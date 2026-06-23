@@ -18,14 +18,16 @@ export type Text = {
   mots: Mot[] | null;
 };
 
-const LEVELS: Record<number, string> = {
-  1: "Souffle",
-  2: "Verset",
-  3: "Passage",
-  4: "Lecture",
-};
+export const wordCount = (text: Text): number =>
+  text.mots?.length ?? text.grec.split(/\s+/).filter(Boolean).length;
 
-export const levelLabel = (n: number): string => LEVELS[n] ?? `Niveau ${n}`;
+/** Libellé de longueur, calculé sur le nombre réel de mots. */
+export const lengthLabel = (text: Text): string => {
+  const n = wordCount(text);
+  if (n < 170) return "Court";
+  if (n <= 240) return "Moyen";
+  return "Long";
+};
 
 export type Collection = {
   id: string;

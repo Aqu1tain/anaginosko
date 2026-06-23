@@ -1,4 +1,4 @@
-import { collections, levelLabel, textsByCollection, type Text } from "../data/texts";
+import { collections, lengthLabel, textsByCollection, type Text } from "../data/texts";
 import scribe from "../assets/scribe.jpg";
 
 function preview(grec: string, words = 7): string {
@@ -15,7 +15,7 @@ function TextCard({ text }: { text: Text }) {
       <div className="card-body min-w-0 gap-1.5 p-4">
         <div className="flex items-baseline justify-between gap-3">
           <h3 className="min-w-0 truncate font-semibold">{text.reference}</h3>
-          <span className="badge badge-sm badge-ghost shrink-0">{levelLabel(text.niveau)}</span>
+          <span className="badge badge-sm badge-ghost shrink-0">{lengthLabel(text)}</span>
         </div>
         <p className="font-greek truncate text-lg text-base-content/65">{preview(text.grec)}</p>
       </div>

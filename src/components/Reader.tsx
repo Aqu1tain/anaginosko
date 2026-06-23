@@ -1,4 +1,4 @@
-import { levelLabel, type Text } from "../data/texts";
+import { lengthLabel, type Text } from "../data/texts";
 import { usePersistentState } from "../hooks/usePersistentState";
 import GreekText, { type TranslitMode } from "./GreekText";
 
@@ -37,7 +37,7 @@ export default function Reader({ text }: { text: Text }) {
   return (
     <article className="pt-5">
       <div className="flex items-center gap-2 text-sm text-base-content/60">
-        <span className="badge badge-sm badge-ghost">{levelLabel(text.niveau)}</span>
+        <span className="badge badge-sm badge-ghost">{lengthLabel(text)}</span>
         <span>Touchez une lettre pour ses indices</span>
       </div>
 

@@ -66,6 +66,12 @@ function GreekText({
     if (el) activate(el);
   };
 
+  // Sur une lettre, neutralise la sélection native du double/triple-clic (qui
+  // gêne l'enchaînement des clics). Le glisser pour sélectionner reste possible.
+  const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.detail > 1 && (e.target as HTMLElement).closest(".glyph")) e.preventDefault();
+  };
+
   const onKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     const el = (e.target as HTMLElement).closest<HTMLElement>(".glyph");
     if (!el) return;
@@ -134,6 +140,7 @@ function GreekText({
         role="group"
         aria-label="Texte grec en scriptio continua, sélectionnez une lettre pour ses indices"
         onClick={onClick}
+        onMouseDown={onMouseDown}
         onKeyDown={onKeyDown}
         className={`font-greek ${greekSize} leading-relaxed tracking-wide break-all`}
       >
@@ -173,6 +180,7 @@ function GreekText({
       role="group"
       aria-label="Texte grec, sélectionnez une lettre pour ses indices"
       onClick={onClick}
+      onMouseDown={onMouseDown}
       onKeyDown={onKeyDown}
       className={`font-greek ${greekSize} ${lineSpace}`}
     >
