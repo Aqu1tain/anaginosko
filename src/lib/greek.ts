@@ -1,0 +1,106 @@
+import { letters, type Letter } from "../data/alphabet";
+
+const byKey = new Map<string, Letter>();
+for (const letter of letters) {
+  for (const key of letter.keys) byKey.set(key, letter);
+}
+
+// Toute marque combinante (catégorie Unicode Mark).
+const COMBINING = /\p{M}/gu;
+
+const PSILI = "̓"; // esprit doux (comma above)
+const DASIA = "̔"; // esprit rude (reversed comma above)
+const OXIA = "́"; // aigu
+const VARIA = "̀"; // grave
+const PERISPOMENI = "͂"; // circonflexe (perispomeni)
+const YPOGEGRAMMENI = "ͅ"; // iota souscrit
+
+export type Breathing = "doux" | "rude" | null;
+export type AccentKind = "aigu" | "grave" | "circonflexe" | null;
+
+export type GraphemeInfo = {
+  /** le cluster tel qu'affiché (lettre + diacritiques) */
+  cluster: string;
+  /** entrée de l'alphabet, ou null si ce n'est pas une lettre grecque */
+  letter: Letter | null;
+  isFinalSigma: boolean;
+  breathing: Breathing;
+  accent: AccentKind;
+  iotaSubscript: boolean;
+};
+
+const segmenter =
+  typeof Intl !== "undefined" && "Segmenter" in Intl
+    ? new Intl.Segmenter("el", { granularity: "grapheme" })
+    : null;
+
+export function segment(text: string): string[] {
+  if (segmenter) {
+    return Array.from(segmenter.segment(text), (s) => s.segment);
+  }
+  return Array.from(text);
+}
+
+export function analyzeGrapheme(cluster: string): GraphemeInfo {
+  const decomposed = cluster.normalize("NFD");
+  const base = decomposed.replace(COMBINING, "");
+  const baseChar = base[0] ?? "";
+  const lower = baseChar.toLowerCase();
+  const isFinalSigma = baseChar === "ς"; // ς
+  const letter = byKey.get(lower) ?? byKey.get(baseChar) ?? null;
+
+  const marks = decomposed.slice(baseChar.length);
+  const breathing: Breathing = marks.includes(DASIA)
+    ? "rude"
+    : marks.includes(PSILI)
+      ? "doux"
+      : null;
+  const accent: AccentKind = marks.includes(PERISPOMENI)
+    ? "circonflexe"
+    : marks.includes(OXIA)
+      ? "aigu"
+      : marks.includes(VARIA)
+        ? "grave"
+        : null;
+
+  return {
+    cluster,
+    letter,
+    isFinalSigma,
+    breathing,
+    accent,
+    iotaSubscript: marks.includes(YPOGEGRAMMENI),
+  };
+}
+
+export const isClickable = (info: GraphemeInfo): boolean => info.letter !== null;
+
+export const breathingLabel = (b: Breathing): string | null =>
+  b === "doux" ? "Esprit doux" : b === "rude" ? "Esprit rude (h)" : null;
+
+export const accentLabel = (a: AccentKind): string | null =>
+  a === "aigu"
+    ? "Accent aigu"
+    : a === "grave"
+      ? "Accent grave"
+      : a === "circonflexe"
+        ? "Accent circonflexe"
+        : null;
+
+/**
+ * Découpe une translittération du jeu de données (voyelle accentuée en
+ * MAJUSCULE) en segments marqués comme accentués ou non, pour un rendu propre.
+ */
+export type TranslitPiece = { text: string; stressed: boolean };
+
+export function translitPieces(translit: string): TranslitPiece[] {
+  const pieces: TranslitPiece[] = [];
+  for (const ch of translit) {
+    const stressed = ch !== ch.toLowerCase() && ch === ch.toUpperCase();
+    const text = stressed ? ch.toLowerCase() : ch;
+    const last = pieces[pieces.length - 1];
+    if (last && last.stressed === stressed) last.text += text;
+    else pieces.push({ text, stressed });
+  }
+  return pieces;
+}

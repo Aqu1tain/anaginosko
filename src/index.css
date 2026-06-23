@@ -1,0 +1,128 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
+@plugin "daisyui/theme" {
+  name: "biblion";
+  default: true;
+  prefersdark: false;
+  color-scheme: light;
+
+  --color-base-100: #ffffff;
+  --color-base-200: #f6f7eb;
+  --color-base-300: #e5e7d6;
+  --color-base-content: #0d3b66;
+
+  --color-primary: #0d3b66;
+  --color-primary-content: #f6f7eb;
+  --color-secondary: #8f95d3;
+  --color-secondary-content: #0d3b66;
+  --color-accent: #d81159;
+  --color-accent-content: #fff7fa;
+  --color-neutral: #0d3b66;
+  --color-neutral-content: #f6f7eb;
+
+  --color-info: #232ed1;
+  --color-info-content: #f6f7eb;
+  --color-success: #23ce6b;
+  --color-success-content: #0d3b66;
+  --color-warning: #e0a82e;
+  --color-warning-content: #0d3b66;
+  --color-error: #d81159;
+  --color-error-content: #fff7fa;
+
+  --radius-selector: 1rem;
+  --radius-field: 0.5rem;
+  --radius-box: 1rem;
+  --border: 1px;
+}
+
+@plugin "daisyui/theme" {
+  name: "biblion-dark";
+  default: false;
+  prefersdark: true;
+  color-scheme: dark;
+
+  --color-base-100: #16181d;
+  --color-base-200: #1d2027;
+  --color-base-300: #2a2e38;
+  --color-base-content: #f6f7eb;
+
+  --color-primary: #8f95d3;
+  --color-primary-content: #0d1322;
+  --color-secondary: #8f95d3;
+  --color-secondary-content: #0d1322;
+  --color-accent: #d81159;
+  --color-accent-content: #fff7fa;
+  --color-neutral: #f6f7eb;
+  --color-neutral-content: #16181d;
+
+  --color-info: #8f95d3;
+  --color-info-content: #0d3b66;
+  --color-success: #23ce6b;
+  --color-success-content: #0d3b66;
+  --color-warning: #e0a82e;
+  --color-warning-content: #0d3b66;
+  --color-error: #d81159;
+  --color-error-content: #fff7fa;
+
+  --radius-selector: 1rem;
+  --radius-field: 0.5rem;
+  --radius-box: 1rem;
+  --border: 1px;
+}
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-greek: "Gentium Plus", "Gentium Book Plus", Georgia, serif;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.font-greek {
+  font-family: var(--font-greek);
+}
+
+.glyph {
+  cursor: pointer;
+  border-radius: 4px;
+  padding-inline: 1px;
+  transition: background-color 0.15s ease;
+}
+
+@media (hover: hover) {
+  .glyph:hover {
+    background-color: color-mix(in oklab, var(--color-accent) 12%, transparent);
+  }
+}
+
+.glyph:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 1px;
+}
+
+.glyph.is-active {
+  background-color: color-mix(in oklab, var(--color-accent) 16%, transparent);
+  color: var(--color-accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

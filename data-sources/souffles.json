@@ -1,0 +1,128 @@
+{
+  "meta": {
+    "titre": "Lecture grec koinè → français (Nouveau Testament)",
+    "prononciation": "érasmienne",
+    "source_grecque_recommandee": "SBLGNT (libre de droits)",
+    "traductions_francaises": "originales et simples, pour rester libres de droits",
+    "note": "La translittération est un guide de prononciation érasmienne, pas une translittération scientifique stricte.",
+    "niveaux": {
+      "1": "un souffle (3 à 5 mots)",
+      "2": "un verset court",
+      "3": "un petit passage"
+    }
+  },
+  "textes": [
+    {
+      "id": 1,
+      "niveau": 1,
+      "reference": "Jean 11:35",
+      "grec": "ἐδάκρυσεν ὁ Ἰησοῦς.",
+      "francais": "Jésus pleura.",
+      "translit_erasmien": "édakrusen ho Iêsous"
+    },
+    {
+      "id": 2,
+      "niveau": 1,
+      "reference": "1 Jean 4:8",
+      "grec": "ὁ θεὸς ἀγάπη ἐστίν.",
+      "francais": "Dieu est amour.",
+      "translit_erasmien": "ho théos agapê éstin"
+    },
+    {
+      "id": 3,
+      "niveau": 1,
+      "reference": "1 Thessaloniciens 5:16",
+      "grec": "Πάντοτε χαίρετε.",
+      "francais": "Réjouissez-vous toujours.",
+      "translit_erasmien": "pantoté khaïreté"
+    },
+    {
+      "id": 4,
+      "niveau": 1,
+      "reference": "1 Thessaloniciens 5:17",
+      "grec": "ἀδιαλείπτως προσεύχεσθε.",
+      "francais": "Priez sans cesse.",
+      "translit_erasmien": "adialéïptôs proseukhesthé"
+    },
+    {
+      "id": 5,
+      "niveau": 1,
+      "reference": "Jean 8:12",
+      "grec": "ἐγώ εἰμι τὸ φῶς τοῦ κόσμου.",
+      "francais": "Je suis la lumière du monde.",
+      "translit_erasmien": "égô éïmi to fôs tou kosmou"
+    },
+    {
+      "id": 6,
+      "niveau": 2,
+      "reference": "Jean 14:6",
+      "grec": "ἐγώ εἰμι ἡ ὁδὸς καὶ ἡ ἀλήθεια καὶ ἡ ζωή.",
+      "francais": "Je suis le chemin, la vérité et la vie.",
+      "translit_erasmien": "égô éïmi hê hodos kaï hê alêthéïa kaï hê zôê"
+    },
+    {
+      "id": 7,
+      "niveau": 2,
+      "reference": "Marc 1:1",
+      "grec": "Ἀρχὴ τοῦ εὐαγγελίου Ἰησοῦ Χριστοῦ υἱοῦ θεοῦ.",
+      "francais": "Commencement de l'Évangile de Jésus-Christ, Fils de Dieu.",
+      "translit_erasmien": "arkhê tou euangéliou Iêsou Khristou huiou théou"
+    },
+    {
+      "id": 8,
+      "niveau": 2,
+      "reference": "Philippiens 4:13",
+      "grec": "πάντα ἰσχύω ἐν τῷ ἐνδυναμοῦντί με.",
+      "francais": "Je peux tout par celui qui me fortifie.",
+      "translit_erasmien": "panta iskhuô en tô endunamounti mé"
+    },
+    {
+      "id": 9,
+      "niveau": 2,
+      "reference": "Jean 1:1",
+      "grec": "Ἐν ἀρχῇ ἦν ὁ λόγος, καὶ ὁ λόγος ἦν πρὸς τὸν θεόν, καὶ θεὸς ἦν ὁ λόγος.",
+      "francais": "Au commencement était la Parole, et la Parole était auprès de Dieu, et la Parole était Dieu.",
+      "translit_erasmien": "en arkhê ên ho logos, kaï ho logos ên pros ton théon, kaï théos ên ho logos"
+    },
+    {
+      "id": 10,
+      "niveau": 3,
+      "reference": "Jean 3:16",
+      "grec": "Οὕτως γὰρ ἠγάπησεν ὁ θεὸς τὸν κόσμον, ὥστε τὸν υἱὸν τὸν μονογενῆ ἔδωκεν, ἵνα πᾶς ὁ πιστεύων εἰς αὐτὸν μὴ ἀπόληται ἀλλ' ἔχῃ ζωὴν αἰώνιον.",
+      "francais": "Car Dieu a tant aimé le monde qu'il a donné son Fils unique, afin que quiconque croit en lui ne périsse pas mais ait la vie éternelle.",
+      "translit_erasmien": "houtôs gar êgapêsen ho théos ton kosmon, hôsté ton huion ton monogenê édôken, hina pas ho pisteuôn éïs auton mê apolêtaï all' ékhê zôên aïônion"
+    },
+    {
+      "id": 11,
+      "niveau": 3,
+      "reference": "Matthieu 5:3-9",
+      "grec": "Μακάριοι οἱ πτωχοὶ τῷ πνεύματι, ὅτι αὐτῶν ἐστιν ἡ βασιλεία τῶν οὐρανῶν. μακάριοι οἱ πενθοῦντες, ὅτι αὐτοὶ παρακληθήσονται. μακάριοι οἱ πραεῖς, ὅτι αὐτοὶ κληρονομήσουσιν τὴν γῆν. μακάριοι οἱ πεινῶντες καὶ διψῶντες τὴν δικαιοσύνην, ὅτι αὐτοὶ χορτασθήσονται. μακάριοι οἱ ἐλεήμονες, ὅτι αὐτοὶ ἐλεηθήσονται. μακάριοι οἱ καθαροὶ τῇ καρδίᾳ, ὅτι αὐτοὶ τὸν θεὸν ὄψονται. μακάριοι οἱ εἰρηνοποιοί, ὅτι αὐτοὶ υἱοὶ θεοῦ κληθήσονται.",
+      "francais": "Heureux les pauvres en esprit, car le royaume des cieux est à eux. Heureux ceux qui pleurent, car ils seront consolés. Heureux les doux, car ils hériteront la terre. Heureux ceux qui ont faim et soif de justice, car ils seront rassasiés. Heureux les miséricordieux, car ils obtiendront miséricorde. Heureux ceux qui ont le cœur pur, car ils verront Dieu. Heureux les artisans de paix, car ils seront appelés fils de Dieu.",
+      "translit_erasmien": "makarioï hoï ptôkhoï tô pneumati, hoti autôn éstin hê basiléïa tôn ouranôn..."
+    },
+    {
+      "id": 12,
+      "niveau": 3,
+      "reference": "1 Corinthiens 13:4-7",
+      "grec": "Ἡ ἀγάπη μακροθυμεῖ, χρηστεύεται ἡ ἀγάπη, οὐ ζηλοῖ, ἡ ἀγάπη οὐ περπερεύεται, οὐ φυσιοῦται, οὐκ ἀσχημονεῖ, οὐ ζητεῖ τὰ ἑαυτῆς, οὐ παροξύνεται, οὐ λογίζεται τὸ κακόν, οὐ χαίρει ἐπὶ τῇ ἀδικίᾳ, συγχαίρει δὲ τῇ ἀληθείᾳ· πάντα στέγει, πάντα πιστεύει, πάντα ἐλπίζει, πάντα ὑπομένει.",
+      "francais": "L'amour est patient, l'amour est plein de bonté ; il n'est pas envieux, il ne se vante pas, il ne s'enfle pas d'orgueil, il ne fait rien de malséant, il ne cherche pas son intérêt, il ne s'irrite pas, il ne tient pas compte du mal ; il ne se réjouit pas de l'injustice, mais il se réjouit de la vérité ; il excuse tout, il croit tout, il espère tout, il supporte tout.",
+      "translit_erasmien": "hê agapê makrothuméï, khrêsteuétaï hê agapê, ou zêloï..."
+    },
+    {
+      "id": 13,
+      "niveau": 3,
+      "reference": "Jean 1:1-5",
+      "grec": "Ἐν ἀρχῇ ἦν ὁ λόγος, καὶ ὁ λόγος ἦν πρὸς τὸν θεόν, καὶ θεὸς ἦν ὁ λόγος. οὗτος ἦν ἐν ἀρχῇ πρὸς τὸν θεόν. πάντα δι' αὐτοῦ ἐγένετο, καὶ χωρὶς αὐτοῦ ἐγένετο οὐδὲ ἕν ὃ γέγονεν. ἐν αὐτῷ ζωὴ ἦν, καὶ ἡ ζωὴ ἦν τὸ φῶς τῶν ἀνθρώπων· καὶ τὸ φῶς ἐν τῇ σκοτίᾳ φαίνει, καὶ ἡ σκοτία αὐτὸ οὐ κατέλαβεν.",
+      "francais": "Au commencement était la Parole, et la Parole était auprès de Dieu, et la Parole était Dieu. Elle était au commencement auprès de Dieu. Tout a été fait par elle, et rien de ce qui a été fait ne l'a été sans elle. En elle était la vie, et la vie était la lumière des hommes ; et la lumière brille dans les ténèbres, et les ténèbres ne l'ont pas saisie.",
+      "translit_erasmien": "en arkhê ên ho logos..."
+    },
+    {
+      "id": 14,
+      "niveau": 3,
+      "reference": "Matthieu 6:9-13 (Notre Père)",
+      "grec": "Πάτερ ἡμῶν ὁ ἐν τοῖς οὐρανοῖς, ἁγιασθήτω τὸ ὄνομά σου· ἐλθέτω ἡ βασιλεία σου· γενηθήτω τὸ θέλημά σου, ὡς ἐν οὐρανῷ καὶ ἐπὶ γῆς· τὸν ἄρτον ἡμῶν τὸν ἐπιούσιον δὸς ἡμῖν σήμερον· καὶ ἄφες ἡμῖν τὰ ὀφειλήματα ἡμῶν, ὡς καὶ ἡμεῖς ἀφήκαμεν τοῖς ὀφειλέταις ἡμῶν· καὶ μὴ εἰσενέγκῃς ἡμᾶς εἰς πειρασμόν, ἀλλὰ ῥῦσαι ἡμᾶς ἀπὸ τοῦ πονηροῦ.",
+      "francais": "Notre Père qui es aux cieux, que ton nom soit sanctifié ; que ton règne vienne ; que ta volonté soit faite sur la terre comme au ciel ; donne-nous aujourd'hui notre pain de ce jour ; pardonne-nous nos offenses, comme nous aussi avons pardonné à ceux qui nous ont offensés ; et ne nous laisse pas entrer en tentation, mais délivre-nous du malin.",
+      "translit_erasmien": "pater hêmôn ho en toïs ouranoïs..."
+    }
+  ]
+}
