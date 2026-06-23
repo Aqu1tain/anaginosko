@@ -147,19 +147,23 @@ export default function LetterSheet({
             <div className="mt-2 space-y-1 text-base">
               <div className="flex items-center gap-1.5">
                 <span className="text-sm text-base-content/55">Érasmien&nbsp;</span>
-                <Translit
-                  value={word.erasmien}
-                  stressedClass="font-semibold text-accent underline decoration-accent/40 underline-offset-2"
-                />
+                <span>
+                  <Translit
+                    value={word.erasmien}
+                    stressedClass="font-semibold text-accent underline decoration-accent/40 underline-offset-2"
+                  />
+                </span>
                 <SpeakButton value={word.erasmien} />
               </div>
               {word.restituee && (
                 <div className="flex items-center gap-1.5">
                   <span className="text-sm text-base-content/55">Restituée&nbsp;</span>
-                  <Translit
-                    value={word.restituee}
-                    stressedClass="font-semibold text-accent underline decoration-accent/40 underline-offset-2"
-                  />
+                  <span>
+                    <Translit
+                      value={word.restituee}
+                      stressedClass="font-semibold text-accent underline decoration-accent/40 underline-offset-2"
+                    />
+                  </span>
                   <SpeakButton value={word.restituee} />
                 </div>
               )}
