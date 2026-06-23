@@ -3,14 +3,13 @@ import { accentLabel, breathingLabel, type GraphemeInfo } from "../lib/greek";
 import type { SheetStage } from "./SheetContext";
 import type { WordContext } from "../lib/tokenize";
 import { glossFor } from "../data/glosses";
-import { speakTranslit, speechSupported } from "../lib/audio";
+import { playTranslit } from "../lib/audio";
 import Translit from "./Translit";
 
 function SpeakButton({ value }: { value: string }) {
-  if (!speechSupported()) return null;
   return (
     <button
-      onClick={() => speakTranslit(value)}
+      onClick={() => playTranslit(value)}
       aria-label="Écouter la prononciation"
       className="btn btn-ghost btn-xs btn-circle text-accent"
     >

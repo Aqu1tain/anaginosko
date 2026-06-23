@@ -55,6 +55,16 @@ const sources: Source[] = [
     body: <>D'après le cours « Introduction au grec biblique » (érasmienne et restituée).</>,
   },
   {
+    title: "Audio",
+    body: (
+      <>
+        Voix de synthèse <strong>Microsoft Azure Speech</strong> (neuronales), pilotées en alphabet
+        phonétique international ; fichiers pré-générés. érasmien : voix fr-FR ; restituée : voix
+        el-GR.
+      </>
+    ),
+  },
+  {
     title: "Polices",
     body: (
       <>
