@@ -5,6 +5,8 @@ export type Occurrence = {
   reference: string;
   verse: number | null;
   forme: string;
+  /** index de jeton du mot dans le texte (pour le surlignage). */
+  w: number;
 };
 
 export type LemmaEntry = {
@@ -27,8 +29,8 @@ export function concordance(): LemmaEntry[] {
 
   const map = new Map<string, LemmaEntry>();
   for (const t of texts as Text[]) {
-    for (const mot of t.mots ?? []) {
-      if (!mot.lemme) continue;
+    (t.mots ?? []).forEach((mot, i) => {
+      if (!mot.lemme) return;
       let entry = map.get(mot.lemme);
       if (!entry) {
         entry = {
@@ -43,13 +45,15 @@ export function concordance(): LemmaEntry[] {
       const forme = cleanForm(mot.grec);
       entry.count += 1;
       if (!entry.forms.includes(forme)) entry.forms.push(forme);
+      // tokenizeText intercale un espace entre les mots : le mot i est au jeton 2*i.
       entry.occurrences.push({
         textId: t.id,
         reference: t.reference,
         verse: mot.verse,
         forme,
+        w: i * 2,
       });
-    }
+    });
   }
 
   cache = [...map.values()].sort((a, b) => a.lemma.localeCompare(b.lemma, "el"));

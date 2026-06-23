@@ -153,6 +153,23 @@ body {
   animation: sheet-in 0.24s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+/* Surlignage temporaire d'un mot suivi depuis la concordance. */
+@keyframes word-flash {
+  0%,
+  55% {
+    background-color: color-mix(in oklab, var(--color-accent) 28%, transparent);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+.word-flash {
+  border-radius: 5px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  animation: word-flash 2.6s ease forwards;
+}
+
 /* Mot entier surligné au 2e clic. */
 .word-active {
   background-color: color-mix(in oklab, var(--color-secondary) 28%, transparent);

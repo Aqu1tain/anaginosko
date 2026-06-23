@@ -17,6 +17,7 @@ import Reader from "./components/Reader";
 import AlphabetView from "./components/AlphabetView";
 import ConcordanceView from "./components/ConcordanceView";
 import LetterSheet from "./components/LetterSheet";
+import TabBar from "./components/TabBar";
 
 const prefersDark =
   typeof matchMedia !== "undefined" && matchMedia("(prefers-color-scheme: dark)").matches;
@@ -46,6 +47,20 @@ export default function App() {
   useEffect(() => {
     setSheet(null);
   }, [route]);
+
+  // Quand la fiche s'ouvre sur une nouvelle lettre, la remonter au-dessus de la
+  // feuille (ancrée en bas). La marge basse réservée (plus bas) donne la place.
+  useEffect(() => {
+    if (!sheet) return;
+    const el = document.querySelector<HTMLElement>(".glyph.is-active");
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    const target = window.innerHeight * 0.3;
+    if (r.top > target + 24 || r.top < 64) {
+      window.scrollBy({ top: r.top - target, behavior: "smooth" });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sheet?.key]);
 
   const clickLetter = useCallback(({ w, g, info, word }: LetterClick) => {
     const key = `${w}:${g}`;
@@ -84,12 +99,18 @@ export default function App() {
     <SheetContext.Provider value={api}>
       <div className="min-h-dvh bg-base-100 text-base-content">
         <TopBar route={route} text={text} dark={dark} onToggleTheme={() => setDark((d) => !d)} />
-        <main className="mx-auto w-full max-w-2xl px-4 pb-16">
+        <main
+          className={`mx-auto w-full max-w-2xl px-4 ${
+            sheet ? "pb-[65vh]" : "pb-[calc(5rem+env(safe-area-inset-bottom))]"
+          }`}
+        >
           {route.name === "library" && <Library />}
           {route.name === "alphabet" && <AlphabetView />}
           {route.name === "concordance" && <ConcordanceView lemma={route.lemma} />}
-          {route.name === "text" && (text ? <Reader text={text} /> : <NotFound />)}
+          {route.name === "text" &&
+            (text ? <Reader text={text} highlight={route.highlight} /> : <NotFound />)}
         </main>
+        <TabBar route={route} />
       </div>
       {sheet && (
         <LetterSheet

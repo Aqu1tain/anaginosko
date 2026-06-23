@@ -2,13 +2,17 @@ import { useEffect, useState } from "react";
 
 export type Route =
   | { name: "library" }
-  | { name: "text"; id: string }
+  | { name: "text"; id: string; highlight: number | null }
   | { name: "alphabet" }
   | { name: "concordance"; lemma: string | null };
 
 function parse(hash: string): Route {
   const path = hash.replace(/^#/, "");
-  if (path.startsWith("/text/")) return { name: "text", id: path.slice("/text/".length) };
+  if (path.startsWith("/text/")) {
+    const [id, query] = path.slice("/text/".length).split("?");
+    const m = query?.match(/(?:^|&)w=(\d+)/);
+    return { name: "text", id, highlight: m ? Number(m[1]) : null };
+  }
   if (path === "/alphabet") return { name: "alphabet" };
   if (path.startsWith("/concordance/"))
     return { name: "concordance", lemma: decodeURIComponent(path.slice("/concordance/".length)) };

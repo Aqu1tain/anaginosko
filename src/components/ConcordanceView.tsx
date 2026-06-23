@@ -78,7 +78,7 @@ function Detail({ entry }: { entry: LemmaEntry }) {
         {entry.occurrences.map((o, i) => (
           <a
             key={i}
-            href={`#/text/${o.textId}`}
+            href={`#/text/${o.textId}?w=${o.w}`}
             className="flex items-center gap-3 rounded-box border border-base-300 bg-base-100 px-3.5 py-2.5 transition-colors hover:border-primary/40"
           >
             <span className="font-greek min-w-0 flex-1 truncate text-lg">{o.forme}</span>

@@ -1,4 +1,4 @@
-import { Fragment, memo, useMemo, useRef } from "react";
+import { Fragment, memo, useEffect, useMemo, useRef, useState } from "react";
 import type { Text } from "../data/texts";
 import { tokenizeText } from "../lib/tokenize";
 import { isClickable, type GraphemeInfo } from "../lib/greek";
@@ -12,30 +12,58 @@ function GreekText({
   size,
   translit = "off",
   manuscript = false,
+  verseOnly = null,
+  highlightWord = null,
 }: {
   text: Text;
   size: "lg" | "md";
   translit?: TranslitMode;
   manuscript?: boolean;
+  /** Ne rendre que les mots de ce verset (mode étude). */
+  verseOnly?: number | null;
+  /** Index de jeton à surligner temporairement (suivi de concordance). */
+  highlightWord?: number | null;
 }) {
   const { active, clickLetter } = useSheet();
   const containerRef = useRef<HTMLDivElement>(null);
+  const [flashW, setFlashW] = useState<number | null>(null);
   const tokens = useMemo(() => tokenizeText(text), [text]);
-  const interlinear = translit !== "off";
+  // L'interlinéaire (prononciation sous chaque mot) reste réservé au moderne ;
+  // le manuscrit garde la scriptio continua (prononciation au tap + audio).
+  const interlinear = translit !== "off" && !manuscript;
 
-  // Roving tabindex : une seule lettre est dans l'ordre de tabulation.
+  // Mots avec leur index de jeton d'origine (stable pour data-w / activate).
+  const words = useMemo(() => {
+    const arr: Array<[number, (typeof tokens)[number] & { type: "word" }]> = [];
+    tokens.forEach((t, i) => {
+      if (t.type === "word") arr.push([i, t as never]);
+    });
+    return arr;
+  }, [tokens]);
+
+  const shown = verseOnly == null ? words : words.filter(([, t]) => t.word.verse === verseOnly);
+
   const firstKey = useMemo(() => {
-    for (let w = 0; w < tokens.length; w++) {
-      const t = tokens[w];
-      if (t.type !== "word") continue;
+    for (const [w, t] of shown) {
       const g = t.word.graphemes.findIndex(isClickable);
       if (g >= 0) return `${w}:${g}`;
     }
     return null;
-  }, [tokens]);
+  }, [shown]);
 
   const tabbableKey = active?.key ?? firstKey;
   const activeWord = active && active.stage === 2 ? active.w : -1;
+
+  // Surlignage temporaire d'un mot (arrivée depuis la concordance).
+  useEffect(() => {
+    if (highlightWord == null) return;
+    const el = containerRef.current?.querySelector<HTMLElement>(`[data-w="${highlightWord}"]`);
+    if (!el) return; // le mot n'est pas dans cette instance (autre verset)
+    setFlashW(highlightWord);
+    el.scrollIntoView({ block: "center", behavior: "smooth" });
+    const t = setTimeout(() => setFlashW(null), 2600);
+    return () => clearTimeout(t);
+  }, [highlightWord]);
 
   const activate = (el: HTMLElement) => {
     const w = Number(el.dataset.w);
@@ -66,8 +94,8 @@ function GreekText({
     if (el) activate(el);
   };
 
-  // Sur une lettre, neutralise la sélection native du double/triple-clic (qui
-  // gêne l'enchaînement des clics). Le glisser pour sélectionner reste possible.
+  // Neutralise la sélection native du double/triple-clic sur une lettre ; le
+  // glisser pour copier reste possible.
   const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.detail > 1 && (e.target as HTMLElement).closest(".glyph")) e.preventDefault();
   };
@@ -93,28 +121,24 @@ function GreekText({
   };
 
   const greekSize = size === "lg" ? "text-[1.95rem]" : "text-2xl";
-  // Numéros de versets et ponctuation seulement en moderne ; le manuscrit reste
-  // proche de l'original. La translittération (prononciation) marche dans les deux.
-  const containerSpacing =
-    manuscript && !interlinear
-      ? "leading-relaxed tracking-wide break-all"
-      : interlinear
-        ? "leading-snug"
-        : size === "lg"
-          ? "leading-[1.85]"
-          : "leading-[1.8]";
+  const containerSpacing = manuscript
+    ? "leading-relaxed tracking-wide break-all"
+    : interlinear
+      ? "leading-snug"
+      : size === "lg"
+        ? "leading-[1.85]"
+        : "leading-[1.8]";
 
   const verseAt = useMemo(() => {
     const map = new Map<number, number>();
     let last: number | null = null;
-    tokens.forEach((tk, i) => {
-      if (tk.type !== "word") return;
-      const v = tk.word.verse;
-      if (v != null && v !== last) map.set(i, v);
+    for (const [w, t] of words) {
+      const v = t.word.verse;
+      if (v != null && v !== last) map.set(w, v);
       if (v != null) last = v;
-    });
+    }
     return map;
-  }, [tokens]);
+  }, [words]);
 
   const verseMark = (w: number) =>
     !manuscript && verseAt.has(w) ? <span className="verse-num">{verseAt.get(w)}</span> : null;
@@ -150,17 +174,14 @@ function GreekText({
       onKeyDown={onKeyDown}
       className={`font-greek ${greekSize} ${containerSpacing}`}
     >
-      {tokens.map((token, w) => {
-        if (token.type === "space") {
-          if (manuscript || interlinear) return null;
-          return <span key={w}> </span>;
-        }
+      {shown.map(([w, token], idx) => {
         const glyphs = renderGlyphs(token.word.graphemes, w);
-        const wordCls = `whitespace-nowrap${w === activeWord ? " word-active" : ""}`;
+        const wordCls = `whitespace-nowrap${w === activeWord ? " word-active" : ""}${w === flashW ? " word-flash" : ""}`;
 
         if (!interlinear) {
           return (
             <Fragment key={w}>
+              {idx > 0 && !manuscript ? " " : null}
               {verseMark(w)}
               <span className={wordCls}>{glyphs}</span>
             </Fragment>
@@ -170,10 +191,7 @@ function GreekText({
         const ctx = token.word.context;
         const tr = ctx ? (translit === "restituee" ? ctx.restituee : ctx.erasmien) : null;
         return (
-          <span
-            key={w}
-            className={`mb-2 inline-flex flex-col items-center align-top ${manuscript ? "mr-1" : "mr-2.5"}`}
-          >
+          <span key={w} className="mr-2.5 mb-2 inline-flex flex-col items-center align-top">
             <span className={wordCls}>
               {verseMark(w)}
               {glyphs}

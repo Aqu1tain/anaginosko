@@ -74,16 +74,6 @@ export default function TopBar({
         </div>
 
         <div className="flex items-center gap-1">
-          {isLibrary && (
-            <>
-              <a href="#/alphabet" className="btn btn-ghost btn-sm">
-                Alphabet
-              </a>
-              <a href="#/concordance" className="btn btn-ghost btn-sm">
-                Concordance
-              </a>
-            </>
-          )}
           <ThemeToggle dark={dark} onToggle={onToggleTheme} />
         </div>
       </div>
