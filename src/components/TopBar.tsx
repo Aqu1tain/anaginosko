@@ -6,28 +6,43 @@ function ThemeToggle({ dark, onToggle }: { dark: boolean; onToggle: () => void }
     <button
       onClick={onToggle}
       aria-label={dark ? "Passer en clair" : "Passer en sombre"}
+      aria-pressed={dark}
       className="btn btn-ghost btn-circle"
     >
-      {dark ? (
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <circle cx="12" cy="12" r="4.2" stroke="currentColor" strokeWidth="1.6" />
-          <path
-            d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8"
-            stroke="currentColor"
-            strokeWidth="1.6"
-            strokeLinecap="round"
-          />
-        </svg>
-      ) : (
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path
-            d="M20 14.5A8 8 0 019.5 4a7 7 0 1010.5 10.5z"
-            stroke="currentColor"
-            strokeWidth="1.6"
-            strokeLinejoin="round"
-          />
-        </svg>
-      )}
+      <svg
+        className={`theme-icon ${dark ? "is-dark" : ""}`}
+        width="22"
+        height="22"
+        viewBox="0 0 24 24"
+        fill="none"
+        aria-hidden="true"
+      >
+        <mask id="theme-moon-mask">
+          <rect x="0" y="0" width="24" height="24" fill="white" />
+          {/* Ce disque glisse devant le soleil pour creuser le croissant. */}
+          <circle className="theme-cutout" cx="24" cy="3" r="6" fill="black" />
+        </mask>
+        {/* Corps : soleil (plein) qui se réduit en lune (croissant via le masque). */}
+        <circle
+          className="theme-core"
+          cx="12"
+          cy="12"
+          r="5"
+          fill="currentColor"
+          mask="url(#theme-moon-mask)"
+        />
+        {/* Rayons : présents le jour, rétractés la nuit. */}
+        <g className="theme-rays" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round">
+          <line x1="12" y1="1.5" x2="12" y2="3.8" />
+          <line x1="12" y1="20.2" x2="12" y2="22.5" />
+          <line x1="1.5" y1="12" x2="3.8" y2="12" />
+          <line x1="20.2" y1="12" x2="22.5" y2="12" />
+          <line x1="4.4" y1="4.4" x2="6" y2="6" />
+          <line x1="18" y1="18" x2="19.6" y2="19.6" />
+          <line x1="19.6" y1="4.4" x2="18" y2="6" />
+          <line x1="6" y1="18" x2="4.4" y2="19.6" />
+        </g>
+      </svg>
     </button>
   );
 }

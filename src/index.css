@@ -95,6 +95,45 @@ body {
   font-family: var(--font-greek);
 }
 
+/* Bascule jour/nuit animée : le soleil se réduit, ses rayons se rétractent et
+   tournent, un croissant se creuse via le masque. */
+.theme-icon {
+  color: currentColor;
+}
+.theme-icon .theme-core {
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-origin: center;
+}
+.theme-icon .theme-cutout {
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.theme-icon .theme-rays {
+  transform-origin: center;
+  transition:
+    transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 0.35s ease;
+}
+/* Vers la nuit : le disque grandit un peu, le cutout glisse sur lui (croissant),
+   les rayons disparaissent en tournant et en se rétractant. */
+.theme-icon.is-dark .theme-core {
+  transform: scale(1.35);
+}
+.theme-icon.is-dark .theme-cutout {
+  transform: translate(-9px, 5px);
+}
+.theme-icon.is-dark .theme-rays {
+  transform: rotate(-50deg) scale(0.5);
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-icon .theme-core,
+  .theme-icon .theme-cutout,
+  .theme-icon .theme-rays {
+    transition: none;
+  }
+}
+
 .glyph {
   cursor: pointer;
   border-radius: 4px;
