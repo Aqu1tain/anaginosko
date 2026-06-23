@@ -1,30 +1,60 @@
-// Clé de fichier audio = hash FNV-1a de la translittération (même fonction côté
-// build, voir scripts/build-audio.mjs). Les mp3 sont pré-générés dans public/audio.
+// Prononciation via la voix française native de l'appareil (Web Speech API) :
+// naturelle (neuronale sur iOS/macOS), gratuite, rien à embarquer. On lit la
+// translittération érasmienne ou restituée selon le choix de l'utilisateur.
+// Limite : le français ne produit pas /θ/ (θ restituée) ni /x/ (χ restituée) ;
+// l'écart érasmien/restituée passe surtout par les voyelles et β, bien rendus.
 
-export function audioKey(s: string): string {
-  let h = 2166136261 >>> 0;
-  const str = s.toLowerCase();
-  for (let i = 0; i < str.length; i++) {
-    h ^= str.charCodeAt(i);
-    h = Math.imul(h, 16777619) >>> 0;
-  }
-  return h.toString(16).padStart(8, "0");
+let voices: SpeechSynthesisVoice[] = [];
+
+function refresh() {
+  if (typeof speechSynthesis === "undefined") return;
+  voices = speechSynthesis.getVoices();
 }
 
-export const audioUrl = (translit: string): string =>
-  `${import.meta.env.BASE_URL}audio/${audioKey(translit)}.mp3`;
+if (typeof window !== "undefined" && "speechSynthesis" in window) {
+  refresh();
+  speechSynthesis.addEventListener?.("voiceschanged", refresh);
+}
 
-let current: HTMLAudioElement | null = null;
+export const speechSupported = (): boolean =>
+  typeof window !== "undefined" && "speechSynthesis" in window;
 
-export function playTranslit(translit: string): void {
-  try {
-    current?.pause();
-  } catch {
-    /* ignore */
-  }
-  const a = new Audio(audioUrl(translit));
-  current = a;
-  a.play().catch(() => {
-    /* fichier absent ou lecture bloquée */
-  });
+function frenchVoice(): SpeechSynthesisVoice | null {
+  // Préfère une voix fr-FR locale (souvent la meilleure qualité).
+  return (
+    voices.find((v) => v.lang === "fr-FR" && v.localService) ||
+    voices.find((v) => v.lang === "fr-FR") ||
+    voices.find((v) => /^fr/i.test(v.lang)) ||
+    null
+  );
+}
+
+// On ne donne pas le mot tel quel à la voix : on lui donne une graphie française
+// trafiquée qui lui fait produire le son visé (corrige les pièges du français).
+export function toFrenchSpelling(translit: string): string {
+  let s = translit.toLowerCase();
+  // Diphtongues érasmiennes que le français lit mal : αυ "au"→/o/, ευ "eu"→/ø/.
+  s = s.replace(/au/g, "aou").replace(/eu/g, "éou");
+  // g toujours dur (devant e, i, é, è…).
+  s = s.replace(/g(?=[eiéèêy])/g, "gu");
+  // s toujours /s/ : évite le z intervocalique (kosmos) et force la finale (logos).
+  s = s.replace(/s+/g, "ss");
+  // Dénasalise une voyelle suivie de n/m en fin de mot (théon, amèn…).
+  // (entrée = un seul mot, donc on ancre la fin avec $ ; \b se déclenche à tort
+  //  autour des lettres accentuées en JS.)
+  s = s.replace(/([aeiouéèêôy])([nm])$/, "$1$2e");
+  // Force la prononciation d'une consonne finale muette en français.
+  s = s.replace(/([ktpdbfvr])$/, "$1e");
+  return s;
+}
+
+export function speakTranslit(translit: string): void {
+  if (!speechSupported()) return;
+  const u = new SpeechSynthesisUtterance(toFrenchSpelling(translit));
+  u.lang = "fr-FR";
+  const v = frenchVoice();
+  if (v) u.voice = v;
+  u.rate = 0.85;
+  speechSynthesis.cancel();
+  speechSynthesis.speak(u);
 }
