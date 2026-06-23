@@ -2,6 +2,44 @@ import { useEffect, useMemo, useState } from "react";
 import { concordance, lemmaByKey, searchLemmas, type LemmaEntry } from "../lib/concordance";
 import { glossFor, type Gloss } from "../data/glosses";
 
+// Met en forme la notation Bailly : « || » sépare les grands sens ; on isole
+// la vedette (jusqu'à la 1re parenthèse) et on met en gras les repères (A, I, 1…).
+function formatDefinition(text: string): React.ReactNode {
+  const segments = text
+    .split(/\s*\|\|\s*/)
+    .map((s) => s.trim())
+    .filter(Boolean);
+
+  return segments.map((seg, i) => {
+    // 1er segment : vedette en gras jusqu'à la 1re « ) ».
+    if (i === 0) {
+      const close = seg.indexOf(")");
+      if (close !== -1) {
+        return (
+          <p key={i} className="font-greek text-[0.95rem] leading-relaxed text-base-content/85">
+            <strong className="font-semibold">{seg.slice(0, close + 1)}</strong>
+            {seg.slice(close + 1)}
+          </p>
+        );
+      }
+    }
+    // Repère de section en tête (A, B… / I, II, III… / 1, 2…).
+    const m = seg.match(/^([A-D]|[IVX]{1,4}|\d+)(\b.*)$/s);
+    return (
+      <p key={i} className="font-greek text-[0.95rem] leading-relaxed text-base-content/85">
+        {m ? (
+          <>
+            <strong className="text-accent">{m[1]}</strong>
+            {m[2]}
+          </>
+        ) : (
+          seg
+        )}
+      </p>
+    );
+  });
+}
+
 function FullDefinition({ gloss }: { gloss: Gloss }) {
   const [full, setFull] = useState<string | null>(null);
   const [state, setState] = useState<"loading" | "done" | "error">("loading");
@@ -29,10 +67,10 @@ function FullDefinition({ gloss }: { gloss: Gloss }) {
       <div className="text-[0.7rem] font-medium uppercase tracking-wide text-base-content/55">
         Définition · Bailly
       </div>
-      <p className="font-greek mt-1.5 leading-relaxed whitespace-pre-wrap text-[0.95rem] text-base-content/85">
-        {text}
-        {state === "loading" && <span className="text-base-content/45"> … (extrait)</span>}
-      </p>
+      <div className="mt-1.5 space-y-1.5">
+        {formatDefinition(text)}
+        {state === "loading" && <p className="text-xs text-base-content/45">… (extrait, définition complète en cours)</p>}
+      </div>
       <a
         className="link mt-2 inline-block text-xs text-base-content/55"
         href={`https://bailly.app/recherche/${encodeURIComponent(gloss.uri)}`}
