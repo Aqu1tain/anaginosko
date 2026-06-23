@@ -116,6 +116,16 @@ body {
 .glyph.is-active {
   background-color: color-mix(in oklab, var(--color-accent) 16%, transparent);
   color: var(--color-accent);
+  position: relative;
+}
+
+/* Zone de clic agrandie INVISIBLE pour la lettre active : facilite le 2e/3e
+   clic sans changer l'apparence du surlignage. Reste assez étroite pour ne pas
+   recouvrir entièrement la lettre voisine. */
+.glyph.is-active::after {
+  content: "";
+  position: absolute;
+  inset: -0.35em -0.28em;
 }
 
 /* Numéro de verset, discret, pour se repérer. */
