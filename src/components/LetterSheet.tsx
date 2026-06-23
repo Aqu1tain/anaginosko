@@ -156,7 +156,7 @@ export default function LetterSheet({
                   href={`#/concordance/${encodeURIComponent(word.lemme)}`}
                   className="mt-1.5 inline-block text-sm font-medium text-accent"
                 >
-                  voir les occurrences →
+                  définition complète & occurrences →
                 </a>
               </div>
             )}

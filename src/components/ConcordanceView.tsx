@@ -1,6 +1,49 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { concordance, lemmaByKey, searchLemmas, type LemmaEntry } from "../lib/concordance";
-import { glossFor } from "../data/glosses";
+import { glossFor, type Gloss } from "../data/glosses";
+
+function FullDefinition({ gloss }: { gloss: Gloss }) {
+  const [full, setFull] = useState<string | null>(null);
+  const [state, setState] = useState<"loading" | "done" | "error">("loading");
+
+  useEffect(() => {
+    let alive = true;
+    setState("loading");
+    setFull(null);
+    fetch(`https://api.bailly.app/entry/${encodeURIComponent(gloss.uri)}?fields=definition`)
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
+      .then((d) => {
+        if (!alive) return;
+        setFull(d?.data?.entry?.definition ?? null);
+        setState("done");
+      })
+      .catch(() => alive && setState("error"));
+    return () => {
+      alive = false;
+    };
+  }, [gloss.uri]);
+
+  const text = full ?? gloss.excerpt;
+  return (
+    <div className="mt-3 rounded-box bg-base-200 px-4 py-3">
+      <div className="text-[0.7rem] font-medium uppercase tracking-wide text-base-content/55">
+        Définition · Bailly
+      </div>
+      <p className="font-greek mt-1.5 leading-relaxed whitespace-pre-wrap text-[0.95rem] text-base-content/85">
+        {text}
+        {state === "loading" && <span className="text-base-content/45"> … (extrait)</span>}
+      </p>
+      <a
+        className="link mt-2 inline-block text-xs text-base-content/55"
+        href={`https://bailly.app/recherche/${encodeURIComponent(gloss.uri)}`}
+        target="_blank"
+        rel="noreferrer"
+      >
+        Bailly 2020 (CC BY-NC-ND) ↗
+      </a>
+    </div>
+  );
+}
 
 function LemmaRow({ entry }: { entry: LemmaEntry }) {
   return (
@@ -75,12 +118,7 @@ function Detail({ entry }: { entry: LemmaEntry }) {
         )}
       </p>
 
-      {glossFor(entry.lemma) && (
-        <p className="mt-3 rounded-box bg-base-200 px-3.5 py-3 text-sm leading-snug text-base-content/80">
-          {glossFor(entry.lemma)!.excerpt}
-          <span className="text-base-content/45"> — Bailly</span>
-        </p>
-      )}
+      {glossFor(entry.lemma) && <FullDefinition gloss={glossFor(entry.lemma)!} />}
 
       <div className="mt-4 grid gap-1.5">
         {entry.occurrences.map((o, i) => (
