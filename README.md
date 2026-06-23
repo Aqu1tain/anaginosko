@@ -1,4 +1,4 @@
-# Biblion
+# Anaginosko
 
 Lire le grec koinè du Nouveau Testament, lettre par lettre. Application web
 mobile-first : touchez n'importe quelle lettre d'un texte pour obtenir son nom,

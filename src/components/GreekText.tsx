@@ -16,7 +16,7 @@ function GreekText({
   size: "lg" | "md";
   translit?: TranslitMode;
 }) {
-  const openSheet = useSheet();
+  const { active, clickLetter } = useSheet();
   const containerRef = useRef<HTMLDivElement>(null);
   const tokens = useMemo(() => tokenizeText(text), [text]);
   const interlinear = translit !== "off";
@@ -32,14 +32,17 @@ function GreekText({
     return null;
   }, [tokens]);
 
+  const tabbableKey = active?.key ?? firstKey;
+  const activeWord = active && active.stage === 2 ? active.w : -1;
+
   const activate = (el: HTMLElement) => {
-    const token = tokens[Number(el.dataset.w)];
+    const w = Number(el.dataset.w);
+    const g = Number(el.dataset.g);
+    const token = tokens[w];
     if (!token || token.type !== "word") return;
-    const info = token.word.graphemes[Number(el.dataset.g)];
+    const info = token.word.graphemes[g];
     if (!info) return;
-    containerRef.current?.querySelector(".glyph.is-active")?.classList.remove("is-active");
-    el.classList.add("is-active");
-    openSheet({ info, word: token.word.context });
+    clickLetter({ w, g, info, word: token.word.context });
   };
 
   const moveFocus = (current: HTMLElement, to: "prev" | "next" | "first" | "last") => {
@@ -91,9 +94,9 @@ function GreekText({
       return (
         <span
           key={g}
-          className="glyph"
+          className={`glyph${active?.key === key ? " is-active" : ""}`}
           role="button"
-          tabIndex={key === firstKey ? 0 : -1}
+          tabIndex={key === tabbableKey ? 0 : -1}
           aria-label={`Lettre ${info.letter!.name}`}
           data-w={w}
           data-g={g}
@@ -117,9 +120,10 @@ function GreekText({
       {tokens.map((token, w) => {
         if (token.type === "space") return interlinear ? null : <span key={w}> </span>;
         const glyphs = renderGlyphs(token.word.graphemes, w);
+        const wordCls = `whitespace-nowrap${w === activeWord ? " word-active" : ""}`;
         if (!interlinear) {
           return (
-            <span key={w} className="whitespace-nowrap">
+            <span key={w} className={wordCls}>
               {glyphs}
             </span>
           );
@@ -128,7 +132,7 @@ function GreekText({
         const tr = ctx ? (translit === "restituee" ? ctx.restituee : ctx.erasmien) : null;
         return (
           <span key={w} className="mr-2.5 mb-2 inline-flex flex-col items-center align-top">
-            <span className="whitespace-nowrap">{glyphs}</span>
+            <span className={wordCls}>{glyphs}</span>
             {tr && (
               <span className="mt-0.5 font-sans text-[0.8rem] leading-tight text-base-content/65">
                 <Translit value={tr} stressedClass="font-semibold text-accent" />

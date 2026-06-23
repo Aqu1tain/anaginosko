@@ -6,8 +6,8 @@
     <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff" />
     <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#16181d" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="description" content="Biblion — lire le grec koinè du Nouveau Testament, lettre par lettre." />
-    <title>Biblion — lire le grec koinè</title>
+    <meta name="description" content="Anaginosko — lire le grec koinè du Nouveau Testament, lettre par lettre." />
+    <title>Anaginosko — lire le grec koinè</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -19,17 +19,17 @@
     <script>
       (function () {
         try {
-          var stored = localStorage.getItem("biblion:dark");
+          var stored = localStorage.getItem("anaginosko:dark");
           var dark =
             stored === null
               ? matchMedia("(prefers-color-scheme: dark)").matches
               : JSON.parse(stored);
           document.documentElement.setAttribute(
             "data-theme",
-            dark ? "biblion-dark" : "biblion",
+            dark ? "anaginosko-dark" : "anaginosko",
           );
         } catch (e) {
-          document.documentElement.setAttribute("data-theme", "biblion");
+          document.documentElement.setAttribute("data-theme", "anaginosko");
         }
       })();
     </script>

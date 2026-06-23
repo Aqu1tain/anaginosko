@@ -1,8 +1,16 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useHashRoute } from "./hooks/useHashRoute";
 import { usePersistentState } from "./hooks/usePersistentState";
 import { textById } from "./data/texts";
-import { SheetContext, type SheetPayload } from "./components/SheetContext";
+import {
+  SheetContext,
+  type ActiveLetter,
+  type LetterClick,
+  type SheetApi,
+  type SheetStage,
+} from "./components/SheetContext";
+import type { GraphemeInfo } from "./lib/greek";
+import type { WordContext } from "./lib/tokenize";
 import TopBar from "./components/TopBar";
 import Library from "./components/Library";
 import Reader from "./components/Reader";
@@ -12,32 +20,83 @@ import LetterSheet from "./components/LetterSheet";
 const prefersDark =
   typeof matchMedia !== "undefined" && matchMedia("(prefers-color-scheme: dark)").matches;
 
+type SheetState = {
+  key: string;
+  w: number;
+  g: number;
+  info: GraphemeInfo;
+  word: WordContext | null;
+  stage: SheetStage;
+};
+
 export default function App() {
   const route = useHashRoute();
-  const [dark, setDark] = usePersistentState<boolean>("biblion:dark", prefersDark);
-  const [sheet, setSheet] = useState<SheetPayload | null>(null);
+  const [dark, setDark] = usePersistentState<boolean>("anaginosko:dark", prefersDark);
+  const [sheet, setSheet] = useState<SheetState | null>(null);
 
   useEffect(() => {
     document.documentElement.setAttribute(
       "data-theme",
-      dark ? "biblion-dark" : "biblion",
+      dark ? "anaginosko-dark" : "anaginosko",
     );
   }, [dark]);
+
+  // Fermer la fiche quand on change d'écran.
+  useEffect(() => {
+    setSheet(null);
+  }, [route]);
+
+  const clickLetter = useCallback(({ w, g, info, word }: LetterClick) => {
+    const key = `${w}:${g}`;
+    setSheet((prev) => {
+      if (!prev || prev.key !== key) return { key, w, g, info, word, stage: 1 };
+      if (prev.stage === 1) return { ...prev, stage: 2 };
+      return null; // 3e clic : on ferme
+    });
+  }, []);
+
+  const closeSheet = useCallback(() => setSheet(null), []);
+
+  const openLetter = useCallback((info: GraphemeInfo) => {
+    setSheet({
+      key: `alpha:${info.letter?.name ?? info.cluster}`,
+      w: -1,
+      g: -1,
+      info,
+      word: null,
+      stage: 1,
+    });
+  }, []);
+
+  const active: ActiveLetter | null = sheet
+    ? { key: sheet.key, w: sheet.w, g: sheet.g, stage: sheet.stage }
+    : null;
+
+  const api = useMemo<SheetApi>(
+    () => ({ active, clickLetter, openLetter }),
+    [active, clickLetter, openLetter],
+  );
 
   const text = route.name === "text" ? textById(route.id) : undefined;
 
   return (
-    <SheetContext.Provider value={setSheet}>
+    <SheetContext.Provider value={api}>
       <div className="min-h-dvh bg-base-100 text-base-content">
         <TopBar route={route} text={text} dark={dark} onToggleTheme={() => setDark((d) => !d)} />
         <main className="mx-auto w-full max-w-2xl px-4 pb-16">
           {route.name === "library" && <Library />}
           {route.name === "alphabet" && <AlphabetView />}
-          {route.name === "text" &&
-            (text ? <Reader text={text} /> : <NotFound />)}
+          {route.name === "text" && (text ? <Reader text={text} /> : <NotFound />)}
         </main>
       </div>
-      {sheet && <LetterSheet payload={sheet} onClose={() => setSheet(null)} />}
+      {sheet && (
+        <LetterSheet
+          info={sheet.info}
+          word={sheet.word}
+          stage={sheet.stage}
+          onClose={closeSheet}
+        />
+      )}
     </SheetContext.Provider>
   );
 }

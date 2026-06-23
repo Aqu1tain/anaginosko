@@ -57,7 +57,7 @@ export default function TopBar({
         <div className="flex min-w-0 flex-1 items-center gap-1">
           {isLibrary ? (
             <a href="#/" className="btn btn-ghost px-2 text-lg font-bold tracking-tight">
-              Biblion
+              Anaginosko
             </a>
           ) : (
             <>

@@ -2,7 +2,7 @@
 @plugin "daisyui";
 
 @plugin "daisyui/theme" {
-  name: "biblion";
+  name: "anaginosko";
   default: true;
   prefersdark: false;
   color-scheme: light;
@@ -37,7 +37,7 @@
 }
 
 @plugin "daisyui/theme" {
-  name: "biblion-dark";
+  name: "anaginosko-dark";
   default: false;
   prefersdark: true;
   color-scheme: dark;
@@ -116,6 +116,27 @@ body {
 .glyph.is-active {
   background-color: color-mix(in oklab, var(--color-accent) 16%, transparent);
   color: var(--color-accent);
+}
+
+@keyframes sheet-in {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.animate-sheet {
+  animation: sheet-in 0.24s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Mot entier surligné au 2e clic. */
+.word-active {
+  background-color: color-mix(in oklab, var(--color-secondary) 28%, transparent);
+  border-radius: 5px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
 }
 
 @media (prefers-reduced-motion: reduce) {

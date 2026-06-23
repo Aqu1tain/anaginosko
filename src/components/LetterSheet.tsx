@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
-import { accentLabel, breathingLabel } from "../lib/greek";
-import type { SheetPayload } from "./SheetContext";
+import { accentLabel, breathingLabel, type GraphemeInfo } from "../lib/greek";
+import type { SheetStage } from "./SheetContext";
+import type { WordContext } from "../lib/tokenize";
 import Translit from "./Translit";
 
 function Pron({ label, value }: { label: string; value: string }) {
@@ -15,49 +16,37 @@ function Pron({ label, value }: { label: string; value: string }) {
 }
 
 export default function LetterSheet({
-  payload,
+  info,
+  word,
+  stage,
   onClose,
 }: {
-  payload: SheetPayload;
+  info: GraphemeInfo;
+  word: WordContext | null;
+  stage: SheetStage;
   onClose: () => void;
 }) {
   const boxRef = useRef<HTMLDivElement>(null);
-  const closeRef = useRef<HTMLButtonElement>(null);
-  const { info, word } = payload;
   const letter = info.letter;
 
+  // Feuille non bloquante : les lettres restent cliquables (pour enchaîner les
+  // clics). On ferme via Échap ou un clic en dehors — sauf sur une lettre, qui
+  // pilote elle-même le cycle.
   useEffect(() => {
-    const opener = document.activeElement as HTMLElement | null;
-    closeRef.current?.focus();
-
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        onClose();
-        return;
-      }
-      if (e.key !== "Tab" || !boxRef.current) return;
-      const items = boxRef.current.querySelectorAll<HTMLElement>(
-        'button, [href], [tabindex]:not([tabindex="-1"])',
-      );
-      if (items.length === 0) return;
-      const first = items[0];
-      const last = items[items.length - 1];
-      if (e.shiftKey && document.activeElement === first) {
-        e.preventDefault();
-        last.focus();
-      } else if (!e.shiftKey && document.activeElement === last) {
-        e.preventDefault();
-        first.focus();
-      }
+      if (e.key === "Escape") onClose();
     };
-
+    const onPointerDown = (e: PointerEvent) => {
+      const t = e.target as HTMLElement;
+      if (boxRef.current?.contains(t)) return;
+      if (t.closest(".glyph")) return;
+      onClose();
+    };
     document.addEventListener("keydown", onKey);
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    document.addEventListener("pointerdown", onPointerDown);
     return () => {
       document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = prevOverflow;
-      opener?.focus?.();
+      document.removeEventListener("pointerdown", onPointerDown);
     };
   }, [onClose]);
 
@@ -71,15 +60,12 @@ export default function LetterSheet({
   ].filter((c): c is string => c !== null);
 
   return (
-    <div
-      className="modal modal-open modal-bottom sm:modal-middle"
-      role="dialog"
-      aria-modal="true"
-      aria-label={`Lettre ${letter.name}`}
-    >
+    <div className="pointer-events-none fixed inset-x-0 bottom-0 z-50 flex justify-center sm:inset-0 sm:items-center">
       <div
         ref={boxRef}
-        className="modal-box max-w-md pb-[calc(1.5rem+env(safe-area-inset-bottom))]"
+        role="dialog"
+        aria-label={`Lettre ${letter.name}`}
+        className="animate-sheet pointer-events-auto w-full max-w-md rounded-t-2xl border border-base-300 bg-base-100 px-5 pt-5 pb-[calc(1.5rem+env(safe-area-inset-bottom))] shadow-2xl sm:rounded-2xl sm:pb-6"
       >
         <div className="flex items-center gap-4">
           <div className="font-greek flex h-16 w-16 shrink-0 items-center justify-center rounded-box bg-accent/15 text-4xl text-accent">
@@ -94,7 +80,6 @@ export default function LetterSheet({
             </div>
           </div>
           <button
-            ref={closeRef}
             onClick={onClose}
             aria-label="Fermer"
             className="btn btn-ghost btn-circle ml-auto shrink-0"
@@ -124,7 +109,13 @@ export default function LetterSheet({
           </div>
         )}
 
-        {word && (
+        {stage === 1 && word && (
+          <p className="mt-4 border-t border-base-300 pt-3 text-sm text-base-content/55">
+            Touchez encore la lettre pour voir le mot complet →
+          </p>
+        )}
+
+        {stage === 2 && word && (
           <div className="mt-4 border-t border-base-300 pt-4">
             <div className="text-[0.7rem] font-medium uppercase tracking-wide text-base-content/55">
               Le mot

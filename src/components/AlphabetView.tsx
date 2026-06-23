@@ -56,7 +56,7 @@ function DiacriticCard({ example, name, text }: { example: string; name: string;
 }
 
 export default function AlphabetView() {
-  const openSheet = useSheet();
+  const { openLetter } = useSheet();
 
   return (
     <div className="pb-4">
@@ -70,7 +70,7 @@ export default function AlphabetView() {
           {letters.map((letter) => (
             <button
               key={letter.name}
-              onClick={() => openSheet({ info: asInfo(letter), word: null })}
+              onClick={() => openLetter(asInfo(letter))}
               className="card border border-base-300 bg-base-100 py-3 transition-colors hover:border-primary/40 hover:bg-base-200"
             >
               <span className="font-greek text-2xl">

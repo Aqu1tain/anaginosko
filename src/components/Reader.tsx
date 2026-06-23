@@ -23,7 +23,7 @@ function Toggle({
 }
 
 export default function Reader({ text }: { text: Text }) {
-  const [mode, setMode] = usePersistentState<TranslitMode>("biblion:translit", "off");
+  const [mode, setMode] = usePersistentState<TranslitMode>("anaginosko:translit", "off");
 
   const hasErasmien = !!text.translitErasmien;
   const hasRestituee = !!text.translitRestituee;
