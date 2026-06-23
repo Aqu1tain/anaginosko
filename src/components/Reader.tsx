@@ -32,14 +32,7 @@ export default function Reader({ text }: { text: Text }) {
   const hasErasmien = !!text.translitErasmien;
   const hasRestituee = !!text.translitRestituee;
 
-  const set = (m: TranslitMode) => {
-    setManuscript(false);
-    setMode((cur) => (cur === m ? "off" : m));
-  };
-  const toggleManuscript = () => {
-    setMode("off");
-    setManuscript((v) => !v);
-  };
+  const set = (m: TranslitMode) => setMode((cur) => (cur === m ? "off" : m));
 
   return (
     <article className="pt-5">
@@ -48,20 +41,41 @@ export default function Reader({ text }: { text: Text }) {
         <span>Touchez une lettre pour ses indices</span>
       </div>
 
-      <div className="mt-3 flex flex-wrap gap-1.5">
-        {hasErasmien && (
-          <Toggle active={!manuscript && mode === "erasmien"} onClick={() => set("erasmien")}>
-            Érasmien
-          </Toggle>
+      <div className="mt-3 flex flex-wrap items-center gap-2">
+        <div className="join">
+          <button
+            onClick={() => setManuscript(false)}
+            aria-pressed={!manuscript}
+            className={`btn join-item sm:btn-md ${!manuscript ? "btn-primary" : "btn-outline border-base-300"}`}
+          >
+            Moderne
+          </button>
+          <button
+            onClick={() => {
+              setMode("off");
+              setManuscript(true);
+            }}
+            aria-pressed={manuscript}
+            className={`btn join-item sm:btn-md ${manuscript ? "btn-primary" : "btn-outline border-base-300"}`}
+          >
+            Manuscrit
+          </button>
+        </div>
+
+        {!manuscript && (hasErasmien || hasRestituee) && (
+          <div className="flex flex-wrap gap-1.5">
+            {hasErasmien && (
+              <Toggle active={mode === "erasmien"} onClick={() => set("erasmien")}>
+                Érasmien
+              </Toggle>
+            )}
+            {hasRestituee && (
+              <Toggle active={mode === "restituee"} onClick={() => set("restituee")}>
+                Restituée
+              </Toggle>
+            )}
+          </div>
         )}
-        {hasRestituee && (
-          <Toggle active={!manuscript && mode === "restituee"} onClick={() => set("restituee")}>
-            Restituée
-          </Toggle>
-        )}
-        <Toggle active={manuscript} onClick={toggleManuscript}>
-          Manuscrit
-        </Toggle>
       </div>
 
       <div className="mt-5">
