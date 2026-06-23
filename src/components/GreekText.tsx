@@ -11,15 +11,17 @@ function GreekText({
   text,
   size,
   translit = "off",
+  manuscript = false,
 }: {
   text: Text;
   size: "lg" | "md";
   translit?: TranslitMode;
+  manuscript?: boolean;
 }) {
   const { active, clickLetter } = useSheet();
   const containerRef = useRef<HTMLDivElement>(null);
   const tokens = useMemo(() => tokenizeText(text), [text]);
-  const interlinear = translit !== "off";
+  const interlinear = translit !== "off" && !manuscript;
 
   // Roving tabindex : une seule lettre est dans l'ordre de tabulation.
   const firstKey = useMemo(() => {
@@ -121,6 +123,47 @@ function GreekText({
         </span>
       );
     });
+
+  // Scriptio continua : majuscules, sans accents, sans espaces ni ponctuation.
+  if (manuscript) {
+    return (
+      <div
+        ref={containerRef}
+        dir="ltr"
+        lang="grc"
+        role="group"
+        aria-label="Texte grec en scriptio continua, sélectionnez une lettre pour ses indices"
+        onClick={onClick}
+        onKeyDown={onKeyDown}
+        className={`font-greek ${greekSize} leading-relaxed tracking-wide break-all`}
+      >
+        {tokens.map((token, w) => {
+          if (token.type !== "word") return null;
+          return (
+            <span key={w} className={w === activeWord ? "word-active" : undefined}>
+              {token.word.graphemes.map((info, g) => {
+                if (!isClickable(info)) return null;
+                const key = `${w}:${g}`;
+                return (
+                  <span
+                    key={g}
+                    className={`glyph${active?.key === key ? " is-active" : ""}`}
+                    role="button"
+                    tabIndex={key === tabbableKey ? 0 : -1}
+                    aria-label={`Lettre ${info.letter!.name}`}
+                    data-w={w}
+                    data-g={g}
+                  >
+                    {info.letter!.upper}
+                  </span>
+                );
+              })}
+            </span>
+          );
+        })}
+      </div>
+    );
+  }
 
   return (
     <div

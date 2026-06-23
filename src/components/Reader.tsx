@@ -24,11 +24,22 @@ function Toggle({
 
 export default function Reader({ text }: { text: Text }) {
   const [mode, setMode] = usePersistentState<TranslitMode>("anaginosko:translit", "off");
+  const [manuscript, setManuscript] = usePersistentState<boolean>(
+    "anaginosko:manuscript",
+    false,
+  );
 
   const hasErasmien = !!text.translitErasmien;
   const hasRestituee = !!text.translitRestituee;
 
-  const set = (m: TranslitMode) => setMode((cur) => (cur === m ? "off" : m));
+  const set = (m: TranslitMode) => {
+    setManuscript(false);
+    setMode((cur) => (cur === m ? "off" : m));
+  };
+  const toggleManuscript = () => {
+    setMode("off");
+    setManuscript((v) => !v);
+  };
 
   return (
     <article className="pt-5">
@@ -37,23 +48,24 @@ export default function Reader({ text }: { text: Text }) {
         <span>Touchez une lettre pour ses indices</span>
       </div>
 
-      {(hasErasmien || hasRestituee) && (
-        <div className="mt-3 flex flex-wrap gap-1.5">
-          {hasErasmien && (
-            <Toggle active={mode === "erasmien"} onClick={() => set("erasmien")}>
-              Érasmien
-            </Toggle>
-          )}
-          {hasRestituee && (
-            <Toggle active={mode === "restituee"} onClick={() => set("restituee")}>
-              Restituée
-            </Toggle>
-          )}
-        </div>
-      )}
+      <div className="mt-3 flex flex-wrap gap-1.5">
+        {hasErasmien && (
+          <Toggle active={!manuscript && mode === "erasmien"} onClick={() => set("erasmien")}>
+            Érasmien
+          </Toggle>
+        )}
+        {hasRestituee && (
+          <Toggle active={!manuscript && mode === "restituee"} onClick={() => set("restituee")}>
+            Restituée
+          </Toggle>
+        )}
+        <Toggle active={manuscript} onClick={toggleManuscript}>
+          Manuscrit
+        </Toggle>
+      </div>
 
       <div className="mt-5">
-        <GreekText text={text} size="lg" translit={mode} />
+        <GreekText text={text} size="lg" translit={mode} manuscript={manuscript} />
       </div>
     </article>
   );
