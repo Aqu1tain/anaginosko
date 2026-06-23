@@ -16,6 +16,7 @@ import Library from "./components/Library";
 import Reader from "./components/Reader";
 import AlphabetView from "./components/AlphabetView";
 import ConcordanceView from "./components/ConcordanceView";
+import MentionsView from "./components/MentionsView";
 import LetterSheet from "./components/LetterSheet";
 import TabBar from "./components/TabBar";
 
@@ -107,6 +108,7 @@ export default function App() {
           {route.name === "library" && <Library />}
           {route.name === "alphabet" && <AlphabetView />}
           {route.name === "concordance" && <ConcordanceView lemma={route.lemma} />}
+          {route.name === "mentions" && <MentionsView />}
           {route.name === "text" &&
             (text ? <Reader text={text} highlight={route.highlight} /> : <NotFound />)}
         </main>

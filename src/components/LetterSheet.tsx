@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { accentLabel, breathingLabel, type GraphemeInfo } from "../lib/greek";
 import type { SheetStage } from "./SheetContext";
 import type { WordContext } from "../lib/tokenize";
+import { glossFor } from "../data/glosses";
 import Translit from "./Translit";
 
 function Pron({ label, value }: { label: string; value: string }) {
@@ -140,13 +141,24 @@ export default function LetterSheet({
               )}
             </div>
             {word.lemme && (
-              <a
-                href={`#/concordance/${encodeURIComponent(word.lemme)}`}
-                className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-accent"
-              >
-                <span className="font-greek">{word.lemme}</span>
-                {word.nature ? ` · ${word.nature}` : ""} · voir les occurrences →
-              </a>
+              <div className="mt-3">
+                <div className="text-sm">
+                  <span className="font-greek font-medium">{word.lemme}</span>
+                  {word.nature ? <span className="text-base-content/55"> · {word.nature}</span> : null}
+                </div>
+                {glossFor(word.lemme) && (
+                  <p className="mt-1 text-sm leading-snug text-base-content/70">
+                    {glossFor(word.lemme)!.excerpt}
+                    <span className="text-base-content/45"> — Bailly</span>
+                  </p>
+                )}
+                <a
+                  href={`#/concordance/${encodeURIComponent(word.lemme)}`}
+                  className="mt-1.5 inline-block text-sm font-medium text-accent"
+                >
+                  voir les occurrences →
+                </a>
+              </div>
             )}
           </div>
         )}

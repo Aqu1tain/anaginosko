@@ -59,8 +59,11 @@ export default function Library() {
       ))}
 
       <footer className="pt-10 text-center text-xs text-base-content/60">
-        Texte grec : SBLGNT (domaine public). Prononciation d’après le cours
-        « Introduction au grec biblique ».
+        Texte grec : SBLGNT · traduction : Crampon · définitions : Bailly.
+        <br />
+        <a href="#/mentions" className="link mt-1 inline-block">
+          Mentions légales
+        </a>
       </footer>
     </div>
   );

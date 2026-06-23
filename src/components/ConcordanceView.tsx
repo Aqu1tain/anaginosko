@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { concordance, lemmaByKey, searchLemmas, type LemmaEntry } from "../lib/concordance";
+import { glossFor } from "../data/glosses";
 
 function LemmaRow({ entry }: { entry: LemmaEntry }) {
   return (
@@ -73,6 +74,13 @@ function Detail({ entry }: { entry: LemmaEntry }) {
           <span className="font-greek"> · formes : {entry.forms.join(", ")}</span>
         )}
       </p>
+
+      {glossFor(entry.lemma) && (
+        <p className="mt-3 rounded-box bg-base-200 px-3.5 py-3 text-sm leading-snug text-base-content/80">
+          {glossFor(entry.lemma)!.excerpt}
+          <span className="text-base-content/45"> — Bailly</span>
+        </p>
+      )}
 
       <div className="mt-4 grid gap-1.5">
         {entry.occurrences.map((o, i) => (

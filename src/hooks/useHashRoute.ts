@@ -4,7 +4,8 @@ export type Route =
   | { name: "library" }
   | { name: "text"; id: string; highlight: number | null }
   | { name: "alphabet" }
-  | { name: "concordance"; lemma: string | null };
+  | { name: "concordance"; lemma: string | null }
+  | { name: "mentions" };
 
 function parse(hash: string): Route {
   const path = hash.replace(/^#/, "");
@@ -17,6 +18,7 @@ function parse(hash: string): Route {
   if (path.startsWith("/concordance/"))
     return { name: "concordance", lemma: decodeURIComponent(path.slice("/concordance/".length)) };
   if (path === "/concordance") return { name: "concordance", lemma: null };
+  if (path === "/mentions") return { name: "mentions" };
   return { name: "library" };
 }
 

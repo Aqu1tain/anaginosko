@@ -49,7 +49,9 @@ export default function TopBar({
       ? "L’alphabet"
       : route.name === "concordance"
         ? "Concordance"
-        : route.name === "text"
+        : route.name === "mentions"
+          ? "Mentions légales"
+          : route.name === "text"
           ? (text?.reference ?? "Texte")
           : null;
 
