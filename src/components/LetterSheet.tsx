@@ -3,6 +3,7 @@ import { accentLabel, breathingLabel, type GraphemeInfo } from "../lib/greek";
 import type { SheetStage } from "./SheetContext";
 import type { WordContext } from "../lib/tokenize";
 import { glossFor } from "../data/glosses";
+import { playTranslit } from "../lib/audio";
 import Translit from "./Translit";
 
 function Pron({ label, value }: { label: string; value: string }) {
@@ -121,7 +122,27 @@ export default function LetterSheet({
             <div className="text-[0.7rem] font-medium uppercase tracking-wide text-base-content/55">
               Le mot
             </div>
-            <div className="font-greek mt-1 text-2xl">{word.grec}</div>
+            <div className="flex items-center gap-2">
+              <div className="font-greek mt-1 text-2xl">{word.grec}</div>
+              <button
+                onClick={() => playTranslit(word.erasmien)}
+                aria-label="Écouter la prononciation érasmienne"
+                className="btn btn-ghost btn-sm btn-circle text-accent"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path
+                    d="M4 9v6h4l5 4V5L8 9H4z"
+                    fill="currentColor"
+                  />
+                  <path
+                    d="M16.5 8.5a4 4 0 010 7M19 6a7 7 0 010 12"
+                    stroke="currentColor"
+                    strokeWidth="1.6"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </button>
+            </div>
             <div className="mt-2 space-y-0.5 text-base">
               <div>
                 <span className="text-sm text-base-content/55">Érasmien&nbsp;</span>
