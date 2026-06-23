@@ -28,9 +28,8 @@ function GreekText({
   const containerRef = useRef<HTMLDivElement>(null);
   const [flashW, setFlashW] = useState<number | null>(null);
   const tokens = useMemo(() => tokenizeText(text), [text]);
-  // L'interlinéaire (prononciation sous chaque mot) reste réservé au moderne ;
-  // le manuscrit garde la scriptio continua (prononciation au tap + audio).
-  const interlinear = translit !== "off" && !manuscript;
+  // Interlinéaire = prononciation sous chaque mot (moderne ET manuscrit).
+  const interlinear = translit !== "off";
 
   // Mots avec leur index de jeton d'origine (stable pour data-w / activate).
   const words = useMemo(() => {
@@ -121,10 +120,12 @@ function GreekText({
   };
 
   const greekSize = size === "lg" ? "text-[1.95rem]" : "text-2xl";
-  const containerSpacing = manuscript
-    ? "leading-relaxed tracking-wide break-all"
-    : interlinear
-      ? "leading-snug"
+  const containerSpacing = interlinear
+    ? manuscript
+      ? "leading-snug tracking-wide"
+      : "leading-snug"
+    : manuscript
+      ? "leading-relaxed tracking-wide break-all"
       : size === "lg"
         ? "leading-[1.85]"
         : "leading-[1.8]";
@@ -191,7 +192,10 @@ function GreekText({
         const ctx = token.word.context;
         const tr = ctx ? (translit === "restituee" ? ctx.restituee : ctx.erasmien) : null;
         return (
-          <span key={w} className="mr-2.5 mb-2 inline-flex flex-col items-center align-top">
+          <span
+            key={w}
+            className={`mb-2 inline-flex flex-col items-center align-top ${manuscript ? "mr-1.5" : "mr-2.5"}`}
+          >
             <span className={wordCls}>
               {verseMark(w)}
               {glyphs}

@@ -1,7 +1,6 @@
 import { lengthLabel, type Text } from "../data/texts";
 import { usePersistentState } from "../hooks/usePersistentState";
 import GreekText, { type TranslitMode } from "./GreekText";
-import Translit from "./Translit";
 
 function Seg({
   active,
@@ -23,14 +22,6 @@ function Seg({
   );
 }
 
-function TranslitLine({ value }: { value: string }) {
-  return (
-    <p className="mt-2 text-[1.05rem] italic leading-relaxed text-base-content/70">
-      <Translit value={value} stressedClass="font-semibold not-italic text-accent" />
-    </p>
-  );
-}
-
 export default function Reader({ text, highlight }: { text: Text; highlight: number | null }) {
   const [manuscript, setManuscript] = usePersistentState<boolean>("anaginosko:manuscript", false);
   const [mode, setMode] = usePersistentState<TranslitMode>("anaginosko:translit", "off");
@@ -42,17 +33,6 @@ export default function Reader({ text, highlight }: { text: Text; highlight: num
   const hasFrench = !!french && Object.keys(french).length > 0;
   const verses = hasFrench ? Object.keys(french!).map(Number).sort((a, b) => a - b) : [];
   const study = showFr && hasFrench;
-
-  // En manuscrit, la prononciation s'affiche en ligne continue (pas d'interlinéaire,
-  // donc aucun espace ajouté au texte majuscule).
-  const showLine = manuscript && mode !== "off";
-  const lineFor = (v?: number): string => {
-    if (v == null) return (mode === "restituee" ? text.translitRestituee : text.translitErasmien) ?? "";
-    return (text.mots ?? [])
-      .filter((m) => m.verse === v)
-      .map((m) => (mode === "restituee" ? m.restituee : m.erasmien))
-      .join(" ");
-  };
 
   return (
     <article className="pt-5">
@@ -112,7 +92,6 @@ export default function Reader({ text, highlight }: { text: Text; highlight: num
                 verseOnly={v}
                 highlightWord={highlight}
               />
-              {showLine && <TranslitLine value={lineFor(v)} />}
               <p className="mt-2 leading-relaxed text-base-content/85">
                 <span className="verse-num">{v}</span>
                 {french![v]}
@@ -132,7 +111,6 @@ export default function Reader({ text, highlight }: { text: Text; highlight: num
             manuscript={manuscript}
             highlightWord={highlight}
           />
-          {showLine && <TranslitLine value={lineFor()} />}
         </div>
       )}
     </article>
