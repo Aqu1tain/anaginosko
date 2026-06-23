@@ -5,6 +5,8 @@ export type WordContext = {
   grec: string;
   erasmien: string;
   restituee: string;
+  lemme: string | null;
+  nature: string | null;
 };
 
 export type Word = {
@@ -33,7 +35,13 @@ export function tokenizeText(text: Text): Token[] {
         type: "word",
         word: {
           graphemes: segmentToGraphemes(mot.grec),
-          context: { grec: mot.grec, erasmien: mot.erasmien, restituee: mot.restituee },
+          context: {
+            grec: mot.grec,
+            erasmien: mot.erasmien,
+            restituee: mot.restituee,
+            lemme: mot.lemme,
+            nature: mot.nature,
+          },
           verse: mot.verse,
         },
       });

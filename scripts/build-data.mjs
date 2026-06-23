@@ -30,6 +30,8 @@ const passageTexts = passages.textes.map((t) => ({
     erasmien: m.erasmien,
     restituee: m.restituee,
     verse: m.verse ?? null,
+    lemme: m.lemme ?? null,
+    nature: m.nature ?? null,
   })),
 }));
 

@@ -1,5 +1,6 @@
 // One-time enrichment: tag each word in data-sources/passages.json with its
-// verse number, aligned to the public-domain MorphGNT/SBLGNT word list.
+// verse number, son lemme et sa nature, aligned to the public-domain
+// MorphGNT/SBLGNT word list.
 // Requires the MorphGNT book files in a local dir (default /tmp/morphgnt).
 // Run: node scripts/enrich-verses.mjs
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
@@ -8,6 +9,24 @@ import { dirname, resolve } from "node:path";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const MORPH_DIR = process.env.MORPH_DIR || "/tmp/morphgnt";
+
+// Code POS MorphGNT -> nature en français.
+const NATURE = {
+  "N-": "Nom",
+  "V-": "Verbe",
+  "A-": "Adjectif",
+  "D-": "Adverbe",
+  "C-": "Conjonction",
+  "P-": "Préposition",
+  "X-": "Particule",
+  "I-": "Interjection",
+  RA: "Article",
+  RD: "Pronom démonstratif",
+  RI: "Pronom indéfini",
+  RP: "Pronom personnel",
+  RR: "Pronom relatif",
+};
+const natureOf = (pos) => NATURE[pos] ?? NATURE[pos[0] + "-"] ?? "Autre";
 
 const BOOKS = {
   Jean: { file: "64-Jn", code: "04" },
@@ -52,7 +71,7 @@ function morphWords({ file, code }, chapter, vStart, vEnd) {
     const ch = Number(ref.slice(2, 4));
     const v = Number(ref.slice(4, 6));
     if (ch !== chapter || v < vStart || v > vEnd) continue;
-    out.push({ verse: v, word: parts[3] });
+    out.push({ verse: v, word: parts[3], lemme: parts[6], nature: natureOf(parts[1]) });
   }
   return out;
 }
@@ -78,6 +97,8 @@ for (const t of passages.textes) {
   t.mots.forEach((mot, i) => {
     if (norm(mot.grec) !== norm(ref[i].word)) wordDiffs++;
     mot.verse = ref[i].verse;
+    mot.lemme = ref[i].lemme;
+    mot.nature = ref[i].nature;
   });
   const tag = wordDiffs === 0 ? "✓" : `~ (${wordDiffs} variantes d'orthographe)`;
   console.log(`${tag} ${t.reference} : ${ref.length} mots, versets ${vStart}-${vEnd}`);

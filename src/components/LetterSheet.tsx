@@ -139,15 +139,18 @@ export default function LetterSheet({
                 </div>
               )}
             </div>
+            {word.lemme && (
+              <a
+                href={`#/concordance/${encodeURIComponent(word.lemme)}`}
+                className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-accent"
+              >
+                <span className="font-greek">{word.lemme}</span>
+                {word.nature ? ` · ${word.nature}` : ""} · voir les occurrences →
+              </a>
+            )}
           </div>
         )}
       </div>
-      <button
-        type="button"
-        className="modal-backdrop"
-        aria-label="Fermer"
-        onClick={onClose}
-      />
     </div>
   );
 }

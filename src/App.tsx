@@ -15,6 +15,7 @@ import TopBar from "./components/TopBar";
 import Library from "./components/Library";
 import Reader from "./components/Reader";
 import AlphabetView from "./components/AlphabetView";
+import ConcordanceView from "./components/ConcordanceView";
 import LetterSheet from "./components/LetterSheet";
 
 const prefersDark =
@@ -86,6 +87,7 @@ export default function App() {
         <main className="mx-auto w-full max-w-2xl px-4 pb-16">
           {route.name === "library" && <Library />}
           {route.name === "alphabet" && <AlphabetView />}
+          {route.name === "concordance" && <ConcordanceView lemma={route.lemma} />}
           {route.name === "text" && (text ? <Reader text={text} /> : <NotFound />)}
         </main>
       </div>

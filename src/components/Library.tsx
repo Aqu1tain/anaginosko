@@ -44,9 +44,14 @@ export default function Library() {
           d’un texte pour découvrir son nom et sa prononciation, érasmienne et
           restituée.
         </p>
-        <a href="#/alphabet" className="btn btn-primary mt-4">
-          <span className="font-greek text-base">Αα</span> Découvrir l’alphabet
-        </a>
+        <div className="mt-4 flex flex-wrap gap-2">
+          <a href="#/alphabet" className="btn btn-primary">
+            <span className="font-greek text-base">Αα</span> Découvrir l’alphabet
+          </a>
+          <a href="#/concordance" className="btn btn-outline border-base-300">
+            Concordance
+          </a>
+        </div>
       </section>
 
       {collections.map((c) => (

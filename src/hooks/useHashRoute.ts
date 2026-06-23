@@ -3,12 +3,16 @@ import { useEffect, useState } from "react";
 export type Route =
   | { name: "library" }
   | { name: "text"; id: string }
-  | { name: "alphabet" };
+  | { name: "alphabet" }
+  | { name: "concordance"; lemma: string | null };
 
 function parse(hash: string): Route {
   const path = hash.replace(/^#/, "");
   if (path.startsWith("/text/")) return { name: "text", id: path.slice("/text/".length) };
   if (path === "/alphabet") return { name: "alphabet" };
+  if (path.startsWith("/concordance/"))
+    return { name: "concordance", lemma: decodeURIComponent(path.slice("/concordance/".length)) };
+  if (path === "/concordance") return { name: "concordance", lemma: null };
   return { name: "library" };
 }
 

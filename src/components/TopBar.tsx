@@ -47,9 +47,11 @@ export default function TopBar({
   const title =
     route.name === "alphabet"
       ? "L’alphabet"
-      : route.name === "text"
-        ? (text?.reference ?? "Texte")
-        : null;
+      : route.name === "concordance"
+        ? "Concordance"
+        : route.name === "text"
+          ? (text?.reference ?? "Texte")
+          : null;
 
   return (
     <header className="sticky top-0 z-30 border-b border-base-300 bg-base-100/85 pt-[env(safe-area-inset-top)] backdrop-blur-md">
@@ -73,9 +75,14 @@ export default function TopBar({
 
         <div className="flex items-center gap-1">
           {isLibrary && (
-            <a href="#/alphabet" className="btn btn-ghost">
-              Alphabet
-            </a>
+            <>
+              <a href="#/alphabet" className="btn btn-ghost btn-sm">
+                Alphabet
+              </a>
+              <a href="#/concordance" className="btn btn-ghost btn-sm">
+                Concordance
+              </a>
+            </>
           )}
           <ThemeToggle dark={dark} onToggle={onToggleTheme} />
         </div>

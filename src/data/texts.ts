@@ -5,6 +5,8 @@ export type Mot = {
   erasmien: string;
   restituee: string;
   verse: number | null;
+  lemme: string | null;
+  nature: string | null;
 };
 
 export type Text = {
