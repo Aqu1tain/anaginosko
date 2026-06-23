@@ -8,6 +8,7 @@
     "enrich": "node scripts/enrich-verses.mjs",
     "french": "node scripts/fetch-french.mjs",
     "glosses": "node scripts/fetch-glosses.mjs",
+    "audio:azure": "node scripts/build-audio-azure.mjs",
     "dev": "vite",
     "build": "node scripts/build-data.mjs && tsc -b && vite build",
     "preview": "vite preview"
