@@ -23,6 +23,7 @@ const passageTexts = passages.textes.map((t) => ({
   niveau: t.niveau,
   reference: t.reference,
   grec: t.grec,
+  francais: t.francais || null,
   translitErasmien: t.erasmien_continu || null,
   translitRestituee: t.restituee_continu || null,
   mots: (t.mots || []).map((m) => ({

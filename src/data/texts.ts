@@ -15,6 +15,8 @@ export type Text = {
   niveau: number;
   reference: string;
   grec: string;
+  /** Louis Segond 1910 (domaine public), par numéro de verset. */
+  francais: Record<string, string> | null;
   translitErasmien: string | null;
   translitRestituee: string | null;
   mots: Mot[] | null;
@@ -38,7 +40,7 @@ export type Collection = {
 };
 
 export const collections = data.collections as Collection[];
-export const texts = data.texts as Text[];
+export const texts = data.texts as unknown as Text[];
 
 export const textById = (id: string): Text | undefined =>
   texts.find((t) => t.id === id);

@@ -2,7 +2,7 @@ import { lengthLabel, type Text } from "../data/texts";
 import { usePersistentState } from "../hooks/usePersistentState";
 import GreekText, { type TranslitMode } from "./GreekText";
 
-function Toggle({
+function Seg({
   active,
   onClick,
   children,
@@ -15,7 +15,7 @@ function Toggle({
     <button
       onClick={onClick}
       aria-pressed={active}
-      className={`btn sm:btn-md ${active ? "btn-primary" : "btn-outline border-base-300"}`}
+      className={`btn join-item btn-sm sm:btn-md ${active ? "btn-primary" : "btn-outline border-base-300"}`}
     >
       {children}
     </button>
@@ -23,16 +23,15 @@ function Toggle({
 }
 
 export default function Reader({ text }: { text: Text }) {
+  const [manuscript, setManuscript] = usePersistentState<boolean>("anaginosko:manuscript", false);
   const [mode, setMode] = usePersistentState<TranslitMode>("anaginosko:translit", "off");
-  const [manuscript, setManuscript] = usePersistentState<boolean>(
-    "anaginosko:manuscript",
-    false,
-  );
+  const [showFr, setShowFr] = usePersistentState<boolean>("anaginosko:french", false);
 
   const hasErasmien = !!text.translitErasmien;
   const hasRestituee = !!text.translitRestituee;
-
-  const set = (m: TranslitMode) => setMode((cur) => (cur === m ? "off" : m));
+  const french = text.francais;
+  const hasFrench = !!french && Object.keys(french).length > 0;
+  const verses = hasFrench ? Object.keys(french!).map(Number).sort((a, b) => a - b) : [];
 
   return (
     <article className="pt-5">
@@ -41,46 +40,62 @@ export default function Reader({ text }: { text: Text }) {
         <span>Touchez une lettre pour ses indices</span>
       </div>
 
-      <div className="mt-3 flex flex-wrap items-center gap-2">
+      <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2">
         <div className="join">
-          <button
-            onClick={() => setManuscript(false)}
-            aria-pressed={!manuscript}
-            className={`btn join-item sm:btn-md ${!manuscript ? "btn-primary" : "btn-outline border-base-300"}`}
-          >
+          <Seg active={!manuscript} onClick={() => setManuscript(false)}>
             Moderne
-          </button>
-          <button
-            onClick={() => {
-              setMode("off");
-              setManuscript(true);
-            }}
-            aria-pressed={manuscript}
-            className={`btn join-item sm:btn-md ${manuscript ? "btn-primary" : "btn-outline border-base-300"}`}
-          >
+          </Seg>
+          <Seg active={manuscript} onClick={() => setManuscript(true)}>
             Manuscrit
-          </button>
+          </Seg>
         </div>
 
-        {!manuscript && (hasErasmien || hasRestituee) && (
-          <div className="flex flex-wrap gap-1.5">
+        {(hasErasmien || hasRestituee) && (
+          <div className="join">
+            <Seg active={mode === "off"} onClick={() => setMode("off")}>
+              Grec
+            </Seg>
             {hasErasmien && (
-              <Toggle active={mode === "erasmien"} onClick={() => set("erasmien")}>
+              <Seg active={mode === "erasmien"} onClick={() => setMode("erasmien")}>
                 Érasmien
-              </Toggle>
+              </Seg>
             )}
             {hasRestituee && (
-              <Toggle active={mode === "restituee"} onClick={() => set("restituee")}>
+              <Seg active={mode === "restituee"} onClick={() => setMode("restituee")}>
                 Restituée
-              </Toggle>
+              </Seg>
             )}
           </div>
+        )}
+
+        {hasFrench && (
+          <button
+            onClick={() => setShowFr((v) => !v)}
+            aria-pressed={showFr}
+            className={`btn btn-sm sm:btn-md ${showFr ? "btn-primary" : "btn-outline border-base-300"}`}
+          >
+            Français
+          </button>
         )}
       </div>
 
       <div className="mt-5">
         <GreekText text={text} size="lg" translit={mode} manuscript={manuscript} />
       </div>
+
+      {showFr && hasFrench && (
+        <div className="mt-6 border-t border-base-300 pt-4">
+          <div className="space-y-1 leading-relaxed">
+            {verses.map((v) => (
+              <p key={v}>
+                <span className="verse-num">{v}</span>
+                {french![v]}
+              </p>
+            ))}
+          </div>
+          <p className="mt-3 text-xs text-base-content/50">Traduction : Louis Segond 1910 (domaine public).</p>
+        </div>
+      )}
     </article>
   );
 }

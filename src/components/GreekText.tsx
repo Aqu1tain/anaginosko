@@ -21,7 +21,7 @@ function GreekText({
   const { active, clickLetter } = useSheet();
   const containerRef = useRef<HTMLDivElement>(null);
   const tokens = useMemo(() => tokenizeText(text), [text]);
-  const interlinear = translit !== "off" && !manuscript;
+  const interlinear = translit !== "off";
 
   // Roving tabindex : une seule lettre est dans l'ordre de tabulation.
   const firstKey = useMemo(() => {
@@ -93,9 +93,17 @@ function GreekText({
   };
 
   const greekSize = size === "lg" ? "text-[1.95rem]" : "text-2xl";
-  const lineSpace = interlinear ? "leading-snug" : size === "lg" ? "leading-[1.85]" : "leading-[1.8]";
+  // Numéros de versets et ponctuation seulement en moderne ; le manuscrit reste
+  // proche de l'original. La translittération (prononciation) marche dans les deux.
+  const containerSpacing =
+    manuscript && !interlinear
+      ? "leading-relaxed tracking-wide break-all"
+      : interlinear
+        ? "leading-snug"
+        : size === "lg"
+          ? "leading-[1.85]"
+          : "leading-[1.8]";
 
-  // Index de jeton -> numéro de verset à afficher (au premier mot de chaque verset).
   const verseAt = useMemo(() => {
     const map = new Map<number, number>();
     let last: number | null = null;
@@ -109,11 +117,11 @@ function GreekText({
   }, [tokens]);
 
   const verseMark = (w: number) =>
-    verseAt.has(w) ? <span className="verse-num">{verseAt.get(w)}</span> : null;
+    !manuscript && verseAt.has(w) ? <span className="verse-num">{verseAt.get(w)}</span> : null;
 
   const renderGlyphs = (graphemes: GraphemeInfo[], w: number) =>
     graphemes.map((info, g) => {
-      if (!isClickable(info)) return <span key={g}>{info.cluster}</span>;
+      if (!isClickable(info)) return manuscript ? null : <span key={g}>{info.cluster}</span>;
       const key = `${w}:${g}`;
       return (
         <span
@@ -125,52 +133,10 @@ function GreekText({
           data-w={w}
           data-g={g}
         >
-          {info.cluster}
+          {manuscript ? info.letter!.upper : info.cluster}
         </span>
       );
     });
-
-  // Scriptio continua : majuscules, sans accents, sans espaces ni ponctuation.
-  if (manuscript) {
-    return (
-      <div
-        ref={containerRef}
-        dir="ltr"
-        lang="grc"
-        role="group"
-        aria-label="Texte grec en scriptio continua, sélectionnez une lettre pour ses indices"
-        onClick={onClick}
-        onMouseDown={onMouseDown}
-        onKeyDown={onKeyDown}
-        className={`font-greek ${greekSize} leading-relaxed tracking-wide break-all`}
-      >
-        {tokens.map((token, w) => {
-          if (token.type !== "word") return null;
-          return (
-            <span key={w} className={w === activeWord ? "word-active" : undefined}>
-              {token.word.graphemes.map((info, g) => {
-                if (!isClickable(info)) return null;
-                const key = `${w}:${g}`;
-                return (
-                  <span
-                    key={g}
-                    className={`glyph${active?.key === key ? " is-active" : ""}`}
-                    role="button"
-                    tabIndex={key === tabbableKey ? 0 : -1}
-                    aria-label={`Lettre ${info.letter!.name}`}
-                    data-w={w}
-                    data-g={g}
-                  >
-                    {info.letter!.upper}
-                  </span>
-                );
-              })}
-            </span>
-          );
-        })}
-      </div>
-    );
-  }
 
   return (
     <div
@@ -182,12 +148,16 @@ function GreekText({
       onClick={onClick}
       onMouseDown={onMouseDown}
       onKeyDown={onKeyDown}
-      className={`font-greek ${greekSize} ${lineSpace}`}
+      className={`font-greek ${greekSize} ${containerSpacing}`}
     >
       {tokens.map((token, w) => {
-        if (token.type === "space") return interlinear ? null : <span key={w}> </span>;
+        if (token.type === "space") {
+          if (manuscript || interlinear) return null;
+          return <span key={w}> </span>;
+        }
         const glyphs = renderGlyphs(token.word.graphemes, w);
         const wordCls = `whitespace-nowrap${w === activeWord ? " word-active" : ""}`;
+
         if (!interlinear) {
           return (
             <Fragment key={w}>
@@ -196,10 +166,14 @@ function GreekText({
             </Fragment>
           );
         }
+
         const ctx = token.word.context;
         const tr = ctx ? (translit === "restituee" ? ctx.restituee : ctx.erasmien) : null;
         return (
-          <span key={w} className="mr-2.5 mb-2 inline-flex flex-col items-center align-top">
+          <span
+            key={w}
+            className={`mb-2 inline-flex flex-col items-center align-top ${manuscript ? "mr-1" : "mr-2.5"}`}
+          >
             <span className={wordCls}>
               {verseMark(w)}
               {glyphs}
