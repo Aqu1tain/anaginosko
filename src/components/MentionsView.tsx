@@ -8,7 +8,7 @@ const sources: Source[] = [
     title: "Texte grec",
     body: (
       <>
-        <strong>SBLGNT</strong> — The Greek New Testament, éd. Michael W. Holmes, Society of
+        <strong>SBLGNT</strong>, The Greek New Testament, éd. Michael W. Holmes, Society of
         Biblical Literature & Logos Bible Software. Utilisé selon la licence SBLGNT.
       </>
     ),
@@ -17,7 +17,7 @@ const sources: Source[] = [
     title: "Versets, lemmes et nature des mots",
     body: (
       <>
-        <strong>MorphGNT / SBLGNT</strong> (analyse morphologique), licence CC BY-SA 3.0 —{" "}
+        <strong>MorphGNT / SBLGNT</strong> (analyse morphologique), licence CC BY-SA 3.0 ·{" "}
         <a className="link" href="https://github.com/morphgnt/sblgnt" target="_blank" rel="noreferrer">
           github.com/morphgnt/sblgnt
         </a>
@@ -44,15 +44,20 @@ const sources: Source[] = [
         <strong>Bailly 2020</strong> (Dictionnaire grec-français, éd. Gérard Gréco et al.), via{" "}
         <a className="link" href="https://bailly.app" target="_blank" rel="noreferrer">
           api.bailly.app
-        </a>{" "}
-        — licence <strong>CC BY-NC-ND 4.0</strong>. Extraits reproduits sans modification, dans un
+        </a>
+        , licence <strong>CC BY-NC-ND 4.0</strong>. Extraits reproduits sans modification, dans un
         cadre strictement non commercial.
       </>
     ),
   },
   {
     title: "Prononciation",
-    body: <>D'après le cours « Introduction au grec biblique » (érasmienne et restituée).</>,
+    body: (
+      <>
+        D'après le cours « Introduction au grec biblique » de <strong>Biblion</strong> (prononciation
+        érasmienne et restituée).
+      </>
+    ),
   },
   {
     title: "Audio",
