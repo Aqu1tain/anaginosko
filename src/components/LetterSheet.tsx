@@ -30,7 +30,7 @@ export default function LetterSheet({
   const letter = info.letter;
 
   // Feuille non bloquante : les lettres restent cliquables (pour enchaîner les
-  // clics). On ferme via Échap ou un clic en dehors — sauf sur une lettre, qui
+  // clics). On ferme via Échap ou un clic en dehors, sauf sur une lettre, qui
   // pilote elle-même le cycle.
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {

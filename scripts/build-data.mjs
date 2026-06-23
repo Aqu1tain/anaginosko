@@ -29,6 +29,7 @@ const passageTexts = passages.textes.map((t) => ({
     grec: m.grec,
     erasmien: m.erasmien,
     restituee: m.restituee,
+    verse: m.verse ?? null,
   })),
 }));
 

@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "data": "node scripts/build-data.mjs",
+    "enrich": "node scripts/enrich-verses.mjs",
     "dev": "vite",
     "build": "node scripts/build-data.mjs && tsc -b && vite build",
     "preview": "vite preview"

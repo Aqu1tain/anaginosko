@@ -118,6 +118,18 @@ body {
   color: var(--color-accent);
 }
 
+/* Numéro de verset, discret, pour se repérer. */
+.verse-num {
+  font-family: var(--font-sans);
+  font-size: 0.55em;
+  font-weight: 600;
+  vertical-align: super;
+  color: var(--color-base-content);
+  opacity: 0.4;
+  margin-right: 0.2em;
+  user-select: none;
+}
+
 @keyframes sheet-in {
   from {
     transform: translateY(100%);

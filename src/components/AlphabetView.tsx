@@ -117,7 +117,7 @@ export default function AlphabetView() {
               <span className="font-greek w-8 shrink-0 text-center text-xl">{p.sign}</span>
               <div className="text-sm">
                 <span className="font-medium">{p.name}</span>
-                <span className="text-base-content/60"> — {p.meaning}</span>
+                <span className="text-base-content/60"> · {p.meaning}</span>
               </div>
             </div>
           ))}

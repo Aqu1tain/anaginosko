@@ -1,4 +1,4 @@
-import { memo, useMemo, useRef } from "react";
+import { Fragment, memo, useMemo, useRef } from "react";
 import type { Text } from "../data/texts";
 import { tokenizeText } from "../lib/tokenize";
 import { isClickable, type GraphemeInfo } from "../lib/greek";
@@ -87,6 +87,22 @@ function GreekText({
   const greekSize = size === "lg" ? "text-[1.95rem]" : "text-2xl";
   const lineSpace = interlinear ? "leading-snug" : size === "lg" ? "leading-[1.85]" : "leading-[1.8]";
 
+  // Index de jeton -> numéro de verset à afficher (au premier mot de chaque verset).
+  const verseAt = useMemo(() => {
+    const map = new Map<number, number>();
+    let last: number | null = null;
+    tokens.forEach((tk, i) => {
+      if (tk.type !== "word") return;
+      const v = tk.word.verse;
+      if (v != null && v !== last) map.set(i, v);
+      if (v != null) last = v;
+    });
+    return map;
+  }, [tokens]);
+
+  const verseMark = (w: number) =>
+    verseAt.has(w) ? <span className="verse-num">{verseAt.get(w)}</span> : null;
+
   const renderGlyphs = (graphemes: GraphemeInfo[], w: number) =>
     graphemes.map((info, g) => {
       if (!isClickable(info)) return <span key={g}>{info.cluster}</span>;
@@ -112,7 +128,7 @@ function GreekText({
       dir="ltr"
       lang="grc"
       role="group"
-      aria-label="Texte grec — sélectionnez une lettre pour ses indices"
+      aria-label="Texte grec, sélectionnez une lettre pour ses indices"
       onClick={onClick}
       onKeyDown={onKeyDown}
       className={`font-greek ${greekSize} ${lineSpace}`}
@@ -123,16 +139,20 @@ function GreekText({
         const wordCls = `whitespace-nowrap${w === activeWord ? " word-active" : ""}`;
         if (!interlinear) {
           return (
-            <span key={w} className={wordCls}>
-              {glyphs}
-            </span>
+            <Fragment key={w}>
+              {verseMark(w)}
+              <span className={wordCls}>{glyphs}</span>
+            </Fragment>
           );
         }
         const ctx = token.word.context;
         const tr = ctx ? (translit === "restituee" ? ctx.restituee : ctx.erasmien) : null;
         return (
           <span key={w} className="mr-2.5 mb-2 inline-flex flex-col items-center align-top">
-            <span className={wordCls}>{glyphs}</span>
+            <span className={wordCls}>
+              {verseMark(w)}
+              {glyphs}
+            </span>
             {tr && (
               <span className="mt-0.5 font-sans text-[0.8rem] leading-tight text-base-content/65">
                 <Translit value={tr} stressedClass="font-semibold text-accent" />

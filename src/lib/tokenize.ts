@@ -11,6 +11,8 @@ export type Word = {
   graphemes: GraphemeInfo[];
   /** prononciation du mot, si le jeu de données la fournit */
   context: WordContext | null;
+  /** numéro de verset, si connu */
+  verse: number | null;
 };
 
 export type Token =
@@ -32,6 +34,7 @@ export function tokenizeText(text: Text): Token[] {
         word: {
           graphemes: segmentToGraphemes(mot.grec),
           context: { grec: mot.grec, erasmien: mot.erasmien, restituee: mot.restituee },
+          verse: mot.verse,
         },
       });
     });
@@ -44,7 +47,7 @@ export function tokenizeText(text: Text): Token[] {
     .map((chunk): Token =>
       /\s/.test(chunk)
         ? { type: "space" }
-        : { type: "word", word: { graphemes: segmentToGraphemes(chunk), context: null } },
+        : { type: "word", word: { graphemes: segmentToGraphemes(chunk), context: null, verse: null } },
     );
 }
 

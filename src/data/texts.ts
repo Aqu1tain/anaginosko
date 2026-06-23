@@ -4,6 +4,7 @@ export type Mot = {
   grec: string;
   erasmien: string;
   restituee: string;
+  verse: number | null;
 };
 
 export type Text = {
