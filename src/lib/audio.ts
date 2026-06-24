@@ -21,6 +21,21 @@ const AUDIO_BASE =
 export const audioUrl = (translit: string): string =>
   `${AUDIO_BASE}${audioKey(translit)}.mp3`;
 
+// Manifeste des sons disponibles (hash présents côté serveur). Chargé une fois ;
+// si absent (404), on considère qu'aucun son n'est disponible. Permet de masquer
+// le bouton « écouter » tant que l'audio n'est pas généré.
+let manifestPromise: Promise<Set<string>> | null = null;
+
+export function loadAudioManifest(): Promise<Set<string>> {
+  if (!manifestPromise) {
+    manifestPromise = fetch(`${AUDIO_BASE}manifest.json`)
+      .then((r) => (r.ok ? r.json() : []))
+      .then((arr: string[]) => new Set(arr))
+      .catch(() => new Set<string>());
+  }
+  return manifestPromise;
+}
+
 let current: HTMLAudioElement | null = null;
 
 export function playTranslit(translit: string): void {

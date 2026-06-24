@@ -5,24 +5,37 @@ import type { WordContext } from "../lib/tokenize";
 import { glossFor } from "../data/glosses";
 import { ntGlossFor } from "../data/nt";
 import { playTranslit } from "../lib/audio";
+import { useHasAudio } from "../hooks/useHasAudio";
 import Translit from "./Translit";
 
 const anyGloss = (lemma: string | null) => (lemma ? glossFor(lemma) ?? ntGlossFor(lemma) : undefined);
 
-// Ligne de prononciation entièrement cliquable : grande cible tactile pour
-// lancer le son, avec l'icône haut-parleur comme repère à droite.
+// Ligne de prononciation. Si le son est disponible, toute la ligne est cliquable
+// (grande cible tactile) avec l'icône haut-parleur ; sinon, simple texte (le
+// bouton son est masqué tant que l'audio n'est pas généré).
 function SpeakRow({ label, value }: { label: string; value: string }) {
+  const hasAudio = useHasAudio(value);
+  const content = (
+    <>
+      <span className="text-sm text-base-content/55">{label}&nbsp;</span>
+      <Translit
+        value={value}
+        stressedClass="font-semibold text-accent underline decoration-accent/40 underline-offset-2"
+      />
+    </>
+  );
+
+  if (!hasAudio) {
+    return <div className="flex items-center gap-1.5 px-2 py-2">{content}</div>;
+  }
+
   return (
     <button
       onClick={() => playTranslit(value)}
       aria-label={`Écouter (${label})`}
       className="-mx-2 flex w-full items-center gap-1.5 rounded-lg px-2 py-2 text-left transition-colors hover:bg-base-200 active:bg-base-300"
     >
-      <span className="text-sm text-base-content/55">{label}&nbsp;</span>
-      <Translit
-        value={value}
-        stressedClass="font-semibold text-accent underline decoration-accent/40 underline-offset-2"
-      />
+      {content}
       <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true" className="ml-auto shrink-0 text-accent">
         <path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor" />
         <path
