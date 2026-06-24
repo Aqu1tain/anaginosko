@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 import {
   fetchAdminStats,
-  fetchAdminAnnotations,
+  fetchMyAnnotations,
   deleteAnnotation,
   type AdminStats,
-  type AdminAnnotation,
+  type Annotation,
 } from "../lib/api";
+import AnnotationEditor, { type AnnotationTarget } from "./AnnotationEditor";
 
 const ICONS = {
   eye: "M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z M12 9.2a2.8 2.8 0 100 5.6 2.8 2.8 0 000-5.6z",
@@ -30,40 +31,50 @@ function Stat({ label, value, path }: { label: string; value: number; path: stri
   );
 }
 
-function sourceLabel(url: string): string {
-  try {
-    const u = new URL(url);
-    const label = u.hostname.replace(/^www\./, "") + (u.pathname !== "/" ? u.pathname : "");
-    return decodeURI(label);
-  } catch {
-    return url;
-  }
+function scopeLabel(a: Annotation): string {
+  return a.graphemeIndex != null ? "caractère" : a.endWordIndex != null ? "phrase" : "mot";
+}
+
+function targetFromAnnotation(a: Annotation): AnnotationTarget {
+  return {
+    ref: a.ref,
+    verse: a.verse,
+    wordIndex: a.wordIndex ?? 0,
+    endWordIndex: a.endWordIndex,
+    graphemeIndex: a.graphemeIndex,
+    grec: "",
+    scopeLabel: scopeLabel(a),
+    existing: a,
+  };
 }
 
 export default function AdminView() {
   const { user, ready } = useAuth();
+  const isAdmin = user?.role === "admin";
+  const isContributor = isAdmin || user?.role === "philologist";
+
   const [stats, setStats] = useState<AdminStats | null>(null);
-  const [annos, setAnnos] = useState<AdminAnnotation[]>([]);
+  const [annos, setAnnos] = useState<Annotation[]>([]);
   const [error, setError] = useState(false);
+  const [editing, setEditing] = useState<AnnotationTarget | null>(null);
+  const [pendingDelete, setPendingDelete] = useState<Annotation | null>(null);
 
   const reload = () => {
-    Promise.all([fetchAdminStats(), fetchAdminAnnotations()])
-      .then(([s, a]) => {
-        setStats(s);
-        setAnnos(a);
-      })
-      .catch(() => setError(true));
+    const jobs: Promise<unknown>[] = [fetchMyAnnotations().then(setAnnos)];
+    if (isAdmin) jobs.push(fetchAdminStats().then(setStats));
+    Promise.all(jobs).catch(() => setError(true));
   };
 
   useEffect(() => {
-    if (user?.role === "admin") reload();
+    if (isContributor) reload();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   if (!ready) return null;
-  if (user?.role !== "admin") {
+  if (!isContributor) {
     return (
       <div className="py-20 text-center text-base-content/70">
-        <p>Accès réservé à l’administrateur.</p>
+        <p>Accès réservé aux contributeurs.</p>
         <a href="#/login" className="link link-primary mt-3 inline-block">
           Se connecter
         </a>
@@ -77,9 +88,11 @@ export default function AdminView() {
   return (
     <div className="pb-10 pt-6">
       <h1 className="text-2xl font-bold">Tableau de bord</h1>
-      <p className="mt-0.5 text-sm text-base-content/55">Fréquentation et modération des annotations.</p>
+      <p className="mt-0.5 text-sm text-base-content/55">
+        {isAdmin ? "Fréquentation et modération des annotations." : "Gérez vos annotations."}
+      </p>
 
-      {stats && (
+      {isAdmin && stats && (
         <>
           <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-3">
             <Stat label="Visites" value={stats.views} path={ICONS.eye} />
@@ -89,9 +102,7 @@ export default function AdminView() {
 
           {stats.viewsByDay.length > 0 && (
             <section className="mt-6 rounded-2xl border border-base-300 bg-base-100 p-4">
-              <h2 className="mb-3 text-sm font-semibold text-base-content/70">
-                Visites · 14 derniers jours
-              </h2>
+              <h2 className="mb-3 text-sm font-semibold text-base-content/70">Visites · 14 derniers jours</h2>
               <div className="flex items-end gap-1" style={{ height: 90 }}>
                 {stats.viewsByDay.map((d, i) => (
                   <div key={d.day ?? i} className="group relative flex-1">
@@ -129,7 +140,7 @@ export default function AdminView() {
 
       <section className="mt-7">
         <h2 className="mb-2 text-sm font-semibold text-base-content/70">
-          Annotations · {annos.length}
+          {isAdmin ? "Annotations" : "Mes annotations"} · {annos.length}
         </h2>
         <div className="grid gap-2">
           {annos.map((a) => (
@@ -137,37 +148,39 @@ export default function AdminView() {
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
                   <div className="text-sm leading-relaxed">{a.body}</div>
-                  <a
-                    href={a.source}
-                    target="_blank"
-                    rel="noreferrer noopener"
-                    className="mt-1.5 inline-flex max-w-full items-center gap-1 text-xs font-medium text-primary hover:underline"
-                  >
-                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="shrink-0">
-                      <path d="M10 14L20 4M20 4h-6M20 4v6" />
-                      <path d="M19 14v4a2 2 0 01-2 2H6a2 2 0 01-2-2V7a2 2 0 012-2h4" />
-                    </svg>
-                    <span className="truncate">{sourceLabel(a.source)}</span>
-                  </a>
+                  {a.link ? (
+                    <a
+                      href={a.link}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      className="mt-1.5 inline-flex max-w-full items-center gap-1 text-xs font-medium text-primary hover:underline"
+                    >
+                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="shrink-0">
+                        <path d="M10 14L20 4M20 4h-6M20 4v6" />
+                        <path d="M19 14v4a2 2 0 01-2 2H6a2 2 0 01-2-2V7a2 2 0 012-2h4" />
+                      </svg>
+                      <span className="truncate">{a.source}</span>
+                    </a>
+                  ) : (
+                    <div className="mt-1 text-xs italic text-base-content/55">{a.source}</div>
+                  )}
                   <div className="mt-1.5 flex flex-wrap items-center gap-x-2 text-xs text-base-content/45">
-                    <span className="font-mono">{a.ref}</span>
+                    <span className="capitalize">{scopeLabel(a)}</span>
+                    <span>· <span className="font-mono">{a.ref}</span></span>
                     {a.verse != null && <span>· v.{a.verse}</span>}
-                    {a.author && (
-                      <span>
-                        · <span className="font-greek">{a.author}</span>
-                      </span>
+                    {isAdmin && a.author && (
+                      <span>· <span className="font-greek">{a.author.displayName}</span></span>
                     )}
                   </div>
                 </div>
-                <button
-                  onClick={async () => {
-                    await deleteAnnotation(a.id);
-                    reload();
-                  }}
-                  className="btn btn-ghost btn-xs shrink-0 text-error"
-                >
-                  Supprimer
-                </button>
+                <div className="flex shrink-0 flex-col items-end gap-1">
+                  <button onClick={() => setEditing(targetFromAnnotation(a))} className="btn btn-ghost btn-xs">
+                    Modifier
+                  </button>
+                  <button onClick={() => setPendingDelete(a)} className="btn btn-ghost btn-xs text-error">
+                    Supprimer
+                  </button>
+                </div>
               </div>
             </div>
           ))}
@@ -176,6 +189,42 @@ export default function AdminView() {
           )}
         </div>
       </section>
+
+      {editing && (
+        <AnnotationEditor
+          target={editing}
+          onClose={() => setEditing(null)}
+          onSaved={() => {
+            setEditing(null);
+            reload();
+          }}
+        />
+      )}
+
+      {pendingDelete && (
+        <div className="fixed inset-0 z-[80] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/45 backdrop-blur-sm" onClick={() => setPendingDelete(null)} aria-hidden="true" />
+          <div role="dialog" aria-label="Confirmer la suppression" className="relative w-full max-w-xs rounded-2xl border border-base-300 bg-base-100 p-5 shadow-2xl">
+            <p className="text-sm">Supprimer cette annotation&nbsp;?</p>
+            <p className="mt-1 line-clamp-3 text-xs text-base-content/55">{pendingDelete.body}</p>
+            <div className="mt-4 flex justify-end gap-2">
+              <button onClick={() => setPendingDelete(null)} className="btn btn-ghost btn-sm">
+                Annuler
+              </button>
+              <button
+                onClick={async () => {
+                  await deleteAnnotation(pendingDelete.id);
+                  setPendingDelete(null);
+                  reload();
+                }}
+                className="btn btn-error btn-sm"
+              >
+                Supprimer
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
