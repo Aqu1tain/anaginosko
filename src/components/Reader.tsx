@@ -44,7 +44,7 @@ export default function Reader({ text, highlight }: { text: Text; highlight: num
       <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 wide:fixed wide:top-20 wide:right-4 wide:z-30 wide:mt-0 wide:w-72 wide:flex-col wide:items-stretch wide:gap-2 wide:rounded-2xl wide:border wide:border-base-300 wide:bg-base-100/90 wide:p-3 wide:shadow-sm wide:backdrop-blur-md">
         <div className="join wide:w-full">
           <Seg active={!manuscript} onClick={() => setManuscript(false)}>
-            Moderne
+            Minuscules
           </Seg>
           <Seg active={manuscript} onClick={() => setManuscript(true)}>
             Manuscrit
