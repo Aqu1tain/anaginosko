@@ -9,14 +9,21 @@ import Translit from "./Translit";
 
 const anyGloss = (lemma: string | null) => (lemma ? glossFor(lemma) ?? ntGlossFor(lemma) : undefined);
 
-function SpeakButton({ value, label }: { value: string; label: string }) {
+// Ligne de prononciation entièrement cliquable : grande cible tactile pour
+// lancer le son, avec l'icône haut-parleur comme repère à droite.
+function SpeakRow({ label, value }: { label: string; value: string }) {
   return (
     <button
       onClick={() => playTranslit(value)}
       aria-label={`Écouter (${label})`}
-      className="btn btn-ghost btn-xs btn-circle text-accent"
+      className="-mx-2 flex w-full items-center gap-1.5 rounded-lg px-2 py-2 text-left transition-colors hover:bg-base-200 active:bg-base-300"
     >
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <span className="text-sm text-base-content/55">{label}&nbsp;</span>
+      <Translit
+        value={value}
+        stressedClass="font-semibold text-accent underline decoration-accent/40 underline-offset-2"
+      />
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true" className="ml-auto shrink-0 text-accent">
         <path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor" />
         <path
           d="M16.5 8.5a4 4 0 010 7M19 6a7 7 0 010 12"
@@ -146,29 +153,9 @@ export default function LetterSheet({
               Le mot
             </div>
             <div className="font-greek mt-1 text-2xl">{word.grec}</div>
-            <div className="mt-2 space-y-1 text-base">
-              <div className="flex items-center gap-1.5">
-                <span className="text-sm text-base-content/55">Érasmien&nbsp;</span>
-                <span>
-                  <Translit
-                    value={word.erasmien}
-                    stressedClass="font-semibold text-accent underline decoration-accent/40 underline-offset-2"
-                  />
-                </span>
-                <SpeakButton value={word.erasmien} label="érasmien" />
-              </div>
-              {word.restituee && (
-                <div className="flex items-center gap-1.5">
-                  <span className="text-sm text-base-content/55">Restituée&nbsp;</span>
-                  <span>
-                    <Translit
-                      value={word.restituee}
-                      stressedClass="font-semibold text-accent underline decoration-accent/40 underline-offset-2"
-                    />
-                  </span>
-                  <SpeakButton value={word.restituee} label="restituée" />
-                </div>
-              )}
+            <div className="mt-2 text-base">
+              <SpeakRow label="Érasmien" value={word.erasmien} />
+              {word.restituee && <SpeakRow label="Restituée" value={word.restituee} />}
             </div>
             {word.morph && (
               <div className="mt-3 rounded-box bg-base-200 px-3 py-2">
