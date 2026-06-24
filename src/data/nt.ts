@@ -23,8 +23,24 @@ export const NT_GROUPS: { title: string; ids: string[] }[] = [
 
 const base = import.meta.env.BASE_URL;
 
+type FrenchByChapter = Record<string, Record<string, string>>;
+
 let booksCache: NtBook[] | null = null;
 const chapterCache = new Map<string, Text>();
+const frenchCache = new Map<string, FrenchByChapter | null>();
+
+async function loadFrench(book: string): Promise<FrenchByChapter | null> {
+  if (frenchCache.has(book)) return frenchCache.get(book)!;
+  try {
+    const res = await fetch(`${base}nt/${book}/fr.json`);
+    const data = res.ok ? ((await res.json()) as FrenchByChapter) : null;
+    frenchCache.set(book, data);
+    return data;
+  } catch {
+    frenchCache.set(book, null);
+    return null;
+  }
+}
 
 export async function loadBooks(): Promise<NtBook[]> {
   if (booksCache) return booksCache;
@@ -44,7 +60,10 @@ export async function loadChapter(book: string, chapter: number): Promise<Text> 
   const cached = chapterCache.get(key);
   if (cached) return cached;
 
-  const res = await fetch(`${base}nt/${book}/${chapter}.json`);
+  const [res, french] = await Promise.all([
+    fetch(`${base}nt/${book}/${chapter}.json`),
+    loadFrench(book),
+  ]);
   if (!res.ok) throw new Error(`Chapitre introuvable : ${key}`);
   const data = (await res.json()) as { reference: string; mots: Mot[] };
 
@@ -54,7 +73,7 @@ export async function loadChapter(book: string, chapter: number): Promise<Text> 
     niveau: 0,
     reference: data.reference,
     grec: "",
-    francais: null,
+    francais: french?.[chapter] ?? null,
     translitErasmien: null,
     translitRestituee: null,
     mots: data.mots,
