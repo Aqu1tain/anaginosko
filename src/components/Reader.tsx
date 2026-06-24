@@ -70,13 +70,15 @@ export default function Reader({ text, highlight }: { text: Text; highlight: num
         )}
 
         {hasFrench && (
-          <button
-            onClick={() => setShowFr((v) => !v)}
-            aria-pressed={showFr}
-            className={`btn btn-sm sm:btn-md ${showFr ? "btn-primary" : "btn-outline border-base-300"}`}
-          >
-            Français
-          </button>
+          <label className="flex cursor-pointer items-center gap-2 text-sm">
+            <input
+              type="checkbox"
+              checked={showFr}
+              onChange={(e) => setShowFr(e.target.checked)}
+              className="toggle toggle-sm toggle-primary"
+            />
+            <span>Traduction</span>
+          </label>
         )}
       </div>
 

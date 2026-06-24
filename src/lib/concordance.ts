@@ -1,4 +1,5 @@
 import { texts, type Text } from "../data/texts";
+import { glossFor } from "../data/glosses";
 
 export type Occurrence = {
   textId: string;
@@ -14,6 +15,8 @@ export type LemmaEntry = {
   nature: string;
   count: number;
   forms: string[];
+  /** translittérations latines (érasmien) des formes, pour la recherche. */
+  translits: string[];
   occurrences: Occurrence[];
 };
 
@@ -38,6 +41,7 @@ export function concordance(): LemmaEntry[] {
           nature: mot.nature ?? "Autre",
           count: 0,
           forms: [],
+          translits: [],
           occurrences: [],
         };
         map.set(mot.lemme, entry);
@@ -45,6 +49,8 @@ export function concordance(): LemmaEntry[] {
       const forme = cleanForm(mot.grec);
       entry.count += 1;
       if (!entry.forms.includes(forme)) entry.forms.push(forme);
+      const tr = mot.erasmien?.toLowerCase();
+      if (tr && !entry.translits.includes(tr)) entry.translits.push(tr);
       // tokenizeText intercale un espace entre les mots : le mot i est au jeton 2*i.
       entry.occurrences.push({
         textId: t.id,
@@ -60,17 +66,28 @@ export function concordance(): LemmaEntry[] {
   return cache;
 }
 
-const NO_ACCENT = /[̀-ͯ]/g;
-const fold = (s: string): string => s.normalize("NFD").replace(NO_ACCENT, "").toLowerCase();
+const COMBINING = /[̀-ͯ]/g;
+const fold = (s: string): string => s.normalize("NFD").replace(COMBINING, "").toLowerCase();
 
-/** Recherche tolérante aux accents, sur le lemme ou ses formes. */
+// Index de recherche : lemme + formes (grec replié) + translittérations + glose
+// française, tout replié sans accents.
+const searchIndex = new WeakMap<LemmaEntry, string>();
+function haystack(e: LemmaEntry): string {
+  let h = searchIndex.get(e);
+  if (h === undefined) {
+    const gloss = glossFor(e.lemma)?.excerpt ?? "";
+    h = fold([e.lemma, ...e.forms, ...e.translits, gloss].join(" "));
+    searchIndex.set(e, h);
+  }
+  return h;
+}
+
+/** Recherche tolérante aux accents : grec, translittération latine ou français. */
 export function searchLemmas(query: string): LemmaEntry[] {
   const all = concordance();
   const q = fold(query.trim());
   if (!q) return all;
-  return all.filter(
-    (e) => fold(e.lemma).includes(q) || e.forms.some((f) => fold(f).includes(q)),
-  );
+  return all.filter((e) => haystack(e).includes(q));
 }
 
 export const lemmaByKey = (lemma: string): LemmaEntry | undefined =>

@@ -17,7 +17,7 @@ function TextCard({ text }: { text: Text }) {
           <h3 className="min-w-0 truncate font-semibold">{text.reference}</h3>
           <span className="badge badge-sm badge-ghost shrink-0">{lengthLabel(text)}</span>
         </div>
-        <p className="font-greek truncate text-lg text-base-content/65">{preview(text.grec)}</p>
+        <p className="font-greek truncate text-lg text-base-content/75">{preview(text.grec)}</p>
       </div>
     </a>
   );
@@ -49,7 +49,7 @@ export default function Library() {
       {collections.map((c) => (
         <section key={c.id} className="pt-7">
           <h2 className="text-lg font-bold">{c.title}</h2>
-          <p className="mb-3 text-sm text-base-content/60">{c.subtitle}</p>
+          <p className="mb-3 text-sm text-base-content/70">{c.subtitle}</p>
           <div className="grid gap-2.5">
             {textsByCollection(c.id).map((t) => (
               <TextCard key={t.id} text={t} />
@@ -58,7 +58,7 @@ export default function Library() {
         </section>
       ))}
 
-      <footer className="pt-10 text-center text-xs text-base-content/60">
+      <footer className="pt-10 text-center text-xs text-base-content/70">
         Texte grec : SBLGNT · traduction : Crampon · définitions : Bailly.
         <br />
         <a href="#/mentions" className="link mt-1 inline-block">

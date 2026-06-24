@@ -6,11 +6,11 @@ import { glossFor } from "../data/glosses";
 import { playTranslit } from "../lib/audio";
 import Translit from "./Translit";
 
-function SpeakButton({ value }: { value: string }) {
+function SpeakButton({ value, label }: { value: string; label: string }) {
   return (
     <button
       onClick={() => playTranslit(value)}
-      aria-label="Écouter la prononciation"
+      aria-label={`Écouter (${label})`}
       className="btn btn-ghost btn-xs btn-circle text-accent"
     >
       <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -152,7 +152,7 @@ export default function LetterSheet({
                     stressedClass="font-semibold text-accent underline decoration-accent/40 underline-offset-2"
                   />
                 </span>
-                <SpeakButton value={word.erasmien} />
+                <SpeakButton value={word.erasmien} label="érasmien" />
               </div>
               {word.restituee && (
                 <div className="flex items-center gap-1.5">
@@ -163,7 +163,7 @@ export default function LetterSheet({
                       stressedClass="font-semibold text-accent underline decoration-accent/40 underline-offset-2"
                     />
                   </span>
-                  <SpeakButton value={word.restituee} />
+                  <SpeakButton value={word.restituee} label="restituée" />
                 </div>
               )}
             </div>

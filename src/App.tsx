@@ -102,7 +102,7 @@ export default function App() {
         <TopBar route={route} text={text} dark={dark} onToggleTheme={() => setDark((d) => !d)} />
         <main
           className={`mx-auto w-full max-w-2xl px-4 ${
-            sheet ? "pb-[65vh]" : "pb-[calc(5rem+env(safe-area-inset-bottom))]"
+            sheet ? "pb-[65vh]" : "pb-[calc(5rem+env(safe-area-inset-bottom))] md:pb-16"
           }`}
         >
           {route.name === "library" && <Library />}
