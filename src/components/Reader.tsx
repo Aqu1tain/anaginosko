@@ -1,10 +1,19 @@
 import { useEffect, useMemo, useState } from "react";
+import { createPortal } from "react-dom";
 import { lengthLabel, type Text } from "../data/texts";
 import { usePersistentState } from "../hooks/usePersistentState";
 import { useAuth } from "../hooks/useAuth";
-import { fetchAnnotations, recordView, type Annotation } from "../lib/api";
-import GreekText, { type TranslitMode } from "./GreekText";
+import { fetchAnnotations, deleteAnnotation, recordView, type Annotation } from "../lib/api";
+import GreekText, { type TranslitMode, type AnnoScope, type AnnoSelection } from "./GreekText";
 import AnnotationEditor, { type AnnotationTarget } from "./AnnotationEditor";
+
+type Sel = { anchorW: number; headW: number; g: number; char: string; scope: AnnoScope };
+
+const SCOPES: { id: AnnoScope; label: string }[] = [
+  { id: "char", label: "Caractère" },
+  { id: "word", label: "Mot" },
+  { id: "phrase", label: "Phrase" },
+];
 
 function Seg({
   active,
@@ -36,9 +45,12 @@ export default function Reader({ text, highlight }: { text: Text; highlight: num
   const canAnnotate = user?.role === "philologist" || user?.role === "admin";
   const [annotateMode, setAnnotateMode] = useState(false);
   const [annotations, setAnnotations] = useState<Annotation[]>([]);
+  const [sel, setSel] = useState<Sel | null>(null);
   const [editTarget, setEditTarget] = useState<AnnotationTarget | null>(null);
+  const [pendingDelete, setPendingDelete] = useState<Annotation | null>(null);
 
   const ref = text.id;
+  const motGrec = (w: number) => text.mots?.[Math.floor(w / 2)]?.grec ?? "";
 
   const loadAnnotations = useMemo(
     () => () => fetchAnnotations(ref).then(setAnnotations).catch(() => setAnnotations([])),
@@ -50,28 +62,117 @@ export default function Reader({ text, highlight }: { text: Text; highlight: num
     recordView(ref);
   }, [ref, loadAnnotations]);
 
-  // Index de jeton -> annotations.
-  const annotatedWords = useMemo(() => {
-    if (!showAnnotations) return undefined;
-    const map = new Map<number, Annotation[]>();
+  // Quitter le mode annotation efface la sélection en cours.
+  useEffect(() => {
+    if (!annotateMode) setSel(null);
+  }, [annotateMode]);
+
+  const canManage = (a: Annotation) =>
+    !!user && (user.role === "admin" || (a.userId != null && a.userId === user.id));
+
+  // Cartes de rendu : soulignement mot/phrase, soulignement caractère, pastilles.
+  const maps = useMemo(() => {
+    if (!showAnnotations) return null;
+    const spanWords = new Map<number, Annotation[]>();
+    const charSpots = new Map<string, Annotation[]>();
+    const markers = new Map<number, Annotation[]>();
+    const push = <K,>(m: Map<K, Annotation[]>, k: K, a: Annotation) =>
+      m.set(k, [...(m.get(k) ?? []), a]);
     for (const a of annotations) {
       if (a.wordIndex == null) continue;
-      const arr = map.get(a.wordIndex) ?? [];
-      arr.push(a);
-      map.set(a.wordIndex, arr);
+      if (a.graphemeIndex != null) {
+        push(charSpots, `${a.wordIndex}:${a.graphemeIndex}`, a);
+        push(markers, a.wordIndex, a);
+      } else if (a.endWordIndex != null) {
+        for (let w = a.wordIndex; w <= a.endWordIndex; w += 2) push(spanWords, w, a);
+        push(markers, a.endWordIndex, a);
+      } else {
+        push(spanWords, a.wordIndex, a);
+        push(markers, a.wordIndex, a);
+      }
     }
-    return map;
+    return { spanWords, charSpots, markers };
   }, [annotations, showAnnotations]);
 
-  const onAnnotate = (wordIndex: number, graphemeIndex: number) => {
-    const mot = text.mots?.[Math.floor(wordIndex / 2)];
+  const onSelectLetter = (w: number, g: number, cluster: string) => {
+    setSel((prev) => {
+      if (!prev) return { anchorW: w, headW: w, g, char: cluster, scope: "word" };
+      if (prev.scope === "phrase") return { ...prev, headW: w };
+      return { anchorW: w, headW: w, g, char: cluster, scope: prev.scope };
+    });
+  };
+
+  const setScope = (scope: AnnoScope) =>
+    setSel((prev) => (prev ? { ...prev, scope, headW: scope === "phrase" ? prev.headW : prev.anchorW } : prev));
+
+  const selection: AnnoSelection = sel
+    ? { from: sel.anchorW, to: sel.headW, g: sel.g, scope: sel.scope }
+    : null;
+
+  const openEditorFromSelection = () => {
+    if (!sel) return;
+    const from = Math.min(sel.anchorW, sel.headW);
+    const to = Math.max(sel.anchorW, sel.headW);
+    let grec: string, wordIndex: number, endWordIndex: number | null, graphemeIndex: number | null, scopeLabel: string;
+    if (sel.scope === "char") {
+      grec = sel.char || motGrec(sel.anchorW);
+      wordIndex = sel.anchorW;
+      endWordIndex = null;
+      graphemeIndex = sel.g;
+      scopeLabel = "caractère";
+    } else if (sel.scope === "word") {
+      grec = motGrec(sel.anchorW);
+      wordIndex = sel.anchorW;
+      endWordIndex = null;
+      graphemeIndex = null;
+      scopeLabel = "mot";
+    } else {
+      const parts: string[] = [];
+      for (let w = from; w <= to; w += 2) parts.push(motGrec(w));
+      grec = parts.join(" ");
+      wordIndex = from;
+      endWordIndex = to;
+      graphemeIndex = null;
+      scopeLabel = "phrase";
+    }
     setEditTarget({
       ref,
+      verse: text.mots?.[Math.floor(wordIndex / 2)]?.verse ?? null,
       wordIndex,
+      endWordIndex,
       graphemeIndex,
-      verse: mot?.verse ?? null,
-      grec: mot?.grec ?? "",
+      grec,
+      scopeLabel,
     });
+  };
+
+  const openEditorForExisting = (a: Annotation) => {
+    const from = a.wordIndex ?? 0;
+    const to = a.endWordIndex ?? from;
+    const parts: string[] = [];
+    for (let w = from; w <= to; w += 2) parts.push(motGrec(w));
+    const scopeLabel = a.graphemeIndex != null ? "caractère" : a.endWordIndex != null ? "phrase" : "mot";
+    setEditTarget({
+      ref,
+      verse: a.verse,
+      wordIndex: from,
+      endWordIndex: a.endWordIndex,
+      graphemeIndex: a.graphemeIndex,
+      grec: parts.join(" ") || motGrec(from),
+      scopeLabel,
+      existing: a,
+    });
+  };
+
+  const confirmDelete = async () => {
+    if (!pendingDelete) return;
+    try {
+      await deleteAnnotation(pendingDelete.id);
+    } catch {
+      /* ignore */
+    }
+    setPendingDelete(null);
+    loadAnnotations();
   };
 
   const hasErasmien = !!text.translitErasmien || !!text.mots?.[0]?.erasmien;
@@ -82,16 +183,37 @@ export default function Reader({ text, highlight }: { text: Text; highlight: num
   const study = showFr && hasFrench;
 
   const greekProps = {
-    annotatedWords,
+    spanWords: maps?.spanWords,
+    charSpots: maps?.charSpots,
+    markers: maps?.markers,
     annotateMode,
-    onAnnotate,
+    selection,
+    onSelectLetter,
+    canManage,
+    onEditAnnotation: openEditorForExisting,
+    onDeleteAnnotation: (a: Annotation) => setPendingDelete(a),
   };
+
+  const selGrec = sel
+    ? sel.scope === "char"
+      ? sel.char
+      : sel.scope === "word"
+        ? motGrec(sel.anchorW)
+        : (() => {
+            const from = Math.min(sel.anchorW, sel.headW);
+            const to = Math.max(sel.anchorW, sel.headW);
+            const parts: string[] = [];
+            for (let w = from; w <= to; w += 2) parts.push(motGrec(w));
+            return parts.join(" ");
+          })()
+    : "";
+  const phraseNeedsEnd = sel?.scope === "phrase" && sel.anchorW === sel.headW;
 
   return (
     <article className="pt-5">
       <div className="flex items-center gap-2 text-sm text-base-content/70">
         <span className="badge badge-sm badge-ghost">{lengthLabel(text)}</span>
-        <span>{annotateMode ? "Cliquez un mot pour l’annoter" : "Touchez une lettre pour ses indices"}</span>
+        <span>{annotateMode ? "Touchez le texte pour sélectionner" : "Touchez une lettre pour ses indices"}</span>
       </div>
 
       <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 wide:fixed wide:top-20 wide:right-4 wide:z-30 wide:mt-0 wide:w-72 wide:flex-col wide:items-stretch wide:gap-2 wide:rounded-2xl wide:border wide:border-base-300 wide:bg-base-100/90 wide:p-3 wide:shadow-sm wide:backdrop-blur-md">
@@ -184,16 +306,78 @@ export default function Reader({ text, highlight }: { text: Text; highlight: num
         </div>
       )}
 
+      {annotateMode && (
+        <div className="fixed inset-x-0 bottom-[calc(4.2rem+env(safe-area-inset-bottom))] z-40 px-3 wide:bottom-6 wide:left-auto wide:right-4 wide:px-0">
+          <div className="mx-auto max-w-md rounded-2xl border border-base-300 bg-base-100/95 p-3 shadow-2xl backdrop-blur-md wide:w-80">
+            {sel ? (
+              <>
+                <div className="mb-2 flex items-baseline justify-between gap-2">
+                  <span className="truncate font-greek text-lg text-primary">{selGrec}</span>
+                  <button onClick={() => setSel(null)} className="btn btn-ghost btn-xs shrink-0">
+                    Effacer
+                  </button>
+                </div>
+                <div className="join w-full">
+                  {SCOPES.map((s) => (
+                    <button
+                      key={s.id}
+                      onClick={() => setScope(s.id)}
+                      aria-pressed={sel.scope === s.id}
+                      className={`btn join-item btn-sm flex-1 ${sel.scope === s.id ? "btn-primary" : "btn-outline border-base-300"}`}
+                    >
+                      {s.label}
+                    </button>
+                  ))}
+                </div>
+                <button
+                  onClick={openEditorFromSelection}
+                  disabled={phraseNeedsEnd}
+                  className="btn btn-accent btn-sm mt-2 w-full"
+                >
+                  {phraseNeedsEnd ? "Touchez le dernier mot…" : "Annoter"}
+                </button>
+              </>
+            ) : (
+              <p className="text-center text-sm text-base-content/70">
+                Touchez une lettre pour annoter le <strong>mot</strong> ; ajustez ensuite la portée
+                (caractère, mot, phrase).
+              </p>
+            )}
+          </div>
+        </div>
+      )}
+
       {editTarget && (
         <AnnotationEditor
           target={editTarget}
           onClose={() => setEditTarget(null)}
           onSaved={() => {
             setEditTarget(null);
+            setSel(null);
             loadAnnotations();
           }}
         />
       )}
+
+      {pendingDelete &&
+        createPortal(
+          <div className="fixed inset-0 z-[80] flex items-center justify-center p-4">
+            <div className="absolute inset-0 bg-black/45 backdrop-blur-sm" onClick={() => setPendingDelete(null)} aria-hidden="true" />
+            <div role="dialog" aria-label="Confirmer la suppression" className="relative w-full max-w-xs rounded-2xl border border-base-300 bg-base-100 p-5 shadow-2xl">
+              <p className="text-sm">Supprimer cette annotation&nbsp;?</p>
+              <p className="mt-1 line-clamp-3 text-xs text-base-content/55">{pendingDelete.body}</p>
+              <div className="mt-4 flex justify-end gap-2">
+                <button onClick={() => setPendingDelete(null)} className="btn btn-ghost btn-sm">
+                  Annuler
+                </button>
+                <button onClick={confirmDelete} className="btn btn-error btn-sm">
+                  Supprimer
+                </button>
+              </div>
+            </div>
+          </div>,
+          document.body,
+        )}
     </article>
   );
 }

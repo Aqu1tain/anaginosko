@@ -1,13 +1,31 @@
 import { useState } from "react";
-import { createAnnotation } from "../lib/api";
+import { createPortal } from "react-dom";
+import { createAnnotation, updateAnnotation, type Annotation } from "../lib/api";
 
 export type AnnotationTarget = {
   ref: string;
-  wordIndex: number;
-  graphemeIndex: number;
   verse: number | null;
+  wordIndex: number;
+  endWordIndex: number | null;
+  graphemeIndex: number | null;
   grec: string;
+  scopeLabel: string;
+  existing?: Annotation;
 };
+
+function normalizeUrl(raw: string): string | null {
+  const v = raw.trim();
+  if (!v) return null;
+  const withScheme = /^https?:\/\//i.test(v) ? v : `https://${v}`;
+  try {
+    const u = new URL(withScheme);
+    if (u.protocol !== "http:" && u.protocol !== "https:") return null;
+    if (!u.hostname.includes(".")) return null;
+    return u.toString();
+  } catch {
+    return null;
+  }
+}
 
 export default function AnnotationEditor({
   target,
@@ -18,27 +36,31 @@ export default function AnnotationEditor({
   onClose: () => void;
   onSaved: () => void;
 }) {
-  const [body, setBody] = useState("");
-  const [source, setSource] = useState("");
-  const [charOnly, setCharOnly] = useState(false);
+  const editing = !!target.existing;
+  const [body, setBody] = useState(target.existing?.body ?? "");
+  const [source, setSource] = useState(target.existing?.source ?? "");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const valid = body.trim().length > 0 && source.trim().length > 0;
+  const url = normalizeUrl(source);
+  const valid = body.trim().length > 0 && url != null;
 
   const save = async () => {
     if (!valid) return;
     setSaving(true);
     setError(null);
+    const input = {
+      ref: target.ref,
+      verse: target.verse,
+      wordIndex: target.wordIndex,
+      endWordIndex: target.endWordIndex,
+      graphemeIndex: target.graphemeIndex,
+      body: body.trim(),
+      source: url!,
+    };
     try {
-      await createAnnotation({
-        ref: target.ref,
-        verse: target.verse,
-        wordIndex: target.wordIndex,
-        graphemeIndex: charOnly ? target.graphemeIndex : null,
-        body: body.trim(),
-        source: source.trim(),
-      });
+      if (editing) await updateAnnotation(target.existing!.id, input);
+      else await createAnnotation(input);
       onSaved();
     } catch (e) {
       setError(e instanceof Error ? e.message : "Erreur");
@@ -46,26 +68,28 @@ export default function AnnotationEditor({
     }
   };
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center">
-      <div className="absolute inset-0 bg-black/40" onClick={onClose} aria-hidden="true" />
+  return createPortal(
+    <div className="fixed inset-0 z-[80] flex items-end justify-center p-0 sm:items-center sm:p-4">
+      <div className="absolute inset-0 bg-black/45 backdrop-blur-sm" onClick={onClose} aria-hidden="true" />
       <div
         role="dialog"
-        aria-label="Ajouter une annotation"
-        className="relative w-full max-w-lg rounded-t-2xl border border-base-300 bg-base-100 p-5 shadow-2xl sm:rounded-2xl"
+        aria-label={editing ? "Modifier l’annotation" : "Ajouter une annotation"}
+        className="relative w-full max-w-lg rounded-t-3xl border border-base-300 bg-base-100 p-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))] shadow-2xl sm:rounded-3xl sm:pb-5"
       >
-        <h2 className="text-lg font-semibold">Annoter</h2>
-        <p className="mt-1 text-sm text-base-content/70">
-          <span className="font-greek text-lg">{target.grec}</span>
-          {target.verse != null ? <span className="text-base-content/55"> · v. {target.verse}</span> : null}
-        </p>
+        <div className="mb-1 flex items-center gap-2">
+          <span className="badge badge-sm badge-primary badge-soft capitalize">{target.scopeLabel}</span>
+          {target.verse != null && <span className="text-xs text-base-content/55">v. {target.verse}</span>}
+        </div>
+        <h2 className="text-lg font-semibold">{editing ? "Modifier l’annotation" : "Annoter"}</h2>
+        <p className="mt-1 font-greek text-xl leading-snug text-primary">{target.grec}</p>
 
-        <label className="mt-3 block">
+        <label className="mt-4 block">
           <span className="text-sm font-medium">Note</span>
           <textarea
             value={body}
             onChange={(e) => setBody(e.target.value)}
             rows={4}
+            autoFocus
             placeholder="Note philologique, neutre et factuelle…"
             className="textarea textarea-bordered mt-1 w-full"
           />
@@ -73,40 +97,35 @@ export default function AnnotationEditor({
 
         <label className="mt-3 block">
           <span className="text-sm font-medium">
-            Source <span className="text-accent">*</span>
+            Lien de la source <span className="text-error">*</span>
           </span>
           <input
+            type="url"
+            inputMode="url"
             value={source}
             onChange={(e) => setSource(e.target.value)}
-            placeholder="ex. Bailly s.v. λόγος ; BDAG ; Blass-Debrunner §…"
-            className="input input-bordered mt-1 w-full"
+            placeholder="https://bailly.app/λόγος"
+            className={`input input-bordered mt-1 w-full ${source && !url ? "input-error" : ""}`}
           />
           <span className="mt-1 block text-xs text-base-content/55">
-            Toute note doit être sourcée et neutre.
+            {source && !url
+              ? "Entrez une URL valide (https://…)."
+              : "Lien vérifiable et consultable (Bailly, BDAG en ligne, article…)."}
           </span>
-        </label>
-
-        <label className="mt-3 flex cursor-pointer items-center gap-2 text-sm">
-          <input
-            type="checkbox"
-            checked={charOnly}
-            onChange={(e) => setCharOnly(e.target.checked)}
-            className="checkbox checkbox-sm"
-          />
-          <span>Annoter seulement ce caractère</span>
         </label>
 
         {error && <p className="mt-3 text-sm text-error">{error}</p>}
 
-        <div className="mt-4 flex justify-end gap-2">
+        <div className="mt-5 flex justify-end gap-2">
           <button onClick={onClose} className="btn btn-ghost btn-sm">
             Annuler
           </button>
           <button onClick={save} disabled={!valid || saving} className="btn btn-primary btn-sm">
-            {saving ? "Enregistrement…" : "Enregistrer"}
+            {saving ? "Enregistrement…" : editing ? "Enregistrer" : "Publier"}
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }

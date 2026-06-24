@@ -8,6 +8,8 @@ import AnnotationMarker from "./AnnotationMarker";
 import Translit from "./Translit";
 
 export type TranslitMode = "off" | "erasmien" | "restituee";
+export type AnnoScope = "char" | "word" | "phrase";
+export type AnnoSelection = { from: number; to: number; g: number; scope: AnnoScope } | null;
 
 function GreekText({
   text,
@@ -16,9 +18,15 @@ function GreekText({
   manuscript = false,
   verseOnly = null,
   highlightWord = null,
-  annotatedWords,
+  spanWords,
+  charSpots,
+  markers,
   annotateMode = false,
-  onAnnotate,
+  selection = null,
+  onSelectLetter,
+  canManage,
+  onEditAnnotation,
+  onDeleteAnnotation,
 }: {
   text: Text;
   size: "lg" | "md";
@@ -28,11 +36,19 @@ function GreekText({
   verseOnly?: number | null;
   /** Index de jeton à surligner temporairement (suivi de concordance). */
   highlightWord?: number | null;
-  /** Annotations à afficher, par index de jeton. */
-  annotatedWords?: Map<number, Annotation[]>;
-  /** Mode philologue : un clic ajoute une annotation. */
+  /** Mots couverts par une annotation mot/phrase -> soulignement du mot. */
+  spanWords?: Map<number, Annotation[]>;
+  /** Caractères annotés, clé `${w}:${g}` -> soulignement de la lettre. */
+  charSpots?: Map<string, Annotation[]>;
+  /** Pastille ⓘ à poser après ce mot (fin de groupe / mot / caractère). */
+  markers?: Map<number, Annotation[]>;
+  /** Mode philologue : un clic sélectionne une lettre/un mot. */
   annotateMode?: boolean;
-  onAnnotate?: (wordIndex: number, graphemeIndex: number) => void;
+  selection?: AnnoSelection;
+  onSelectLetter?: (wordIndex: number, graphemeIndex: number, cluster: string) => void;
+  canManage?: (a: Annotation) => boolean;
+  onEditAnnotation?: (a: Annotation) => void;
+  onDeleteAnnotation?: (a: Annotation) => void;
 }) {
   const { active, clickLetter } = useSheet();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -79,13 +95,13 @@ function GreekText({
     const g = Number(el.dataset.g);
     const token = tokens[w];
     if (!token || token.type !== "word") return;
-    // Mode philologue : un clic cible le mot/caractère à annoter.
-    if (annotateMode && onAnnotate) {
-      onAnnotate(w, g);
-      return;
-    }
     const info = token.word.graphemes[g];
     if (!info) return;
+    // Mode philologue : un clic sélectionne la lettre/le mot à annoter.
+    if (annotateMode && onSelectLetter) {
+      onSelectLetter(w, g, manuscript ? (info.letter?.upper ?? info.cluster) : info.cluster);
+      return;
+    }
     clickLetter({ w, g, info, word: token.word.context });
   };
 
@@ -159,14 +175,22 @@ function GreekText({
   const verseMark = (w: number) =>
     !manuscript && verseAt.has(w) ? <span className="verse-num">{verseAt.get(w)}</span> : null;
 
+  const selFrom = selection ? Math.min(selection.from, selection.to) : -1;
+  const selTo = selection ? Math.max(selection.from, selection.to) : -1;
+  const wordSelected = (w: number) =>
+    selection != null && selection.scope !== "char" && w >= selFrom && w <= selTo;
+
   const renderGlyphs = (graphemes: GraphemeInfo[], w: number) =>
     graphemes.map((info, g) => {
       if (!isClickable(info)) return manuscript ? null : <span key={g}>{info.cluster}</span>;
       const key = `${w}:${g}`;
+      const charAnno = charSpots?.has(key);
+      const charSel =
+        selection?.scope === "char" && w === selection.from && g === selection.g;
       return (
         <span
           key={g}
-          className={`glyph${active?.key === key ? " is-active" : ""}`}
+          className={`glyph${active?.key === key ? " is-active" : ""}${charAnno ? " glyph-annotated" : ""}${charSel ? " glyph-selected" : ""}`}
           role="button"
           tabIndex={key === tabbableKey ? 0 : -1}
           aria-label={`Lettre ${info.letter!.name}`}
@@ -177,6 +201,19 @@ function GreekText({
         </span>
       );
     });
+
+  const markerFor = (w: number) => {
+    const annos = markers?.get(w);
+    if (!annos?.length) return null;
+    return (
+      <AnnotationMarker
+        annotations={annos}
+        canManage={canManage}
+        onEdit={onEditAnnotation}
+        onDelete={onDeleteAnnotation}
+      />
+    );
+  };
 
   return (
     <div
@@ -192,10 +229,9 @@ function GreekText({
     >
       {shown.map(([w, token], idx) => {
         const glyphs = renderGlyphs(token.word.graphemes, w);
-        const annos = annotatedWords?.get(w);
-        const annoCls = annos?.length ? " word-annotated" : "";
-        const wordCls = `whitespace-nowrap${w === activeWord ? " word-active" : ""}${w === flashW ? " word-flash" : ""}${annoCls}`;
-        const marker = annos?.length ? <AnnotationMarker annotations={annos} /> : null;
+        const annoCls = spanWords?.has(w) ? " word-annotated" : "";
+        const selCls = wordSelected(w) ? " word-selected" : "";
+        const wordCls = `whitespace-nowrap${w === activeWord ? " word-active" : ""}${w === flashW ? " word-flash" : ""}${annoCls}${selCls}`;
 
         if (!interlinear) {
           return (
@@ -203,7 +239,7 @@ function GreekText({
               {idx > 0 && !manuscript ? " " : null}
               {verseMark(w)}
               <span className={wordCls}>{glyphs}</span>
-              {marker}
+              {markerFor(w)}
             </Fragment>
           );
         }
@@ -218,7 +254,7 @@ function GreekText({
             <span className={wordCls}>
               {verseMark(w)}
               {glyphs}
-              {marker}
+              {markerFor(w)}
             </span>
             {tr && (
               <span className="mt-0.5 font-sans text-[0.8rem] leading-tight text-base-content/65">

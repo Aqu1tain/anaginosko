@@ -15,6 +15,7 @@ export type Annotation = {
   graphemeIndex: number | null;
   body: string;
   source: string;
+  userId: number | null;
   author: { displayName: string; role: Role } | null;
   updatedAt: string | null;
 };
@@ -95,6 +96,9 @@ export type AnnotationInput = {
 
 export const createAnnotation = (input: AnnotationInput) =>
   apiFetch<Annotation>("/annotations", { method: "POST", body: JSON.stringify(input) });
+
+export const updateAnnotation = (id: number, input: AnnotationInput) =>
+  apiFetch<Annotation>(`/annotations/${id}`, { method: "PUT", body: JSON.stringify(input) });
 
 export const deleteAnnotation = (id: number) =>
   apiFetch<void>(`/annotations/${id}`, { method: "DELETE" });

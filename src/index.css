@@ -274,6 +274,43 @@ body {
   text-underline-offset: 0.2em;
 }
 
+/* Caractère annoté : soulignement pointillé sur la seule lettre. */
+.glyph-annotated {
+  text-decoration: underline dotted color-mix(in oklab, var(--color-accent) 65%, transparent);
+  text-underline-offset: 0.2em;
+}
+
+/* Sélection en cours (mode annotation) : mot/phrase et caractère. */
+.word-selected {
+  background-color: color-mix(in oklab, var(--color-accent) 20%, transparent);
+  border-radius: 5px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+.glyph-selected {
+  background-color: color-mix(in oklab, var(--color-accent) 32%, transparent);
+  border-radius: 4px;
+}
+
+/* Pastille d'annotation : petit jeton cliquable. */
+.anno-dot {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.05em;
+  height: 1.05em;
+  padding: 0 0.18em;
+  border-radius: 999px;
+  font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+  font-size: 0.58em;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--color-accent-content, white);
+  background-color: var(--color-accent);
+}
+.anno-dot:hover {
+  filter: brightness(1.05);
+}
+
 /* Mot entier surligné au 2e clic. */
 .word-active {
   background-color: color-mix(in oklab, var(--color-secondary) 28%, transparent);
