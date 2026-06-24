@@ -21,6 +21,8 @@ import { NtToc, NtBookView } from "./components/NtBrowser";
 import ChapterReader from "./components/ChapterReader";
 import LetterSheet from "./components/LetterSheet";
 import TabBar from "./components/TabBar";
+import LoginView from "./components/LoginView";
+import AdminView from "./components/AdminView";
 
 const prefersDark =
   typeof matchMedia !== "undefined" && matchMedia("(prefers-color-scheme: dark)").matches;
@@ -127,6 +129,8 @@ export default function App() {
             {route.name === "alphabet" && <AlphabetView />}
             {route.name === "concordance" && <ConcordanceView lemma={route.lemma} />}
             {route.name === "mentions" && <MentionsView />}
+            {route.name === "login" && <LoginView />}
+            {route.name === "admin" && <AdminView />}
             {route.name === "ntToc" && <NtToc />}
             {route.name === "ntBook" && <NtBookView book={route.book} />}
             {route.name === "ntChapter" && (

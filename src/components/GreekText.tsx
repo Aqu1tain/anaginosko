@@ -3,6 +3,8 @@ import type { Text } from "../data/texts";
 import { tokenizeText } from "../lib/tokenize";
 import { isClickable, type GraphemeInfo } from "../lib/greek";
 import { useSheet } from "./SheetContext";
+import type { Annotation } from "../lib/api";
+import AnnotationMarker from "./AnnotationMarker";
 import Translit from "./Translit";
 
 export type TranslitMode = "off" | "erasmien" | "restituee";
@@ -14,6 +16,9 @@ function GreekText({
   manuscript = false,
   verseOnly = null,
   highlightWord = null,
+  annotatedWords,
+  annotateMode = false,
+  onAnnotate,
 }: {
   text: Text;
   size: "lg" | "md";
@@ -23,6 +28,11 @@ function GreekText({
   verseOnly?: number | null;
   /** Index de jeton à surligner temporairement (suivi de concordance). */
   highlightWord?: number | null;
+  /** Annotations à afficher, par index de jeton. */
+  annotatedWords?: Map<number, Annotation[]>;
+  /** Mode philologue : un clic ajoute une annotation. */
+  annotateMode?: boolean;
+  onAnnotate?: (wordIndex: number, graphemeIndex: number) => void;
 }) {
   const { active, clickLetter } = useSheet();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -69,6 +79,11 @@ function GreekText({
     const g = Number(el.dataset.g);
     const token = tokens[w];
     if (!token || token.type !== "word") return;
+    // Mode philologue : un clic cible le mot/caractère à annoter.
+    if (annotateMode && onAnnotate) {
+      onAnnotate(w, g);
+      return;
+    }
     const info = token.word.graphemes[g];
     if (!info) return;
     clickLetter({ w, g, info, word: token.word.context });
@@ -177,7 +192,10 @@ function GreekText({
     >
       {shown.map(([w, token], idx) => {
         const glyphs = renderGlyphs(token.word.graphemes, w);
-        const wordCls = `whitespace-nowrap${w === activeWord ? " word-active" : ""}${w === flashW ? " word-flash" : ""}`;
+        const annos = annotatedWords?.get(w);
+        const annoCls = annos?.length ? " word-annotated" : "";
+        const wordCls = `whitespace-nowrap${w === activeWord ? " word-active" : ""}${w === flashW ? " word-flash" : ""}${annoCls}`;
+        const marker = annos?.length ? <AnnotationMarker annotations={annos} /> : null;
 
         if (!interlinear) {
           return (
@@ -185,6 +203,7 @@ function GreekText({
               {idx > 0 && !manuscript ? " " : null}
               {verseMark(w)}
               <span className={wordCls}>{glyphs}</span>
+              {marker}
             </Fragment>
           );
         }
@@ -199,6 +218,7 @@ function GreekText({
             <span className={wordCls}>
               {verseMark(w)}
               {glyphs}
+              {marker}
             </span>
             {tr && (
               <span className="mt-0.5 font-sans text-[0.8rem] leading-tight text-base-content/65">

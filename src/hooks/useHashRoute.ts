@@ -8,7 +8,9 @@ export type Route =
   | { name: "ntChapter"; book: string; chapter: number; highlight: number | null }
   | { name: "alphabet" }
   | { name: "concordance"; lemma: string | null }
-  | { name: "mentions" };
+  | { name: "mentions" }
+  | { name: "login" }
+  | { name: "admin" };
 
 function parse(hash: string): Route {
   const path = hash.replace(/^#/, "");
@@ -32,6 +34,8 @@ function parse(hash: string): Route {
     return { name: "concordance", lemma: decodeURIComponent(path.slice("/concordance/".length)) };
   if (path === "/concordance") return { name: "concordance", lemma: null };
   if (path === "/mentions") return { name: "mentions" };
+  if (path === "/login") return { name: "login" };
+  if (path === "/admin") return { name: "admin" };
   return { name: "library" };
 }
 

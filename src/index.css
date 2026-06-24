@@ -268,6 +268,12 @@ body {
   animation: word-flash 2.6s ease forwards;
 }
 
+/* Mot annoté : soulignement pointillé discret. */
+.word-annotated {
+  text-decoration: underline dotted color-mix(in oklab, var(--color-accent) 55%, transparent);
+  text-underline-offset: 0.2em;
+}
+
 /* Mot entier surligné au 2e clic. */
 .word-active {
   background-color: color-mix(in oklab, var(--color-secondary) 28%, transparent);

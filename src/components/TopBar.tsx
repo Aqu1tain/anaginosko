@@ -75,7 +75,11 @@ export default function TopBar({
                 ? `${BOOK_NAMES[route.book] ?? ""} ${route.chapter}`.trim()
                 : route.name === "text"
                   ? (text?.reference ?? "Texte")
-                  : null;
+                  : route.name === "login"
+                    ? "Connexion"
+                    : route.name === "admin"
+                      ? "Tableau de bord"
+                      : null;
 
   const backHref =
     route.name === "ntBook"
@@ -105,6 +109,12 @@ export default function TopBar({
         </div>
 
         <div className="flex items-center gap-1">
+          <a href="#/login" aria-label="Espace contributeurs" className="btn btn-ghost btn-circle btn-sm">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="12" cy="8" r="3.4" stroke="currentColor" strokeWidth="1.6" />
+              <path d="M5 19.5a7 7 0 0114 0" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+            </svg>
+          </a>
           <ThemeToggle dark={dark} onToggle={onToggleTheme} />
         </div>
       </div>
