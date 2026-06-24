@@ -49,21 +49,28 @@ export default function App() {
     setSheet(null);
   }, [route]);
 
-  // Quand la fiche s'ouvre sur une nouvelle lettre, la remonter au-dessus de la
-  // feuille (ancrée en bas) — seulement en layout mobile/tablette : sur desktop
-  // large la fiche flotte à droite et ne recouvre pas le texte.
+  // Garde la lettre active visible AU-DESSUS de la feuille (ancrée en bas) — en
+  // layout mobile/tablette seulement (sur desktop la fiche flotte à droite). On
+  // re-mesure à chaque étape car la feuille grandit au 2e clic.
   useEffect(() => {
     if (!sheet) return;
     if (window.matchMedia("(min-width: 86rem)").matches) return;
-    const el = document.querySelector<HTMLElement>(".glyph.is-active");
-    if (!el) return;
-    const r = el.getBoundingClientRect();
-    const target = window.innerHeight * 0.3;
-    if (r.top > target + 24 || r.top < 64) {
-      window.scrollBy({ top: r.top - target, behavior: "smooth" });
-    }
+    const id = requestAnimationFrame(() => {
+      const el = document.querySelector<HTMLElement>(".glyph.is-active");
+      const sheetEl = document.querySelector<HTMLElement>('[role="dialog"]');
+      if (!el || !sheetEl) return;
+      const g = el.getBoundingClientRect();
+      const top = sheetEl.getBoundingClientRect().top;
+      const margin = 24;
+      // cible : la lettre juste au-dessus du haut de la feuille (sans passer sous la barre).
+      const targetTop = Math.max(72, top - margin - g.height);
+      if (Math.abs(g.top - targetTop) > 8) {
+        window.scrollBy({ top: g.top - targetTop, behavior: "smooth" });
+      }
+    });
+    return () => cancelAnimationFrame(id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sheet?.key]);
+  }, [sheet?.key, sheet?.stage]);
 
   const clickLetter = useCallback(({ w, g, info, word }: LetterClick) => {
     const key = `${w}:${g}`;

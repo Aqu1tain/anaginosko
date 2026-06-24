@@ -82,12 +82,12 @@ export default function LetterSheet({
   ].filter((c): c is string => c !== null);
 
   return (
-    <div className="pointer-events-none fixed inset-x-0 bottom-0 z-50 flex justify-center wide:inset-y-0 wide:left-auto wide:right-4 wide:items-center wide:justify-end">
+    <div className="pointer-events-none fixed inset-x-0 bottom-0 z-50 flex justify-center wide:inset-x-auto wide:right-4 wide:bottom-4 wide:block">
       <div
         ref={boxRef}
         role="dialog"
         aria-label={`Lettre ${letter.name}`}
-        className="animate-sheet pointer-events-auto max-h-[85dvh] w-full max-w-md overflow-y-auto overscroll-contain rounded-t-2xl border border-base-300 bg-base-100 px-5 pt-5 pb-[calc(1.5rem+env(safe-area-inset-bottom))] shadow-2xl wide:max-h-[85vh] wide:w-80 wide:rounded-2xl wide:pb-5"
+        className="animate-sheet pointer-events-auto max-h-[85dvh] w-full max-w-md overflow-y-auto overscroll-contain rounded-t-2xl border border-base-300 bg-base-100 px-5 pt-5 pb-[calc(1.5rem+env(safe-area-inset-bottom))] shadow-2xl wide:max-h-[calc(100dvh-17rem)] wide:w-80 wide:rounded-2xl wide:pb-5"
       >
         <div className="flex items-center gap-4">
           <div className="font-greek flex h-16 w-16 shrink-0 items-center justify-center rounded-box bg-accent/15 text-4xl text-accent">
