@@ -6,6 +6,7 @@
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, resolve } from "node:path";
+import { decodeMorph } from "./morph.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const MORPH_DIR = process.env.MORPH_DIR || "/tmp/morphgnt";
@@ -71,7 +72,7 @@ function morphWords({ file, code }, chapter, vStart, vEnd) {
     const ch = Number(ref.slice(2, 4));
     const v = Number(ref.slice(4, 6));
     if (ch !== chapter || v < vStart || v > vEnd) continue;
-    out.push({ verse: v, word: parts[3], lemme: parts[6], nature: natureOf(parts[1]) });
+    out.push({ verse: v, word: parts[3], lemme: parts[6], nature: natureOf(parts[1]), morph: decodeMorph(parts[2]) });
   }
   return out;
 }
@@ -99,6 +100,7 @@ for (const t of passages.textes) {
     mot.verse = ref[i].verse;
     mot.lemme = ref[i].lemme;
     mot.nature = ref[i].nature;
+    mot.morph = ref[i].morph;
   });
   const tag = wordDiffs === 0 ? "✓" : `~ (${wordDiffs} variantes d'orthographe)`;
   console.log(`${tag} ${t.reference} : ${ref.length} mots, versets ${vStart}-${vEnd}`);

@@ -8,6 +8,7 @@ import { readFileSync, writeFileSync, mkdirSync, rmSync, existsSync, readdirSync
 import { fileURLToPath } from "node:url";
 import { dirname, resolve } from "node:path";
 import { grecToErasmien, grecToRestituee } from "./translit.mjs";
+import { decodeMorph } from "./morph.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const MORPH = process.env.MORPH_DIR || "/tmp/morphgnt";
@@ -71,6 +72,7 @@ for (const [id, name, file, usfm] of BOOKS) {
     const grec = p[3].replace(/[⸀-ⸯ]/g, "");
     const lemme = p[6];
     const nature = natureOf(p[1]);
+    const morph = decodeMorph(p[2]);
     if (!chapters.has(ch)) chapters.set(ch, []);
     const arr = chapters.get(ch);
     const w = arr.length * 2; // tokenizeText intercale un espace : mot n -> jeton 2n
@@ -81,6 +83,7 @@ for (const [id, name, file, usfm] of BOOKS) {
       verse,
       lemme,
       nature,
+      ...(morph ? { morph } : {}),
     });
     totalWords++;
     let e = lemmas.get(lemme);

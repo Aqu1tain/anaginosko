@@ -167,11 +167,25 @@ export default function LetterSheet({
                 </div>
               )}
             </div>
+            {word.morph && (
+              <div className="mt-3 rounded-box bg-base-200 px-3 py-2">
+                <div className="text-[0.7rem] font-medium uppercase tracking-wide text-base-content/55">
+                  Analyse
+                </div>
+                <div className="mt-0.5 text-sm">
+                  <span className="font-medium">{word.nature}</span>
+                  <span className="text-base-content/70"> · {word.morph}</span>
+                </div>
+              </div>
+            )}
             {word.lemme && (
               <div className="mt-3">
                 <div className="text-sm">
+                  <span className="text-base-content/55">Lemme&nbsp;</span>
                   <span className="font-greek font-medium">{word.lemme}</span>
-                  {word.nature ? <span className="text-base-content/55"> · {word.nature}</span> : null}
+                  {!word.morph && word.nature ? (
+                    <span className="text-base-content/55"> · {word.nature}</span>
+                  ) : null}
                 </div>
                 {glossFor(word.lemme) && (
                   <p className="mt-1 text-sm leading-snug text-base-content/70">

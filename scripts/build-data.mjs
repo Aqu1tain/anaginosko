@@ -33,6 +33,7 @@ const passageTexts = passages.textes.map((t) => ({
     verse: m.verse ?? null,
     lemme: m.lemme ?? null,
     nature: m.nature ?? null,
+    morph: m.morph ?? null,
   })),
 }));
 

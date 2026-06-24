@@ -7,6 +7,8 @@ export type Mot = {
   verse: number | null;
   lemme: string | null;
   nature: string | null;
+  /** analyse morphologique en français (cas/genre/nombre ou personne/temps/voix/mode). */
+  morph: string | null;
 };
 
 export type Text = {

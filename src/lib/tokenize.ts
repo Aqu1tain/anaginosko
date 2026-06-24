@@ -7,6 +7,7 @@ export type WordContext = {
   restituee: string;
   lemme: string | null;
   nature: string | null;
+  morph: string | null;
 };
 
 export type Word = {
@@ -41,6 +42,7 @@ export function tokenizeText(text: Text): Token[] {
             restituee: mot.restituee,
             lemme: mot.lemme,
             nature: mot.nature,
+            morph: mot.morph,
           },
           verse: mot.verse,
         },
