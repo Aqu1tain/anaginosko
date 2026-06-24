@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import type { Text } from "../data/texts";
-import { loadBooks, loadChapter, bookById } from "../data/nt";
+import { loadBooks, loadChapter, bookById, prefetchGlosses } from "../data/nt";
 import Reader from "./Reader";
 
 export default function ChapterReader({
@@ -17,6 +17,7 @@ export default function ChapterReader({
   const [error, setError] = useState(false);
 
   useEffect(() => {
+    prefetchGlosses(); // gloses Bailly NT prêtes avant le 1er clic
     let alive = true;
     setText(null);
     setError(false);

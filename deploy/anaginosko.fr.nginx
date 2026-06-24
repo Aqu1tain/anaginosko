@@ -1,0 +1,51 @@
+server {
+    server_name anaginosko.fr www.anaginosko.fr;
+    root /var/www/anaginosko;
+    index index.html;
+
+    gzip on;
+    gzip_vary on;
+    gzip_types application/json application/javascript text/css image/svg+xml text/plain application/manifest+json;
+    gzip_min_length 512;
+
+    location /.well-known/acme-challenge/ {
+        root /var/www/html;
+    }
+
+    # assets hashés + audio : immuables
+    location ~* ^/(assets|audio)/ {
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+        access_log off;
+    }
+
+    # données NT : revalidation rapide
+    location /nt/ {
+        expires 5m;
+        add_header Cache-Control "public, max-age=300";
+    }
+
+    # le shell HTML doit rester frais
+    location = /index.html {
+        add_header Cache-Control "no-cache";
+    }
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+    listen 443 ssl; # managed by Certbot
+    listen [::]:443 ssl ipv6only=on; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/anaginosko.fr/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/anaginosko.fr/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+}
+server {
+    if ($host = www.anaginosko.fr) { return 301 https://$host$request_uri; } # managed by Certbot
+    if ($host = anaginosko.fr) { return 301 https://$host$request_uri; } # managed by Certbot
+    listen 80;
+    listen [::]:80;
+    server_name anaginosko.fr www.anaginosko.fr;
+    return 404; # managed by Certbot
+}

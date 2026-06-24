@@ -1,4 +1,5 @@
 import type { Text, Mot } from "./texts";
+import type { Gloss } from "./glosses";
 
 export type NtBook = { id: string; name: string; usfm: string; chapters: number };
 
@@ -97,6 +98,32 @@ export function searchLemmaIndex(index: LemmaEntry[], query: string): LemmaEntry
 
 export const lemmaEntry = (index: LemmaEntry[], lemma: string): LemmaEntry | undefined =>
   index.find((e) => e.lemma === lemma);
+
+// --- Gloses Bailly pour tout le NT (chargées une fois, à la demande) ---
+
+let glossesCache: Record<string, Gloss> | null = null;
+let glossesPromise: Promise<void> | null = null;
+
+export function prefetchGlosses(): void {
+  if (glossesCache || glossesPromise) return;
+  glossesPromise = fetch(`${base}nt/glosses.json`)
+    .then((r) => (r.ok ? r.json() : {}))
+    .then((data) => {
+      glossesCache = data as Record<string, Gloss>;
+    })
+    .catch(() => {
+      glossesCache = {};
+    });
+}
+
+/** Glose NT si déjà chargée (sinon undefined). Déclenche le préchargement. */
+export function ntGlossFor(lemma: string | null | undefined): Gloss | undefined {
+  if (!glossesCache) {
+    prefetchGlosses();
+    return undefined;
+  }
+  return lemma ? glossesCache[lemma] : undefined;
+}
 
 /** Charge un chapitre et l'adapte au type Text consommé par le Reader. */
 export async function loadChapter(book: string, chapter: number): Promise<Text> {

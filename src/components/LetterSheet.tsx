@@ -3,8 +3,11 @@ import { accentLabel, breathingLabel, type GraphemeInfo } from "../lib/greek";
 import type { SheetStage } from "./SheetContext";
 import type { WordContext } from "../lib/tokenize";
 import { glossFor } from "../data/glosses";
+import { ntGlossFor } from "../data/nt";
 import { playTranslit } from "../lib/audio";
 import Translit from "./Translit";
+
+const anyGloss = (lemma: string | null) => (lemma ? glossFor(lemma) ?? ntGlossFor(lemma) : undefined);
 
 function SpeakButton({ value, label }: { value: string; label: string }) {
   return (
@@ -187,9 +190,9 @@ export default function LetterSheet({
                     <span className="text-base-content/55"> · {word.nature}</span>
                   ) : null}
                 </div>
-                {glossFor(word.lemme) && (
+                {anyGloss(word.lemme) && (
                   <p className="mt-1 text-sm leading-snug text-base-content/70">
-                    {glossFor(word.lemme)!.excerpt}
+                    {anyGloss(word.lemme)!.excerpt}
                     <span className="text-base-content/45"> — Bailly</span>
                   </p>
                 )}
