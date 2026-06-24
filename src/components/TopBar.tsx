@@ -109,8 +109,8 @@ export default function TopBar({
         </div>
 
         <div className="flex items-center gap-1">
-          <a href="#/login" aria-label="Espace contributeurs" className="btn btn-ghost btn-circle btn-sm">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <a href="#/login" aria-label="Espace contributeurs" className="btn btn-ghost btn-circle">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
               <circle cx="12" cy="8" r="4" />
               <path d="M12 13.5c-4 0-7.2 2.4-7.5 5.6A1 1 0 005.5 20.5h13a1 1 0 001-1.4c-.3-3.2-3.5-5.6-7.5-5.6z" />
             </svg>
