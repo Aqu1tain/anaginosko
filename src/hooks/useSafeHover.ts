@@ -24,8 +24,9 @@ const over = (el: HTMLElement | null, p: Pt) => {
   return p.x >= r.left && p.x <= r.right && p.y >= r.top && p.y <= r.bottom;
 };
 
-const GRACE = 300; // ms de répit tant qu'on file vers le popup
-const LEAVE = 80; // ms avant fermeture quand on s'en éloigne
+// Seul répit : si le curseur s'immobilise DANS le cône (en route vers le popup),
+// on attend ce court délai avant de fermer. Hors du cône = fermeture immédiate.
+const GRACE = 120; // ms
 
 export function useSafeHover() {
   const [open, setOpen] = useState(false);
@@ -67,11 +68,11 @@ export function useSafeHover() {
         const r = pop.getBoundingClientRect();
         const headingToPop = inTriangle(p, apex.current, { x: r.left, y: r.top }, { x: r.right, y: r.top });
         if (headingToPop) {
-          scheduleClose(GRACE); // file vers le popup : on prolonge le répit
+          scheduleClose(GRACE); // file vers le popup : court répit, fermé s'il s'arrête
           return;
         }
       }
-      scheduleClose(LEAVE); // s'éloigne : on ferme vite
+      close(); // hors du cône : fermeture immédiate
     };
     document.addEventListener("pointermove", onMove);
     return () => document.removeEventListener("pointermove", onMove);
@@ -92,7 +93,7 @@ export function useSafeHover() {
     onPointerEnter: () => clearTimer(),
     onPointerLeave: (e: React.PointerEvent) => {
       if (e.pointerType !== "mouse") return;
-      scheduleClose(LEAVE);
+      close();
     },
   };
 
