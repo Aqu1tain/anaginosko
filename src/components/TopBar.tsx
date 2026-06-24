@@ -110,9 +110,9 @@ export default function TopBar({
 
         <div className="flex items-center gap-1">
           <a href="#/login" aria-label="Espace contributeurs" className="btn btn-ghost btn-circle btn-sm">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <circle cx="12" cy="8" r="3.4" stroke="currentColor" strokeWidth="1.6" />
-              <path d="M5 19.5a7 7 0 0114 0" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <circle cx="12" cy="8" r="4" />
+              <path d="M12 13.5c-4 0-7.2 2.4-7.5 5.6A1 1 0 005.5 20.5h13a1 1 0 001-1.4c-.3-3.2-3.5-5.6-7.5-5.6z" />
             </svg>
           </a>
           <ThemeToggle dark={dark} onToggle={onToggleTheme} />
