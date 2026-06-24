@@ -60,13 +60,15 @@ export default function App() {
       const sheetEl = document.querySelector<HTMLElement>('[role="dialog"]');
       if (!el || !sheetEl) return;
       const g = el.getBoundingClientRect();
-      const top = sheetEl.getBoundingClientRect().top;
-      const margin = 24;
-      // cible : la lettre juste au-dessus du haut de la feuille (sans passer sous la barre).
-      const targetTop = Math.max(72, top - margin - g.height);
-      if (Math.abs(g.top - targetTop) > 8) {
-        window.scrollBy({ top: g.top - targetTop, behavior: "smooth" });
-      }
+      const sheetTop = sheetEl.getBoundingClientRect().top;
+      const margin = 16;
+      const topBar = 64;
+      // On ne bouge QUE si la lettre est cachée (par la feuille ou la barre),
+      // et du minimum, dans le bon sens.
+      let delta = 0;
+      if (g.bottom > sheetTop - margin) delta = g.bottom - (sheetTop - margin); // cachée par la feuille
+      else if (g.top < topBar) delta = g.top - topBar; // sous la barre du haut
+      if (Math.abs(delta) > 4) window.scrollBy({ top: delta, behavior: "smooth" });
     });
     return () => cancelAnimationFrame(id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
