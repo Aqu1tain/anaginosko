@@ -54,6 +54,50 @@ export function bookById(books: NtBook[], id: string): NtBook | undefined {
   return books.find((b) => b.id === id);
 }
 
+// --- Concordance NT (index des lemmes + occurrences à la demande) ---
+
+export type LemmaEntry = {
+  lemma: string;
+  nature: string;
+  count: number;
+  translit: string;
+  oid: number;
+};
+
+export type Occ = { b: string; c: number; v: number; w: number; f: string };
+
+let lemmaIndexCache: LemmaEntry[] | null = null;
+const occCache = new Map<number, Occ[]>();
+
+export async function loadLemmaIndex(): Promise<LemmaEntry[]> {
+  if (lemmaIndexCache) return lemmaIndexCache;
+  const res = await fetch(`${base}nt/lemmas.json`);
+  lemmaIndexCache = (await res.json()) as LemmaEntry[];
+  return lemmaIndexCache;
+}
+
+export async function loadOccurrences(oid: number): Promise<Occ[]> {
+  const cached = occCache.get(oid);
+  if (cached) return cached;
+  const res = await fetch(`${base}nt/occ/${oid}.json`);
+  const data = (await res.json()) as Occ[];
+  occCache.set(oid, data);
+  return data;
+}
+
+const COMBINING = /[̀-ͯ]/g;
+const fold = (s: string): string => s.normalize("NFD").replace(COMBINING, "").toLowerCase();
+
+/** Recherche tolérante aux accents : grec ou translittération latine. */
+export function searchLemmaIndex(index: LemmaEntry[], query: string): LemmaEntry[] {
+  const q = fold(query.trim());
+  if (!q) return index;
+  return index.filter((e) => fold(e.lemma).includes(q) || fold(e.translit).includes(q));
+}
+
+export const lemmaEntry = (index: LemmaEntry[], lemma: string): LemmaEntry | undefined =>
+  index.find((e) => e.lemma === lemma);
+
 /** Charge un chapitre et l'adapte au type Text consommé par le Reader. */
 export async function loadChapter(book: string, chapter: number): Promise<Text> {
   const key = `${book}/${chapter}`;

@@ -4,7 +4,7 @@
 //   public/nt/<id>/<chapter>.json   { reference, mots:[{grec,erasmien,restituee,verse,lemme,nature}] }
 //   public/nt/lemmas.json           index { lemma:{nature,count} } (concordance/recherche)
 // Run: node scripts/build-nt.mjs   (requiert /tmp/morphgnt rempli)
-import { readFileSync, writeFileSync, mkdirSync, rmSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdirSync, rmSync, existsSync, readdirSync, statSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, resolve } from "node:path";
 import { grecToErasmien, grecToRestituee } from "./translit.mjs";
@@ -12,6 +12,7 @@ import { grecToErasmien, grecToRestituee } from "./translit.mjs";
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const MORPH = process.env.MORPH_DIR || "/tmp/morphgnt";
 const outDir = resolve(root, "public/nt");
+const OCC_CAP = 500; // occurrences stockées par lemme (les mots ultra-fréquents sont tronqués)
 
 // id, nom FR, fichier MorphGNT, code USFM (helloao/Crampon).
 const BOOKS = [
@@ -38,7 +39,19 @@ const NATURE = {
 };
 const natureOf = (pos) => NATURE[pos] ?? NATURE[pos[0] + "-"] ?? "Autre";
 
-rmSync(outDir, { recursive: true, force: true });
+// Nettoie nos sorties générées, mais PRÉSERVE les fr.json (récupérés séparément).
+rmSync(resolve(outDir, "occ"), { recursive: true, force: true });
+rmSync(resolve(outDir, "books.json"), { force: true });
+rmSync(resolve(outDir, "lemmas.json"), { force: true });
+if (existsSync(outDir)) {
+  for (const b of readdirSync(outDir)) {
+    const bdir = resolve(outDir, b);
+    if (!statSync(bdir).isDirectory()) continue;
+    for (const f of readdirSync(bdir)) {
+      if (/^\d+\.json$/.test(f)) rmSync(resolve(bdir, f), { force: true });
+    }
+  }
+}
 mkdirSync(outDir, { recursive: true });
 
 const lemmas = new Map(); // lemme -> { nature, count }
@@ -59,7 +72,9 @@ for (const [id, name, file, usfm] of BOOKS) {
     const lemme = p[6];
     const nature = natureOf(p[1]);
     if (!chapters.has(ch)) chapters.set(ch, []);
-    chapters.get(ch).push({
+    const arr = chapters.get(ch);
+    const w = arr.length * 2; // tokenizeText intercale un espace : mot n -> jeton 2n
+    arr.push({
       grec,
       erasmien: grecToErasmien(grec),
       restituee: grecToRestituee(grec),
@@ -68,9 +83,13 @@ for (const [id, name, file, usfm] of BOOKS) {
       nature,
     });
     totalWords++;
-    const e = lemmas.get(lemme);
-    if (e) e.count++;
-    else lemmas.set(lemme, { nature, count: 1 });
+    let e = lemmas.get(lemme);
+    if (!e) {
+      e = { nature, count: 0, occ: [] };
+      lemmas.set(lemme, e);
+    }
+    e.count++;
+    if (e.occ.length < OCC_CAP) e.occ.push({ b: id, c: ch, v: verse, w, f: grec });
   }
 
   mkdirSync(resolve(outDir, id), { recursive: true });
@@ -87,10 +106,19 @@ for (const [id, name, file, usfm] of BOOKS) {
 
 writeFileSync(resolve(outDir, "books.json"), JSON.stringify({ books: manifest }, null, 2));
 
-// Index des lemmes trié alphabétiquement (grec).
-const lemmaIndex = [...lemmas.entries()]
-  .map(([lemma, v]) => ({ lemma, nature: v.nature, count: v.count }))
-  .sort((a, b) => a.lemma.localeCompare(b.lemma, "el"));
+// Index des lemmes (trié grec) + occurrences par lemme (fichier dédié, à la demande).
+mkdirSync(resolve(outDir, "occ"), { recursive: true });
+const sorted = [...lemmas.entries()].sort((a, b) => a[0].localeCompare(b[0], "el"));
+const lemmaIndex = sorted.map(([lemma, v], oid) => {
+  writeFileSync(resolve(outDir, "occ", `${oid}.json`), JSON.stringify(v.occ));
+  return {
+    lemma,
+    nature: v.nature,
+    count: v.count,
+    translit: grecToErasmien(lemma).toLowerCase(),
+    oid,
+  };
+});
 writeFileSync(resolve(outDir, "lemmas.json"), JSON.stringify(lemmaIndex));
 
 console.log(`\n\n${manifest.length} livres, ${totalWords} mots, ${lemmaIndex.length} lemmes distincts.`);
