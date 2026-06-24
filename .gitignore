@@ -1,6 +1,8 @@
 node_modules
 dist
 *.local
+.env
+.env.audio
 *.tsbuildinfo
 .DS_Store
 .playwright-mcp
