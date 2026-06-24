@@ -2,8 +2,8 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 
-// Project Pages are served from /<repo>/, so the production build needs that base.
-export default defineConfig(({ command }) => ({
-  base: command === "build" ? "/anaginosko/" : "/",
+// Servi à la racine d'anaginosko.fr (VPS) -> base "/".
+export default defineConfig({
+  base: "/",
   plugins: [react(), tailwindcss()],
-}));
+});

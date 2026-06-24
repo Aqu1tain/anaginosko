@@ -49,7 +49,7 @@ console.log(`Wrote ${out.texts.length} passages to src/data/texts.json`);
 // --- Versions statiques, lisibles par les robots et les LLM (le SPA en hash
 // routing ne sert qu'une coquille vide aux fetchers sans JS). ---
 
-const SITE = "https://aqu1tain.github.io/anaginosko";
+const SITE = "https://anaginosko.fr";
 const esc = (s) =>
   s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 

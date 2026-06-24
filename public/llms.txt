@@ -7,7 +7,7 @@
 L'application est un SPA en hash routing : les URL `#/text/...` ne sont pas
 lisibles sans JavaScript. Le contenu intégral est disponible en texte ici :
 
-- [Corpus complet (HTML)](https://aqu1tain.github.io/anaginosko/corpus.html)
+- [Corpus complet (HTML)](https://anaginosko.fr/corpus.html)
 
 ## Passages
 

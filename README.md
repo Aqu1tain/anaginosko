@@ -4,7 +4,7 @@ Lire le grec koinè du Nouveau Testament, lettre par lettre. Application web
 mobile-first : touchez n'importe quelle lettre d'un texte pour obtenir son nom,
 sa valeur et sa prononciation (érasmienne et restituée).
 
-**En ligne : https://aqu1tain.github.io/anaginosko/**
+**En ligne : https://anaginosko.fr/**
 
 ## Lancer
 

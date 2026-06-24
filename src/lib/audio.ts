@@ -13,8 +13,13 @@ export function audioKey(s: string): string {
   return (h >>> 0).toString(16).padStart(8, "0");
 }
 
+// Base des fichiers audio : en prod ils sont sur Cloudflare R2
+// (VITE_AUDIO_BASE, ex. https://audio.anaginosko.fr/) ; en local, public/audio/.
+const AUDIO_BASE =
+  import.meta.env.VITE_AUDIO_BASE ?? `${import.meta.env.BASE_URL}audio/`;
+
 export const audioUrl = (translit: string): string =>
-  `${import.meta.env.BASE_URL}audio/${audioKey(translit)}.mp3`;
+  `${AUDIO_BASE}${audioKey(translit)}.mp3`;
 
 let current: HTMLAudioElement | null = null;
 
