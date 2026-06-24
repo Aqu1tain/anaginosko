@@ -1,16 +1,6 @@
 import type { Annotation } from "../lib/api";
 import { useSafeHover } from "../hooks/useSafeHover";
 
-function sourceLabel(url: string): string {
-  try {
-    const u = new URL(url);
-    const label = u.hostname.replace(/^www\./, "") + (u.pathname !== "/" ? u.pathname : "");
-    return decodeURI(label);
-  } catch {
-    return url;
-  }
-}
-
 export default function AnnotationMarker({
   annotations,
   canManage,
@@ -53,19 +43,23 @@ export default function AnnotationMarker({
           {annotations.map((a, i) => (
             <span key={a.id} className={`block p-3.5 font-sans ${i > 0 ? "border-t border-base-300" : ""}`}>
               <span className="block text-sm leading-relaxed text-base-content/90">{a.body}</span>
-              <a
-                href={a.source}
-                target="_blank"
-                rel="noreferrer noopener"
-                onClick={(e) => e.stopPropagation()}
-                className="mt-2 inline-flex max-w-full items-center gap-1 text-xs font-medium text-primary hover:underline"
-              >
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true" className="shrink-0">
-                  <path d="M10 14L20 4M20 4h-6M20 4v6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                  <path d="M19 14v4a2 2 0 01-2 2H6a2 2 0 01-2-2V7a2 2 0 012-2h4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-                <span className="truncate">{sourceLabel(a.source)}</span>
-              </a>
+              {a.link ? (
+                <a
+                  href={a.link}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  onClick={(e) => e.stopPropagation()}
+                  className="mt-2 inline-flex max-w-full items-center gap-1 text-xs font-medium text-primary hover:underline"
+                >
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true" className="shrink-0">
+                    <path d="M10 14L20 4M20 4h-6M20 4v6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M19 14v4a2 2 0 01-2 2H6a2 2 0 01-2-2V7a2 2 0 012-2h4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                  <span className="truncate">{a.source}</span>
+                </a>
+              ) : (
+                <span className="mt-2 block text-xs italic text-base-content/55">{a.source}</span>
+              )}
               <span className="mt-2 flex items-center justify-between gap-2">
                 {a.author ? (
                   <span className="text-xs text-base-content/45">

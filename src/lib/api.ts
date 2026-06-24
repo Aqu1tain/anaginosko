@@ -15,6 +15,7 @@ export type Annotation = {
   graphemeIndex: number | null;
   body: string;
   source: string;
+  link: string | null;
   userId: number | null;
   author: { displayName: string; role: Role } | null;
   updatedAt: string | null;
@@ -92,6 +93,7 @@ export type AnnotationInput = {
   graphemeIndex?: number | null;
   body: string;
   source: string;
+  link?: string | null;
 };
 
 export const createAnnotation = (input: AnnotationInput) =>
@@ -102,6 +104,9 @@ export const updateAnnotation = (id: number, input: AnnotationInput) =>
 
 export const deleteAnnotation = (id: number) =>
   apiFetch<void>(`/annotations/${id}`, { method: "DELETE" });
+
+// Annotations de l'utilisateur connecté (admin : toutes) pour le tableau de bord.
+export const fetchMyAnnotations = () => apiFetch<Annotation[]>("/annotations/mine");
 
 export type AdminStats = {
   annotations: number;

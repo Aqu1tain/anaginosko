@@ -39,11 +39,13 @@ export default function AnnotationEditor({
   const editing = !!target.existing;
   const [body, setBody] = useState(target.existing?.body ?? "");
   const [source, setSource] = useState(target.existing?.source ?? "");
+  const [link, setLink] = useState(target.existing?.link ?? "");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const url = normalizeUrl(source);
-  const valid = body.trim().length > 0 && url != null;
+  const linkUrl = link.trim() ? normalizeUrl(link) : null;
+  const linkValid = link.trim() === "" || linkUrl != null;
+  const valid = body.trim().length > 0 && source.trim().length > 0 && linkValid;
 
   const save = async () => {
     if (!valid) return;
@@ -56,7 +58,8 @@ export default function AnnotationEditor({
       endWordIndex: target.endWordIndex,
       graphemeIndex: target.graphemeIndex,
       body: body.trim(),
-      source: url!,
+      source: source.trim(),
+      link: linkUrl,
     };
     try {
       if (editing) await updateAnnotation(target.existing!.id, input);
@@ -76,12 +79,13 @@ export default function AnnotationEditor({
         aria-label={editing ? "Modifier l’annotation" : "Ajouter une annotation"}
         className="relative w-full max-w-lg rounded-t-3xl border border-base-300 bg-base-100 p-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))] shadow-2xl sm:rounded-3xl sm:pb-5"
       >
-        <div className="mb-1 flex items-center gap-2">
+        <div className="mb-1 flex flex-wrap items-center gap-2 text-xs text-base-content/55">
           <span className="badge badge-sm badge-primary badge-soft capitalize">{target.scopeLabel}</span>
-          {target.verse != null && <span className="text-xs text-base-content/55">v. {target.verse}</span>}
+          <span className="font-mono">{target.ref}</span>
+          {target.verse != null && <span>v. {target.verse}</span>}
         </div>
         <h2 className="text-lg font-semibold">{editing ? "Modifier l’annotation" : "Annoter"}</h2>
-        <p className="mt-1 font-greek text-xl leading-snug text-primary">{target.grec}</p>
+        {target.grec && <p className="mt-1 font-greek text-xl leading-snug text-primary">{target.grec}</p>}
 
         <label className="mt-4 block">
           <span className="text-sm font-medium">Note</span>
@@ -97,21 +101,31 @@ export default function AnnotationEditor({
 
         <label className="mt-3 block">
           <span className="text-sm font-medium">
-            Lien de la source <span className="text-error">*</span>
+            Source <span className="text-error">*</span>
+          </span>
+          <input
+            value={source}
+            onChange={(e) => setSource(e.target.value)}
+            placeholder="ex. Bailly s.v. λόγος ; BDAG λόγος 2"
+            className="input input-bordered mt-1 w-full"
+          />
+        </label>
+
+        <label className="mt-3 block">
+          <span className="text-sm font-medium">
+            Lien <span className="font-normal text-base-content/45">(optionnel)</span>
           </span>
           <input
             type="url"
             inputMode="url"
-            value={source}
-            onChange={(e) => setSource(e.target.value)}
+            value={link}
+            onChange={(e) => setLink(e.target.value)}
             placeholder="https://bailly.app/λόγος"
-            className={`input input-bordered mt-1 w-full ${source && !url ? "input-error" : ""}`}
+            className={`input input-bordered mt-1 w-full ${link && !linkUrl ? "input-error" : ""}`}
           />
-          <span className="mt-1 block text-xs text-base-content/55">
-            {source && !url
-              ? "Entrez une URL valide (https://…)."
-              : "Lien vérifiable et consultable (Bailly, BDAG en ligne, article…)."}
-          </span>
+          {link && !linkUrl && (
+            <span className="mt-1 block text-xs text-error">URL invalide (https://…).</span>
+          )}
         </label>
 
         {error && <p className="mt-3 text-sm text-error">{error}</p>}
