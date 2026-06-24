@@ -32,8 +32,8 @@ export default function TabBar({ route }: { route: Route }) {
 
   return (
     <>
-      {/* Mobile : barre fixée en bas. */}
-      <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-base-300 bg-base-100/90 pb-[env(safe-area-inset-bottom)] backdrop-blur-md md:hidden">
+      {/* Mobile / tablette : barre fixée en bas. */}
+      <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-base-300 bg-base-100/90 pb-[env(safe-area-inset-bottom)] backdrop-blur-md wide:hidden">
         <div className="mx-auto flex w-full max-w-2xl">
           {tabs.map((t) => (
             <a
@@ -51,21 +51,25 @@ export default function TabBar({ route }: { route: Route }) {
         </div>
       </nav>
 
-      {/* Desktop : rail vertical flottant à gauche. */}
-      <nav className="fixed top-1/2 left-4 z-40 hidden -translate-y-1/2 flex-col gap-1 rounded-2xl border border-base-300 bg-base-100/90 p-2 shadow-sm backdrop-blur-md md:flex">
+      {/* Desktop large : rail vertical flottant à gauche. Le fond actif n'entoure
+          que l'icône (pastille carrée), le libellé reste en texte simple. */}
+      <nav className="fixed top-1/2 left-4 z-40 hidden -translate-y-1/2 flex-col gap-2 wide:flex">
         {tabs.map((t) => (
           <a
             key={t.href}
             href={t.href}
             aria-current={t.active ? "page" : undefined}
-            title={t.label}
-            className={`flex w-16 flex-col items-center gap-1 rounded-xl py-2.5 text-[0.7rem] font-medium transition-colors ${
-              t.active
-                ? "bg-primary/10 text-primary"
-                : "text-base-content/65 hover:bg-base-200 hover:text-base-content"
+            className={`group flex flex-col items-center gap-1 text-[0.7rem] font-medium transition-colors ${
+              t.active ? "text-primary" : "text-base-content/65 hover:text-base-content"
             }`}
           >
-            {t.icon}
+            <span
+              className={`grid h-11 w-11 place-items-center rounded-2xl transition-colors ${
+                t.active ? "bg-primary/12 text-primary" : "group-hover:bg-base-200"
+              }`}
+            >
+              {t.icon}
+            </span>
             <span>{t.label}</span>
           </a>
         ))}

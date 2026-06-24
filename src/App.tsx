@@ -50,9 +50,11 @@ export default function App() {
   }, [route]);
 
   // Quand la fiche s'ouvre sur une nouvelle lettre, la remonter au-dessus de la
-  // feuille (ancrée en bas). La marge basse réservée (plus bas) donne la place.
+  // feuille (ancrée en bas) — seulement en layout mobile/tablette : sur desktop
+  // large la fiche flotte à droite et ne recouvre pas le texte.
   useEffect(() => {
     if (!sheet) return;
+    if (window.matchMedia("(min-width: 86rem)").matches) return;
     const el = document.querySelector<HTMLElement>(".glyph.is-active");
     if (!el) return;
     const r = el.getBoundingClientRect();
@@ -95,6 +97,9 @@ export default function App() {
   );
 
   const text = route.name === "text" ? textById(route.id) : undefined;
+  // Section grossière : la transition de vue ne se joue qu'au changement d'onglet,
+  // pas entre deux textes ou deux lemmes.
+  const section = route.name === "text" ? "library" : route.name;
 
   return (
     <SheetContext.Provider value={api}>
@@ -102,15 +107,17 @@ export default function App() {
         <TopBar route={route} text={text} dark={dark} onToggleTheme={() => setDark((d) => !d)} />
         <main
           className={`mx-auto w-full max-w-2xl px-4 ${
-            sheet ? "pb-[65vh]" : "pb-[calc(5rem+env(safe-area-inset-bottom))] md:pb-16"
+            sheet ? "pb-[65vh] wide:pb-16" : "pb-[calc(5rem+env(safe-area-inset-bottom))] wide:pb-16"
           }`}
         >
-          {route.name === "library" && <Library />}
-          {route.name === "alphabet" && <AlphabetView />}
-          {route.name === "concordance" && <ConcordanceView lemma={route.lemma} />}
-          {route.name === "mentions" && <MentionsView />}
-          {route.name === "text" &&
-            (text ? <Reader text={text} highlight={route.highlight} /> : <NotFound />)}
+          <div key={section} className="animate-view">
+            {route.name === "library" && <Library />}
+            {route.name === "alphabet" && <AlphabetView />}
+            {route.name === "concordance" && <ConcordanceView lemma={route.lemma} />}
+            {route.name === "mentions" && <MentionsView />}
+            {route.name === "text" &&
+              (text ? <Reader text={text} highlight={route.highlight} /> : <NotFound />)}
+          </div>
         </main>
         <TabBar route={route} />
       </div>

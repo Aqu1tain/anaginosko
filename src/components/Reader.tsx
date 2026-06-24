@@ -15,7 +15,7 @@ function Seg({
     <button
       onClick={onClick}
       aria-pressed={active}
-      className={`btn join-item btn-sm sm:btn-md ${active ? "btn-primary" : "btn-outline border-base-300"}`}
+      className={`btn join-item btn-sm sm:btn-md wide:flex-1 ${active ? "btn-primary" : "btn-outline border-base-300"}`}
     >
       {children}
     </button>
@@ -36,13 +36,13 @@ export default function Reader({ text, highlight }: { text: Text; highlight: num
 
   return (
     <article className="pt-5">
-      <div className="flex items-center gap-2 text-sm text-base-content/60">
+      <div className="flex items-center gap-2 text-sm text-base-content/70">
         <span className="badge badge-sm badge-ghost">{lengthLabel(text)}</span>
         <span>Touchez une lettre pour ses indices</span>
       </div>
 
-      <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2">
-        <div className="join">
+      <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 wide:fixed wide:top-20 wide:right-4 wide:z-30 wide:mt-0 wide:w-72 wide:flex-col wide:items-stretch wide:gap-2 wide:rounded-2xl wide:border wide:border-base-300 wide:bg-base-100/90 wide:p-3 wide:shadow-sm wide:backdrop-blur-md">
+        <div className="join wide:w-full">
           <Seg active={!manuscript} onClick={() => setManuscript(false)}>
             Moderne
           </Seg>
@@ -52,7 +52,7 @@ export default function Reader({ text, highlight }: { text: Text; highlight: num
         </div>
 
         {(hasErasmien || hasRestituee) && (
-          <div className="join">
+          <div className="join wide:w-full">
             <Seg active={mode === "off"} onClick={() => setMode("off")}>
               Grec
             </Seg>
