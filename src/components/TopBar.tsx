@@ -1,5 +1,6 @@
 import type { Route } from "../hooks/useHashRoute";
 import type { Text } from "../data/texts";
+import { BOOK_NAMES } from "../data/nt";
 
 function ThemeToggle({ dark, onToggle }: { dark: boolean; onToggle: () => void }) {
   return (
@@ -66,9 +67,22 @@ export default function TopBar({
         ? "Concordance"
         : route.name === "mentions"
           ? "Mentions légales"
-          : route.name === "text"
-          ? (text?.reference ?? "Texte")
-          : null;
+          : route.name === "ntToc"
+            ? "Nouveau Testament"
+            : route.name === "ntBook"
+              ? (BOOK_NAMES[route.book] ?? "Livre")
+              : route.name === "ntChapter"
+                ? `${BOOK_NAMES[route.book] ?? ""} ${route.chapter}`.trim()
+                : route.name === "text"
+                  ? (text?.reference ?? "Texte")
+                  : null;
+
+  const backHref =
+    route.name === "ntBook"
+      ? "#/nt"
+      : route.name === "ntChapter"
+        ? `#/nt/${route.book}`
+        : "#/";
 
   return (
     <header className="sticky top-0 z-30 border-b border-base-300 bg-base-100/85 pt-[env(safe-area-inset-top)] backdrop-blur-md">
@@ -80,7 +94,7 @@ export default function TopBar({
             </a>
           ) : (
             <>
-              <a href="#/" aria-label="Retour" className="btn btn-ghost btn-circle">
+              <a href={backHref} aria-label="Retour" className="btn btn-ghost btn-circle">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                   <path d="M15 5l-7 7 7 7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>

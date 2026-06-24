@@ -17,6 +17,8 @@ import Reader from "./components/Reader";
 import AlphabetView from "./components/AlphabetView";
 import ConcordanceView from "./components/ConcordanceView";
 import MentionsView from "./components/MentionsView";
+import { NtToc, NtBookView } from "./components/NtBrowser";
+import ChapterReader from "./components/ChapterReader";
 import LetterSheet from "./components/LetterSheet";
 import TabBar from "./components/TabBar";
 
@@ -107,8 +109,9 @@ export default function App() {
 
   const text = route.name === "text" ? textById(route.id) : undefined;
   // Section grossière : la transition de vue ne se joue qu'au changement d'onglet,
-  // pas entre deux textes ou deux lemmes.
-  const section = route.name === "text" ? "library" : route.name;
+  // pas entre deux textes, chapitres ou lemmes.
+  const READING = ["text", "ntToc", "ntBook", "ntChapter"];
+  const section = READING.includes(route.name) ? "library" : route.name;
 
   return (
     <SheetContext.Provider value={api}>
@@ -124,6 +127,11 @@ export default function App() {
             {route.name === "alphabet" && <AlphabetView />}
             {route.name === "concordance" && <ConcordanceView lemma={route.lemma} />}
             {route.name === "mentions" && <MentionsView />}
+            {route.name === "ntToc" && <NtToc />}
+            {route.name === "ntBook" && <NtBookView book={route.book} />}
+            {route.name === "ntChapter" && (
+              <ChapterReader book={route.book} chapter={route.chapter} highlight={route.highlight} />
+            )}
             {route.name === "text" &&
               (text ? <Reader text={text} highlight={route.highlight} /> : <NotFound />)}
           </div>

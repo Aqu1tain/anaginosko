@@ -27,8 +27,8 @@ export default function Reader({ text, highlight }: { text: Text; highlight: num
   const [mode, setMode] = usePersistentState<TranslitMode>("anaginosko:translit", "off");
   const [showFr, setShowFr] = usePersistentState<boolean>("anaginosko:french", false);
 
-  const hasErasmien = !!text.translitErasmien;
-  const hasRestituee = !!text.translitRestituee;
+  const hasErasmien = !!text.translitErasmien || !!text.mots?.[0]?.erasmien;
+  const hasRestituee = !!text.translitRestituee || !!text.mots?.[0]?.restituee;
   const french = text.francais;
   const hasFrench = !!french && Object.keys(french).length > 0;
   const verses = hasFrench ? Object.keys(french!).map(Number).sort((a, b) => a - b) : [];

@@ -44,6 +44,16 @@ export default function Library() {
           d’un texte pour découvrir son nom et sa prononciation, érasmienne et
           restituée.
         </p>
+        <a
+          href="#/nt"
+          className="mt-4 flex items-center justify-between gap-3 rounded-box border border-base-300 bg-base-100 px-4 py-3 transition-colors hover:border-primary/40"
+        >
+          <span>
+            <span className="block font-semibold">Nouveau Testament complet</span>
+            <span className="block text-sm text-base-content/70">27 livres · 260 chapitres</span>
+          </span>
+          <span className="text-primary">→</span>
+        </a>
       </section>
 
       {collections.map((c) => (
