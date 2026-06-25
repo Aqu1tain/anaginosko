@@ -4,11 +4,15 @@
 // Digraphes consonantiques + ου, communs aux deux systèmes.
 const DIGRAPH = { th: "θ", kh: "x", ph: "f", ps: "ps", ks: "ks", dz: "dz", ou: "u" };
 
-// Diphtongues érasmiennes fusionnées en UN son « à la française ». Seules αυ/ευ/υι
-// fusionnent : le cours translittère αι/ει/οι en « aï/éï/oï » (deux voyelles, cf.
-// translit.mjs), donc on ne les fusionne PAS — sinon on écrase aussi les hiatus
-// authentiques écrits « ai/oi » (Ἠσαΐας, Καϊάφα…). ου est déjà dans DIGRAPH.
-const ERASMIEN_DIPHTHONG = { eu: "ø", au: "o", ui: "ɥi" };
+// Diphtongues érasmiennes « à la française ». αυ/ευ/υι -> voyelle simple ([o]/[ø]/
+// [ɥi]). αι/ει/οι (notés « aï/éï/oï » avec tréma par le cours, cf. translit.mjs)
+// sont des semi-voyelles glissées : « ail » [aj], « abeille » [ɛj], « boy » [oj].
+// Les hiatus authentiques (noms propres écrits « ai/oi » SANS tréma : Ἠσαΐας,
+// Καϊάφα…) ne matchent pas et restent deux voyelles pleines. ου est dans DIGRAPH.
+const ERASMIEN_DIPHTHONG = {
+  eu: "ø", au: "o", ui: "ɥi",
+  "aï": "aj", "éï": "ɛj", "oï": "oj",
+};
 
 const CHAR = {
   a: "a", á: "a", à: "a", e: "e", é: "e", è: "ɛ", ê: "ɛ", i: "i", í: "i", ï: "i",
@@ -18,7 +22,7 @@ const CHAR = {
 };
 
 // Unités IPA qui comptent comme noyau vocalique (voyelles + diphtongues fusionnées).
-const VOWEL_UNITS = new Set(["a", "e", "ɛ", "i", "o", "ɔ", "u", "y", "ø", "wa", "ɥi"]);
+const VOWEL_UNITS = new Set(["a", "e", "ɛ", "i", "o", "ɔ", "u", "y", "ø", "ɥi", "aj", "ɛj", "oj"]);
 const isVowelUnit = (u) => VOWEL_UNITS.has(u);
 
 export function translitToIpa(translit, system = "erasmien") {
@@ -57,4 +61,4 @@ export function translitToIpa(translit, system = "erasmien") {
 
 // Vrai si la translittération érasmienne contient une diphtongue fusionnée
 // (donc son IPA change avec ce module) -> sert au ciblage de la régénération.
-export const hasErasmienDiphthong = (translit) => /eu|au|ui/i.test(translit);
+export const hasErasmienDiphthong = (translit) => /aï|éï|oï|eu|au|ui/.test(translit.toLowerCase());
