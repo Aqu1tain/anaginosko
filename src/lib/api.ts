@@ -123,8 +123,8 @@ export type PronunciationOverride = {
   audioUrl: string;
 };
 
-export const fetchPronunciations = (ref: string) =>
-  apiFetch<PronunciationOverride[]>(`/pronunciations?ref=${encodeURIComponent(ref)}`);
+// Tous les overrides (s'appliquent par forme = mot grec, donc à toutes les occurrences).
+export const fetchPronunciations = () => apiFetch<PronunciationOverride[]>("/pronunciations");
 
 export type PronunciationInput = {
   ref: string;

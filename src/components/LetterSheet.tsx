@@ -193,20 +193,18 @@ export default function LetterSheet({
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const reload = () => {
-    if (!textRef) return Promise.resolve();
-    return fetchPronunciations(textRef)
+  const reload = () =>
+    fetchPronunciations()
       .then((rows) => {
         setOverrides(rows);
         setBump((b) => b + 1);
       })
       .catch(() => {});
-  };
 
+  // Liste globale (les overrides s'appliquent par forme, à toutes les occurrences).
   useEffect(() => {
-    setOverrides([]);
-    if (textRef) fetchPronunciations(textRef).then(setOverrides).catch(() => {});
-  }, [textRef]);
+    fetchPronunciations().then(setOverrides).catch(() => {});
+  }, []);
 
   // Changer de mot ferme l'éditeur en cours.
   useEffect(() => {
@@ -215,7 +213,7 @@ export default function LetterSheet({
   }, [wordIndex]);
 
   const overrideFor = (system: System) =>
-    overrides.find((o) => o.wordIndex === wordIndex && o.system === system);
+    word ? overrides.find((o) => o.grec === word.grec && o.system === system) : undefined;
 
   const openEditor = (system: System, value: string) => {
     setError(null);
