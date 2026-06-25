@@ -1,0 +1,351 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
+/* Composants hors du dossier app/ : forcer le scan pour ne pas tree-shaker
+   les classes DaisyUI/Tailwind utilisées seulement dans src/. */
+@source "../src";
+@source "../app";
+
+@plugin "daisyui/theme" {
+  name: "anaginosko";
+  default: true;
+  prefersdark: false;
+  color-scheme: light;
+
+  --color-base-100: #ffffff;
+  --color-base-200: #f6f7eb;
+  --color-base-300: #e5e7d6;
+  --color-base-content: #0d3b66;
+
+  --color-primary: #0d3b66;
+  --color-primary-content: #f6f7eb;
+  --color-secondary: #8f95d3;
+  --color-secondary-content: #0d3b66;
+  --color-accent: #d81159;
+  --color-accent-content: #fff7fa;
+  --color-neutral: #0d3b66;
+  --color-neutral-content: #f6f7eb;
+
+  --color-info: #232ed1;
+  --color-info-content: #f6f7eb;
+  --color-success: #23ce6b;
+  --color-success-content: #0d3b66;
+  --color-warning: #e0a82e;
+  --color-warning-content: #0d3b66;
+  --color-error: #d81159;
+  --color-error-content: #fff7fa;
+
+  --radius-selector: 1rem;
+  --radius-field: 0.5rem;
+  --radius-box: 1rem;
+  --border: 1px;
+}
+
+@plugin "daisyui/theme" {
+  name: "anaginosko-dark";
+  default: false;
+  prefersdark: true;
+  color-scheme: dark;
+
+  --color-base-100: #16181d;
+  --color-base-200: #1d2027;
+  --color-base-300: #2a2e38;
+  --color-base-content: #f6f7eb;
+
+  --color-primary: #8f95d3;
+  --color-primary-content: #0d1322;
+  --color-secondary: #8f95d3;
+  --color-secondary-content: #0d1322;
+  --color-accent: #d81159;
+  --color-accent-content: #fff7fa;
+  --color-neutral: #f6f7eb;
+  --color-neutral-content: #16181d;
+
+  --color-info: #8f95d3;
+  --color-info-content: #0d3b66;
+  --color-success: #23ce6b;
+  --color-success-content: #0d3b66;
+  --color-warning: #e0a82e;
+  --color-warning-content: #0d3b66;
+  --color-error: #d81159;
+  --color-error-content: #fff7fa;
+
+  --radius-selector: 1rem;
+  --radius-field: 0.5rem;
+  --radius-box: 1rem;
+  --border: 1px;
+}
+
+@theme {
+  --font-sans: var(--font-inter), "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-greek: var(--font-gentium), "Gentium Plus", "Gentium Book Plus", Georgia, serif;
+  /* Layout « flottant » (rail + contrôles + popup à droite) seulement quand les
+     gouttières sont assez larges pour ne pas chevaucher la colonne de texte. */
+  --breakpoint-wide: 86rem;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Au changement de thème, fondu uniforme des couleurs : fonds, bordures et
+   textes basculent ensemble (sinon les boutons DaisyUI traînent après le fond).
+   Spécificité 0 (:where) pour ne pas écraser les transitions propres des
+   composants. */
+:where(*) {
+  transition-property: background-color, border-color, color, fill;
+  transition-duration: 200ms;
+  transition-timing-function: ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :where(*) {
+    transition-duration: 0s;
+  }
+}
+
+.font-greek {
+  font-family: var(--font-greek);
+}
+
+/* Bascule jour/nuit animée : le soleil se réduit, ses rayons se rétractent et
+   tournent, un croissant se creuse via le masque. */
+.theme-icon {
+  color: currentColor;
+}
+.theme-icon .theme-core {
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-origin: center;
+}
+.theme-icon .theme-cutout {
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.theme-icon .theme-rays {
+  transform-origin: center;
+  transition:
+    transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 0.35s ease;
+}
+/* Vers la nuit : le disque grandit un peu, le cutout glisse sur lui (croissant),
+   les rayons disparaissent en tournant et en se rétractant. */
+.theme-icon.is-dark .theme-core {
+  transform: scale(1.35);
+}
+.theme-icon.is-dark .theme-cutout {
+  transform: translate(-9px, 5px);
+}
+.theme-icon.is-dark .theme-rays {
+  transform: rotate(-50deg) scale(0.5);
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-icon .theme-core,
+  .theme-icon .theme-cutout,
+  .theme-icon .theme-rays {
+    transition: none;
+  }
+}
+
+.glyph {
+  cursor: pointer;
+  border-radius: 4px;
+  padding-inline: 1px;
+  transition: background-color 0.15s ease;
+}
+
+@media (hover: hover) {
+  .glyph:hover {
+    background-color: color-mix(in oklab, var(--color-accent) 12%, transparent);
+  }
+}
+
+.glyph:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 1px;
+}
+
+.glyph.is-active {
+  background-color: color-mix(in oklab, var(--color-accent) 16%, transparent);
+  color: var(--color-accent);
+  position: relative;
+}
+
+/* Zone de clic agrandie INVISIBLE pour la lettre active : facilite le 2e/3e
+   clic sans changer l'apparence du surlignage. Reste assez étroite pour ne pas
+   recouvrir entièrement la lettre voisine. */
+.glyph.is-active::after {
+  content: "";
+  position: absolute;
+  inset: -0.35em -0.28em;
+}
+
+/* Numéro de verset, discret, pour se repérer. */
+.verse-num {
+  font-family: var(--font-sans);
+  font-size: 0.55em;
+  font-weight: 600;
+  vertical-align: super;
+  color: var(--color-base-content);
+  opacity: 0.4;
+  margin-right: 0.2em;
+  user-select: none;
+}
+
+@keyframes sheet-in {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes sheet-in-right {
+  from {
+    transform: translateX(110%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-sheet {
+  animation: sheet-in 0.24s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Sur desktop, la feuille flotte à droite : glissement latéral. */
+@media (min-width: 768px) {
+  .animate-sheet {
+    animation: sheet-in-right 0.26s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+}
+
+/* Transition douce au changement d'onglet. Opacité seule : surtout pas de
+   transform, sinon ce conteneur deviendrait le bloc de référence des enfants
+   position:fixed (les contrôles flottants se mal-positionneraient). */
+@keyframes view-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.animate-view {
+  animation: view-in 0.28s ease both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-sheet,
+  .animate-view {
+    animation: none;
+  }
+}
+
+/* Surlignage temporaire d'un mot suivi depuis la concordance. */
+@keyframes word-flash {
+  0%,
+  55% {
+    background-color: color-mix(in oklab, var(--color-accent) 28%, transparent);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+.word-flash {
+  border-radius: 5px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  animation: word-flash 2.6s ease forwards;
+}
+
+/* Mot annoté : soulignement pointillé discret. */
+.word-annotated {
+  text-decoration: underline dotted color-mix(in oklab, var(--color-accent) 55%, transparent);
+  text-underline-offset: 0.2em;
+}
+
+/* Caractère annoté : soulignement pointillé sur la seule lettre. */
+.glyph-annotated {
+  text-decoration: underline dotted color-mix(in oklab, var(--color-accent) 65%, transparent);
+  text-underline-offset: 0.2em;
+}
+
+/* Sélection en cours (mode annotation) : mot/phrase et caractère. */
+.word-selected {
+  background-color: color-mix(in oklab, var(--color-accent) 20%, transparent);
+  border-radius: 5px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+.glyph-selected {
+  background-color: color-mix(in oklab, var(--color-accent) 32%, transparent);
+  border-radius: 4px;
+}
+
+/* Exposant d'annotation : la pastille est levée visuellement sans gonfler la
+   ligne (line-height nulle + décalage en position), pour ne pas décaler la
+   ligne de base du mot annoté. */
+.anno-mark {
+  vertical-align: baseline;
+  line-height: 0;
+}
+/* Pastille d'annotation : petit jeton cliquable. */
+.anno-dot {
+  position: relative;
+  top: -0.5em;
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.05em;
+  height: 1.05em;
+  padding: 0 0.18em;
+  border-radius: 999px;
+  font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+  font-size: 0.58em;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--color-accent-content, white);
+  background-color: var(--color-accent);
+}
+/* Zone de survol/tap élargie (transparente) autour de la pastille, sans changer
+   sa taille visible ni la mise en page. */
+.anno-dot::after {
+  content: "";
+  position: absolute;
+  inset: -0.7em;
+  border-radius: 999px;
+}
+.anno-dot:hover {
+  filter: brightness(1.05);
+}
+
+/* Mot entier surligné au 2e clic. */
+.word-active {
+  background-color: color-mix(in oklab, var(--color-secondary) 28%, transparent);
+  border-radius: 5px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
