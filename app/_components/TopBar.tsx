@@ -68,7 +68,10 @@ export default function TopBar({ dark, onToggleTheme }: { dark: boolean; onToggl
       <div className="navbar mx-auto min-h-14 w-full max-w-2xl gap-1 px-2">
         <div className="flex min-w-0 flex-1 items-center gap-1">
           {isLibrary ? (
-            <Link href="/" className="btn btn-ghost px-2 text-lg font-bold tracking-tight">
+            <Link
+              href="/"
+              className="btn btn-ghost px-2 text-xl font-bold tracking-tight font-[family-name:var(--font-syne)]"
+            >
               Anaginosko
             </Link>
           ) : (
