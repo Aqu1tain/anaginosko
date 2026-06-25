@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { lengthLabel, textById, type Mot, type Text } from "../data/texts";
 import { loadChapter } from "../data/nt";
@@ -18,6 +18,18 @@ const SCOPES: { id: AnnoScope; label: string }[] = [
   { id: "word", label: "Mot" },
   { id: "phrase", label: "Phrase" },
 ];
+
+// Groupe de contrôle avec un mini label au-dessus.
+function Field({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div className="flex flex-col gap-1 wide:w-full">
+      <span className="px-0.5 text-[0.6rem] font-semibold uppercase tracking-wide text-base-content/45">
+        {label}
+      </span>
+      {children}
+    </div>
+  );
+}
 
 function Seg({
   active,
@@ -53,9 +65,9 @@ export default function Reader({ text }: { text: Text }) {
   const isPassage = text.collection === "passages";
   const [manuscript, setManuscript] = usePersistentState<boolean>("anaginosko:manuscript", false);
   const [mode, setMode] = usePersistentState<TranslitMode>("anaginosko:translit", "off");
-  const [showFr, setShowFr] = usePersistentState<boolean>(
-    isPassage ? "anaginosko:french:passage" : "anaginosko:french",
-    false,
+  const [translation, setTranslation] = usePersistentState<"off" | "verses" | "columns">(
+    isPassage ? "anaginosko:translation:passage" : "anaginosko:translation",
+    "off",
   );
   const [showAnnotations, setShowAnnotations] = usePersistentState<boolean>(
     isPassage ? "anaginosko:annotations:passage" : "anaginosko:annotations",
@@ -245,7 +257,7 @@ export default function Reader({ text }: { text: Text }) {
   const french = text.francais;
   const hasFrench = !!french && Object.keys(french).length > 0;
   const verses = hasFrench ? Object.keys(french!).map(Number).sort((a, b) => a - b) : [];
-  const study = showFr && hasFrench;
+  const transMode = hasFrench ? translation : "off";
 
   const greekProps = {
     spanWords: maps?.spanWords,
@@ -281,94 +293,117 @@ export default function Reader({ text }: { text: Text }) {
         <span>{annotateMode ? "Touchez le texte pour sélectionner" : "Touchez une lettre pour ses indices"}</span>
       </div>
 
-      <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 wide:fixed wide:top-20 wide:right-4 wide:z-30 wide:mt-0 wide:w-72 wide:flex-col wide:items-stretch wide:gap-2 wide:rounded-2xl wide:border wide:border-base-300 wide:bg-base-100/90 wide:p-3 wide:shadow-sm wide:backdrop-blur-md">
-        <div className="join wide:w-full">
-          <Seg active={!manuscript} onClick={() => setManuscript(false)}>
-            Minuscules
-          </Seg>
-          <Seg active={manuscript} onClick={() => setManuscript(true)}>
-            Manuscrit
-          </Seg>
-        </div>
+      <div className="mt-3 flex flex-wrap items-start gap-x-4 gap-y-2.5 wide:fixed wide:top-20 wide:right-4 wide:z-30 wide:mt-0 wide:w-72 wide:flex-col wide:items-stretch wide:gap-2.5 wide:rounded-2xl wide:border wide:border-base-300 wide:bg-base-100/90 wide:p-3 wide:shadow-sm wide:backdrop-blur-md">
+        <Field label="Écriture">
+          <div className="join wide:w-full">
+            <Seg active={!manuscript} onClick={() => setManuscript(false)}>
+              Minuscules
+            </Seg>
+            <Seg active={manuscript} onClick={() => setManuscript(true)}>
+              Manuscrit
+            </Seg>
+          </div>
+        </Field>
 
         {(hasErasmien || hasRestituee) && (
-          <div className="join wide:w-full">
-            <Seg active={mode === "off"} onClick={() => setMode("off")}>
-              Grec
-            </Seg>
-            {hasErasmien && (
-              <Seg active={mode === "erasmien"} onClick={() => setMode("erasmien")}>
-                Érasmien
+          <Field label="Prononciation">
+            <div className="join wide:w-full">
+              <Seg active={mode === "off"} onClick={() => setMode("off")}>
+                Aucune
               </Seg>
-            )}
-            {hasRestituee && (
-              <Seg active={mode === "restituee"} onClick={() => setMode("restituee")}>
-                Restituée
-              </Seg>
-            )}
-          </div>
+              {hasErasmien && (
+                <Seg active={mode === "erasmien"} onClick={() => setMode("erasmien")}>
+                  Érasmien
+                </Seg>
+              )}
+              {hasRestituee && (
+                <Seg active={mode === "restituee"} onClick={() => setMode("restituee")}>
+                  Restituée
+                </Seg>
+              )}
+            </div>
+          </Field>
         )}
 
-        <div className="join wide:w-full" role="group" aria-label="Taille du texte">
-          <button
-            onClick={() => adjustScale(-0.1)}
-            disabled={textScale <= 0.8}
-            aria-label="Réduire la taille du texte"
-            className="btn join-item btn-sm sm:btn-md btn-outline border-base-300 wide:flex-1"
-          >
-            <span className="text-xs font-semibold">A</span>
-          </button>
-          <button
-            onClick={() => setTextScale(1)}
-            aria-label="Taille par défaut"
-            className="btn join-item btn-sm sm:btn-md btn-outline border-base-300 tabular-nums text-xs wide:flex-1"
-          >
-            {Math.round(textScale * 100)}%
-          </button>
-          <button
-            onClick={() => adjustScale(0.1)}
-            disabled={textScale >= 1.6}
-            aria-label="Agrandir la taille du texte"
-            className="btn join-item btn-sm sm:btn-md btn-outline border-base-300 wide:flex-1"
-          >
-            <span className="text-lg font-semibold">A</span>
-          </button>
-        </div>
+        {hasFrench && (
+          <Field label="Traduction">
+            <div className="join wide:w-full" role="group" aria-label="Traduction">
+              {(
+                [
+                  ["off", "Aucune"],
+                  ["verses", "Versets"],
+                  ["columns", "Colonnes"],
+                ] as const
+              ).map(([val, label]) => (
+                <button
+                  key={val}
+                  onClick={() => setTranslation(val)}
+                  aria-pressed={translation === val}
+                  className={`btn join-item btn-sm sm:btn-md wide:flex-1 ${translation === val ? "btn-primary" : "btn-outline border-base-300"}`}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+          </Field>
+        )}
 
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 wide:flex-col wide:items-start">
-          {hasFrench && (
-            <label className="flex cursor-pointer items-center gap-2 text-sm">
-              <input
-                type="checkbox"
-                checked={showFr}
-                onChange={(e) => setShowFr(e.target.checked)}
-                className="toggle toggle-sm toggle-primary"
-              />
-              <span>Traduction</span>
-            </label>
-          )}
-          <label className="flex cursor-pointer items-center gap-2 text-sm">
-            <input
-              type="checkbox"
-              checked={showAnnotations}
-              onChange={(e) => setShowAnnotations(e.target.checked)}
-              className="toggle toggle-sm toggle-primary"
-            />
-            <span>Annotations</span>
-          </label>
-          {canAnnotate && (
+        <Field label="Annotations">
+          <div className="flex items-center gap-2 wide:flex-col wide:items-stretch wide:gap-2">
+            <div className="join wide:w-full">
+              <Seg active={!showAnnotations} onClick={() => setShowAnnotations(false)}>
+                Cacher
+              </Seg>
+              <Seg active={showAnnotations} onClick={() => setShowAnnotations(true)}>
+                Afficher
+              </Seg>
+            </div>
+            {canAnnotate && (
+              <button
+                onClick={() => setAnnotateMode((v) => !v)}
+                aria-pressed={annotateMode}
+                className={`btn btn-sm sm:btn-md wide:w-full ${annotateMode ? "btn-accent" : "btn-outline border-base-300"}`}
+              >
+                {annotateMode ? "Quitter l’annotation" : "Annoter"}
+              </button>
+            )}
+          </div>
+        </Field>
+
+        <Field label="Taille">
+          <div className="join wide:w-full" role="group" aria-label="Taille du texte">
             <button
-              onClick={() => setAnnotateMode((v) => !v)}
-              aria-pressed={annotateMode}
-              className={`btn btn-sm ${annotateMode ? "btn-accent" : "btn-outline border-base-300"}`}
+              onClick={() => adjustScale(-0.1)}
+              disabled={textScale <= 0.8}
+              aria-label="Réduire la taille du texte"
+              className="btn join-item btn-sm sm:btn-md btn-outline border-base-300 wide:flex-1"
             >
-              {annotateMode ? "Quitter l’annotation" : "Annoter"}
+              <span className="text-xs font-semibold">A</span>
             </button>
-          )}
-        </div>
+            <button
+              onClick={() => setTextScale(1)}
+              aria-label="Taille par défaut"
+              className="btn join-item btn-sm sm:btn-md btn-outline border-base-300 tabular-nums text-xs wide:flex-1"
+            >
+              {Math.round(textScale * 100)}%
+            </button>
+            <button
+              onClick={() => adjustScale(0.1)}
+              disabled={textScale >= 1.6}
+              aria-label="Agrandir la taille du texte"
+              className="btn join-item btn-sm sm:btn-md btn-outline border-base-300 wide:flex-1"
+            >
+              <span className="text-lg font-semibold">A</span>
+            </button>
+          </div>
+        </Field>
       </div>
 
-      {study ? (
+      {transMode === "off" ? (
+        <div className="mt-5">
+          <GreekText text={text} size="lg" scale={textScale} translit={mode} manuscript={manuscript} highlightWord={highlight} {...greekProps} />
+        </div>
+      ) : transMode === "verses" ? (
         <div className="mt-5">
           {verses.map((v) => (
             <div key={v} className="border-b border-base-300/70 py-4 first:pt-0 last:border-0">
@@ -393,8 +428,31 @@ export default function Reader({ text }: { text: Text }) {
           </p>
         </div>
       ) : (
-        <div className="mt-5">
-          <GreekText text={text} size="lg" scale={textScale} translit={mode} manuscript={manuscript} highlightWord={highlight} {...greekProps} />
+        // Côte à côte : grec | français, alignés par verset.
+        <div className="mt-5 grid grid-cols-[1.15fr_1fr] gap-x-3 sm:gap-x-6">
+          {verses.map((v) => (
+            <Fragment key={v}>
+              <div className="border-b border-base-300/70 py-3">
+                <GreekText
+                  text={text}
+                  size="lg"
+                  scale={textScale}
+                  translit={mode}
+                  manuscript={manuscript}
+                  verseOnly={v}
+                  highlightWord={highlight}
+                  {...greekProps}
+                />
+              </div>
+              <div className="border-b border-base-300/70 py-3 leading-relaxed text-base-content/85">
+                <span className="verse-num">{v}</span>
+                {french![v]}
+              </div>
+            </Fragment>
+          ))}
+          <p className="col-span-2 mt-3 text-xs text-base-content/50">
+            Traduction : Bible Crampon (néo-Crampon, domaine public).
+          </p>
         </div>
       )}
 
