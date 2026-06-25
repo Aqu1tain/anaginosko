@@ -43,8 +43,8 @@ export function linkedRef(ref: string): string | null {
 export function refHref(ref: string, wordIndex: number | null): string {
   const w = wordIndex != null ? `?w=${wordIndex}` : "";
   const nt = parseNtRef(ref);
-  if (nt) return `#/nt/${nt.book}/${nt.chapter}${w}`;
-  return `#/text/${ref}${w}`;
+  if (nt) return `/nt/${nt.book}/${nt.chapter}${w}`;
+  return `/text/${ref}${w}`;
 }
 
 // Position d'un mot dans son verset (nombre de mots du même verset avant lui).
