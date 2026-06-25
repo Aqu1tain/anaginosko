@@ -33,7 +33,7 @@ const HIT_PAD = 14; // px : élargit la zone « sur le déclencheur » (cf. ::af
 
 // guard = true : garde « safe triangle » au survol (desktop). guard = false :
 // ouverture/fermeture uniquement explicites (tactile / bottom-sheet), sans
-// écoute du pointeur — sinon un scroll fermerait le popup.
+// écoute du pointeur, sinon un scroll fermerait le popup.
 export function useSafeHover({ guard = true }: { guard?: boolean } = {}) {
   const [open, setOpen] = useState(false);
   const triggerRef = useRef<HTMLElement | null>(null);

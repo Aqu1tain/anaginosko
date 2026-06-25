@@ -195,7 +195,7 @@ export default function LetterSheet({
                 {anyGloss(word.lemme) && (
                   <p className="mt-1 text-sm leading-snug text-base-content/70">
                     {anyGloss(word.lemme)!.excerpt}
-                    <span className="text-base-content/45"> — Bailly</span>
+                    <span className="text-base-content/45"> · Bailly</span>
                   </p>
                 )}
                 <a

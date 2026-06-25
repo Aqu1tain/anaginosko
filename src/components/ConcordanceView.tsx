@@ -141,7 +141,7 @@ function List({ index }: { index: LemmaEntry[] }) {
     <div className="pb-4">
       <p className="max-w-prose pt-6 text-[0.95rem] leading-relaxed text-base-content/75">
         Concordance des {index.length} lemmes du Nouveau Testament. Cherchez en grec
-        (<span className="font-greek">λόγος</span>) ou en translittération latine — restituée
+        (<span className="font-greek">λόγος</span>) ou en translittération latine, restituée
         comme érasmienne (ex.&nbsp;<span className="font-greek">ἀρχή</span> : <em>arkhi</em> ou{" "}
         <em>arkê</em>).
       </p>

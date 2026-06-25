@@ -23,7 +23,7 @@ export async function generateMetadata({
   const name = BOOK_NAMES[book] ?? "Livre";
   return {
     title: `${name} ${chapter}`,
-    description: `${name} chapitre ${chapter} en grec koinè (SBLGNT) — translittération érasmienne et restituée, traduction française.`,
+    description: `${name} chapitre ${chapter} en grec koinè (SBLGNT), translittération érasmienne et restituée, traduction française.`,
     alternates: { canonical: `/nt/${book}/${chapter}` },
     openGraph: { type: "article", locale: "fr_FR", title: `${name} ${chapter}` },
   };

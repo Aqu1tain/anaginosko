@@ -85,7 +85,7 @@ export type PlacedAnnotation = {
 /**
  * Remappe une annotation du texte source vers les coordonnées du texte cible
  * (tokenisation identique par verset). Renvoie null si le mot n'existe pas dans
- * la cible (ex. verset hors de la plage du passage) — l'annotation reste alors
+ * la cible (ex. verset hors de la plage du passage) ; l'annotation reste alors
  * visible uniquement dans son texte d'origine.
  */
 export function remapAnnotation(a: Annotation, source: Mot[], target: Mot[]): PlacedAnnotation | null {

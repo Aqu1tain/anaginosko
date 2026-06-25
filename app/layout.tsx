@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     template: "%s · Anaginosko",
   },
   description:
-    "Anaginosko · lire le grec koinè du Nouveau Testament, lettre par lettre — prononciation érasmienne et restituée, alphabet interactif.",
+    "Anaginosko · lire le grec koinè du Nouveau Testament, lettre par lettre, prononciation érasmienne et restituée, alphabet interactif.",
   manifest: "/manifest.webmanifest",
   icons: { icon: "/favicon.svg", apple: "/apple-touch-icon.png" },
   appleWebApp: { capable: true, title: "Anaginosko", statusBarStyle: "default" },

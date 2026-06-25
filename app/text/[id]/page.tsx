@@ -19,7 +19,7 @@ export async function generateMetadata({
   if (!t) return { title: "Texte" };
   return {
     title: t.reference,
-    description: `${t.reference} — grec koinè, translittération et traduction.`,
+    description: `${t.reference} : grec koinè, translittération et traduction.`,
     alternates: { canonical: `/text/${id}` },
     openGraph: { type: "article", locale: "fr_FR", title: t.reference },
   };
