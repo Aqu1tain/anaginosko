@@ -56,8 +56,10 @@ let ok = 0, fail = 0, skip = 0, n = 0;
 for (const [key, job] of jobs) {
   n++;
   const mp3 = resolve(outDir, `${key}.mp3`);
-  const regen = REGEN_DIPH && job.system === "erasmien" && hasErasmienDiphthong(job.translit);
-  if (existsSync(mp3) && !regen) { skip++; continue; }
+  const affected = job.system === "erasmien" && hasErasmienDiphthong(job.translit);
+  // Régén ciblée : on ne (re)génère QUE les diphtongues érasmiennes. Mode
+  // normal : on saute ce qui existe déjà.
+  if (REGEN_DIPH ? !affected : existsSync(mp3)) { skip++; continue; }
   try {
     const res = await fetch(endpoint, {
       method: "POST",
