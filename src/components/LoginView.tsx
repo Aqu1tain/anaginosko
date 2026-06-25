@@ -30,10 +30,10 @@ export default function LoginView() {
             <RoleBadge role={user.role} />
           </div>
           <div className="mt-6 grid gap-2">
-            <a href="#/admin" className="btn btn-primary">
+            <a href="/admin" className="btn btn-primary">
               {user.role === "admin" ? "Tableau de bord" : "Mes annotations"}
             </a>
-            <a href="#/" className="btn btn-outline border-base-300">
+            <a href="/" className="btn btn-outline border-base-300">
               Aller à la lecture
             </a>
             <button onClick={() => logout()} className="btn btn-ghost btn-sm text-base-content/60">

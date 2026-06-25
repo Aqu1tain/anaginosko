@@ -214,7 +214,7 @@ function Occurrences({ entry }: { entry: LemmaEntry }) {
 function Detail({ entry }: { entry: LemmaEntry }) {
   return (
     <div className="pb-4 pt-5">
-      <a href="#/concordance" className="link link-primary text-sm">
+      <a href="/concordance" className="link link-primary text-sm">
         ← Toute la concordance
       </a>
       <div className="mt-3 flex flex-wrap items-baseline gap-x-3 gap-y-1">
@@ -244,7 +244,7 @@ export default function ConcordanceView({ lemma }: { lemma: string | null }) {
       <div className="py-20 text-center text-base-content/70">
         <p className="font-greek text-xl">{lemma}</p>
         <p className="mt-2">Lemme introuvable.</p>
-        <a href="#/concordance" className="link link-primary mt-3 inline-block">
+        <a href="/concordance" className="link link-primary mt-3 inline-block">
           Toute la concordance
         </a>
       </div>

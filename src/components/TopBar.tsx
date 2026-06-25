@@ -93,7 +93,7 @@ export default function TopBar({
       <div className="navbar mx-auto min-h-14 w-full max-w-2xl gap-1 px-2">
         <div className="flex min-w-0 flex-1 items-center gap-1">
           {isLibrary ? (
-            <a href="#/" className="btn btn-ghost px-2 text-lg font-bold tracking-tight">
+            <a href="/" className="btn btn-ghost px-2 text-lg font-bold tracking-tight">
               Anaginosko
             </a>
           ) : (
@@ -109,7 +109,7 @@ export default function TopBar({
         </div>
 
         <div className="flex items-center gap-1">
-          <a href="#/login" aria-label="Espace contributeurs" className="btn btn-ghost btn-circle">
+          <a href="/login" aria-label="Espace contributeurs" className="btn btn-ghost btn-circle">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
               <circle cx="12" cy="8" r="4" />
               <path d="M12 13.5c-4 0-7.2 2.4-7.5 5.6A1 1 0 005.5 20.5h13a1 1 0 001-1.4c-.3-3.2-3.5-5.6-7.5-5.6z" />

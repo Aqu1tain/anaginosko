@@ -95,7 +95,7 @@ export default function AdminView() {
     return (
       <div className="py-20 text-center text-base-content/70">
         <p>Accès réservé aux contributeurs.</p>
-        <a href="#/login" className="link link-primary mt-3 inline-block">
+        <a href="/login" className="link link-primary mt-3 inline-block">
           Se connecter
         </a>
       </div>

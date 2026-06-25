@@ -45,7 +45,7 @@ export default function Library() {
           restituée.
         </p>
         <a
-          href="#/nt"
+          href="/nt"
           className="mt-4 flex items-center justify-between gap-3 rounded-box border border-base-300 bg-base-100 px-4 py-3 transition-colors hover:border-primary/40"
         >
           <span>
@@ -71,7 +71,7 @@ export default function Library() {
       <footer className="pt-10 text-center text-xs text-base-content/70">
         Texte grec : SBLGNT · traduction : Crampon · définitions : Bailly.
         <br />
-        <a href="#/mentions" className="link mt-1 inline-block">
+        <a href="/mentions" className="link mt-1 inline-block">
           Mentions légales
         </a>
       </footer>

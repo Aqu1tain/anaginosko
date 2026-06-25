@@ -70,7 +70,7 @@ export function NtBookView({ book }: { book: string }) {
     return (
       <div className="py-20 text-center text-base-content/70">
         <p>Livre introuvable.</p>
-        <a href="#/nt" className="link link-primary mt-3 inline-block">
+        <a href="/nt" className="link link-primary mt-3 inline-block">
           Nouveau Testament
         </a>
       </div>
@@ -79,7 +79,7 @@ export function NtBookView({ book }: { book: string }) {
 
   return (
     <div className="pb-4 pt-6">
-      <a href="#/nt" className="link link-primary text-sm">
+      <a href="/nt" className="link link-primary text-sm">
         ← Nouveau Testament
       </a>
       <h1 className="mt-2 text-2xl font-bold">{b.name}</h1>
