@@ -100,7 +100,11 @@ export default function MentionsView() {
       </dl>
 
       <p className="mt-5 max-w-prose text-xs leading-relaxed text-base-content/55">
-        © 2026 <strong>Corentin RENARD</strong>, tous droits réservés (code et interface). Les
+        © 2026{" "}
+        <a className="link" href="https://corentinrenard.com" target="_blank" rel="noreferrer">
+          <strong>Corentin RENARD</strong>
+        </a>
+        , tous droits réservés (code et interface). Les
         annotations et notes philologiques sont la propriété intellectuelle de{" "}
         <strong>Biblion (Noah Jaubert)</strong>. Les marques et œuvres tierces citées restent la
         propriété de leurs auteurs respectifs.
