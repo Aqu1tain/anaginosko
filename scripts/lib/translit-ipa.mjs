@@ -4,10 +4,11 @@
 // Digraphes consonantiques + ου, communs aux deux systèmes.
 const DIGRAPH = { th: "θ", kh: "x", ph: "f", ps: "ps", ks: "ks", dz: "dz", ou: "u" };
 
-// Diphtongues érasmiennes : un SEUL son « à la française » (≠ restituée, qui les
-// rend en av/ev/e/i… déjà encodés dans sa translittération). La diérèse (ï/ü)
-// casse le digraphe et garde les voyelles séparées (ex. « aï » -> a + i).
-const ERASMIEN_DIPHTHONG = { eu: "ø", au: "o", ai: "ɛ", ei: "e", oi: "wa", ui: "ɥi" };
+// Diphtongues érasmiennes fusionnées en UN son « à la française ». Seules αυ/ευ/υι
+// fusionnent : le cours translittère αι/ει/οι en « aï/éï/oï » (deux voyelles, cf.
+// translit.mjs), donc on ne les fusionne PAS — sinon on écrase aussi les hiatus
+// authentiques écrits « ai/oi » (Ἠσαΐας, Καϊάφα…). ου est déjà dans DIGRAPH.
+const ERASMIEN_DIPHTHONG = { eu: "ø", au: "o", ui: "ɥi" };
 
 const CHAR = {
   a: "a", á: "a", à: "a", e: "e", é: "e", è: "ɛ", ê: "ɛ", i: "i", í: "i", ï: "i",
@@ -51,4 +52,4 @@ export function translitToIpa(translit, system = "erasmien") {
 
 // Vrai si la translittération érasmienne contient une diphtongue fusionnée
 // (donc son IPA change avec ce module) -> sert au ciblage de la régénération.
-export const hasErasmienDiphthong = (translit) => /eu|au|ai|ei|oi|ui/i.test(translit);
+export const hasErasmienDiphthong = (translit) => /eu|au|ui/i.test(translit);
