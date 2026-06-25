@@ -18,15 +18,18 @@ function inTriangle(p: Pt, a: Pt, b: Pt, c: Pt): boolean {
   return !(neg && pos);
 }
 
-const over = (el: HTMLElement | null, p: Pt) => {
+// pad : marge ajoutée autour de la boîte, pour coller à la zone de survol élargie
+// du déclencheur (la pastille a un ::after transparent plus grand qu'elle).
+const over = (el: HTMLElement | null, p: Pt, pad = 0) => {
   if (!el) return false;
   const r = el.getBoundingClientRect();
-  return p.x >= r.left && p.x <= r.right && p.y >= r.top && p.y <= r.bottom;
+  return p.x >= r.left - pad && p.x <= r.right + pad && p.y >= r.top - pad && p.y <= r.bottom + pad;
 };
 
 // Seul répit : si le curseur s'immobilise DANS le cône (en route vers le popup),
 // on attend ce court délai avant de fermer. Hors du cône = fermeture immédiate.
 const GRACE = 120; // ms
+const HIT_PAD = 14; // px : élargit la zone « sur le déclencheur » (cf. ::after)
 
 // guard = true : garde « safe triangle » au survol (desktop). guard = false :
 // ouverture/fermeture uniquement explicites (tactile / bottom-sheet), sans
@@ -62,7 +65,7 @@ export function useSafeHover({ guard = true }: { guard?: boolean } = {}) {
     if (!open || !guard) return;
     const onMove = (e: PointerEvent) => {
       const p = { x: e.clientX, y: e.clientY };
-      if (over(triggerRef.current, p) || over(popRef.current, p)) {
+      if (over(triggerRef.current, p, HIT_PAD) || over(popRef.current, p)) {
         clearTimer();
         return;
       }
