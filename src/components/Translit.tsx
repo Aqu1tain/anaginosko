@@ -1,3 +1,5 @@
+"use client";
+
 import { translitPieces } from "../lib/greek";
 
 export default function Translit({
