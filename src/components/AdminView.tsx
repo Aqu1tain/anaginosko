@@ -185,7 +185,7 @@ export default function AdminView() {
                         <path d="M10 14L20 4M20 4h-6M20 4v6" />
                         <path d="M19 14v4a2 2 0 01-2 2H6a2 2 0 01-2-2V7a2 2 0 012-2h4" />
                       </svg>
-                      <span className="truncate">{a.source}</span>
+                      <span className="min-w-0 truncate">{a.source}</span>
                     </a>
                   ) : (
                     <div className="mt-1 text-xs italic text-base-content/55 [overflow-wrap:anywhere]">{a.source}</div>
