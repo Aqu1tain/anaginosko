@@ -5,10 +5,13 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, resolve } from "node:path";
+import { translitToIpa, hasErasmienDiphthong } from "./lib/translit-ipa.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const ntDir = resolve(root, "public/nt");
 const outDir = resolve(root, "public/audio");
+// Réécrit les fichiers érasmiens contenant une diphtongue (leur IPA a changé).
+const REGEN_DIPH = process.argv.includes("--regen-diphthongs");
 
 const VOICE = { erasmien: "fr-FR-HenriNeural", restituee: "el-GR-NestorasNeural" };
 const LANG = { erasmien: "fr-FR", restituee: "el-GR" };
@@ -21,43 +24,6 @@ function audioKey(s) {
     h = Math.imul(h, 16777619) >>> 0;
   }
   return (h >>> 0).toString(16).padStart(8, "0");
-}
-
-const DIGRAPH = { th: "θ", kh: "x", ph: "f", ps: "ps", ks: "ks", dz: "dz", ou: "u" };
-const CHAR = {
-  a: "a", á: "a", à: "a", e: "e", é: "e", è: "ɛ", ê: "ɛ", i: "i", í: "i", ï: "i",
-  o: "o", ó: "o", ô: "ɔ", u: "y", ü: "y", y: "i", b: "b", c: "k", d: "d", f: "f",
-  g: "ɡ", h: "", j: "ʒ", k: "k", l: "l", m: "m", n: "n", p: "p", q: "k", r: "r",
-  s: "s", t: "t", v: "v", w: "v", x: "ks", z: "z",
-};
-const VOWELS = "aeɛioɔuy";
-const isVowel = (u) => u.length === 1 && VOWELS.includes(u);
-
-function translitToIpa(translit) {
-  let stressIdx = -1;
-  for (let i = 0; i < translit.length; i++) {
-    const c = translit[i];
-    if (c !== c.toLowerCase() && c === c.toUpperCase() && /\p{L}/u.test(c)) { stressIdx = i; break; }
-  }
-  const s = translit.toLowerCase();
-  const out = [];
-  let stressed = false, i = 0;
-  while (i < s.length) {
-    const two = s.slice(i, i + 2);
-    let unit, len;
-    if (DIGRAPH[two] !== undefined) { unit = DIGRAPH[two]; len = 2; }
-    else { unit = CHAR[s[i]] ?? ""; len = 1; }
-    const coversStress = stressIdx >= i && stressIdx < i + len;
-    if (!stressed && coversStress && isVowel(unit)) {
-      let pos = out.length;
-      while (pos > 0 && out[pos - 1] !== "ˈ" && !isVowel(out[pos - 1])) pos--;
-      out.splice(pos, 0, "ˈ");
-      stressed = true;
-    }
-    if (unit) out.push(unit);
-    i += len;
-  }
-  return out.join("");
 }
 
 const xmlEscape = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -90,7 +56,8 @@ let ok = 0, fail = 0, skip = 0, n = 0;
 for (const [key, job] of jobs) {
   n++;
   const mp3 = resolve(outDir, `${key}.mp3`);
-  if (existsSync(mp3)) { skip++; continue; }
+  const regen = REGEN_DIPH && job.system === "erasmien" && hasErasmienDiphthong(job.translit);
+  if (existsSync(mp3) && !regen) { skip++; continue; }
   try {
     const res = await fetch(endpoint, {
       method: "POST",
@@ -100,7 +67,7 @@ for (const [key, job] of jobs) {
         "X-Microsoft-OutputFormat": "audio-24khz-48kbitrate-mono-mp3",
         "User-Agent": "anaginosko",
       },
-      body: ssml(job.system, translitToIpa(job.translit)),
+      body: ssml(job.system, translitToIpa(job.translit, job.system)),
     });
     if (res.status === 429) { await sleep(2000); n--; continue; } // throttle: réessaie
     if (!res.ok) throw new Error(`HTTP ${res.status}`);

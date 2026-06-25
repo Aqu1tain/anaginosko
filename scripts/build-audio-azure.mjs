@@ -8,9 +8,12 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, resolve } from "node:path";
+import { translitToIpa, hasErasmienDiphthong } from "./lib/translit-ipa.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const DRY = process.argv.includes("--dry");
+// Réécrit les fichiers érasmiens contenant une diphtongue (leur IPA a changé).
+const REGEN_DIPH = process.argv.includes("--regen-diphthongs");
 
 const VOICE = {
   erasmien: "fr-FR-HenriNeural",
@@ -28,57 +31,6 @@ function audioKey(s) {
   return (h >>> 0).toString(16).padStart(8, "0");
 }
 
-const DIGRAPH = { th: "θ", kh: "x", ph: "f", ps: "ps", ks: "ks", dz: "dz", ou: "u" };
-const CHAR = {
-  a: "a", á: "a", à: "a",
-  e: "e", é: "e", è: "ɛ", ê: "ɛ",
-  i: "i", í: "i", ï: "i",
-  o: "o", ó: "o", ô: "ɔ",
-  u: "y", ü: "y", y: "i",
-  b: "b", c: "k", d: "d", f: "f", g: "ɡ", h: "", j: "ʒ", k: "k", l: "l",
-  m: "m", n: "n", p: "p", q: "k", r: "r", s: "s", t: "t", v: "v", w: "v",
-  x: "ks", z: "z",
-};
-const VOWELS = "aeɛioɔuy";
-const isVowel = (u) => u.length === 1 && VOWELS.includes(u);
-
-// Translittération (voyelle accentuée en MAJUSCULE) -> IPA.
-export function translitToIpa(translit) {
-  let stressIdx = -1;
-  for (let i = 0; i < translit.length; i++) {
-    const c = translit[i];
-    if (c !== c.toLowerCase() && c === c.toUpperCase() && /\p{L}/u.test(c)) {
-      stressIdx = i;
-      break;
-    }
-  }
-  const s = translit.toLowerCase();
-  const out = [];
-  let stressed = false;
-  let i = 0;
-  while (i < s.length) {
-    const two = s.slice(i, i + 2);
-    let unit, len;
-    if (DIGRAPH[two] !== undefined) {
-      unit = DIGRAPH[two];
-      len = 2;
-    } else {
-      unit = CHAR[s[i]] ?? "";
-      len = 1;
-    }
-    const coversStress = stressIdx >= i && stressIdx < i + len;
-    if (!stressed && coversStress && isVowel(unit)) {
-      let pos = out.length;
-      while (pos > 0 && out[pos - 1] !== "ˈ" && !isVowel(out[pos - 1])) pos--;
-      out.splice(pos, 0, "ˈ");
-      stressed = true;
-    }
-    if (unit) out.push(unit);
-    i += len;
-  }
-  return out.join("");
-}
-
 const xmlEscape = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
 function ssml(system, ipa) {
@@ -93,15 +45,15 @@ for (const t of data.texts) {
     for (const [system, tr] of [["erasmien", m.erasmien], ["restituee", m.restituee]]) {
       if (!tr) continue;
       const key = audioKey(tr);
-      if (!jobs.has(key)) jobs.set(key, { translit: tr, system, ipa: translitToIpa(tr) });
+      if (!jobs.has(key)) jobs.set(key, { translit: tr, system, ipa: translitToIpa(tr, system) });
     }
   }
 }
 
 if (DRY) {
-  const samples = ["lOgos", "théOn", "egÔ", "khristOu", "arkhÊ", "pneUma", "vasilIa", "AnthrÔpôn"];
-  console.log("=== échantillons translittération -> IPA ===");
-  for (const w of samples) console.log(w.padEnd(12), "->", translitToIpa(w));
+  const samples = ["euangElio", "pneUma", "aiÔnios", "oikÍa", "autOs", "eithÊ", "lOgos", "khristOu"];
+  console.log("=== échantillons translittération érasmienne -> IPA ===");
+  for (const w of samples) console.log(w.padEnd(12), "->", translitToIpa(w, "erasmien"));
   console.log(`\n${jobs.size} fichiers à générer (érasmien + restituée distincts).`);
   console.log("Lance avec AZURE_SPEECH_KEY et AZURE_SPEECH_REGION pour générer.");
   process.exit(0);
@@ -125,7 +77,8 @@ let n = 0;
 for (const [key, job] of jobs) {
   n++;
   const mp3 = resolve(outDir, `${key}.mp3`);
-  if (existsSync(mp3)) continue;
+  const regen = REGEN_DIPH && job.system === "erasmien" && hasErasmienDiphthong(job.translit);
+  if (existsSync(mp3) && !regen) continue;
   try {
     const res = await fetch(endpoint, {
       method: "POST",
