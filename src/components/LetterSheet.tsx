@@ -49,7 +49,6 @@ function SpeakRow({
     <span className="min-w-0">
       <span className="text-sm text-base-content/55">{label}&nbsp;</span>
       <Translit value={value} stressedClass="text-accent" />
-      {override && <span className="badge badge-accent badge-xs ml-1.5 align-middle">modifié</span>}
     </span>
   );
 
@@ -85,23 +84,25 @@ function SpeakRow({
 // Éditeur d'override (admin/philologue) : écriture phonétique IPA -> régénère Azure.
 function PronunciationEditor({
   system,
-  initialIpa,
+  translit,
+  ipa,
   hasOverride,
   busy,
   error,
-  onChange,
-  ipa,
+  onTranslitChange,
+  onIpaChange,
   onSave,
   onDelete,
   onCancel,
 }: {
   system: System;
-  initialIpa: string;
+  translit: string;
+  ipa: string;
   hasOverride: boolean;
   busy: boolean;
   error: string | null;
-  ipa: string;
-  onChange: (v: string) => void;
+  onTranslitChange: (v: string) => void;
+  onIpaChange: (v: string) => void;
   onSave: () => void;
   onDelete: () => void;
   onCancel: () => void;
@@ -109,19 +110,33 @@ function PronunciationEditor({
   return (
     <div className="mt-2 rounded-box border border-base-300 bg-base-200/60 p-3">
       <div className="text-[0.7rem] font-medium uppercase tracking-wide text-base-content/55">
-        Prononciation {system === "erasmien" ? "érasmienne" : "restituée"} · IPA
+        Prononciation {system === "erasmien" ? "érasmienne" : "restituée"}
       </div>
+      <label className="mt-2 block text-xs text-base-content/55">
+        Transcription (latin, MAJUSCULE = syllabe accentuée)
+      </label>
+      <input
+        value={translit}
+        onChange={(e) => onTranslitChange(e.target.value)}
+        spellCheck={false}
+        className="input input-sm mt-1 w-full"
+        aria-label="Transcription en caractères latins"
+      />
+      <label className="mt-2 block text-xs text-base-content/55">Phonème (IPA)</label>
       <input
         value={ipa}
-        onChange={(e) => onChange(e.target.value)}
-        placeholder={initialIpa}
+        onChange={(e) => onIpaChange(e.target.value)}
         spellCheck={false}
-        className="input input-sm mt-1.5 w-full font-mono"
+        className="input input-sm mt-1 w-full font-mono"
         aria-label="Écriture phonétique (IPA)"
       />
       {error && <p className="mt-1 text-xs text-error">{error}</p>}
       <div className="mt-2 flex items-center gap-2">
-        <button onClick={onSave} disabled={busy || !ipa.trim()} className="btn btn-primary btn-sm flex-1">
+        <button
+          onClick={onSave}
+          disabled={busy || !ipa.trim() || !translit.trim()}
+          className="btn btn-primary btn-sm flex-1"
+        >
           {busy ? "Génération…" : "Régénérer"}
         </button>
         {hasOverride && (
@@ -172,7 +187,9 @@ export default function LetterSheet({
   // Overrides de prononciation pour ce texte (chargés une fois par ref).
   const [overrides, setOverrides] = useState<PronunciationOverride[]>([]);
   const [bump, setBump] = useState(0);
-  const [editing, setEditing] = useState<{ system: System; ipa: string } | null>(null);
+  const [editing, setEditing] = useState<{ system: System; translit: string; ipa: string } | null>(
+    null,
+  );
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -202,7 +219,9 @@ export default function LetterSheet({
 
   const openEditor = (system: System, value: string) => {
     setError(null);
-    setEditing({ system, ipa: overrideFor(system)?.ipa ?? translitToIpa(value, system) });
+    const ov = overrideFor(system);
+    const translit = ov?.translit ?? value;
+    setEditing({ system, translit, ipa: ov?.ipa ?? translitToIpa(translit, system) });
   };
 
   const saveEditor = async () => {
@@ -216,6 +235,7 @@ export default function LetterSheet({
         system: editing.system,
         grec: word.grec,
         ipa: editing.ipa.trim(),
+        translit: editing.translit.trim(),
       });
       await reload();
       setEditing(null);
@@ -339,7 +359,7 @@ export default function LetterSheet({
             <div className="mt-2 text-base">
               <SpeakRow
                 label="Érasmien"
-                value={word.erasmien}
+                value={overrideFor("erasmien")?.translit ?? word.erasmien}
                 override={overrideFor("erasmien")}
                 canEdit={canEdit && !!textRef}
                 onEdit={() => openEditor("erasmien", word.erasmien)}
@@ -348,12 +368,15 @@ export default function LetterSheet({
               {editing?.system === "erasmien" && (
                 <PronunciationEditor
                   system="erasmien"
-                  initialIpa={translitToIpa(word.erasmien, "erasmien")}
+                  translit={editing.translit}
                   ipa={editing.ipa}
                   hasOverride={!!overrideFor("erasmien")}
                   busy={busy}
                   error={error}
-                  onChange={(v) => setEditing((s) => (s ? { ...s, ipa: v } : s))}
+                  onTranslitChange={(v) =>
+                    setEditing((s) => (s ? { ...s, translit: v, ipa: translitToIpa(v, "erasmien") } : s))
+                  }
+                  onIpaChange={(v) => setEditing((s) => (s ? { ...s, ipa: v } : s))}
                   onSave={saveEditor}
                   onDelete={deleteEditor}
                   onCancel={() => setEditing(null)}
@@ -363,7 +386,7 @@ export default function LetterSheet({
                 <>
                   <SpeakRow
                     label="Restituée"
-                    value={word.restituee}
+                    value={overrideFor("restituee")?.translit ?? word.restituee}
                     override={overrideFor("restituee")}
                     canEdit={canEdit && !!textRef}
                     onEdit={() => openEditor("restituee", word.restituee!)}
@@ -372,12 +395,15 @@ export default function LetterSheet({
                   {editing?.system === "restituee" && (
                     <PronunciationEditor
                       system="restituee"
-                      initialIpa={translitToIpa(word.restituee, "restituee")}
+                      translit={editing.translit}
                       ipa={editing.ipa}
                       hasOverride={!!overrideFor("restituee")}
                       busy={busy}
                       error={error}
-                      onChange={(v) => setEditing((s) => (s ? { ...s, ipa: v } : s))}
+                      onTranslitChange={(v) =>
+                        setEditing((s) => (s ? { ...s, translit: v, ipa: translitToIpa(v, "restituee") } : s))
+                      }
+                      onIpaChange={(v) => setEditing((s) => (s ? { ...s, ipa: v } : s))}
                       onSave={saveEditor}
                       onDelete={deleteEditor}
                       onCancel={() => setEditing(null)}

@@ -119,6 +119,7 @@ export type PronunciationOverride = {
   system: System;
   grec: string;
   ipa: string;
+  translit: string | null;
   audioUrl: string;
 };
 
@@ -131,6 +132,7 @@ export type PronunciationInput = {
   system: System;
   grec: string;
   ipa: string;
+  translit: string;
 };
 
 export const createPronunciation = (input: PronunciationInput) =>

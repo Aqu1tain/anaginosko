@@ -44,7 +44,7 @@ function Seg({
     <button
       onClick={onClick}
       aria-pressed={active}
-      className={`btn join-item btn-sm sm:btn-md wide:flex-1 ${active ? "btn-primary" : "btn-outline border-base-300"}`}
+      className={`btn join-item btn-sm sm:btn-md wide:flex-1 whitespace-nowrap px-2 ${active ? "btn-primary" : "btn-outline border-base-300"}`}
     >
       {children}
     </button>
@@ -293,7 +293,7 @@ export default function Reader({ text }: { text: Text }) {
         <span>{annotateMode ? "Touchez le texte pour sélectionner" : "Touchez une lettre pour ses indices"}</span>
       </div>
 
-      <div className="mt-3 flex flex-wrap items-start gap-x-4 gap-y-2.5 wide:fixed wide:top-20 wide:right-4 wide:z-30 wide:mt-0 wide:w-72 wide:flex-col wide:items-stretch wide:gap-2.5 wide:rounded-2xl wide:border wide:border-base-300 wide:bg-base-100/90 wide:p-3 wide:shadow-sm wide:backdrop-blur-md">
+      <div className="mt-3 flex flex-wrap items-start gap-x-4 gap-y-2.5 wide:fixed wide:top-20 wide:right-4 wide:z-30 wide:mt-0 wide:w-80 wide:flex-col wide:items-stretch wide:gap-2.5 wide:rounded-2xl wide:border wide:border-base-300 wide:bg-base-100/90 wide:p-3 wide:shadow-sm wide:backdrop-blur-md">
         <Field label="Écriture">
           <div className="join wide:w-full">
             <Seg active={!manuscript} onClick={() => setManuscript(false)}>
@@ -339,7 +339,7 @@ export default function Reader({ text }: { text: Text }) {
                   key={val}
                   onClick={() => setTranslation(val)}
                   aria-pressed={translation === val}
-                  className={`btn join-item btn-sm sm:btn-md wide:flex-1 ${translation === val ? "btn-primary" : "btn-outline border-base-300"}`}
+                  className={`btn join-item btn-sm sm:btn-md wide:flex-1 whitespace-nowrap px-2 ${translation === val ? "btn-primary" : "btn-outline border-base-300"}`}
                 >
                   {label}
                 </button>
