@@ -36,7 +36,12 @@ export function translitToIpa(translit, system = "erasmien") {
     let unit, len;
     if (diph && diph[two] !== undefined) { unit = diph[two]; len = 2; }
     else if (DIGRAPH[two] !== undefined) { unit = DIGRAPH[two]; len = 2; }
-    else { unit = CHAR[s[i]] ?? ""; len = 1; }
+    else {
+      unit = CHAR[s[i]] ?? "";
+      len = 1;
+      // Koine restituée : γ = [ɣ] (fricative vélaire), sauf après nasale (γγ/νγ -> [ɡ]).
+      if (system === "restituee" && s[i] === "g" && s[i - 1] !== "n") unit = "ɣ";
+    }
     const coversStress = stressIdx >= i && stressIdx < i + len;
     if (!stressed && coversStress && isVowelUnit(unit)) {
       let pos = out.length;
