@@ -38,10 +38,19 @@ function Seg({
 }
 
 export default function Reader({ text, highlight }: { text: Text; highlight: number | null }) {
+  // En mode passage, traduction et annotations sont masquées par défaut (clés de
+  // préférence distinctes du mode NT, pour que chaque mode garde son réglage).
+  const isPassage = text.collection === "passages";
   const [manuscript, setManuscript] = usePersistentState<boolean>("anaginosko:manuscript", false);
   const [mode, setMode] = usePersistentState<TranslitMode>("anaginosko:translit", "off");
-  const [showFr, setShowFr] = usePersistentState<boolean>("anaginosko:french", false);
-  const [showAnnotations, setShowAnnotations] = usePersistentState<boolean>("anaginosko:annotations", true);
+  const [showFr, setShowFr] = usePersistentState<boolean>(
+    isPassage ? "anaginosko:french:passage" : "anaginosko:french",
+    false,
+  );
+  const [showAnnotations, setShowAnnotations] = usePersistentState<boolean>(
+    isPassage ? "anaginosko:annotations:passage" : "anaginosko:annotations",
+    isPassage ? false : true,
+  );
 
   const { user } = useAuth();
   const canAnnotate = user?.role === "philologist" || user?.role === "admin";
