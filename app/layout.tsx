@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { gentium, inter } from "./fonts";
+import Providers from "./providers";
+import Shell from "./shell";
 
 // Applique le thème (clair/sombre) avant le premier paint pour éviter le flash,
 // d'après localStorage("anaginosko:dark") ou la préférence système.
@@ -38,7 +40,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT }} />
       </head>
-      <body>{children}</body>
+      <body>
+        <Providers>
+          <Shell>{children}</Shell>
+        </Providers>
+      </body>
     </html>
   );
 }
