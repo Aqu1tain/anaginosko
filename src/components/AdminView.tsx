@@ -7,7 +7,25 @@ import {
   type AdminStats,
   type Annotation,
 } from "../lib/api";
+import { BOOK_NAMES } from "../data/nt";
+import { textById } from "../data/texts";
+import { refHref, parseNtRef } from "../data/passageLink";
 import AnnotationEditor, { type AnnotationTarget } from "./AnnotationEditor";
+
+function locationLabel(ref: string): string {
+  const nt = parseNtRef(ref);
+  if (nt) return `${BOOK_NAMES[nt.book] ?? nt.book} ${nt.chapter}`;
+  return textById(ref)?.reference ?? ref;
+}
+
+function formatDate(iso: string | null): string {
+  if (!iso) return "";
+  try {
+    return new Date(iso).toLocaleDateString("fr-FR", { day: "numeric", month: "short", year: "numeric" });
+  } catch {
+    return "";
+  }
+}
 
 const ICONS = {
   eye: "M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z M12 9.2a2.8 2.8 0 100 5.6 2.8 2.8 0 000-5.6z",
@@ -147,7 +165,13 @@ export default function AdminView() {
             <div key={a.id} className="rounded-2xl border border-base-300 bg-base-100 p-3.5">
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
-                  <div className="text-sm leading-relaxed">{a.body}</div>
+                  <a
+                    href={refHref(a.ref, a.wordIndex)}
+                    className="block text-sm leading-relaxed hover:text-primary"
+                    title="Aller au texte"
+                  >
+                    {a.body}
+                  </a>
                   {a.link ? (
                     <a
                       href={a.link}
@@ -165,9 +189,11 @@ export default function AdminView() {
                     <div className="mt-1 text-xs italic text-base-content/55">{a.source}</div>
                   )}
                   <div className="mt-1.5 flex flex-wrap items-center gap-x-2 text-xs text-base-content/45">
-                    <span className="capitalize">{scopeLabel(a)}</span>
-                    <span>· <span className="font-mono">{a.ref}</span></span>
-                    {a.verse != null && <span>· v.{a.verse}</span>}
+                    <a href={refHref(a.ref, a.wordIndex)} className="font-medium text-primary hover:underline">
+                      {locationLabel(a.ref)}{a.verse != null ? `, v.${a.verse}` : ""} →
+                    </a>
+                    <span>· {scopeLabel(a)}</span>
+                    {a.createdAt && <span>· {formatDate(a.createdAt)}</span>}
                     {isAdmin && a.author && (
                       <span>· <span className="font-greek">{a.author.displayName}</span></span>
                     )}

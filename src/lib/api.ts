@@ -18,6 +18,7 @@ export type Annotation = {
   link: string | null;
   userId: number | null;
   author: { displayName: string; role: Role } | null;
+  createdAt: string | null;
   updatedAt: string | null;
 };
 
