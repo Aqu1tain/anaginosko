@@ -17,14 +17,14 @@ const anyGloss = (lemma: string | null) => (lemma ? glossFor(lemma) ?? ntGlossFo
 // bouton son est masqué tant que l'audio n'est pas généré).
 function SpeakRow({ label, value }: { label: string; value: string }) {
   const hasAudio = useHasAudio(value);
+  // Enveloppe dans un span NON-flex : sinon les morceaux du Translit (dont la
+  // voyelle accentuée isolée) deviennent des enfants du flex et reçoivent le
+  // gap-1.5 de chaque côté → faux espaces autour des lettres rouges.
   const content = (
-    <>
+    <span className="min-w-0">
       <span className="text-sm text-base-content/55">{label}&nbsp;</span>
-      <Translit
-        value={value}
-        stressedClass="text-accent"
-      />
-    </>
+      <Translit value={value} stressedClass="text-accent" />
+    </span>
   );
 
   if (!hasAudio) {
