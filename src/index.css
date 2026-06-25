@@ -316,6 +316,14 @@ body {
   color: var(--color-accent-content, white);
   background-color: var(--color-accent);
 }
+/* Zone de survol/tap élargie (transparente) autour de la pastille, sans changer
+   sa taille visible ni la mise en page. */
+.anno-dot::after {
+  content: "";
+  position: absolute;
+  inset: -0.7em;
+  border-radius: 999px;
+}
 .anno-dot:hover {
   filter: brightness(1.05);
 }
