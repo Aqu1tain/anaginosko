@@ -78,7 +78,7 @@ export default function AnnotationMarker({
   return (
     <span
       ref={triggerRef as React.RefObject<HTMLSpanElement>}
-      className="relative inline-block align-super"
+      className="anno-mark relative inline-block"
       {...triggerProps}
     >
       <button

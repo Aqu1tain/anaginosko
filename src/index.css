@@ -292,8 +292,17 @@ body {
   border-radius: 4px;
 }
 
+/* Exposant d'annotation : la pastille est levée visuellement sans gonfler la
+   ligne (line-height nulle + décalage en position), pour ne pas décaler la
+   ligne de base du mot annoté. */
+.anno-mark {
+  vertical-align: baseline;
+  line-height: 0;
+}
 /* Pastille d'annotation : petit jeton cliquable. */
 .anno-dot {
+  position: relative;
+  top: -0.5em;
   display: inline-grid;
   place-items: center;
   min-width: 1.05em;
