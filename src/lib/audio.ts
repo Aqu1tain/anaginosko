@@ -37,15 +37,19 @@ export function loadAudioManifest(): Promise<Set<string>> {
 
 let current: HTMLAudioElement | null = null;
 
-export function playTranslit(translit: string): void {
+export function playUrl(url: string): void {
   try {
     current?.pause();
   } catch {
     /* ignore */
   }
-  const a = new Audio(audioUrl(translit));
+  const a = new Audio(url);
   current = a;
   a.play().catch(() => {
     /* fichier absent ou lecture bloquée */
   });
+}
+
+export function playTranslit(translit: string): void {
+  playUrl(audioUrl(translit));
 }

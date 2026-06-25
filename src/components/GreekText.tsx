@@ -107,7 +107,7 @@ function GreekText({
       onSelectLetter(w, g, manuscript ? (info.letter?.upper ?? info.cluster) : info.cluster);
       return;
     }
-    clickLetter({ w, g, info, word: token.word.context });
+    clickLetter({ ref: text.id, w, g, info, word: token.word.context });
   };
 
   const moveFocus = (current: HTMLElement, to: "prev" | "next" | "first" | "last") => {

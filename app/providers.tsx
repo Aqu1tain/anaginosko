@@ -17,6 +17,7 @@ import HashRedirect from "./_components/HashRedirect";
 
 type SheetState = {
   key: string;
+  ref: string | null;
   w: number;
   g: number;
   info: GraphemeInfo;
@@ -54,10 +55,10 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sheet?.key, sheet?.stage]);
 
-  const clickLetter = useCallback(({ w, g, info, word }: LetterClick) => {
+  const clickLetter = useCallback(({ ref, w, g, info, word }: LetterClick) => {
     const key = `${w}:${g}`;
     setSheet((prev) => {
-      if (!prev || prev.key !== key) return { key, w, g, info, word, stage: 1 };
+      if (!prev || prev.key !== key) return { key, ref, w, g, info, word, stage: 1 };
       if (prev.stage === 1) return { ...prev, stage: 2 };
       return null;
     });
@@ -68,6 +69,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   const openLetter = useCallback((info: GraphemeInfo) => {
     setSheet({
       key: `alpha:${info.letter?.name ?? info.cluster}`,
+      ref: null,
       w: -1,
       g: -1,
       info,
@@ -91,7 +93,14 @@ export default function Providers({ children }: { children: React.ReactNode }) {
         <HashRedirect />
         {children}
         {sheet && (
-          <LetterSheet info={sheet.info} word={sheet.word} stage={sheet.stage} onClose={closeSheet} />
+          <LetterSheet
+            info={sheet.info}
+            word={sheet.word}
+            stage={sheet.stage}
+            textRef={sheet.ref}
+            wordIndex={sheet.w}
+            onClose={closeSheet}
+          />
         )}
       </SheetContext.Provider>
     </AuthProvider>

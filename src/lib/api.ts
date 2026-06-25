@@ -109,6 +109,39 @@ export const deleteAnnotation = (id: number) =>
 // Annotations de l'utilisateur connecté (admin : toutes) pour le tableau de bord.
 export const fetchMyAnnotations = () => apiFetch<Annotation[]>("/annotations/mine");
 
+// --- Override de prononciation (cas par cas, admin/philologue) ---
+export type System = "erasmien" | "restituee";
+
+export type PronunciationOverride = {
+  id: number;
+  ref: string;
+  wordIndex: number;
+  system: System;
+  grec: string;
+  ipa: string;
+  audioUrl: string;
+};
+
+export const fetchPronunciations = (ref: string) =>
+  apiFetch<PronunciationOverride[]>(`/pronunciations?ref=${encodeURIComponent(ref)}`);
+
+export type PronunciationInput = {
+  ref: string;
+  wordIndex: number;
+  system: System;
+  grec: string;
+  ipa: string;
+};
+
+export const createPronunciation = (input: PronunciationInput) =>
+  apiFetch<PronunciationOverride>("/pronunciations", {
+    method: "POST",
+    body: JSON.stringify(input),
+  });
+
+export const deletePronunciation = (id: number) =>
+  apiFetch<void>(`/pronunciations/${id}`, { method: "DELETE" });
+
 export type AdminStats = {
   annotations: number;
   users: number;

@@ -15,6 +15,7 @@ export type ActiveLetter = {
 };
 
 export type LetterClick = {
+  ref: string | null;
   w: number;
   g: number;
   info: GraphemeInfo;

@@ -1,13 +1,22 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { accentLabel, breathingLabel, type GraphemeInfo } from "../lib/greek";
 import type { SheetStage } from "./SheetContext";
 import type { WordContext } from "../lib/tokenize";
 import { glossFor } from "../data/glosses";
 import { ntGlossFor } from "../data/nt";
-import { playTranslit } from "../lib/audio";
+import { playTranslit, playUrl } from "../lib/audio";
 import { useHasAudio } from "../hooks/useHasAudio";
+import { useAuth } from "../hooks/useAuth";
+import {
+  fetchPronunciations,
+  createPronunciation,
+  deletePronunciation,
+  type PronunciationOverride,
+  type System,
+} from "../lib/api";
+import { translitToIpa } from "../lib/translitIpa";
 import Translit from "./Translit";
 
 const anyGloss = (lemma: string | null) => (lemma ? glossFor(lemma) ?? ntGlossFor(lemma) : undefined);
@@ -15,8 +24,24 @@ const anyGloss = (lemma: string | null) => (lemma ? glossFor(lemma) ?? ntGlossFo
 // Ligne de prononciation. Si le son est disponible, toute la ligne est cliquable
 // (grande cible tactile) avec l'icône haut-parleur ; sinon, simple texte (le
 // bouton son est masqué tant que l'audio n'est pas généré).
-function SpeakRow({ label, value }: { label: string; value: string }) {
-  const hasAudio = useHasAudio(value);
+function SpeakRow({
+  label,
+  value,
+  override,
+  canEdit,
+  onEdit,
+  bump,
+}: {
+  label: string;
+  value: string;
+  override?: PronunciationOverride;
+  canEdit?: boolean;
+  onEdit?: () => void;
+  bump?: number;
+}) {
+  const hasAudio = useHasAudio(value) || !!override;
+  // ?v= force le rechargement après une régénération (cache court côté API).
+  const play = () => (override ? playUrl(`${override.audioUrl}?v=${bump ?? 0}`) : playTranslit(value));
   // Enveloppe dans un span NON-flex : sinon les morceaux du Translit (dont la
   // voyelle accentuée isolée) deviennent des enfants du flex et reçoivent le
   // gap-1.5 de chaque côté → faux espaces autour des lettres rouges.
@@ -24,30 +49,91 @@ function SpeakRow({ label, value }: { label: string; value: string }) {
     <span className="min-w-0">
       <span className="text-sm text-base-content/55">{label}&nbsp;</span>
       <Translit value={value} stressedClass="text-accent" />
+      {override && <span className="badge badge-accent badge-xs ml-1.5 align-middle">modifié</span>}
     </span>
   );
 
-  if (!hasAudio) {
-    return <div className="flex items-center gap-1.5 px-2 py-2">{content}</div>;
-  }
-
   return (
-    <button
-      onClick={() => playTranslit(value)}
-      aria-label={`Écouter (${label})`}
-      className="-mx-2 flex w-full items-center gap-1.5 rounded-lg px-2 py-2 text-left transition-colors hover:bg-base-200 active:bg-base-300"
-    >
-      {content}
-      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true" className="ml-auto shrink-0 text-accent">
-        <path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor" />
-        <path
-          d="M16.5 8.5a4 4 0 010 7M19 6a7 7 0 010 12"
-          stroke="currentColor"
-          strokeWidth="1.6"
-          strokeLinecap="round"
-        />
-      </svg>
-    </button>
+    <div className="-mx-2 flex items-center gap-0.5 rounded-lg px-2 transition-colors hover:bg-base-200">
+      {hasAudio ? (
+        <button onClick={play} aria-label={`Écouter (${label})`} className="flex flex-1 items-center gap-1.5 py-2 text-left">
+          {content}
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true" className="ml-auto shrink-0 text-accent">
+            <path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor" />
+            <path d="M16.5 8.5a4 4 0 010 7M19 6a7 7 0 010 12" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+          </svg>
+        </button>
+      ) : (
+        <div className="flex flex-1 items-center gap-1.5 py-2">{content}</div>
+      )}
+      {canEdit && (
+        <button
+          onClick={onEdit}
+          aria-label="Ajuster la prononciation"
+          className="btn btn-ghost btn-xs btn-circle shrink-0 text-base-content/45"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M12 20h9" />
+            <path d="M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4z" />
+          </svg>
+        </button>
+      )}
+    </div>
+  );
+}
+
+// Éditeur d'override (admin/philologue) : écriture phonétique IPA -> régénère Azure.
+function PronunciationEditor({
+  system,
+  initialIpa,
+  hasOverride,
+  busy,
+  error,
+  onChange,
+  ipa,
+  onSave,
+  onDelete,
+  onCancel,
+}: {
+  system: System;
+  initialIpa: string;
+  hasOverride: boolean;
+  busy: boolean;
+  error: string | null;
+  ipa: string;
+  onChange: (v: string) => void;
+  onSave: () => void;
+  onDelete: () => void;
+  onCancel: () => void;
+}) {
+  return (
+    <div className="mt-2 rounded-box border border-base-300 bg-base-200/60 p-3">
+      <div className="text-[0.7rem] font-medium uppercase tracking-wide text-base-content/55">
+        Prononciation {system === "erasmien" ? "érasmienne" : "restituée"} · IPA
+      </div>
+      <input
+        value={ipa}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={initialIpa}
+        spellCheck={false}
+        className="input input-sm mt-1.5 w-full font-mono"
+        aria-label="Écriture phonétique (IPA)"
+      />
+      {error && <p className="mt-1 text-xs text-error">{error}</p>}
+      <div className="mt-2 flex items-center gap-2">
+        <button onClick={onSave} disabled={busy || !ipa.trim()} className="btn btn-primary btn-sm flex-1">
+          {busy ? "Génération…" : "Régénérer"}
+        </button>
+        {hasOverride && (
+          <button onClick={onDelete} disabled={busy} className="btn btn-ghost btn-sm text-error">
+            Réinitialiser
+          </button>
+        )}
+        <button onClick={onCancel} disabled={busy} className="btn btn-ghost btn-sm">
+          Annuler
+        </button>
+      </div>
+    </div>
   );
 }
 
@@ -66,15 +152,97 @@ export default function LetterSheet({
   info,
   word,
   stage,
+  textRef,
+  wordIndex,
   onClose,
 }: {
   info: GraphemeInfo;
   word: WordContext | null;
   stage: SheetStage;
+  textRef: string | null;
+  wordIndex: number;
   onClose: () => void;
 }) {
   const boxRef = useRef<HTMLDivElement>(null);
   const letter = info.letter;
+
+  const { user } = useAuth();
+  const canEdit = user?.role === "admin" || user?.role === "philologist";
+
+  // Overrides de prononciation pour ce texte (chargés une fois par ref).
+  const [overrides, setOverrides] = useState<PronunciationOverride[]>([]);
+  const [bump, setBump] = useState(0);
+  const [editing, setEditing] = useState<{ system: System; ipa: string } | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const reload = () => {
+    if (!textRef) return Promise.resolve();
+    return fetchPronunciations(textRef)
+      .then((rows) => {
+        setOverrides(rows);
+        setBump((b) => b + 1);
+      })
+      .catch(() => {});
+  };
+
+  useEffect(() => {
+    setOverrides([]);
+    if (textRef) fetchPronunciations(textRef).then(setOverrides).catch(() => {});
+  }, [textRef]);
+
+  // Changer de mot ferme l'éditeur en cours.
+  useEffect(() => {
+    setEditing(null);
+    setError(null);
+  }, [wordIndex]);
+
+  const overrideFor = (system: System) =>
+    overrides.find((o) => o.wordIndex === wordIndex && o.system === system);
+
+  const openEditor = (system: System, value: string) => {
+    setError(null);
+    setEditing({ system, ipa: overrideFor(system)?.ipa ?? translitToIpa(value, system) });
+  };
+
+  const saveEditor = async () => {
+    if (!editing || !textRef || !word) return;
+    setBusy(true);
+    setError(null);
+    try {
+      await createPronunciation({
+        ref: textRef,
+        wordIndex,
+        system: editing.system,
+        grec: word.grec,
+        ipa: editing.ipa.trim(),
+      });
+      await reload();
+      setEditing(null);
+    } catch (e) {
+      setError((e as Error).message);
+    }
+    setBusy(false);
+  };
+
+  const deleteEditor = async () => {
+    if (!editing) return;
+    const ov = overrideFor(editing.system);
+    if (!ov) {
+      setEditing(null);
+      return;
+    }
+    setBusy(true);
+    setError(null);
+    try {
+      await deletePronunciation(ov.id);
+      await reload();
+      setEditing(null);
+    } catch (e) {
+      setError((e as Error).message);
+    }
+    setBusy(false);
+  };
 
   // Feuille non bloquante : les lettres restent cliquables (pour enchaîner les
   // clics). On ferme via Échap ou un clic en dehors, sauf sur une lettre, qui
@@ -169,8 +337,54 @@ export default function LetterSheet({
             </div>
             <div className="font-greek mt-1 text-2xl">{word.grec}</div>
             <div className="mt-2 text-base">
-              <SpeakRow label="Érasmien" value={word.erasmien} />
-              {word.restituee && <SpeakRow label="Restituée" value={word.restituee} />}
+              <SpeakRow
+                label="Érasmien"
+                value={word.erasmien}
+                override={overrideFor("erasmien")}
+                canEdit={canEdit && !!textRef}
+                onEdit={() => openEditor("erasmien", word.erasmien)}
+                bump={bump}
+              />
+              {editing?.system === "erasmien" && (
+                <PronunciationEditor
+                  system="erasmien"
+                  initialIpa={translitToIpa(word.erasmien, "erasmien")}
+                  ipa={editing.ipa}
+                  hasOverride={!!overrideFor("erasmien")}
+                  busy={busy}
+                  error={error}
+                  onChange={(v) => setEditing((s) => (s ? { ...s, ipa: v } : s))}
+                  onSave={saveEditor}
+                  onDelete={deleteEditor}
+                  onCancel={() => setEditing(null)}
+                />
+              )}
+              {word.restituee && (
+                <>
+                  <SpeakRow
+                    label="Restituée"
+                    value={word.restituee}
+                    override={overrideFor("restituee")}
+                    canEdit={canEdit && !!textRef}
+                    onEdit={() => openEditor("restituee", word.restituee!)}
+                    bump={bump}
+                  />
+                  {editing?.system === "restituee" && (
+                    <PronunciationEditor
+                      system="restituee"
+                      initialIpa={translitToIpa(word.restituee, "restituee")}
+                      ipa={editing.ipa}
+                      hasOverride={!!overrideFor("restituee")}
+                      busy={busy}
+                      error={error}
+                      onChange={(v) => setEditing((s) => (s ? { ...s, ipa: v } : s))}
+                      onSave={saveEditor}
+                      onDelete={deleteEditor}
+                      onCancel={() => setEditing(null)}
+                    />
+                  )}
+                </>
+              )}
             </div>
             {word.morph && (
               <div className="mt-3 rounded-box bg-base-200 px-3 py-2">
