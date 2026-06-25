@@ -20,7 +20,7 @@ function SpeakRow({ label, value }: { label: string; value: string }) {
       <span className="text-sm text-base-content/55">{label}&nbsp;</span>
       <Translit
         value={value}
-        stressedClass="font-semibold text-accent underline decoration-accent/40 underline-offset-2"
+        stressedClass="text-accent"
       />
     </>
   );

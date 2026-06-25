@@ -258,7 +258,7 @@ function GreekText({
             </span>
             {tr && (
               <span className="mt-0.5 font-sans text-[0.8rem] leading-tight text-base-content/65">
-                <Translit value={tr} stressedClass="font-semibold text-accent" />
+                <Translit value={tr} stressedClass="text-accent" />
               </span>
             )}
           </span>
