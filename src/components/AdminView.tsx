@@ -166,10 +166,10 @@ export default function AdminView() {
           {annos.map((a) => (
             <div key={a.id} className="rounded-2xl border border-base-300 bg-base-100 p-3.5">
               <div className="flex items-start justify-between gap-3">
-                <div className="min-w-0">
+                <div className="min-w-0 break-words">
                   <a
                     href={refHref(a.ref, a.wordIndex)}
-                    className="block text-sm leading-relaxed hover:text-primary"
+                    className="block text-sm leading-relaxed [overflow-wrap:anywhere] hover:text-primary"
                     title="Aller au texte"
                   >
                     {a.body}
@@ -188,7 +188,7 @@ export default function AdminView() {
                       <span className="truncate">{a.source}</span>
                     </a>
                   ) : (
-                    <div className="mt-1 text-xs italic text-base-content/55">{a.source}</div>
+                    <div className="mt-1 text-xs italic text-base-content/55 [overflow-wrap:anywhere]">{a.source}</div>
                   )}
                   <div className="mt-1.5 flex flex-wrap items-center gap-x-2 text-xs text-base-content/45">
                     <a href={refHref(a.ref, a.wordIndex)} className="font-medium text-primary hover:underline">
