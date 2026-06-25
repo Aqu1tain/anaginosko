@@ -61,7 +61,8 @@ export type LemmaEntry = {
   lemma: string;
   nature: string;
   count: number;
-  translit: string;
+  translit: string; // érasmien
+  translitR: string; // restituée
   oid: number;
 };
 
@@ -89,11 +90,30 @@ export async function loadOccurrences(oid: number): Promise<Occ[]> {
 const COMBINING = /[̀-ͯ]/g;
 const fold = (s: string): string => s.normalize("NFD").replace(COMBINING, "").toLowerCase();
 
-/** Recherche tolérante aux accents : grec ou translittération latine. */
+/**
+ * Recherche tolérante aux accents : grec, restituée OU érasmien (caractères
+ * latins). La restituée est privilégiée (meilleur score) ; à score égal, les
+ * lemmes les plus fréquents d'abord.
+ */
 export function searchLemmaIndex(index: LemmaEntry[], query: string): LemmaEntry[] {
   const q = fold(query.trim());
   if (!q) return index;
-  return index.filter((e) => fold(e.lemma).includes(q) || fold(e.translit).includes(q));
+  const scored: { e: LemmaEntry; score: number }[] = [];
+  for (const e of index) {
+    const r = fold(e.translitR);
+    const er = fold(e.translit);
+    const l = fold(e.lemma);
+    let score = 0;
+    if (r.startsWith(q)) score = 6;
+    else if (er.startsWith(q)) score = 5;
+    else if (r.includes(q)) score = 4;
+    else if (er.includes(q)) score = 3;
+    else if (l.startsWith(q)) score = 2;
+    else if (l.includes(q)) score = 1;
+    if (score > 0) scored.push({ e, score });
+  }
+  scored.sort((a, b) => b.score - a.score || b.e.count - a.e.count);
+  return scored.map((s) => s.e);
 }
 
 export const lemmaEntry = (index: LemmaEntry[], lemma: string): LemmaEntry | undefined =>

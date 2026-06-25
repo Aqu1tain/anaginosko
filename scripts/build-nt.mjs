@@ -119,6 +119,7 @@ const lemmaIndex = sorted.map(([lemma, v], oid) => {
     nature: v.nature,
     count: v.count,
     translit: grecToErasmien(lemma).toLowerCase(),
+    translitR: grecToRestituee(lemma).toLowerCase(),
     oid,
   };
 });

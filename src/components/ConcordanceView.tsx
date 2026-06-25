@@ -122,7 +122,8 @@ function LemmaRow({ entry }: { entry: LemmaEntry }) {
     >
       <span className="min-w-0 flex-1">
         <span className="font-greek text-xl">{entry.lemma}</span>
-        <span className="ml-2 text-sm text-base-content/60">{entry.translit}</span>
+        <span className="ml-2 text-sm text-base-content/65">{entry.translitR}</span>
+        <span className="ml-1.5 text-xs text-base-content/40">· {entry.translit}</span>
       </span>
       <span className="shrink-0 text-xs text-base-content/70">{entry.nature}</span>
       <span className="badge badge-sm badge-ghost shrink-0">{entry.count}</span>
@@ -138,13 +139,15 @@ function List({ index }: { index: LemmaEntry[] }) {
     <div className="pb-4">
       <p className="max-w-prose pt-6 text-[0.95rem] leading-relaxed text-base-content/75">
         Concordance des {index.length} lemmes du Nouveau Testament. Cherchez en grec
-        (<span className="font-greek">λόγος</span>) ou en translittération (<em>logos</em>).
+        (<span className="font-greek">λόγος</span>) ou en translittération latine — restituée
+        comme érasmienne (ex.&nbsp;<span className="font-greek">ἀρχή</span> : <em>arkhi</em> ou{" "}
+        <em>arkê</em>).
       </p>
       <input
         type="search"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        placeholder="Chercher : λόγος, logos…"
+        placeholder="Chercher : λόγος, arkhi, logos…"
         className="input input-bordered mt-4 w-full"
         autoComplete="off"
         autoCapitalize="off"
@@ -212,9 +215,10 @@ function Detail({ entry }: { entry: LemmaEntry }) {
       <a href="#/concordance" className="link link-primary text-sm">
         ← Toute la concordance
       </a>
-      <div className="mt-3 flex items-baseline gap-3">
+      <div className="mt-3 flex flex-wrap items-baseline gap-x-3 gap-y-1">
         <h1 className="font-greek text-3xl">{entry.lemma}</h1>
-        <span className="text-sm text-base-content/70">{entry.translit}</span>
+        <span className="text-sm text-base-content/70">{entry.translitR}</span>
+        <span className="text-xs text-base-content/45">érasmien&nbsp;: {entry.translit}</span>
         <span className="text-sm text-base-content/70">· {entry.nature}</span>
       </div>
       <p className="mt-1 text-sm text-base-content/70">
