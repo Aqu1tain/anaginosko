@@ -39,6 +39,33 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="fr" className={`${gentium.variable} ${inter.variable} ${syne.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT }} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@graph": [
+                {
+                  "@type": "WebSite",
+                  name: "Anaginosko",
+                  url: "https://anaginosko.fr",
+                  inLanguage: "fr",
+                  description:
+                    "Lire le grec koinè du Nouveau Testament, lettre par lettre : prononciation érasmienne et restituée, alphabet interactif, concordance.",
+                  potentialAction: {
+                    "@type": "SearchAction",
+                    target: {
+                      "@type": "EntryPoint",
+                      urlTemplate: "https://anaginosko.fr/concordance/{search_term_string}",
+                    },
+                    "query-input": "required name=search_term_string",
+                  },
+                },
+                { "@type": "Organization", name: "Anaginosko", url: "https://anaginosko.fr" },
+              ],
+            }),
+          }}
+        />
       </head>
       <body suppressHydrationWarning>
         <Providers>

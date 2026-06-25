@@ -133,15 +133,22 @@ ${t.translitRestituee ? `<p><strong>Restituée :</strong> ${esc(t.translitRestit
 const llmsTxt = `# Anaginosko
 
 > Lire le grec koinè du Nouveau Testament, lettre par lettre. Application web
-> mobile-first : prononciation érasmienne et restituée, alphabet interactif,
-> mode manuscrit (scriptio continua), numéros de versets.
+> (Next.js, rendu statique) : prononciation érasmienne et restituée, alphabet
+> interactif, concordance, mode manuscrit, traduction française.
 
-L'application est un SPA en hash routing : les URL \`#/text/...\` ne sont pas
-lisibles sans JavaScript. Le contenu intégral est disponible en texte ici :
+Le texte grec est rendu côté serveur : chaque page est lisible sans JavaScript.
 
-- [Corpus complet (HTML)](${SITE}/corpus.html)
+## Parcourir
 
-## Passages
+- Nouveau Testament (index) : ${SITE}/nt
+- Un chapitre : ${SITE}/nt/{livre}/{chapitre} (ex. ${SITE}/nt/jn/1)
+- Données structurées d'un chapitre (JSON) : ${SITE}/nt/{livre}/{chapitre}.json
+  — mots avec grec, translittération érasmienne et restituée, verset, lemme, nature
+- Concordance d'un lemme : ${SITE}/concordance/{lemme}
+- Alphabet grec : ${SITE}/alphabet
+- Corpus des passages choisis (HTML, sans JS) : ${SITE}/corpus.html
+
+## Passages choisis (texte intégral)
 
 ${out.texts.map((t) => `### ${t.reference}\n\n${greekWithVerses(t)}`).join("\n\n")}
 `;

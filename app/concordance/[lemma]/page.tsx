@@ -17,5 +17,11 @@ export async function generateMetadata({
 
 export default async function LemmaPage({ params }: { params: Promise<{ lemma: string }> }) {
   const { lemma } = await params;
-  return <ConcordanceView lemma={decodeURIComponent(lemma)} />;
+  const l = decodeURIComponent(lemma);
+  return (
+    <>
+      <h1 className="sr-only">{l} — concordance du Nouveau Testament</h1>
+      <ConcordanceView lemma={l} />
+    </>
+  );
 }

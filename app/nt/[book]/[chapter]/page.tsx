@@ -25,7 +25,7 @@ export async function generateMetadata({
     title: `${name} ${chapter}`,
     description: `${name} chapitre ${chapter} en grec koinè (SBLGNT), translittération érasmienne et restituée, traduction française.`,
     alternates: { canonical: `/nt/${book}/${chapter}` },
-    openGraph: { type: "article", locale: "fr_FR", title: `${name} ${chapter}` },
+    openGraph: { type: "article", locale: "fr_FR", siteName: "Anaginosko", title: `${name} ${chapter}` },
   };
 }
 
@@ -41,8 +41,39 @@ export default async function ChapterPage({
   if (!b || !Number.isInteger(ch) || ch < 1 || ch > b.chapters) notFound();
   const text = await loadChapterFs(book, ch);
 
+  const SITE = "https://anaginosko.fr";
+  const url = `${SITE}/nt/${book}/${ch}`;
+  const name = BOOK_NAMES[book] ?? "Livre";
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Accueil", item: `${SITE}/` },
+          { "@type": "ListItem", position: 2, name: "Nouveau Testament", item: `${SITE}/nt` },
+          { "@type": "ListItem", position: 3, name, item: `${SITE}/nt/${book}` },
+          { "@type": "ListItem", position: 4, name: `${name} ${ch}`, item: url },
+        ],
+      },
+      {
+        "@type": "CreativeWork",
+        name: `${name} ${ch}`,
+        inLanguage: "grc",
+        url,
+        isPartOf: { "@type": "Book", name: "Nouveau Testament", inLanguage: "grc" },
+        isBasedOn: "https://sblgnt.com/",
+        publisher: { "@type": "Organization", name: "Anaginosko", url: SITE },
+      },
+    ],
+  };
+
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <h1 className="sr-only">
+        {name} {ch}
+      </h1>
       <Reader text={text} />
       <nav className="mt-8 flex items-center justify-between gap-3">
         {ch > 1 ? (

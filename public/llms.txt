@@ -1,15 +1,22 @@
 # Anaginosko
 
 > Lire le grec koinè du Nouveau Testament, lettre par lettre. Application web
-> mobile-first : prononciation érasmienne et restituée, alphabet interactif,
-> mode manuscrit (scriptio continua), numéros de versets.
+> (Next.js, rendu statique) : prononciation érasmienne et restituée, alphabet
+> interactif, concordance, mode manuscrit, traduction française.
 
-L'application est un SPA en hash routing : les URL `#/text/...` ne sont pas
-lisibles sans JavaScript. Le contenu intégral est disponible en texte ici :
+Le texte grec est rendu côté serveur : chaque page est lisible sans JavaScript.
 
-- [Corpus complet (HTML)](https://anaginosko.fr/corpus.html)
+## Parcourir
 
-## Passages
+- Nouveau Testament (index) : https://anaginosko.fr/nt
+- Un chapitre : https://anaginosko.fr/nt/{livre}/{chapitre} (ex. https://anaginosko.fr/nt/jn/1)
+- Données structurées d'un chapitre (JSON) : https://anaginosko.fr/nt/{livre}/{chapitre}.json
+  — mots avec grec, translittération érasmienne et restituée, verset, lemme, nature
+- Concordance d'un lemme : https://anaginosko.fr/concordance/{lemme}
+- Alphabet grec : https://anaginosko.fr/alphabet
+- Corpus des passages choisis (HTML, sans JS) : https://anaginosko.fr/corpus.html
+
+## Passages choisis (texte intégral)
 
 ### Jean 1:1-18 (Prologue)
 

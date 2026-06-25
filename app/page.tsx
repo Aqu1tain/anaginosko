@@ -1,5 +1,8 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { collections, lengthLabel, textsByCollection, type Text } from "../src/data/texts";
+
+export const metadata: Metadata = { alternates: { canonical: "/" } };
 
 function preview(grec: string, words = 7): string {
   const parts = grec.split(/\s+/);

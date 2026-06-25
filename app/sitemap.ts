@@ -6,7 +6,8 @@ const BASE = "https://anaginosko.fr";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const books = await loadBooksFs();
-  const url = (p: string) => ({ url: `${BASE}${p}` });
+  const lastModified = new Date();
+  const url = (p: string) => ({ url: `${BASE}${p}`, lastModified });
 
   return [
     url("/"),
