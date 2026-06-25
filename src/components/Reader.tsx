@@ -1,3 +1,5 @@
+"use client";
+
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { lengthLabel, textById, type Mot, type Text } from "../data/texts";
@@ -37,7 +39,15 @@ function Seg({
   );
 }
 
-export default function Reader({ text, highlight }: { text: Text; highlight: number | null }) {
+export default function Reader({ text }: { text: Text }) {
+  // Mot à surligner (?w=) lu côté client après hydratation, pour ne pas rendre
+  // la page dynamique ni casser le SSG du texte grec.
+  const [highlight, setHighlight] = useState<number | null>(null);
+  useEffect(() => {
+    const w = new URLSearchParams(window.location.search).get("w");
+    setHighlight(w ? Number(w) : null);
+  }, []);
+
   // En mode passage, traduction et annotations sont masquées par défaut (clés de
   // préférence distinctes du mode NT, pour que chaque mode garde son réglage).
   const isPassage = text.collection === "passages";

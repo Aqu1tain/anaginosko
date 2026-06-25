@@ -1,3 +1,5 @@
+"use client";
+
 import { Fragment, memo, useEffect, useMemo, useRef, useState } from "react";
 import type { Text } from "../data/texts";
 import { tokenizeText } from "../lib/tokenize";

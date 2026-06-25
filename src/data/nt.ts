@@ -22,7 +22,9 @@ export const NT_GROUPS: { title: string; ids: string[] }[] = [
   { title: "Apocalypse", ids: ["re"] },
 ];
 
-const base = import.meta.env.BASE_URL;
+// Données servies à la racine par nginx (/nt/...). Les fonctions fetch ci-dessous
+// tournent côté client au runtime ; le SSG passe par lib/nt-server.ts (fs).
+const base = "/";
 
 type FrenchByChapter = Record<string, Record<string, string>>;
 

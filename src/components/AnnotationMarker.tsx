@@ -1,3 +1,5 @@
+"use client";
+
 import { createPortal } from "react-dom";
 import type { Annotation } from "../lib/api";
 import { useSafeHover } from "../hooks/useSafeHover";

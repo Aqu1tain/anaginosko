@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useMemo, useState } from "react";
 import {
   loadLemmaIndex,
@@ -117,7 +119,7 @@ function Definition({ lemma }: { lemma: string }) {
 function LemmaRow({ entry }: { entry: LemmaEntry }) {
   return (
     <a
-      href={`#/concordance/${encodeURIComponent(entry.lemma)}`}
+      href={`/concordance/${encodeURIComponent(entry.lemma)}`}
       className="flex items-center gap-3 rounded-box border border-base-300 bg-base-100 px-3.5 py-2.5 transition-colors hover:border-primary/40"
     >
       <span className="min-w-0 flex-1">
@@ -196,7 +198,7 @@ function Occurrences({ entry }: { entry: LemmaEntry }) {
       {occ.map((o, i) => (
         <a
           key={i}
-          href={`#/nt/${o.b}/${o.c}?w=${o.w}`}
+          href={`/nt/${o.b}/${o.c}?w=${o.w}`}
           className="flex items-center gap-3 rounded-box border border-base-300 bg-base-100 px-3.5 py-2.5 transition-colors hover:border-primary/40"
         >
           <span className="font-greek min-w-0 flex-1 truncate text-lg">{o.f}</span>
@@ -212,7 +214,7 @@ function Occurrences({ entry }: { entry: LemmaEntry }) {
 function Detail({ entry }: { entry: LemmaEntry }) {
   return (
     <div className="pb-4 pt-5">
-      <a href="#/concordance" className="link link-primary text-sm">
+      <a href="/concordance" className="link link-primary text-sm">
         ← Toute la concordance
       </a>
       <div className="mt-3 flex flex-wrap items-baseline gap-x-3 gap-y-1">
@@ -242,7 +244,7 @@ export default function ConcordanceView({ lemma }: { lemma: string | null }) {
       <div className="py-20 text-center text-base-content/70">
         <p className="font-greek text-xl">{lemma}</p>
         <p className="mt-2">Lemme introuvable.</p>
-        <a href="#/concordance" className="link link-primary mt-3 inline-block">
+        <a href="/concordance" className="link link-primary mt-3 inline-block">
           Toute la concordance
         </a>
       </div>

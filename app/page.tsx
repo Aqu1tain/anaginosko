@@ -1,5 +1,5 @@
-import { collections, lengthLabel, textsByCollection, type Text } from "../data/texts";
-import scribe from "../assets/scribe.jpg";
+import Link from "next/link";
+import { collections, lengthLabel, textsByCollection, type Text } from "../src/data/texts";
 
 function preview(grec: string, words = 7): string {
   const parts = grec.split(/\s+/);
@@ -8,8 +8,8 @@ function preview(grec: string, words = 7): string {
 
 function TextCard({ text }: { text: Text }) {
   return (
-    <a
-      href={`#/text/${text.id}`}
+    <Link
+      href={`/text/${text.id}`}
       className="card min-w-0 border border-base-300 bg-base-100 transition-colors hover:border-primary/40"
     >
       <div className="card-body min-w-0 gap-1.5 p-4">
@@ -19,17 +19,18 @@ function TextCard({ text }: { text: Text }) {
         </div>
         <p className="font-greek truncate text-lg text-base-content/75">{preview(text.grec)}</p>
       </div>
-    </a>
+    </Link>
   );
 }
 
-export default function Library() {
+export default function Home() {
   return (
     <div>
       <section className="pt-4 pb-2">
         <div className="relative overflow-hidden rounded-box">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={scribe}
+            src="/scribe.jpg"
             alt="Un scribe copiant l’Évangile sur un rouleau de papyrus"
             className="h-48 w-full object-cover object-center sm:h-60"
             loading="eager"
@@ -44,8 +45,8 @@ export default function Library() {
           d’un texte pour découvrir son nom et sa prononciation, érasmienne et
           restituée.
         </p>
-        <a
-          href="#/nt"
+        <Link
+          href="/nt"
           className="mt-4 flex items-center justify-between gap-3 rounded-box border border-base-300 bg-base-100 px-4 py-3 transition-colors hover:border-primary/40"
         >
           <span>
@@ -53,7 +54,7 @@ export default function Library() {
             <span className="block text-sm text-base-content/70">27 livres · 260 chapitres</span>
           </span>
           <span className="text-primary">→</span>
-        </a>
+        </Link>
       </section>
 
       {collections.map((c) => (
@@ -71,9 +72,9 @@ export default function Library() {
       <footer className="pt-10 text-center text-xs text-base-content/70">
         Texte grec : SBLGNT · traduction : Crampon · définitions : Bailly.
         <br />
-        <a href="#/mentions" className="link mt-1 inline-block">
+        <Link href="/mentions" className="link mt-1 inline-block">
           Mentions légales
-        </a>
+        </Link>
       </footer>
     </div>
   );

@@ -85,8 +85,9 @@ export default function MentionsView() {
     <div className="pt-6 pb-4">
       <h1 className="text-2xl font-bold">Mentions légales</h1>
       <p className="mt-2 max-w-prose text-[0.95rem] leading-relaxed text-base-content/70">
-        Anaginosko est un projet pédagogique <strong>non commercial</strong>, libre d'accès. Il
-        s'appuie sur des ressources ouvertes, créditées ci-dessous.
+        Anaginosko est un projet <strong>pédagogique</strong> et <strong>catholique</strong>, non
+        commercial et <strong>libre d'accès</strong>, pour lire le Nouveau Testament dans sa langue
+        originale. Il s'appuie sur des ressources ouvertes, créditées ci-dessous.
       </p>
 
       <dl className="mt-5 grid gap-3">

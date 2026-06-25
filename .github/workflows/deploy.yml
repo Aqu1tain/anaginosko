@@ -20,13 +20,44 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
-      - name: Deploy build to VPS
+
+      # Assemble le bundle Next « standalone » : serveur Node minimal + assets
+      # statiques + public SANS audio ni nt (servis depuis le disque par nginx).
+      - name: Assemble standalone bundle
         run: |
+          set -euo pipefail
+          rm -rf deploy-out
+          cp -r .next/standalone deploy-out
+          mkdir -p deploy-out/.next
+          cp -r .next/static deploy-out/.next/static
+          rm -rf deploy-out/public
+          rsync -a --exclude audio --exclude nt public/ deploy-out/public/
+
+      - name: Deploy to VPS
+        run: |
+          set -euo pipefail
           mkdir -p ~/.ssh
           printf '%s\n' "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -H "${{ secrets.VPS_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
-          # déploie app + données ; l'audio (servi depuis /audio) est préservé.
-          rsync -az --delete --exclude 'audio' \
-            -e "ssh -i ~/.ssh/id_ed25519" \
-            dist/ "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/var/www/anaginosko/"
+          SSH="ssh -i ~/.ssh/id_ed25519"
+          HOST="${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}"
+          TS=$(date +%Y%m%d%H%M%S)
+          REL="/opt/anaginosko-web/releases/$TS"
+
+          # 1) Données NT : lues au runtime par le client, servies par nginx
+          #    depuis /var/www/anaginosko/nt. L'audio n'est JAMAIS touché.
+          rsync -az --delete -e "$SSH" public/nt/ "$HOST:/var/www/anaginosko/nt/"
+
+          # 2) Nouvelle release (bundle standalone immuable)
+          $SSH "$HOST" "mkdir -p $REL"
+          rsync -az --delete -e "$SSH" deploy-out/ "$HOST:$REL/"
+
+          # 3) Bascule atomique du symlink + redémarrage du service
+          $SSH "$HOST" "ln -sfn $REL /opt/anaginosko-web/current && sudo systemctl restart anaginosko-web"
+
+          # 4) Purge : ne garder que les 3 dernières releases
+          $SSH "$HOST" "ls -1dt /opt/anaginosko-web/releases/*/ | tail -n +4 | xargs -r rm -rf"
+
+          # 5) Smoke-test : le service répond bien en local sur le VPS
+          $SSH "$HOST" "curl -fsS -o /dev/null http://127.0.0.1:3100/ && echo 'service OK'"

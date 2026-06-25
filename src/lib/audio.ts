@@ -15,8 +15,7 @@ export function audioKey(s: string): string {
 
 // Base des fichiers audio : en prod ils sont sur Cloudflare R2
 // (VITE_AUDIO_BASE, ex. https://audio.anaginosko.fr/) ; en local, public/audio/.
-const AUDIO_BASE =
-  import.meta.env.VITE_AUDIO_BASE ?? `${import.meta.env.BASE_URL}audio/`;
+const AUDIO_BASE = process.env.NEXT_PUBLIC_AUDIO_BASE ?? "/audio/";
 
 export const audioUrl = (translit: string): string =>
   `${AUDIO_BASE}${audioKey(translit)}.mp3`;

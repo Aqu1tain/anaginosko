@@ -7,3 +7,7 @@ dist
 .DS_Store
 .playwright-mcp
 public/audio/
+
+# Next.js
+.next/
+next-env.d.ts

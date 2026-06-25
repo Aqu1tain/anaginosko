@@ -1,3 +1,5 @@
+"use client";
+
 import { createContext, useContext } from "react";
 import type { GraphemeInfo } from "../lib/greek";
 import type { WordContext } from "../lib/tokenize";

@@ -1,6 +1,6 @@
 // Client de l'API Anaginosko (backend AdonisJS). Base configurable :
 // VITE_API_BASE (ex. /api en prod via nginx ; http://localhost:3333/api en dev).
-const API_BASE = import.meta.env.VITE_API_BASE ?? "/api";
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "/api";
 const TOKEN_KEY = "anaginosko:token";
 
 export type Role = "admin" | "philologist";
