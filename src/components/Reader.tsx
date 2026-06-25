@@ -1,6 +1,8 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
-import { lengthLabel, type Text } from "../data/texts";
+import { lengthLabel, textById, type Mot, type Text } from "../data/texts";
+import { loadChapter } from "../data/nt";
+import { linkedRef, parseNtRef, remapAnnotation, type PlacedAnnotation } from "../data/passageLink";
 import { usePersistentState } from "../hooks/usePersistentState";
 import { useAuth } from "../hooks/useAuth";
 import { fetchAnnotations, deleteAnnotation, recordView, type Annotation } from "../lib/api";
@@ -45,22 +47,52 @@ export default function Reader({ text, highlight }: { text: Text; highlight: num
   const canAnnotate = user?.role === "philologist" || user?.role === "admin";
   const [annotateMode, setAnnotateMode] = useState(false);
   const [annotations, setAnnotations] = useState<Annotation[]>([]);
+  // Annotations du texte lié (passage ↔ chapitre NT), remappées sur ce texte.
+  const [foreign, setForeign] = useState<PlacedAnnotation[]>([]);
   const [sel, setSel] = useState<Sel | null>(null);
   const [editTarget, setEditTarget] = useState<AnnotationTarget | null>(null);
   const [pendingDelete, setPendingDelete] = useState<Annotation | null>(null);
 
   const ref = text.id;
-  const motGrec = (w: number) => text.mots?.[Math.floor(w / 2)]?.grec ?? "";
+  const mots = text.mots;
+  const motGrec = (w: number) => mots?.[Math.floor(w / 2)]?.grec ?? "";
 
-  const loadAnnotations = useMemo(
-    () => () => fetchAnnotations(ref).then(setAnnotations).catch(() => setAnnotations([])),
+  const loadAnnotations = useCallback(
+    () => fetchAnnotations(ref).then(setAnnotations).catch(() => setAnnotations([])),
     [ref],
   );
 
+  const loadForeign = useCallback(async () => {
+    setForeign([]);
+    const lref = linkedRef(ref);
+    if (!lref || !mots) return;
+    try {
+      const nt = parseNtRef(lref);
+      const srcMots: Mot[] | null = nt
+        ? (await loadChapter(nt.book, nt.chapter)).mots
+        : (textById(lref)?.mots ?? null);
+      if (!srcMots) return;
+      const anns = await fetchAnnotations(lref);
+      setForeign(
+        anns
+          .map((a) => remapAnnotation(a, srcMots, mots))
+          .filter((p): p is PlacedAnnotation => p !== null),
+      );
+    } catch {
+      /* lien indisponible : on garde les annotations natives seules */
+    }
+  }, [ref, mots]);
+
+  const reload = useCallback(() => {
+    loadAnnotations();
+    loadForeign();
+  }, [loadAnnotations, loadForeign]);
+
   useEffect(() => {
     loadAnnotations();
+    loadForeign();
     recordView(ref);
-  }, [ref, loadAnnotations]);
+  }, [ref, loadAnnotations, loadForeign]);
 
   // Quitter le mode annotation efface la sélection en cours.
   useEffect(() => {
@@ -71,28 +103,36 @@ export default function Reader({ text, highlight }: { text: Text; highlight: num
     !!user && (user.role === "admin" || (a.userId != null && a.userId === user.id));
 
   // Cartes de rendu : soulignement mot/phrase, soulignement caractère, pastilles.
-  const maps = useMemo(() => {
-    if (!showAnnotations) return null;
+  // Les annotations liées (passage ↔ NT) sont placées à leurs coords remappées,
+  // mais gardent leur enregistrement d'origine pour l'édition/suppression.
+  const { maps, displayById } = useMemo(() => {
+    const displayById = new Map<number, { w: number; end: number | null }>();
+    if (!showAnnotations) return { maps: null, displayById };
     const spanWords = new Map<number, Annotation[]>();
     const charSpots = new Map<string, Annotation[]>();
     const markers = new Map<number, Annotation[]>();
     const push = <K,>(m: Map<K, Annotation[]>, k: K, a: Annotation) =>
       m.set(k, [...(m.get(k) ?? []), a]);
+    const place = (a: Annotation, w: number, end: number | null, g: number | null) => {
+      displayById.set(a.id, { w, end });
+      if (g != null) {
+        push(charSpots, `${w}:${g}`, a);
+        push(markers, w, a);
+      } else if (end != null) {
+        for (let x = w; x <= end; x += 2) push(spanWords, x, a);
+        push(markers, end, a);
+      } else {
+        push(spanWords, w, a);
+        push(markers, w, a);
+      }
+    };
     for (const a of annotations) {
       if (a.wordIndex == null) continue;
-      if (a.graphemeIndex != null) {
-        push(charSpots, `${a.wordIndex}:${a.graphemeIndex}`, a);
-        push(markers, a.wordIndex, a);
-      } else if (a.endWordIndex != null) {
-        for (let w = a.wordIndex; w <= a.endWordIndex; w += 2) push(spanWords, w, a);
-        push(markers, a.endWordIndex, a);
-      } else {
-        push(spanWords, a.wordIndex, a);
-        push(markers, a.wordIndex, a);
-      }
+      place(a, a.wordIndex, a.endWordIndex, a.graphemeIndex);
     }
-    return { spanWords, charSpots, markers };
-  }, [annotations, showAnnotations]);
+    for (const p of foreign) place(p.a, p.w, p.end, p.g);
+    return { maps: { spanWords, charSpots, markers }, displayById };
+  }, [annotations, foreign, showAnnotations]);
 
   const onSelectLetter = (w: number, g: number, cluster: string) => {
     setSel((prev) => {
@@ -147,15 +187,18 @@ export default function Reader({ text, highlight }: { text: Text; highlight: num
   };
 
   const openEditorForExisting = (a: Annotation) => {
-    const from = a.wordIndex ?? 0;
-    const to = a.endWordIndex ?? from;
+    // Mot affiché dans CE texte (remappé si annotation liée), pour le grec.
+    const disp = displayById.get(a.id);
+    const from = disp?.w ?? a.wordIndex ?? 0;
+    const to = disp?.end ?? from;
     const parts: string[] = [];
     for (let w = from; w <= to; w += 2) parts.push(motGrec(w));
     const scopeLabel = a.graphemeIndex != null ? "caractère" : a.endWordIndex != null ? "phrase" : "mot";
+    // ref/wordIndex d'ORIGINE pour la mise à jour : ne déplace pas l'annotation.
     setEditTarget({
-      ref,
+      ref: a.ref,
       verse: a.verse,
-      wordIndex: from,
+      wordIndex: a.wordIndex ?? 0,
       endWordIndex: a.endWordIndex,
       graphemeIndex: a.graphemeIndex,
       grec: parts.join(" ") || motGrec(from),
@@ -172,7 +215,7 @@ export default function Reader({ text, highlight }: { text: Text; highlight: num
       /* ignore */
     }
     setPendingDelete(null);
-    loadAnnotations();
+    reload();
   };
 
   const hasErasmien = !!text.translitErasmien || !!text.mots?.[0]?.erasmien;
@@ -354,7 +397,7 @@ export default function Reader({ text, highlight }: { text: Text; highlight: num
           onSaved={() => {
             setEditTarget(null);
             setSel(null);
-            loadAnnotations();
+            reload();
           }}
         />
       )}
