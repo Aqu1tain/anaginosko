@@ -145,11 +145,11 @@ export default function AdminView() {
           {stats.topRefs.length > 0 && (
             <section className="mt-6">
               <h2 className="mb-2 text-sm font-semibold text-base-content/70">Textes les plus lus</h2>
-              <div className="grid gap-1.5">
+              <div className="grid grid-cols-1 gap-1.5">
                 {stats.topRefs.map((r) => (
-                  <div key={r.ref} className="flex items-center justify-between rounded-xl bg-base-200 px-3 py-2 text-sm">
-                    <span className="font-mono text-xs text-base-content/70">{r.ref}</span>
-                    <span className="font-semibold">{r.views}</span>
+                  <div key={r.ref} className="flex items-center justify-between gap-2 rounded-xl bg-base-200 px-3 py-2 text-sm">
+                    <span className="min-w-0 truncate font-mono text-xs text-base-content/70">{r.ref}</span>
+                    <span className="shrink-0 font-semibold">{r.views}</span>
                   </div>
                 ))}
               </div>
@@ -162,7 +162,7 @@ export default function AdminView() {
         <h2 className="mb-2 text-sm font-semibold text-base-content/70">
           {isAdmin ? "Annotations" : "Mes annotations"} · {annos.length}
         </h2>
-        <div className="grid gap-2">
+        <div className="grid grid-cols-1 gap-2">
           {annos.map((a) => (
             <div key={a.id} className="rounded-2xl border border-base-300 bg-base-100 p-3.5">
               <div className="flex items-start justify-between gap-3">
