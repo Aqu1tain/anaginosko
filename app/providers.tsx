@@ -13,6 +13,7 @@ import {
 import type { GraphemeInfo } from "../src/lib/greek";
 import type { WordContext } from "../src/lib/tokenize";
 import LetterSheet from "../src/components/LetterSheet";
+import HashRedirect from "./_components/HashRedirect";
 
 type SheetState = {
   key: string;
@@ -87,6 +88,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   return (
     <AuthProvider>
       <SheetContext.Provider value={api}>
+        <HashRedirect />
         {children}
         {sheet && (
           <LetterSheet info={sheet.info} word={sheet.word} stage={sheet.stage} onClose={closeSheet} />
