@@ -93,11 +93,25 @@ export const accentLabel = (a: AccentKind): string | null =>
  */
 export type TranslitPiece = { text: string; stressed: boolean };
 
+// Diphtongues : la lettre rouge (accentuée) va sur la 2e voyelle, car l'accent
+// grec porte sur le 2e élément. Les hiatus (« ai/ei/oi » SANS tréma) n'en sont
+// pas et gardent l'accent sur la voyelle réellement marquée.
+const STRESS_SHIFT_DIPH = new Set(["au", "eu", "ou", "ui", "aï", "éï", "oï"]);
+
 export function translitPieces(translit: string): TranslitPiece[] {
+  const chars = [...translit];
+  const isUpper = (c: string) => c !== c.toLowerCase() && c === c.toUpperCase();
+  const red = new Set<number>();
+  for (let i = 0; i < chars.length; i++) {
+    if (!isUpper(chars[i])) continue;
+    const next = chars[i + 1];
+    const pair = (chars[i] + (next ?? "")).toLowerCase();
+    red.add(next && STRESS_SHIFT_DIPH.has(pair) ? i + 1 : i);
+  }
   const pieces: TranslitPiece[] = [];
-  for (const ch of translit) {
-    const stressed = ch !== ch.toLowerCase() && ch === ch.toUpperCase();
-    const text = stressed ? ch.toLowerCase() : ch;
+  for (let i = 0; i < chars.length; i++) {
+    const stressed = red.has(i);
+    const text = chars[i].toLowerCase();
     const last = pieces[pieces.length - 1];
     if (last && last.stressed === stressed) last.text += text;
     else pieces.push({ text, stressed });
