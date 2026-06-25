@@ -28,7 +28,10 @@ const over = (el: HTMLElement | null, p: Pt) => {
 // on attend ce court délai avant de fermer. Hors du cône = fermeture immédiate.
 const GRACE = 120; // ms
 
-export function useSafeHover() {
+// guard = true : garde « safe triangle » au survol (desktop). guard = false :
+// ouverture/fermeture uniquement explicites (tactile / bottom-sheet), sans
+// écoute du pointeur — sinon un scroll fermerait le popup.
+export function useSafeHover({ guard = true }: { guard?: boolean } = {}) {
   const [open, setOpen] = useState(false);
   const triggerRef = useRef<HTMLElement | null>(null);
   const popRef = useRef<HTMLElement | null>(null);
@@ -56,7 +59,7 @@ export function useSafeHover() {
   };
 
   useEffect(() => {
-    if (!open) return;
+    if (!open || !guard) return;
     const onMove = (e: PointerEvent) => {
       const p = { x: e.clientX, y: e.clientY };
       if (over(triggerRef.current, p) || over(popRef.current, p)) {
@@ -76,26 +79,30 @@ export function useSafeHover() {
     };
     document.addEventListener("pointermove", onMove);
     return () => document.removeEventListener("pointermove", onMove);
-  }, [open, close]);
+  }, [open, guard, close]);
 
-  const triggerProps = {
-    onPointerEnter: (e: React.PointerEvent) => {
-      if (e.pointerType !== "mouse") return; // tactile : géré au clic
-      show();
-    },
-    onPointerLeave: (e: React.PointerEvent) => {
-      if (e.pointerType !== "mouse") return;
-      apex.current = { x: e.clientX, y: e.clientY };
-      scheduleClose(GRACE);
-    },
-  };
-  const popProps = {
-    onPointerEnter: () => clearTimer(),
-    onPointerLeave: (e: React.PointerEvent) => {
-      if (e.pointerType !== "mouse") return;
-      close();
-    },
-  };
+  const triggerProps = guard
+    ? {
+        onPointerEnter: (e: React.PointerEvent) => {
+          if (e.pointerType !== "mouse") return; // tactile : géré au clic
+          show();
+        },
+        onPointerLeave: (e: React.PointerEvent) => {
+          if (e.pointerType !== "mouse") return;
+          apex.current = { x: e.clientX, y: e.clientY };
+          scheduleClose(GRACE);
+        },
+      }
+    : {};
+  const popProps = guard
+    ? {
+        onPointerEnter: () => clearTimer(),
+        onPointerLeave: (e: React.PointerEvent) => {
+          if (e.pointerType !== "mouse") return;
+          close();
+        },
+      }
+    : {};
 
   return { open, setOpen, show, close, triggerRef, popRef, triggerProps, popProps };
 }
