@@ -16,6 +16,7 @@ export type AnnoSelection = { from: number; to: number; g: number; scope: AnnoSc
 function GreekText({
   text,
   size,
+  scale = 1,
   translit = "off",
   manuscript = false,
   verseOnly = null,
@@ -32,6 +33,8 @@ function GreekText({
 }: {
   text: Text;
   size: "lg" | "md";
+  /** Multiplicateur de taille du texte grec (contrôle lecteur). */
+  scale?: number;
   translit?: TranslitMode;
   manuscript?: boolean;
   /** Ne rendre que les mots de ce verset (mode étude). */
@@ -152,7 +155,10 @@ function GreekText({
     }
   };
 
-  const greekSize = size === "lg" ? "text-[1.95rem]" : "text-2xl";
+  // Taille de base (rem) × multiplicateur du contrôle lecteur, posée en style
+  // inline ; les enfants (glyphes, interlinéaire en `em`) suivent.
+  const baseRem = size === "lg" ? 1.95 : 1.5;
+  const fontSize = `${(baseRem * scale).toFixed(3)}rem`;
   const containerSpacing = interlinear
     ? manuscript
       ? "leading-snug tracking-wide"
@@ -227,7 +233,8 @@ function GreekText({
       onClick={onClick}
       onMouseDown={onMouseDown}
       onKeyDown={onKeyDown}
-      className={`font-greek ${greekSize} ${containerSpacing}`}
+      style={{ fontSize }}
+      className={`font-greek ${containerSpacing}`}
     >
       {shown.map(([w, token], idx) => {
         const glyphs = renderGlyphs(token.word.graphemes, w);
@@ -259,7 +266,7 @@ function GreekText({
               {markerFor(w)}
             </span>
             {tr && (
-              <span className="mt-0.5 font-sans text-[0.8rem] leading-tight text-base-content/65">
+              <span className="mt-0.5 font-sans text-[0.42em] leading-tight text-base-content/65">
                 <Translit value={tr} stressedClass="text-accent" />
               </span>
             )}

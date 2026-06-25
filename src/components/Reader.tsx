@@ -61,6 +61,9 @@ export default function Reader({ text }: { text: Text }) {
     isPassage ? "anaginosko:annotations:passage" : "anaginosko:annotations",
     isPassage ? false : true,
   );
+  const [textScale, setTextScale] = usePersistentState<number>("anaginosko:textScale", 1);
+  const adjustScale = (d: number) =>
+    setTextScale((s) => Math.min(1.6, Math.max(0.8, Math.round((s + d) * 100) / 100)));
 
   const { user } = useAuth();
   const canAnnotate = user?.role === "philologist" || user?.role === "admin";
@@ -306,6 +309,32 @@ export default function Reader({ text }: { text: Text }) {
           </div>
         )}
 
+        <div className="join wide:w-full" role="group" aria-label="Taille du texte">
+          <button
+            onClick={() => adjustScale(-0.1)}
+            disabled={textScale <= 0.8}
+            aria-label="Réduire la taille du texte"
+            className="btn join-item btn-sm sm:btn-md btn-outline border-base-300 wide:flex-1"
+          >
+            <span className="text-xs font-semibold">A</span>
+          </button>
+          <button
+            onClick={() => setTextScale(1)}
+            aria-label="Taille par défaut"
+            className="btn join-item btn-sm sm:btn-md btn-outline border-base-300 tabular-nums text-xs wide:flex-1"
+          >
+            {Math.round(textScale * 100)}%
+          </button>
+          <button
+            onClick={() => adjustScale(0.1)}
+            disabled={textScale >= 1.6}
+            aria-label="Agrandir la taille du texte"
+            className="btn join-item btn-sm sm:btn-md btn-outline border-base-300 wide:flex-1"
+          >
+            <span className="text-lg font-semibold">A</span>
+          </button>
+        </div>
+
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2 wide:flex-col wide:items-start">
           {hasFrench && (
             <label className="flex cursor-pointer items-center gap-2 text-sm">
@@ -346,6 +375,7 @@ export default function Reader({ text }: { text: Text }) {
               <GreekText
                 text={text}
                 size="lg"
+                scale={textScale}
                 translit={mode}
                 manuscript={manuscript}
                 verseOnly={v}
@@ -364,7 +394,7 @@ export default function Reader({ text }: { text: Text }) {
         </div>
       ) : (
         <div className="mt-5">
-          <GreekText text={text} size="lg" translit={mode} manuscript={manuscript} highlightWord={highlight} {...greekProps} />
+          <GreekText text={text} size="lg" scale={textScale} translit={mode} manuscript={manuscript} highlightWord={highlight} {...greekProps} />
         </div>
       )}
 
