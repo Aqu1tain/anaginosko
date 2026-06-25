@@ -17,25 +17,57 @@ const collections = [
   },
 ];
 
-const passageTexts = passages.textes.map((t) => ({
-  id: `passages-${t.id}`,
-  collection: "passages",
-  niveau: t.niveau,
-  reference: t.reference,
-  grec: t.grec,
-  francais: t.francais || null,
-  translitErasmien: t.erasmien_continu || null,
-  translitRestituee: t.restituee_continu || null,
-  mots: (t.mots || []).map((m) => ({
+// Chaque passage est un EXTRAIT d'un chapitre du NT. On dérive son texte et ses
+// translittérations directement des données NT (source de vérité : η=i en
+// restituée, lemmes, etc.), pour qu'ils restent strictement identiques à
+// l'évangile. Du passage on ne garde que ses métadonnées (référence, niveau,
+// traduction) et l'analyse morphologique `morph`, absente des données NT.
+const PASSAGE_TO_NT = {
+  1: ["jn", 1], 2: ["mt", 5], 3: ["1co", 13], 4: ["php", 2],
+  5: ["jn", 15], 6: ["ro", 8], 7: ["lk", 2], 8: ["lk", 15],
+  9: ["1jn", 1], 10: ["heb", 11], 11: ["re", 21], 12: ["mt", 6],
+};
+const ntCache = {};
+const loadNt = (book, ch) => (ntCache[`${book}/${ch}`] ??= read(`public/nt/${book}/${ch}.json`));
+const normGrec = (s) => s.normalize("NFC").replace(/[·,.;:’ʼ]/g, "").trim();
+
+const passageTexts = passages.textes.map((t) => {
+  const ref = PASSAGE_TO_NT[t.id];
+  if (!ref) throw new Error(`passage ${t.id} : aucun chapitre NT associé`);
+  const [book, ch] = ref;
+  const nt = loadNt(book, ch);
+  const verses = [...new Set((t.mots || []).map((m) => m.verse).filter((v) => v != null))];
+  const slice = nt.mots.filter((m) => verses.includes(m.verse));
+
+  // Garde-fou : la fusion positionnelle (morph du passage sur les mots du NT)
+  // n'est sûre que si les deux séquences concordent mot à mot.
+  const src = t.mots || [];
+  const aligned = slice.length === src.length && slice.every((m, i) => normGrec(m.grec) === normGrec(src[i].grec));
+  if (!aligned) throw new Error(`passage ${t.id} (${book} ${ch}) ne s'aligne plus sur le NT (${src.length} vs ${slice.length} mots)`);
+
+  const mots = slice.map((m, i) => ({
     grec: m.grec,
     erasmien: m.erasmien,
     restituee: m.restituee,
     verse: m.verse ?? null,
     lemme: m.lemme ?? null,
     nature: m.nature ?? null,
-    morph: m.morph ?? null,
-  })),
-}));
+    morph: src[i].morph ?? null,
+  }));
+  const join = (key) => mots.map((m) => m[key]).filter(Boolean).join(" ");
+
+  return {
+    id: `passages-${t.id}`,
+    collection: "passages",
+    niveau: t.niveau,
+    reference: t.reference,
+    grec: mots.map((m) => m.grec).join(" "),
+    francais: t.francais || null,
+    translitErasmien: join("erasmien"),
+    translitRestituee: join("restituee"),
+    mots,
+  };
+});
 
 const out = {
   generatedFrom: ["data-sources/passages.json"],
