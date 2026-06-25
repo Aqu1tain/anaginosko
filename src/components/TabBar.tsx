@@ -25,9 +25,9 @@ type Tab = { href: string; label: string; icon: React.ReactNode; active: boolean
 export default function TabBar({ route }: { route: Route }) {
   const reading = route.name === "library" || route.name === "text";
   const tabs: Tab[] = [
-    { href: "#/", label: "Lire", icon: ICONS.read, active: reading },
-    { href: "#/alphabet", label: "Alphabet", icon: ICONS.alphabet, active: route.name === "alphabet" },
-    { href: "#/concordance", label: "Concordance", icon: ICONS.concordance, active: route.name === "concordance" },
+    { href: "/", label: "Lire", icon: ICONS.read, active: reading },
+    { href: "/alphabet", label: "Alphabet", icon: ICONS.alphabet, active: route.name === "alphabet" },
+    { href: "/concordance", label: "Concordance", icon: ICONS.concordance, active: route.name === "concordance" },
   ];
 
   return (

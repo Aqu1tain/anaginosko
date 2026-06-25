@@ -46,7 +46,7 @@ export function NtToc() {
               return (
                 <a
                   key={id}
-                  href={`#/nt/${id}`}
+                  href={`/nt/${id}`}
                   className="flex items-center justify-between gap-2 rounded-box border border-base-300 bg-base-100 px-3.5 py-2.5 transition-colors hover:border-primary/40"
                 >
                   <span className="min-w-0 truncate font-medium">{b.name}</span>
@@ -90,7 +90,7 @@ export function NtBookView({ book }: { book: string }) {
         {Array.from({ length: b.chapters }, (_, i) => i + 1).map((ch) => (
           <a
             key={ch}
-            href={`#/nt/${book}/${ch}`}
+            href={`/nt/${book}/${ch}`}
             className="grid aspect-square place-items-center rounded-box border border-base-300 bg-base-100 text-lg font-medium transition-colors hover:border-primary/40 hover:bg-base-200"
           >
             {ch}

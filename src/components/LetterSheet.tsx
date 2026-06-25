@@ -199,7 +199,7 @@ export default function LetterSheet({
                   </p>
                 )}
                 <a
-                  href={`#/concordance/${encodeURIComponent(word.lemme)}`}
+                  href={`/concordance/${encodeURIComponent(word.lemme)}`}
                   className="mt-1.5 inline-block text-sm font-medium text-accent"
                 >
                   définition complète & occurrences →

@@ -43,7 +43,7 @@ export default async function ChapterPage({
 
   return (
     <>
-      <Reader text={text} highlight={null} />
+      <Reader text={text} />
       <nav className="mt-8 flex items-center justify-between gap-3">
         {ch > 1 ? (
           <Link href={`/nt/${book}/${ch - 1}`} className="btn btn-sm btn-outline border-base-300">

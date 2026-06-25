@@ -29,5 +29,5 @@ export default async function TextPage({ params }: { params: Promise<{ id: strin
   const { id } = await params;
   const text = textById(id);
   if (!text) notFound();
-  return <Reader text={text} highlight={null} />;
+  return <Reader text={text} />;
 }

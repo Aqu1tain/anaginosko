@@ -9,7 +9,7 @@ function preview(grec: string, words = 7): string {
 function TextCard({ text }: { text: Text }) {
   return (
     <a
-      href={`#/text/${text.id}`}
+      href={`/text/${text.id}`}
       className="card min-w-0 border border-base-300 bg-base-100 transition-colors hover:border-primary/40"
     >
       <div className="card-body min-w-0 gap-1.5 p-4">

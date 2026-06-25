@@ -83,10 +83,10 @@ export default function TopBar({
 
   const backHref =
     route.name === "ntBook"
-      ? "#/nt"
+      ? "/nt"
       : route.name === "ntChapter"
-        ? `#/nt/${route.book}`
-        : "#/";
+        ? `/nt/${route.book}`
+        : "/";
 
   return (
     <header className="sticky top-0 z-30 border-b border-base-300 bg-base-100/85 pt-[env(safe-area-inset-top)] backdrop-blur-md">

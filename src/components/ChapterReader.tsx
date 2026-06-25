@@ -37,7 +37,7 @@ export default function ChapterReader({
     return (
       <div className="py-20 text-center text-base-content/70">
         <p>Chapitre introuvable.</p>
-        <a href={`#/nt/${book}`} className="link link-primary mt-3 inline-block">
+        <a href={`/nt/${book}`} className="link link-primary mt-3 inline-block">
           Retour au livre
         </a>
       </div>
@@ -60,17 +60,17 @@ export default function ChapterReader({
       <Reader key={text.id} text={text} highlight={highlight} />
       <nav className="mt-8 flex items-center justify-between gap-3">
         {hasPrev ? (
-          <a href={`#/nt/${book}/${chapter - 1}`} className="btn btn-sm btn-outline border-base-300">
+          <a href={`/nt/${book}/${chapter - 1}`} className="btn btn-sm btn-outline border-base-300">
             ← Chapitre {chapter - 1}
           </a>
         ) : (
           <span />
         )}
-        <a href={`#/nt/${book}`} className="btn btn-sm btn-ghost">
+        <a href={`/nt/${book}`} className="btn btn-sm btn-ghost">
           Chapitres
         </a>
         {hasNext ? (
-          <a href={`#/nt/${book}/${chapter + 1}`} className="btn btn-sm btn-outline border-base-300">
+          <a href={`/nt/${book}/${chapter + 1}`} className="btn btn-sm btn-outline border-base-300">
             Chapitre {chapter + 1} →
           </a>
         ) : (
