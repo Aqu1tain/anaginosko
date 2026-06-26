@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import TopBar from "./_components/TopBar";
 import TabBar from "./_components/TabBar";
+import SideNav from "./_components/SideNav";
 
 export default function Shell({ children }: { children: React.ReactNode }) {
   // dark = null tant qu'on n'a pas lu le thème réellement appliqué par le script
@@ -26,9 +27,12 @@ export default function Shell({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-dvh bg-base-100 text-base-content">
       <TopBar dark={dark ?? false} onToggleTheme={() => setDark((d) => !d)} />
-      <main className="mx-auto w-full max-w-2xl px-4 pb-[calc(5rem+env(safe-area-inset-bottom))] wide:pb-16">
-        {children}
-      </main>
+      <div className="mx-auto flex w-full max-w-2xl px-4 wide:max-w-[84rem] wide:gap-8 wide:px-6">
+        <SideNav />
+        <main className="min-w-0 flex-1 pb-[calc(5rem+env(safe-area-inset-bottom))] wide:pb-16">
+          {children}
+        </main>
+      </div>
       <TabBar />
     </div>
   );
