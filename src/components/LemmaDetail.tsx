@@ -6,7 +6,7 @@ import Breadcrumb from "../../app/_components/Breadcrumb";
 import DistributionProfile from "./DistributionProfile";
 import Collocations from "./Collocations";
 import { glossFor } from "../data/glosses";
-import { pickBaillyEntry } from "../lib/bailly";
+import { pickBaillyEntry, baillyDefinition } from "../lib/bailly";
 import {
   BOOK_NAMES,
   type Colloc,
@@ -59,7 +59,9 @@ function Definition({ lemma }: { lemma: string }) {
         if (!entry) { if (alive) setState(text ? "done" : "absent"); return; }
         const full = await fetch(`https://api.bailly.app/entry/${encodeURIComponent(entry.uri)}?fields=definition`).then((r) => r.json());
         if (!alive) return;
-        setText(full?.data?.entry?.definition ?? entry.excerpt ?? text);
+        // `||` et pas `??` : la définition de tête peut être une chaîne vide
+        // (entrée-conteneur), il faut alors retomber sur les sous-entrées / l'excerpt.
+        setText(baillyDefinition(full?.data?.entry) || entry.excerpt || text);
         setUri(entry.uri);
         setState("done");
       } catch {
@@ -69,7 +71,9 @@ function Definition({ lemma }: { lemma: string }) {
     return () => { alive = false; };
   }, [lemma]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  if (state === "absent" && !text) return null;
+  // Rien à montrer et plus de recherche en cours : on masque la carte (évite le
+  // « Recherche… » perpétuel quand Bailly n'a pas de définition exploitable).
+  if (!text && state !== "loading") return null;
   return (
     <div className="mt-3 rounded-box bg-base-200 px-4 py-3">
       <div className="text-[0.7rem] font-medium uppercase tracking-wide text-base-content/70">

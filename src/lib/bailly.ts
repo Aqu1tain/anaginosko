@@ -33,3 +33,18 @@ export function pickBaillyEntry(entries: BaillyEntry[], lemma: string): BaillyEn
     entries[0]
   );
 }
+
+type DefEntry = { definition?: string; children?: DefEntry[] };
+
+// Définition d'une entrée renvoyée par /entry. Pour certains mots (le relatif ὅς,
+// etc.) la définition de tête est vide et le texte vit dans `children` ; on
+// descend donc jusqu'à la première définition non vide.
+export function baillyDefinition(entry: DefEntry | null | undefined): string {
+  if (!entry) return "";
+  if (entry.definition?.trim()) return entry.definition;
+  for (const child of entry.children ?? []) {
+    const d = baillyDefinition(child);
+    if (d) return d;
+  }
+  return "";
+}
