@@ -16,7 +16,7 @@ export default function ResumeReading() {
       className="mt-4 flex items-center justify-between gap-3 rounded-box border border-primary/30 bg-primary/5 px-4 py-3 transition-colors hover:border-primary/50"
     >
       <span className="min-w-0">
-        <span className="block text-xs font-semibold uppercase tracking-wide text-primary/80">
+        <span className="block text-xs font-semibold uppercase tracking-wide text-primary">
           Reprendre la lecture
         </span>
         <span className="block truncate font-semibold">{last.label}</span>

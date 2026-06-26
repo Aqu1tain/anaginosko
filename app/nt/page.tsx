@@ -19,7 +19,7 @@ export default async function NtTocPage() {
 
       {NT_GROUPS.map((group) => (
         <section key={group.title} className="pt-5">
-          <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-base-content/55">
+          <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-base-content/70">
             {group.title}
           </h2>
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">

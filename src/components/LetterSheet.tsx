@@ -48,7 +48,7 @@ function SpeakRow({
   // gap-1.5 de chaque côté → faux espaces autour des lettres rouges.
   const content = (
     <span className="min-w-0">
-      <span className="text-sm text-base-content/55">{label}&nbsp;</span>
+      <span className="text-sm text-base-content/70">{label}&nbsp;</span>
       <Translit value={value} stressedClass="text-accent" />
     </span>
   );
@@ -70,7 +70,7 @@ function SpeakRow({
         <button
           onClick={onEdit}
           aria-label="Ajuster la prononciation"
-          className="btn btn-ghost btn-xs btn-circle shrink-0 text-base-content/45"
+          className="btn btn-ghost btn-xs btn-circle shrink-0 text-base-content/70"
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             <path d="M12 20h9" />
@@ -110,10 +110,10 @@ function PronunciationEditor({
 }) {
   return (
     <div className="mt-2 rounded-box border border-base-300 bg-base-200/60 p-3">
-      <div className="text-[0.7rem] font-medium uppercase tracking-wide text-base-content/55">
+      <div className="text-[0.7rem] font-medium uppercase tracking-wide text-base-content/70">
         Prononciation {system === "erasmien" ? "érasmienne" : "restituée"}
       </div>
-      <label className="mt-2 block text-xs text-base-content/55">
+      <label className="mt-2 block text-xs text-base-content/70">
         Transcription (latin, MAJUSCULE = syllabe accentuée)
       </label>
       <input
@@ -123,7 +123,7 @@ function PronunciationEditor({
         className="input input-sm mt-1 w-full"
         aria-label="Transcription en caractères latins"
       />
-      <label className="mt-2 block text-xs text-base-content/55">Phonème (IPA)</label>
+      <label className="mt-2 block text-xs text-base-content/70">Phonème (IPA)</label>
       <input
         value={ipa}
         onChange={(e) => onIpaChange(e.target.value)}
@@ -156,7 +156,7 @@ function PronunciationEditor({
 function Pron({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex-1 rounded-box bg-base-200 px-3 py-2.5">
-      <div className="text-[0.7rem] font-medium uppercase tracking-wide text-base-content/55">
+      <div className="text-[0.7rem] font-medium uppercase tracking-wide text-base-content/70">
         {label}
       </div>
       <div className="mt-0.5 text-lg font-medium">{value}</div>
@@ -324,7 +324,7 @@ export default function LetterSheet({
               </div>
               <div className="min-w-0">
                 <div className="text-xl font-semibold">{letter.name}</div>
-                <div className="font-greek text-base text-base-content/60">
+                <div className="font-greek text-base text-base-content/70">
                   {letter.upper} {letter.lower}
                   {letter.final ? ` ${letter.final}` : ""}
                   <span className="font-sans"> · « {letter.latin} »</span>
@@ -353,7 +353,7 @@ export default function LetterSheet({
             )}
 
             {word && (
-              <p className="mt-4 border-t border-base-300 pt-3 text-sm text-base-content/55">
+              <p className="mt-4 border-t border-base-300 pt-3 text-sm text-base-content/70">
                 Touchez encore la lettre pour le mot entier →
               </p>
             )}
@@ -364,7 +364,7 @@ export default function LetterSheet({
           <div>
             <div className="flex items-start gap-4">
               <div className="min-w-0">
-                <div className="text-[0.7rem] font-medium uppercase tracking-wide text-base-content/55">
+                <div className="text-[0.7rem] font-medium uppercase tracking-wide text-base-content/70">
                   Le mot
                 </div>
                 <div className="font-greek text-3xl">{word.grec}</div>
@@ -429,7 +429,7 @@ export default function LetterSheet({
             </div>
             {word.morph && (
               <div className="mt-3 rounded-box bg-base-200 px-3 py-2">
-                <div className="text-[0.7rem] font-medium uppercase tracking-wide text-base-content/55">
+                <div className="text-[0.7rem] font-medium uppercase tracking-wide text-base-content/70">
                   Analyse
                 </div>
                 <div className="mt-0.5 text-sm">
@@ -441,16 +441,16 @@ export default function LetterSheet({
             {word.lemme && (
               <div className="mt-3">
                 <div className="text-sm">
-                  <span className="text-base-content/55">Lemme&nbsp;</span>
+                  <span className="text-base-content/70">Lemme&nbsp;</span>
                   <span className="font-greek font-medium">{word.lemme}</span>
                   {!word.morph && word.nature ? (
-                    <span className="text-base-content/55"> · {word.nature}</span>
+                    <span className="text-base-content/70"> · {word.nature}</span>
                   ) : null}
                 </div>
                 {anyGloss(word.lemme) && (
                   <p className="mt-1 text-sm leading-snug text-base-content/70">
                     {anyGloss(word.lemme)!.excerpt}
-                    <span className="text-base-content/45"> · Bailly</span>
+                    <span className="text-base-content/70"> · Bailly</span>
                   </p>
                 )}
                 <Link

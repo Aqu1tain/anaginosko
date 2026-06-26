@@ -147,7 +147,7 @@ export default function Tour({
         </div>
 
         <div className="mt-3 flex items-center justify-between gap-1.5">
-          <button onClick={onDone} className="btn btn-ghost btn-sm px-3 text-base-content/55">
+          <button onClick={onDone} className="btn btn-ghost btn-sm px-3 text-base-content/70">
             Passer
           </button>
           <div className="flex items-center gap-1.5">

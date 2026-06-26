@@ -45,7 +45,7 @@ function Stat({ label, value, path }: { label: string; value: number; path: stri
       </span>
       <span className="min-w-0">
         <span className="block text-xl font-bold leading-none">{value}</span>
-        <span className="block truncate text-xs text-base-content/55">{label}</span>
+        <span className="block truncate text-xs text-base-content/70">{label}</span>
       </span>
     </div>
   );
@@ -108,7 +108,7 @@ export default function AdminView() {
   return (
     <div className="pb-10 pt-6">
       <h1 className="text-2xl font-bold">Tableau de bord</h1>
-      <p className="mt-0.5 text-sm text-base-content/55">
+      <p className="mt-0.5 text-sm text-base-content/70">
         {isAdmin ? "Fréquentation et modération des annotations." : "Gérez vos annotations."}
       </p>
 
@@ -134,7 +134,7 @@ export default function AdminView() {
                   </div>
                 ))}
               </div>
-              <div className="mt-1 flex justify-between text-[0.65rem] text-base-content/40">
+              <div className="mt-1 flex justify-between text-[0.65rem] text-base-content/70">
                 <span>{stats.viewsByDay[0]?.day?.slice(5) ?? ""}</span>
                 <span>max {maxDay}</span>
                 <span>{stats.viewsByDay.at(-1)?.day?.slice(5) ?? ""}</span>
@@ -188,9 +188,9 @@ export default function AdminView() {
                       <span className="min-w-0 truncate">{a.source}</span>
                     </a>
                   ) : (
-                    <div className="mt-1 text-xs italic text-base-content/55 [overflow-wrap:anywhere]">{a.source}</div>
+                    <div className="mt-1 text-xs italic text-base-content/70 [overflow-wrap:anywhere]">{a.source}</div>
                   )}
-                  <div className="mt-1.5 flex flex-wrap items-center gap-x-2 text-xs text-base-content/45">
+                  <div className="mt-1.5 flex flex-wrap items-center gap-x-2 text-xs text-base-content/70">
                     <a href={refHref(a.ref, a.wordIndex)} className="font-medium text-primary hover:underline">
                       {locationLabel(a.ref)}{a.verse != null ? `, v.${a.verse}` : ""} →
                     </a>
@@ -213,7 +213,7 @@ export default function AdminView() {
             </div>
           ))}
           {annos.length === 0 && (
-            <p className="text-sm text-base-content/55">Aucune annotation pour l’instant.</p>
+            <p className="text-sm text-base-content/70">Aucune annotation pour l’instant.</p>
           )}
         </div>
       </section>
@@ -234,7 +234,7 @@ export default function AdminView() {
           <div className="absolute inset-0 bg-black/45 backdrop-blur-sm" onClick={() => setPendingDelete(null)} aria-hidden="true" />
           <div role="dialog" aria-label="Confirmer la suppression" className="relative w-full max-w-xs rounded-2xl border border-base-300 bg-base-100 p-5 shadow-2xl">
             <p className="text-sm">Supprimer cette annotation&nbsp;?</p>
-            <p className="mt-1 line-clamp-3 text-xs text-base-content/55">{pendingDelete.body}</p>
+            <p className="mt-1 line-clamp-3 text-xs text-base-content/70">{pendingDelete.body}</p>
             <div className="mt-4 flex justify-end gap-2">
               <button onClick={() => setPendingDelete(null)} className="btn btn-ghost btn-sm">
                 Annuler

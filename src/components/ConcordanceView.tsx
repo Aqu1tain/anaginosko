@@ -94,20 +94,20 @@ function Definition({ lemma }: { lemma: string }) {
   if (state === "absent" && !text) return null;
   return (
     <div className="mt-3 rounded-box bg-base-200 px-4 py-3">
-      <div className="text-[0.7rem] font-medium uppercase tracking-wide text-base-content/65">
+      <div className="text-[0.7rem] font-medium uppercase tracking-wide text-base-content/70">
         Définition · Bailly
       </div>
       {text ? (
         <div className="mt-1.5 space-y-1.5">{formatDefinition(text)}</div>
       ) : (
-        <p className="mt-1 text-sm text-base-content/55">Recherche…</p>
+        <p className="mt-1 text-sm text-base-content/70">Recherche…</p>
       )}
       {state === "loading" && text && (
-        <p className="mt-1 text-xs text-base-content/45">… définition complète en cours</p>
+        <p className="mt-1 text-xs text-base-content/70">… définition complète en cours</p>
       )}
       {uri && (
         <a
-          className="link mt-2 inline-block text-xs text-base-content/65"
+          className="link mt-2 inline-block text-xs text-base-content/70"
           href={`https://bailly.app/${encodeURIComponent(lemma)}`}
           target="_blank"
           rel="noreferrer"
@@ -127,8 +127,8 @@ function LemmaRow({ entry }: { entry: LemmaEntry }) {
     >
       <span className="min-w-0 flex-1">
         <span className="font-greek text-xl">{entry.lemma}</span>
-        <span className="ml-2 text-sm text-base-content/65">{entry.translitR}</span>
-        <span className="ml-1.5 text-xs text-base-content/40">· {entry.translit}</span>
+        <span className="ml-2 text-sm text-base-content/70">{entry.translitR}</span>
+        <span className="ml-1.5 text-xs text-base-content/70">· {entry.translit}</span>
       </span>
       <span className="shrink-0 text-xs text-base-content/70">{entry.nature}</span>
       <span className="badge badge-sm badge-ghost shrink-0">{entry.count}</span>
@@ -166,7 +166,7 @@ function List({ index }: { index: LemmaEntry[] }) {
       />
       {!query && examples.length > 0 && (
         <div className="mt-3 flex flex-wrap items-center gap-1.5">
-          <span className="text-xs font-medium uppercase tracking-wide text-base-content/45">
+          <span className="text-xs font-medium uppercase tracking-wide text-base-content/70">
             Exemples
           </span>
           {examples.map((e) => (
@@ -176,7 +176,7 @@ function List({ index }: { index: LemmaEntry[] }) {
               className="badge badge-lg badge-ghost gap-1.5 font-greek hover:badge-primary"
             >
               {e.lemma}
-              <span className="text-[0.65rem] text-base-content/50">{e.count}</span>
+              <span className="text-[0.65rem] text-base-content/70">{e.count}</span>
             </Link>
           ))}
         </div>
@@ -217,7 +217,7 @@ function Occurrences({ entry }: { entry: LemmaEntry }) {
   return (
     <div className="mt-4 grid gap-1.5">
       {entry.count > occ.length && (
-        <p className="text-sm text-base-content/60">
+        <p className="text-sm text-base-content/70">
           {occ.length} premières occurrences sur {entry.count}.
         </p>
       )}
@@ -250,7 +250,7 @@ function Detail({ entry }: { entry: LemmaEntry }) {
       <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
         <h1 className="font-greek text-3xl">{entry.lemma}</h1>
         <span className="text-sm text-base-content/70">{entry.translitR}</span>
-        <span className="text-xs text-base-content/45">érasmien&nbsp;: {entry.translit}</span>
+        <span className="text-xs text-base-content/70">érasmien&nbsp;: {entry.translit}</span>
         <span className="text-sm text-base-content/70">· {entry.nature}</span>
       </div>
       <p className="mt-1 text-sm text-base-content/70">

@@ -277,7 +277,7 @@ function GreekText({
               {markerFor(w)}
             </span>
             {tr && (
-              <span className="mt-0.5 font-sans text-[0.42em] leading-tight text-base-content/65">
+              <span className="mt-0.5 font-sans text-[0.42em] leading-tight text-base-content/70">
                 <Translit value={tr} stressedClass="text-accent" />
               </span>
             )}

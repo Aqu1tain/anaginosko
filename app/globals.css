@@ -56,8 +56,10 @@
   --color-primary-content: #0d1322;
   --color-secondary: #8f95d3;
   --color-secondary-content: #0d1322;
-  --color-accent: #d81159;
-  --color-accent-content: #fff7fa;
+  /* Accent éclairci pour le thème sombre : lisible comme TEXTE sur les fonds
+     sombres (AA), avec un accent-content foncé pour le texte SUR l'accent. */
+  --color-accent: #f07497;
+  --color-accent-content: #2b0a13;
   --color-neutral: #f6f7eb;
   --color-neutral-content: #16181d;
 
@@ -158,6 +160,16 @@ body {
   }
 }
 
+/* Rouge Tipeee pour le TEXTE (titre/CTA du bandeau de soutien), adapté au thème
+   pour respecter le contraste AA : plus foncé sur clair, plus clair sur sombre.
+   Le rouge de marque (#d84759) reste pour les bordures/fonds décoratifs. */
+[data-theme="anaginosko"] {
+  --tipeee-text: #a4263a;
+}
+[data-theme="anaginosko-dark"] {
+  --tipeee-text: #ea5d6e;
+}
+
 .glyph {
   cursor: pointer;
   border-radius: 4px;
@@ -228,7 +240,7 @@ body {
   font-weight: 600;
   vertical-align: super;
   color: var(--color-base-content);
-  opacity: 0.4;
+  opacity: 0.75;
   margin-right: 0.2em;
   user-select: none;
 }

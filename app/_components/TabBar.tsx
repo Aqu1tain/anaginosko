@@ -52,7 +52,7 @@ export default function TabBar() {
               key={t.label}
               href={t.href}
               aria-current={t.active ? "page" : undefined}
-              className={`flex flex-1 flex-col items-center justify-center gap-0.5 py-2 text-[0.7rem] font-medium transition-colors ${t.active ? "text-primary" : "text-base-content/65 hover:text-base-content"}`}
+              className={`flex flex-1 flex-col items-center justify-center gap-0.5 py-2 text-[0.7rem] font-medium transition-colors ${t.active ? "text-primary" : "text-base-content/70 hover:text-base-content"}`}
             >
               {t.icon}
               <span>{t.label}</span>
@@ -67,7 +67,7 @@ export default function TabBar() {
             key={t.label}
             href={t.href}
             aria-current={t.active ? "page" : undefined}
-            className={`group flex flex-col items-center gap-1 text-[0.7rem] font-medium transition-colors ${t.active ? "text-primary" : "text-base-content/65 hover:text-base-content"}`}
+            className={`group flex flex-col items-center gap-1 text-[0.7rem] font-medium transition-colors ${t.active ? "text-primary" : "text-base-content/70 hover:text-base-content"}`}
           >
             <span className={`grid h-11 w-11 place-items-center rounded-2xl transition-colors ${t.active ? "bg-primary/12 text-primary" : "group-hover:bg-base-200"}`}>
               {t.icon}

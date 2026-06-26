@@ -61,7 +61,7 @@ const SCOPES: { id: AnnoScope; label: string }[] = [
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="flex w-full flex-col gap-1">
-      <span className="px-0.5 text-[0.6rem] font-semibold uppercase tracking-wide text-base-content/45">
+      <span className="px-0.5 text-[0.6rem] font-semibold uppercase tracking-wide text-base-content/70">
         {label}
       </span>
       {children}
@@ -536,7 +536,7 @@ export default function Reader({ text }: { text: Text }) {
                 setTipSeen(false);
                 setSettingsOpen(false);
               }}
-              className="mt-1 self-start text-xs font-medium text-base-content/55 underline-offset-2 hover:underline"
+              className="mt-1 self-start text-xs font-medium text-base-content/70 underline-offset-2 hover:underline"
             >
               Revoir le tutoriel
             </button>
@@ -568,7 +568,7 @@ export default function Reader({ text }: { text: Text }) {
               </p>
             </div>
           ))}
-          <p className="mt-3 text-xs text-base-content/50">
+          <p className="mt-3 text-xs text-base-content/70">
             Traduction : Bible Crampon (néo-Crampon, domaine public).
           </p>
         </div>
@@ -596,7 +596,7 @@ export default function Reader({ text }: { text: Text }) {
               </div>
             </div>
           ))}
-          <p className="mt-3 text-xs text-base-content/50">
+          <p className="mt-3 text-xs text-base-content/70">
             Traduction : Bible Crampon (néo-Crampon, domaine public).
           </p>
         </div>
@@ -667,7 +667,7 @@ export default function Reader({ text }: { text: Text }) {
             <div className="absolute inset-0 bg-black/45 backdrop-blur-sm" onClick={() => setPendingDelete(null)} aria-hidden="true" />
             <div role="dialog" aria-label="Confirmer la suppression" className="relative w-full max-w-xs rounded-2xl border border-base-300 bg-base-100 p-5 shadow-2xl">
               <p className="text-sm">Supprimer cette annotation&nbsp;?</p>
-              <p className="mt-1 line-clamp-3 text-xs text-base-content/55">{pendingDelete.body}</p>
+              <p className="mt-1 line-clamp-3 text-xs text-base-content/70">{pendingDelete.body}</p>
               <div className="mt-4 flex justify-end gap-2">
                 <button onClick={() => setPendingDelete(null)} className="btn btn-ghost btn-sm">
                   Annuler

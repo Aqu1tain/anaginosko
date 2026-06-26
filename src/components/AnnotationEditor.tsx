@@ -81,7 +81,7 @@ export default function AnnotationEditor({
         aria-label={editing ? "Modifier l’annotation" : "Ajouter une annotation"}
         className="relative w-full max-w-lg rounded-t-3xl border border-base-300 bg-base-100 p-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))] shadow-2xl sm:rounded-3xl sm:pb-5"
       >
-        <div className="mb-1 flex flex-wrap items-center gap-2 text-xs text-base-content/55">
+        <div className="mb-1 flex flex-wrap items-center gap-2 text-xs text-base-content/70">
           <span className="badge badge-sm badge-primary badge-soft capitalize">{target.scopeLabel}</span>
           <span className="font-mono">{target.ref}</span>
           {target.verse != null && <span>v. {target.verse}</span>}
@@ -115,7 +115,7 @@ export default function AnnotationEditor({
 
         <label className="mt-3 block">
           <span className="text-sm font-medium">
-            Lien <span className="font-normal text-base-content/45">(optionnel)</span>
+            Lien <span className="font-normal text-base-content/70">(optionnel)</span>
           </span>
           <input
             type="url"

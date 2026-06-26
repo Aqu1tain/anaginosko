@@ -47,13 +47,13 @@ function Verses({ occ, row }: { occ: Occ[]; row: Row }) {
           className="flex items-center gap-2 rounded px-1.5 py-1 text-sm transition-colors hover:bg-base-200"
         >
           <span className="font-greek min-w-0 flex-1 truncate">{o.f}</span>
-          <span className="shrink-0 text-xs text-base-content/65">
+          <span className="shrink-0 text-xs text-base-content/70">
             {row.name} {o.c}:{o.v}
           </span>
         </Link>
       ))}
       {row.count > verses.length && (
-        <p className="px-1.5 text-xs text-base-content/45">
+        <p className="px-1.5 text-xs text-base-content/70">
           {verses.length} premières sur {row.count}.
         </p>
       )}
@@ -125,7 +125,7 @@ export default function DistributionProfile({ entry }: { entry: LemmaEntry }) {
         >
           <div className="flex items-baseline justify-between gap-2">
             <span className="min-w-0 truncate text-sm font-medium">{r.name}</span>
-            <span className="shrink-0 text-xs tabular-nums text-base-content/60">{label(r)}</span>
+            <span className="shrink-0 text-xs tabular-nums text-base-content/70">{label(r)}</span>
           </div>
           <div className="mt-1.5 h-2.5 overflow-hidden rounded-full bg-base-200">
             <div
@@ -155,13 +155,13 @@ export default function DistributionProfile({ entry }: { entry: LemmaEntry }) {
               <div className="mb-0.5 flex items-center gap-1.5">
                 <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: g.color }} />
                 <span className="text-xs font-semibold">{g.title}</span>
-                <span className="text-xs text-base-content/55">· {subtotal}</span>
+                <span className="text-xs text-base-content/70">· {subtotal}</span>
               </div>
               {grows.map(BarRow)}
             </div>
           ))}
         {empty.length > 0 && (
-          <p className="text-xs text-base-content/45">Absent : {empty.join(", ")}.</p>
+          <p className="text-xs text-base-content/70">Absent : {empty.join(", ")}.</p>
         )}
       </div>
     );
@@ -170,7 +170,7 @@ export default function DistributionProfile({ entry }: { entry: LemmaEntry }) {
   return (
     <div className="mt-4 rounded-box border border-base-300 bg-base-100 px-4 py-3">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <div className="text-[0.7rem] font-medium uppercase tracking-wide text-base-content/65">
+        <div className="text-[0.7rem] font-medium uppercase tracking-wide text-base-content/70">
           Répartition · Nouveau Testament
         </div>
         {isHapax && <span className="badge badge-sm badge-warning badge-soft">hapax legomenon</span>}
@@ -178,7 +178,7 @@ export default function DistributionProfile({ entry }: { entry: LemmaEntry }) {
 
       <p className="mt-1 text-sm text-base-content/70">
         {entry.count} occurrence{entry.count > 1 ? "s" : ""} · {present} livre{present > 1 ? "s" : ""}
-        {absent > 0 && <span className="text-base-content/45"> · absent de {absent} autres</span>}
+        {absent > 0 && <span className="text-base-content/70"> · absent de {absent} autres</span>}
       </p>
 
       <div className="mt-3 flex flex-wrap gap-2">
@@ -209,7 +209,7 @@ export default function DistributionProfile({ entry }: { entry: LemmaEntry }) {
         )}
       </div>
 
-      <p className="mt-2 text-xs text-base-content/45">
+      <p className="mt-2 text-xs text-base-content/70">
         {mode === "density"
           ? "Occurrences pour 1000 mots du livre. Touchez un livre pour ses versets."
           : "Touchez un livre pour voir ses versets."}

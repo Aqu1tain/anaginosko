@@ -99,7 +99,7 @@ export default function MentionsView() {
         ))}
       </dl>
 
-      <p className="mt-5 max-w-prose text-xs leading-relaxed text-base-content/55">
+      <p className="mt-5 max-w-prose text-xs leading-relaxed text-base-content/70">
         © 2026{" "}
         <a className="link" href="https://corentinrenard.com" target="_blank" rel="noreferrer">
           <strong>Corentin RENARD</strong>
@@ -109,7 +109,7 @@ export default function MentionsView() {
         <strong>Biblion (Noah Jaubert)</strong>. Les marques et œuvres tierces citées restent la
         propriété de leurs auteurs respectifs.
       </p>
-      <p className="mt-2 max-w-prose text-xs leading-relaxed text-base-content/55">
+      <p className="mt-2 max-w-prose text-xs leading-relaxed text-base-content/70">
         Pour toute question ou demande de retrait, ouvrez une issue sur{" "}
         <a
           className="link"

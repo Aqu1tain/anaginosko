@@ -31,7 +31,7 @@ export default function SupportBanner() {
           </svg>
         </button>
 
-        <h2 className="text-base font-semibold" style={{ color: TIPEEE }}>
+        <h2 className="text-base font-semibold" style={{ color: "var(--tipeee-text)" }}>
           Un projet libre et indépendant
         </h2>
         <p className="text-sm leading-relaxed text-base-content/70">
@@ -47,7 +47,7 @@ export default function SupportBanner() {
             target="_blank"
             rel="noreferrer noopener"
             className="btn btn-sm border bg-base-100"
-            style={{ borderColor: `${TIPEEE}66`, color: TIPEEE }}
+            style={{ borderColor: `${TIPEEE}66`, color: "var(--tipeee-text)" }}
             aria-label="Nous soutenir sur Tipeee"
           >
             <span className="font-medium">Nous soutenir sur</span>

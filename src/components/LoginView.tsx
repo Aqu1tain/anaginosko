@@ -36,7 +36,7 @@ export default function LoginView() {
             <a href="/" className="btn btn-outline border-base-300">
               Aller à la lecture
             </a>
-            <button onClick={() => logout()} className="btn btn-ghost btn-sm text-base-content/60">
+            <button onClick={() => logout()} className="btn btn-ghost btn-sm text-base-content/70">
               Se déconnecter
             </button>
           </div>
@@ -67,7 +67,7 @@ export default function LoginView() {
           </svg>
         </div>
         <h1 className="mt-3 text-center text-2xl font-bold">Espace contributeurs</h1>
-        <p className="mt-1 text-center text-sm text-base-content/65">
+        <p className="mt-1 text-center text-sm text-base-content/70">
           Réservé à l’administration et aux philologues, pour rédiger et gérer les
           annotations savantes. La lecture reste libre, sans compte.
         </p>

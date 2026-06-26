@@ -34,11 +34,11 @@ function Row({ greek, eras, rest }: { greek: string; eras: string; rest: string 
     <div className="flex items-center gap-3 rounded-box bg-base-200 px-3.5 py-2.5">
       <span className="font-greek w-16 shrink-0 text-xl">{greek}</span>
       <span className="flex-1 text-sm">
-        <span className="text-base-content/55">éras. </span>
+        <span className="text-base-content/70">éras. </span>
         {eras}
       </span>
       <span className="flex-1 text-sm">
-        <span className="text-base-content/55">rest. </span>
+        <span className="text-base-content/70">rest. </span>
         {rest}
       </span>
     </div>
@@ -52,7 +52,7 @@ function DiacriticCard({ example, name, text }: { example: string; name: string;
         <span className="font-greek text-xl text-accent">{example}</span>
         <span className="font-semibold">{name}</span>
       </div>
-      <p className="mt-1 text-sm leading-relaxed text-base-content/65">{text}</p>
+      <p className="mt-1 text-sm leading-relaxed text-base-content/70">{text}</p>
     </div>
   );
 }
@@ -79,7 +79,7 @@ export default function AlphabetView() {
                 {letter.upper} {letter.lower}
                 {letter.final ? ` ${letter.final}` : ""}
               </span>
-              <span className="mt-0.5 text-xs text-base-content/60">{letter.name}</span>
+              <span className="mt-0.5 text-xs text-base-content/70">{letter.name}</span>
             </button>
           ))}
         </div>
@@ -119,7 +119,7 @@ export default function AlphabetView() {
               <span className="font-greek w-8 shrink-0 text-center text-xl">{p.sign}</span>
               <div className="text-sm">
                 <span className="font-medium">{p.name}</span>
-                <span className="text-base-content/60"> · {p.meaning}</span>
+                <span className="text-base-content/70"> · {p.meaning}</span>
               </div>
             </div>
           ))}

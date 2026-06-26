@@ -118,7 +118,7 @@ export default function TopBar({ dark, onToggleTheme }: { dark: boolean; onToggl
             target="_blank"
             rel="noreferrer noopener"
             aria-label="Soutenir le projet sur Tipeee"
-            className="btn btn-ghost btn-sm gap-1.5 px-2 text-[#d84759]"
+            className="btn btn-ghost btn-sm gap-1.5 px-2 text-[var(--tipeee-text)]"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/tipeee-icon.webp" alt="" aria-hidden="true" className="h-[18px] w-auto" />
