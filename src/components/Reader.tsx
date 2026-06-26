@@ -6,6 +6,7 @@ import { lengthLabel, textById, type Mot, type Text } from "../data/texts";
 import { loadChapter } from "../data/nt";
 import { linkedRef, parseNtRef, remapAnnotation, type PlacedAnnotation } from "../data/passageLink";
 import { usePersistentState } from "../hooks/usePersistentState";
+import { setLastRead } from "../lib/lastRead";
 import { useAuth } from "../hooks/useAuth";
 import {
   fetchAnnotations,
@@ -187,7 +188,11 @@ export default function Reader({ text }: { text: Text }) {
     loadAnnotations();
     loadForeign();
     recordView(ref);
-  }, [ref, loadAnnotations, loadForeign]);
+    setLastRead({
+      href: window.location.pathname,
+      label: document.title.replace(/\s*·\s*Anaginosko$/, "") || text.reference,
+    });
+  }, [ref, loadAnnotations, loadForeign, text.reference]);
 
   // Quitter le mode annotation efface la sélection en cours.
   useEffect(() => {

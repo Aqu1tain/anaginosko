@@ -1,7 +1,9 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { getLastRead } from "../../src/lib/lastRead";
 
 const ICONS = {
   read: (
@@ -21,8 +23,16 @@ const ICONS = {
 export default function TabBar() {
   const pathname = usePathname();
   const reading = pathname === "/" || pathname.startsWith("/nt") || pathname.startsWith("/text");
+
+  // L'onglet « Lire » reprend le dernier texte ouvert (sinon l'accueil).
+  const [readHref, setReadHref] = useState("/");
+  useEffect(() => {
+    const last = getLastRead();
+    if (last?.href) setReadHref(last.href);
+  }, [pathname]);
+
   const tabs = [
-    { href: "/", label: "Lire", icon: ICONS.read, active: reading },
+    { href: readHref, label: "Lire", icon: ICONS.read, active: reading },
     { href: "/alphabet", label: "Alphabet", icon: ICONS.alphabet, active: pathname.startsWith("/alphabet") },
     { href: "/concordance", label: "Concordance", icon: ICONS.concordance, active: pathname.startsWith("/concordance") },
   ];

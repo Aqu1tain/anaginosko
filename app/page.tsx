@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { collections, lengthLabel, textsByCollection, type Text } from "../src/data/texts";
 import SupportBanner from "./_components/SupportBanner";
+import ResumeReading from "./_components/ResumeReading";
 
 export const metadata: Metadata = { alternates: { canonical: "/" } };
 
@@ -16,12 +17,14 @@ function TextCard({ text }: { text: Text }) {
       href={`/text/${text.id}`}
       className="card min-w-0 border border-base-300 bg-base-100 transition-colors hover:border-primary/40"
     >
-      <div className="card-body min-w-0 gap-1.5 p-4">
+      <div className="card-body min-w-0 gap-2 p-4">
         <div className="flex items-baseline justify-between gap-3">
-          <h3 className="min-w-0 truncate font-semibold">{text.reference}</h3>
+          <h3 className="min-w-0 truncate text-[1.05rem] font-bold">{text.reference}</h3>
           <span className="badge badge-sm badge-ghost shrink-0">{lengthLabel(text)}</span>
         </div>
-        <p className="font-greek truncate text-lg text-base-content/75">{preview(text.grec)}</p>
+        <p className="font-greek truncate border-t border-base-200 pt-2 text-lg text-base-content/70">
+          {preview(text.grec)}
+        </p>
       </div>
     </Link>
   );
@@ -50,6 +53,8 @@ export default function Home() {
           restituée.
         </p>
         <SupportBanner />
+
+        <ResumeReading />
 
         <Link
           href="/nt"
