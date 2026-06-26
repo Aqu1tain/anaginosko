@@ -292,69 +292,85 @@ export default function LetterSheet({
     info.isFinalSigma ? "Sigma final (ς)" : null,
   ].filter((c): c is string => c !== null);
 
+  // Simple tap = lettre ; double tap = mot entier (pas lettre + mot redondants).
+  const wordView = stage === 2 && !!word;
+
+  const closeButton = (
+    <button
+      onClick={onClose}
+      aria-label="Fermer"
+      className="btn btn-ghost btn-circle ml-auto shrink-0"
+    >
+      <svg width="18" height="18" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M3 3l10 10M13 3L3 13" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+      </svg>
+    </button>
+  );
+
   return (
     <div className="pointer-events-none fixed inset-x-0 bottom-0 z-50 flex justify-center wide:inset-x-auto wide:right-4 wide:bottom-4 wide:block">
       <div
         ref={boxRef}
         role="dialog"
-        aria-label={`Lettre ${letter.name}`}
+        aria-label={wordView ? `Mot ${word?.grec}` : `Lettre ${letter.name}`}
         className="animate-sheet pointer-events-auto max-h-[85dvh] w-full max-w-md overflow-y-auto overscroll-contain rounded-t-2xl border border-base-300 bg-base-100 px-5 pt-5 pb-[calc(1.5rem+env(safe-area-inset-bottom))] shadow-2xl wide:max-h-[calc(100dvh-30rem)] wide:w-80 wide:rounded-2xl wide:pb-5"
       >
-        <div className="flex items-center gap-4">
-          <div className="font-greek flex h-16 w-16 shrink-0 items-center justify-center rounded-box bg-accent/15 text-4xl text-accent">
-            {info.cluster}
-          </div>
-          <div className="min-w-0">
-            <div className="text-xl font-semibold">{letter.name}</div>
-            <div className="font-greek text-base text-base-content/60">
-              {letter.upper} {letter.lower}
-              {letter.final ? ` ${letter.final}` : ""}
-              <span className="font-sans"> · « {letter.latin} »</span>
+        {!wordView && (
+          <>
+            <div className="flex items-center gap-4">
+              <div className="font-greek flex h-16 w-16 shrink-0 items-center justify-center rounded-box bg-accent/15 text-4xl text-accent">
+                {info.cluster}
+              </div>
+              <div className="min-w-0">
+                <div className="text-xl font-semibold">{letter.name}</div>
+                <div className="font-greek text-base text-base-content/60">
+                  {letter.upper} {letter.lower}
+                  {letter.final ? ` ${letter.final}` : ""}
+                  <span className="font-sans"> · « {letter.latin} »</span>
+                </div>
+              </div>
+              {closeButton}
             </div>
-          </div>
-          <button
-            onClick={onClose}
-            aria-label="Fermer"
-            className="btn btn-ghost btn-circle ml-auto shrink-0"
-          >
-            <svg width="18" height="18" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-              <path d="M3 3l10 10M13 3L3 13" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-            </svg>
-          </button>
-        </div>
 
-        <div className="mt-4 flex gap-2.5">
-          <Pron label="Érasmien" value={letter.erasmien} />
-          <Pron label="Restituée" value={letter.restituee} />
-        </div>
-
-        {letter.note && (
-          <p className="mt-3 text-sm leading-relaxed text-base-content/70">{letter.note}</p>
-        )}
-
-        {chips.length > 0 && (
-          <div className="mt-3 flex flex-wrap gap-1.5">
-            {chips.map((c) => (
-              <span key={c} className="badge badge-sm badge-ghost">
-                {c}
-              </span>
-            ))}
-          </div>
-        )}
-
-        {stage === 1 && word && (
-          <p className="mt-4 border-t border-base-300 pt-3 text-sm text-base-content/55">
-            Touchez encore la lettre pour voir le mot complet →
-          </p>
-        )}
-
-        {stage === 2 && word && (
-          <div className="mt-4 border-t border-base-300 pt-4">
-            <div className="text-[0.7rem] font-medium uppercase tracking-wide text-base-content/55">
-              Le mot
+            <div className="mt-4 flex gap-2.5">
+              <Pron label="Érasmien" value={letter.erasmien} />
+              <Pron label="Restituée" value={letter.restituee} />
             </div>
-            <div className="font-greek mt-1 text-2xl">{word.grec}</div>
-            <div className="mt-2 text-base">
+
+            {letter.note && (
+              <p className="mt-3 text-sm leading-relaxed text-base-content/70">{letter.note}</p>
+            )}
+
+            {chips.length > 0 && (
+              <div className="mt-3 flex flex-wrap gap-1.5">
+                {chips.map((c) => (
+                  <span key={c} className="badge badge-sm badge-ghost">
+                    {c}
+                  </span>
+                ))}
+              </div>
+            )}
+
+            {word && (
+              <p className="mt-4 border-t border-base-300 pt-3 text-sm text-base-content/55">
+                Touchez encore la lettre pour le mot entier →
+              </p>
+            )}
+          </>
+        )}
+
+        {wordView && word && (
+          <div>
+            <div className="flex items-start gap-4">
+              <div className="min-w-0">
+                <div className="text-[0.7rem] font-medium uppercase tracking-wide text-base-content/55">
+                  Le mot
+                </div>
+                <div className="font-greek text-3xl">{word.grec}</div>
+              </div>
+              {closeButton}
+            </div>
+            <div className="mt-4 text-base">
               <SpeakRow
                 label="Érasmien"
                 value={overrideFor("erasmien")?.translit ?? word.erasmien}
