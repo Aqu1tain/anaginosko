@@ -204,7 +204,7 @@ export default function DistributionProfile({ entry }: { entry: LemmaEntry }) {
             aria-pressed={log}
             className={`btn btn-sm ${log ? "btn-primary" : "btn-outline border-base-300"}`}
           >
-            Log
+            Logarithmique
           </button>
         )}
       </div>
