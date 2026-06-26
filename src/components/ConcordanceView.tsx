@@ -108,7 +108,7 @@ function Definition({ lemma }: { lemma: string }) {
       {uri && (
         <a
           className="link mt-2 inline-block text-xs text-base-content/65"
-          href={`https://bailly.app/recherche/${encodeURIComponent(uri)}`}
+          href={`https://bailly.app/${encodeURIComponent(lemma)}`}
           target="_blank"
           rel="noreferrer"
         >
