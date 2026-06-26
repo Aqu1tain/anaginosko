@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { lengthLabel, textById, type Mot, type Text } from "../data/texts";
 import { loadChapter } from "../data/nt";
@@ -126,6 +126,18 @@ export default function Reader({ text }: { text: Text }) {
 
   // Tutoriel guidé, montré une seule fois (US-2).
   const [tipSeen, setTipSeen] = usePersistentState<boolean>("anaginosko:tour:v1", false);
+
+  // Les colonnes côte à côte n'ont de sens qu'à partir de 640px ; en dessous on
+  // n'offre pas l'option (elle serait identique à « Versets »). Départ à true
+  // pour coller au rendu serveur, puis ajusté après montage (US-6).
+  const [colsAvailable, setColsAvailable] = useState(true);
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 40rem)");
+    const update = () => setColsAvailable(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
 
   const { user } = useAuth();
   const canAnnotate = user?.role === "philologist" || user?.role === "admin";
@@ -323,7 +335,11 @@ export default function Reader({ text }: { text: Text }) {
   const french = text.francais;
   const hasFrench = !!french && Object.keys(french).length > 0;
   const verses = hasFrench ? Object.keys(french!).map(Number).sort((a, b) => a - b) : [];
-  const transMode = hasFrench ? translation : "off";
+  // Sur mobile, « colonnes » retombe sur « versets » (même rendu) et n'est pas
+  // proposé dans les contrôles.
+  const effectiveTranslation =
+    !colsAvailable && translation === "columns" ? "verses" : translation;
+  const transMode = hasFrench ? effectiveTranslation : "off";
 
   const greekProps = {
     spanWords: maps?.spanWords,
@@ -439,14 +455,14 @@ export default function Reader({ text }: { text: Text }) {
                 [
                   ["off", "Aucune"],
                   ["verses", "Versets"],
-                  ["columns", "Colonnes"],
-                ] as const
+                  ...(colsAvailable ? [["columns", "Colonnes"]] : []),
+                ] as ["off" | "verses" | "columns", string][]
               ).map(([val, label]) => (
                 <button
                   key={val}
                   onClick={() => setTranslation(val)}
-                  aria-pressed={translation === val}
-                  className={`btn join-item btn-sm sm:btn-md flex-1 whitespace-nowrap px-2 ${translation === val ? "btn-primary" : "btn-outline border-base-300"}`}
+                  aria-pressed={effectiveTranslation === val}
+                  className={`btn join-item btn-sm sm:btn-md flex-1 whitespace-nowrap px-2 ${effectiveTranslation === val ? "btn-primary" : "btn-outline border-base-300"}`}
                 >
                   {label}
                 </button>
@@ -548,11 +564,12 @@ export default function Reader({ text }: { text: Text }) {
           </p>
         </div>
       ) : (
-        // Côte à côte : grec | français, alignés par verset.
-        <div className="mt-5 grid grid-cols-[1.15fr_1fr] gap-x-3 sm:gap-x-6">
+        // Côte à côte : grec | français, alignés par verset. Sous 640px, dégrade
+        // en colonne unique empilée (interligne) pour rester lisible (US-6).
+        <div className="mt-5">
           {verses.map((v) => (
-            <Fragment key={v}>
-              <div className="border-b border-base-300/70 py-3">
+            <div key={v} className="trans-row border-b border-base-300/70 py-3">
+              <div className="trans-grec">
                 <GreekText
                   text={text}
                   size="lg"
@@ -564,13 +581,13 @@ export default function Reader({ text }: { text: Text }) {
                   {...greekProps}
                 />
               </div>
-              <div className="border-b border-base-300/70 py-3 leading-relaxed text-base-content/85">
+              <div className="trans-fr leading-relaxed text-base-content/85">
                 <span className="verse-num">{v}</span>
                 {french![v]}
               </div>
-            </Fragment>
+            </div>
           ))}
-          <p className="col-span-2 mt-3 text-xs text-base-content/50">
+          <p className="mt-3 text-xs text-base-content/50">
             Traduction : Bible Crampon (néo-Crampon, domaine public).
           </p>
         </div>

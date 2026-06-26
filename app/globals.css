@@ -162,6 +162,10 @@ body {
   cursor: pointer;
   border-radius: 4px;
   padding-inline: 1px;
+  /* Agrandit la zone tactile verticale (cible ~44px) sans décaler les lignes :
+     le padding vertical d'un inline ne change pas l'interligne. Horizontalement
+     on reste étroit pour garder la sélection lettre par lettre précise. */
+  padding-block: 0.2em;
   transition: background-color 0.15s ease;
 }
 
@@ -189,6 +193,31 @@ body {
   content: "";
   position: absolute;
   inset: -0.35em -0.28em;
+}
+
+/* Traduction « Colonnes » : chaque verset est une rangée grec / français. Sous
+   640px on empile (interligne) ; au-dessus on passe côte à côte, le grec un peu
+   plus large (US-6). Media query explicite plutôt que les variantes Tailwind
+   arbitraires de grille, qui ne sont pas toujours encadrées par leur media. */
+.trans-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+@media (min-width: 40rem) {
+  .trans-row {
+    flex-direction: row;
+    align-items: start;
+    gap: 1.5rem;
+  }
+  .trans-grec {
+    flex: 1.15 1 0;
+    min-width: 0;
+  }
+  .trans-fr {
+    flex: 1 1 0;
+    min-width: 0;
+  }
 }
 
 /* Numéro de verset, discret, pour se repérer. */
