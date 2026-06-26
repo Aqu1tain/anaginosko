@@ -24,12 +24,18 @@ export default function TabBar() {
   const pathname = usePathname();
   const reading = pathname === "/" || pathname.startsWith("/nt") || pathname.startsWith("/text");
 
-  // L'onglet « Lire » reprend le dernier texte ouvert (sinon l'accueil).
+  // L'onglet « Lire » ramène là où on a quitté la section lecture (accueil, TOC,
+  // chapitre, passage) comme un vrai onglet — pas vers le dernier texte lu. Au
+  // tout premier rendu (rechargement, mémoire perdue) on retombe sur le dernier
+  // texte lu, sinon l'accueil.
   const [readHref, setReadHref] = useState("/");
   useEffect(() => {
     const last = getLastRead();
     if (last?.href) setReadHref(last.href);
-  }, [pathname]);
+  }, []);
+  useEffect(() => {
+    if (reading) setReadHref(pathname);
+  }, [pathname, reading]);
 
   const tabs = [
     { href: readHref, label: "Lire", icon: ICONS.read, active: reading },
@@ -43,7 +49,7 @@ export default function TabBar() {
         <div className="mx-auto flex w-full max-w-2xl">
           {tabs.map((t) => (
             <Link
-              key={t.href}
+              key={t.label}
               href={t.href}
               aria-current={t.active ? "page" : undefined}
               className={`flex flex-1 flex-col items-center justify-center gap-0.5 py-2 text-[0.7rem] font-medium transition-colors ${t.active ? "text-primary" : "text-base-content/65 hover:text-base-content"}`}
@@ -58,7 +64,7 @@ export default function TabBar() {
       <nav className="fixed top-1/2 left-4 z-40 hidden -translate-y-1/2 flex-col gap-2 wide:flex">
         {tabs.map((t) => (
           <Link
-            key={t.href}
+            key={t.label}
             href={t.href}
             aria-current={t.active ? "page" : undefined}
             className={`group flex flex-col items-center gap-1 text-[0.7rem] font-medium transition-colors ${t.active ? "text-primary" : "text-base-content/65 hover:text-base-content"}`}
