@@ -68,7 +68,8 @@ export default function LoginView() {
         </div>
         <h1 className="mt-3 text-center text-2xl font-bold">Espace contributeurs</h1>
         <p className="mt-1 text-center text-sm text-base-content/65">
-          Réservé à l’administration et aux philologues.
+          Réservé à l’administration et aux philologues, pour rédiger et gérer les
+          annotations savantes. La lecture reste libre, sans compte.
         </p>
 
         <form onSubmit={submit} className="mt-6 grid gap-3">
