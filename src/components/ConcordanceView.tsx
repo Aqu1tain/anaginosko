@@ -133,9 +133,15 @@ function LemmaRow({ entry }: { entry: LemmaEntry }) {
   );
 }
 
+const EXAMPLE_LEMMAS = ["λόγος", "ἀγάπη", "θεός", "πίστις", "χάρις", "πνεῦμα"];
+
 function List({ index }: { index: LemmaEntry[] }) {
   const [query, setQuery] = useState("");
   const results = useMemo(() => searchLemmaIndex(index, query), [index, query]);
+  const examples = useMemo(() => {
+    const byLemma = new Map(index.map((e) => [e.lemma, e]));
+    return EXAMPLE_LEMMAS.map((l) => byLemma.get(l)).filter((e): e is LemmaEntry => !!e);
+  }, [index]);
 
   return (
     <div className="pb-4">
@@ -155,6 +161,23 @@ function List({ index }: { index: LemmaEntry[] }) {
         autoCapitalize="off"
         spellCheck={false}
       />
+      {!query && examples.length > 0 && (
+        <div className="mt-3 flex flex-wrap items-center gap-1.5">
+          <span className="text-xs font-medium uppercase tracking-wide text-base-content/45">
+            Exemples
+          </span>
+          {examples.map((e) => (
+            <a
+              key={e.lemma}
+              href={`/concordance/${encodeURIComponent(e.lemma)}`}
+              className="badge badge-lg badge-ghost gap-1.5 font-greek hover:badge-primary"
+            >
+              {e.lemma}
+              <span className="text-[0.65rem] text-base-content/50">{e.count}</span>
+            </a>
+          ))}
+        </div>
+      )}
       <p className="mt-3 mb-2 text-sm text-base-content/70">
         {results.length} résultat{results.length > 1 ? "s" : ""}
       </p>
