@@ -200,11 +200,21 @@ export default function Reader({ text }: { text: Text }) {
     loadAnnotations();
     loadForeign();
     recordView(ref);
-    setLastRead({
-      href: window.location.pathname,
-      label: document.title.replace(/\s*·\s*Anaginosko$/, "") || text.reference,
-    });
-  }, [ref, loadAnnotations, loadForeign, text.reference]);
+  }, [ref, loadAnnotations, loadForeign]);
+
+  // « Dernier texte lu » : enregistré seulement si l'on reste sur le texte un
+  // court instant. Ainsi, traverser des chapitres en spammant Retour pour
+  // rentrer à l'accueil n'écrase pas le dernier chapitre réellement lu (le
+  // chapitre traversé est démonté avant l'échéance).
+  useEffect(() => {
+    const t = setTimeout(() => {
+      setLastRead({
+        href: window.location.pathname,
+        label: document.title.replace(/\s*·\s*Anaginosko$/, "") || text.reference,
+      });
+    }, 1500);
+    return () => clearTimeout(t);
+  }, [ref, text.reference]);
 
   // Quitter le mode annotation efface la sélection en cours.
   useEffect(() => {
