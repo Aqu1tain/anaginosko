@@ -2,7 +2,7 @@ import "server-only";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import type { Text } from "../src/data/texts";
-import type { NtBook } from "../src/data/nt";
+import type { NtBook, LemmaEntry, Occ, Distribution } from "../src/data/nt";
 
 // Lecture des données NT depuis le disque (public/nt) au build, pour le SSG des
 // chapitres. Le runtime client continue de fetcher /nt/... (cf. src/data/nt.ts).
@@ -15,6 +15,26 @@ export async function loadBooksFs(): Promise<NtBook[]> {
   const data = await readJson<{ books: NtBook[] }>("books.json");
   return data.books;
 }
+
+// --- Concordance : lecture disque pour le SSR des fiches-lemme ---
+
+let lemmasFsCache: LemmaEntry[] | null = null;
+
+export async function loadLemmasFs(): Promise<LemmaEntry[]> {
+  if (!lemmasFsCache) lemmasFsCache = await readJson<LemmaEntry[]>("lemmas.json");
+  return lemmasFsCache;
+}
+
+export async function lemmaEntryFs(lemma: string): Promise<LemmaEntry | undefined> {
+  const index = await loadLemmasFs();
+  return index.find((e) => e.lemma === lemma);
+}
+
+export const loadOccurrencesFs = (oid: number): Promise<Occ[]> =>
+  readJson<Occ[]>(`occ/${oid}.json`);
+
+export const loadDistributionFs = (oid: number): Promise<Distribution> =>
+  readJson<Distribution>(`distribution/${oid}.json`).catch(() => ({}) as Distribution);
 
 type FrenchByChapter = Record<string, Record<string, string>>;
 

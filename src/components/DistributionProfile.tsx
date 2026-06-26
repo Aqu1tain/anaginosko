@@ -1,15 +1,12 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import {
   BOOK_NAMES,
   BOOK_ORDER,
   CORPUS_GROUPS,
   corpusOf,
-  loadBooks,
-  loadDistribution,
-  loadOccurrences,
   type Distribution,
   type LemmaEntry,
   type NtBook,
@@ -61,39 +58,29 @@ function Verses({ occ, row }: { occ: Occ[]; row: Row }) {
   );
 }
 
-export default function DistributionProfile({ entry }: { entry: LemmaEntry }) {
-  const [dist, setDist] = useState<Distribution | null>(null);
-  const [books, setBooks] = useState<NtBook[] | null>(null);
-  const [occ, setOcc] = useState<Occ[] | null>(null);
+export default function DistributionProfile({
+  entry,
+  dist,
+  books,
+  occ,
+}: {
+  entry: LemmaEntry;
+  dist: Distribution;
+  books: NtBook[];
+  occ: Occ[];
+}) {
   const [mode, setMode] = useState<"raw" | "density">("raw");
   const [grouped, setGrouped] = useState(false);
   const [log, setLog] = useState(false);
   const [openBook, setOpenBook] = useState<string | null>(null);
 
-  useEffect(() => {
-    let alive = true;
-    setOpenBook(null);
-    Promise.all([loadDistribution(entry.oid), loadBooks(), loadOccurrences(entry.oid)])
-      .then(([d, b, o]) => {
-        if (!alive) return;
-        setDist(d);
-        setBooks(b);
-        setOcc(o);
-      })
-      .catch(() => {});
-    return () => {
-      alive = false;
-    };
-  }, [entry.oid]);
-
   const wordsByBook = useMemo(() => {
     const m: Record<string, number> = {};
-    for (const b of books ?? []) m[b.id] = b.words;
+    for (const b of books) m[b.id] = b.words;
     return m;
   }, [books]);
 
   const rows = useMemo<Row[]>(() => {
-    if (!dist) return [];
     return BOOK_ORDER.map((id) => {
       const count = dist[id] ?? 0;
       const words = wordsByBook[id] || 1;
@@ -102,7 +89,7 @@ export default function DistributionProfile({ entry }: { entry: LemmaEntry }) {
     }).filter((r) => r.count > 0);
   }, [dist, mode, wordsByBook]);
 
-  if (!dist || !books || !occ) return null;
+  if (rows.length === 0) return null;
 
   const present = rows.length;
   const absent = BOOK_ORDER.length - present;

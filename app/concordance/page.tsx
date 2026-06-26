@@ -8,5 +8,5 @@ export const metadata = {
 };
 
 export default function ConcordancePage() {
-  return <ConcordanceView lemma={null} />;
+  return <ConcordanceView />;
 }
