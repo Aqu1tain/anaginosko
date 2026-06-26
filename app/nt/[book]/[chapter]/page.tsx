@@ -42,6 +42,20 @@ export default async function ChapterPage({
   if (!b || !Number.isInteger(ch) || ch < 1 || ch > b.chapters) notFound();
   const text = await loadChapterFs(book, ch);
 
+  // Bloc de versets contigus (grec + français), rendu côté serveur. Le lecteur
+  // interactif éclate le grec lettre par lettre (spans cliquables) ; ce bloc
+  // donne aux moteurs et aux lecteurs d'écran le texte propre et continu, et
+  // rend la traduction française indexable (masquée par défaut dans le lecteur).
+  const verseGreek = new Map<number, string[]>();
+  for (const m of text.mots ?? []) {
+    if (m.verse == null) continue;
+    if (!verseGreek.has(m.verse)) verseGreek.set(m.verse, []);
+    verseGreek.get(m.verse)!.push(m.grec);
+  }
+  const verses = [...verseGreek.entries()]
+    .sort((a, b) => a[0] - b[0])
+    .map(([v, words]) => ({ v, grec: words.join(" "), fr: text.francais?.[String(v)] ?? null }));
+
   const SITE = "https://anaginosko.fr";
   const url = `${SITE}/nt/${book}/${ch}`;
   const name = BOOK_NAMES[book] ?? "Livre";
@@ -84,6 +98,18 @@ export default async function ChapterPage({
         ]}
       />
       <Reader text={text} />
+
+      <section className="sr-only" aria-label={`${name} ${ch}, texte continu`}>
+        {verses.map((vs) => (
+          <p key={vs.v}>
+            <span lang="grc">
+              {vs.v} {vs.grec}
+            </span>
+            {vs.fr ? <span lang="fr"> — {vs.fr}</span> : null}
+          </p>
+        ))}
+      </section>
+
       <nav className="mt-8 flex items-center justify-between gap-3">
         {ch > 1 ? (
           <Link href={`/nt/${book}/${ch - 1}`} className="btn btn-sm btn-outline border-base-300">
