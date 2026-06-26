@@ -85,7 +85,9 @@ function GreekText({
   }, [shown]);
 
   const tabbableKey = active?.key ?? firstKey;
-  const activeWord = active && active.stage === 2 ? active.w : -1;
+  // On surligne le mot entier dès qu'une de ses lettres est active (lecture),
+  // plutôt que de poser un pavé de fond sur la seule lettre.
+  const activeWord = active && active.w >= 0 ? active.w : -1;
 
   // Surlignage temporaire d'un mot (arrivée depuis la concordance).
   useEffect(() => {

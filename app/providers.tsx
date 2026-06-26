@@ -34,16 +34,22 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     setSheet(null);
   }, [pathname]);
 
-  // Garde la lettre active visible au-dessus de la feuille (mobile/tablette).
+  // Garde le mot actif visible au-dessus de la feuille (mobile/tablette). On
+  // mesure la hauteur de la feuille via offsetHeight (insensible à l'animation
+  // d'entrée translateY, contrairement à getBoundingClientRect) pour ne pas
+  // sous-estimer la zone couverte et finir avec le mot caché. Seulement au
+  // changement de mot, pas au passage lettre -> mot.
   useEffect(() => {
     if (!sheet) return;
     if (window.matchMedia("(min-width: 86rem)").matches) return;
     const id = requestAnimationFrame(() => {
-      const el = document.querySelector<HTMLElement>(".glyph.is-active");
+      const el =
+        document.querySelector<HTMLElement>(".word-active") ??
+        document.querySelector<HTMLElement>(".glyph.is-active");
       const sheetEl = document.querySelector<HTMLElement>('[role="dialog"]');
       if (!el || !sheetEl) return;
       const g = el.getBoundingClientRect();
-      const sheetTop = sheetEl.getBoundingClientRect().top;
+      const sheetTop = window.innerHeight - sheetEl.offsetHeight;
       const margin = 16;
       const topBar = 64;
       let delta = 0;
@@ -52,8 +58,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
       if (Math.abs(delta) > 4) window.scrollBy({ top: delta, behavior: "smooth" });
     });
     return () => cancelAnimationFrame(id);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sheet?.key, sheet?.stage]);
+  }, [sheet?.key]);
 
   const clickLetter = useCallback(({ ref, w, g, info, word }: LetterClick) => {
     const key = `${w}:${g}`;

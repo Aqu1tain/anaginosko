@@ -162,10 +162,6 @@ body {
   cursor: pointer;
   border-radius: 4px;
   padding-inline: 1px;
-  /* Agrandit la zone tactile verticale (cible ~44px) sans décaler les lignes :
-     le padding vertical d'un inline ne change pas l'interligne. Horizontalement
-     on reste étroit pour garder la sélection lettre par lettre précise. */
-  padding-block: 0.2em;
   transition: background-color 0.15s ease;
 }
 
@@ -180,8 +176,9 @@ body {
   outline-offset: 1px;
 }
 
+/* La lettre active ne porte plus de pavé de fond (le mot entier est surligné) ;
+   on garde juste sa couleur d'accent et la zone de clic agrandie ci-dessous. */
 .glyph.is-active {
-  background-color: color-mix(in oklab, var(--color-accent) 16%, transparent);
   color: var(--color-accent);
   position: relative;
 }
