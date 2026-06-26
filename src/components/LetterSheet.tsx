@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { accentLabel, breathingLabel, type GraphemeInfo } from "../lib/greek";
 import type { SheetStage } from "./SheetContext";
@@ -452,12 +453,12 @@ export default function LetterSheet({
                     <span className="text-base-content/45"> · Bailly</span>
                   </p>
                 )}
-                <a
+                <Link
                   href={`/concordance/${encodeURIComponent(word.lemme)}`}
                   className="mt-1.5 inline-block text-sm font-medium text-accent"
                 >
                   définition complète & occurrences →
-                </a>
+                </Link>
               </div>
             )}
           </div>

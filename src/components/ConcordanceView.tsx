@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import {
   loadLemmaIndex,
@@ -118,7 +119,7 @@ function Definition({ lemma }: { lemma: string }) {
 
 function LemmaRow({ entry }: { entry: LemmaEntry }) {
   return (
-    <a
+    <Link
       href={`/concordance/${encodeURIComponent(entry.lemma)}`}
       className="flex items-center gap-3 rounded-box border border-base-300 bg-base-100 px-3.5 py-2.5 transition-colors hover:border-primary/40"
     >
@@ -129,7 +130,7 @@ function LemmaRow({ entry }: { entry: LemmaEntry }) {
       </span>
       <span className="shrink-0 text-xs text-base-content/70">{entry.nature}</span>
       <span className="badge badge-sm badge-ghost shrink-0">{entry.count}</span>
-    </a>
+    </Link>
   );
 }
 
@@ -167,14 +168,14 @@ function List({ index }: { index: LemmaEntry[] }) {
             Exemples
           </span>
           {examples.map((e) => (
-            <a
+            <Link
               key={e.lemma}
               href={`/concordance/${encodeURIComponent(e.lemma)}`}
               className="badge badge-lg badge-ghost gap-1.5 font-greek hover:badge-primary"
             >
               {e.lemma}
               <span className="text-[0.65rem] text-base-content/50">{e.count}</span>
-            </a>
+            </Link>
           ))}
         </div>
       )}
@@ -219,7 +220,7 @@ function Occurrences({ entry }: { entry: LemmaEntry }) {
         </p>
       )}
       {occ.map((o, i) => (
-        <a
+        <Link
           key={i}
           href={`/nt/${o.b}/${o.c}?w=${o.w}`}
           className="flex items-center gap-3 rounded-box border border-base-300 bg-base-100 px-3.5 py-2.5 transition-colors hover:border-primary/40"
@@ -228,7 +229,7 @@ function Occurrences({ entry }: { entry: LemmaEntry }) {
           <span className="shrink-0 text-sm text-base-content/70">
             {BOOK_NAMES[o.b] ?? o.b} {o.c}:{o.v}
           </span>
-        </a>
+        </Link>
       ))}
     </div>
   );
@@ -237,9 +238,9 @@ function Occurrences({ entry }: { entry: LemmaEntry }) {
 function Detail({ entry }: { entry: LemmaEntry }) {
   return (
     <div className="pb-4 pt-5">
-      <a href="/concordance" className="link link-primary text-sm">
+      <Link href="/concordance" className="link link-primary text-sm">
         ← Toute la concordance
-      </a>
+      </Link>
       <div className="mt-3 flex flex-wrap items-baseline gap-x-3 gap-y-1">
         <h1 className="font-greek text-3xl">{entry.lemma}</h1>
         <span className="text-sm text-base-content/70">{entry.translitR}</span>
@@ -267,9 +268,9 @@ export default function ConcordanceView({ lemma }: { lemma: string | null }) {
       <div className="py-20 text-center text-base-content/70">
         <p className="font-greek text-xl">{lemma}</p>
         <p className="mt-2">Lemme introuvable.</p>
-        <a href="/concordance" className="link link-primary mt-3 inline-block">
+        <Link href="/concordance" className="link link-primary mt-3 inline-block">
           Toute la concordance
-        </a>
+        </Link>
       </div>
     );
   }

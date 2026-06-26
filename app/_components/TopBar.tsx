@@ -1,7 +1,8 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { BOOK_NAMES } from "../../src/data/nt";
 import { textById } from "../../src/data/texts";
 
@@ -40,7 +41,11 @@ function chrome(pathname: string): { title: string | null; back: string; isLibra
   const seg = pathname.split("/").filter(Boolean); // ["nt","jn","1"]
   if (pathname === "/") return { title: null, back: "/", isLibrary: true };
   if (seg[0] === "alphabet") return { title: "L’alphabet", back: "/", isLibrary: false };
-  if (seg[0] === "concordance") return { title: "Concordance", back: "/", isLibrary: false };
+  if (seg[0] === "concordance") {
+    // Une fiche de lemme remonte à la liste ; la liste remonte à l'accueil.
+    const back = seg.length > 1 ? "/concordance" : "/";
+    return { title: "Concordance", back, isLibrary: false };
+  }
   if (seg[0] === "mentions") return { title: "Mentions légales", back: "/", isLibrary: false };
   if (seg[0] === "login") return { title: "Connexion", back: "/", isLibrary: false };
   if (seg[0] === "admin") return { title: "Tableau de bord", back: "/", isLibrary: false };
@@ -61,7 +66,23 @@ function chrome(pathname: string): { title: string | null; back: string; isLibra
 
 export default function TopBar({ dark, onToggleTheme }: { dark: boolean; onToggleTheme: () => void }) {
   const pathname = usePathname();
+  const router = useRouter();
   const { title, back, isLibrary } = chrome(pathname);
+
+  // Le bouton retour suit l'historique réel dès qu'on a navigué dans l'app
+  // (revenir au texte d'où l'on vient, etc.). En accès direct / lien partagé,
+  // il remonte au parent hiérarchique pour ne pas quitter le site.
+  const navigated = useRef(false);
+  const mounted = useRef(false);
+  useEffect(() => {
+    if (mounted.current) navigated.current = true;
+    else mounted.current = true;
+  }, [pathname]);
+
+  const goBack = () => {
+    if (navigated.current) router.back();
+    else router.push(back);
+  };
 
   return (
     <header className="sticky top-0 z-30 border-b border-base-300 bg-base-100/85 pt-[env(safe-area-inset-top)] backdrop-blur-md">
@@ -76,11 +97,16 @@ export default function TopBar({ dark, onToggleTheme }: { dark: boolean; onToggl
             </Link>
           ) : (
             <>
-              <Link href={back} aria-label="Retour" className="btn btn-ghost btn-circle">
+              <button
+                type="button"
+                onClick={goBack}
+                aria-label="Retour"
+                className="btn btn-ghost btn-circle"
+              >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                   <path d="M15 5l-7 7 7 7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
-              </Link>
+              </button>
               {title && <span className="truncate text-base font-semibold">{title}</span>}
             </>
           )}
