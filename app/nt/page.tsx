@@ -13,7 +13,7 @@ export default async function NtTocPage() {
   const books = await loadBooksFs();
   return (
     <div className="pb-4">
-      <Breadcrumb items={[{ label: "Accueil", href: "/" }, { label: "Nouveau Testament" }]} />
+      <Breadcrumb items={[{ label: "Accueil", href: "/", home: true }, { label: "Nouveau Testament" }]} />
       <h1 className="text-2xl font-bold">Nouveau Testament</h1>
       <p className="mt-1 mb-2 text-sm text-base-content/70">27 livres · texte grec SBLGNT</p>
 

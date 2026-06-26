@@ -32,7 +32,7 @@ export default async function NtBookPage({ params }: { params: Promise<{ book: s
     <div className="pb-4">
       <Breadcrumb
         items={[
-          { label: "Accueil", href: "/" },
+          { label: "Accueil", href: "/", home: true },
           { label: "Nouveau Testament", href: "/nt" },
           { label: b.name },
         ]}

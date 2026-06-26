@@ -241,7 +241,7 @@ function Detail({ entry }: { entry: LemmaEntry }) {
     <div className="pb-4">
       <Breadcrumb
         items={[
-          { label: "Accueil", href: "/" },
+          { label: "Accueil", href: "/", home: true },
           { label: "Concordance", href: "/concordance" },
           { label: entry.lemma, greek: true },
         ]}

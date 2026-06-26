@@ -32,7 +32,7 @@ export default async function TextPage({ params }: { params: Promise<{ id: strin
   if (!text) notFound();
   return (
     <>
-      <Breadcrumb items={[{ label: "Accueil", href: "/" }, { label: text.reference }]} />
+      <Breadcrumb items={[{ label: "Accueil", href: "/", home: true }, { label: text.reference }]} />
       <Reader text={text} />
     </>
   );

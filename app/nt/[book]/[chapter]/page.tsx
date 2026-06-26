@@ -77,7 +77,7 @@ export default async function ChapterPage({
       </h1>
       <Breadcrumb
         items={[
-          { label: "Accueil", href: "/" },
+          { label: "Accueil", href: "/", home: true },
           { label: "NT", href: "/nt" },
           { label: name, href: `/nt/${book}` },
           { label: String(ch) },
