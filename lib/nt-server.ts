@@ -2,7 +2,7 @@ import "server-only";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import type { Text } from "../src/data/texts";
-import type { NtBook, LemmaEntry, Occ, Distribution } from "../src/data/nt";
+import type { NtBook, LemmaEntry, Occ, Distribution, Colloc } from "../src/data/nt";
 
 // Lecture des données NT depuis le disque (public/nt) au build, pour le SSG des
 // chapitres. Le runtime client continue de fetcher /nt/... (cf. src/data/nt.ts).
@@ -35,6 +35,9 @@ export const loadOccurrencesFs = (oid: number): Promise<Occ[]> =>
 
 export const loadDistributionFs = (oid: number): Promise<Distribution> =>
   readJson<Distribution>(`distribution/${oid}.json`).catch(() => ({}) as Distribution);
+
+export const loadCollocationsFs = (oid: number): Promise<Colloc[]> =>
+  readJson<Colloc[]>(`colloc/${oid}.json`).catch(() => []);
 
 type FrenchByChapter = Record<string, Record<string, string>>;
 

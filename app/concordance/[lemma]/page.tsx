@@ -3,6 +3,7 @@ import Link from "next/link";
 import {
   lemmaEntryFs,
   loadBooksFs,
+  loadCollocationsFs,
   loadDistributionFs,
   loadOccurrencesFs,
 } from "@/lib/nt-server";
@@ -43,11 +44,12 @@ export default async function LemmaPage({ params }: { params: Promise<{ lemma: s
     );
   }
 
-  const [occ, dist, books] = await Promise.all([
+  const [occ, dist, books, colloc] = await Promise.all([
     loadOccurrencesFs(entry.oid),
     loadDistributionFs(entry.oid),
     loadBooksFs(),
+    loadCollocationsFs(entry.oid),
   ]);
 
-  return <LemmaDetail entry={entry} occ={occ} dist={dist} books={books} />;
+  return <LemmaDetail entry={entry} occ={occ} dist={dist} books={books} colloc={colloc} />;
 }

@@ -4,9 +4,11 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Breadcrumb from "../../app/_components/Breadcrumb";
 import DistributionProfile from "./DistributionProfile";
+import Collocations from "./Collocations";
 import { glossFor } from "../data/glosses";
 import {
   BOOK_NAMES,
+  type Colloc,
   type Distribution,
   type LemmaEntry,
   type NtBook,
@@ -123,11 +125,13 @@ export default function LemmaDetail({
   occ,
   dist,
   books,
+  colloc,
 }: {
   entry: LemmaEntry;
   occ: Occ[];
   dist: Distribution;
   books: NtBook[];
+  colloc: Colloc[];
 }) {
   return (
     <div className="pb-4">
@@ -149,6 +153,7 @@ export default function LemmaDetail({
       </p>
       <Definition lemma={entry.lemma} />
       <DistributionProfile entry={entry} dist={dist} books={books} occ={occ} />
+      <Collocations items={colloc} />
       <Occurrences entry={entry} occ={occ} />
     </div>
   );

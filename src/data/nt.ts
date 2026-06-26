@@ -111,6 +111,9 @@ export async function loadOccurrences(oid: number): Promise<Occ[]> {
   return data;
 }
 
+// Voisins lexicaux (collocations PMI au niveau du verset).
+export type Colloc = { oid: number; lemma: string; translitR: string; score: number; n: number };
+
 // Distribution par livre (non plafonnée), pour le profil de distribution.
 export type Distribution = Record<string, number>;
 const distCache = new Map<number, Distribution>();
