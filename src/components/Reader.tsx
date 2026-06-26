@@ -16,6 +16,37 @@ import {
 } from "../lib/api";
 import GreekText, { type TranslitMode, type AnnoScope, type AnnoSelection } from "./GreekText";
 import AnnotationEditor, { type AnnotationTarget } from "./AnnotationEditor";
+import Tour, { type TourStep } from "./Tour";
+
+const TOUR_STEPS: TourStep[] = [
+  {
+    title: "Bienvenue sur Anaginosko",
+    body: "Le grec du Nouveau Testament, lettre par lettre. Trois repères pour commencer.",
+  },
+  {
+    target: ".glyph",
+    body: "Touchez une lettre pour découvrir son nom et sa prononciation, érasmienne et restituée.",
+  },
+  {
+    target: 'button[aria-controls="reader-settings"]',
+    body: "Réglez l’affichage ici : écriture, prononciation, traduction et taille du texte.",
+  },
+  {
+    target: 'a[href="/concordance"]',
+    body: "Cherchez un mot grec dans tout le Nouveau Testament depuis la concordance.",
+  },
+];
+
+function SlidersIcon() {
+  return (
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+      <path d="M4 6h10M18 6h2M4 12h2M10 12h10M4 18h10M18 18h2" />
+      <circle cx="16" cy="6" r="2" fill="currentColor" stroke="none" />
+      <circle cx="8" cy="12" r="2" fill="currentColor" stroke="none" />
+      <circle cx="16" cy="18" r="2" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
 
 type Sel = { anchorW: number; headW: number; g: number; char: string; scope: AnnoScope };
 
@@ -28,7 +59,7 @@ const SCOPES: { id: AnnoScope; label: string }[] = [
 // Groupe de contrôle avec un mini label au-dessus.
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="flex flex-col gap-1 wide:w-full">
+    <div className="flex w-full flex-col gap-1">
       <span className="px-0.5 text-[0.6rem] font-semibold uppercase tracking-wide text-base-content/45">
         {label}
       </span>
@@ -50,7 +81,7 @@ function Seg({
     <button
       onClick={onClick}
       aria-pressed={active}
-      className={`btn join-item btn-sm sm:btn-md wide:flex-1 whitespace-nowrap px-2 ${active ? "btn-primary" : "btn-outline border-base-300"}`}
+      className={`btn join-item btn-sm sm:btn-md flex-1 whitespace-nowrap px-2 ${active ? "btn-primary" : "btn-outline border-base-300"}`}
     >
       {children}
     </button>
@@ -82,6 +113,18 @@ export default function Reader({ text }: { text: Text }) {
   const [textScale, setTextScale] = usePersistentState<number>("anaginosko:textScale", 1);
   const adjustScale = (d: number) =>
     setTextScale((s) => Math.min(1.6, Math.max(0.8, Math.round((s + d) * 100) / 100)));
+
+  // Panneau de réglages d'affichage, replié par défaut (US-1).
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  useEffect(() => {
+    if (!settingsOpen) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setSettingsOpen(false);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [settingsOpen]);
+
+  // Tutoriel guidé, montré une seule fois (US-2).
+  const [tipSeen, setTipSeen] = usePersistentState<boolean>("anaginosko:tour:v1", false);
 
   const { user } = useAuth();
   const canAnnotate = user?.role === "philologist" || user?.role === "admin";
@@ -312,9 +355,49 @@ export default function Reader({ text }: { text: Text }) {
         <span>{annotateMode ? "Touchez le texte pour sélectionner" : "Touchez une lettre pour ses indices"}</span>
       </div>
 
-      <div className="mt-3 flex flex-wrap items-start gap-x-4 gap-y-2.5 wide:fixed wide:top-20 wide:right-4 wide:z-30 wide:mt-0 wide:w-80 wide:flex-col wide:items-stretch wide:gap-2.5 wide:rounded-2xl wide:border wide:border-base-300 wide:bg-base-100/90 wide:p-3 wide:shadow-sm wide:backdrop-blur-md">
+      {!settingsOpen && !annotateMode && (
+        <button
+          type="button"
+          onClick={() => setSettingsOpen(true)}
+          aria-haspopup="dialog"
+          aria-expanded={settingsOpen}
+          aria-controls="reader-settings"
+          className="btn btn-sm fixed right-3 bottom-[calc(4.6rem+env(safe-area-inset-bottom))] z-30 gap-1.5 rounded-full border-base-300 bg-base-100/95 shadow-md backdrop-blur-md wide:top-20 wide:right-4 wide:bottom-auto"
+        >
+          <SlidersIcon />
+          <span className="font-medium">Affichage</span>
+        </button>
+      )}
+
+      <div
+        id="reader-settings"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Réglages d’affichage"
+        className={`fixed inset-0 z-50 ${settingsOpen ? "" : "hidden"}`}
+      >
+        <div
+          className="absolute inset-0 bg-black/40 wide:bg-transparent"
+          onClick={() => setSettingsOpen(false)}
+          aria-hidden="true"
+        />
+        <div className="absolute inset-x-0 bottom-0 max-h-[82dvh] overflow-y-auto rounded-t-2xl border-t border-base-300 bg-base-100 p-4 pb-[calc(1.25rem+env(safe-area-inset-bottom))] shadow-2xl wide:inset-x-auto wide:top-20 wide:right-4 wide:bottom-auto wide:max-h-[calc(100dvh-7rem)] wide:w-80 wide:rounded-2xl wide:border wide:border-base-300 wide:p-3">
+          <div className="mb-3 flex items-center justify-between">
+            <h2 className="font-semibold">Affichage</h2>
+            <button
+              onClick={() => setSettingsOpen(false)}
+              aria-label="Fermer"
+              className="btn btn-ghost btn-sm btn-circle"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true">
+                <path d="M6 6l12 12M18 6L6 18" />
+              </svg>
+            </button>
+          </div>
+
+          <div className="flex flex-col gap-3">
         <Field label="Écriture">
-          <div className="join wide:w-full">
+          <div className="join w-full">
             <Seg active={!manuscript} onClick={() => setManuscript(false)}>
               Minuscules
             </Seg>
@@ -326,7 +409,7 @@ export default function Reader({ text }: { text: Text }) {
 
         {(hasErasmien || hasRestituee) && (
           <Field label="Prononciation">
-            <div className="join wide:w-full">
+            <div className="join w-full">
               <Seg active={mode === "off"} onClick={() => setMode("off")}>
                 Aucune
               </Seg>
@@ -346,7 +429,7 @@ export default function Reader({ text }: { text: Text }) {
 
         {hasFrench && (
           <Field label="Traduction">
-            <div className="join wide:w-full" role="group" aria-label="Traduction">
+            <div className="join w-full" role="group" aria-label="Traduction">
               {(
                 [
                   ["off", "Aucune"],
@@ -358,7 +441,7 @@ export default function Reader({ text }: { text: Text }) {
                   key={val}
                   onClick={() => setTranslation(val)}
                   aria-pressed={translation === val}
-                  className={`btn join-item btn-sm sm:btn-md wide:flex-1 whitespace-nowrap px-2 ${translation === val ? "btn-primary" : "btn-outline border-base-300"}`}
+                  className={`btn join-item btn-sm sm:btn-md flex-1 whitespace-nowrap px-2 ${translation === val ? "btn-primary" : "btn-outline border-base-300"}`}
                 >
                   {label}
                 </button>
@@ -368,8 +451,8 @@ export default function Reader({ text }: { text: Text }) {
         )}
 
         <Field label="Annotations">
-          <div className="flex items-center gap-2 wide:flex-col wide:items-stretch wide:gap-2">
-            <div className="join wide:w-full">
+          <div className="flex flex-col gap-2">
+            <div className="join w-full">
               <Seg active={!showAnnotations} onClick={() => setShowAnnotations(false)}>
                 Cacher
               </Seg>
@@ -381,7 +464,7 @@ export default function Reader({ text }: { text: Text }) {
               <button
                 onClick={() => setAnnotateMode((v) => !v)}
                 aria-pressed={annotateMode}
-                className={`btn btn-sm sm:btn-md wide:w-full ${annotateMode ? "btn-accent" : "btn-outline border-base-300"}`}
+                className={`btn btn-sm sm:btn-md w-full ${annotateMode ? "btn-accent" : "btn-outline border-base-300"}`}
               >
                 {annotateMode ? "Quitter l’annotation" : "Annoter"}
               </button>
@@ -390,19 +473,19 @@ export default function Reader({ text }: { text: Text }) {
         </Field>
 
         <Field label="Taille">
-          <div className="join wide:w-full" role="group" aria-label="Taille du texte">
+          <div className="join w-full" role="group" aria-label="Taille du texte">
             <button
               onClick={() => adjustScale(-0.1)}
               disabled={textScale <= 0.8}
               aria-label="Réduire la taille du texte"
-              className="btn join-item btn-sm sm:btn-md btn-outline border-base-300 wide:flex-1"
+              className="btn join-item btn-sm sm:btn-md btn-outline border-base-300 flex-1"
             >
               <span className="text-xs font-semibold">A</span>
             </button>
             <button
               onClick={() => setTextScale(1)}
               aria-label="Taille par défaut"
-              className="btn join-item btn-sm sm:btn-md btn-outline border-base-300 tabular-nums text-xs wide:flex-1"
+              className="btn join-item btn-sm sm:btn-md btn-outline border-base-300 tabular-nums text-xs flex-1"
             >
               {Math.round(textScale * 100)}%
             </button>
@@ -410,12 +493,25 @@ export default function Reader({ text }: { text: Text }) {
               onClick={() => adjustScale(0.1)}
               disabled={textScale >= 1.6}
               aria-label="Agrandir la taille du texte"
-              className="btn join-item btn-sm sm:btn-md btn-outline border-base-300 wide:flex-1"
+              className="btn join-item btn-sm sm:btn-md btn-outline border-base-300 flex-1"
             >
               <span className="text-lg font-semibold">A</span>
             </button>
           </div>
         </Field>
+
+            <button
+              type="button"
+              onClick={() => {
+                setTipSeen(false);
+                setSettingsOpen(false);
+              }}
+              className="mt-1 self-start text-xs font-medium text-base-content/55 underline-offset-2 hover:underline"
+            >
+              Revoir le tutoriel
+            </button>
+          </div>
+        </div>
       </div>
 
       {transMode === "off" ? (
@@ -474,6 +570,12 @@ export default function Reader({ text }: { text: Text }) {
           </p>
         </div>
       )}
+
+      <Tour
+        active={!tipSeen && !settingsOpen && !annotateMode}
+        steps={TOUR_STEPS}
+        onDone={() => setTipSeen(true)}
+      />
 
       {annotateMode && (
         <div className="fixed inset-x-0 bottom-[calc(4.2rem+env(safe-area-inset-bottom))] z-40 px-3 wide:bottom-6 wide:left-auto wide:right-4 wide:px-0">
