@@ -5,7 +5,7 @@ export type Crumb = { label: string; href?: string; greek?: boolean };
 // Fil d'Ariane (breadcrumb) : dernier élément = page courante (sans lien).
 export default function Breadcrumb({ items }: { items: Crumb[] }) {
   return (
-    <nav aria-label="Fil d’Ariane" className="breadcrumbs max-w-full py-2 text-sm text-base-content/55">
+    <nav aria-label="Fil d’Ariane" className="breadcrumbs max-w-full pt-4 pb-2 text-sm text-base-content/55">
       <ul>
         {items.map((it, i) => (
           <li key={i}>

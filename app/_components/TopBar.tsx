@@ -107,6 +107,12 @@ export default function TopBar({ dark, onToggleTheme }: { dark: boolean; onToggl
                   <path d="M15 5l-7 7 7 7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </button>
+              <Link href="/" aria-label="Accueil" className="btn btn-ghost btn-circle">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M3 10.5 12 4l9 6.5" />
+                  <path d="M5 9.5V20h14V9.5" />
+                </svg>
+              </Link>
               {title && <span className="truncate text-base font-semibold">{title}</span>}
             </>
           )}

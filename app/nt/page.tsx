@@ -12,9 +12,9 @@ export const metadata = {
 export default async function NtTocPage() {
   const books = await loadBooksFs();
   return (
-    <div className="pb-4 pt-4">
+    <div className="pb-4">
       <Breadcrumb items={[{ label: "Accueil", href: "/" }, { label: "Nouveau Testament" }]} />
-      <h1 className="mt-1 text-2xl font-bold">Nouveau Testament</h1>
+      <h1 className="text-2xl font-bold">Nouveau Testament</h1>
       <p className="mt-1 mb-2 text-sm text-base-content/70">27 livres · texte grec SBLGNT</p>
 
       {NT_GROUPS.map((group) => (

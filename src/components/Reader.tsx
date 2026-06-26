@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
-import { lengthLabel, textById, type Mot, type Text } from "../data/texts";
+import { textById, type Mot, type Text } from "../data/texts";
 import { loadChapter } from "../data/nt";
 import { linkedRef, parseNtRef, remapAnnotation, type PlacedAnnotation } from "../data/passageLink";
 import { usePersistentState } from "../hooks/usePersistentState";
@@ -370,11 +370,10 @@ export default function Reader({ text }: { text: Text }) {
   const phraseNeedsEnd = sel?.scope === "phrase" && sel.anchorW === sel.headW;
 
   return (
-    <article className="pt-5">
-      <div className="flex items-center gap-2 text-sm text-base-content/70">
-        <span className="badge badge-sm badge-ghost">{lengthLabel(text)}</span>
-        <span>{annotateMode ? "Touchez le texte pour sélectionner" : "Touchez une lettre pour ses indices"}</span>
-      </div>
+    <article>
+      {annotateMode && (
+        <div className="text-sm text-base-content/70">Touchez le texte pour sélectionner</div>
+      )}
 
       {!settingsOpen && !annotateMode && (
         <button

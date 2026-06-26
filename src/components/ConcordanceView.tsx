@@ -238,7 +238,7 @@ function Occurrences({ entry }: { entry: LemmaEntry }) {
 
 function Detail({ entry }: { entry: LemmaEntry }) {
   return (
-    <div className="pb-4 pt-4">
+    <div className="pb-4">
       <Breadcrumb
         items={[
           { label: "Accueil", href: "/" },
@@ -246,7 +246,7 @@ function Detail({ entry }: { entry: LemmaEntry }) {
           { label: entry.lemma, greek: true },
         ]}
       />
-      <div className="mt-2 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+      <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
         <h1 className="font-greek text-3xl">{entry.lemma}</h1>
         <span className="text-sm text-base-content/70">{entry.translitR}</span>
         <span className="text-xs text-base-content/45">érasmien&nbsp;: {entry.translit}</span>

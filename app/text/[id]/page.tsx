@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { texts, textById } from "@/src/data/texts";
 import Reader from "@/src/components/Reader";
+import Breadcrumb from "@/app/_components/Breadcrumb";
 
 export const dynamicParams = false;
 
@@ -29,5 +30,10 @@ export default async function TextPage({ params }: { params: Promise<{ id: strin
   const { id } = await params;
   const text = textById(id);
   if (!text) notFound();
-  return <Reader text={text} />;
+  return (
+    <>
+      <Breadcrumb items={[{ label: "Accueil", href: "/" }, { label: text.reference }]} />
+      <Reader text={text} />
+    </>
+  );
 }

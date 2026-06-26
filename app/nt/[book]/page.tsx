@@ -29,7 +29,7 @@ export default async function NtBookPage({ params }: { params: Promise<{ book: s
   if (!b) notFound();
 
   return (
-    <div className="pb-4 pt-4">
+    <div className="pb-4">
       <Breadcrumb
         items={[
           { label: "Accueil", href: "/" },
@@ -37,7 +37,7 @@ export default async function NtBookPage({ params }: { params: Promise<{ book: s
           { label: b.name },
         ]}
       />
-      <h1 className="mt-1 text-2xl font-bold">{b.name}</h1>
+      <h1 className="text-2xl font-bold">{b.name}</h1>
       <p className="mt-1 mb-3 text-sm text-base-content/70">
         {b.chapters} chapitre{b.chapters > 1 ? "s" : ""}
       </p>
