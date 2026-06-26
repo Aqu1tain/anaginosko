@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import Breadcrumb from "../../app/_components/Breadcrumb";
+import DistributionProfile from "./DistributionProfile";
 import {
   loadLemmaIndex,
   loadOccurrences,
@@ -256,6 +257,7 @@ function Detail({ entry }: { entry: LemmaEntry }) {
         {entry.count} occurrence{entry.count > 1 ? "s" : ""} dans le NT
       </p>
       <Definition lemma={entry.lemma} />
+      <DistributionProfile entry={entry} />
       <Occurrences entry={entry} />
     </div>
   );

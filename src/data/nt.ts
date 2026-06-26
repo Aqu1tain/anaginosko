@@ -1,7 +1,29 @@
 import type { Text, Mot } from "./texts";
 import type { Gloss } from "./glosses";
 
-export type NtBook = { id: string; name: string; usfm: string; chapters: number };
+export type NtBook = { id: string; name: string; usfm: string; chapters: number; words: number };
+
+// Ordre canonique des 27 livres.
+export const BOOK_ORDER = [
+  "mt", "mk", "lk", "jn", "ac", "ro", "1co", "2co", "ga", "eph", "php", "col",
+  "1th", "2th", "1ti", "2ti", "tit", "phm", "heb", "jas", "1pe", "2pe", "1jn",
+  "2jn", "3jn", "jud", "re",
+] as const;
+
+// Ensembles de corpus pour le profil de distribution (couvre les 27 livres).
+export const CORPUS_GROUPS: { id: string; title: string; short: string; books: string[]; color: string }[] = [
+  { id: "syn", title: "Synoptiques", short: "Syn.", books: ["mt", "mk", "lk"], color: "#4f86c6" },
+  { id: "ac", title: "Actes", short: "Actes", books: ["ac"], color: "#5bb5b0" },
+  { id: "joh", title: "Corpus johannique", short: "Joh.", books: ["jn", "1jn", "2jn", "3jn"], color: "#8b5cf6" },
+  { id: "paul", title: "Épîtres pauliniennes", short: "Paul", books: ["ro", "1co", "2co", "ga", "eph", "php", "col", "1th", "2th", "phm"], color: "#e0823d" },
+  { id: "past", title: "Pastorales", short: "Past.", books: ["1ti", "2ti", "tit"], color: "#e6b13e" },
+  { id: "cath", title: "Épîtres catholiques", short: "Cath.", books: ["heb", "jas", "1pe", "2pe", "jud"], color: "#4cae7e" },
+  { id: "apo", title: "Apocalypse", short: "Apoc.", books: ["re"], color: "#d8485a" },
+];
+
+const GROUP_BY_BOOK: Record<string, (typeof CORPUS_GROUPS)[number]> = {};
+for (const g of CORPUS_GROUPS) for (const b of g.books) GROUP_BY_BOOK[b] = g;
+export const corpusOf = (book: string) => GROUP_BY_BOOK[book];
 
 // Noms des livres (bundlé, pour les titres synchrones de la barre du haut).
 export const BOOK_NAMES: Record<string, string> = {
@@ -86,6 +108,19 @@ export async function loadOccurrences(oid: number): Promise<Occ[]> {
   const res = await fetch(`${base}nt/occ/${oid}.json`);
   const data = (await res.json()) as Occ[];
   occCache.set(oid, data);
+  return data;
+}
+
+// Distribution par livre (non plafonnée), pour le profil de distribution.
+export type Distribution = Record<string, number>;
+const distCache = new Map<number, Distribution>();
+
+export async function loadDistribution(oid: number): Promise<Distribution> {
+  const cached = distCache.get(oid);
+  if (cached) return cached;
+  const res = await fetch(`${base}nt/distribution/${oid}.json`);
+  const data = (await res.json()) as Distribution;
+  distCache.set(oid, data);
   return data;
 }
 

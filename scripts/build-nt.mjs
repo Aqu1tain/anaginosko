@@ -63,6 +63,7 @@ for (const [id, name, file, usfm] of BOOKS) {
   const lines = readFileSync(resolve(MORPH, `${file}.txt`), "utf8").split("\n").filter(Boolean);
   // chapitre -> [{grec,erasmien,restituee,verse,lemme,nature}]
   const chapters = new Map();
+  let bookWords = 0;
   for (const line of lines) {
     const p = line.split(" ");
     const ref = p[0]; // BBCCVV
@@ -86,6 +87,7 @@ for (const [id, name, file, usfm] of BOOKS) {
       ...(morph ? { morph } : {}),
     });
     totalWords++;
+    bookWords++;
     let e = lemmas.get(lemme);
     if (!e) {
       e = { nature, count: 0, occ: [] };
@@ -103,7 +105,7 @@ for (const [id, name, file, usfm] of BOOKS) {
       JSON.stringify({ reference: `${name} ${ch}`, mots: chapters.get(ch) }),
     );
   }
-  manifest.push({ id, name, usfm, chapters: chapterNums.length });
+  manifest.push({ id, name, usfm, chapters: chapterNums.length, words: bookWords });
   process.stdout.write(`${id}(${chapterNums.length}) `);
 }
 

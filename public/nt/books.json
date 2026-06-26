@@ -4,163 +4,190 @@
       "id": "mt",
       "name": "Matthieu",
       "usfm": "MAT",
-      "chapters": 28
+      "chapters": 28,
+      "words": 18329
     },
     {
       "id": "mk",
       "name": "Marc",
       "usfm": "MRK",
-      "chapters": 16
+      "chapters": 16,
+      "words": 11286
     },
     {
       "id": "lk",
       "name": "Luc",
       "usfm": "LUK",
-      "chapters": 24
+      "chapters": 24,
+      "words": 19446
     },
     {
       "id": "jn",
       "name": "Jean",
       "usfm": "JHN",
-      "chapters": 21
+      "chapters": 21,
+      "words": 15438
     },
     {
       "id": "ac",
       "name": "Actes",
       "usfm": "ACT",
-      "chapters": 28
+      "chapters": 28,
+      "words": 18412
     },
     {
       "id": "ro",
       "name": "Romains",
       "usfm": "ROM",
-      "chapters": 16
+      "chapters": 16,
+      "words": 7055
     },
     {
       "id": "1co",
       "name": "1 Corinthiens",
       "usfm": "1CO",
-      "chapters": 16
+      "chapters": 16,
+      "words": 6812
     },
     {
       "id": "2co",
       "name": "2 Corinthiens",
       "usfm": "2CO",
-      "chapters": 13
+      "chapters": 13,
+      "words": 4473
     },
     {
       "id": "ga",
       "name": "Galates",
       "usfm": "GAL",
-      "chapters": 6
+      "chapters": 6,
+      "words": 2226
     },
     {
       "id": "eph",
       "name": "Éphésiens",
       "usfm": "EPH",
-      "chapters": 6
+      "chapters": 6,
+      "words": 2416
     },
     {
       "id": "php",
       "name": "Philippiens",
       "usfm": "PHP",
-      "chapters": 4
+      "chapters": 4,
+      "words": 1626
     },
     {
       "id": "col",
       "name": "Colossiens",
       "usfm": "COL",
-      "chapters": 4
+      "chapters": 4,
+      "words": 1580
     },
     {
       "id": "1th",
       "name": "1 Thessaloniciens",
       "usfm": "1TH",
-      "chapters": 5
+      "chapters": 5,
+      "words": 1473
     },
     {
       "id": "2th",
       "name": "2 Thessaloniciens",
       "usfm": "2TH",
-      "chapters": 3
+      "chapters": 3,
+      "words": 820
     },
     {
       "id": "1ti",
       "name": "1 Timothée",
       "usfm": "1TI",
-      "chapters": 6
+      "chapters": 6,
+      "words": 1591
     },
     {
       "id": "2ti",
       "name": "2 Timothée",
       "usfm": "2TI",
-      "chapters": 4
+      "chapters": 4,
+      "words": 1235
     },
     {
       "id": "tit",
       "name": "Tite",
       "usfm": "TIT",
-      "chapters": 3
+      "chapters": 3,
+      "words": 659
     },
     {
       "id": "phm",
       "name": "Philémon",
       "usfm": "PHM",
-      "chapters": 1
+      "chapters": 1,
+      "words": 334
     },
     {
       "id": "heb",
       "name": "Hébreux",
       "usfm": "HEB",
-      "chapters": 13
+      "chapters": 13,
+      "words": 4935
     },
     {
       "id": "jas",
       "name": "Jacques",
       "usfm": "JAS",
-      "chapters": 5
+      "chapters": 5,
+      "words": 1739
     },
     {
       "id": "1pe",
       "name": "1 Pierre",
       "usfm": "1PE",
-      "chapters": 5
+      "chapters": 5,
+      "words": 1678
     },
     {
       "id": "2pe",
       "name": "2 Pierre",
       "usfm": "2PE",
-      "chapters": 3
+      "chapters": 3,
+      "words": 1098
     },
     {
       "id": "1jn",
       "name": "1 Jean",
       "usfm": "1JN",
-      "chapters": 5
+      "chapters": 5,
+      "words": 2137
     },
     {
       "id": "2jn",
       "name": "2 Jean",
       "usfm": "2JN",
-      "chapters": 1
+      "chapters": 1,
+      "words": 245
     },
     {
       "id": "3jn",
       "name": "3 Jean",
       "usfm": "3JN",
-      "chapters": 1
+      "chapters": 1,
+      "words": 219
     },
     {
       "id": "jud",
       "name": "Jude",
       "usfm": "JUD",
-      "chapters": 1
+      "chapters": 1,
+      "words": 459
     },
     {
       "id": "re",
       "name": "Apocalypse",
       "usfm": "REV",
-      "chapters": 22
+      "chapters": 22,
+      "words": 9833
     }
   ]
 }
