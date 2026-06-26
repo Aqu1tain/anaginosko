@@ -205,6 +205,7 @@ function GreekText({
           role="button"
           tabIndex={key === tabbableKey ? 0 : -1}
           aria-label={`Lettre ${info.letter!.name}`}
+          aria-expanded={active?.key === key}
           data-w={w}
           data-g={g}
         >

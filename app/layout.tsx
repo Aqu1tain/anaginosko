@@ -24,6 +24,12 @@ export const metadata: Metadata = {
     siteName: "Anaginosko",
     locale: "fr_FR",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: { default: "Anaginosko · lire le grec koinè", template: "%s · Anaginosko" },
+    description:
+      "Lire le grec koinè du Nouveau Testament, lettre par lettre : prononciation érasmienne et restituée, concordance, alphabet.",
+  },
 };
 
 export const viewport: Viewport = {
