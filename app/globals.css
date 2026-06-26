@@ -176,11 +176,15 @@ body {
   outline-offset: 1px;
 }
 
-/* La lettre active ne porte plus de pavé de fond (le mot entier est surligné) ;
-   on garde juste sa couleur d'accent et la zone de clic agrandie ci-dessous. */
 .glyph.is-active {
   color: var(--color-accent);
   position: relative;
+}
+
+/* 1er tap (lettre) : pavé de fond sur la seule lettre. Au 2e tap (mot), ce pavé
+   disparaît au profit du surlignage du mot entier. */
+.glyph.is-active.is-letter {
+  background-color: color-mix(in oklab, var(--color-accent) 16%, transparent);
 }
 
 /* Zone de clic agrandie INVISIBLE pour la lettre active : facilite le 2e/3e

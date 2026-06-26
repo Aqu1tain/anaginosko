@@ -85,9 +85,8 @@ function GreekText({
   }, [shown]);
 
   const tabbableKey = active?.key ?? firstKey;
-  // On surligne le mot entier dès qu'une de ses lettres est active (lecture),
-  // plutôt que de poser un pavé de fond sur la seule lettre.
-  const activeWord = active && active.w >= 0 ? active.w : -1;
+  // 1er tap = lettre seule ; 2e tap (stage 2) = mot entier surligné.
+  const activeWord = active && active.stage === 2 ? active.w : -1;
 
   // Surlignage temporaire d'un mot (arrivée depuis la concordance).
   useEffect(() => {
@@ -197,13 +196,15 @@ function GreekText({
     graphemes.map((info, g) => {
       if (!isClickable(info)) return manuscript ? null : <span key={g}>{info.cluster}</span>;
       const key = `${w}:${g}`;
+      const isActive = active?.key === key;
+      const isLetter = isActive && active.stage === 1;
       const charAnno = charSpots?.has(key);
       const charSel =
         selection?.scope === "char" && w === selection.from && g === selection.g;
       return (
         <span
           key={g}
-          className={`glyph${active?.key === key ? " is-active" : ""}${charAnno ? " glyph-annotated" : ""}${charSel ? " glyph-selected" : ""}`}
+          className={`glyph${isActive ? " is-active" : ""}${isLetter ? " is-letter" : ""}${charAnno ? " glyph-annotated" : ""}${charSel ? " glyph-selected" : ""}`}
           role="button"
           tabIndex={key === tabbableKey ? 0 : -1}
           aria-label={`Lettre ${info.letter!.name}`}
