@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { collections, lengthLabel, textsByCollection, type Text } from "../src/data/texts";
+import SupportBanner from "./_components/SupportBanner";
 
 export const metadata: Metadata = { alternates: { canonical: "/" } };
 
@@ -48,6 +49,8 @@ export default function Home() {
           d’un texte pour découvrir son nom et sa prononciation, érasmienne et
           restituée.
         </p>
+        <SupportBanner />
+
         <Link
           href="/nt"
           className="mt-4 flex items-center justify-between gap-3 rounded-box border border-base-300 bg-base-100 px-4 py-3 transition-colors hover:border-primary/40"
