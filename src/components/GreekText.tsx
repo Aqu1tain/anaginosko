@@ -30,6 +30,7 @@ function GreekText({
   canManage,
   onEditAnnotation,
   onDeleteAnnotation,
+  pronOverrides,
 }: {
   text: Text;
   size: "lg" | "md";
@@ -54,6 +55,8 @@ function GreekText({
   canManage?: (a: Annotation) => boolean;
   onEditAnnotation?: (a: Annotation) => void;
   onDeleteAnnotation?: (a: Annotation) => void;
+  /** Translittérations overridées, clé `${grec}:${system}` -> translit affichée. */
+  pronOverrides?: Map<string, string>;
 }) {
   const { active, clickLetter } = useSheet();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -254,7 +257,11 @@ function GreekText({
         }
 
         const ctx = token.word.context;
-        const tr = ctx ? (translit === "restituee" ? ctx.restituee : ctx.erasmien) : null;
+        let tr = ctx ? (translit === "restituee" ? ctx.restituee : ctx.erasmien) : null;
+        if (ctx && pronOverrides) {
+          const ov = pronOverrides.get(`${ctx.grec}:${translit}`);
+          if (ov) tr = ov;
+        }
         return (
           <span
             key={w}

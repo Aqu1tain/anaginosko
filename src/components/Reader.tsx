@@ -7,7 +7,13 @@ import { loadChapter } from "../data/nt";
 import { linkedRef, parseNtRef, remapAnnotation, type PlacedAnnotation } from "../data/passageLink";
 import { usePersistentState } from "../hooks/usePersistentState";
 import { useAuth } from "../hooks/useAuth";
-import { fetchAnnotations, deleteAnnotation, recordView, type Annotation } from "../lib/api";
+import {
+  fetchAnnotations,
+  deleteAnnotation,
+  recordView,
+  fetchPronunciations,
+  type Annotation,
+} from "../lib/api";
 import GreekText, { type TranslitMode, type AnnoScope, type AnnoSelection } from "./GreekText";
 import AnnotationEditor, { type AnnotationTarget } from "./AnnotationEditor";
 
@@ -86,6 +92,18 @@ export default function Reader({ text }: { text: Text }) {
   const [sel, setSel] = useState<Sel | null>(null);
   const [editTarget, setEditTarget] = useState<AnnotationTarget | null>(null);
   const [pendingDelete, setPendingDelete] = useState<Annotation | null>(null);
+  // Overrides de prononciation (par forme) -> translittération affichée dans
+  // l'interlinéaire, cohérente avec la fiche du mot.
+  const [pronOverrides, setPronOverrides] = useState<Map<string, string>>(new Map());
+  useEffect(() => {
+    fetchPronunciations()
+      .then((rows) => {
+        const m = new Map<string, string>();
+        for (const o of rows) if (o.translit) m.set(`${o.grec}:${o.system}`, o.translit);
+        setPronOverrides(m);
+      })
+      .catch(() => {});
+  }, []);
 
   const ref = text.id;
   const mots = text.mots;
@@ -269,6 +287,7 @@ export default function Reader({ text }: { text: Text }) {
     canManage,
     onEditAnnotation: openEditorForExisting,
     onDeleteAnnotation: (a: Annotation) => setPendingDelete(a),
+    pronOverrides,
   };
 
   const selGrec = sel
