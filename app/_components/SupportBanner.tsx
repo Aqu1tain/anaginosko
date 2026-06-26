@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { usePersistentState } from "../../src/hooks/usePersistentState";
 
-const TIPEEE = "#d84858";
+const TIPEEE = "#d84759";
 
 export default function SupportBanner() {
   const [dismissed, setDismissed] = usePersistentState("anaginosko:supportBanner", false);
