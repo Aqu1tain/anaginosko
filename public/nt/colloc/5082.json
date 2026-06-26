@@ -1,1 +1,1 @@
-[{"oid":3822,"lemma":"πᾶς","translitR":"pas","score":1.767,"n":4},{"oid":3454,"lemma":"ὁ","translitR":"ho","score":0.131,"n":5}]
+[{"oid":3822,"lemma":"πᾶς","translitR":"pas","score":1.767,"n":4,"verses":[{"b":"ro","c":13,"v":1},{"b":"php","c":3,"v":8},{"b":"php","c":4,"v":7},{"b":"1pe","c":2,"v":13}]},{"oid":3454,"lemma":"ὁ","translitR":"ho","score":0.131,"n":5,"verses":[{"b":"ro","c":13,"v":1},{"b":"php","c":2,"v":3},{"b":"php","c":3,"v":8},{"b":"php","c":4,"v":7},{"b":"1pe","c":2,"v":13}]}]

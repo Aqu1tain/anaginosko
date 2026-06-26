@@ -1,1 +1,1 @@
-[{"oid":1156,"lemma":"δέ","translitR":"dé","score":0.947,"n":4},{"oid":836,"lemma":"αὐτός","translitR":"aftos","score":0.537,"n":4}]
+[{"oid":1156,"lemma":"δέ","translitR":"dé","score":0.947,"n":4,"verses":[{"b":"mt","c":15,"v":14},{"b":"lk","c":6,"v":39},{"b":"jn","c":16,"v":13},{"b":"ac","c":8,"v":31}]},{"oid":836,"lemma":"αὐτός","translitR":"aftos","score":0.537,"n":4,"verses":[{"b":"mt","c":15,"v":14},{"b":"lk","c":6,"v":39},{"b":"ac","c":8,"v":31},{"b":"re","c":7,"v":17}]}]

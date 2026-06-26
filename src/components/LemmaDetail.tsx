@@ -98,24 +98,29 @@ function Definition({ lemma }: { lemma: string }) {
 
 function Occurrences({ entry, occ }: { entry: LemmaEntry; occ: Occ[] }) {
   return (
-    <div className="mt-4 grid gap-1.5">
+    <div className="mt-4">
+      <div className="text-[0.7rem] font-medium uppercase tracking-wide text-base-content/70">
+        Occurrences
+      </div>
       {entry.count > occ.length && (
-        <p className="text-sm text-base-content/70">
+        <p className="mt-1 text-sm text-base-content/70">
           {occ.length} premières occurrences sur {entry.count}.
         </p>
       )}
-      {occ.map((o, i) => (
-        <Link
-          key={i}
-          href={`/nt/${o.b}/${o.c}?w=${o.w}`}
-          className="flex items-center gap-3 rounded-box border border-base-300 bg-base-100 px-3.5 py-2.5 transition-colors hover:border-primary/40"
-        >
-          <span className="font-greek min-w-0 flex-1 truncate text-lg">{o.f}</span>
-          <span className="shrink-0 text-sm text-base-content/70">
-            {BOOK_NAMES[o.b] ?? o.b} {o.c}:{o.v}
-          </span>
-        </Link>
-      ))}
+      <div className="mt-2 grid gap-1.5 wide:grid-cols-2 wide:gap-x-3">
+        {occ.map((o, i) => (
+          <Link
+            key={i}
+            href={`/nt/${o.b}/${o.c}?w=${o.w}`}
+            className="flex items-center gap-3 rounded-box border border-base-300 bg-base-100 px-3.5 py-2.5 transition-colors hover:border-primary/40"
+          >
+            <span className="font-greek min-w-0 flex-1 truncate text-lg">{o.f}</span>
+            <span className="shrink-0 text-sm text-base-content/70">
+              {BOOK_NAMES[o.b] ?? o.b} {o.c}:{o.v}
+            </span>
+          </Link>
+        ))}
+      </div>
     </div>
   );
 }
@@ -151,9 +156,20 @@ export default function LemmaDetail({
       <p className="mt-1 text-sm text-base-content/70">
         {entry.count} occurrence{entry.count > 1 ? "s" : ""} dans le NT
       </p>
-      <Definition lemma={entry.lemma} />
-      <DistributionProfile entry={entry} dist={dist} books={books} occ={occ} />
-      <Collocations items={colloc} />
+      {/* Desktop : on éclate la pile. En haut, deux colonnes d'analyse — sens +
+          répartition à gauche, voisins à droite. En dessous, les occurrences en
+          pleine largeur, réparties en colonnes. Quand la grille retombe en une
+          colonne (mobile), l'ordre source reste Définition → Répartition →
+          Associés → Occurrences. */}
+      <div className="wide:grid wide:grid-cols-2 wide:items-start wide:gap-8">
+        <div className="min-w-0">
+          <Definition lemma={entry.lemma} />
+          <DistributionProfile entry={entry} dist={dist} books={books} occ={occ} />
+        </div>
+        <div className="min-w-0">
+          <Collocations items={colloc} occ={occ} />
+        </div>
+      </div>
       <Occurrences entry={entry} occ={occ} />
     </div>
   );

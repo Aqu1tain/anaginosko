@@ -1,1 +1,1 @@
-[{"oid":2179,"lemma":"ἔχω","translitR":"ékhô","score":2.031,"n":3},{"oid":3454,"lemma":"ὁ","translitR":"ho","score":0.131,"n":5}]
+[{"oid":2179,"lemma":"ἔχω","translitR":"ékhô","score":2.031,"n":3,"verses":[{"b":"2co","c":8,"v":12},{"b":"heb","c":6,"v":18},{"b":"heb","c":12,"v":1}]},{"oid":3454,"lemma":"ὁ","translitR":"ho","score":0.131,"n":5,"verses":[{"b":"2co","c":8,"v":12},{"b":"heb","c":6,"v":18},{"b":"heb","c":12,"v":1},{"b":"heb","c":12,"v":2},{"b":"jud","c":1,"v":7}]}]

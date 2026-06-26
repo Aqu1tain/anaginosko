@@ -1,1 +1,1 @@
-[{"oid":3646,"lemma":"οὗτος","translitR":"houtos","score":1.551,"n":3},{"oid":3454,"lemma":"ὁ","translitR":"ho","score":0.131,"n":4}]
+[{"oid":3646,"lemma":"οὗτος","translitR":"houtos","score":1.551,"n":3,"verses":[{"b":"mk","c":14,"v":36},{"b":"lk","c":22,"v":42},{"b":"jud","c":1,"v":12}]},{"oid":3454,"lemma":"ὁ","translitR":"ho","score":0.131,"n":4,"verses":[{"b":"mk","c":14,"v":36},{"b":"lk","c":22,"v":42},{"b":"heb","c":13,"v":9},{"b":"jud","c":1,"v":12}]}]

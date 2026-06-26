@@ -1,1 +1,1 @@
-[{"oid":3608,"lemma":"ὅς","translitR":"hos","score":1.018,"n":3},{"oid":3454,"lemma":"ὁ","translitR":"ho","score":0.131,"n":7}]
+[{"oid":3608,"lemma":"ὅς","translitR":"hos","score":1.018,"n":3,"verses":[{"b":"2co","c":5,"v":4},{"b":"heb","c":11,"v":29},{"b":"re","c":12,"v":16}]},{"oid":3454,"lemma":"ὁ","translitR":"ho","score":0.131,"n":7,"verses":[{"b":"mt","c":23,"v":24},{"b":"1co","c":15,"v":54},{"b":"2co","c":2,"v":7},{"b":"2co","c":5,"v":4},{"b":"heb","c":11,"v":29},{"b":"1pe","c":5,"v":8},{"b":"re","c":12,"v":16}]}]

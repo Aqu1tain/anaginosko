@@ -1,1 +1,1 @@
-[{"oid":1500,"lemma":"εἰμί","translitR":"imi","score":1.108,"n":4},{"oid":3454,"lemma":"ὁ","translitR":"ho","score":0.131,"n":5}]
+[{"oid":1500,"lemma":"εἰμί","translitR":"imi","score":1.108,"n":4,"verses":[{"b":"php","c":1,"v":1},{"b":"1ti","c":3,"v":2},{"b":"tit","c":1,"v":7},{"b":"1pe","c":2,"v":25}]},{"oid":3454,"lemma":"ὁ","translitR":"ho","score":0.131,"n":5,"verses":[{"b":"ac","c":20,"v":28},{"b":"php","c":1,"v":1},{"b":"1ti","c":3,"v":2},{"b":"tit","c":1,"v":7},{"b":"1pe","c":2,"v":25}]}]

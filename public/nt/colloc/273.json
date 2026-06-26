@@ -1,1 +1,1 @@
-[{"oid":2298,"lemma":"θεός","translitR":"théos","score":1.421,"n":3},{"oid":1710,"lemma":"ἐν","translitR":"én","score":1.105,"n":4}]
+[{"oid":2298,"lemma":"θεός","translitR":"théos","score":1.421,"n":3,"verses":[{"b":"lk","c":1,"v":6},{"b":"php","c":2,"v":15},{"b":"1th","c":3,"v":13}]},{"oid":1710,"lemma":"ἐν","translitR":"én","score":1.105,"n":4,"verses":[{"b":"lk","c":1,"v":6},{"b":"php","c":2,"v":15},{"b":"php","c":3,"v":6},{"b":"1th","c":3,"v":13}]}]

@@ -1,1 +1,1 @@
-[{"oid":1508,"lemma":"εἰς","translitR":"is","score":1.665,"n":5},{"oid":1473,"lemma":"ἐγώ","translitR":"égô","score":1.245,"n":4}]
+[{"oid":1508,"lemma":"εἰς","translitR":"is","score":1.665,"n":5,"verses":[{"b":"eph","c":1,"v":14},{"b":"1th","c":5,"v":9},{"b":"2th","c":2,"v":14},{"b":"heb","c":10,"v":39},{"b":"1pe","c":2,"v":9}]},{"oid":1473,"lemma":"ἐγώ","translitR":"égô","score":1.245,"n":4,"verses":[{"b":"eph","c":1,"v":14},{"b":"1th","c":5,"v":9},{"b":"2th","c":2,"v":14},{"b":"heb","c":10,"v":39}]}]

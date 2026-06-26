@@ -1,1 +1,1 @@
-[{"oid":1091,"lemma":"γίνομαι","translitR":"ginomé","score":1.847,"n":3},{"oid":1156,"lemma":"δέ","translitR":"dé","score":0.764,"n":4}]
+[{"oid":1091,"lemma":"γίνομαι","translitR":"ginomé","score":1.847,"n":3,"verses":[{"b":"mt","c":24,"v":20},{"b":"mk","c":13,"v":18},{"b":"jn","c":10,"v":22}]},{"oid":1156,"lemma":"δέ","translitR":"dé","score":0.764,"n":4,"verses":[{"b":"mt","c":16,"v":3},{"b":"mt","c":24,"v":20},{"b":"mk","c":13,"v":18},{"b":"ac","c":27,"v":20}]}]

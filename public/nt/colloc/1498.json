@@ -1,1 +1,1 @@
-[{"oid":234,"lemma":"ἀλλά","translitR":"alla","score":2.576,"n":3},{"oid":1710,"lemma":"ἐν","translitR":"én","score":1.328,"n":3}]
+[{"oid":234,"lemma":"ἀλλά","translitR":"alla","score":2.576,"n":3,"verses":[{"b":"1co","c":5,"v":8},{"b":"2co","c":1,"v":12},{"b":"2co","c":2,"v":17}]},{"oid":1710,"lemma":"ἐν","translitR":"én","score":1.328,"n":3,"verses":[{"b":"1co","c":5,"v":8},{"b":"2co","c":1,"v":12},{"b":"2co","c":2,"v":17}]}]

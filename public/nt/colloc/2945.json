@@ -1,1 +1,1 @@
-[{"oid":1058,"lemma":"γάρ","translitR":"gar","score":1.524,"n":4},{"oid":3622,"lemma":"ὅτι","translitR":"hoti","score":1.052,"n":3}]
+[{"oid":1058,"lemma":"γάρ","translitR":"gar","score":1.524,"n":4,"verses":[{"b":"ro","c":6,"v":14},{"b":"ro","c":7,"v":1},{"b":"ro","c":14,"v":9},{"b":"2co","c":1,"v":24}]},{"oid":3622,"lemma":"ὅτι","translitR":"hoti","score":1.052,"n":3,"verses":[{"b":"ro","c":6,"v":9},{"b":"ro","c":7,"v":1},{"b":"2co","c":1,"v":24}]}]

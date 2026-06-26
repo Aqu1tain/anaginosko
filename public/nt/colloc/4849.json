@@ -1,1 +1,1 @@
-[{"oid":2298,"lemma":"θεός","translitR":"théos","score":1.709,"n":4},{"oid":3454,"lemma":"ὁ","translitR":"ho","score":0.131,"n":5}]
+[{"oid":2298,"lemma":"θεός","translitR":"théos","score":1.709,"n":4,"verses":[{"b":"lk","c":3,"v":6},{"b":"ac","c":28,"v":28},{"b":"eph","c":6,"v":17},{"b":"tit","c":2,"v":11}]},{"oid":3454,"lemma":"ὁ","translitR":"ho","score":0.131,"n":5,"verses":[{"b":"lk","c":2,"v":30},{"b":"lk","c":3,"v":6},{"b":"ac","c":28,"v":28},{"b":"eph","c":6,"v":17},{"b":"tit","c":2,"v":11}]}]

@@ -1,1 +1,1 @@
-[{"oid":1473,"lemma":"ἐγώ","translitR":"égô","score":1.18,"n":3},{"oid":3454,"lemma":"ὁ","translitR":"ho","score":0.131,"n":4}]
+[{"oid":1473,"lemma":"ἐγώ","translitR":"égô","score":1.18,"n":3,"verses":[{"b":"lk","c":1,"v":79},{"b":"ac","c":27,"v":20},{"b":"tit","c":3,"v":4}]},{"oid":3454,"lemma":"ὁ","translitR":"ho","score":0.131,"n":4,"verses":[{"b":"lk","c":1,"v":79},{"b":"ac","c":27,"v":20},{"b":"tit","c":2,"v":11},{"b":"tit","c":3,"v":4}]}]

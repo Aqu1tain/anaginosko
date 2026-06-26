@@ -1,1 +1,1 @@
-[{"oid":419,"lemma":"ἄνεμος","translitR":"anémos","score":5.1,"n":3},{"oid":3454,"lemma":"ὁ","translitR":"ho","score":0.131,"n":5}]
+[{"oid":419,"lemma":"ἄνεμος","translitR":"anémos","score":5.1,"n":3,"verses":[{"b":"mk","c":4,"v":39},{"b":"lk","c":8,"v":24},{"b":"jn","c":6,"v":18}]},{"oid":3454,"lemma":"ὁ","translitR":"ho","score":0.131,"n":5,"verses":[{"b":"mk","c":4,"v":39},{"b":"lk","c":8,"v":24},{"b":"jn","c":6,"v":18},{"b":"2pe","c":1,"v":13},{"b":"2pe","c":3,"v":1}]}]

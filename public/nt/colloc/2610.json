@@ -1,1 +1,1 @@
-[{"oid":3441,"lemma":"Νῶε","translitR":"nôé","score":6.611,"n":3},{"oid":2514,"lemma":"καί","translitR":"ké","score":0.439,"n":4}]
+[{"oid":3441,"lemma":"Νῶε","translitR":"nôé","score":6.611,"n":3,"verses":[{"b":"mt","c":24,"v":38},{"b":"lk","c":17,"v":27},{"b":"2pe","c":2,"v":5}]},{"oid":2514,"lemma":"καί","translitR":"ké","score":0.439,"n":4,"verses":[{"b":"mt","c":24,"v":38},{"b":"mt","c":24,"v":39},{"b":"lk","c":17,"v":27},{"b":"2pe","c":2,"v":5}]}]

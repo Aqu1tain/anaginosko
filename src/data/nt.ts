@@ -111,8 +111,17 @@ export async function loadOccurrences(oid: number): Promise<Occ[]> {
   return data;
 }
 
-// Voisins lexicaux (collocations PMI au niveau du verset).
-export type Colloc = { oid: number; lemma: string; translitR: string; score: number; n: number };
+// Voisins lexicaux (collocations PMI au niveau du verset). `verses` liste les
+// versets communs (plafonnés) pour les déplier sous le mot, comme la répartition.
+export type VerseRef = { b: string; c: number; v: number };
+export type Colloc = {
+  oid: number;
+  lemma: string;
+  translitR: string;
+  score: number;
+  n: number;
+  verses?: VerseRef[];
+};
 
 // Distribution par livre (non plafonnée), pour le profil de distribution.
 export type Distribution = Record<string, number>;

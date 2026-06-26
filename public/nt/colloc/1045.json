@@ -1,1 +1,1 @@
-[{"oid":1058,"lemma":"γάρ","translitR":"gar","score":1.573,"n":3},{"oid":3623,"lemma":"οὐ","translitR":"ou","score":1.23,"n":3}]
+[{"oid":1058,"lemma":"γάρ","translitR":"gar","score":1.573,"n":3,"verses":[{"b":"1co","c":3,"v":2},{"b":"heb","c":5,"v":12},{"b":"heb","c":5,"v":13}]},{"oid":3623,"lemma":"οὐ","translitR":"ou","score":1.23,"n":3,"verses":[{"b":"1co","c":3,"v":2},{"b":"1co","c":9,"v":7},{"b":"heb","c":5,"v":12}]}]

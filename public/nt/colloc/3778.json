@@ -1,1 +1,1 @@
-[{"oid":4177,"lemma":"πρός","translitR":"pros","score":2.224,"n":3},{"oid":1156,"lemma":"δέ","translitR":"dé","score":0.882,"n":3}]
+[{"oid":4177,"lemma":"πρός","translitR":"pros","score":2.224,"n":3,"verses":[{"b":"ac","c":27,"v":12},{"b":"1co","c":16,"v":6},{"b":"tit","c":3,"v":12}]},{"oid":1156,"lemma":"δέ","translitR":"dé","score":0.882,"n":3,"verses":[{"b":"ac","c":27,"v":12},{"b":"ac","c":28,"v":11},{"b":"1co","c":16,"v":6}]}]

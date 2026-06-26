@@ -1,1 +1,1 @@
-[{"oid":4626,"lemma":"σύ","translitR":"su","score":0.855,"n":3},{"oid":3454,"lemma":"ὁ","translitR":"ho","score":0.131,"n":5}]
+[{"oid":4626,"lemma":"σύ","translitR":"su","score":0.855,"n":3,"verses":[{"b":"ac","c":20,"v":26},{"b":"eph","c":4,"v":17},{"b":"1th","c":2,"v":12}]},{"oid":3454,"lemma":"ὁ","translitR":"ho","score":0.131,"n":5,"verses":[{"b":"ac","c":20,"v":26},{"b":"ac","c":26,"v":22},{"b":"ga","c":5,"v":3},{"b":"eph","c":4,"v":17},{"b":"1th","c":2,"v":12}]}]

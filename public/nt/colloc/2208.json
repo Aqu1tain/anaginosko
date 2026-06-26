@@ -1,1 +1,1 @@
-[{"oid":2207,"lemma":"ζύμη","translitR":"zumi","score":6.58,"n":4},{"oid":3519,"lemma":"ὅλος","translitR":"holos","score":4.414,"n":4}]
+[{"oid":2207,"lemma":"ζύμη","translitR":"zumi","score":6.58,"n":4,"verses":[{"b":"mt","c":13,"v":33},{"b":"lk","c":13,"v":21},{"b":"1co","c":5,"v":6},{"b":"ga","c":5,"v":9}]},{"oid":3519,"lemma":"ὅλος","translitR":"holos","score":4.414,"n":4,"verses":[{"b":"mt","c":13,"v":33},{"b":"lk","c":13,"v":21},{"b":"1co","c":5,"v":6},{"b":"ga","c":5,"v":9}]}]

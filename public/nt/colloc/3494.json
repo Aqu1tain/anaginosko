@@ -1,1 +1,1 @@
-[{"oid":3635,"lemma":"οὖν","translitR":"oun","score":2.281,"n":3},{"oid":2298,"lemma":"θεός","translitR":"théos","score":1.421,"n":3}]
+[{"oid":3635,"lemma":"οὖν","translitR":"oun","score":2.281,"n":3,"verses":[{"b":"ro","c":12,"v":1},{"b":"php","c":2,"v":1},{"b":"col","c":3,"v":12}]},{"oid":2298,"lemma":"θεός","translitR":"théos","score":1.421,"n":3,"verses":[{"b":"ro","c":12,"v":1},{"b":"2co","c":1,"v":3},{"b":"col","c":3,"v":12}]}]

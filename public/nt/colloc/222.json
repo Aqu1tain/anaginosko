@@ -1,1 +1,1 @@
-[{"oid":836,"lemma":"αὐτός","translitR":"aftos","score":0.25,"n":3},{"oid":3454,"lemma":"ὁ","translitR":"ho","score":0.131,"n":5}]
+[{"oid":836,"lemma":"αὐτός","translitR":"aftos","score":0.25,"n":3,"verses":[{"b":"mk","c":15,"v":21},{"b":"ac","c":19,"v":33},{"b":"2ti","c":4,"v":14}]},{"oid":3454,"lemma":"ὁ","translitR":"ho","score":0.131,"n":5,"verses":[{"b":"mk","c":15,"v":21},{"b":"ac","c":4,"v":6},{"b":"ac","c":19,"v":33},{"b":"1ti","c":1,"v":20},{"b":"2ti","c":4,"v":14}]}]

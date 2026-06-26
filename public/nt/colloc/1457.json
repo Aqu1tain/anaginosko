@@ -1,1 +1,1 @@
-[{"oid":3878,"lemma":"περί","translitR":"péri","score":2.701,"n":4},{"oid":3608,"lemma":"ὅς","translitR":"hos","score":1.528,"n":5}]
+[{"oid":3878,"lemma":"περί","translitR":"péri","score":2.701,"n":4,"verses":[{"b":"ac","c":19,"v":40},{"b":"ac","c":23,"v":29},{"b":"ac","c":26,"v":2},{"b":"ac","c":26,"v":7}]},{"oid":3608,"lemma":"ὅς","translitR":"hos","score":1.528,"n":5,"verses":[{"b":"ac","c":19,"v":40},{"b":"ac","c":23,"v":28},{"b":"ac","c":23,"v":29},{"b":"ac","c":26,"v":2},{"b":"ac","c":26,"v":7}]}]

@@ -56,48 +56,50 @@ function List({ index }: { index: LemmaEntry[] }) {
 
   return (
     <div className="pb-4">
-      <p className="max-w-prose pt-6 text-[0.95rem] leading-relaxed text-base-content/75">
-        Concordance des {index.length} lemmes du Nouveau Testament. Cherchez en grec
-        (<span className="font-greek">λόγος</span>) ou en translittération latine, restituée
-        comme érasmienne (ex.&nbsp;<span className="font-greek">ἀρχή</span> : <em>arkhi</em> ou{" "}
-        <em>arkê</em>).
-      </p>
-      <input
-        type="search"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        placeholder="Chercher : λόγος, arkhi, logos…"
-        className="input input-bordered mt-4 w-full"
-        autoComplete="off"
-        autoCapitalize="off"
-        spellCheck={false}
-      />
-      {!query && examples.length > 0 && (
-        <div className="mt-3 flex flex-wrap items-center gap-1.5">
-          <span className="text-xs font-medium uppercase tracking-wide text-base-content/70">
-            Exemples
-          </span>
-          {examples.map((e) => (
-            <Link
-              key={e.lemma}
-              href={`/concordance/${encodeURIComponent(e.lemma)}`}
-              className="badge badge-lg badge-ghost gap-1.5 font-greek hover:badge-primary"
-            >
-              {e.lemma}
-              <span className="text-[0.65rem] text-base-content/70">{e.count}</span>
-            </Link>
-          ))}
-        </div>
-      )}
+      <div className="max-w-2xl">
+        <p className="max-w-prose pt-6 text-[0.95rem] leading-relaxed text-base-content/75">
+          Concordance des {index.length} lemmes du Nouveau Testament. Cherchez en grec
+          (<span className="font-greek">λόγος</span>) ou en translittération latine, restituée
+          comme érasmienne (ex.&nbsp;<span className="font-greek">ἀρχή</span> : <em>arkhi</em> ou{" "}
+          <em>arkê</em>).
+        </p>
+        <input
+          type="search"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Chercher : λόγος, arkhi, logos…"
+          className="input input-bordered mt-4 w-full"
+          autoComplete="off"
+          autoCapitalize="off"
+          spellCheck={false}
+        />
+        {!query && examples.length > 0 && (
+          <div className="mt-3 flex flex-wrap items-center gap-1.5">
+            <span className="text-xs font-medium uppercase tracking-wide text-base-content/70">
+              Exemples
+            </span>
+            {examples.map((e) => (
+              <Link
+                key={e.lemma}
+                href={`/concordance/${encodeURIComponent(e.lemma)}`}
+                className="badge badge-lg badge-ghost gap-1.5 font-greek hover:badge-primary"
+              >
+                {e.lemma}
+                <span className="text-[0.65rem] text-base-content/70">{e.count}</span>
+              </Link>
+            ))}
+          </div>
+        )}
+      </div>
       <p className="mt-3 mb-2 text-sm text-base-content/70">
         {results.length} résultat{results.length > 1 ? "s" : ""}
       </p>
       {results.length === 0 ? (
-        <div className="rounded-box bg-base-200 px-4 py-6 text-center text-sm text-base-content/70">
+        <div className="max-w-2xl rounded-box bg-base-200 px-4 py-6 text-center text-sm text-base-content/70">
           Aucun résultat. Essaie en grec ou en translittération latine.
         </div>
       ) : (
-        <div className="grid gap-1.5">
+        <div className="grid gap-1.5 wide:grid-cols-2 wide:gap-x-3">
           {results.slice(0, 300).map((e) => (
             <LemmaRow key={e.lemma} entry={e} />
           ))}

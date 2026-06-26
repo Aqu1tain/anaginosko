@@ -1,1 +1,1 @@
-[{"oid":1899,"lemma":"ἐπί","translitR":"épi","score":1.627,"n":3},{"oid":3454,"lemma":"ὁ","translitR":"ho","score":0.131,"n":6}]
+[{"oid":1899,"lemma":"ἐπί","translitR":"épi","score":1.627,"n":3,"verses":[{"b":"1co","c":14,"v":16},{"b":"1co","c":16,"v":17},{"b":"1th","c":2,"v":16}]},{"oid":3454,"lemma":"ὁ","translitR":"ho","score":0.131,"n":6,"verses":[{"b":"mt","c":13,"v":14},{"b":"1co","c":14,"v":16},{"b":"1co","c":16,"v":17},{"b":"ga","c":6,"v":2},{"b":"php","c":2,"v":30},{"b":"1th","c":2,"v":16}]}]

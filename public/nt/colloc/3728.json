@@ -1,1 +1,1 @@
-[{"oid":3241,"lemma":"μή","translitR":"mi","score":1.87,"n":3},{"oid":836,"lemma":"αὐτός","translitR":"aftos","score":0.473,"n":3}]
+[{"oid":3241,"lemma":"μή","translitR":"mi","score":1.87,"n":3,"verses":[{"b":"ro","c":10,"v":19},{"b":"ro","c":11,"v":11},{"b":"1co","c":10,"v":22}]},{"oid":836,"lemma":"αὐτός","translitR":"aftos","score":0.473,"n":3,"verses":[{"b":"ro","c":11,"v":11},{"b":"ro","c":11,"v":14},{"b":"1co","c":10,"v":22}]}]

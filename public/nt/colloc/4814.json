@@ -1,1 +1,1 @@
-[{"oid":2423,"lemma":"ἵνα","translitR":"hina","score":2.039,"n":3},{"oid":836,"lemma":"αὐτός","translitR":"aftos","score":0.25,"n":3}]
+[{"oid":2423,"lemma":"ἵνα","translitR":"hina","score":2.039,"n":3,"verses":[{"b":"mk","c":15,"v":32},{"b":"ro","c":6,"v":6},{"b":"ga","c":2,"v":19}]},{"oid":836,"lemma":"αὐτός","translitR":"aftos","score":0.25,"n":3,"verses":[{"b":"mt","c":27,"v":44},{"b":"mk","c":15,"v":32},{"b":"jn","c":19,"v":32}]}]

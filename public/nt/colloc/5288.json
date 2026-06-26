@@ -1,1 +1,1 @@
-[{"oid":4626,"lemma":"σύ","translitR":"su","score":1.029,"n":5},{"oid":1156,"lemma":"δέ","translitR":"dé","score":0.61,"n":4}]
+[{"oid":4626,"lemma":"σύ","translitR":"su","score":1.029,"n":5,"verses":[{"b":"1co","c":4,"v":6},{"b":"1co","c":4,"v":18},{"b":"1co","c":4,"v":19},{"b":"1co","c":5,"v":2},{"b":"col","c":2,"v":18}]},{"oid":1156,"lemma":"δέ","translitR":"dé","score":0.61,"n":4,"verses":[{"b":"1co","c":4,"v":6},{"b":"1co","c":4,"v":18},{"b":"1co","c":4,"v":19},{"b":"1co","c":8,"v":1}]}]
