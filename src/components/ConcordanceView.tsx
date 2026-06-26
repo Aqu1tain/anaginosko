@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import Breadcrumb from "../../app/_components/Breadcrumb";
 import {
   loadLemmaIndex,
   loadOccurrences,
@@ -237,11 +238,15 @@ function Occurrences({ entry }: { entry: LemmaEntry }) {
 
 function Detail({ entry }: { entry: LemmaEntry }) {
   return (
-    <div className="pb-4 pt-5">
-      <Link href="/concordance" className="link link-primary text-sm">
-        ← Toute la concordance
-      </Link>
-      <div className="mt-3 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+    <div className="pb-4 pt-4">
+      <Breadcrumb
+        items={[
+          { label: "Accueil", href: "/" },
+          { label: "Concordance", href: "/concordance" },
+          { label: entry.lemma, greek: true },
+        ]}
+      />
+      <div className="mt-2 flex flex-wrap items-baseline gap-x-3 gap-y-1">
         <h1 className="font-greek text-3xl">{entry.lemma}</h1>
         <span className="text-sm text-base-content/70">{entry.translitR}</span>
         <span className="text-xs text-base-content/45">érasmien&nbsp;: {entry.translit}</span>

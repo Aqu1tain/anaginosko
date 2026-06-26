@@ -1,8 +1,9 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import Link from "next/link";
 import { loadBooksFs } from "../../../lib/nt-server";
 import { bookById, BOOK_NAMES } from "../../../src/data/nt";
+import Breadcrumb from "../../_components/Breadcrumb";
 
 export const dynamicParams = false;
 
@@ -28,11 +29,15 @@ export default async function NtBookPage({ params }: { params: Promise<{ book: s
   if (!b) notFound();
 
   return (
-    <div className="pb-4 pt-6">
-      <Link href="/nt" className="link link-primary text-sm">
-        ← Nouveau Testament
-      </Link>
-      <h1 className="mt-2 text-2xl font-bold">{b.name}</h1>
+    <div className="pb-4 pt-4">
+      <Breadcrumb
+        items={[
+          { label: "Accueil", href: "/" },
+          { label: "Nouveau Testament", href: "/nt" },
+          { label: b.name },
+        ]}
+      />
+      <h1 className="mt-1 text-2xl font-bold">{b.name}</h1>
       <p className="mt-1 mb-3 text-sm text-base-content/70">
         {b.chapters} chapitre{b.chapters > 1 ? "s" : ""}
       </p>

@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { loadBooksFs, loadChapterFs } from "@/lib/nt-server";
 import { bookById, BOOK_NAMES } from "@/src/data/nt";
 import Reader from "@/src/components/Reader";
+import Breadcrumb from "@/app/_components/Breadcrumb";
 
 export const dynamicParams = false;
 
@@ -74,6 +75,14 @@ export default async function ChapterPage({
       <h1 className="sr-only">
         {name} {ch}
       </h1>
+      <Breadcrumb
+        items={[
+          { label: "Accueil", href: "/" },
+          { label: "NT", href: "/nt" },
+          { label: name, href: `/nt/${book}` },
+          { label: String(ch) },
+        ]}
+      />
       <Reader text={text} />
       <nav className="mt-8 flex items-center justify-between gap-3">
         {ch > 1 ? (
