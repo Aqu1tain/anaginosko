@@ -110,7 +110,7 @@ export default async function ChapterPage({
         ))}
       </section>
 
-      <nav className="mt-8 flex items-center justify-between gap-3">
+      <nav className="mt-8 flex max-w-2xl items-center justify-between gap-3">
         {ch > 1 ? (
           <Link href={`/nt/${book}/${ch - 1}`} className="btn btn-sm btn-outline border-base-300">
             ← Chapitre {ch - 1}

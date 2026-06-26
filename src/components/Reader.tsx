@@ -545,11 +545,11 @@ export default function Reader({ text }: { text: Text }) {
       </div>
 
       {transMode === "off" ? (
-        <div className="mt-5">
+        <div className="mt-5 max-w-2xl">
           <GreekText text={text} size="lg" scale={textScale} translit={mode} manuscript={manuscript} highlightWord={highlight} {...greekProps} />
         </div>
       ) : transMode === "verses" ? (
-        <div className="mt-5">
+        <div className="mt-5 max-w-2xl">
           {verses.map((v) => (
             <div key={v} className="border-b border-base-300/70 py-4 first:pt-0 last:border-0">
               <GreekText
@@ -574,8 +574,9 @@ export default function Reader({ text }: { text: Text }) {
         </div>
       ) : (
         // Côte à côte : grec | français, alignés par verset. Sous 640px, dégrade
-        // en colonne unique empilée (interligne) pour rester lisible (US-6).
-        <div className="mt-5">
+        // en colonne unique empilée (interligne) pour rester lisible (US-6). Sur
+        // desktop, profite de la largeur (les deux colonnes respirent).
+        <div className="mt-5 wide:max-w-5xl">
           {verses.map((v) => (
             <div key={v} className="trans-row border-b border-base-300/70 py-3">
               <div className="trans-grec">
