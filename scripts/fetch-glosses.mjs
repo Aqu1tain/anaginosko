@@ -6,6 +6,7 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, resolve } from "node:path";
+import { pickEntry } from "./lib/bailly-pick.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -14,11 +15,6 @@ const data = JSON.parse(readFileSync(resolve(root, "src/data/texts.json"), "utf8
 const lemmas = [
   ...new Set(data.texts.flatMap((t) => (t.mots ?? []).map((m) => m.lemme).filter(Boolean))),
 ].sort((a, b) => a.localeCompare(b, "el"));
-
-const pick = (entries) =>
-  entries.find((e) => e.isExact && !e.isMorpheus) ||
-  entries.find((e) => !e.isMorpheus) ||
-  entries[0];
 
 const glosses = {};
 let ok = 0;
@@ -31,7 +27,7 @@ for (let i = 0; i < lemmas.length; i++) {
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const json = await res.json();
     const entries = json.data?.entries ?? [];
-    const e = entries.length ? pick(entries) : null;
+    const e = entries.length ? pickEntry(entries, lemma) : null;
     if (e?.excerpt) {
       glosses[lemma] = { excerpt: e.excerpt.trim(), uri: e.uri };
       ok++;

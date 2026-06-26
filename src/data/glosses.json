@@ -72,8 +72,8 @@
     "uri": "aiteô-ô"
   },
   "αἰών": {
-    "excerpt": "ἀϊών, όνος et ἀΐων, ονος (ἡ) v. ἠϊών.",
-    "uri": "aiôn_(1)"
+    "excerpt": "αἰών, ῶνος (ὁ, poét. ἡ) I temps : 1 durée de la vie, vie, Il. 5, 685, etc. ; Od. 5, 160, etc. ; τελευτᾶν τοῦ αἰῶνα, Hdt. 1, 32, etc. achever sa vie ;…",
+    "uri": "aiôn_(2)"
   },
   "αἰώνιος": {
     "excerpt": "αἰώνιος, ος, ον : 1 éternel, T. Locr. 96c ; Plat. Leg. 904a, etc. || 2 perpétuel, Plat. Rsp. 363d || 3 séculaire : αἰώνιοι θέαι, Hdn 3, 8, 18, jeux s…",
@@ -228,8 +228,8 @@
     "uri": "arti"
   },
   "ἄρτος": {
-    "excerpt": "ἀρτός, ή, όν, enlevé, porté, Spt. Num. 4, 27. Étym. vb. d’αἴρω.",
-    "uri": "artos_(1)"
+    "excerpt": "ἄρτος, ου (ὁ) pain de froment (p. opp. à μᾶζα, Hpc. Acut. 389, etc. pain d’orge) ; dans Hom. d’ord. au plur. Od. 18, 120 ; rar. au sg. avec sens coll…",
+    "uri": "artos_(2)"
   },
   "ἀρχή": {
     "excerpt": "ἀρχή, ῆς (ἡ) ce qui est en avant, d’où : A commencement, d’où : I principe, origine : ἀρχὴ νείκεος, Il. 22, 116 ; ἀρχὴ φόνου, Od. 21, 4, origine d’un…",
@@ -484,8 +484,8 @@
     "uri": "dôron"
   },
   "ἐάν": {
-    "excerpt": "ἐᾶν, inf. prés. de ἐάω.",
-    "uri": "ean_(1)"
+    "excerpt": "ἐάν (pour εἰ ἄν), par contract. ἤν ou ἄν [ᾱ] conj. marquant une idée d’hypothèse ou de condition, si, au cas où : A dans le discours direct : I d’ord…",
+    "uri": "ean_(2)"
   },
   "ἑαυτοῦ": {
     "excerpt": "ἑαυτοῦ, ῆς, οῦ (contr. αὑτοῦ, ῆς, οῦ) ; acc. neutre ἑαυτό ; gén. pl. ἑαυτῶν, etc. 1 de soi-même, à soi-même, soi-même : ἑαυτὸν σφάττειν, Xén. Cyr. 7,…",
@@ -532,8 +532,8 @@
     "uri": "eis_(1)"
   },
   "εἷς": {
-    "excerpt": "εἰς, ion. dor. et anc. att. ἐς (v. fin de l’article), adv. et prép. dedans, dans, avec idée de mouvement. A Adv. (seul. en poésie) dedans, dans : ἐς …",
-    "uri": "eis_(1)"
+    "excerpt": "εἷς, μία, ἕν, gén. ἑνός, μιᾶς, ἑνός, etc. un, une, un : A n. de nombre : I n. de nombre cardinal, un, p. opp. à un autre n. de nombre, Il. 22, 272 ; …",
+    "uri": "heis"
   },
   "εἰσακούω": {
     "excerpt": "εἰσ·ακούω, ion. et anc. att. ἐσ·ακούω [ᾰ] I tendre l’oreille vers, prêter l’oreille, d’où : 1 entendre : abs. Il. 8, 97 ; avec un acc. de chose : τι,…",
@@ -664,8 +664,8 @@
     "uri": "exousia"
   },
   "ἔξω": {
-    "excerpt": "ἕξω, fut. d’ἔχω.",
-    "uri": "hexô"
+    "excerpt": "ἔξω, adv. et prép. au dehors, dehors, hors : I avec idée de lieu : 1 au dehors, en relief, en saillie : τὸ ἔξω τῶν ὀμμάτων, Plat. Theæt. 143e, les ye…",
+    "uri": "exô"
   },
   "ἐπαγγελία": {
     "excerpt": "ἐπαγγελία, ας (ἡ) 1 commandement, ordre, Pol. 9, 38, 2 || 2 t. de droit att. sommation d’avoir à subir la δοκιμασία à un orateur public déclaré indig…",
@@ -1168,8 +1168,8 @@
     "uri": "makrothumeô-ô"
   },
   "μακρός": {
-    "excerpt": "μάκρος, εος-ους (τὸ) longueur, Ar. Av. 1131. Étym. cf. le suiv.",
-    "uri": "makros_(1)"
+    "excerpt": "μακρός, ά, όν, long : A avec idée d’espace, d’où : I propr. long : 1 en parl. de choses : μ. δόρυ, Il. 7, 140 ; μ. ἔγχος, Il. 14, 36, etc. longue lan…",
+    "uri": "makros_(2)"
   },
   "μᾶλλον": {
     "excerpt": "μᾶλλον, v. μάλα.",
@@ -1296,8 +1296,8 @@
     "uri": "noeô-oô"
   },
   "νόμος": {
-    "excerpt": "νομός, οῦ (ὁ) propr. « part, portion », d’où : I division de territoire, particul. 1 province, district, région, Pd. O. 7, 62 ; Soph. O.C. 1061 ; Eur…",
-    "uri": "nomos_(1)"
+    "excerpt": "νόμος, ου (ὁ) I ce qui est attribué en partage, d’où ce qu’on possède ou dont on fait usage, d’où usage, coutume, Hés. Th. 66 ; avec l’inf. : τόνδε ν…",
+    "uri": "nomos_(2)"
   },
   "νύμφη": {
     "excerpt": "νύμφη, ης (ἡ) I propr. celle qui est recouverte ou voilée, d’où : en parl. de pers. 1 fiancée, jeune mariée, Il. 18, 492 ; Eschl. Ag. 1179 ; Soph. Tr…",
@@ -1320,8 +1320,8 @@
     "uri": "xêrainô"
   },
   "ὁ": {
-    "excerpt": "Ο, ο (ὂ μικρόν) omicron (propr. o petit, c. à d. bref, p. opp. à ὦ μέγα) 15e lettre de l’alphabet grec. Comme chiffre οʹ = 70, ͵ο = 70 000 ; οἱ Οʹ, l…",
-    "uri": "O"
+    "excerpt": "ὁ, ἡ, τό (gén. τοῦ, τῆς, τοῦ ; dat. τῷ, τῇ, τῷ ; acc. τόν, τήν, τό ; plur. nom. οἱ, αἱ, τά ; gén. τῶν pour les trois genres ; dat. τοῖς, ταῖς, τοῖς ;…",
+    "uri": "ho_(1)"
   },
   "οἶδα": {
     "excerpt": "οἶδα, v. *εἴδω.",
@@ -1396,8 +1396,8 @@
     "uri": "hoti"
   },
   "οὐ": {
-    "excerpt": "οὖ (τὸ) indécl. la lettre omicron, Callias (Ath. 453d).",
-    "uri": "ou_(1)"
+    "excerpt": "οὐ, dev. une voy. οὐκ, dev. une voy. avec esprit rude οὐχ, nég. non, ne, ne... pas : A Sens : οὐ s’emploie : I pour nier un fait (p. opp. à μή qui se…",
+    "uri": "ou_(2)"
   },
   "οὐδέ": {
     "excerpt": "οὐ·δέ, nég. 1 et ne, et non, par opp. à un premier terme annoncé par μέν : γυνὴ μὲν οὐδ’ ἀνὴρ ἔφυς, Soph. El. 997, tu es née femme et non homme ; ἄλλ…",
@@ -1716,8 +1716,8 @@
     "uri": "prôtos"
   },
   "πρωτότοκος": {
-    "excerpt": "πρωτο·τόκος, ος, ον : 1 qui enfante pour la première fois, Plat. Theæt. 151c, 161a ; Anth. 8, 163 ; Orph. Lith. 191 || 2 qui met bas pour la première…",
-    "uri": "prôtotokos_(1)"
+    "excerpt": "πρωτό·τοκος, ος, ον, premier-né, Anth. 9, 213 ; Spt. 2 Reg. 19, 43, etc. ; NT. Luc. 2, 7 ; fig. le premier, le chef, Spt. Ps. 88, 28 ; NT. Col. 1, 15…",
+    "uri": "prôtotokos_(2)"
   },
   "πτωχός": {
     "excerpt": "πτωχός, ή, όν, litt. qui se blottit ou se cache, d’où humble ; p. ext. : 1 pauvre, mendiant, Od. 14, 400 ; 18, 1 ; joint à ἀλήμων, Od. 19, 74 ; à ἀλα…",
@@ -1888,8 +1888,8 @@
     "uri": "tachus"
   },
   "τέ": {
-    "excerpt": "τε, particule enclit., touj. après un mot : A Signification : τε s’emploie : I comme mot démonstratif (seul. en poésie, surt. chez Homère et qqf. les…",
-    "uri": "te_(1)"
+    "excerpt": "τέ, v. σύ.",
+    "uri": "te_(2)"
   },
   "τέκνον": {
     "excerpt": "τέκνον, ου (τὸ) 1 enfant (fils ou fille) Il. 2, 136, etc. ; Hdt. 1, 164 ; 2, 30, etc. ; Eschl. Eum. 658, etc. ; au sg. dans Hom. seul. au voc., souv.…",
@@ -1952,8 +1952,8 @@
     "uri": "hudôr"
   },
   "υἱός": {
-    "excerpt": "υἷος, v. le suiv.",
-    "uri": "huios_(1)"
+    "excerpt": "υἱός, οῦ (ὁ) 1 fils, Hom. Att. etc. ; au plur. par périphr. avec un gén. pour désigner une classe d’hommes : υἷες (v. ci-dessous) Ἀχαιῶν, Il. 1, 162,…",
+    "uri": "huios_(2)"
   },
   "ὑπακούω": {
     "excerpt": "ὑπ·ακούω (f. ὑπακούσομαι) [ῠᾰ] I écouter en baissant la tête, prêter l’oreille, Od. 14, 485 ; Hh. Ven. 181 ; Eur. Alc. 402 ; Thcr. Idyl. 7, 95, etc. …",

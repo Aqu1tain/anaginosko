@@ -6,6 +6,7 @@ import Breadcrumb from "../../app/_components/Breadcrumb";
 import DistributionProfile from "./DistributionProfile";
 import Collocations from "./Collocations";
 import { glossFor } from "../data/glosses";
+import { pickBaillyEntry } from "../lib/bailly";
 import {
   BOOK_NAMES,
   type Colloc,
@@ -54,7 +55,7 @@ function Definition({ lemma }: { lemma: string }) {
     (async () => {
       try {
         const look = await fetch(`https://api.bailly.app/lookup/${encodeURIComponent(lemma)}`).then((r) => r.json());
-        const entry = (look?.data?.entries ?? []).find((e: { isMorpheus?: boolean }) => !e.isMorpheus) ?? look?.data?.entries?.[0];
+        const entry = pickBaillyEntry(look?.data?.entries ?? [], lemma);
         if (!entry) { if (alive) setState(text ? "done" : "absent"); return; }
         const full = await fetch(`https://api.bailly.app/entry/${encodeURIComponent(entry.uri)}?fields=definition`).then((r) => r.json());
         if (!alive) return;
