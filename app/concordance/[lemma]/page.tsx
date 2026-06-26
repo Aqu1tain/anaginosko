@@ -9,6 +9,10 @@ import {
 } from "@/lib/nt-server";
 import LemmaDetail from "@/src/components/LemmaDetail";
 
+// Rendu serveur à la demande. Les données NT sont lues depuis NT_DATA_DIR (en
+// prod : le dossier servi par nginx, /var/www/anaginosko/nt), car elles ne sont
+// pas embarquées dans le standalone Next. Pré-rendre les 5461 fiches gonflerait
+// le bundle de centaines de Mo ; on garde donc le rendu dynamique.
 export const dynamicParams = true;
 
 export async function generateMetadata({

@@ -32,6 +32,10 @@ jobs:
           cp -r .next/static deploy-out/.next/static
           rm -rf deploy-out/public
           rsync -a --exclude audio --exclude nt public/ deploy-out/public/
+          # Les données NT ne sont pas dans le standalone (servies par nginx) ;
+          # le serveur les lit au runtime depuis NT_DATA_DIR pour le SSR des
+          # fiches-lemme. Le standalone Next charge .env.production au démarrage.
+          printf 'NT_DATA_DIR=/var/www/anaginosko/nt\n' > deploy-out/.env.production
 
       - name: Deploy to VPS
         run: |

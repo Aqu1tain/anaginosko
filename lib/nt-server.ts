@@ -4,12 +4,13 @@ import path from "node:path";
 import type { Text } from "../src/data/texts";
 import type { NtBook, LemmaEntry, Occ, Distribution, Colloc } from "../src/data/nt";
 
-// Lecture des données NT depuis le disque (public/nt) au build, pour le SSG des
-// chapitres. Le runtime client continue de fetcher /nt/... (cf. src/data/nt.ts).
-const NT = path.join(process.cwd(), "public", "nt");
+// Dossier des données NT. Au build (SSG des chapitres) : public/nt. En prod, le
+// standalone Next ne contient PAS public/nt (servi par nginx) ; on lit alors
+// NT_DATA_DIR (=/var/www/anaginosko/nt) défini dans l'environnement du service.
+const ntDir = () => process.env.NT_DATA_DIR || path.join(process.cwd(), "public", "nt");
 
 const readJson = async <T>(rel: string): Promise<T> =>
-  JSON.parse(await readFile(path.join(NT, rel), "utf8")) as T;
+  JSON.parse(await readFile(path.join(ntDir(), rel), "utf8")) as T;
 
 export async function loadBooksFs(): Promise<NtBook[]> {
   const data = await readJson<{ books: NtBook[] }>("books.json");
