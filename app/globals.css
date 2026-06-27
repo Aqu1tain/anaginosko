@@ -81,9 +81,10 @@
 @theme {
   --font-sans: var(--font-inter), "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-greek: var(--font-gentium), "Gentium Plus", "Gentium Book Plus", Georgia, serif;
-  /* Layout « flottant » (rail + contrôles + popup à droite) seulement quand les
-     gouttières sont assez larges pour ne pas chevaucher la colonne de texte. */
-  --breakpoint-wide: 86rem;
+  /* Layout « flottant » (rail + contrôles + popup à droite) dès qu'on a la largeur
+     d'un portable courant (1280/1366). À 1200px le popup à droite ne chevauche pas
+     encore la colonne de texte (672px) calée à gauche. */
+  --breakpoint-wide: 75rem;
 }
 
 html {
