@@ -5,6 +5,10 @@ import Link from "next/link";
 import Breadcrumb from "../../app/_components/Breadcrumb";
 import DistributionProfile from "./DistributionProfile";
 import Collocations from "./Collocations";
+import AnnotationEditor, { type AnnotationTarget } from "./AnnotationEditor";
+import { useAuth } from "../hooks/useAuth";
+import { useLemmaNotes } from "../hooks/useLemmaNotes";
+import { type Annotation } from "../lib/api";
 import { glossFor } from "../data/glosses";
 import { pickBaillyEntry, baillyDefinition } from "../lib/bailly";
 import {
@@ -130,6 +134,86 @@ function Occurrences({ entry, occ }: { entry: LemmaEntry; occ: Occ[] }) {
   );
 }
 
+// Note philologique de Biblion attachée au lemme (ref « lemma:<lemma> », sans
+// index de mot). Affichée pour tous ; un contributeur peut l'ajouter/modifier.
+function BiblionNote({ lemma }: { lemma: string }) {
+  const { user } = useAuth();
+  const canEdit = user?.role === "admin" || user?.role === "philologist";
+  const annoRef = `lemma:${lemma}`;
+  const { notes, reload } = useLemmaNotes(lemma);
+  const [editing, setEditing] = useState<AnnotationTarget | null>(null);
+
+  if (notes === null) return null;
+  if (notes.length === 0 && !canEdit) return null;
+
+  const targetFor = (existing?: Annotation): AnnotationTarget => ({
+    ref: annoRef,
+    verse: null,
+    wordIndex: null,
+    endWordIndex: null,
+    graphemeIndex: null,
+    grec: lemma,
+    scopeLabel: "lemme",
+    existing,
+  });
+
+  return (
+    <section className="mt-4 rounded-box border border-primary/30 bg-primary/5 px-4 py-3">
+      <div className="flex items-center justify-between gap-2">
+        <div className="text-[0.7rem] font-medium uppercase tracking-wide text-primary">
+          Note · Biblion
+        </div>
+        {canEdit && (
+          <button onClick={() => setEditing(targetFor())} className="btn btn-ghost btn-xs">
+            Ajouter
+          </button>
+        )}
+      </div>
+
+      {notes.length === 0 ? (
+        <p className="mt-1 text-sm text-base-content/70">Aucune note pour ce lemme.</p>
+      ) : (
+        <div className="mt-2 grid gap-3">
+          {notes.map((n) => (
+            <div key={n.id}>
+              <div className="space-y-1.5 text-[0.95rem] leading-relaxed text-base-content/90">
+                {n.body.split(/\n+/).filter(Boolean).map((p, i) => (
+                  <p key={i}>{p}</p>
+                ))}
+              </div>
+              <div className="mt-1.5 flex flex-wrap items-center gap-x-2 text-xs text-base-content/70">
+                {n.author?.displayName && <span className="font-greek">{n.author.displayName}</span>}
+                {n.source && <span>· {n.source}</span>}
+                {n.link && (
+                  <a href={n.link} target="_blank" rel="noreferrer" className="link text-primary">
+                    source ↗
+                  </a>
+                )}
+                {canEdit && (
+                  <button onClick={() => setEditing(targetFor(n))} className="btn btn-ghost btn-xs ml-auto">
+                    Modifier
+                  </button>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {editing && (
+        <AnnotationEditor
+          target={editing}
+          onClose={() => setEditing(null)}
+          onSaved={() => {
+            setEditing(null);
+            reload();
+          }}
+        />
+      )}
+    </section>
+  );
+}
+
 export default function LemmaDetail({
   entry,
   occ,
@@ -161,6 +245,9 @@ export default function LemmaDetail({
       <p className="mt-1 text-sm text-base-content/70">
         {entry.count} occurrence{entry.count > 1 ? "s" : ""} dans le NT
       </p>
+
+      <BiblionNote lemma={entry.lemma} />
+
       {/* Desktop : on éclate la pile. En haut, deux colonnes d'analyse — sens +
           répartition à gauche, voisins à droite. En dessous, les occurrences en
           pleine largeur, réparties en colonnes. Quand la grille retombe en une

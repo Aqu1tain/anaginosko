@@ -7,7 +7,7 @@ import { createAnnotation, updateAnnotation, type Annotation } from "../lib/api"
 export type AnnotationTarget = {
   ref: string;
   verse: number | null;
-  wordIndex: number;
+  wordIndex: number | null;
   endWordIndex: number | null;
   graphemeIndex: number | null;
   grec: string;

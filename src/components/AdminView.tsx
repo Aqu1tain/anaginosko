@@ -16,6 +16,7 @@ import AnnotationEditor, { type AnnotationTarget } from "./AnnotationEditor";
 import AdminAnalytics from "./AdminAnalytics";
 
 function locationLabel(ref: string): string {
+  if (ref.startsWith("lemma:")) return ref.slice(6);
   const nt = parseNtRef(ref);
   if (nt) return `${BOOK_NAMES[nt.book] ?? nt.book} ${nt.chapter}`;
   return textById(ref)?.reference ?? ref;
@@ -31,6 +32,7 @@ function formatDate(iso: string | null): string {
 }
 
 function scopeLabel(a: Annotation): string {
+  if (a.ref.startsWith("lemma:")) return "lemme";
   return a.graphemeIndex != null ? "caractère" : a.endWordIndex != null ? "phrase" : "mot";
 }
 
@@ -38,7 +40,7 @@ function targetFromAnnotation(a: Annotation): AnnotationTarget {
   return {
     ref: a.ref,
     verse: a.verse,
-    wordIndex: a.wordIndex ?? 0,
+    wordIndex: a.wordIndex,
     endWordIndex: a.endWordIndex,
     graphemeIndex: a.graphemeIndex,
     grec: "",

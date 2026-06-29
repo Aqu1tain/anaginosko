@@ -39,8 +39,9 @@ export function linkedRef(ref: string): string | null {
   return null;
 }
 
-/** URL de lecture pour une annotation (NT ou passage), surlignant le mot. */
+/** URL de lecture pour une annotation (NT, passage, ou note de lemme). */
 export function refHref(ref: string, wordIndex: number | null): string {
+  if (ref.startsWith("lemma:")) return `/concordance/${encodeURIComponent(ref.slice(6))}`;
   const w = wordIndex != null ? `?w=${wordIndex}` : "";
   const nt = parseNtRef(ref);
   if (nt) return `/nt/${nt.book}/${nt.chapter}${w}`;

@@ -10,6 +10,7 @@ import { ntGlossFor } from "../data/nt";
 import { playTranslit, playUrl } from "../lib/audio";
 import { useHasAudio } from "../hooks/useHasAudio";
 import { useAuth } from "../hooks/useAuth";
+import { useLemmaNotes } from "../hooks/useLemmaNotes";
 import {
   fetchPronunciations,
   createPronunciation,
@@ -184,6 +185,7 @@ export default function LetterSheet({
 
   const { user } = useAuth();
   const canEdit = user?.role === "admin" || user?.role === "philologist";
+  const { notes: lemmaNotes } = useLemmaNotes(stage === 2 && word ? word.lemme : null);
 
   // Overrides de prononciation pour ce texte (chargés une fois par ref).
   const [overrides, setOverrides] = useState<PronunciationOverride[]>([]);
@@ -452,6 +454,23 @@ export default function LetterSheet({
                     {anyGloss(word.lemme)!.excerpt}
                     <span className="text-base-content/70"> · Bailly</span>
                   </p>
+                )}
+                {lemmaNotes && lemmaNotes.length > 0 && (
+                  <div className="mt-2 rounded-lg border border-primary/30 bg-primary/5 px-3 py-2">
+                    <div className="text-[0.65rem] font-medium uppercase tracking-wide text-primary">
+                      Note · Biblion
+                    </div>
+                    <div className="mt-1 grid gap-2">
+                      {lemmaNotes.map((n) => (
+                        <div key={n.id}>
+                          <p className="text-sm leading-snug text-base-content/85">{n.body}</p>
+                          {n.source && (
+                            <p className="mt-0.5 text-xs text-base-content/60">{n.source}</p>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 )}
                 <Link
                   href={`/concordance/${encodeURIComponent(word.lemme)}`}
