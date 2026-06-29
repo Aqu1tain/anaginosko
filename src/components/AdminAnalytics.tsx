@@ -13,12 +13,38 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
+  ReferenceLine,
 } from "recharts";
 import { fetchAdminStats, type AdminStats } from "../lib/api";
 
 type Series = { day: string; views: number }[];
 const defaultLoadSeries = (days: number): Promise<Series> =>
   fetchAdminStats(days).then((s) => s.viewsByDay);
+
+// Jalons affichés sur le graphe de visites (lignes verticales repères).
+const EVENTS = [
+  { day: "2026-06-24", label: "Lancement" },
+  { day: "2026-06-25", label: "1ᵉʳ TikTok (Biblion)" },
+];
+
+const isoToday = () => new Date().toISOString().slice(0, 10);
+const isoShift = (iso: string, n: number) => {
+  const d = new Date(`${iso}T00:00:00Z`);
+  d.setUTCDate(d.getUTCDate() + n);
+  return d.toISOString().slice(0, 10);
+};
+
+// Étend la série à `days` jours pleins se terminant aujourd'hui : on remplit à 0
+// les jours sans donnée (on voit la chronologie avant même d'avoir des visites).
+function fillRange(series: Series, days: number): Series {
+  const byDay = new Map(series.map((d) => [d.day, d.views]));
+  const last = series.at(-1)?.day;
+  const end = last && last > isoToday() ? last : isoToday();
+  return Array.from({ length: days }, (_, k) => {
+    const day = isoShift(end, k - days + 1);
+    return { day, views: byDay.get(day) ?? 0 };
+  });
+}
 
 // Recharts injecte active/payload/label dans le contenu cloné (props runtime,
 // absentes du type public en v3) : on les déclare optionnelles localement.
@@ -104,7 +130,15 @@ const AXIS = { fontSize: 11, fill: "currentColor" } as const;
 
 type ChartType = "area" | "bar" | "line";
 
-function ViewsChart({ data, type }: { data: { day: string; views: number }[]; type: ChartType }) {
+function ViewsChart({
+  data,
+  type,
+  events,
+}: {
+  data: Series;
+  type: ChartType;
+  events: { day: string; label: string }[];
+}) {
   const tip = <Tooltip content={<ChartTooltip unit="visites" />} cursor={{ fill: "var(--color-base-200)" }} />;
   const common = {
     data,
@@ -122,6 +156,16 @@ function ViewsChart({ data, type }: { data: { day: string; views: number }[]; ty
   );
   const y = <YAxis tick={AXIS} tickLine={false} axisLine={false} width={40} allowDecimals={false} />;
   const grid = <CartesianGrid stroke={C.grid} strokeDasharray="3 3" vertical={false} />;
+  const marks = events.map((e) => (
+    <ReferenceLine
+      key={e.day}
+      x={e.day}
+      stroke={C.accent}
+      strokeDasharray="4 3"
+      strokeOpacity={0.8}
+      ifOverflow="extendDomain"
+    />
+  ));
 
   return (
     <div className="h-60 text-base-content/55">
@@ -133,6 +177,7 @@ function ViewsChart({ data, type }: { data: { day: string; views: number }[]; ty
             {y}
             {tip}
             <Bar dataKey="views" fill={C.primary} radius={[4, 4, 0, 0]} maxBarSize={42} />
+            {marks}
           </BarChart>
         ) : type === "line" ? (
           <LineChart {...common}>
@@ -141,6 +186,7 @@ function ViewsChart({ data, type }: { data: { day: string; views: number }[]; ty
             {y}
             {tip}
             <Line type="monotone" dataKey="views" stroke={C.primary} strokeWidth={2.5} dot={false} activeDot={{ r: 4 }} />
+            {marks}
           </LineChart>
         ) : (
           <AreaChart {...common}>
@@ -155,6 +201,7 @@ function ViewsChart({ data, type }: { data: { day: string; views: number }[]; ty
             {y}
             {tip}
             <Area type="monotone" dataKey="views" stroke={C.primary} strokeWidth={2.5} fill="url(#viewsFill)" />
+            {marks}
           </AreaChart>
         )}
       </ResponsiveContainer>
@@ -263,6 +310,15 @@ export default function AdminAnalytics({
     return Math.round(((last - prev) / prev) * 100);
   }, [stats.viewsByDay]);
 
+  // Série complète sur la fenêtre demandée (0 avant les premières visites) +
+  // jalons visibles dans cette fenêtre.
+  const filled = useMemo(() => fillRange(series, days), [series, days]);
+  const visibleEvents = useMemo(() => {
+    const lo = filled[0]?.day ?? "";
+    const hi = filled.at(-1)?.day ?? "";
+    return EVENTS.filter((e) => e.day >= lo && e.day <= hi);
+  }, [filled]);
+
   const topTexts = useMemo(
     () => stats.topRefs.map((r) => ({ label: refLabel(r.ref), views: r.views })),
     [stats.topRefs, refLabel],
@@ -321,14 +377,18 @@ export default function AdminAnalytics({
           {loading && (
             <span className="loading loading-spinner loading-sm absolute right-1 top-0 z-10 text-primary" />
           )}
-          {series.length > 0 ? (
-            <ViewsChart data={series} type={type} />
-          ) : (
-            <p className="grid h-60 place-items-center text-sm text-base-content/60">
-              Aucune visite sur la période.
-            </p>
-          )}
+          <ViewsChart data={filled} type={type} events={visibleEvents} />
         </div>
+        {visibleEvents.length > 0 && (
+          <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-base-content/60">
+            {visibleEvents.map((e) => (
+              <span key={e.day} className="inline-flex items-center gap-1.5">
+                <span className="inline-block h-3 border-l-2 border-dashed border-accent" />
+                {dayLabel(e.day)} — {e.label}
+              </span>
+            ))}
+          </div>
+        )}
       </ChartCard>
 
       {topTexts.length > 0 && (
