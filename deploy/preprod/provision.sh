@@ -51,8 +51,10 @@ if $DOCKER cp anaginosko-api:/app/tmp/db.sqlite3 /tmp/anag-preprod-db.sqlite3 2>
     fi
   done
   sudo rm -f /tmp/anag-preprod-db.sqlite3*  # docker (via sudo) a écrit en root
-  # docker cp pose la DB en root ; l'API tourne en `node` -> rétablir la propriété.
-  $DOCKER exec anaginosko-api-next sh -c 'chown node:node /app/tmp/db.sqlite3*' 2>/dev/null || true
+  # docker cp pose la DB en root ; l'API tourne en `node` et SQLite doit écrire le
+  # fichier + le -wal/-shm dans /app/tmp. On rétablit la propriété en root (sinon
+  # le chown lancé en `node` échoue) -> sinon SQLITE_READONLY au login.
+  $DOCKER exec -u root anaginosko-api-next chown -R node:node /app/tmp 2>/dev/null || true
   $DOCKER restart anaginosko-api-next >/dev/null
   echo "    DB prod copiée vers la préprod."
 else
