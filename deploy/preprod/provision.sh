@@ -50,7 +50,7 @@ if $DOCKER cp anaginosko-api:/app/tmp/db.sqlite3 /tmp/anag-preprod-db.sqlite3 2>
       $DOCKER cp "/tmp/anag-preprod-db.sqlite3$ext" "anaginosko-api-next:/app/tmp/db.sqlite3$ext" 2>/dev/null || true
     fi
   done
-  rm -f /tmp/anag-preprod-db.sqlite3*
+  sudo rm -f /tmp/anag-preprod-db.sqlite3*  # docker (via sudo) a écrit en root
   $DOCKER restart anaginosko-api-next >/dev/null
   echo "    DB prod copiée vers la préprod."
 else
