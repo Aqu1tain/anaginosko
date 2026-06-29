@@ -11,3 +11,6 @@ public/audio/
 # Next.js
 .next/
 next-env.d.ts
+
+# Source LXX (Rahlfs) — données générées dans public/lxx, source non versionnée
+data-sources/lxx-rahlfs/

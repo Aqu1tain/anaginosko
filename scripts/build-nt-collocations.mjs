@@ -4,12 +4,12 @@
 // Source : les chapitres déjà générés dans public/nt/<id>/<ch>.json.
 // Sortie : public/nt/colloc/<oid>.json  [{ oid, lemma, score, n, verses }]  (top voisins)
 // Run: node scripts/build-nt-collocations.mjs
-import { readFileSync, writeFileSync, mkdirSync, rmSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdirSync, rmSync, readdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, resolve } from "node:path";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const ntDir = resolve(root, "public/nt");
+const ntDir = resolve(root, process.env.CORPUS_DIR || "public/nt");
 
 const TOP = 12; // voisins gardés par lemme
 const MIN_COOC = 3; // au moins 3 versets en commun (évite le bruit des hapax)
@@ -28,8 +28,10 @@ let N = 0; // nombre total de versets
 const pairKey = (a, b) => (a < b ? `${a}|${b}` : `${b}|${a}`);
 
 for (const b of books) {
-  for (let ch = 1; ch <= b.chapters; ch++) {
-    const data = JSON.parse(readFileSync(resolve(ntDir, b.id, `${ch}.json`), "utf8"));
+  const files = readdirSync(resolve(ntDir, b.id)).filter((f) => /^\d+\.json$/.test(f));
+  for (const f of files) {
+    const ch = Number(f.slice(0, -5));
+    const data = JSON.parse(readFileSync(resolve(ntDir, b.id, f), "utf8"));
     const byVerse = new Map();
     for (const m of data.mots) {
       const oid = oidByLemma.get(m.lemme);
@@ -87,11 +89,13 @@ for (const [oid, list] of neighbors) {
 }
 
 console.log(`${N} versets, ${cooc.size} paires, ${written} lemmes avec voisins.`);
-const agapeOid = oidByLemma.get("ἀγάπη");
-console.log(
-  `ἀγάπη → ${(neighbors.get(agapeOid) ?? [])
-    .sort((x, y) => y.score - x.score)
-    .slice(0, 10)
-    .map((v) => `${v.lemma}(${v.n}, ${v.score})`)
-    .join(", ")}`,
-);
+if (!process.env.CORPUS_DIR) {
+  const agapeOid = oidByLemma.get("ἀγάπη");
+  console.log(
+    `ἀγάπη → ${(neighbors.get(agapeOid) ?? [])
+      .sort((x, y) => y.score - x.score)
+      .slice(0, 10)
+      .map((v) => `${v.lemma}(${v.n}, ${v.score})`)
+      .join(", ")}`,
+  );
+}
