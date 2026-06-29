@@ -1,5 +1,6 @@
 import type { Mot } from "./texts";
 import type { Annotation } from "../lib/api";
+import { parseRef, corpusById } from "./corpus";
 
 // Chaque « passage » est un extrait d'un chapitre du NT. On lie les deux pour
 // partager les annotations à l'affichage (sans rien déplacer en base).
@@ -24,9 +25,11 @@ const NT_TO_PASSAGE: Record<string, string> = Object.fromEntries(
   Object.entries(PASSAGE_TO_NT).map(([pid, { book, chapter }]) => [ntRef(book, chapter), pid]),
 );
 
+/** Compat : ne résout que les refs NT (`nt-<book>-<ch>`). Les appelants multi-corpus
+ *  utilisent `parseRef` du registre. */
 export function parseNtRef(ref: string): { book: string; chapter: number } | null {
-  const m = ref.match(/^nt-(.+)-(\d+)$/);
-  return m ? { book: m[1], chapter: Number(m[2]) } : null;
+  const p = parseRef(ref);
+  return p && p.corpus === "nt" ? { book: p.book, chapter: p.chapter } : null;
 }
 
 /** Ref NT correspondant à un passage, ou inversement (null si pas de lien). */
@@ -39,12 +42,12 @@ export function linkedRef(ref: string): string | null {
   return null;
 }
 
-/** URL de lecture pour une annotation (NT, passage, ou note de lemme). */
+/** URL de lecture pour une annotation (corpus, passage, ou note de lemme). */
 export function refHref(ref: string, wordIndex: number | null): string {
   if (ref.startsWith("lemma:")) return `/concordance/${encodeURIComponent(ref.slice(6))}`;
   const w = wordIndex != null ? `?w=${wordIndex}` : "";
-  const nt = parseNtRef(ref);
-  if (nt) return `/nt/${nt.book}/${nt.chapter}${w}`;
+  const parsed = parseRef(ref);
+  if (parsed) return `${corpusById(parsed.corpus).routePrefix}/${parsed.book}/${parsed.chapter}${w}`;
   return `/text/${ref}${w}`;
 }
 

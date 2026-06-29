@@ -4,7 +4,8 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { textById, type Mot, type Text } from "../data/texts";
 import { loadChapter } from "../data/nt";
-import { linkedRef, parseNtRef, remapAnnotation, type PlacedAnnotation } from "../data/passageLink";
+import { corpusById, parseRef } from "../data/corpus";
+import { linkedRef, remapAnnotation, type PlacedAnnotation } from "../data/passageLink";
 import { usePersistentState } from "../hooks/usePersistentState";
 import { setLastRead } from "../lib/lastRead";
 import { useAuth } from "../hooks/useAuth";
@@ -175,9 +176,9 @@ export default function Reader({ text }: { text: Text }) {
     const lref = linkedRef(ref);
     if (!lref || !mots) return;
     try {
-      const nt = parseNtRef(lref);
-      const srcMots: Mot[] | null = nt
-        ? (await loadChapter(nt.book, nt.chapter)).mots
+      const p = parseRef(lref);
+      const srcMots: Mot[] | null = p
+        ? (await loadChapter(p.book, p.chapter, corpusById(p.corpus))).mots
         : (textById(lref)?.mots ?? null);
       if (!srcMots) return;
       const anns = await fetchAnnotations(lref);

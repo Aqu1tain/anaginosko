@@ -9,16 +9,19 @@ import {
   type AdminStats,
   type Annotation,
 } from "../lib/api";
-import { BOOK_NAMES } from "../data/nt";
+import { corpusById, parseRef } from "../data/corpus";
 import { textById } from "../data/texts";
-import { refHref, parseNtRef } from "../data/passageLink";
+import { refHref } from "../data/passageLink";
 import AnnotationEditor, { type AnnotationTarget } from "./AnnotationEditor";
 import AdminAnalytics from "./AdminAnalytics";
 
 function locationLabel(ref: string): string {
   if (ref.startsWith("lemma:")) return ref.slice(6);
-  const nt = parseNtRef(ref);
-  if (nt) return `${BOOK_NAMES[nt.book] ?? nt.book} ${nt.chapter}`;
+  const p = parseRef(ref);
+  if (p) {
+    const names = corpusById(p.corpus).bookNames;
+    return `${names[p.book] ?? p.book} ${p.chapter}`;
+  }
   return textById(ref)?.reference ?? ref;
 }
 
