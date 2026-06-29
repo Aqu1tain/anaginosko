@@ -1,5 +1,6 @@
 import type { Text, Mot } from "./texts";
 import type { Gloss } from "./glosses";
+import type { CorpusConfig } from "./corpus";
 
 export type NtBook = { id: string; name: string; usfm: string; chapters: number; words: number };
 
@@ -47,32 +48,36 @@ export const NT_GROUPS: { title: string; ids: string[] }[] = [
 // Données servies à la racine par nginx (/nt/...). Les fonctions fetch ci-dessous
 // tournent côté client au runtime ; le SSG passe par lib/nt-server.ts (fs).
 const base = "/";
+const prefix = (c?: CorpusConfig) => c?.dataPrefix ?? "nt";
+const cid = (c?: CorpusConfig) => c?.id ?? "nt";
 
 type FrenchByChapter = Record<string, Record<string, string>>;
 
-let booksCache: NtBook[] | null = null;
+const booksCache = new Map<string, NtBook[]>();
 const chapterCache = new Map<string, Text>();
 const frenchCache = new Map<string, FrenchByChapter | null>();
 
-async function loadFrench(book: string): Promise<FrenchByChapter | null> {
-  if (frenchCache.has(book)) return frenchCache.get(book)!;
+async function loadFrench(book: string, c?: CorpusConfig): Promise<FrenchByChapter | null> {
+  const key = `${cid(c)}:${book}`;
+  if (frenchCache.has(key)) return frenchCache.get(key)!;
   try {
-    const res = await fetch(`${base}nt/${book}/fr.json`);
+    const res = await fetch(`${base}${prefix(c)}/${book}/fr.json`);
     const data = res.ok ? ((await res.json()) as FrenchByChapter) : null;
-    frenchCache.set(book, data);
+    frenchCache.set(key, data);
     return data;
   } catch {
-    frenchCache.set(book, null);
+    frenchCache.set(key, null);
     return null;
   }
 }
 
-export async function loadBooks(): Promise<NtBook[]> {
-  if (booksCache) return booksCache;
-  const res = await fetch(`${base}nt/books.json`);
+export async function loadBooks(c?: CorpusConfig): Promise<NtBook[]> {
+  const cached = booksCache.get(cid(c));
+  if (cached) return cached;
+  const res = await fetch(`${base}${prefix(c)}/books.json`);
   const data = (await res.json()) as { books: NtBook[] };
-  booksCache = data.books;
-  return booksCache;
+  booksCache.set(cid(c), data.books);
+  return data.books;
 }
 
 export function bookById(books: NtBook[], id: string): NtBook | undefined {
@@ -92,22 +97,25 @@ export type LemmaEntry = {
 
 export type Occ = { b: string; c: number; v: number; w: number; f: string };
 
-let lemmaIndexCache: LemmaEntry[] | null = null;
-const occCache = new Map<number, Occ[]>();
+const lemmaIndexCache = new Map<string, LemmaEntry[]>();
+const occCache = new Map<string, Occ[]>();
 
-export async function loadLemmaIndex(): Promise<LemmaEntry[]> {
-  if (lemmaIndexCache) return lemmaIndexCache;
-  const res = await fetch(`${base}nt/lemmas.json`);
-  lemmaIndexCache = (await res.json()) as LemmaEntry[];
-  return lemmaIndexCache;
+export async function loadLemmaIndex(c?: CorpusConfig): Promise<LemmaEntry[]> {
+  const cached = lemmaIndexCache.get(cid(c));
+  if (cached) return cached;
+  const res = await fetch(`${base}${prefix(c)}/lemmas.json`);
+  const data = (await res.json()) as LemmaEntry[];
+  lemmaIndexCache.set(cid(c), data);
+  return data;
 }
 
-export async function loadOccurrences(oid: number): Promise<Occ[]> {
-  const cached = occCache.get(oid);
+export async function loadOccurrences(oid: number, c?: CorpusConfig): Promise<Occ[]> {
+  const key = `${cid(c)}:${oid}`;
+  const cached = occCache.get(key);
   if (cached) return cached;
-  const res = await fetch(`${base}nt/occ/${oid}.json`);
+  const res = await fetch(`${base}${prefix(c)}/occ/${oid}.json`);
   const data = (await res.json()) as Occ[];
-  occCache.set(oid, data);
+  occCache.set(key, data);
   return data;
 }
 
@@ -125,14 +133,15 @@ export type Colloc = {
 
 // Distribution par livre (non plafonnée), pour le profil de distribution.
 export type Distribution = Record<string, number>;
-const distCache = new Map<number, Distribution>();
+const distCache = new Map<string, Distribution>();
 
-export async function loadDistribution(oid: number): Promise<Distribution> {
-  const cached = distCache.get(oid);
+export async function loadDistribution(oid: number, c?: CorpusConfig): Promise<Distribution> {
+  const key = `${cid(c)}:${oid}`;
+  const cached = distCache.get(key);
   if (cached) return cached;
-  const res = await fetch(`${base}nt/distribution/${oid}.json`);
+  const res = await fetch(`${base}${prefix(c)}/distribution/${oid}.json`);
   const data = (await res.json()) as Distribution;
-  distCache.set(oid, data);
+  distCache.set(key, data);
   return data;
 }
 
@@ -195,21 +204,21 @@ export function ntGlossFor(lemma: string | null | undefined): Gloss | undefined 
 }
 
 /** Charge un chapitre et l'adapte au type Text consommé par le Reader. */
-export async function loadChapter(book: string, chapter: number): Promise<Text> {
-  const key = `${book}/${chapter}`;
+export async function loadChapter(book: string, chapter: number, c?: CorpusConfig): Promise<Text> {
+  const key = `${cid(c)}:${book}/${chapter}`;
   const cached = chapterCache.get(key);
   if (cached) return cached;
 
   const [res, french] = await Promise.all([
-    fetch(`${base}nt/${book}/${chapter}.json`),
-    loadFrench(book),
+    fetch(`${base}${prefix(c)}/${book}/${chapter}.json`),
+    loadFrench(book, c),
   ]);
-  if (!res.ok) throw new Error(`Chapitre introuvable : ${key}`);
+  if (!res.ok) throw new Error(`Chapitre introuvable : ${book}/${chapter}`);
   const data = (await res.json()) as { reference: string; mots: Mot[] };
 
   const text: Text = {
-    id: `nt-${book}-${chapter}`,
-    collection: "nt",
+    id: `${c?.refPrefix ?? "nt"}-${book}-${chapter}`,
+    collection: c?.textCollection ?? "nt",
     niveau: 0,
     reference: data.reference,
     grec: "",
