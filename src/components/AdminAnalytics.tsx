@@ -130,6 +130,48 @@ const AXIS = { fontSize: 11, fill: "currentColor" } as const;
 
 type ChartType = "area" | "bar" | "line";
 
+type Hover = { text: string; x: number; y: number } | null;
+
+// Pastille « i » reliée au trait pointillé, rendue dans la marge haute du graphe.
+function EventPin({
+  vb,
+  text,
+  onEnter,
+  onLeave,
+}: {
+  vb: { x: number; y: number };
+  text: string;
+  onEnter: (h: Hover) => void;
+  onLeave: () => void;
+}) {
+  return (
+    <g
+      transform={`translate(${vb.x}, ${vb.y})`}
+      onMouseEnter={() => onEnter({ text, x: vb.x, y: vb.y })}
+      onMouseLeave={onLeave}
+      style={{ cursor: "help" }}
+    >
+      <line x1={0} y1={0} x2={0} y2={-7} stroke={C.accent} strokeWidth={1.5} />
+      <circle cx={0} cy={-15.5} r={8.5} fill="var(--color-base-100)" stroke={C.accent} strokeWidth={1.5} />
+      <text
+        x={0}
+        y={-15.5}
+        textAnchor="middle"
+        dominantBaseline="central"
+        fontFamily="Georgia, serif"
+        fontSize={12}
+        fontStyle="italic"
+        fontWeight={700}
+        fill={C.accent}
+      >
+        i
+      </text>
+      {/* zone de survol élargie */}
+      <circle cx={0} cy={-15.5} r={13} fill="transparent" />
+    </g>
+  );
+}
+
 function ViewsChart({
   data,
   type,
@@ -139,10 +181,11 @@ function ViewsChart({
   type: ChartType;
   events: { day: string; label: string }[];
 }) {
+  const [hover, setHover] = useState<Hover>(null);
   const tip = <Tooltip content={<ChartTooltip unit="visites" />} cursor={{ fill: "var(--color-base-200)" }} />;
   const common = {
     data,
-    margin: { top: 4, right: 8, left: 0, bottom: 0 },
+    margin: { top: 30, right: 8, left: 0, bottom: 0 },
   };
   const x = (
     <XAxis
@@ -162,13 +205,21 @@ function ViewsChart({
       x={e.day}
       stroke={C.accent}
       strokeDasharray="4 3"
-      strokeOpacity={0.8}
+      strokeOpacity={0.7}
       ifOverflow="extendDomain"
+      label={(p: { viewBox: { x: number; y: number } }) => (
+        <EventPin
+          vb={p.viewBox}
+          text={`${dayLabel(e.day)} · ${e.label}`}
+          onEnter={setHover}
+          onLeave={() => setHover(null)}
+        />
+      )}
     />
   ));
 
   return (
-    <div className="h-60 text-base-content/55">
+    <div className="relative h-60 text-base-content/55">
       <ResponsiveContainer width="100%" height="100%">
         {type === "bar" ? (
           <BarChart {...common}>
@@ -205,6 +256,14 @@ function ViewsChart({
           </AreaChart>
         )}
       </ResponsiveContainer>
+      {hover && (
+        <div
+          className="pointer-events-none absolute z-20 -translate-x-1/2 whitespace-nowrap rounded-lg border border-base-300 bg-base-100 px-2 py-1 text-xs font-medium text-base-content shadow-lg"
+          style={{ left: hover.x, top: hover.y + 2 }}
+        >
+          {hover.text}
+        </div>
+      )}
     </div>
   );
 }
@@ -379,16 +438,6 @@ export default function AdminAnalytics({
           )}
           <ViewsChart data={filled} type={type} events={visibleEvents} />
         </div>
-        {visibleEvents.length > 0 && (
-          <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-base-content/60">
-            {visibleEvents.map((e) => (
-              <span key={e.day} className="inline-flex items-center gap-1.5">
-                <span className="inline-block h-3 border-l-2 border-dashed border-accent" />
-                {dayLabel(e.day)} — {e.label}
-              </span>
-            ))}
-          </div>
-        )}
       </ChartCard>
 
       {topTexts.length > 0 && (
