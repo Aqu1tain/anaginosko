@@ -13,6 +13,7 @@ import { BOOK_NAMES } from "../data/nt";
 import { textById } from "../data/texts";
 import { refHref, parseNtRef } from "../data/passageLink";
 import AnnotationEditor, { type AnnotationTarget } from "./AnnotationEditor";
+import AdminAnalytics from "./AdminAnalytics";
 
 function locationLabel(ref: string): string {
   const nt = parseNtRef(ref);
@@ -27,28 +28,6 @@ function formatDate(iso: string | null): string {
   } catch {
     return "";
   }
-}
-
-const ICONS = {
-  eye: "M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z M12 9.2a2.8 2.8 0 100 5.6 2.8 2.8 0 000-5.6z",
-  note: "M5 3.5h11l3 3V20.5H5z M14 3.5V7h3.5",
-  users: "M9 11a3.2 3.2 0 100-6.4A3.2 3.2 0 009 11z M2.5 19.5a6.5 6.5 0 0113 0z M16 11a3 3 0 100-6 M21.5 19.5a6 6 0 00-5-5.9",
-};
-
-function Stat({ label, value, path }: { label: string; value: number; path: string }) {
-  return (
-    <div className="flex items-center gap-3 rounded-2xl border border-base-300 bg-base-100 px-4 py-3">
-      <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" strokeLinecap="round" aria-hidden="true">
-          <path d={path} />
-        </svg>
-      </span>
-      <span className="min-w-0">
-        <span className="block text-xl font-bold leading-none">{value}</span>
-        <span className="block truncate text-xs text-base-content/70">{label}</span>
-      </span>
-    </div>
-  );
 }
 
 function scopeLabel(a: Annotation): string {
@@ -103,8 +82,6 @@ export default function AdminView() {
   }
   if (error) return <p className="py-20 text-center text-base-content/70">Chargement impossible.</p>;
 
-  const maxDay = Math.max(1, ...(stats?.viewsByDay.map((d) => d.views) ?? [1]));
-
   return (
     <div className="pb-10 pt-6">
       <h1 className="text-2xl font-bold">Tableau de bord</h1>
@@ -112,51 +89,7 @@ export default function AdminView() {
         {isAdmin ? "Fréquentation et modération des annotations." : "Gérez vos annotations."}
       </p>
 
-      {isAdmin && stats && (
-        <>
-          <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-3">
-            <Stat label="Visites" value={stats.views} path={ICONS.eye} />
-            <Stat label="Annotations" value={stats.annotations} path={ICONS.note} />
-            <Stat label="Comptes" value={stats.users} path={ICONS.users} />
-          </div>
-
-          {stats.viewsByDay.length > 0 && (
-            <section className="mt-6 rounded-2xl border border-base-300 bg-base-100 p-4">
-              <h2 className="mb-3 text-sm font-semibold text-base-content/70">Visites · 14 derniers jours</h2>
-              <div className="flex items-end gap-1" style={{ height: 90 }}>
-                {stats.viewsByDay.map((d, i) => (
-                  <div key={d.day ?? i} className="group relative flex-1">
-                    <div
-                      title={`${d.day ?? "?"} : ${d.views}`}
-                      className="w-full rounded-t bg-primary/70 transition-colors group-hover:bg-primary"
-                      style={{ height: `${(d.views / maxDay) * 78}px`, minHeight: 3 }}
-                    />
-                  </div>
-                ))}
-              </div>
-              <div className="mt-1 flex justify-between text-[0.65rem] text-base-content/70">
-                <span>{stats.viewsByDay[0]?.day?.slice(5) ?? ""}</span>
-                <span>max {maxDay}</span>
-                <span>{stats.viewsByDay.at(-1)?.day?.slice(5) ?? ""}</span>
-              </div>
-            </section>
-          )}
-
-          {stats.topRefs.length > 0 && (
-            <section className="mt-6">
-              <h2 className="mb-2 text-sm font-semibold text-base-content/70">Textes les plus lus</h2>
-              <div className="grid grid-cols-1 gap-1.5">
-                {stats.topRefs.map((r) => (
-                  <div key={r.ref} className="flex items-center justify-between gap-2 rounded-xl bg-base-200 px-3 py-2 text-sm">
-                    <span className="min-w-0 truncate font-mono text-xs text-base-content/70">{r.ref}</span>
-                    <span className="shrink-0 font-semibold">{r.views}</span>
-                  </div>
-                ))}
-              </div>
-            </section>
-          )}
-        </>
-      )}
+      {isAdmin && stats && <AdminAnalytics stats={stats} refLabel={locationLabel} />}
 
       <section className="mt-7">
         <h2 className="mb-2 text-sm font-semibold text-base-content/70">

@@ -151,7 +151,8 @@ export type AdminStats = {
   topRefs: { ref: string; views: number }[];
   viewsByDay: { day: string; views: number }[];
 };
-export const fetchAdminStats = () => apiFetch<AdminStats>("/admin/stats");
+export const fetchAdminStats = (days?: number) =>
+  apiFetch<AdminStats>(`/admin/stats${days ? `?days=${days}` : ""}`);
 
 export type AdminAnnotation = {
   id: number;
