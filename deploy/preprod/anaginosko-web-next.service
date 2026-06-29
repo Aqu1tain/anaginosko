@@ -1,0 +1,28 @@
+[Unit]
+Description=Anaginosko Next.js préprod (standalone)
+After=network.target
+
+[Service]
+Type=simple
+User=anag-web
+Group=anag-web
+WorkingDirectory=/opt/anaginosko-web-next/current
+Environment=NODE_ENV=production
+Environment=PORT=3101
+Environment=HOSTNAME=127.0.0.1
+# Données statiques propres à la préprod (issues de la branche next, dont la LXX
+# qui n'est pas encore en prod). L'audio reste partagé avec la prod via nginx.
+Environment=NT_DATA_DIR=/var/www/anaginosko-next/nt
+Environment=LXX_DATA_DIR=/var/www/anaginosko-next/lxx
+ExecStart=/usr/bin/node server.js
+Restart=on-failure
+RestartSec=2
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+ReadWritePaths=/opt/anaginosko-web-next
+MemoryMax=512M
+
+[Install]
+WantedBy=multi-user.target

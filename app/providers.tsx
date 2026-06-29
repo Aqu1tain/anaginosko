@@ -14,6 +14,7 @@ import type { GraphemeInfo } from "../src/lib/greek";
 import type { WordContext } from "../src/lib/tokenize";
 import LetterSheet from "../src/components/LetterSheet";
 import HashRedirect from "./_components/HashRedirect";
+import PreprodGate from "./_components/PreprodGate";
 
 type SheetState = {
   key: string;
@@ -96,7 +97,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     <AuthProvider>
       <SheetContext.Provider value={api}>
         <HashRedirect />
-        {children}
+        <PreprodGate>{children}</PreprodGate>
         {sheet && (
           <LetterSheet
             info={sheet.info}

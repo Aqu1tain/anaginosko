@@ -1,0 +1,61 @@
+# Préproduction next.anaginosko.fr — HTTP seul ; certbot --nginx ajoute le 443 et
+# la redirection au premier provisioning. Données NT/LXX propres à la préprod
+# (/var/www/anaginosko-next, issues de la branche next) ; audio partagé avec la
+# prod (/var/www/anaginosko) ; app Next 3101 et API 3901 isolées (DB copiée de la
+# prod, rien ne repart en prod).
+server {
+    listen 80;
+    listen [::]:80;
+    server_name next.anaginosko.fr;
+    root /var/www/anaginosko;
+
+    gzip on;
+    gzip_vary on;
+    gzip_types application/json application/javascript text/css image/svg+xml text/plain application/manifest+json;
+    gzip_min_length 512;
+
+    location /.well-known/acme-challenge/ {
+        root /var/www/html;
+    }
+
+    # API préprod isolée (conteneur Docker séparé, DB copiée de la prod)
+    location /api/ {
+        proxy_pass http://127.0.0.1:3901;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 30s;
+    }
+
+    location = /audio/manifest.json {
+        expires 5m;
+        add_header Cache-Control "public, max-age=300";
+    }
+
+    location ^~ /audio/ {
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+        access_log off;
+    }
+
+    # NT + LXX : seuls les .json (lus par le client) sont servis du disque, depuis
+    # la data propre à la préprod ; les routes de page tombent sur Next.
+    location ~ ^/(nt|lxx)/.+\.json$ {
+        root /var/www/anaginosko-next;
+        expires 5m;
+        add_header Cache-Control "public, max-age=300";
+        try_files $uri =404;
+    }
+
+    location / {
+        proxy_pass http://127.0.0.1:3101;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 60s;
+    }
+}

@@ -1,6 +1,10 @@
 import type { MetadataRoute } from "next";
 
+const PREPROD = process.env.NEXT_PUBLIC_PREPROD === "1";
+
 export default function robots(): MetadataRoute.Robots {
+  // Préproduction : on n'indexe rien.
+  if (PREPROD) return { rules: [{ userAgent: "*", disallow: "/" }] };
   return {
     rules: [
       { userAgent: "*", allow: "/", disallow: ["/admin", "/login"] },

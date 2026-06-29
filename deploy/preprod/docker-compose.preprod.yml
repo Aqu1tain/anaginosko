@@ -1,0 +1,16 @@
+# API préprod : réutilise l'image `anaginosko-api` déjà construite par la prod,
+# mais conteneur, port et volume SÉPARÉS. La DB (db-next) est une copie de la prod
+# rafraîchie à chaque déploiement préprod — les écritures préprod restent isolées.
+services:
+  api:
+    image: anaginosko-api
+    container_name: anaginosko-api-next
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - "127.0.0.1:3901:3333"
+    volumes:
+      - db-next:/app/tmp
+
+volumes:
+  db-next:

@@ -8,8 +8,11 @@ import Shell from "./shell";
 // d'après localStorage("anaginosko:dark") ou la préférence système.
 const THEME_INIT = `(function(){try{var s=localStorage.getItem("anaginosko:dark");var d=s===null?matchMedia("(prefers-color-scheme: dark)").matches:JSON.parse(s);document.documentElement.setAttribute("data-theme",d?"anaginosko-dark":"anaginosko");}catch(e){document.documentElement.setAttribute("data-theme","anaginosko");}})();`;
 
+const PREPROD = process.env.NEXT_PUBLIC_PREPROD === "1";
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://anaginosko.fr"),
+  robots: PREPROD ? { index: false, follow: false } : undefined,
   title: {
     default: "Anaginosko · lire le grec koinè",
     template: "%s · Anaginosko",

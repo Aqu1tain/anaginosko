@@ -1,0 +1,74 @@
+name: Deploy preprod (next.anaginosko.fr)
+
+on:
+  push:
+    branches: [next]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-preprod
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+
+      - name: Build (préprod)
+        env:
+          NEXT_PUBLIC_PREPROD: "1"
+          NEXT_PUBLIC_API_BASE: /api
+        run: npm run build
+
+      - name: Assemble standalone bundle
+        run: |
+          set -euo pipefail
+          rm -rf deploy-out
+          cp -r .next/standalone deploy-out
+          mkdir -p deploy-out/.next
+          cp -r .next/static deploy-out/.next/static
+          rm -rf deploy-out/public
+          rsync -a --exclude audio --exclude nt --exclude lxx public/ deploy-out/public/
+          # La préprod lit sa propre data NT/LXX (branche next), pas celle de la prod.
+          printf 'NT_DATA_DIR=/var/www/anaginosko-next/nt\nLXX_DATA_DIR=/var/www/anaginosko-next/lxx\n' > deploy-out/.env.production
+
+      - name: Deploy preprod to VPS
+        env:
+          CERTBOT_EMAIL: corentinfox08@gmail.com
+        run: |
+          set -euo pipefail
+          mkdir -p ~/.ssh
+          printf '%s\n' "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H "${{ secrets.VPS_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
+          SSH="ssh -i ~/.ssh/id_ed25519"
+          HOST="${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}"
+          TS=$(date +%Y%m%d%H%M%S)
+          REL="/opt/anaginosko-web-next/releases/$TS"
+
+          # 1) Pousser les fichiers de provisioning préprod
+          $SSH "$HOST" "rm -rf ~/anag-preprod && mkdir -p ~/anag-preprod"
+          rsync -az -e "$SSH" deploy/preprod/ "$HOST:anag-preprod/"
+
+          # 2) Provisionner (idempotent) : service systemd, API isolée + DB copiée
+          #    de la prod, nginx + TLS. Aucune ressource prod n'est touchée.
+          $SSH "$HOST" "CERTBOT_EMAIL='$CERTBOT_EMAIL' bash anag-preprod/provision.sh"
+
+          # 3) Data statique propre à la préprod (NT inchangé, LXX nouvelle)
+          rsync -az --delete -e "$SSH" public/nt/  "$HOST:/var/www/anaginosko-next/nt/"
+          rsync -az --delete -e "$SSH" public/lxx/ "$HOST:/var/www/anaginosko-next/lxx/"
+
+          # 4) Release Next préprod (bundle standalone immuable)
+          $SSH "$HOST" "mkdir -p $REL"
+          rsync -az --delete -e "$SSH" deploy-out/ "$HOST:$REL/"
+          $SSH "$HOST" "ln -sfn $REL /opt/anaginosko-web-next/current && sudo systemctl restart anaginosko-web-next"
+          $SSH "$HOST" "ls -1dt /opt/anaginosko-web-next/releases/*/ | tail -n +4 | xargs -r rm -rf"
+
+          # 5) Smoke-test local sur le VPS
+          $SSH "$HOST" "curl -fsS -o /dev/null http://127.0.0.1:3101/ && echo 'préprod OK'"
