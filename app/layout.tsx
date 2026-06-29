@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     template: "%s · Anaginosko",
   },
   description:
-    "Anaginosko · lire le grec koinè du Nouveau Testament, lettre par lettre, prononciation érasmienne et restituée, alphabet interactif.",
+    "Anaginosko · lire le grec koinè de la Bible, lettre par lettre, prononciation érasmienne et restituée, alphabet interactif.",
   manifest: "/manifest.webmanifest",
   icons: { icon: "/favicon.svg", apple: "/apple-touch-icon.png" },
   appleWebApp: { capable: true, title: "Anaginosko", statusBarStyle: "default" },
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: { default: "Anaginosko · lire le grec koinè", template: "%s · Anaginosko" },
     description:
-      "Lire le grec koinè du Nouveau Testament, lettre par lettre : prononciation érasmienne et restituée, concordance, alphabet.",
+      "Lire le grec koinè de la Bible, lettre par lettre : prononciation érasmienne et restituée, concordance, alphabet.",
   },
 };
 
@@ -57,7 +57,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   url: "https://anaginosko.fr",
                   inLanguage: "fr",
                   description:
-                    "Lire le grec koinè du Nouveau Testament, lettre par lettre : prononciation érasmienne et restituée, alphabet interactif, concordance.",
+                    "Lire le grec koinè de la Bible, lettre par lettre : prononciation érasmienne et restituée, alphabet interactif, concordance.",
                   potentialAction: {
                     "@type": "SearchAction",
                     target: {

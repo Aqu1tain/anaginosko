@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { collections, lengthLabel, textsByCollection, type Text } from "../src/data/texts";
+import { loadBooksFs } from "../lib/nt-server";
+import { NT, LXX } from "../src/data/corpus";
 import SupportBanner from "./_components/SupportBanner";
 import ResumeReading from "./_components/ResumeReading";
 
 export const metadata: Metadata = {
   description:
-    "Anaginosko : lire le grec koinè du Nouveau Testament, lettre par lettre. Prononciation érasmienne et restituée, alphabet interactif, concordance grecque et traduction française. Gratuit, sans publicité.",
+    "Anaginosko : lire le grec koinè de la Bible, lettre par lettre. Prononciation érasmienne et restituée, alphabet interactif, concordance grecque et traduction française. Gratuit, sans publicité.",
   alternates: { canonical: "/" },
 };
 
@@ -19,22 +21,40 @@ function preview(grec: string, words = 12): string {
   return parts.length > words ? parts.slice(0, words).join(" ") + " …" : grec;
 }
 
-// Accès principal au NT : bouton plein, couleur primaire — il doit dominer les
-// cartes de passages et le bandeau « reprendre ».
-function NtCta({ className = "" }: { className?: string }) {
+// Accès à un corpus. Le NT (primaire, bouton plein) domine ; la Septante vient en
+// second (carte bordée). Les comptes sont dérivés de books.json.
+function CorpusCta({
+  href,
+  title,
+  subtitle,
+  primary,
+  className = "",
+}: {
+  href: string;
+  title: string;
+  subtitle: string;
+  primary?: boolean;
+  className?: string;
+}) {
+  const style = primary
+    ? "bg-primary text-primary-content shadow-sm hover:bg-primary/90"
+    : "border border-base-300 bg-base-100 hover:border-primary/40";
   return (
     <Link
-      href="/nt"
-      className={`flex items-center justify-between gap-3 rounded-box bg-primary px-4 py-3.5 text-primary-content shadow-sm transition-colors hover:bg-primary/90 ${className}`}
+      href={href}
+      className={`flex items-center justify-between gap-3 rounded-box px-4 py-3.5 transition-colors ${style} ${className}`}
     >
       <span>
-        <span className="block font-semibold">Nouveau Testament complet</span>
-        <span className="block text-sm text-primary-content/80">27 livres · 260 chapitres</span>
+        <span className="block font-semibold">{title}</span>
+        <span className={`block text-sm ${primary ? "text-primary-content/80" : "text-base-content/70"}`}>{subtitle}</span>
       </span>
       <span aria-hidden className="text-lg">→</span>
     </Link>
   );
 }
+
+const corpusSubtitle = (books: { chapters: number }[]) =>
+  `${books.length} livres · ${books.reduce((a, b) => a + b.chapters, 0)} chapitres`;
 
 function TextCard({ text }: { text: Text }) {
   return (
@@ -73,7 +93,10 @@ function Passages() {
   );
 }
 
-export default function Home() {
+export default async function Home() {
+  const [ntBooks, lxxBooks] = await Promise.all([loadBooksFs(NT), loadBooksFs(LXX)]);
+  const ntSub = corpusSubtitle(ntBooks);
+  const lxxSub = corpusSubtitle(lxxBooks);
   return (
     <div>
       {/* Desktop : héros en deux temps — titre + intro + accès NT à gauche, image
@@ -82,7 +105,10 @@ export default function Home() {
         <div className="flex flex-col justify-center gap-5">
           <h1 className="font-greek text-5xl leading-[1.1]">Lire le grec koinè</h1>
           <p className="max-w-prose text-base leading-relaxed text-base-content/70">{INTRO}</p>
-          <NtCta className="max-w-md" />
+          <div className="flex max-w-md flex-col gap-2.5">
+            <CorpusCta href="/nt" title="Nouveau Testament complet" subtitle={ntSub} primary />
+            <CorpusCta href="/lxx" title="Septante — Ancien Testament grec" subtitle={lxxSub} />
+          </div>
         </div>
         <div className="relative min-h-[22rem] overflow-hidden rounded-box">
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -113,8 +139,11 @@ export default function Home() {
         <p className="mt-3 max-w-prose text-[0.95rem] leading-relaxed text-base-content/70">{INTRO}</p>
       </section>
 
-      {/* Mobile : l'accès NT vient juste après l'intro (sur desktop il est dans le héros). */}
-      <NtCta className="mt-4 wide:hidden" />
+      {/* Mobile : les accès aux corpus viennent juste après l'intro (dans le héros sur desktop). */}
+      <div className="mt-4 grid gap-2.5 wide:hidden">
+        <CorpusCta href="/nt" title="Nouveau Testament complet" subtitle={ntSub} primary />
+        <CorpusCta href="/lxx" title="Septante — Ancien Testament grec" subtitle={lxxSub} />
+      </div>
 
       {/* Reprise (pastille compacte) + soutien (bandeau pleine largeur). Aucun des
           deux ne réserve d'espace : si l'un manque (pas de lecture en cours, bandeau
@@ -125,7 +154,7 @@ export default function Home() {
       <Passages />
 
       <footer className="pt-10 text-center text-xs text-base-content/70">
-        Texte grec : SBLGNT · traduction : Crampon · définitions : Bailly.
+        Texte grec : SBLGNT (NT) et Rahlfs (LXX) · traduction : Crampon · définitions : Bailly.
         <br />
         <Link href="/mentions" className="link mt-1 inline-block">
           Mentions légales

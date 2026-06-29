@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { getLastRead } from "../../src/lib/lastRead";
+import { CORPORA } from "../../src/data/corpus";
 
 const ICONS = {
   read: (
@@ -25,7 +26,10 @@ export type NavTab = { href: string; label: string; icon: React.ReactNode; activ
 // latéral (desktop). « Lire » ramène là où on a quitté la section lecture.
 export function useNavTabs(): NavTab[] {
   const pathname = usePathname();
-  const reading = pathname === "/" || pathname.startsWith("/nt") || pathname.startsWith("/text");
+  const isConcordance = /\/concordance(\/|$)/.test(pathname);
+  const reading =
+    !isConcordance &&
+    (pathname === "/" || pathname.startsWith("/text") || CORPORA.some((c) => pathname.startsWith(c.routePrefix)));
 
   const [readHref, setReadHref] = useState("/");
   useEffect(() => {
@@ -39,6 +43,6 @@ export function useNavTabs(): NavTab[] {
   return [
     { href: readHref, label: "Lire", icon: ICONS.read, active: reading },
     { href: "/alphabet", label: "Alphabet", icon: ICONS.alphabet, active: pathname.startsWith("/alphabet") },
-    { href: "/concordance", label: "Concordance", icon: ICONS.concordance, active: pathname.startsWith("/concordance") },
+    { href: "/concordance", label: "Concordance", icon: ICONS.concordance, active: isConcordance },
   ];
 }

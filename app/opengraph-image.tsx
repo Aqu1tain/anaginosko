@@ -4,7 +4,7 @@ import { join } from "node:path";
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
-export const alt = "Anaginosko, lire le grec koinè du Nouveau Testament";
+export const alt = "Anaginosko, lire le grec koinè de la Bible";
 
 export default async function Image() {
   const dir = join(process.cwd(), "app/_og");
@@ -32,7 +32,7 @@ export default async function Image() {
           Anaginosko
         </div>
         <div style={{ fontSize: 46, fontWeight: 600, marginTop: 24, color: "#cbd5e1" }}>
-          Lire le grec koinè du Nouveau Testament, lettre par lettre
+          Lire le grec koinè de la Bible, lettre par lettre
         </div>
         <div style={{ fontSize: 30, marginTop: 56, color: "#7fa8d0" }}>
           Prononciation érasmienne et restituée · concordance · alphabet
