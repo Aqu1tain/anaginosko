@@ -31,11 +31,11 @@ jobs:
           mkdir -p deploy-out/.next
           cp -r .next/static deploy-out/.next/static
           rm -rf deploy-out/public
-          rsync -a --exclude audio --exclude nt public/ deploy-out/public/
-          # Les données NT ne sont pas dans le standalone (servies par nginx) ;
-          # le serveur les lit au runtime depuis NT_DATA_DIR pour le SSR des
-          # fiches-lemme. Le standalone Next charge .env.production au démarrage.
-          printf 'NT_DATA_DIR=/var/www/anaginosko/nt\n' > deploy-out/.env.production
+          rsync -a --exclude audio --exclude nt --exclude lxx public/ deploy-out/public/
+          # Les données NT et LXX ne sont pas dans le standalone (servies par
+          # nginx) ; le serveur les lit au runtime depuis NT_DATA_DIR / LXX_DATA_DIR
+          # pour le SSR des fiches-lemme. Le standalone Next charge .env.production.
+          printf 'NT_DATA_DIR=/var/www/anaginosko/nt\nLXX_DATA_DIR=/var/www/anaginosko/lxx\n' > deploy-out/.env.production
 
       - name: Deploy to VPS
         run: |
@@ -49,9 +49,10 @@ jobs:
           TS=$(date +%Y%m%d%H%M%S)
           REL="/opt/anaginosko-web/releases/$TS"
 
-          # 1) Données NT : lues au runtime par le client, servies par nginx
-          #    depuis /var/www/anaginosko/nt. L'audio n'est JAMAIS touché.
+          # 1) Données NT + LXX : lues au runtime par le client, servies par nginx
+          #    depuis /var/www/anaginosko/{nt,lxx}. L'audio n'est JAMAIS touché.
           rsync -az --delete -e "$SSH" public/nt/ "$HOST:/var/www/anaginosko/nt/"
+          rsync -az --delete -e "$SSH" public/lxx/ "$HOST:/var/www/anaginosko/lxx/"
 
           # 2) Nouvelle release (bundle standalone immuable)
           $SSH "$HOST" "mkdir -p $REL"
