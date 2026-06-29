@@ -3,15 +3,12 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import {
-  BOOK_NAMES,
-  BOOK_ORDER,
-  CORPUS_GROUPS,
-  corpusOf,
   type Distribution,
   type LemmaEntry,
   type NtBook,
   type Occ,
 } from "../data/nt";
+import type { CorpusConfig } from "../data/corpus";
 
 type Row = {
   id: string;
@@ -33,14 +30,14 @@ function Seg({ active, onClick, children }: { active: boolean; onClick: () => vo
   );
 }
 
-function Verses({ occ, row }: { occ: Occ[]; row: Row }) {
+function Verses({ occ, row, routePrefix }: { occ: Occ[]; row: Row; routePrefix: string }) {
   const verses = occ.filter((o) => o.b === row.id);
   return (
     <div className="mt-1 mb-2 ml-2 grid gap-1 border-l-2 border-base-300 pl-2">
       {verses.map((o, i) => (
         <Link
           key={i}
-          href={`/nt/${o.b}/${o.c}?w=${o.w}`}
+          href={`${routePrefix}/${o.b}/${o.c}?w=${o.w}`}
           className="flex items-center gap-2 rounded px-1.5 py-1 text-sm transition-colors hover:bg-base-200"
         >
           <span className="font-greek min-w-0 flex-1 truncate">{o.f}</span>
@@ -63,16 +60,19 @@ export default function DistributionProfile({
   dist,
   books,
   occ,
+  corpus,
 }: {
   entry: LemmaEntry;
   dist: Distribution;
   books: NtBook[];
   occ: Occ[];
+  corpus: CorpusConfig;
 }) {
   const [mode, setMode] = useState<"raw" | "density">("raw");
   const [grouped, setGrouped] = useState(false);
   const [log, setLog] = useState(false);
   const [openBook, setOpenBook] = useState<string | null>(null);
+  const groupOf = (id: string) => corpus.subGroups.find((g) => g.books.includes(id));
 
   const wordsByBook = useMemo(() => {
     const m: Record<string, number> = {};
@@ -81,18 +81,19 @@ export default function DistributionProfile({
   }, [books]);
 
   const rows = useMemo<Row[]>(() => {
-    return BOOK_ORDER.map((id) => {
+    return corpus.bookOrder.map((id) => {
       const count = dist[id] ?? 0;
       const words = wordsByBook[id] || 1;
       const value = mode === "density" ? (count / words) * 1000 : count;
-      return { id, name: BOOK_NAMES[id], count, value, color: corpusOf(id)?.color ?? "#888" };
+      return { id, name: corpus.bookNames[id], count, value, color: groupOf(id)?.color ?? "#888" };
     }).filter((r) => r.count > 0);
-  }, [dist, mode, wordsByBook]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dist, mode, wordsByBook, corpus]);
 
   if (rows.length === 0) return null;
 
   const present = rows.length;
-  const absent = BOOK_ORDER.length - present;
+  const absent = corpus.bookOrder.length - present;
   const maxRaw = Math.max(1, ...rows.map((r) => r.count));
   const maxValue = Math.max(...rows.map((r) => r.value), 1e-9);
   const showLog = maxRaw >= 25;
@@ -121,14 +122,14 @@ export default function DistributionProfile({
             />
           </div>
         </button>
-        {open && <Verses occ={occ} row={r} />}
+        {open && <Verses occ={occ} row={r} routePrefix={corpus.routePrefix} />}
       </div>
     );
   };
 
   const groupView = () => {
-    const blocks = CORPUS_GROUPS.map((g) => {
-      const grows = rows.filter((r) => corpusOf(r.id)?.id === g.id);
+    const blocks = corpus.subGroups.map((g) => {
+      const grows = rows.filter((r) => groupOf(r.id)?.id === g.id);
       const subtotal = grows.reduce((a, r) => a + r.count, 0);
       return { g, grows, subtotal };
     });
@@ -158,7 +159,7 @@ export default function DistributionProfile({
     <div className="mt-4 rounded-box border border-base-300 bg-base-100 px-4 py-3">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="text-[0.7rem] font-medium uppercase tracking-wide text-base-content/70">
-          Répartition · Nouveau Testament
+          Répartition · {corpus.label}
         </div>
         {isHapax && <span className="badge badge-sm badge-warning badge-soft">hapax legomenon</span>}
       </div>

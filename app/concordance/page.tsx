@@ -1,4 +1,5 @@
 import ConcordanceView from "@/src/components/ConcordanceView";
+import { NT } from "@/src/data/corpus";
 
 export const metadata = {
   title: "Concordance",
@@ -8,5 +9,5 @@ export const metadata = {
 };
 
 export default function ConcordancePage() {
-  return <ConcordanceView />;
+  return <ConcordanceView corpus={NT} />;
 }

@@ -8,6 +8,7 @@ import {
   loadOccurrencesFs,
 } from "@/lib/nt-server";
 import LemmaDetail from "@/src/components/LemmaDetail";
+import { NT } from "@/src/data/corpus";
 
 // Rendu serveur à la demande. Les données NT sont lues depuis NT_DATA_DIR (en
 // prod : le dossier servi par nginx, /var/www/anaginosko/nt), car elles ne sont
@@ -55,5 +56,5 @@ export default async function LemmaPage({ params }: { params: Promise<{ lemma: s
     loadCollocationsFs(entry.oid),
   ]);
 
-  return <LemmaDetail entry={entry} occ={occ} dist={dist} books={books} colloc={colloc} />;
+  return <LemmaDetail entry={entry} occ={occ} dist={dist} books={books} colloc={colloc} corpus={NT} />;
 }

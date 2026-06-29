@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { loadLemmaIndex, searchLemmaIndex, type LemmaEntry } from "../data/nt";
+import type { CorpusConfig } from "../data/corpus";
 
 function Loading() {
   return (
@@ -12,25 +13,25 @@ function Loading() {
   );
 }
 
-function useLemmaIndex() {
+function useLemmaIndex(corpus: CorpusConfig) {
   const [index, setIndex] = useState<LemmaEntry[] | null>(null);
   const [error, setError] = useState(false);
   useEffect(() => {
     let alive = true;
-    loadLemmaIndex()
+    loadLemmaIndex(corpus)
       .then((i) => alive && setIndex(i))
       .catch(() => alive && setError(true));
     return () => {
       alive = false;
     };
-  }, []);
+  }, [corpus]);
   return { index, error };
 }
 
-function LemmaRow({ entry }: { entry: LemmaEntry }) {
+function LemmaRow({ entry, corpus }: { entry: LemmaEntry; corpus: CorpusConfig }) {
   return (
     <Link
-      href={`/concordance/${encodeURIComponent(entry.lemma)}`}
+      href={`${corpus.concordanceBase}/${encodeURIComponent(entry.lemma)}`}
       className="flex items-center gap-3 rounded-box border border-base-300 bg-base-100 px-3.5 py-2.5 transition-colors hover:border-primary/40"
     >
       <span className="min-w-0 flex-1">
@@ -46,7 +47,7 @@ function LemmaRow({ entry }: { entry: LemmaEntry }) {
 
 const EXAMPLE_LEMMAS = ["λόγος", "ἀγάπη", "θεός", "πίστις", "χάρις", "πνεῦμα"];
 
-function List({ index }: { index: LemmaEntry[] }) {
+function List({ index, corpus }: { index: LemmaEntry[]; corpus: CorpusConfig }) {
   const [query, setQuery] = useState("");
   const results = useMemo(() => searchLemmaIndex(index, query), [index, query]);
   const examples = useMemo(() => {
@@ -58,7 +59,7 @@ function List({ index }: { index: LemmaEntry[] }) {
     <div className="pb-4">
       <div className="max-w-2xl">
         <p className="max-w-prose pt-6 text-[0.95rem] leading-relaxed text-base-content/75">
-          Concordance des {index.length} lemmes du Nouveau Testament. Cherchez en grec
+          Concordance des {index.length} lemmes {corpus.genitive}. Cherchez en grec
           (<span className="font-greek">λόγος</span>) ou en translittération latine, restituée
           comme érasmienne (ex.&nbsp;<span className="font-greek">ἀρχή</span> : <em>arkhi</em> ou{" "}
           <em>arkê</em>).
@@ -81,7 +82,7 @@ function List({ index }: { index: LemmaEntry[] }) {
             {examples.map((e) => (
               <Link
                 key={e.lemma}
-                href={`/concordance/${encodeURIComponent(e.lemma)}`}
+                href={`${corpus.concordanceBase}/${encodeURIComponent(e.lemma)}`}
                 className="badge badge-lg badge-ghost gap-1.5 font-greek hover:badge-primary"
               >
                 {e.lemma}
@@ -101,7 +102,7 @@ function List({ index }: { index: LemmaEntry[] }) {
       ) : (
         <div className="grid gap-1.5 wide:grid-cols-2 wide:gap-x-3">
           {results.slice(0, 300).map((e) => (
-            <LemmaRow key={e.lemma} entry={e} />
+            <LemmaRow key={e.lemma} entry={e} corpus={corpus} />
           ))}
         </div>
       )}
@@ -116,9 +117,9 @@ function List({ index }: { index: LemmaEntry[] }) {
 
 // Liste / recherche de la concordance. La fiche d'un lemme est rendue côté
 // serveur (cf. app/concordance/[lemma]/page.tsx + LemmaDetail) pour être indexable.
-export default function ConcordanceView() {
-  const { index, error } = useLemmaIndex();
+export default function ConcordanceView({ corpus }: { corpus: CorpusConfig }) {
+  const { index, error } = useLemmaIndex(corpus);
   if (error) return <p className="py-20 text-center text-base-content/70">Chargement impossible.</p>;
   if (!index) return <Loading />;
-  return <List index={index} />;
+  return <List index={index} corpus={corpus} />;
 }

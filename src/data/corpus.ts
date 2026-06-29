@@ -19,6 +19,7 @@ export type CorpusConfig = {
   concordanceBase: string; // "/concordance" | "/lxx/concordance"
   label: string; // "Nouveau Testament" | "Septante"
   genitive: string; // "du Nouveau Testament" | "de la Septante" (libellés SEO)
+  locative: string; // "dans le Nouveau Testament" | "dans la Septante"
   shortLabel: string; // "NT" | "LXX"
   sourceLabel: string; // "SBLGNT" | "Rahlfs 1935"
   sourceUrl: string; // isBasedOn (JSON-LD)
@@ -38,6 +39,7 @@ export const NT: CorpusConfig = {
   concordanceBase: "/concordance",
   label: "Nouveau Testament",
   genitive: "du Nouveau Testament",
+  locative: "dans le Nouveau Testament",
   shortLabel: "NT",
   sourceLabel: "SBLGNT",
   sourceUrl: "https://sblgnt.com/",
@@ -57,6 +59,7 @@ export const LXX: CorpusConfig = {
   concordanceBase: "/lxx/concordance",
   label: "Septante",
   genitive: "de la Septante",
+  locative: "dans la Septante",
   shortLabel: "LXX",
   sourceLabel: "Rahlfs 1935",
   sourceUrl: "https://github.com/eliranwong/LXX-Rahlfs-1935",

@@ -12,13 +12,13 @@ import { type Annotation } from "../lib/api";
 import { glossFor } from "../data/glosses";
 import { pickBaillyEntry, baillyDefinition } from "../lib/bailly";
 import {
-  BOOK_NAMES,
   type Colloc,
   type Distribution,
   type LemmaEntry,
   type NtBook,
   type Occ,
 } from "../data/nt";
+import type { CorpusConfig } from "../data/corpus";
 
 // Met en forme la notation Bailly : « || » sépare les grands sens, on met en
 // gras la vedette et les repères (A, I, 1…).
@@ -105,7 +105,7 @@ function Definition({ lemma }: { lemma: string }) {
   );
 }
 
-function Occurrences({ entry, occ }: { entry: LemmaEntry; occ: Occ[] }) {
+function Occurrences({ entry, occ, corpus }: { entry: LemmaEntry; occ: Occ[]; corpus: CorpusConfig }) {
   return (
     <div className="mt-4">
       <div className="text-[0.7rem] font-medium uppercase tracking-wide text-base-content/70">
@@ -120,12 +120,12 @@ function Occurrences({ entry, occ }: { entry: LemmaEntry; occ: Occ[] }) {
         {occ.map((o, i) => (
           <Link
             key={i}
-            href={`/nt/${o.b}/${o.c}?w=${o.w}`}
+            href={`${corpus.routePrefix}/${o.b}/${o.c}?w=${o.w}`}
             className="flex items-center gap-3 rounded-box border border-base-300 bg-base-100 px-3.5 py-2.5 transition-colors hover:border-primary/40"
           >
             <span className="font-greek min-w-0 flex-1 truncate text-lg">{o.f}</span>
             <span className="shrink-0 text-sm text-base-content/70">
-              {BOOK_NAMES[o.b] ?? o.b} {o.c}:{o.v}
+              {corpus.bookNames[o.b] ?? o.b} {o.c}:{o.v}
             </span>
           </Link>
         ))}
@@ -220,19 +220,21 @@ export default function LemmaDetail({
   dist,
   books,
   colloc,
+  corpus,
 }: {
   entry: LemmaEntry;
   occ: Occ[];
   dist: Distribution;
   books: NtBook[];
   colloc: Colloc[];
+  corpus: CorpusConfig;
 }) {
   return (
     <div className="pb-4">
       <Breadcrumb
         items={[
           { label: "Accueil", href: "/", home: true },
-          { label: "Concordance", href: "/concordance" },
+          { label: "Concordance", href: corpus.concordanceBase },
           { label: entry.lemma, greek: true },
         ]}
       />
@@ -243,7 +245,7 @@ export default function LemmaDetail({
         <span className="text-sm text-base-content/70">· {entry.nature}</span>
       </div>
       <p className="mt-1 text-sm text-base-content/70">
-        {entry.count} occurrence{entry.count > 1 ? "s" : ""} dans le NT
+        {entry.count} occurrence{entry.count > 1 ? "s" : ""} {corpus.locative}
       </p>
 
       <BiblionNote lemma={entry.lemma} />
@@ -256,13 +258,13 @@ export default function LemmaDetail({
       <div className="wide:grid wide:grid-cols-2 wide:items-start wide:gap-8">
         <div className="min-w-0">
           <Definition lemma={entry.lemma} />
-          <DistributionProfile entry={entry} dist={dist} books={books} occ={occ} />
+          <DistributionProfile entry={entry} dist={dist} books={books} occ={occ} corpus={corpus} />
         </div>
         <div className="min-w-0">
-          <Collocations items={colloc} occ={occ} />
+          <Collocations items={colloc} occ={occ} corpus={corpus} />
         </div>
       </div>
-      <Occurrences entry={entry} occ={occ} />
+      <Occurrences entry={entry} occ={occ} corpus={corpus} />
     </div>
   );
 }
