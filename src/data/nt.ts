@@ -2,7 +2,15 @@ import type { Text, Mot } from "./texts";
 import type { Gloss } from "./glosses";
 import type { CorpusConfig } from "./corpus";
 
-export type NtBook = { id: string; name: string; usfm: string; chapters: number; words: number };
+export type NtBook = {
+  id: string;
+  name: string;
+  usfm: string;
+  chapters: number;
+  words: number;
+  canon?: "proto" | "deutero" | "extra"; // LXX : tier canonique
+  chapterList?: number[]; // LXX : chapitres réels (non contigus : Proverbes, prologue du Siracide)
+};
 
 // Ordre canonique des 27 livres.
 export const BOOK_ORDER = [

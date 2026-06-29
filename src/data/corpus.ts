@@ -1,4 +1,5 @@
 import { BOOK_ORDER, BOOK_NAMES, NT_GROUPS, CORPUS_GROUPS } from "./nt";
+import { LXX_BOOK_ORDER, LXX_BOOK_NAMES, LXX_GROUPS, LXX_SUBGROUPS } from "./lxx";
 
 // Registre des corpus. Module pur (ni server-only ni "use client") : importé par
 // les loaders fs serveur, les loaders fetch client, les pages serveur et les
@@ -16,7 +17,8 @@ export type CorpusConfig = {
   refPrefix: string; // "nt" | "lxx" — ref d'annotation `${refPrefix}-${book}-${ch}`
   textCollection: string; // "nt" | "lxx" — valeur Text.collection
   concordanceBase: string; // "/concordance" | "/lxx/concordance"
-  label: string; // "Nouveau Testament" | "Septante (LXX)"
+  label: string; // "Nouveau Testament" | "Septante"
+  genitive: string; // "du Nouveau Testament" | "de la Septante" (libellés SEO)
   shortLabel: string; // "NT" | "LXX"
   sourceLabel: string; // "SBLGNT" | "Rahlfs 1935"
   sourceUrl: string; // isBasedOn (JSON-LD)
@@ -35,6 +37,7 @@ export const NT: CorpusConfig = {
   textCollection: "nt",
   concordanceBase: "/concordance",
   label: "Nouveau Testament",
+  genitive: "du Nouveau Testament",
   shortLabel: "NT",
   sourceLabel: "SBLGNT",
   sourceUrl: "https://sblgnt.com/",
@@ -44,7 +47,26 @@ export const NT: CorpusConfig = {
   subGroups: CORPUS_GROUPS,
 };
 
-export const CORPORA: CorpusConfig[] = [NT];
+export const LXX: CorpusConfig = {
+  id: "lxx",
+  routePrefix: "/lxx",
+  dataPrefix: "lxx",
+  dataDirEnv: "LXX_DATA_DIR",
+  refPrefix: "lxx",
+  textCollection: "lxx",
+  concordanceBase: "/lxx/concordance",
+  label: "Septante",
+  genitive: "de la Septante",
+  shortLabel: "LXX",
+  sourceLabel: "Rahlfs 1935",
+  sourceUrl: "https://github.com/eliranwong/LXX-Rahlfs-1935",
+  bookOrder: LXX_BOOK_ORDER,
+  bookNames: LXX_BOOK_NAMES,
+  editorialGroups: LXX_GROUPS,
+  subGroups: LXX_SUBGROUPS,
+};
+
+export const CORPORA: CorpusConfig[] = [NT, LXX];
 
 const byId = new Map(CORPORA.map((c) => [c.id, c]));
 
