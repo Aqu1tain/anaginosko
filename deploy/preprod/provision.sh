@@ -5,6 +5,9 @@
 # volume db, nginx anaginosko.fr, data /var/www/anaginosko/{nt,lxx}).
 set -euo pipefail
 
+echo "DIAG: $(id)"
+sudo -n true 2>/dev/null && echo "DIAG: sudo NOPASSWD OK" || echo "DIAG: sudo NOPASSWD indisponible (mot de passe requis)"
+
 CFG_DIR="$(cd "$(dirname "$0")" && pwd)"
 CI_USER="$(id -un)"
 WEB_ROOT=/opt/anaginosko-web-next

@@ -48,6 +48,7 @@ jobs:
           chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -H "${{ secrets.VPS_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
           SSH="ssh -i ~/.ssh/id_ed25519"
+          SSHTT="ssh -tt -i ~/.ssh/id_ed25519"  # tty pour sudo (Defaults use_pty)
           HOST="${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}"
           TS=$(date +%Y%m%d%H%M%S)
           REL="/opt/anaginosko-web-next/releases/$TS"
@@ -58,7 +59,7 @@ jobs:
 
           # 2) Provisionner (idempotent) : service systemd, API isolée + DB copiée
           #    de la prod, nginx + TLS. Aucune ressource prod n'est touchée.
-          $SSH "$HOST" "CERTBOT_EMAIL='$CERTBOT_EMAIL' bash anag-preprod/provision.sh"
+          $SSHTT "$HOST" "CERTBOT_EMAIL='$CERTBOT_EMAIL' bash anag-preprod/provision.sh"
 
           # 3) Data statique propre à la préprod (NT inchangé, LXX nouvelle)
           rsync -az --delete -e "$SSH" public/nt/  "$HOST:/var/www/anaginosko-next/nt/"
@@ -67,7 +68,7 @@ jobs:
           # 4) Release Next préprod (bundle standalone immuable)
           $SSH "$HOST" "mkdir -p $REL"
           rsync -az --delete -e "$SSH" deploy-out/ "$HOST:$REL/"
-          $SSH "$HOST" "ln -sfn $REL /opt/anaginosko-web-next/current && sudo systemctl restart anaginosko-web-next"
+          $SSHTT "$HOST" "ln -sfn $REL /opt/anaginosko-web-next/current && sudo systemctl restart anaginosko-web-next"
           $SSH "$HOST" "ls -1dt /opt/anaginosko-web-next/releases/*/ | tail -n +4 | xargs -r rm -rf"
 
           # 5) Smoke-test local sur le VPS
