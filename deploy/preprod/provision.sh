@@ -51,6 +51,8 @@ if $DOCKER cp anaginosko-api:/app/tmp/db.sqlite3 /tmp/anag-preprod-db.sqlite3 2>
     fi
   done
   sudo rm -f /tmp/anag-preprod-db.sqlite3*  # docker (via sudo) a écrit en root
+  # docker cp pose la DB en root ; l'API tourne en `node` -> rétablir la propriété.
+  $DOCKER exec anaginosko-api-next sh -c 'chown node:node /app/tmp/db.sqlite3*' 2>/dev/null || true
   $DOCKER restart anaginosko-api-next >/dev/null
   echo "    DB prod copiée vers la préprod."
 else
