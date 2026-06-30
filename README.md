@@ -1,8 +1,8 @@
 # Anaginosko
 
-Lire le grec koinè du Nouveau Testament, lettre par lettre. Application web
-mobile-first : touchez n'importe quelle lettre d'un texte pour obtenir son nom,
-sa valeur et sa prononciation (érasmienne et restituée), mot par mot.
+Lire le grec koinè de la Bible (Nouveau Testament et Septante), lettre par lettre.
+Application web mobile-first : touchez n'importe quelle lettre d'un texte pour
+obtenir son nom, sa valeur et sa prononciation (érasmienne et restituée), mot par mot.
 
 **En ligne : https://anaginosko.fr**
 
@@ -34,6 +34,8 @@ Pour la review locale avec le backend, `next.config.ts` proxifie `/api` vers
 
 - **Nouveau Testament complet** : 27 livres, ~260 chapitres, plus 12 passages
   choisis (qui sont des extraits dérivés des chapitres, donc toujours synchrones).
+- **Septante** : Ancien Testament grec (Rahlfs 1935), 55 livres en trois tiers
+  canoniques (protocanoniques, deutérocanoniques, surnuméraires).
 - **Touchez une lettre** : fiche avec le nom, l'équivalent latin, la prononciation
   érasmienne et restituée, l'esprit / accent détectés sur cette occurrence, puis
   le mot complet (prononciation audible, analyse morphologique, lemme, glose).

@@ -107,12 +107,12 @@ const corpusHtml = `<!doctype html>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Anaginosko · corpus grec koinè (version texte)</title>
-<meta name="description" content="Version texte, lisible sans JavaScript, des passages du Nouveau Testament en grec koinè avec translittération érasmienne et restituée." />
+<meta name="description" content="Version texte, lisible sans JavaScript, de passages bibliques en grec koinè avec translittération érasmienne et restituée." />
 <link rel="canonical" href="${SITE}/corpus.html" />
 </head>
 <body>
 <h1>Anaginosko · corpus grec koinè</h1>
-<p>Version texte intégrale des passages du Nouveau Testament en grec koinè, avec
+<p>Version texte intégrale de passages bibliques en grec koinè, avec
 translittération érasmienne et restituée. Application interactive :
 <a href="${SITE}/">${SITE}/</a></p>
 ${out.texts
@@ -132,7 +132,7 @@ ${t.translitRestituee ? `<p><strong>Restituée :</strong> ${esc(t.translitRestit
 
 const llmsTxt = `# Anaginosko
 
-> Lire le grec koinè du Nouveau Testament, lettre par lettre. Application web
+> Lire le grec koinè de la Bible, lettre par lettre. Application web
 > (Next.js, rendu statique) : prononciation érasmienne et restituée, alphabet
 > interactif, concordance, mode manuscrit, traduction française.
 
@@ -141,10 +141,11 @@ Le texte grec est rendu côté serveur : chaque page est lisible sans JavaScript
 ## Parcourir
 
 - Nouveau Testament (index) : ${SITE}/nt
-- Un chapitre : ${SITE}/nt/{livre}/{chapitre} (ex. ${SITE}/nt/jn/1)
-- Données structurées d'un chapitre (JSON) : ${SITE}/nt/{livre}/{chapitre}.json
+- Septante / Ancien Testament grec (index) : ${SITE}/lxx
+- Un chapitre : ${SITE}/{corpus}/{livre}/{chapitre} (ex. ${SITE}/nt/jn/1, ${SITE}/lxx/gen/1)
+- Données structurées d'un chapitre (JSON) : ${SITE}/{corpus}/{livre}/{chapitre}.json
   - mots avec grec, translittération érasmienne et restituée, verset, lemme, nature
-- Concordance d'un lemme : ${SITE}/concordance/{lemme}
+- Concordance d'un lemme : ${SITE}/concordance/{lemme} (NT) ou ${SITE}/lxx/concordance/{lemme} (LXX)
 - Alphabet grec : ${SITE}/alphabet
 - Corpus des passages choisis (HTML, sans JS) : ${SITE}/corpus.html
 

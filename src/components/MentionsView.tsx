@@ -86,7 +86,7 @@ export default function MentionsView() {
       <h1 className="text-2xl font-bold">Mentions légales</h1>
       <p className="mt-2 max-w-prose text-[0.95rem] leading-relaxed text-base-content/70">
         Anaginosko est un projet <strong>pédagogique</strong> et <strong>catholique</strong>, non
-        commercial et <strong>libre d'accès</strong>, pour lire le Nouveau Testament dans sa langue
+        commercial et <strong>libre d'accès</strong>, pour lire la Bible dans sa langue
         originale. Il s'appuie sur des ressources ouvertes, créditées ci-dessous.
       </p>
 

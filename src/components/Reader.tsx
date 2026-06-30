@@ -23,7 +23,7 @@ import Tour, { type TourStep } from "./Tour";
 const TOUR_STEPS: TourStep[] = [
   {
     title: "Bienvenue sur Anaginosko",
-    body: "Le grec du Nouveau Testament, lettre par lettre. Trois repères pour commencer.",
+    body: "Le grec de la Bible, lettre par lettre. Trois repères pour commencer.",
   },
   {
     target: ".glyph",
@@ -35,7 +35,7 @@ const TOUR_STEPS: TourStep[] = [
   },
   {
     target: 'a[href="/concordance"]',
-    body: "Cherchez un mot grec dans tout le Nouveau Testament depuis la concordance.",
+    body: "Cherchez un mot grec dans toute la Bible depuis la concordance.",
   },
 ];
 

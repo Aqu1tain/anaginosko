@@ -1,6 +1,6 @@
 # Anaginosko
 
-> Lire le grec koinè du Nouveau Testament, lettre par lettre. Application web
+> Lire le grec koinè de la Bible, lettre par lettre. Application web
 > (Next.js, rendu statique) : prononciation érasmienne et restituée, alphabet
 > interactif, concordance, mode manuscrit, traduction française.
 
@@ -9,10 +9,11 @@ Le texte grec est rendu côté serveur : chaque page est lisible sans JavaScript
 ## Parcourir
 
 - Nouveau Testament (index) : https://anaginosko.fr/nt
-- Un chapitre : https://anaginosko.fr/nt/{livre}/{chapitre} (ex. https://anaginosko.fr/nt/jn/1)
-- Données structurées d'un chapitre (JSON) : https://anaginosko.fr/nt/{livre}/{chapitre}.json
-  — mots avec grec, translittération érasmienne et restituée, verset, lemme, nature
-- Concordance d'un lemme : https://anaginosko.fr/concordance/{lemme}
+- Septante / Ancien Testament grec (index) : https://anaginosko.fr/lxx
+- Un chapitre : https://anaginosko.fr/{corpus}/{livre}/{chapitre} (ex. https://anaginosko.fr/nt/jn/1, https://anaginosko.fr/lxx/gen/1)
+- Données structurées d'un chapitre (JSON) : https://anaginosko.fr/{corpus}/{livre}/{chapitre}.json
+  - mots avec grec, translittération érasmienne et restituée, verset, lemme, nature
+- Concordance d'un lemme : https://anaginosko.fr/concordance/{lemme} (NT) ou https://anaginosko.fr/lxx/concordance/{lemme} (LXX)
 - Alphabet grec : https://anaginosko.fr/alphabet
 - Corpus des passages choisis (HTML, sans JS) : https://anaginosko.fr/corpus.html
 

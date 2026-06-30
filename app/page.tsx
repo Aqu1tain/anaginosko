@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 };
 
 const INTRO =
-  "Le Nouveau Testament, lettre par lettre. Touchez n’importe quelle lettre d’un texte pour découvrir son nom et sa prononciation, érasmienne et restituée.";
+  "La Bible, lettre par lettre. Touchez n’importe quelle lettre d’un texte pour découvrir son nom et sa prononciation, érasmienne et restituée.";
 const SCRIBE_ALT = "Un scribe copiant l’Évangile sur un rouleau de papyrus";
 
 function preview(grec: string, words = 12): string {
