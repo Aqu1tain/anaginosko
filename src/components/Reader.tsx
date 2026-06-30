@@ -50,6 +50,35 @@ function SlidersIcon() {
   );
 }
 
+// Traduction d'un chapitre dont la versification diffère du grec : on affiche le
+// texte français en continu, avec ses propres numéros, sans l'apparier au grec.
+function FrenchChapterBlock({ french, credit }: { french: Record<string, string>; credit: string }) {
+  const keys = Object.keys(french)
+    .map(Number)
+    .sort((a, b) => a - b);
+  return (
+    <div className="mt-6 rounded-box bg-base-200 px-4 py-3">
+      <div className="text-[0.7rem] font-medium uppercase tracking-wide text-base-content/70">
+        Traduction · versification distincte
+      </div>
+      <p className="mt-1 text-xs text-base-content/70">
+        Ce chapitre n’est pas numéroté de la même façon dans le grec et dans la
+        traduction ; l’alignement verset par verset n’est pas affiché ici pour ne
+        pas créer de fausses correspondances.
+      </p>
+      <p className="mt-2 leading-relaxed text-base-content/85">
+        {keys.map((v) => (
+          <span key={v}>
+            <span className="verse-num">{v}</span>
+            {french[String(v)]}{" "}
+          </span>
+        ))}
+      </p>
+      <p className="mt-3 text-xs text-base-content/70">{credit}</p>
+    </div>
+  );
+}
+
 type Sel = { anchorW: number; headW: number; g: number; char: string; scope: AnnoScope };
 
 const SCOPES: { id: AnnoScope; label: string }[] = [
@@ -345,7 +374,44 @@ export default function Reader({ text }: { text: Text }) {
   const hasRestituee = !!text.translitRestituee || !!text.mots?.[0]?.restituee;
   const french = text.francais;
   const hasFrench = !!french && Object.keys(french).length > 0;
-  const verses = hasFrench ? Object.keys(french!).map(Number).sort((a, b) => a - b) : [];
+
+  const corpus = useMemo(() => {
+    const p = parseRef(text.id);
+    return p ? corpusById(p.corpus) : null;
+  }, [text.id]);
+  const isLxx = corpus?.id === "lxx";
+  const translationCredit = isLxx
+    ? "Traduction : Pierre Giguet, d’après les Septante (1872, domaine public)."
+    : "Traduction : Bible Crampon (néo-Crampon, domaine public).";
+
+  const greekVerses = useMemo(
+    () =>
+      [...new Set((text.mots ?? []).map((m) => m.verse).filter((v): v is number => v != null))].sort(
+        (a, b) => a - b,
+      ),
+    [text.mots],
+  );
+  // La traduction n'est appariée verset par verset que si ses clés recouvrent
+  // exactement celles du grec. Pour le NT (Crampon), les écarts sont purement
+  // additifs (versets du TR omis par SBLGNT) : apparier par numéro reste juste,
+  // on garde donc le rendu historique. Pour la LXX, Giguet (1872) suit une
+  // versification renumérotée (ex. Is 8,23 = Is 9,1) : quand les ensembles
+  // diffèrent, apparier par numéro ment sur l'alignement → bloc continu.
+  const exactlyAligned = useMemo(() => {
+    if (!hasFrench) return false;
+    const fr = new Set(Object.keys(french!).map(Number));
+    return greekVerses.length === fr.size && greekVerses.every((v) => fr.has(v));
+  }, [hasFrench, french, greekVerses]);
+  const useFrenchBlock = hasFrench && isLxx && !exactlyAligned;
+  // Ossature des versets : union grec ∪ français, pour ne perdre aucun verset
+  // d'aucun côté (versets-seulement-grec ou versets-seulement-français du NT).
+  const verses = useMemo(() => {
+    if (useFrenchBlock || !hasFrench) return greekVerses;
+    const union = new Set(greekVerses);
+    for (const k of Object.keys(french!)) union.add(Number(k));
+    return [...union].sort((a, b) => a - b);
+  }, [useFrenchBlock, hasFrench, greekVerses, french]);
+
   // Sur mobile, « colonnes » retombe sur « versets » (même rendu) et n'est pas
   // proposé dans les contrôles.
   const effectiveTranslation =
@@ -549,6 +615,26 @@ export default function Reader({ text }: { text: Text }) {
         <div className="mt-5 max-w-2xl">
           <GreekText text={text} size="lg" scale={textScale} translit={mode} manuscript={manuscript} highlightWord={highlight} {...greekProps} />
         </div>
+      ) : useFrenchBlock ? (
+        // Versification divergente : on rend le grec verset par verset (texte
+        // primaire, complet) puis la traduction en bloc continu, sans apparier.
+        <div className="mt-5 max-w-2xl">
+          {verses.map((v) => (
+            <div key={v} className="border-b border-base-300/70 py-4 first:pt-0 last:border-0">
+              <GreekText
+                text={text}
+                size="lg"
+                scale={textScale}
+                translit={mode}
+                manuscript={manuscript}
+                verseOnly={v}
+                highlightWord={highlight}
+                {...greekProps}
+              />
+            </div>
+          ))}
+          <FrenchChapterBlock french={french!} credit={translationCredit} />
+        </div>
       ) : transMode === "verses" ? (
         <div className="mt-5 max-w-2xl">
           {verses.map((v) => (
@@ -563,15 +649,15 @@ export default function Reader({ text }: { text: Text }) {
                 highlightWord={highlight}
                 {...greekProps}
               />
-              <p className="mt-2 leading-relaxed text-base-content/85">
-                <span className="verse-num">{v}</span>
-                {french![v]}
-              </p>
+              {v in french! && (
+                <p className="mt-2 leading-relaxed text-base-content/85">
+                  <span className="verse-num">{v}</span>
+                  {french![v]}
+                </p>
+              )}
             </div>
           ))}
-          <p className="mt-3 text-xs text-base-content/70">
-            Traduction : Bible Crampon (néo-Crampon, domaine public).
-          </p>
+          <p className="mt-3 text-xs text-base-content/70">{translationCredit}</p>
         </div>
       ) : (
         // Côte à côte : grec | français, alignés par verset. Sous 640px, dégrade
@@ -593,14 +679,16 @@ export default function Reader({ text }: { text: Text }) {
                 />
               </div>
               <div className="trans-fr leading-relaxed text-base-content/85">
-                <span className="verse-num">{v}</span>
-                {french![v]}
+                {v in french! && (
+                  <>
+                    <span className="verse-num">{v}</span>
+                    {french![v]}
+                  </>
+                )}
               </div>
             </div>
           ))}
-          <p className="mt-3 text-xs text-base-content/70">
-            Traduction : Bible Crampon (néo-Crampon, domaine public).
-          </p>
+          <p className="mt-3 text-xs text-base-content/70">{translationCredit}</p>
         </div>
       )}
 

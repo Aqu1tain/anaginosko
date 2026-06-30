@@ -158,9 +158,28 @@ export async function ChapterScreen({
     if (!verseGreek.has(m.verse)) verseGreek.set(m.verse, []);
     verseGreek.get(m.verse)!.push(m.grec);
   }
-  const verses = [...verseGreek.entries()]
-    .sort((a, b) => a[0] - b[0])
-    .map(([v, words]) => ({ v, grec: words.join(" "), fr: text.francais?.[String(v)] ?? null }));
+  const greekVerseNums = [...verseGreek.keys()].sort((a, b) => a - b);
+  // Même garde que le lecteur : pour le NT (Crampon), les écarts sont additifs et
+  // l'appariement par numéro reste juste. Pour la LXX, Giguet (1872) renumérote
+  // (Is 8,23 = Is 9,1) : si les ensembles diffèrent, on rend le français en bloc
+  // à part plutôt que d'indexer de fausses paires verset par verset.
+  const frKeys = text.francais ? new Set(Object.keys(text.francais).map(Number)) : null;
+  const versesAligned =
+    corpus.id !== "lxx" ||
+    (!!frKeys && greekVerseNums.length === frKeys.size && greekVerseNums.every((v) => frKeys.has(v)));
+  const verses = greekVerseNums.map((v) => ({
+    v,
+    grec: verseGreek.get(v)!.join(" "),
+    fr: versesAligned ? (text.francais?.[String(v)] ?? null) : null,
+  }));
+  const frenchBlock =
+    !versesAligned && text.francais
+      ? Object.keys(text.francais)
+          .map(Number)
+          .sort((a, b) => a - b)
+          .map((v) => `${v} ${text.francais![String(v)]}`)
+          .join(" ")
+      : null;
 
   const nums = chapterNumbers(b);
   const idx = nums.indexOf(ch);
@@ -217,6 +236,7 @@ export async function ChapterScreen({
             {vs.fr ? <span lang="fr"> : {vs.fr}</span> : null}
           </p>
         ))}
+        {frenchBlock ? <p lang="fr">{frenchBlock}</p> : null}
       </section>
 
       <nav className="mt-8 flex max-w-2xl items-center justify-between gap-3">
