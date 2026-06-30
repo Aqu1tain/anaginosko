@@ -154,7 +154,7 @@ export default async function Home() {
       <Passages />
 
       <footer className="pt-10 text-center text-xs text-base-content/70">
-        Texte grec : SBLGNT (NT) et Rahlfs (LXX) · traduction : Crampon · définitions : Bailly.
+        Texte grec : SBLGNT (NT) et Rahlfs (LXX) · traduction : Crampon (NT) et Giguet (LXX) · définitions : Bailly.
         <br />
         <Link href="/mentions" className="link mt-1 inline-block">
           Mentions légales
