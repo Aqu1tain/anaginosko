@@ -2,13 +2,13 @@
 
 import { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
+import type { Role } from "../lib/api";
 
-function RoleBadge({ role }: { role: "admin" | "philologist" }) {
-  return (
-    <span className={`badge badge-sm ${role === "admin" ? "badge-primary" : "badge-accent"} badge-soft`}>
-      {role === "admin" ? "Administrateur" : "Philologue"}
-    </span>
-  );
+const ROLE_LABEL: Record<Role, string> = { admin: "Administrateur", philologist: "Philologue", reader: "Lecteur" };
+const ROLE_BADGE: Record<Role, string> = { admin: "badge-primary", philologist: "badge-accent", reader: "badge-ghost" };
+
+function RoleBadge({ role }: { role: Role }) {
+  return <span className={`badge badge-sm ${ROLE_BADGE[role]} badge-soft`}>{ROLE_LABEL[role]}</span>;
 }
 
 export default function LoginView() {

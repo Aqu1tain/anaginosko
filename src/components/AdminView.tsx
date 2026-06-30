@@ -65,7 +65,8 @@ export default function AdminView() {
 
   const reload = () => {
     const jobs: Promise<unknown>[] = [fetchMyAnnotations().then(setAnnos)];
-    if (isAdmin) jobs.push(fetchAdminStats().then(setStats));
+    // Stats non bloquantes : si l'API ne les autorise pas (rôle), on garde le reste.
+    if (isContributor) jobs.push(fetchAdminStats().then(setStats).catch(() => setStats(null)));
     Promise.all(jobs).catch(() => setError(true));
   };
 
@@ -91,10 +92,10 @@ export default function AdminView() {
     <div className="pb-10 pt-6">
       <h1 className="text-2xl font-bold">Tableau de bord</h1>
       <p className="mt-0.5 text-sm text-base-content/70">
-        {isAdmin ? "Fréquentation et modération des annotations." : "Gérez vos annotations."}
+        {isAdmin ? "Fréquentation et modération des annotations." : "Fréquentation et vos annotations."}
       </p>
 
-      {isAdmin && stats && <AdminAnalytics stats={stats} refLabel={locationLabel} />}
+      {isContributor && stats && <AdminAnalytics stats={stats} refLabel={locationLabel} />}
 
       <section className="mt-7">
         <h2 className="mb-2 text-sm font-semibold text-base-content/70">

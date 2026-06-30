@@ -3,7 +3,7 @@
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "/api";
 const TOKEN_KEY = "anaginosko:token";
 
-export type Role = "admin" | "philologist";
+export type Role = "admin" | "philologist" | "reader";
 export type AuthUser = { id: number; displayName: string; role: Role };
 
 export type Annotation = {
