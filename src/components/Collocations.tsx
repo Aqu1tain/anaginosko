@@ -63,7 +63,8 @@ export default function Collocations({ items, occ, corpus }: { items: Colloc[]; 
         Mots associés
       </div>
       <p className="mt-1 text-sm text-base-content/70">
-        Voisins qui partagent souvent un verset. Touchez un mot pour ses versets communs.
+        Voisins classés par affinité (la barre) ; «&nbsp;N&nbsp;versets&nbsp;» compte les versets partagés.
+        Touchez un mot pour les voir.
       </p>
 
       <div className="mt-3 grid gap-0.5">
@@ -85,7 +86,7 @@ export default function Collocations({ items, occ, corpus }: { items: Colloc[]; 
                     {c.n} versets
                   </span>
                 </div>
-                <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-base-200">
+                <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-base-200" title="Affinité (PMI)">
                   <div
                     className="h-full rounded-full bg-secondary"
                     style={{ width: `${Math.max((c.score / max) * 100, 4)}%` }}

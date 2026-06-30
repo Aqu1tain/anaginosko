@@ -16,8 +16,7 @@ export default function SupportBanner() {
     <div
       role="region"
       aria-label="Soutenir le projet"
-      className="card mt-4 border wide:mt-6"
-      style={{ borderColor: `${TIPEEE}66`, backgroundColor: `${TIPEEE}12` }}
+      className="card mt-4 border border-base-300 bg-base-200 wide:mt-6"
     >
       <div className="card-body relative gap-2 p-4 pr-11 wide:flex-row wide:items-center wide:gap-6 wide:pr-11">
         <button
@@ -32,14 +31,12 @@ export default function SupportBanner() {
         </button>
 
         <div className="min-w-0 wide:flex-1">
-          <h3 className="text-base font-semibold" style={{ color: "var(--tipeee-text)" }}>
-            Un projet libre et indépendant
-          </h3>
+          <h3 className="text-base font-semibold">Un projet libre et indépendant</h3>
           <p className="mt-1 text-sm leading-relaxed text-base-content/85">
-            Anaginosko est conçu par deux passionnés pour rendre le grec du Nouveau
-            Testament accessible à tous. Notre but : rester gratuit, sans publicité, et
-            devenir la meilleure concordance grecque en français. Votre soutien finance
-            le développement et enrichit les annotations.
+            Anaginosko est conçu par deux passionnés pour rendre le grec de la Bible
+            accessible à tous. Notre but : rester gratuit, sans publicité, et devenir
+            la meilleure concordance grecque en français. Votre soutien finance le
+            développement et enrichit les annotations.
           </p>
         </div>
 

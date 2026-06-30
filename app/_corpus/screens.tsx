@@ -121,12 +121,12 @@ export async function BookScreen({ corpus, params }: { corpus: CorpusConfig; par
       <p className="mt-1 mb-3 text-sm text-base-content/70">
         {b.chapters} chapitre{b.chapters > 1 ? "s" : ""}
       </p>
-      <div className="grid grid-cols-5 gap-2 sm:grid-cols-8">
+      <div className="grid grid-cols-6 gap-1.5 sm:grid-cols-10 wide:grid-cols-12">
         {chapterNumbers(b).map((ch) => (
           <Link
             key={ch}
             href={`${corpus.routePrefix}/${book}/${ch}`}
-            className="grid aspect-square place-items-center rounded-box border border-base-300 bg-base-100 text-lg font-medium transition-colors hover:border-primary/40 hover:bg-base-200"
+            className="grid h-11 place-items-center rounded-lg border border-base-300 bg-base-100 text-base font-medium transition-colors hover:border-primary/40 hover:bg-base-200"
           >
             {ch === 0 ? "Pr." : ch}
           </Link>

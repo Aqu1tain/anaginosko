@@ -151,7 +151,7 @@ export default function AdminView() {
               spellCheck={false}
             />
             <span className="text-xs text-base-content/70">
-              {filtered.length}{query ? ` / ${annos.length}` : ""}
+              {filtered.length}{query ? ` / ${annos.length}` : ""} annotation{filtered.length > 1 ? "s" : ""}
             </span>
           </div>
           <div className="mt-3 grid grid-cols-1 gap-2">

@@ -240,7 +240,7 @@ export default function LemmaDetail({
       />
       <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
         <h1 className="font-greek text-3xl">{entry.lemma}</h1>
-        <span className="text-sm text-base-content/70">{entry.translitR}</span>
+        <span className="text-sm text-base-content/70">restituée&nbsp;: {entry.translitR}</span>
         <span className="text-xs text-base-content/70">érasmien&nbsp;: {entry.translit}</span>
         <span className="text-sm text-base-content/70">· {entry.nature}</span>
       </div>
