@@ -55,7 +55,10 @@ function targetFromAnnotation(a: Annotation): AnnotationTarget {
 export default function AdminView() {
   const { user, ready } = useAuth();
   const isAdmin = user?.role === "admin";
-  const isContributor = isAdmin || user?.role === "philologist";
+  const isReader = user?.role === "reader";
+  const canEdit = isAdmin || user?.role === "philologist"; // écrire/supprimer (pas reader)
+  const seesAll = isAdmin || isReader; // voit toutes les annotations
+  const canViewDashboard = canEdit || isReader; // admin, philologue, reader
 
   const [stats, setStats] = useState<AdminStats | null>(null);
   const [annos, setAnnos] = useState<Annotation[]>([]);
@@ -66,17 +69,17 @@ export default function AdminView() {
   const reload = () => {
     const jobs: Promise<unknown>[] = [fetchMyAnnotations().then(setAnnos)];
     // Stats non bloquantes : si l'API ne les autorise pas (rôle), on garde le reste.
-    if (isContributor) jobs.push(fetchAdminStats().then(setStats).catch(() => setStats(null)));
+    if (canViewDashboard) jobs.push(fetchAdminStats().then(setStats).catch(() => setStats(null)));
     Promise.all(jobs).catch(() => setError(true));
   };
 
   useEffect(() => {
-    if (isContributor) reload();
+    if (canViewDashboard) reload();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   if (!ready) return null;
-  if (!isContributor) {
+  if (!canViewDashboard) {
     return (
       <div className="py-20 text-center text-base-content/70">
         <p>Accès réservé aux contributeurs.</p>
@@ -92,14 +95,18 @@ export default function AdminView() {
     <div className="pb-10 pt-6">
       <h1 className="text-2xl font-bold">Tableau de bord</h1>
       <p className="mt-0.5 text-sm text-base-content/70">
-        {isAdmin ? "Fréquentation et modération des annotations." : "Fréquentation et vos annotations."}
+        {isAdmin
+          ? "Fréquentation et modération des annotations."
+          : isReader
+            ? "Fréquentation et annotations (lecture seule)."
+            : "Fréquentation et vos annotations."}
       </p>
 
-      {isContributor && stats && <AdminAnalytics stats={stats} refLabel={locationLabel} />}
+      {canViewDashboard && stats && <AdminAnalytics stats={stats} refLabel={locationLabel} />}
 
       <section className="mt-7">
         <h2 className="mb-2 text-sm font-semibold text-base-content/70">
-          {isAdmin ? "Annotations" : "Mes annotations"} · {annos.length}
+          {seesAll ? "Annotations" : "Mes annotations"} · {annos.length}
         </h2>
         <div className="grid grid-cols-1 gap-2">
           {annos.map((a) => (
@@ -135,19 +142,21 @@ export default function AdminView() {
                     </a>
                     <span>· {scopeLabel(a)}</span>
                     {a.createdAt && <span>· {formatDate(a.createdAt)}</span>}
-                    {isAdmin && a.author && (
+                    {seesAll && a.author && (
                       <span>· <span className="font-greek">{a.author.displayName}</span></span>
                     )}
                   </div>
                 </div>
-                <div className="flex shrink-0 flex-col items-end gap-1">
-                  <button onClick={() => setEditing(targetFromAnnotation(a))} className="btn btn-ghost btn-xs">
-                    Modifier
-                  </button>
-                  <button onClick={() => setPendingDelete(a)} className="btn btn-ghost btn-xs text-error">
-                    Supprimer
-                  </button>
-                </div>
+                {canEdit && (
+                  <div className="flex shrink-0 flex-col items-end gap-1">
+                    <button onClick={() => setEditing(targetFromAnnotation(a))} className="btn btn-ghost btn-xs">
+                      Modifier
+                    </button>
+                    <button onClick={() => setPendingDelete(a)} className="btn btn-ghost btn-xs text-error">
+                      Supprimer
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           ))}
