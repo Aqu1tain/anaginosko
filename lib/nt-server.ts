@@ -50,6 +50,15 @@ export const loadCollocationsFs = (oid: number, c?: CorpusConfig): Promise<Collo
 
 type FrenchByChapter = Record<string, Record<string, string>>;
 
+// Chapitres dont la traduction n'est pas appariable verset par verset (manifeste
+// `_align` écrit par realign-lxx-french). `undefined` = pas de manifeste → le
+// lecteur retombe sur son heuristique.
+function blockedChapter(french: FrenchByChapter | null, chapter: number): boolean | undefined {
+  const align = (french as { _align?: { blocks?: number[] } } | null)?._align;
+  if (!align) return undefined;
+  return (align.blocks ?? []).includes(chapter);
+}
+
 export async function loadChapterFs(book: string, chapter: number, c?: CorpusConfig): Promise<Text> {
   const [data, french] = await Promise.all([
     readJson<{ reference: string; mots: Text["mots"] }>(`${book}/${chapter}.json`, c),
@@ -62,6 +71,7 @@ export async function loadChapterFs(book: string, chapter: number, c?: CorpusCon
     reference: data.reference,
     grec: "",
     francais: french?.[chapter] ?? null,
+    frenchBlock: blockedChapter(french, chapter),
     translitErasmien: null,
     translitRestituee: null,
     mots: data.mots,

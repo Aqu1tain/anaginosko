@@ -231,10 +231,18 @@ export async function loadChapter(book: string, chapter: number, c?: CorpusConfi
     reference: data.reference,
     grec: "",
     francais: french?.[chapter] ?? null,
+    frenchBlock: blockedChapter(french, chapter),
     translitErasmien: null,
     translitRestituee: null,
     mots: data.mots,
   };
   chapterCache.set(key, text);
   return text;
+}
+
+// Cf. lib/nt-server : `undefined` quand le manifeste `_align` est absent.
+function blockedChapter(french: FrenchByChapter | null, chapter: number): boolean | undefined {
+  const align = (french as { _align?: { blocks?: number[] } } | null)?._align;
+  if (!align) return undefined;
+  return (align.blocks ?? []).includes(chapter);
 }

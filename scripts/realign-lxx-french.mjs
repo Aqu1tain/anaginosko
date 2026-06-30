@@ -167,9 +167,19 @@ function processBook(id) {
     });
   }
 
+  // Manifeste d'alignement, co-localisé dans fr.json sous une clé réservée. Le
+  // lecteur s'y fie : chapitres « block » → bloc continu ; tous les autres
+  // (rekeyed / aligned-benign / already-aligned) → appariement par numéro, car
+  // le français y est désormais correctement clé sur le grec.
+  const blocks = audit
+    .filter((a) => a.status === "block")
+    .map((a) => a.ch)
+    .sort((a, b) => a - b);
+  newFr._align = { blocks, tool: "realign-lxx-french" };
+
   if (APPLY) fs.writeFileSync(frPath, JSON.stringify(newFr));
   audit.sort((a, b) => a.ch - b.ch);
-  return { id, audit };
+  return { id, audit, blocks };
 }
 
 fs.mkdirSync(AUDIT_DIR, { recursive: true });

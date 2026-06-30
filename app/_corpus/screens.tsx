@@ -159,14 +159,14 @@ export async function ChapterScreen({
     verseGreek.get(m.verse)!.push(m.grec);
   }
   const greekVerseNums = [...verseGreek.keys()].sort((a, b) => a - b);
-  // Même garde que le lecteur : pour le NT (Crampon), les écarts sont additifs et
-  // l'appariement par numéro reste juste. Pour la LXX, Giguet (1872) renumérote
-  // (Is 8,23 = Is 9,1) : si les ensembles diffèrent, on rend le français en bloc
-  // à part plutôt que d'indexer de fausses paires verset par verset.
+  // Même garde que le lecteur : le manifeste `_align` fait foi (chapitres réordonnés
+  // ou à additions → bloc) ; sinon heuristique (LXX + ensembles non identiques).
   const frKeys = text.francais ? new Set(Object.keys(text.francais).map(Number)) : null;
-  const versesAligned =
-    corpus.id !== "lxx" ||
-    (!!frKeys && greekVerseNums.length === frKeys.size && greekVerseNums.every((v) => frKeys.has(v)));
+  const blocked =
+    text.frenchBlock ??
+    (corpus.id === "lxx" &&
+      !(!!frKeys && greekVerseNums.length === frKeys.size && greekVerseNums.every((v) => frKeys.has(v))));
+  const versesAligned = !blocked;
   const verses = greekVerseNums.map((v) => ({
     v,
     grec: verseGreek.get(v)!.join(" "),

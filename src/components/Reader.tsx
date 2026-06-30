@@ -402,7 +402,11 @@ export default function Reader({ text }: { text: Text }) {
     const fr = new Set(Object.keys(french!).map(Number));
     return greekVerses.length === fr.size && greekVerses.every((v) => fr.has(v));
   }, [hasFrench, french, greekVerses]);
-  const useFrenchBlock = hasFrench && isLxx && !exactlyAligned;
+  // Décision d'affichage : le manifeste `_align` (précalculé par realign-lxx-french)
+  // fait foi ; sans manifeste, on retombe sur l'heuristique (LXX + ensembles de
+  // versets non identiques).
+  const useFrenchBlock =
+    hasFrench && (text.frenchBlock ?? (isLxx && !exactlyAligned));
   // Ossature des versets : union grec ∪ français, pour ne perdre aucun verset
   // d'aucun côté (versets-seulement-grec ou versets-seulement-français du NT).
   const verses = useMemo(() => {
