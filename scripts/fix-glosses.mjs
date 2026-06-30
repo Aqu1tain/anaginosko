@@ -32,7 +32,7 @@ async function repair(file, pretty) {
   // Politique sûre : on ne remplace QUE si une entrée porte exactement le lemme
   // (corrige les vrais homonymes : ὁ → la lettre Ο, etc.). Sinon on n'y touche
   // pas : une « suspecte » sans vedette exacte est souvent une glose correcte
-  // sous une autre forme — déponent (πορεύομαι → vedette πορεύω), orthographe
+  // sous une autre forme - déponent (πορεύομαι → vedette πορεύω), orthographe
   // koinè (ἐπιγινώσκω vs ἐπιγιγνώσκω), comparatif… qu'il ne faut pas détruire.
   let fixed = 0;
   let untouched = 0;

@@ -10,12 +10,12 @@ export type SubGroup = { id: string; title: string; short: string; books: string
 export type EditorialGroup = { title: string; ids: string[] };
 
 export type CorpusConfig = {
-  id: string; // "nt" | "lxx" — clé du registre
-  routePrefix: string; // "/nt" | "/lxx" — base des routes de lecture
-  dataPrefix: string; // "nt" | "lxx" — sous-dossier public + chemin fetch client + chemin nginx
-  dataDirEnv: string; // "NT_DATA_DIR" | "LXX_DATA_DIR" — override fs serveur
-  refPrefix: string; // "nt" | "lxx" — ref d'annotation `${refPrefix}-${book}-${ch}`
-  textCollection: string; // "nt" | "lxx" — valeur Text.collection
+  id: string; // "nt" | "lxx" - clé du registre
+  routePrefix: string; // "/nt" | "/lxx" - base des routes de lecture
+  dataPrefix: string; // "nt" | "lxx" - sous-dossier public + chemin fetch client + chemin nginx
+  dataDirEnv: string; // "NT_DATA_DIR" | "LXX_DATA_DIR" - override fs serveur
+  refPrefix: string; // "nt" | "lxx" - ref d'annotation `${refPrefix}-${book}-${ch}`
+  textCollection: string; // "nt" | "lxx" - valeur Text.collection
   concordanceBase: string; // "/concordance" | "/lxx/concordance"
   label: string; // "Nouveau Testament" | "Septante"
   genitive: string; // "du Nouveau Testament" | "de la Septante" (libellés SEO)

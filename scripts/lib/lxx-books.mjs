@@ -1,8 +1,8 @@
 // Table canonique des livres de la Septante (Rahlfs 1935). Sur ce site, le
 // classement canonique EST le produit. Trois tiers explicites :
-//   proto   — protocanoniques (canon hébreu, communs à tous)
-//   deutero — deutérocanoniques (canon catholique)
-//   extra   — surnuméraires (présents dans la LXX, hors canon catholique)
+//   proto   - protocanoniques (canon hébreu, communs à tous)
+//   deutero - deutérocanoniques (canon catholique)
+//   extra   - surnuméraires (présents dans la LXX, hors canon catholique)
 // Chaque livre source un code du dépôt eliranwong/LXX-Rahlfs-1935. Certains sont
 // scindés par plage de chapitres (Esdras B', Psaume 151) et renumérotés. Les
 // recensions non retenues (JoshA fragmentaire, JudgA, TobS, Dan/Bel/Sus ancien
@@ -37,7 +37,7 @@ export const BOOKS = [
   { id: "ecc", name: "Ecclésiaste", usfm: "ECC", canon: "proto", code: "Qoh", note: "Qohéleth" },
   { id: "sng", name: "Cantique des cantiques", usfm: "SNG", canon: "proto", code: "Cant" },
 
-  // --- Livres prophétiques (proto) — ordre LXX : les Douze, puis les grands ---
+  // --- Livres prophétiques (proto) - ordre LXX : les Douze, puis les grands ---
   { id: "hos", name: "Osée", usfm: "HOS", canon: "proto", code: "Hos" },
   { id: "amo", name: "Amos", usfm: "AMO", canon: "proto", code: "Amos" },
   { id: "mic", name: "Michée", usfm: "MIC", canon: "proto", code: "Mic" },

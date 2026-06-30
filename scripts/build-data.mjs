@@ -143,7 +143,7 @@ Le texte grec est rendu côté serveur : chaque page est lisible sans JavaScript
 - Nouveau Testament (index) : ${SITE}/nt
 - Un chapitre : ${SITE}/nt/{livre}/{chapitre} (ex. ${SITE}/nt/jn/1)
 - Données structurées d'un chapitre (JSON) : ${SITE}/nt/{livre}/{chapitre}.json
-  — mots avec grec, translittération érasmienne et restituée, verset, lemme, nature
+  - mots avec grec, translittération érasmienne et restituée, verset, lemme, nature
 - Concordance d'un lemme : ${SITE}/concordance/{lemme}
 - Alphabet grec : ${SITE}/alphabet
 - Corpus des passages choisis (HTML, sans JS) : ${SITE}/corpus.html

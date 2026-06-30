@@ -1,4 +1,4 @@
-# Préproduction — next.anaginosko.fr
+# Préproduction - next.anaginosko.fr
 
 Préprod auto-déployée à chaque push sur `next` (workflow `.github/workflows/deploy-preprod.yml`).
 Même VPS que la prod, **strictement isolée** :
@@ -19,7 +19,7 @@ Même VPS que la prod, **strictement isolée** :
 ## Prérequis (une seule fois)
 
 1. **DNS** : `next.anaginosko.fr` A/AAAA → IP du VPS. *(fait)*
-2. **Secrets GitHub** : `VPS_HOST`, `VPS_USER`, `VPS_SSH_KEY` — déjà présents (mêmes
+2. **Secrets GitHub** : `VPS_HOST`, `VPS_USER`, `VPS_SSH_KEY` - déjà présents (mêmes
    que le déploiement prod).
 3. **Sudo de l'utilisateur de déploiement** : le provisioning installe un service,
    une config nginx, un certificat et un conteneur Docker. Sur le VPS, accorder le

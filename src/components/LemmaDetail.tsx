@@ -250,7 +250,7 @@ export default function LemmaDetail({
 
       <BiblionNote lemma={entry.lemma} />
 
-      {/* Desktop : on éclate la pile. En haut, deux colonnes d'analyse — sens +
+      {/* Desktop : on éclate la pile. En haut, deux colonnes d'analyse - sens +
           répartition à gauche, voisins à droite. En dessous, les occurrences en
           pleine largeur, réparties en colonnes. Quand la grille retombe en une
           colonne (mobile), l'ordre source reste Définition → Répartition →

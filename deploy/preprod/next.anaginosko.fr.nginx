@@ -1,4 +1,4 @@
-# Préproduction next.anaginosko.fr — HTTP seul ; certbot --nginx ajoute le 443 et
+# Préproduction next.anaginosko.fr - HTTP seul ; certbot --nginx ajoute le 443 et
 # la redirection au premier provisioning. Données NT/LXX propres à la préprod
 # (/var/www/anaginosko-next, issues de la branche next) ; audio partagé avec la
 # prod (/var/www/anaginosko) ; app Next 3101 et API 3901 isolées (DB copiée de la

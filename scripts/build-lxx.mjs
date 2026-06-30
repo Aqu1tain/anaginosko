@@ -49,7 +49,7 @@ function parseLabel(label) {
 
 console.log("Lecture des CSV alignés…");
 // NFC : le dépôt accentue à l'oxia (U+1F79…) ; NFC ramène à la forme tonos
-// (U+03CC…) du NT — concordance, gloses Bailly et recoupement inter-corpus.
+// (U+03CC…) du NT - concordance, gloses Bailly et recoupement inter-corpus.
 const grecs = readCol(F_TEXT).map((s) => s.normalize("NFC"));
 const lemmes = readCol(F_LEX).map((s) => s.normalize("NFC"));
 const morphs = readCol(F_MORPH);
@@ -151,4 +151,4 @@ writeFileSync(resolve(outDir, "lemmas.json"), JSON.stringify(lemmaIndex));
 const skipTotal = [...skipped.values()].reduce((a, b) => a + b, 0);
 console.log(`\n\n${manifest.length} livres, ${mapped} mots, ${lemmaIndex.length} lemmes distincts.`);
 console.log(`Couverture morpho : ${nullMorph} mots fléchis sans analyse, ${autre} POS « Autre ».`);
-console.log(`Ignorés (recensions non retenues) : ${skipTotal} mots — ${[...skipped.entries()].map(([c, n]) => `${c}:${n}`).join(", ")}`);
+console.log(`Ignorés (recensions non retenues) : ${skipTotal} mots - ${[...skipped.entries()].map(([c, n]) => `${c}:${n}`).join(", ")}`);

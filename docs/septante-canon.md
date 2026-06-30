@@ -22,10 +22,10 @@ note fait foi pour `scripts/lib/lxx-books.mjs` (build) et `src/data/lxx.ts`
 
 Chaque livre porte un champ `canon`, affiché en groupes explicites :
 
-1. **`proto` — protocanoniques** (39) : le canon hébreu, communs à tous.
-2. **`deutero` — deutérocanoniques** (10), marqués « canon catholique » : reçus comme
+1. **`proto` - protocanoniques** (39) : le canon hébreu, communs à tous.
+2. **`deutero` - deutérocanoniques** (10), marqués « canon catholique » : reçus comme
    Écriture par l'Église catholique.
-3. **`extra` — surnuméraires** (6), marqués « hors canon » : présents dans la LXX (et
+3. **`extra` - surnuméraires** (6), marqués « hors canon » : présents dans la LXX (et
    parfois la tradition orthodoxe), non reçus comme Écriture par l'Église catholique.
 
 ## Désambiguïsation d'Esdras (traitée comme un point de doctrine)
@@ -69,7 +69,7 @@ Les recensions exclues sont documentées ici et pourront faire l'objet d'un modu
   livre `ps151` (extra) ; `psa` (Psaumes, proto) ne garde que 1–150.
 - **Prologue du Siracide** : traité comme chapitre **0** de `sir` (référence
   « Siracide, prologue »).
-- **Livres mono-chapitre** : Abdias, Lettre de Jérémie, Suzanne, Bel — leurs versets
+- **Livres mono-chapitre** : Abdias, Lettre de Jérémie, Suzanne, Bel - leurs versets
   sont sous le chapitre 1 (pas de « ch:vs » dans la source).
 - **Proverbes** : numérotation grecque non contiguë (24 → 30, les ch. 25–29 manquent).
   Les chapitres réels sont listés dans `chapterList` (books.json) ; la navigation et
@@ -87,5 +87,5 @@ Les recensions exclues sont documentées ici et pourront faire l'objet d'un modu
 ## Ordre d'affichage
 
 Quatre groupes protocanoniques par genre (Pentateuque, Historiques, Poétiques et
-sapientiaux, Prophétiques — les Douze avant les grands, ordre LXX), puis le tier
+sapientiaux, Prophétiques - les Douze avant les grands, ordre LXX), puis le tier
 deutérocanonique, puis le tier surnuméraire.

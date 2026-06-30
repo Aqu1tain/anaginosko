@@ -214,7 +214,7 @@ export async function ChapterScreen({
             <span lang="grc">
               {vs.v} {vs.grec}
             </span>
-            {vs.fr ? <span lang="fr"> — {vs.fr}</span> : null}
+            {vs.fr ? <span lang="fr"> : {vs.fr}</span> : null}
           </p>
         ))}
       </section>

@@ -99,7 +99,7 @@ export default async function Home() {
   const lxxSub = corpusSubtitle(lxxBooks);
   return (
     <div>
-      {/* Desktop : héros en deux temps — titre + intro + accès NT à gauche, image
+      {/* Desktop : héros en deux temps - titre + intro + accès NT à gauche, image
           cadrée à droite. */}
       <section className="hidden pt-4 wide:grid wide:grid-cols-2 wide:items-stretch wide:gap-8">
         <div className="flex flex-col justify-center gap-5">
@@ -107,7 +107,7 @@ export default async function Home() {
           <p className="max-w-prose text-base leading-relaxed text-base-content/70">{INTRO}</p>
           <div className="flex max-w-md flex-col gap-2.5">
             <CorpusCta href="/nt" title="Nouveau Testament complet" subtitle={ntSub} primary />
-            <CorpusCta href="/lxx" title="Septante — Ancien Testament grec" subtitle={lxxSub} />
+            <CorpusCta href="/lxx" title="Septante, l’Ancien Testament grec" subtitle={lxxSub} />
           </div>
         </div>
         <div className="relative min-h-[22rem] overflow-hidden rounded-box">
@@ -142,7 +142,7 @@ export default async function Home() {
       {/* Mobile : les accès aux corpus viennent juste après l'intro (dans le héros sur desktop). */}
       <div className="mt-4 grid gap-2.5 wide:hidden">
         <CorpusCta href="/nt" title="Nouveau Testament complet" subtitle={ntSub} primary />
-        <CorpusCta href="/lxx" title="Septante — Ancien Testament grec" subtitle={lxxSub} />
+        <CorpusCta href="/lxx" title="Septante, l’Ancien Testament grec" subtitle={lxxSub} />
       </div>
 
       {/* Reprise (pastille compacte) + soutien (bandeau pleine largeur). Aucun des
