@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 import {
   fetchAdminStats,
@@ -52,27 +52,47 @@ function targetFromAnnotation(a: Annotation): AnnotationTarget {
 export default function AdminView() {
   const { user, ready } = useAuth();
   const isAdmin = user?.role === "admin";
-  const isContributor = isAdmin || user?.role === "philologist";
+  const isReader = user?.role === "reader";
+  const canEdit = isAdmin || user?.role === "philologist"; // écrire/supprimer (pas reader)
+  const seesAll = isAdmin || isReader; // voit toutes les annotations
+  const canViewDashboard = canEdit || isReader; // admin, philologue, reader
 
   const [stats, setStats] = useState<AdminStats | null>(null);
   const [annos, setAnnos] = useState<Annotation[]>([]);
   const [error, setError] = useState(false);
   const [editing, setEditing] = useState<AnnotationTarget | null>(null);
   const [pendingDelete, setPendingDelete] = useState<Annotation | null>(null);
+  const [tab, setTab] = useState<"annotations" | "analytics">("annotations");
+  const [query, setQuery] = useState("");
+
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return annos;
+    return annos.filter(
+      (a) =>
+        a.body.toLowerCase().includes(q) ||
+        (a.source ?? "").toLowerCase().includes(q) ||
+        locationLabel(a.ref).toLowerCase().includes(q) ||
+        (a.author?.displayName ?? "").toLowerCase().includes(q),
+    );
+  }, [annos, query]);
+
+  const annosTabLabel = seesAll ? "Annotations" : "Mes annotations";
 
   const reload = () => {
     const jobs: Promise<unknown>[] = [fetchMyAnnotations().then(setAnnos)];
-    if (isAdmin) jobs.push(fetchAdminStats().then(setStats));
+    // Stats non bloquantes : si l'API ne les autorise pas (rôle), on garde le reste.
+    if (canViewDashboard) jobs.push(fetchAdminStats().then(setStats).catch(() => setStats(null)));
     Promise.all(jobs).catch(() => setError(true));
   };
 
   useEffect(() => {
-    if (isContributor) reload();
+    if (canViewDashboard) reload();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   if (!ready) return null;
-  if (!isContributor) {
+  if (!canViewDashboard) {
     return (
       <div className="py-20 text-center text-base-content/70">
         <p>Accès réservé aux contributeurs.</p>
@@ -87,71 +107,110 @@ export default function AdminView() {
   return (
     <div className="pb-10 pt-6">
       <h1 className="text-2xl font-bold">Tableau de bord</h1>
-      <p className="mt-0.5 text-sm text-base-content/70">
-        {isAdmin ? "Fréquentation et modération des annotations." : "Gérez vos annotations."}
-      </p>
 
-      {isAdmin && stats && <AdminAnalytics stats={stats} refLabel={locationLabel} />}
+      <div role="tablist" className="tabs tabs-boxed mt-3 w-fit">
+        <button
+          role="tab"
+          className={`tab ${tab === "annotations" ? "tab-active" : ""}`}
+          onClick={() => setTab("annotations")}
+        >
+          {annosTabLabel}
+        </button>
+        <button
+          role="tab"
+          className={`tab ${tab === "analytics" ? "tab-active" : ""}`}
+          onClick={() => setTab("analytics")}
+        >
+          Fréquentation
+        </button>
+      </div>
 
-      <section className="mt-7">
-        <h2 className="mb-2 text-sm font-semibold text-base-content/70">
-          {isAdmin ? "Annotations" : "Mes annotations"} · {annos.length}
-        </h2>
-        <div className="grid grid-cols-1 gap-2">
-          {annos.map((a) => (
-            <div key={a.id} className="rounded-2xl border border-base-300 bg-base-100 p-3.5">
-              <div className="flex items-start justify-between gap-3">
-                <div className="min-w-0 break-words">
-                  <a
-                    href={refHref(a.ref, a.wordIndex)}
-                    className="block text-sm leading-relaxed [overflow-wrap:anywhere] hover:text-primary"
-                    title="Aller au texte"
-                  >
-                    {a.body}
-                  </a>
-                  {a.link ? (
+      {tab === "analytics" && (
+        <section className="mt-5">
+          {stats ? (
+            <AdminAnalytics stats={stats} refLabel={locationLabel} />
+          ) : (
+            <p className="text-sm text-base-content/70">Statistiques indisponibles.</p>
+          )}
+        </section>
+      )}
+
+      {tab === "annotations" && (
+        <section className="mt-5">
+          <div className="flex flex-wrap items-center gap-2">
+            <input
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Chercher : texte, source, livre, auteur…"
+              className="input input-bordered input-sm w-full max-w-md"
+              autoComplete="off"
+              spellCheck={false}
+            />
+            <span className="text-xs text-base-content/70">
+              {filtered.length}{query ? ` / ${annos.length}` : ""}
+            </span>
+          </div>
+          <div className="mt-3 grid grid-cols-1 gap-2">
+            {filtered.map((a) => (
+              <div key={a.id} className="rounded-2xl border border-base-300 bg-base-100 p-3.5">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0 break-words">
                     <a
-                      href={a.link}
-                      target="_blank"
-                      rel="noreferrer noopener"
-                      className="mt-1.5 inline-flex max-w-full items-center gap-1 text-xs font-medium text-primary hover:underline"
+                      href={refHref(a.ref, a.wordIndex)}
+                      className="block text-sm leading-relaxed [overflow-wrap:anywhere] hover:text-primary"
+                      title="Aller au texte"
                     >
-                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="shrink-0">
-                        <path d="M10 14L20 4M20 4h-6M20 4v6" />
-                        <path d="M19 14v4a2 2 0 01-2 2H6a2 2 0 01-2-2V7a2 2 0 012-2h4" />
-                      </svg>
-                      <span className="min-w-0 truncate">{a.source}</span>
+                      {a.body}
                     </a>
-                  ) : (
-                    <div className="mt-1 text-xs italic text-base-content/70 [overflow-wrap:anywhere]">{a.source}</div>
-                  )}
-                  <div className="mt-1.5 flex flex-wrap items-center gap-x-2 text-xs text-base-content/70">
-                    <a href={refHref(a.ref, a.wordIndex)} className="font-medium text-primary hover:underline">
-                      {locationLabel(a.ref)}{a.verse != null ? `, v.${a.verse}` : ""} →
-                    </a>
-                    <span>· {scopeLabel(a)}</span>
-                    {a.createdAt && <span>· {formatDate(a.createdAt)}</span>}
-                    {isAdmin && a.author && (
-                      <span>· <span className="font-greek">{a.author.displayName}</span></span>
+                    {a.link ? (
+                      <a
+                        href={a.link}
+                        target="_blank"
+                        rel="noreferrer noopener"
+                        className="mt-1.5 inline-flex max-w-full items-center gap-1 text-xs font-medium text-primary hover:underline"
+                      >
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="shrink-0">
+                          <path d="M10 14L20 4M20 4h-6M20 4v6" />
+                          <path d="M19 14v4a2 2 0 01-2 2H6a2 2 0 01-2-2V7a2 2 0 012-2h4" />
+                        </svg>
+                        <span className="min-w-0 truncate">{a.source}</span>
+                      </a>
+                    ) : (
+                      <div className="mt-1 text-xs italic text-base-content/70 [overflow-wrap:anywhere]">{a.source}</div>
                     )}
+                    <div className="mt-1.5 flex flex-wrap items-center gap-x-2 text-xs text-base-content/70">
+                      <a href={refHref(a.ref, a.wordIndex)} className="font-medium text-primary hover:underline">
+                        {locationLabel(a.ref)}{a.verse != null ? `, v.${a.verse}` : ""} →
+                      </a>
+                      <span>· {scopeLabel(a)}</span>
+                      {a.createdAt && <span>· {formatDate(a.createdAt)}</span>}
+                      {seesAll && a.author && (
+                        <span>· <span className="font-greek">{a.author.displayName}</span></span>
+                      )}
+                    </div>
                   </div>
-                </div>
-                <div className="flex shrink-0 flex-col items-end gap-1">
-                  <button onClick={() => setEditing(targetFromAnnotation(a))} className="btn btn-ghost btn-xs">
-                    Modifier
-                  </button>
-                  <button onClick={() => setPendingDelete(a)} className="btn btn-ghost btn-xs text-error">
-                    Supprimer
-                  </button>
+                  {canEdit && (
+                    <div className="flex shrink-0 flex-col items-end gap-1">
+                      <button onClick={() => setEditing(targetFromAnnotation(a))} className="btn btn-ghost btn-xs">
+                        Modifier
+                      </button>
+                      <button onClick={() => setPendingDelete(a)} className="btn btn-ghost btn-xs text-error">
+                        Supprimer
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
-            </div>
-          ))}
-          {annos.length === 0 && (
-            <p className="text-sm text-base-content/70">Aucune annotation pour l’instant.</p>
-          )}
-        </div>
-      </section>
+            ))}
+            {filtered.length === 0 && (
+              <p className="text-sm text-base-content/70">
+                {query ? "Aucune annotation ne correspond." : "Aucune annotation pour l’instant."}
+              </p>
+            )}
+          </div>
+        </section>
+      )}
 
       {editing && (
         <AnnotationEditor
