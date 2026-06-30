@@ -15,8 +15,8 @@ const API = "https://fr.wikisource.org/w/api.php";
 const BASE = "Traduction de la Septante et du Nouveau Testament/";
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-// Page wikisource -> id de notre corpus. Daniel inclut Suzanne (ch.13) et Bel
-// (ch.14) chez Giguet : traités à part (split:true) vers sus/bel.
+// Page wikisource -> id de notre corpus. Chez Giguet, Suzanne et Bel sont des
+// pages séparées (mono-chapitre) : on les rabat sur le chapitre 1 (cf. SINGLE).
 const BOOKS = [
   ["Genèse", "gen"], ["Exode", "exo"], ["Lévitique", "lev"], ["Nombres", "num"], ["Deutéronome", "deu"],
   ["Josué", "jos"], ["Juges", "jdg"], ["Ruth", "rut"], ["I Samuel", "1sa"], ["II Samuel", "2sa"],
@@ -26,9 +26,14 @@ const BOOKS = [
   ["Osée", "hos"], ["Amos", "amo"], ["Michée", "mic"], ["Joel", "jol"], ["Abdias", "oba"], ["Jonas", "jon"],
   ["Nahum", "nam"], ["Habacuc", "hab"], ["Sophonie", "zep"], ["Aggée", "hag"], ["Zacharie", "zec"], ["Malachie", "mal"],
   ["Isaïe", "isa"], ["Jérémie", "jer"], ["Lamentations", "lam"], ["Ezéchiel", "ezk"], ["Daniel", "dan"],
+  ["Suzanne", "sus"], ["Bel et le dragon", "bel"],
   ["Tobit", "tob"], ["Judith", "jdt"], ["I Machabées", "1ma"], ["II Machabées", "2ma"],
   ["Sagesse", "wis"], ["Ecclésiastique", "sir"], ["Baruch", "bar"], ["Lettre de Jérémie", "lje"],
 ];
+
+// Livres mono-chapitre dont la page Giguet peut porter un en-tête « CHAPITRE XIII »
+// (Suzanne = Daniel 13, Bel = Daniel 14) : on aplatit tous les versets sur le ch.1.
+const SINGLE = new Set(["sus", "bel"]);
 
 const ROMAN = { I: 1, V: 5, X: 10, L: 50, C: 100, D: 500, M: 1000 };
 function romanToInt(s) {
@@ -147,13 +152,11 @@ for (const [page, id] of todo) {
     const parsed = new Map();
     for (const [ch, body] of chapters) parsed.set(ch, parseVerses(body));
 
-    if (id === "dan") {
-      // Giguet inclut Suzanne (13) et Bel (14) dans Daniel -> livres séparés.
-      for (const [ch, target] of [[13, "sus"], [14, "bel"]]) {
-        if (parsed.has(ch)) writeFrench(target, new Map([[1, parsed.get(ch)]]));
-      }
-      const danOnly = new Map([...parsed].filter(([ch]) => ch <= 12));
-      writeFrench("dan", danOnly);
+    if (SINGLE.has(id)) {
+      // Page mono-chapitre (Suzanne/Bel) : aplatir tous les versets sur le ch.1.
+      const verses = {};
+      for (const v of parsed.values()) Object.assign(verses, v);
+      writeFrench(id, new Map([[1, verses]]));
     } else {
       writeFrench(id, parsed);
     }
