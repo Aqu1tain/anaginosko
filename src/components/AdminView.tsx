@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 import {
   fetchAdminStats,
@@ -65,6 +65,22 @@ export default function AdminView() {
   const [error, setError] = useState(false);
   const [editing, setEditing] = useState<AnnotationTarget | null>(null);
   const [pendingDelete, setPendingDelete] = useState<Annotation | null>(null);
+  const [tab, setTab] = useState<"annotations" | "analytics">("annotations");
+  const [query, setQuery] = useState("");
+
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return annos;
+    return annos.filter(
+      (a) =>
+        a.body.toLowerCase().includes(q) ||
+        (a.source ?? "").toLowerCase().includes(q) ||
+        locationLabel(a.ref).toLowerCase().includes(q) ||
+        (a.author?.displayName ?? "").toLowerCase().includes(q),
+    );
+  }, [annos, query]);
+
+  const annosTabLabel = seesAll ? "Annotations" : "Mes annotations";
 
   const reload = () => {
     const jobs: Promise<unknown>[] = [fetchMyAnnotations().then(setAnnos)];
@@ -94,23 +110,53 @@ export default function AdminView() {
   return (
     <div className="pb-10 pt-6">
       <h1 className="text-2xl font-bold">Tableau de bord</h1>
-      <p className="mt-0.5 text-sm text-base-content/70">
-        {isAdmin
-          ? "Fréquentation et modération des annotations."
-          : isReader
-            ? "Fréquentation et annotations (lecture seule)."
-            : "Fréquentation et vos annotations."}
-      </p>
 
-      {canViewDashboard && stats && <AdminAnalytics stats={stats} refLabel={locationLabel} />}
+      <div role="tablist" className="tabs tabs-boxed mt-3 w-fit">
+        <button
+          role="tab"
+          className={`tab ${tab === "annotations" ? "tab-active" : ""}`}
+          onClick={() => setTab("annotations")}
+        >
+          {annosTabLabel}
+        </button>
+        <button
+          role="tab"
+          className={`tab ${tab === "analytics" ? "tab-active" : ""}`}
+          onClick={() => setTab("analytics")}
+        >
+          Fréquentation
+        </button>
+      </div>
 
-      <section className="mt-7">
-        <h2 className="mb-2 text-sm font-semibold text-base-content/70">
-          {seesAll ? "Annotations" : "Mes annotations"} · {annos.length}
-        </h2>
-        <div className="grid grid-cols-1 gap-2">
-          {annos.map((a) => (
-            <div key={a.id} className="rounded-2xl border border-base-300 bg-base-100 p-3.5">
+      {tab === "analytics" && (
+        <section className="mt-5">
+          {stats ? (
+            <AdminAnalytics stats={stats} refLabel={locationLabel} />
+          ) : (
+            <p className="text-sm text-base-content/70">Statistiques indisponibles.</p>
+          )}
+        </section>
+      )}
+
+      {tab === "annotations" && (
+        <section className="mt-5">
+          <div className="flex flex-wrap items-center gap-2">
+            <input
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Chercher : texte, source, livre, auteur…"
+              className="input input-bordered input-sm w-full max-w-md"
+              autoComplete="off"
+              spellCheck={false}
+            />
+            <span className="text-xs text-base-content/70">
+              {filtered.length}{query ? ` / ${annos.length}` : ""}
+            </span>
+          </div>
+          <div className="mt-3 grid grid-cols-1 gap-2">
+            {filtered.map((a) => (
+              <div key={a.id} className="rounded-2xl border border-base-300 bg-base-100 p-3.5">
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0 break-words">
                   <a
@@ -159,12 +205,15 @@ export default function AdminView() {
                 )}
               </div>
             </div>
-          ))}
-          {annos.length === 0 && (
-            <p className="text-sm text-base-content/70">Aucune annotation pour l’instant.</p>
-          )}
-        </div>
-      </section>
+            ))}
+            {filtered.length === 0 && (
+              <p className="text-sm text-base-content/70">
+                {query ? "Aucune annotation ne correspond." : "Aucune annotation pour l’instant."}
+              </p>
+            )}
+          </div>
+        </section>
+      )}
 
       {editing && (
         <AnnotationEditor

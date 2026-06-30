@@ -31,7 +31,7 @@ export default function LoginView() {
           </div>
           <div className="mt-6 grid gap-2">
             <a href="/admin" className="btn btn-primary">
-              {user.role === "admin" ? "Tableau de bord" : "Mes annotations"}
+              Tableau de bord
             </a>
             <a href="/" className="btn btn-outline border-base-300">
               Aller à la lecture
