@@ -1,5 +1,25 @@
 [
   {
+    "book": "jdt",
+    "ref": "16:8",
+    "kind": "reader-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "greek": "καὶ ἐδήσατο τὰς τρίχας αὐτῆς ἐν μίτρᾳ καὶ ἔλαβεν στολὴν λινῆν εἰς ἀπάτην αὐτοῦ",
+    "proposals": [
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "16",
+            "10"
+          ]
+        ]
+      }
+    ],
+    "reason": "Les deux lecteurs divergent : orphelin vs 16:10"
+  },
+  {
     "book": "sir",
     "ref": "33:28",
     "kind": "reader-divergence",
@@ -62,6 +82,1157 @@
     "grain": "verse",
     "priority": 1,
     "canon": "deutero"
+  },
+  {
+    "book": "sir",
+    "ref": "3:7",
+    "kind": "reader-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "greek": "καὶ ὡς δεσπόταις δουλεύσει ἐν τοῖς γεννήσασιν αὐτόν",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "3",
+            "7"
+          ]
+        ]
+      }
+    ],
+    "reason": "Les deux lecteurs divergent : 3:7 vs orphelin"
+  },
+  {
+    "book": "sir",
+    "ref": "8:3",
+    "kind": "reader-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "greek": "μὴ διαμάχου μετὰ ἀνθρώπου γλωσσώδους καὶ μὴ ἐπιστοιβάσῃς ἐπὶ τὸ πῦρ αὐτοῦ ξύλα",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "8",
+            "3"
+          ],
+          [
+            "8",
+            "4"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "8",
+            "4"
+          ]
+        ]
+      }
+    ],
+    "reason": "Les deux lecteurs divergent : 8:3+8:4 vs 8:4"
+  },
+  {
+    "book": "sir",
+    "ref": "23:5",
+    "kind": "reader-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "greek": "καὶ ἐπιθυμίαν ἀπόστρεψον ἀπ᾿ ἐμοῦ",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "23",
+            "5"
+          ]
+        ]
+      }
+    ],
+    "reason": "Les deux lecteurs divergent : 23:5 vs orphelin"
+  },
+  {
+    "book": "sir",
+    "ref": "25:16",
+    "kind": "reader-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "greek": "συνοικῆσαι λέοντι καὶ δράκοντι εὐδοκήσω ἢ συνοικῆσαι μετὰ γυναικὸς πονηρᾶς",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "25",
+            "21"
+          ]
+        ]
+      }
+    ],
+    "reason": "Les deux lecteurs divergent : 25:21 vs orphelin"
+  },
+  {
+    "book": "sir",
+    "ref": "39:23",
+    "kind": "reader-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "greek": "οὕτως ὀργὴν αὐτοῦ ἔθνη κληρονομήσει ὡς μετέστρεψεν ὕδατα εἰς ἅλμην",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "39",
+            "28"
+          ],
+          [
+            "39",
+            "29"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "39",
+            "29"
+          ]
+        ]
+      }
+    ],
+    "reason": "Les deux lecteurs divergent : 39:28+39:29 vs 39:29"
+  },
+  {
+    "book": "sir",
+    "ref": "39:24",
+    "kind": "reader-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "greek": "αἱ ὁδοὶ αὐτοῦ τοῖς ὁσίοις εὐθεῖαι οὕτως τοῖς ἀνόμοις προσκόμματα",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "39",
+            "29"
+          ]
+        ]
+      }
+    ],
+    "reason": "Les deux lecteurs divergent : 39:29 vs orphelin"
+  },
+  {
+    "book": "sir",
+    "ref": "41:4",
+    "kind": "reader-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "greek": "τοῦτο τὸ κρίμα παρὰ κυρίου πάσῃ σαρκί καὶ τί ἀπαναίνῃ ἐν εὐδοκίᾳ ὑψίστου εἴτε δέκα εἴτε ἑκατὸν εἴτε χίλια ἔτη οὐκ ἔστιν ἐν ᾅδου ἐλεγμὸς ζωῆς",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "41",
+            "5"
+          ],
+          [
+            "41",
+            "6"
+          ],
+          [
+            "41",
+            "7"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "41",
+            "6"
+          ],
+          [
+            "41",
+            "7"
+          ]
+        ]
+      }
+    ],
+    "reason": "Les deux lecteurs divergent : 41:5+41:6+41:7 vs 41:6+41:7"
+  },
+  {
+    "book": "sir",
+    "ref": "41:20",
+    "kind": "reader-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "greek": "ἀπὸ ἀληθείας θεοῦ καὶ διαθήκης καὶ ἀπὸ πήξεως ἀγκῶνος ἐπ᾿ ἄρτοις",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "41",
+            "24"
+          ]
+        ]
+      }
+    ],
+    "reason": "Les deux lecteurs divergent : 41:24 vs orphelin"
+  },
+  {
+    "book": "sir",
+    "ref": "41:21",
+    "kind": "reader-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "greek": "ἀπὸ σκορακισμοῦ λήμψεως καὶ δόσεως καὶ ἀπὸ ἀσπαζομένων περὶ σιωπῆς",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "41",
+            "24"
+          ],
+          [
+            "41",
+            "25"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "41",
+            "25"
+          ]
+        ]
+      }
+    ],
+    "reason": "Les deux lecteurs divergent : 41:24+41:25 vs 41:25"
+  },
+  {
+    "book": "sir",
+    "ref": "41:22",
+    "kind": "reader-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "greek": "ἀπὸ ὁράσεως γυναικὸς ἑταίρας καὶ ἀπὸ ἀποστροφῆς προσώπου συγγενοῦς",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "41",
+            "25"
+          ],
+          [
+            "41",
+            "26"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "41",
+            "26"
+          ]
+        ]
+      }
+    ],
+    "reason": "Les deux lecteurs divergent : 41:25+41:26 vs 41:26"
+  },
+  {
+    "book": "sir",
+    "ref": "41:23",
+    "kind": "reader-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "greek": "ἀπὸ ἀφαιρέσεως μερίδος καὶ δόσεως καὶ ἀπὸ κατανοήσεως γυναικὸς ὑπάνδρου",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "41",
+            "26"
+          ],
+          [
+            "41",
+            "27"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "41",
+            "27"
+          ]
+        ]
+      }
+    ],
+    "reason": "Les deux lecteurs divergent : 41:26+41:27 vs 41:27"
+  },
+  {
+    "book": "sir",
+    "ref": "41:24",
+    "kind": "reader-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "greek": "ἀπὸ περιεργίας παιδίσκης αὐτοῦ καὶ μὴ ἐπιστῇς ἐπὶ τὴν κοίτην αὐτῆς",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "41",
+            "27"
+          ]
+        ]
+      }
+    ],
+    "reason": "Les deux lecteurs divergent : 41:27 vs orphelin"
+  },
+  {
+    "book": "sir",
+    "ref": "41:27",
+    "kind": "reader-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "greek": "καὶ ἔσῃ αἰσχυντηρὸς ἀληθινῶς καὶ εὑρίσκων χάριν ἔναντι παντὸς ἀνθρώπου",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "42",
+            "1"
+          ]
+        ]
+      }
+    ],
+    "reason": "Les deux lecteurs divergent : 42:1 vs orphelin"
+  },
+  {
+    "book": "sir",
+    "ref": "43:4",
+    "kind": "reader-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "greek": "κάμινον φυσῶν ἐν ἔργοις καύματος τριπλασίως ἥλιος ἐκκαίων ὄρη ἀτμίδας πυρώδεις ἐκφυσῶν καὶ ἐκλάμπων ἀκτῖνας ἀμαυροῖ ὀφθαλμούς",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "43",
+            "3"
+          ],
+          [
+            "43",
+            "4"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "43",
+            "4"
+          ]
+        ]
+      }
+    ],
+    "reason": "Les deux lecteurs divergent : 43:3+43:4 vs 43:4"
+  },
+  {
+    "book": "sir",
+    "ref": "44:5",
+    "kind": "reader-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "greek": "ἐκζητοῦντες μέλη μουσικῶν καὶ διηγούμενοι ἔπη ἐν γραφῇ",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "44",
+            "5"
+          ]
+        ]
+      }
+    ],
+    "reason": "Les deux lecteurs divergent : 44:5 vs orphelin"
+  },
+  {
+    "book": "sir",
+    "ref": "44:12",
+    "kind": "reader-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "greek": "ἐν ταῖς διαθήκαις ἔστη τὸ σπέρμα αὐτῶν καὶ τὰ τέκνα αὐτῶν δι᾿ αὐτούς",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "44",
+            "12"
+          ],
+          [
+            "44",
+            "13"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "44",
+            "13"
+          ]
+        ]
+      }
+    ],
+    "reason": "Les deux lecteurs divergent : 44:12+44:13 vs 44:13"
+  },
+  {
+    "book": "sir",
+    "ref": "44:13",
+    "kind": "reader-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "greek": "ἕως αἰῶνος μενεῖ σπέρμα αὐτῶν καὶ ἡ δόξα αὐτῶν οὐκ ἐξαλειφθήσεται",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "44",
+            "13"
+          ]
+        ]
+      }
+    ],
+    "reason": "Les deux lecteurs divergent : 44:13 vs orphelin"
+  },
+  {
+    "book": "sir",
+    "ref": "44:20",
+    "kind": "reader-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "greek": "ὃς συνετήρησεν νόμον ὑψίστου καὶ ἐγένετο ἐν διαθήκῃ μετ᾿ αὐτοῦ ἐν σαρκὶ αὐτοῦ ἔστησεν διαθήκην καὶ ἐν πειρασμῷ εὑρέθη πιστός",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "44",
+            "20"
+          ],
+          [
+            "44",
+            "21"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "44",
+            "21"
+          ]
+        ]
+      }
+    ],
+    "reason": "Les deux lecteurs divergent : 44:20+44:21 vs 44:21"
+  },
+  {
+    "book": "sir",
+    "ref": "45:3",
+    "kind": "reader-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "greek": "ἐν λόγοις αὐτοῦ σημεῖα κατέπαυσεν ἐδόξασεν αὐτὸν κατὰ πρόσωπον βασιλέων ἐνετείλατο αὐτῷ πρὸς λαὸν αὐτοῦ καὶ ἔδειξεν αὐτῷ τῆς δόξης αὐτοῦ",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "45",
+            "2"
+          ],
+          [
+            "45",
+            "3"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "45",
+            "3"
+          ]
+        ]
+      }
+    ],
+    "reason": "Les deux lecteurs divergent : 45:2+45:3 vs 45:3"
+  },
+  {
+    "book": "sir",
+    "ref": "45:8",
+    "kind": "reader-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "greek": "ἐνέδυσεν αὐτὸν συντέλειαν καυχήματος καὶ ἐστερέωσεν αὐτὸν σκεύεσιν ἰσχύος περισκελῆ καὶ ποδήρη καὶ ἐπωμίδα",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "45",
+            "9"
+          ],
+          [
+            "45",
+            "10"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "45",
+            "10"
+          ]
+        ]
+      }
+    ],
+    "reason": "Les deux lecteurs divergent : 45:9+45:10 vs 45:10"
+  },
+  {
+    "book": "sir",
+    "ref": "45:9",
+    "kind": "reader-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "greek": "καὶ ἐκύκλωσεν αὐτὸν ῥοΐσκοις χρυσοῖς κώδωσιν πλείστοις κυκλόθεν ἠχῆσαι φωνὴν ἐν βήμασιν αὐτοῦ ἀκουστὸν ποιῆσαι ἦχον ἐν ναῷ εἰς μνημόσυνον υἱοῖς λαοῦ αὐτοῦ",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "45",
+            "10"
+          ],
+          [
+            "45",
+            "11"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "45",
+            "11"
+          ]
+        ]
+      }
+    ],
+    "reason": "Les deux lecteurs divergent : 45:10+45:11 vs 45:11"
+  },
+  {
+    "book": "sir",
+    "ref": "45:11",
+    "kind": "reader-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "greek": "λίθοις πολυτελέσιν γλύμματος σφραγῖδος ἐν δέσει χρυσίου ἔργῳ λιθουργοῦ εἰς μνημόσυνον ἐν γραφῇ κεκολαμμένῃ κατ᾿ ἀριθμὸν φυλῶν Ισραηλ",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "45",
+            "13"
+          ]
+        ]
+      }
+    ],
+    "reason": "Les deux lecteurs divergent : 45:13 vs orphelin"
+  },
+  {
+    "book": "sir",
+    "ref": "45:21",
+    "kind": "reader-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "greek": "καὶ γὰρ θυσίας κυρίου φάγονται ἃς ἔδωκεν αὐτῷ τε καὶ τῷ σπέρματι αὐτοῦ",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "45",
+            "26"
+          ]
+        ]
+      }
+    ],
+    "reason": "Les deux lecteurs divergent : 45:26 vs orphelin"
+  },
+  {
+    "book": "sir",
+    "ref": "46:7",
+    "kind": "reader-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "greek": "καὶ γὰρ ἐπηκολούθησεν ὀπίσω δυνάστου καὶ ἐν ἡμέραις Μωυσέως ἐποίησεν ἔλεος αὐτὸς καὶ Χαλεβ υἱὸς Ιεφοννη ἀντιστῆναι ἔναντι ἐκκλησίας κωλῦσαι λαὸν ἀπὸ ἁμαρτίας κα",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "46",
+            "8"
+          ],
+          [
+            "46",
+            "9"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "46",
+            "9"
+          ]
+        ]
+      }
+    ],
+    "reason": "Les deux lecteurs divergent : 46:8+46:9 vs 46:9"
+  },
+  {
+    "book": "sir",
+    "ref": "46:12",
+    "kind": "reader-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "greek": "τὰ ὀστᾶ αὐτῶν ἀναθάλοι ἐκ τοῦ τόπου αὐτῶν καὶ τὸ ὄνομα αὐτῶν ἀντικαταλλασσόμενον ἐφ᾿ υἱοῖς δεδοξασμένων αὐτῶν",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "46",
+            "14"
+          ],
+          [
+            "46",
+            "15"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "46",
+            "15"
+          ]
+        ]
+      }
+    ],
+    "reason": "Les deux lecteurs divergent : 46:14+46:15 vs 46:15"
+  },
+  {
+    "book": "sir",
+    "ref": "47:4",
+    "kind": "reader-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "greek": "ἐν νεότητι αὐτοῦ οὐχὶ ἀπέκτεινεν γίγαντα καὶ ἐξῆρεν ὀνειδισμὸν ἐκ λαοῦ ἐν τῷ ἐπᾶραι χεῖρα ἐν λίθῳ σφενδόνης καὶ καταβαλεῖν γαυρίαμα τοῦ Γολιαθ",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "47",
+            "4"
+          ],
+          [
+            "47",
+            "5"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "47",
+            "3"
+          ],
+          [
+            "47",
+            "4"
+          ],
+          [
+            "47",
+            "5"
+          ]
+        ]
+      }
+    ],
+    "reason": "Les deux lecteurs divergent : 47:4+47:5 vs 47:3+47:4+47:5"
+  },
+  {
+    "book": "sir",
+    "ref": "47:15",
+    "kind": "reader-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "greek": "γῆν ἐπεκάλυψεν ἡ ψυχή σου καὶ ἐνέπλησας ἐν παραβολαῖς αἰνιγμάτων",
+    "proposals": [
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "47",
+            "16"
+          ],
+          [
+            "47",
+            "17"
+          ]
+        ]
+      }
+    ],
+    "reason": "Les deux lecteurs divergent : orphelin vs 47:16+47:17"
+  },
+  {
+    "book": "sir",
+    "ref": "48:25",
+    "kind": "reader-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "greek": "ἕως τοῦ αἰῶνος ὑπέδειξεν τὰ ἐσόμενα καὶ τὰ ἀπόκρυφα πρὶν ἢ παραγενέσθαι αὐτά",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "48",
+            "28"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "48",
+            "27"
+          ],
+          [
+            "48",
+            "28"
+          ]
+        ]
+      }
+    ],
+    "reason": "Les deux lecteurs divergent : 48:28 vs 48:27+48:28"
+  },
+  {
+    "book": "sir",
+    "ref": "49:7",
+    "kind": "reader-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "greek": "ἐν χειρὶ Ιερεμιου ἐκάκωσαν γὰρ αὐτόν καὶ αὐτὸς ἐν μήτρᾳ ἡγιάσθη προφήτης ἐκριζοῦν καὶ κακοῦν καὶ ἀπολλύειν ὡσαύτως οἰκοδομεῖν καὶ καταφυτεύειν",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "49",
+            "9"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "49",
+            "8"
+          ],
+          [
+            "49",
+            "9"
+          ]
+        ]
+      }
+    ],
+    "reason": "Les deux lecteurs divergent : 49:9 vs 49:8+49:9"
+  },
+  {
+    "book": "sir",
+    "ref": "50:11",
+    "kind": "reader-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "greek": "ἐν τῷ ἀναλαμβάνειν αὐτὸν στολὴν δόξης καὶ ἐνδιδύσκεσθαι αὐτὸν συντέλειαν καυχήματος ἐν ἀναβάσει θυσιαστηρίου ἁγίου ἐδόξασεν περιβολὴν ἁγιάσματος",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "50",
+            "12"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "50",
+            "11"
+          ],
+          [
+            "50",
+            "12"
+          ]
+        ]
+      }
+    ],
+    "reason": "Les deux lecteurs divergent : 50:12 vs 50:11+50:12"
+  },
+  {
+    "book": "sir",
+    "ref": "51:2",
+    "kind": "reader-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "greek": "ὅτι σκεπαστὴς καὶ βοηθὸς ἐγένου μοι καὶ ἐλυτρώσω τὸ σῶμά μου ἐξ ἀπωλείας καὶ ἐκ παγίδος διαβολῆς γλώσσης ἀπὸ χειλέων ἐργαζομένων ψεῦδος καὶ ἔναντι τῶν παρεστηκό",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "51",
+            "3"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "51",
+            "2"
+          ],
+          [
+            "51",
+            "3"
+          ]
+        ]
+      }
+    ],
+    "reason": "Les deux lecteurs divergent : 51:3 vs 51:2+51:3"
+  },
+  {
+    "book": "sir",
+    "ref": "51:6",
+    "kind": "reader-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "greek": "βασιλεῖ διαβολὴ γλώσσης ἀδίκου ἤγγισεν ἕως θανάτου ἡ ψυχή μου καὶ ἡ ζωή μου ἦν σύνεγγυς ᾅδου κάτω",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "51",
+            "8"
+          ],
+          [
+            "51",
+            "9"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "51",
+            "7"
+          ],
+          [
+            "51",
+            "8"
+          ],
+          [
+            "51",
+            "9"
+          ]
+        ]
+      }
+    ],
+    "reason": "Les deux lecteurs divergent : 51:8+51:9 vs 51:7+51:8+51:9"
+  },
+  {
+    "book": "sir",
+    "ref": "51:11",
+    "kind": "reader-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "greek": "καὶ εἰσηκούσθη ἡ δέησίς μου ἔσωσας γάρ με ἐξ ἀπωλείας καὶ ἐξείλου με ἐκ καιροῦ πονηροῦ",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "51",
+            "16"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "51",
+            "15"
+          ],
+          [
+            "51",
+            "16"
+          ]
+        ]
+      }
+    ],
+    "reason": "Les deux lecteurs divergent : 51:16 vs 51:15+51:16"
+  },
+  {
+    "book": "sir",
+    "ref": "51:15",
+    "kind": "reader-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "greek": "ἐξ ἄνθους ὡς περκαζούσης σταφυλῆς εὐφράνθη ἡ καρδία μου ἐν αὐτῇ ἐπέβη ὁ πούς μου ἐν εὐθύτητι ἐκ νεότητός μου ἴχνευον αὐτήν",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "51",
+            "20"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "51",
+            "19"
+          ],
+          [
+            "51",
+            "20"
+          ]
+        ]
+      }
+    ],
+    "reason": "Les deux lecteurs divergent : 51:20 vs 51:19+51:20"
+  },
+  {
+    "book": "sir",
+    "ref": "51:17",
+    "kind": "reader-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "greek": "προκοπὴ ἐγένετό μοι ἐν αὐτῇ τῷ διδόντι μοι σοφίαν δώσω δόξαν",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "51",
+            "23"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "51",
+            "22"
+          ],
+          [
+            "51",
+            "23"
+          ]
+        ]
+      }
+    ],
+    "reason": "Les deux lecteurs divergent : 51:23 vs 51:22+51:23"
+  },
+  {
+    "book": "tob",
+    "ref": "6:12",
+    "kind": "reader-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "greek": "λαλήσω περὶ αὐτῆς τοῦ δοθῆναί σοι αὐτὴν εἰς γυναῖκα ὅτι σοὶ ἐπιβάλλει ἡ κληρονομία αὐτῆς καὶ σὺ μόνος εἶ ἐκ τοῦ γένους αὐτῆς καὶ τὸ κοράσιον καλὸν καὶ φρόνιμόν ",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "6",
+            "11"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "6",
+            "10"
+          ],
+          [
+            "6",
+            "11"
+          ]
+        ]
+      }
+    ],
+    "reason": "Les deux lecteurs divergent : 6:11 vs 6:10+6:11"
+  },
+  {
+    "book": "wis",
+    "ref": "19:13",
+    "kind": "reader-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "greek": "καὶ αἱ τιμωρίαι τοῖς ἁμαρτωλοῖς ἐπῆλθον οὐκ ἄνευ τῶν προγεγονότων τεκμηρίων τῇ βίᾳ τῶν κεραυνῶν δικαίως γὰρ ἔπασχον ταῖς ἰδίαις αὐτῶν πονηρίαις καὶ γὰρ χαλεπωτέ",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "19",
+            "13"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "19",
+            "12"
+          ],
+          [
+            "19",
+            "13"
+          ]
+        ]
+      }
+    ],
+    "reason": "Les deux lecteurs divergent : 19:13 vs 19:12+19:13"
+  },
+  {
+    "book": "wis",
+    "ref": "19:14",
+    "kind": "reader-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "greek": "οἱ μὲν γὰρ τοὺς ἀγνοοῦντας οὐκ ἐδέχοντο παρόντας οὗτοι δὲ εὐεργέτας ξένους ἐδουλοῦντο",
+    "proposals": [
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "19",
+            "13"
+          ]
+        ]
+      }
+    ],
+    "reason": "Les deux lecteurs divergent : orphelin vs 19:13"
+  },
+  {
+    "book": "sir",
+    "ref": "41:26",
+    "kind": "zero-loss-conflict",
+    "grain": "verse",
+    "priority": 1.8,
+    "reason": "Giguet 42:1 déjà lié au grec 42:1 — réattribution à trancher",
+    "proposals": [
+      {
+        "reader": "A+B",
+        "sources": [
+          [
+            "42",
+            "1"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "book": "jer",
+    "ref": "34:16",
+    "kind": "orphan-vs-split",
+    "grain": "verse",
+    "priority": 2,
+    "reason": "Giguet 34:14 rattaché au grec 34:16 par le lecteur A seul (scission disputée) — rattacher, orphéliser, ou autre verset",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "34",
+            "14"
+          ]
+        ]
+      }
+    ]
   },
   {
     "book": "sir",
