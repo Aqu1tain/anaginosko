@@ -162,7 +162,8 @@ function writeOverrides(all: Overrides) {
 export async function requireEditor(authHeader: string | null): Promise<{ ok: boolean; role?: string; name?: string }> {
   const token = authHeader?.replace(/^Bearer\s+/i, "");
   if (!token) return { ok: false };
-  const base = process.env.ARB_API_URL || process.env.NEXT_PUBLIC_API_BASE || "http://127.0.0.1:3333/api";
+  // Base ABSOLUE côté serveur (le /api relatif du client ne résout pas ici).
+  const base = process.env.ARB_API_URL || "http://127.0.0.1:3333/api";
   try {
     const r = await fetch(`${base}/me`, { headers: { Authorization: `Bearer ${token}` } });
     if (!r.ok) return { ok: false };

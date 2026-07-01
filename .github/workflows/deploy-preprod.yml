@@ -35,6 +35,8 @@ jobs:
           cp -r .next/static deploy-out/.next/static
           rm -rf deploy-out/public
           rsync -a --exclude audio --exclude nt --exclude lxx public/ deploy-out/public/
+          # Script de re-matérialisation des overrides d'arbitrage (exécuté côté serveur).
+          mkdir -p deploy-out/scripts && cp scripts/apply-overrides.mjs deploy-out/scripts/
           # La préprod lit sa propre data NT/LXX (branche next), pas celle de la prod.
           printf 'NT_DATA_DIR=/var/www/anaginosko-next/nt\nLXX_DATA_DIR=/var/www/anaginosko-next/lxx\n' > deploy-out/.env.production
 
@@ -68,6 +70,10 @@ jobs:
           # 4) Release Next préprod (bundle standalone immuable)
           $SSH "$HOST" "mkdir -p $REL"
           rsync -az --delete -e "$SSH" deploy-out/ "$HOST:$REL/"
+          # Re-matérialise les overrides Biblion (persistants dans arbitration/) dans les
+          # fr.json, que le rsync lxx --delete vient d'écraser : un déploiement n'efface
+          # jamais son jugement.
+          $SSH "$HOST" "cd $REL && ARB_DIR=/opt/anaginosko-web-next/arbitration LXX_DATA_DIR=/var/www/anaginosko-next/lxx node scripts/apply-overrides.mjs || true"
           $SSHTT "$HOST" "ln -sfn $REL /opt/anaginosko-web-next/current && sudo systemctl restart anaginosko-web-next"
           $SSH "$HOST" "ls -1dt /opt/anaginosko-web-next/releases/*/ | tail -n +4 | xargs -r rm -rf"
 

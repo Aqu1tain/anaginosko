@@ -24,6 +24,11 @@ echo "==> 1) arborescences (propriété $CI_USER, lisibles par nginx)"
 sudo mkdir -p "$WEB_ROOT/releases" "$DATA_DIR/nt" "$DATA_DIR/lxx"
 sudo chown -R "$CI_USER:$CI_USER" "$WEB_ROOT" "$DATA_DIR"
 sudo chmod -R a+rX "$DATA_DIR"
+# Overrides d'arbitrage : dossier PERSISTANT (hors releases/ effacées à chaque
+# déploiement), inscriptible par le service (anag-web), lisible par le CI.
+sudo mkdir -p "$WEB_ROOT/arbitration"
+sudo chown -R anag-web:anag-web "$WEB_ROOT/arbitration"
+sudo chmod 755 "$WEB_ROOT/arbitration"
 
 echo "==> 2) unité systemd anaginosko-web-next"
 sudo install -m644 "$CFG_DIR/anaginosko-web-next.service" /etc/systemd/system/anaginosko-web-next.service
