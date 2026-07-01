@@ -102,5 +102,14 @@
     "grain": "verse",
     "priority": 2,
     "canon": "deutero"
+  },
+  {
+    "book": "isa",
+    "ref": "63:19",
+    "kind": "low-confidence",
+    "grain": "verse",
+    "priority": 3,
+    "canon": "proto",
+    "reason": "Fragment : le français courant est un morceau d'un verset Giguet scindé (G63:19 réparti sur 63:19/64:1) — vérifier le rattachement."
   }
 ]

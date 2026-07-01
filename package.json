@@ -11,7 +11,8 @@
     "glosses": "node scripts/fetch-glosses.mjs",
     "audio:azure": "node scripts/build-audio-azure.mjs",
     "dev": "next dev",
-    "build": "node scripts/build-data.mjs && next build",
+    "build": "node scripts/build-data.mjs && node scripts/apply-overrides.mjs && next build",
+    "arbitrage:data": "node scripts/build-giguet-source.mjs && node scripts/build-links.mjs",
     "start": "node .next/standalone/server.js",
     "lint": "next lint"
   },

@@ -56,8 +56,14 @@ for (const b of list) {
     if (gCh === "_align") continue;
     const greekPath = path.join(LXX, id, `${gCh}.json`);
     if (!fs.existsSync(greekPath)) continue;
+    // Ensemble des versets grecs RÉELS : les clés françaises au-delà (lignes
+    // orphelines placées en slot haut) ne sont pas des versets grecs -> on ne les
+    // lie pas ; leur Giguet reste NON LIÉ (orphelin français, libre à l'arbitrage).
+    const greekMots = JSON.parse(fs.readFileSync(greekPath, "utf8")).mots || [];
+    const realGreek = new Set(greekMots.map((m) => m.verse).filter((v) => v != null).map(String));
 
     for (const gV of Object.keys(fr[gCh])) {
+      if (!realGreek.has(gV)) continue; // clé orpheline, pas un verset grec
       const text = norm(fr[gCh][gV]);
       const key = `${gCh}:${gV}`;
       // Correspondance exacte (paire ou déplacement simple).
@@ -145,6 +151,18 @@ for (const d of ZONE_DIVERGENCES) {
   const ch = Number(d.ref.split(":")[0]);
   if (chapterState.sir?.[ch]) chapterState.sir[ch].pending++;
 }
+
+// Classement explicite des 3 cas de bord (aucun limbo) :
+//  - Greek SANS français = orphelin-grec terminal -> lien [] auto-appliqué, PAS de file.
+//  - fragment douteux (isa 63:19) -> item de file pour l'oeil de Biblion.
+for (const [id, key] of [["sus", "1:64"], ["bel", "1:42"]]) {
+  if (links[id]) links[id][key] = []; // orphelin-grec honnête, appliqué
+}
+queue.push({
+  book: "isa", ref: "63:19", kind: "low-confidence", grain: "verse", priority: 3, canon: "proto",
+  reason: "Fragment : le français courant est un morceau d'un verset Giguet scindé (G63:19 réparti sur 63:19/64:1) — vérifier le rattachement.",
+});
+if (chapterState.isa?.[63]) chapterState.isa[63].pending++;
 
 // Tri de la file : divergence lecteurs (1) > orphelin/scission (2) > basse confiance
 // (3) > coutures canoniques (bonus). Puis par livre/chapitre.
