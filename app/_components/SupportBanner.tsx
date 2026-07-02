@@ -16,6 +16,7 @@ export default function SupportBanner() {
     <div
       role="region"
       aria-label="Soutenir le projet"
+      data-nosnippet=""
       className="card mt-4 border border-base-300 bg-base-200 wide:mt-6"
     >
       <div className="card-body relative gap-2 p-4 pr-11 wide:flex-row wide:items-center wide:gap-6 wide:pr-11">

@@ -14,11 +14,11 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://anaginosko.fr"),
   robots: PREPROD ? { index: false, follow: false } : undefined,
   title: {
-    default: "Anaginosko · lire le grec koinè",
+    default: "Anaginosko · lire la Bible en grec",
     template: "%s · Anaginosko",
   },
   description:
-    "Anaginosko · lire le grec koinè de la Bible, lettre par lettre, prononciation érasmienne et restituée, alphabet interactif.",
+    "Anaginosko : lire la Bible en grec, lettre par lettre. Nouveau Testament et Septante, prononciation érasmienne et restituée, concordance, alphabet.",
   manifest: "/manifest.webmanifest",
   icons: { icon: "/favicon.svg", apple: "/apple-touch-icon.png" },
   appleWebApp: { capable: true, title: "Anaginosko", statusBarStyle: "default" },
@@ -29,9 +29,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: { default: "Anaginosko · lire le grec koinè", template: "%s · Anaginosko" },
+    title: { default: "Anaginosko · lire la Bible en grec", template: "%s · Anaginosko" },
     description:
-      "Lire le grec koinè de la Bible, lettre par lettre : prononciation érasmienne et restituée, concordance, alphabet.",
+      "Lire la Bible en grec, lettre par lettre : prononciation érasmienne et restituée, concordance, alphabet.",
   },
 };
 
@@ -60,7 +60,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   url: "https://anaginosko.fr",
                   inLanguage: "fr",
                   description:
-                    "Lire le grec koinè de la Bible, lettre par lettre : prononciation érasmienne et restituée, alphabet interactif, concordance.",
+                    "Lire la Bible en grec, lettre par lettre : prononciation érasmienne et restituée, alphabet interactif, concordance.",
                   potentialAction: {
                     "@type": "SearchAction",
                     target: {

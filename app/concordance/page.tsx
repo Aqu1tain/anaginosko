@@ -1,4 +1,5 @@
 import ConcordanceView from "@/src/components/ConcordanceView";
+import LemmaIndex from "@/app/_corpus/LemmaIndex";
 import { NT } from "@/src/data/corpus";
 
 export const metadata = {
@@ -9,5 +10,10 @@ export const metadata = {
 };
 
 export default function ConcordancePage() {
-  return <ConcordanceView corpus={NT} />;
+  return (
+    <>
+      <ConcordanceView corpus={NT} />
+      <LemmaIndex corpus={NT} />
+    </>
+  );
 }

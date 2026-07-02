@@ -45,7 +45,16 @@ export async function tocMetadata(corpus: CorpusConfig): Promise<Metadata> {
 export async function bookMetadata(corpus: CorpusConfig, params: Promise<{ book: string }>): Promise<Metadata> {
   const { book } = await params;
   const name = corpus.bookNames[book] ?? "Livre";
-  return { title: name, alternates: { canonical: `${corpus.routePrefix}/${book}` } };
+  const books = await loadBooksFs(corpus);
+  const b = bookById(books, book);
+  const chapters = b ? chapterNumbers(b).length : 0;
+  const description = `${name} en grec koinè (${corpus.sourceLabel}) : ${chapters} chapitres, texte original lettre par lettre, translittération érasmienne et restituée, traduction française.`;
+  return {
+    title: name,
+    description,
+    alternates: { canonical: `${corpus.routePrefix}/${book}` },
+    openGraph: { type: "website", locale: "fr_FR", siteName: "Anaginosko", title: `${name} en grec`, description },
+  };
 }
 
 export async function chapterMetadata(
