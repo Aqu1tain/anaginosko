@@ -16,6 +16,7 @@ export default function SupportBanner() {
     <div
       role="region"
       aria-label="Soutenir le projet"
+      data-nosnippet=""
       className="card mt-4 border wide:mt-6"
       style={{ borderColor: `${TIPEEE}66`, backgroundColor: `${TIPEEE}12` }}
     >

@@ -19,7 +19,15 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { book } = await params;
   const name = BOOK_NAMES[book] ?? "Livre";
-  return { title: name, alternates: { canonical: `/nt/${book}` } };
+  const books = await loadBooksFs();
+  const b = bookById(books, book);
+  const description = `${name} en grec koinè (SBLGNT) : ${b?.chapters ?? 0} chapitres, texte original lettre par lettre, translittération érasmienne et restituée, traduction française.`;
+  return {
+    title: name,
+    description,
+    alternates: { canonical: `/nt/${book}` },
+    openGraph: { type: "website", locale: "fr_FR", siteName: "Anaginosko", title: `${name} en grec`, description },
+  };
 }
 
 export default async function NtBookPage({ params }: { params: Promise<{ book: string }> }) {

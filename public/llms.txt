@@ -1,6 +1,6 @@
 # Anaginosko
 
-> Lire le grec koinè du Nouveau Testament, lettre par lettre. Application web
+> Lire la Bible en grec (koinè, Nouveau Testament), lettre par lettre. Application web
 > (Next.js, rendu statique) : prononciation érasmienne et restituée, alphabet
 > interactif, concordance, mode manuscrit, traduction française.
 
