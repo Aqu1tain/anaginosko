@@ -17,6 +17,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     url("/"),
     url("/nt"),
     url("/alphabet"),
+    url("/prononciation"),
     url("/concordance"),
     url("/mentions"),
     ...books.map((b) => url(`/nt/${b.id}`)),
