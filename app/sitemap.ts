@@ -29,6 +29,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   return [
     url("/"),
     url("/alphabet"),
+    url("/prononciation"),
     url("/mentions"),
     ...corpusUrls,
     ...texts.map((t) => url(`/text/${t.id}`)),

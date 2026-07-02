@@ -70,7 +70,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     "query-input": "required name=search_term_string",
                   },
                 },
-                { "@type": "Organization", name: "Anaginosko", url: "https://anaginosko.fr" },
+                {
+                  "@type": "Organization",
+                  name: "Anaginosko",
+                  url: "https://anaginosko.fr",
+                  logo: "https://anaginosko.fr/apple-touch-icon.png",
+                  sameAs: [
+                    "https://github.com/Aqu1tain/anaginosko",
+                    "https://fr.tipeee.com/anaginosko",
+                  ],
+                },
               ],
             }),
           }}
