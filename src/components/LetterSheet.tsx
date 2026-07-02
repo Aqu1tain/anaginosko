@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { useIsWide } from "../hooks/useIsWide";
 import { accentLabel, breathingLabel, type GraphemeInfo } from "../lib/greek";
 import type { SheetStage } from "./SheetContext";
 import type { WordContext } from "../lib/tokenize";
@@ -183,6 +184,44 @@ export default function LetterSheet({
   const boxRef = useRef<HTMLDivElement>(null);
   const letter = info.letter;
 
+  // Desktop : la fiche s'ancre près du glyphe actif (même modèle que le popover
+  // d'annotation) au lieu du coin bas-droit, pour que l'œil reste sur le mot.
+  // Mobile : bottom sheet inchangée. Sans ancre dans le texte (page alphabet),
+  // retombe sur le coin bas-droit.
+  const wide = useIsWide();
+  const [pos, setPos] = useState<{ top: number; left: number } | null>(null);
+  useEffect(() => {
+    if (!wide) {
+      setPos(null);
+      return;
+    }
+    const compute = () => {
+      const el = document.querySelector<HTMLElement>(".glyph.is-active");
+      if (!el) {
+        setPos(null);
+        return;
+      }
+      const r = el.getBoundingClientRect();
+      const W = 320, M = 10, PAD = 12;
+      const left = Math.min(Math.max(r.left + r.width / 2 - W / 2, PAD), window.innerWidth - W - PAD);
+      const h = boxRef.current?.offsetHeight ?? 380;
+      let top = r.bottom + M;
+      if (top + h > window.innerHeight - PAD) top = r.top - M - h;
+      top = Math.min(Math.max(PAD, top), window.innerHeight - h - PAD); // jamais hors écran
+      setPos({ top, left });
+    };
+    compute();
+    const ro = new ResizeObserver(compute);
+    if (boxRef.current) ro.observe(boxRef.current);
+    window.addEventListener("scroll", compute, true);
+    window.addEventListener("resize", compute);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("scroll", compute, true);
+      window.removeEventListener("resize", compute);
+    };
+  }, [wide, info, stage, wordIndex]);
+
   const { user } = useAuth();
   const canEdit = user?.role === "admin" || user?.role === "philologist";
   const { notes: lemmaNotes } = useLemmaNotes(stage === 2 && word ? word.lemme : null);
@@ -311,12 +350,19 @@ export default function LetterSheet({
   );
 
   return (
-    <div className="pointer-events-none fixed inset-x-0 bottom-0 z-50 flex justify-center wide:inset-x-auto wide:right-4 wide:bottom-4 wide:block">
+    <div
+      className={
+        pos
+          ? "pointer-events-none fixed z-50"
+          : "pointer-events-none fixed inset-x-0 bottom-0 z-50 flex justify-center wide:inset-x-auto wide:right-4 wide:bottom-4 wide:block"
+      }
+      style={pos ? { top: pos.top, left: pos.left } : undefined}
+    >
       <div
         ref={boxRef}
         role="dialog"
         aria-label={wordView ? `Mot ${word?.grec}` : `Lettre ${letter.name}`}
-        className="animate-sheet pointer-events-auto max-h-[85dvh] w-full max-w-md overflow-y-auto overscroll-contain rounded-t-2xl border border-base-300 bg-base-100 px-5 pt-5 pb-[calc(1.5rem+env(safe-area-inset-bottom))] shadow-2xl wide:max-h-[calc(100dvh-30rem)] wide:w-80 wide:rounded-2xl wide:pb-5"
+        className={`animate-sheet pointer-events-auto max-h-[85dvh] w-full max-w-md overflow-y-auto overscroll-contain rounded-t-2xl border border-base-300 bg-base-100 px-5 pt-5 pb-[calc(1.5rem+env(safe-area-inset-bottom))] shadow-2xl wide:w-80 wide:rounded-2xl wide:pb-5 ${pos ? "wide:max-h-[min(65vh,34rem)]" : "wide:max-h-[calc(100dvh-30rem)]"}`}
       >
         {!wordView && (
           <>
