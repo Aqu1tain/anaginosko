@@ -1,0 +1,59 @@
+{
+ "dan": {
+  "undefined": "πάγος καὶ ψῦχος (« glace et froid ») sans invocation française : Giguet 3:69 « Froidure et chaleur » = ψῦχος καὶ καύσων (grec 3:67, lié) et 3:70 « Glaces et neiges » colle mieux à πάχναι καὶ χιόνες (grec 3:70, lié : neiges = χιόνες) ; même en relisant 3:70 comme πάγος, un des deux versets grecs 3:69/3:70 resterait orphelin — le pairage actuel est le meilleur"
+ },
+ "exo": {
+  "25:6": "Rahlfs omet Ex 25:6 (huile du luminaire, aromates pour l'onction et l'encens) : la chaîne grecque passe de 25:5 à 25:7 ; Giguet supplée d'après l'hébreu",
+  "28:23": "MT 28:23 (deux anneaux d'or aux coins supérieurs du rational) absent du grec : Rahlfs saute de 28:22 à 28:29, et le résumé 29a ne mentionne aucun anneau",
+  "28:26": "MT 28:26 (deux anneaux d'or aux extrémités du rational, côté intérieur de l'éphod) absent du grec Rahlfs ; 29a n'en garde rien",
+  "28:27": "MT 28:27 (deux anneaux d'or sous les épaulières, à la couture) absent du grec Rahlfs ; aucun contenu grec correspondant",
+  "28:28": "MT 28:28 (le rational serré aux anneaux de l'éphod par le cordon d'hyacinthe) absent du grec Rahlfs ; aucun contenu grec correspondant",
+  "35:8": "Rahlfs omet Ex 35:8 (huile à éclairer, parfums pour l'onction et l'encens) : la chaîne grecque passe de 35:7 à 35:9 ; huile et encens de la liste grecque sont déjà en 35:12 fin (= Giguet 35:14) et 35:19",
+  "40:7": "MT 40:7 (le réservoir entre la tente et l'autel, rempli d'eau) absent du grec Rahlfs : la chaîne passe de 40:6 à 40:8 (40:7 et 40:11 omis) ; Giguet supplée d'après l'hébreu",
+  "40:27": "MT 40:30 (il mit le réservoir entre la tente et l'autel et y versa de l'eau) absent du grec Rahlfs : la chaîne passe de 40:29 à 40:33 (30-32 omis) ; Giguet supplée d'après l'hébreu"
+ },
+ "ezk": {
+  "32:19": "verset TM absent de la LXX (Rahlfs saute 32:19, aucun mot grec) ; Giguet imprime le placeholder [...] sans contenu ; G18=F18 et G20=F20, aucun décalage",
+  "33:26": "verset TM absent de la LXX (Rahlfs saute 33:26, aucun mot grec) ; Giguet imprime le placeholder [...] sans contenu ; G25=F25 et G27=F27, aucun décalage",
+  "40:30": "verset TM absent de la LXX (Rahlfs saute 40:30, aucun mot grec) ; Giguet imprime le placeholder [...] sans contenu ; G29=F29 et G31=F31, aucun décalage"
+ },
+ "jer": {
+  "7:27": "verset TM/Vulg 7:27 absent de la LXX (le grec 7:27 du corpus = contenu Vulg 7:28, déjà lié à F 7:28) ; Giguet imprime une ellipse [...]",
+  "8:11": "TM 8:11 (« paix, paix, et il n'y a point de paix ») absent de la LXX : le grec saute de 8:10 à 8:13 ; Giguet imprime [...]",
+  "8:12": "TM 8:12 absent de la LXX : le grec saute de 8:10 à 8:13 ; Giguet imprime [...]",
+  "11:7": "TM 11:7-8a absent de la LXX : le grec saute de 11:6 à 11:8 (καὶ οὐκ ἐποίησαν = F 11:8) ; Giguet imprime [...]",
+  "52:29": "aucun grec restant : les 28 versets grecs de 52 (LXX omet 2-3, 15, 28-30) sont tous couverts par G52:1-28 (52:34 = G52:28 « il régla toute sa dépense ») ; « Coupez, retranchez ce qu'il y a d'impur en vos cœurs » est une phrase parénétique étrangère au récit (thème circoncision du cœur, cf. 4:4), vraisemblable note ou artefact d'édition en fin de livre"
+ },
+ "job": {
+  "undefined": "ἢ ἐρεῖς τί ποιήσω ἁμαρτών — Giguet omet ce verset : tout le chapitre est décalé de -1 à partir d’ici (grec 35:4→Giguet 35:3 … grec 35:16→Giguet 35:15, 15 versets Giguet pour 16 grecs) ; Giguet 35:5 « Si tu pèches, que feras-tu ?… » traduit intégralement grec 35:6 (εἰ ἥμαρτες τί πράξεις εἰ δὲ καὶ πολλὰ ἠνόμησας…), aucun reste français disponible",
+  "42:20": "note d’éditeur, pas un verset : renvois « Hébг., I, H. Арoс., XXI, 1 » (Héb. / Apoc., OCR avec caractères cyrilliques) + commentaire sur la prophétie de la résurrection ; aucun texte grec correspondant"
+ },
+ "neh": {
+  "3:7": "le grec saute Neh 3:7 (le chapitre passe du v.6 au v.8) ; aucun verset grec ne mentionne Gabaon/Maspha ni le trône du gouverneur en deçà du fleuve",
+  "undefined": "liste des prêtres aux trompettes (Eliakim, Maasias, Benjamin, Michée…) — aucun français ; F12:30 « avec les trompettes » rend G12:35 (autre liste), déjà lié"
+ },
+ "pro": {
+  "undefined": "chapitre 7 entierement absent de la source Giguet (chapitres 1-6 puis 8-31) ; ch. 6 s arrete a 6:35=G6:35 et ch. 8 reprend a 8:1=G8:1 : aucun texte francais disponible"
+ },
+ "lam": {
+  "3:22": "le grec de lam 3 saute de 21 à 25 : 3:22-24 absents de la LXX (omission connue du texte grec) ; Giguet supplée d après l hébreu/Vulgate",
+  "3:23": "3:22-24 absents du grec LXX (chapitre passe de 21 à 25) ; verset suppléé par Giguet",
+  "3:24": "3:22-24 absents du grec LXX (chapitre passe de 21 à 25) ; verset suppléé par Giguet"
+ },
+ "ecc": {
+  "12:18": "glose éditoriale isolée (« C est le raisonnement du voluptueux ») numérotée 18 alors que le grec s arrête à 12:14 ; aucun verset grec ne dit cela"
+ },
+ "bar": {
+  "5:13": "fragment isolé (« Vaincus, et non vainqueurs ») numéroté 13 alors que le grec de bar 5 s arrête à 5:9, tous liés 1-1 ; aucun vocabulaire de défaite/victoire dans tout le grec de bar ; pas de ch. 6 dans le corpus"
+ },
+ "psa": {
+  "115:5": "le grec Rahlfs saute le v.5 (versets 1,2,3,4,6..10) : doublet hébreu de 116:14, seul le second (115:9, lié) figure en grec ; Giguet suit une édition qui garde les deux occurrences du refrain"
+ },
+ "gen": {
+  "31:51": "le grec Rahlfs omet Gen 31:51 (numérotation saute 50→52) ; le contenu (Laban montre l'autel et la colonne) est un doublet de 31:48, dont le grec est déjà entièrement traduit par Giguet 31:48 ; Giguet suit une édition incluant le v.51"
+ },
+ "sir": {
+  "30:14": "addition GII/Vulgate (μὴ παρίδῃς τὰς ἀγνοίας αὐτοῦ / ne despicias cogitatus illius) absente du grec GI : G30:11 = F30:11 seul, G30:12 = F30:12, G30:13 = F30:13",
+  "30:15": "addition GII/Vulgate (σύγκαμψον τὸν τράχηλον αὐτοῦ ἐν νεότητι / curva cervicem ejus in juventute) absente du grec GI ; porte aussi le titre éditorial CONCERNANT LA SANTÉ"
+ }
+}
