@@ -135,7 +135,7 @@ export default function DistributionProfile({
     });
     const empty = blocks.filter((b) => b.grows.length === 0).map((b) => b.g.title);
     return (
-      <div className="mt-3 grid gap-3">
+      <div className="mt-3 grid gap-3 wide:grid-cols-2 wide:items-start wide:gap-x-8">
         {blocks
           .filter((b) => b.grows.length > 0)
           .map(({ g, grows, subtotal }) => (
@@ -203,7 +203,7 @@ export default function DistributionProfile({
           : "Touchez un livre pour voir ses versets."}
       </p>
 
-      {grouped ? groupView() : <div className="mt-3 grid gap-0.5">{rows.map(BarRow)}</div>}
+      {grouped ? groupView() : <div className="mt-3 grid gap-0.5 wide:grid-cols-2 wide:gap-x-8">{rows.map(BarRow)}</div>}
     </div>
   );
 }

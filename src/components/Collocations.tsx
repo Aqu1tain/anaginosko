@@ -67,7 +67,7 @@ export default function Collocations({ items, occ, corpus }: { items: Colloc[]; 
         Touchez un mot pour les voir.
       </p>
 
-      <div className="mt-3 grid gap-0.5">
+      <div className="mt-3 grid gap-0.5 wide:grid-cols-2 wide:gap-x-8">
         {items.map((c, i) => {
           const isOpen = open === i;
           return (

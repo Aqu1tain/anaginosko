@@ -250,20 +250,12 @@ export default function LemmaDetail({
 
       <BiblionNote lemma={entry.lemma} />
 
-      {/* Desktop : on éclate la pile. En haut, deux colonnes d'analyse - sens +
-          répartition à gauche, voisins à droite. En dessous, les occurrences en
-          pleine largeur, réparties en colonnes. Quand la grille retombe en une
-          colonne (mobile), l'ordre source reste Définition → Répartition →
-          Associés → Occurrences. */}
-      <div className="wide:grid wide:grid-cols-2 wide:items-start wide:gap-8">
-        <div className="min-w-0">
-          <Definition lemma={entry.lemma} />
-          <DistributionProfile entry={entry} dist={dist} books={books} occ={occ} corpus={corpus} />
-        </div>
-        <div className="min-w-0">
-          <Collocations items={colloc} occ={occ} corpus={corpus} />
-        </div>
-      </div>
+      {/* Empilement pleine largeur : chaque section respire sur deux colonnes
+          internes en desktop (livres de la répartition, voisins, occurrences),
+          aucune demi-colonne creuse. */}
+      <Definition lemma={entry.lemma} />
+      <DistributionProfile entry={entry} dist={dist} books={books} occ={occ} corpus={corpus} />
+      <Collocations items={colloc} occ={occ} corpus={corpus} />
       <Occurrences entry={entry} occ={occ} corpus={corpus} />
     </div>
   );
