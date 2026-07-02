@@ -14,10 +14,10 @@ export async function GET(req: Request) {
   const q = url.searchParams.get("q");
   const ch = url.searchParams.get("ch");
   const owners = sourceOwners(book);
-  const enrich = (r: { ch: number; v: number; text: string }) => ({
-    ...r,
-    linkedTo: owners[`${r.ch}:${r.v}`] ?? null,
-  });
+  const enrich = (r: { ch: number; v: number; text: string }) => {
+    const o = owners[`${r.ch}:${r.v}`];
+    return { ...r, linkedTo: o?.ref ?? null, partial: o?.partial ?? false };
+  };
   if (ch != null) {
     const g = giguet()[book]?.[ch] || {};
     const results = Object.keys(g)

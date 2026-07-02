@@ -7,7 +7,12 @@ import path from "node:path";
 // plusieurs grecs -> un français = fusion). On ne modifie JAMAIS le texte Giguet.
 // Override (Biblion) > auto ; garanties d'intégrité sur chaque écriture.
 
-export type Source = [number, number]; // [chapitre Giguet, verset Giguet]
+// Source d'un lien : un verset Giguet ENTIER [ch, v], ou un EXTRAIT [ch, v, de, à]
+// (plage de mots, indices 0-based inclusifs, découpage par espaces). On pointe une
+// plage du texte immuable — on ne coupe jamais le texte lui-même. Cas type : la
+// versification de Giguet fusionne deux versets grecs en un (jdt 16:8 = la moitié
+// de Giguet 16:10) ; chaque verset grec lie alors son extrait.
+export type Source = [number, number] | [number, number, number, number];
 export type Override = { sources: Source[]; by: string; at: string; note?: string };
 export type ChapterState = { scaled: boolean; state: "auto-resolved" | "not-converged" | "pending-scale"; pending: number };
 export type QueueItem = {
@@ -102,46 +107,148 @@ export function effectiveSources(book: string, ref: string): Source[] | null {
   return a === undefined ? null : a;
 }
 
-// Texte matérialisé d'un lien : concaténation des versets Giguet, dans l'ordre.
-export const materialize = (book: string, sources: Source[]): string =>
-  sources.map((s) => giguetText(book, s[0], s[1])).filter(Boolean).join(" ").trim();
+// Découpage en mots du texte Giguet (déterministe : espaces). Les extraits
+// [de, à] indexent ce découpage.
+export const giguetWords = (book: string, ch: number, v: number): string[] | null => {
+  const t = giguetText(book, ch, v);
+  return t == null ? null : t.split(/\s+/).filter(Boolean);
+};
 
-const key = (s: Source) => `${s[0]}:${s[1]}`;
+const sliceSource = (book: string, s: Source): string | null => {
+  if (s.length === 2) return giguetText(book, s[0], s[1]);
+  const words = giguetWords(book, s[0], s[1]);
+  if (!words) return null;
+  return words.slice(s[2], s[3] + 1).join(" ");
+};
+
+// Texte matérialisé d'un lien : concaténation des sources (versets ou extraits),
+// dans l'ordre.
+export const materialize = (book: string, sources: Source[]): string =>
+  sources.map((s) => sliceSource(book, s)).filter(Boolean).join(" ").trim();
+
+const vkey = (s: Source) => `${s[0]}:${s[1]}`;
+const label = (s: Source) => (s.length === 4 ? `${s[0]}:${s[1]} (mots ${s[2] + 1}-${s[3] + 1})` : vkey(s));
+// Intervalle de mots revendiqué : verset entier = [0, +inf).
+const spanOf = (s: Source): [number, number] => (s.length === 4 ? [s[2], s[3]] : [0, Number.MAX_SAFE_INTEGER]);
+const overlaps = (a: [number, number], b: [number, number]) => a[0] <= b[1] && b[0] <= a[1];
 
 // Intégrité, appliquée à CHAQUE écriture (auto ou Biblion).
 export function checkOverride(book: string, ref: string, sources: Source[]): { ok: boolean; errors: string[] } {
   const errors: string[] = [];
-  // 1) Les liens ne pointent que sur des versets Giguet existants.
-  for (const s of sources) if (!giguetExists(book, s)) errors.push(`Verset Giguet inexistant : ${key(s)}`);
+  // 1) Sources existantes ; extraits dans les bornes du verset.
+  for (const s of sources) {
+    if (!giguetExists(book, s)) {
+      errors.push(`Verset Giguet inexistant : ${vkey(s)}`);
+      continue;
+    }
+    if (s.length === 4) {
+      const n = giguetWords(book, s[0], s[1])!.length;
+      if (!(Number.isInteger(s[2]) && Number.isInteger(s[3]) && s[2] >= 0 && s[2] <= s[3] && s[3] < n))
+        errors.push(`Extrait hors bornes : ${label(s)} (le verset a ${n} mots)`);
+    }
+  }
   // 2) Round-trip : la ref grec doit parser (grec = colonne fixe, jamais renumérotée).
   if (!/^\d+:\d+$/.test(ref)) errors.push(`Ref grec invalide : ${ref}`);
-  // 3) Zéro-perte : aucune source Giguet déjà consommée par un AUTRE verset grec.
-  //    (Chaque verset Giguet consommé au plus une fois à travers tous les liens du livre.)
-  const owner = giguetOwners(book);
+  // 3) Zéro-perte au MOT : aucune plage déjà revendiquée par un autre verset grec ne
+  //    peut être recouverte (verset entier = tous les mots). Deux extraits disjoints
+  //    du même verset par deux grecs différents sont légitimes (scission Giguet).
+  const claims = verseClaims(book);
   for (const s of sources) {
-    const used = owner.get(key(s));
-    if (used && used !== ref) errors.push(`Zéro-perte : Giguet ${key(s)} déjà lié au grec ${used}`);
+    const mine = spanOf(s);
+    for (const c of claims.get(vkey(s)) || []) {
+      if (c.ref !== ref && overlaps(mine, c.span)) {
+        errors.push(`Zéro-perte : Giguet ${label(s)} chevauche la part déjà liée au grec ${c.ref}`);
+        break;
+      }
+    }
   }
+  // 3b) Les extraits d'un même verset au sein de CE lien ne se chevauchent pas.
+  for (let i = 0; i < sources.length; i++)
+    for (let j = i + 1; j < sources.length; j++)
+      if (vkey(sources[i]) === vkey(sources[j]) && overlaps(spanOf(sources[i]), spanOf(sources[j])))
+        errors.push(`Extraits en chevauchement dans le lien : ${label(sources[i])} / ${label(sources[j])}`);
   return { ok: errors.length === 0, errors };
 }
 
-// Version sérialisable pour l'UI (contexte du picker : « ce verset Giguet est déjà
-// lié au grec X:Y »).
-export function sourceOwners(book: string): Record<string, string> {
-  return Object.fromEntries(giguetOwners(book));
+// Version sérialisable pour l'UI (contexte du picker) : par verset Giguet, le
+// grec propriétaire (verset entier) ou les extraits déjà revendiqués.
+export function sourceOwners(book: string): Record<string, { ref: string; partial: boolean }> {
+  const out: Record<string, { ref: string; partial: boolean }> = {};
+  for (const [k, cs] of verseClaims(book)) {
+    const whole = cs.find((c) => c.span[1] === Number.MAX_SAFE_INTEGER);
+    out[k] = whole ? { ref: whole.ref, partial: false } : { ref: cs[0].ref, partial: true };
+  }
+  return out;
 }
 
-// Carte : chaque verset Giguet -> le verset grec qui le consomme (override > auto),
-// pour détecter double emploi. Le verset ref courant est ignoré par l'appelant.
-function giguetOwners(book: string): Map<string, string> {
-  const m = new Map<string, string>();
+// Couverture d'un chapitre : l'ALERTE de Biblion. Deux sens contrôlés :
+//  - versets grecs sans français (orphelins ou non arbitrés) ;
+//  - versets Giguet (ou restes de mots après extraits) non liés à aucun grec —
+//    ceux du chapitre Giguet homonyme, plus tout verset partiellement consommé
+//    par un lien de CE chapitre grec.
+export function chapterCoverage(book: string, ch: number) {
+  const greekSide: { v: number; state: "orphan" | "unlinked" }[] = [];
+  for (const gv of greekVerses(book, ch) || []) {
+    const src = effectiveSources(book, `${ch}:${gv.v}`);
+    if (src == null) greekSide.push({ v: gv.v, state: "unlinked" });
+    else if (src.length === 0) greekSide.push({ v: gv.v, state: "orphan" });
+  }
+
+  const claims = verseClaims(book);
+  const frenchSide: { ch: number; v: number; part: string; preview: string }[] = [];
+  const checkVerse = (gc: number, gv: number) => {
+    const words = giguetWords(book, gc, gv);
+    if (!words) return;
+    const cs = claims.get(`${gc}:${gv}`) || [];
+    if (cs.some((c) => c.span[1] === Number.MAX_SAFE_INTEGER)) return; // verset entier consommé
+    // fusionne les plages consommées, puis liste les trous
+    const spans = cs.map((c) => c.span).sort((a, b) => a[0] - b[0]);
+    const gaps: [number, number][] = [];
+    let cursor = 0;
+    for (const [f, t] of spans) {
+      if (f > cursor) gaps.push([cursor, f - 1]);
+      cursor = Math.max(cursor, t + 1);
+    }
+    if (cursor < words.length) gaps.push([cursor, words.length - 1]);
+    for (const [f, t] of gaps) {
+      frenchSide.push({
+        ch: gc, v: gv,
+        part: cs.length === 0 ? "tout le verset" : `mots ${f + 1}-${t + 1}`,
+        preview: words.slice(f, Math.min(t + 1, f + 12)).join(" ") + (t - f >= 12 ? "…" : ""),
+      });
+    }
+  };
+  // chapitre Giguet homonyme en entier…
+  for (const v of Object.keys(giguet()[book]?.[String(ch)] || {})) checkVerse(ch, Number(v));
+  // …plus tout verset Giguet touché par un lien de ce chapitre grec (transpositions).
+  const seen = new Set<string>();
+  for (const [k, cs] of claims) {
+    if (!cs.some((c) => c.ref.startsWith(`${ch}:`))) continue;
+    const [gc, gv] = k.split(":").map(Number);
+    if (gc === ch || seen.has(k)) continue;
+    seen.add(k);
+    checkVerse(gc, gv);
+  }
+  return { greekSide, frenchSide };
+}
+
+// Revendications par verset Giguet : liste {ref grec, plage de mots}, override >
+// auto (les revendications auto d'un ref surchargé sont remplacées).
+function verseClaims(book: string): Map<string, { ref: string; span: [number, number] }[]> {
+  const m = new Map<string, { ref: string; span: [number, number] }[]>();
+  const ov = overrides()[book] || {};
+  const push = (ref: string, s: Source) => {
+    const k = vkey(s);
+    if (!m.has(k)) m.set(k, []);
+    m.get(k)!.push({ ref, span: spanOf(s) });
+  };
   const auto = links()[book] || {};
   for (const ref of Object.keys(auto)) {
+    if (ov[ref]) continue; // surchargé : l'override remplace
     const src = auto[ref];
-    if (Array.isArray(src)) for (const s of src) if (!m.has(key(s))) m.set(key(s), ref);
+    if (Array.isArray(src)) for (const s of src) push(ref, s);
   }
-  const ov = overrides()[book] || {};
-  for (const ref of Object.keys(ov)) for (const s of ov[ref].sources) m.set(key(s), ref); // override écrase
+  for (const ref of Object.keys(ov)) for (const s of ov[ref].sources) push(ref, s);
   return m;
 }
 

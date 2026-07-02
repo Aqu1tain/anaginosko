@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { requireEditor, states, queue, effectiveSources, materialize, greekVerses, overrides, giguet } from "@/lib/arbitration";
+import { requireEditor, states, queue, effectiveSources, materialize, greekVerses, overrides, giguet, chapterCoverage } from "@/lib/arbitration";
 
 export const dynamic = "force-dynamic";
 
@@ -31,5 +31,5 @@ export async function GET(req: Request) {
   const items = queue().filter((q) => q.book === book && q.ref.split(":")[0] === String(ch));
   // Chapitres Giguet du livre, en ordre numérique (navigation du picker).
   const gigChapters = Object.keys(giguet()[book] || {}).sort((a, b) => Number(a) - Number(b));
-  return NextResponse.json({ book, ch, state: st, rows, queueItems: items, gigChapters });
+  return NextResponse.json({ book, ch, state: st, rows, queueItems: items, gigChapters, coverage: chapterCoverage(book, ch) });
 }

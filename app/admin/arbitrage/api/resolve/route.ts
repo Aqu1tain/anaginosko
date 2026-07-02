@@ -25,7 +25,13 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: true, revoked: true, preview: src ? materialize(book, src) : null });
   }
 
-  const sources = (body.sources ?? []) as Source[];
+  // Sources : [ch, v] (verset entier) ou [ch, v, de, à] (extrait) - entiers only.
+  const sources: Source[] = [];
+  for (const s of (body.sources ?? []) as unknown[]) {
+    if (!Array.isArray(s) || (s.length !== 2 && s.length !== 4) || s.some((n) => !Number.isInteger(Number(n))))
+      return NextResponse.json({ ok: false, errors: [`Source invalide : ${JSON.stringify(s)}`] }, { status: 400 });
+    sources.push(s.map(Number) as Source);
+  }
   const check = checkOverride(book, ref, sources);
   if (!check.ok) return NextResponse.json({ ok: false, errors: check.errors }, { status: 422 });
   saveOverride(book, ref, sources, auth.name || "biblion", body.note);

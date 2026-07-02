@@ -8,15 +8,28 @@ import { useAuth } from "../hooks/useAuth";
 // un verset grec -> suite ordonnée de versets Giguet (0 = orphelin, 2+ = scission).
 // On ne modifie jamais le texte Giguet ; on ne fait que le câbler.
 
-type Src = [number, number];
+// Source : verset Giguet entier [ch, v] ou extrait [ch, v, motDébut, motFin]
+// (indices 0-based inclusifs — Giguet fusionne parfois deux versets grecs en un).
+type Src = [number, number] | [number, number, number, number];
 type State = { scaled: boolean; state: "auto-resolved" | "not-converged" | "pending-scale"; pending: number };
 type QItem = {
   book: string; ref: string; kind: string; priority: number; reason?: string; greek?: string;
   proposals?: { reader: string; sources: [string, string][]; orphan?: [string, string][] }[];
 };
 type Row = { v: number; greek: string; ref: string; sources: Src[] | null; french: string | null; orphanGreek: boolean; overridden: boolean };
-type Chapter = { book: string; ch: number; state: State; rows: Row[]; queueItems: QItem[]; gigChapters: string[] };
-type GigVerse = { ch: number; v: number; text: string; linkedTo?: string | null };
+type Coverage = {
+  greekSide: { v: number; state: "orphan" | "unlinked" }[];
+  frenchSide: { ch: number; v: number; part: string; preview: string }[];
+};
+type Chapter = { book: string; ch: number; state: State; rows: Row[]; queueItems: QItem[]; gigChapters: string[]; coverage: Coverage };
+type GigVerse = { ch: number; v: number; text: string; linkedTo?: string | null; partial?: boolean };
+
+const srcLabel = (s: Src) => (s.length === 4 ? `${s[0]}:${s[1]} · mots ${s[2] + 1}-${s[3] + 1}` : `${s[0]}:${s[1]}`);
+const srcText = (s: Src, whole: string | undefined) => {
+  if (whole == null) return undefined;
+  if (s.length === 2) return whole;
+  return whole.split(/\s+/).filter(Boolean).slice(s[2], s[3] + 1).join(" ");
+};
 
 const API = "/admin/arbitrage/api";
 const token = () => (typeof window !== "undefined" ? localStorage.getItem("anaginosko:token") : null);
@@ -177,6 +190,23 @@ function ChapterEditor({ sel, onClose }: { sel: { book: string; ch: number; focu
             (ses) verset(s) Giguet via le picker, ou déclarez-le orphelin.
           </div>
         )}
+        {/* Alerte de couverture : rien ne doit rester orphelin sans décision. */}
+        {data && (data.coverage.greekSide.length > 0 || data.coverage.frenchSide.length > 0) && (
+          <div className="alert alert-warning mt-3 flex-col items-start gap-1 text-sm">
+            <span className="font-semibold">Couverture incomplète</span>
+            {data.coverage.greekSide.length > 0 && (
+              <span>
+                Versets grecs sans français :{" "}
+                {data.coverage.greekSide.map((g) => `${g.v}${g.state === "orphan" ? " (orphelin déclaré)" : ""}`).join(", ")}
+              </span>
+            )}
+            {data.coverage.frenchSide.map((f, i) => (
+              <span key={i}>
+                Giguet {f.ch}:{f.v} non lié ({f.part}) : « {f.preview} »
+              </span>
+            ))}
+          </div>
+        )}
         {data && (
           <div className="mt-4 grid gap-2">
             {data.rows.map((row) => (
@@ -234,9 +264,15 @@ function Resolver({ book, row, item, gigChapters, defaultCh, onDone, onCancel }:
   const [errors, setErrors] = useState<string[]>([]);
   const [gcache, setGcache] = useState<Record<string, string>>({});
 
-  // Lier/délier un verset Giguet depuis le panneau de parcours.
+  // Lier/délier un verset Giguet ENTIER depuis le panneau de parcours. Si des
+  // extraits de ce verset sont déjà liés, le clic les remplace/retire d'un bloc.
   const toggle = (c: number, v: number, text: string) => {
-    setSources((s) => (s.some(([a, b]) => a === c && b === v) ? s.filter(([a, b]) => !(a === c && b === v)) : [...s, [c, v]]));
+    setSources((s) => (s.some((x) => x[0] === c && x[1] === v) ? s.filter((x) => !(x[0] === c && x[1] === v)) : [...s, [c, v]]));
+    setGcache((g) => ({ ...g, [`${c}:${v}`]: text }));
+  };
+  // Lier un EXTRAIT (plage de mots) d'un verset Giguet.
+  const addSpan = (c: number, v: number, from: number, to: number, text: string) => {
+    setSources((s) => [...s.filter((x) => !(x.length === 2 && x[0] === c && x[1] === v)), [c, v, from, to]]);
     setGcache((g) => ({ ...g, [`${c}:${v}`]: text }));
   };
 
@@ -248,7 +284,7 @@ function Resolver({ book, row, item, gigChapters, defaultCh, onDone, onCancel }:
   }, [book, gcache]);
   useEffect(() => { for (const [c] of sources) ensureCh(c); if (item?.proposals) for (const p of item.proposals) for (const [c] of p.sources) ensureCh(Number(c)); }, [sources, item, ensureCh]);
 
-  const preview = sources.map(([c, v]) => gcache[`${c}:${v}`]).filter(Boolean).join(" ");
+  const preview = sources.map((s) => srcText(s, gcache[`${s[0]}:${s[1]}`])).filter(Boolean).join(" ");
   const setFrom = (ss: [string, string][]) => setSources(ss.map(([c, v]) => [Number(c), Number(v)] as Src));
 
   const save = async (revoke = false) => {
@@ -286,17 +322,17 @@ function Resolver({ book, row, item, gigChapters, defaultCh, onDone, onCancel }:
       <div className="text-[0.7rem] font-medium uppercase tracking-wide text-base-content/60">Versets Giguet liés</div>
       <div className="mt-1 flex flex-wrap items-center gap-1.5">
         {sources.length === 0 && <span className="text-xs italic text-base-content/50">orphelin grec (aucun français)</span>}
-        {sources.map(([c, v], i) => (
+        {sources.map((s, i) => (
           <span key={i} className="badge badge-neutral gap-1">
-            {c}:{v}
-            <button onClick={() => setSources((s) => s.filter((_, j) => j !== i))} aria-label="retirer">✕</button>
+            {srcLabel(s)}
+            <button onClick={() => setSources((x) => x.filter((_, j) => j !== i))} aria-label="retirer">✕</button>
           </span>
         ))}
         <button className="btn btn-xs btn-ghost" onClick={() => setSources([])}>Orphelin</button>
       </div>
 
       <GiguetPicker book={book} currentRef={row.ref} gigChapters={gigChapters} defaultCh={defaultCh}
-        selected={sources} onToggle={toggle} />
+        selected={sources} onToggle={toggle} onAddSpan={addSpan} />
 
       {/* Aperçu exact du rendu public. */}
       <div className="mt-3 rounded-box border border-base-300 bg-base-100 p-3">
@@ -322,15 +358,18 @@ function Resolver({ book, row, item, gigChapters, defaultCh, onDone, onCancel }:
 // Panneau Giguet : on FEUILLETTE la traduction en contexte (chapitre par chapitre,
 // versets entiers) et on clique pour lier/délier — la recherche plein texte est le
 // chemin secondaire. Les versets déjà liés ailleurs sont signalés, pas cachés.
-function GiguetPicker({ book, currentRef, gigChapters, defaultCh, selected, onToggle }: {
+function GiguetPicker({ book, currentRef, gigChapters, defaultCh, selected, onToggle, onAddSpan }: {
   book: string; currentRef: string; gigChapters: string[]; defaultCh: string;
   selected: Src[]; onToggle: (ch: number, v: number, text: string) => void;
+  onAddSpan: (ch: number, v: number, from: number, to: number, text: string) => void;
 }) {
   const [ch, setCh] = useState(gigChapters.includes(defaultCh) ? defaultCh : gigChapters[0]);
   const [q, setQ] = useState("");
   const [verses, setVerses] = useState<GigVerse[]>([]);
   const [results, setResults] = useState<GigVerse[]>([]);
-  const selKeys = new Set(selected.map(([c, v]) => `${c}:${v}`));
+  // Mode extrait : verset déplié en mots ; 1er clic = début, 2e clic = fin.
+  const [extract, setExtract] = useState<{ key: string; start: number | null } | null>(null);
+  const selKeys = new Set(selected.map((s) => `${s[0]}:${s[1]}`));
   const searching = q.trim().length >= 2;
 
   useEffect(() => {
@@ -378,18 +417,62 @@ function GiguetPicker({ book, currentRef, gigChapters, defaultCh, selected, onTo
           const key = `${r.ch}:${r.v}`;
           const isSel = selKeys.has(key);
           const elsewhere = r.linkedTo && r.linkedTo !== currentRef;
+          const inExtract = extract?.key === key;
+
+          if (inExtract) {
+            const words = r.text.split(/\s+/).filter(Boolean);
+            return (
+              <div key={key} className="border-l-2 border-accent bg-accent/5 px-3 py-2">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-[0.7rem] font-medium uppercase tracking-wide text-accent">
+                    Extrait de {r.ch}:{r.v} — {extract.start == null ? "touchez le PREMIER mot" : "touchez le DERNIER mot"}
+                  </span>
+                  <button type="button" className="btn btn-ghost btn-xs" onClick={() => setExtract(null)}>Annuler</button>
+                </div>
+                <p className="mt-1.5 text-sm leading-loose">
+                  {words.map((w, i) => (
+                    <button key={i} type="button"
+                      onClick={() => {
+                        if (extract.start == null) setExtract({ key, start: i });
+                        else {
+                          const [from, to] = extract.start <= i ? [extract.start, i] : [i, extract.start];
+                          onAddSpan(r.ch, r.v, from, to, r.text);
+                          setExtract(null);
+                        }
+                      }}
+                      className={`mr-1 rounded px-0.5 transition-colors hover:bg-accent/25 ${
+                        extract.start != null && i === extract.start ? "bg-accent text-accent-content" : ""
+                      }`}>
+                      {w}
+                    </button>
+                  ))}
+                </p>
+              </div>
+            );
+          }
+
           return (
-            <button key={key} type="button" onClick={() => onToggle(r.ch, r.v, r.text)}
-              title={isSel ? "Cliquer pour délier" : elsewhere ? `Déjà lié au grec ${r.linkedTo} — le lier ici demandera une réattribution` : "Cliquer pour lier"}
-              className={`block w-full border-l-2 px-3 py-2 text-left text-sm leading-relaxed transition-colors ${
-                isSel ? "border-primary bg-primary/10" : "border-transparent hover:bg-base-200"
-              }`}>
-              <span className={`verse-num ${isSel ? "text-primary" : ""}`}>{searching ? `${r.ch}:${r.v}` : r.v}</span>
-              <span className={elsewhere && !isSel ? "text-base-content/45" : "text-base-content/85"}>{r.text}</span>
-              {elsewhere && (
-                <span className="badge badge-ghost badge-xs ml-1.5 align-middle">→ grec {r.linkedTo}</span>
-              )}
-            </button>
+            <div key={key} className={`group flex items-start border-l-2 transition-colors ${
+              isSel ? "border-primary bg-primary/10" : "border-transparent hover:bg-base-200"
+            }`}>
+              <button type="button" onClick={() => onToggle(r.ch, r.v, r.text)}
+                title={isSel ? "Cliquer pour délier" : elsewhere ? `Déjà lié au grec ${r.linkedTo} — le lier ici demandera une réattribution` : "Cliquer pour lier le verset entier"}
+                className="min-w-0 flex-1 px-3 py-2 text-left text-sm leading-relaxed">
+                <span className={`verse-num ${isSel ? "text-primary" : ""}`}>{searching ? `${r.ch}:${r.v}` : r.v}</span>
+                <span className={elsewhere && !isSel ? "text-base-content/45" : "text-base-content/85"}>{r.text}</span>
+                {elsewhere && (
+                  <span className="badge badge-ghost badge-xs ml-1.5 align-middle">
+                    → grec {r.linkedTo}{r.partial ? " (extrait)" : ""}
+                  </span>
+                )}
+              </button>
+              <button type="button"
+                onClick={() => setExtract({ key, start: null })}
+                title="Lier seulement une partie du verset (plage de mots)"
+                className="btn btn-ghost btn-xs mr-1 mt-1.5 shrink-0 opacity-0 transition-opacity focus:opacity-100 group-hover:opacity-100">
+                Extrait
+              </button>
+            </div>
           );
         })}
         {rows.length === 0 && (
