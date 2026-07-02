@@ -29,7 +29,7 @@ export async function GET(req: Request) {
     };
   });
   const items = queue().filter((q) => q.book === book && q.ref.split(":")[0] === String(ch));
-  // Chapitres Giguet évoqués par les liens (pour situer le picker).
-  const gigChapters = Object.keys(giguet()[book] || {});
+  // Chapitres Giguet du livre, en ordre numérique (navigation du picker).
+  const gigChapters = Object.keys(giguet()[book] || {}).sort((a, b) => Number(a) - Number(b));
   return NextResponse.json({ book, ch, state: st, rows, queueItems: items, gigChapters });
 }

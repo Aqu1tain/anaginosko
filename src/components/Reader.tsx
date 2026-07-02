@@ -375,10 +375,8 @@ export default function Reader({ text }: { text: Text }) {
   const french = text.francais;
   const hasFrench = !!french && Object.keys(french).length > 0;
 
-  const corpus = useMemo(() => {
-    const p = parseRef(text.id);
-    return p ? corpusById(p.corpus) : null;
-  }, [text.id]);
+  const parsedRef = useMemo(() => parseRef(text.id), [text.id]);
+  const corpus = parsedRef ? corpusById(parsedRef.corpus) : null;
   const isLxx = corpus?.id === "lxx";
   const translationCredit = isLxx
     ? "Traduction : Pierre Giguet, d’après les Septante (1872, domaine public)."
@@ -694,6 +692,18 @@ export default function Reader({ text }: { text: Text }) {
           ))}
           <p className="mt-3 text-xs text-base-content/70">{translationCredit}</p>
         </div>
+      )}
+
+      {/* Philologue/admin, LXX : accès direct à l'arbitrage des liens du chapitre lu. */}
+      {isLxx && canAnnotate && parsedRef && (
+        <p className="mt-4 text-xs">
+          <a
+            href={`/admin/arbitrage?book=${parsedRef.book}&ch=${parsedRef.chapter}`}
+            className="link text-base-content/60 underline-offset-2"
+          >
+            Arbitrer les liens de ce chapitre →
+          </a>
+        </p>
       )}
 
       <Tour

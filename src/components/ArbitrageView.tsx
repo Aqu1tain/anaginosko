@@ -15,7 +15,8 @@ type QItem = {
   proposals?: { reader: string; sources: [string, string][]; orphan?: [string, string][] }[];
 };
 type Row = { v: number; greek: string; ref: string; sources: Src[] | null; french: string | null; orphanGreek: boolean; overridden: boolean };
-type Chapter = { book: string; ch: number; state: State; rows: Row[]; queueItems: QItem[] };
+type Chapter = { book: string; ch: number; state: State; rows: Row[]; queueItems: QItem[]; gigChapters: string[] };
+type GigVerse = { ch: number; v: number; text: string; linkedTo?: string | null };
 
 const API = "/admin/arbitrage/api";
 const token = () => (typeof window !== "undefined" ? localStorage.getItem("anaginosko:token") : null);
@@ -47,6 +48,15 @@ export default function ArbitrageView() {
     setStates(d.states);
   }, []);
   useEffect(() => { if (editor) reload(); }, [editor, reload]);
+
+  // Deep-link depuis le lecteur : /admin/arbitrage?book=<id>&ch=<n> ouvre le chapitre.
+  useEffect(() => {
+    if (!editor) return;
+    const sp = new URLSearchParams(window.location.search);
+    const book = sp.get("book");
+    const ch = Number(sp.get("ch"));
+    if (book && Number.isInteger(ch)) setOpen({ book, ch });
+  }, [editor]);
 
   if (!ready) return null;
   if (!editor)
@@ -174,6 +184,8 @@ function ChapterEditor({ sel, onClose }: { sel: { book: string; ch: number; focu
                 item={data.queueItems.find((q) => q.ref === row.ref)}
                 focused={sel.focus === row.ref}
                 heavy={!!notConverged}
+                gigChapters={data.gigChapters}
+                defaultCh={String(sel.ch)}
                 onSaved={load} />
             ))}
           </div>
@@ -183,8 +195,9 @@ function ChapterEditor({ sel, onClose }: { sel: { book: string; ch: number; focu
   );
 }
 
-function VerseRow({ book, row, item, focused, heavy, onSaved }: {
-  book: string; row: Row; item?: QItem; focused: boolean; heavy: boolean; onSaved: () => void;
+function VerseRow({ book, row, item, focused, heavy, gigChapters, defaultCh, onSaved }: {
+  book: string; row: Row; item?: QItem; focused: boolean; heavy: boolean;
+  gigChapters: string[]; defaultCh: string; onSaved: () => void;
 }) {
   const needsEye = !!item || heavy;
   const [editing, setEditing] = useState(focused || heavy);
@@ -204,16 +217,28 @@ function VerseRow({ book, row, item, focused, heavy, onSaved }: {
         {!editing && needsEye && <button className="btn btn-xs btn-primary" onClick={() => setEditing(true)}>Arbitrer</button>}
         {!editing && !needsEye && <button className="btn btn-xs btn-ghost" onClick={() => setEditing(true)}>Modifier</button>}
       </div>
-      {editing && <Resolver book={book} row={row} item={item} onDone={() => { setEditing(false); onSaved(); }} onCancel={() => setEditing(false)} />}
+      {editing && (
+        <Resolver book={book} row={row} item={item} gigChapters={gigChapters} defaultCh={defaultCh}
+          onDone={() => { setEditing(false); onSaved(); }} onCancel={() => setEditing(false)} />
+      )}
     </div>
   );
 }
 
-function Resolver({ book, row, item, onDone, onCancel }: { book: string; row: Row; item?: QItem; onDone: () => void; onCancel: () => void }) {
+function Resolver({ book, row, item, gigChapters, defaultCh, onDone, onCancel }: {
+  book: string; row: Row; item?: QItem; gigChapters: string[]; defaultCh: string;
+  onDone: () => void; onCancel: () => void;
+}) {
   const [sources, setSources] = useState<Src[]>(row.sources ?? []);
   const [busy, setBusy] = useState(false);
   const [errors, setErrors] = useState<string[]>([]);
   const [gcache, setGcache] = useState<Record<string, string>>({});
+
+  // Lier/délier un verset Giguet depuis le panneau de parcours.
+  const toggle = (c: number, v: number, text: string) => {
+    setSources((s) => (s.some(([a, b]) => a === c && b === v) ? s.filter(([a, b]) => !(a === c && b === v)) : [...s, [c, v]]));
+    setGcache((g) => ({ ...g, [`${c}:${v}`]: text }));
+  };
 
   // Cache texte Giguet : charge à la demande le chapitre d'une source (pour l'aperçu).
   const ensureCh = useCallback(async (ch: number) => {
@@ -270,7 +295,8 @@ function Resolver({ book, row, item, onDone, onCancel }: { book: string; row: Ro
         <button className="btn btn-xs btn-ghost" onClick={() => setSources([])}>Orphelin</button>
       </div>
 
-      <GiguetPicker book={book} onAdd={(c, v, text) => { setSources((s) => [...s, [c, v]]); setGcache((g) => ({ ...g, [`${c}:${v}`]: text })); }} />
+      <GiguetPicker book={book} currentRef={row.ref} gigChapters={gigChapters} defaultCh={defaultCh}
+        selected={sources} onToggle={toggle} />
 
       {/* Aperçu exact du rendu public. */}
       <div className="mt-3 rounded-box border border-base-300 bg-base-100 p-3">
@@ -293,32 +319,85 @@ function Resolver({ book, row, item, onDone, onCancel }: { book: string; row: Ro
   );
 }
 
-function GiguetPicker({ book, onAdd }: { book: string; onAdd: (ch: number, v: number, text: string) => void }) {
+// Panneau Giguet : on FEUILLETTE la traduction en contexte (chapitre par chapitre,
+// versets entiers) et on clique pour lier/délier — la recherche plein texte est le
+// chemin secondaire. Les versets déjà liés ailleurs sont signalés, pas cachés.
+function GiguetPicker({ book, currentRef, gigChapters, defaultCh, selected, onToggle }: {
+  book: string; currentRef: string; gigChapters: string[]; defaultCh: string;
+  selected: Src[]; onToggle: (ch: number, v: number, text: string) => void;
+}) {
+  const [ch, setCh] = useState(gigChapters.includes(defaultCh) ? defaultCh : gigChapters[0]);
   const [q, setQ] = useState("");
-  const [results, setResults] = useState<{ ch: number; v: number; text: string }[]>([]);
+  const [verses, setVerses] = useState<GigVerse[]>([]);
+  const [results, setResults] = useState<GigVerse[]>([]);
+  const selKeys = new Set(selected.map(([c, v]) => `${c}:${v}`));
+  const searching = q.trim().length >= 2;
+
   useEffect(() => {
-    if (q.trim().length < 2) { setResults([]); return; }
+    let alive = true;
+    arb<{ results: GigVerse[] }>(`/search?book=${book}&ch=${ch}`).then((d) => { if (alive) setVerses(d.results || []); });
+    return () => { alive = false; };
+  }, [book, ch]);
+
+  useEffect(() => {
+    if (!searching) { setResults([]); return; }
     const t = setTimeout(async () => {
-      const d = await arb<{ results: typeof results }>(`/search?book=${book}&q=${encodeURIComponent(q)}`);
-      setResults(d.results);
+      const d = await arb<{ results: GigVerse[] }>(`/search?book=${book}&q=${encodeURIComponent(q)}`);
+      setResults(d.results || []);
     }, 250);
     return () => clearTimeout(t);
-  }, [q, book]);
+  }, [q, book, searching]);
+
+  const chIdx = gigChapters.indexOf(ch);
+  const rows = searching ? results : verses;
+
   return (
-    <div className="mt-3">
-      <div className="text-[0.7rem] font-medium uppercase tracking-wide text-base-content/60">Chercher un verset Giguet (n’importe où dans le livre)</div>
-      <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="mot ou phrase du français Giguet…"
-        className="input input-bordered input-sm mt-1 w-full" spellCheck={false} autoComplete="off" />
-      {results.length > 0 && (
-        <div className="mt-1 max-h-48 overflow-y-auto rounded-box border border-base-300">
-          {results.map((r) => (
-            <button key={`${r.ch}:${r.v}`} onClick={() => { onAdd(r.ch, r.v, r.text); setQ(""); setResults([]); }}
-              className="block w-full border-b border-base-200 px-2 py-1.5 text-left text-xs last:border-0 hover:bg-base-200">
-              <span className="font-mono text-base-content/60">{r.ch}:{r.v}</span> {r.text.slice(0, 90)}
+    <div className="mt-3 overflow-hidden rounded-box border border-base-300 bg-base-100">
+      <div className="flex flex-wrap items-center gap-2 border-b border-base-200 px-2.5 py-2">
+        <span className="text-[0.7rem] font-medium uppercase tracking-wide text-base-content/60">Giguet</span>
+        <input value={q} onChange={(e) => setQ(e.target.value)}
+          placeholder="Chercher dans tout le livre…"
+          className="input input-bordered input-xs min-w-0 flex-1"
+          spellCheck={false} autoComplete="off" />
+        {!searching && (
+          <div className="join">
+            <button type="button" className="btn btn-xs join-item" disabled={chIdx <= 0}
+              onClick={() => setCh(gigChapters[chIdx - 1])} aria-label="Chapitre précédent">‹</button>
+            <select className="select select-xs join-item" value={ch} onChange={(e) => setCh(e.target.value)}
+              aria-label="Chapitre Giguet">
+              {gigChapters.map((c) => <option key={c} value={c}>ch. {c}</option>)}
+            </select>
+            <button type="button" className="btn btn-xs join-item" disabled={chIdx < 0 || chIdx >= gigChapters.length - 1}
+              onClick={() => setCh(gigChapters[chIdx + 1])} aria-label="Chapitre suivant">›</button>
+          </div>
+        )}
+      </div>
+
+      <div className="max-h-72 overflow-y-auto">
+        {rows.map((r) => {
+          const key = `${r.ch}:${r.v}`;
+          const isSel = selKeys.has(key);
+          const elsewhere = r.linkedTo && r.linkedTo !== currentRef;
+          return (
+            <button key={key} type="button" onClick={() => onToggle(r.ch, r.v, r.text)}
+              title={isSel ? "Cliquer pour délier" : elsewhere ? `Déjà lié au grec ${r.linkedTo} — le lier ici demandera une réattribution` : "Cliquer pour lier"}
+              className={`block w-full border-l-2 px-3 py-2 text-left text-sm leading-relaxed transition-colors ${
+                isSel ? "border-primary bg-primary/10" : "border-transparent hover:bg-base-200"
+              }`}>
+              <span className={`verse-num ${isSel ? "text-primary" : ""}`}>{searching ? `${r.ch}:${r.v}` : r.v}</span>
+              <span className={elsewhere && !isSel ? "text-base-content/45" : "text-base-content/85"}>{r.text}</span>
+              {elsewhere && (
+                <span className="badge badge-ghost badge-xs ml-1.5 align-middle">→ grec {r.linkedTo}</span>
+              )}
             </button>
-          ))}
-        </div>
-      )}
+          );
+        })}
+        {rows.length === 0 && (
+          <p className="px-3 py-4 text-xs text-base-content/50">
+            {searching ? "Aucun verset ne correspond." : "Chapitre vide."}
+          </p>
+        )}
+      </div>
     </div>
   );
 }

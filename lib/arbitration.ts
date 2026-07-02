@@ -125,6 +125,12 @@ export function checkOverride(book: string, ref: string, sources: Source[]): { o
   return { ok: errors.length === 0, errors };
 }
 
+// Version sérialisable pour l'UI (contexte du picker : « ce verset Giguet est déjà
+// lié au grec X:Y »).
+export function sourceOwners(book: string): Record<string, string> {
+  return Object.fromEntries(giguetOwners(book));
+}
+
 // Carte : chaque verset Giguet -> le verset grec qui le consomme (override > auto),
 // pour détecter double emploi. Le verset ref courant est ignoré par l'appelant.
 function giguetOwners(book: string): Map<string, string> {

@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
-import { requireEditor, searchGiguet, giguet } from "@/lib/arbitration";
+import { requireEditor, searchGiguet, giguet, sourceOwners } from "@/lib/arbitration";
 
 export const dynamic = "force-dynamic";
 
-// Picker cherry-pick : cherche n'importe quel verset Giguet du livre par le texte
-// (q), ou renvoie un chapitre Giguet entier (ch) pour parcourir.
+// Picker Giguet : parcourir un chapitre entier (ch) ou chercher dans tout le livre
+// par le texte (q). Chaque verset porte `linkedTo` : le verset grec qui le consomme
+// déjà (contexte pour Biblion — un verset déjà lié est signalé, pas caché).
 export async function GET(req: Request) {
   const auth = await requireEditor(req.headers.get("authorization"));
   if (!auth.ok) return NextResponse.json({ error: "Réservé aux contributeurs." }, { status: 401 });
@@ -12,10 +13,18 @@ export async function GET(req: Request) {
   const book = url.searchParams.get("book") || "";
   const q = url.searchParams.get("q");
   const ch = url.searchParams.get("ch");
+  const owners = sourceOwners(book);
+  const enrich = (r: { ch: number; v: number; text: string }) => ({
+    ...r,
+    linkedTo: owners[`${r.ch}:${r.v}`] ?? null,
+  });
   if (ch != null) {
     const g = giguet()[book]?.[ch] || {};
-    const results = Object.keys(g).map((v) => ({ ch: Number(ch), v: Number(v), text: g[v] }));
+    const results = Object.keys(g)
+      .map(Number)
+      .sort((a, b) => a - b)
+      .map((v) => enrich({ ch: Number(ch), v, text: g[String(v)] }));
     return NextResponse.json({ results });
   }
-  return NextResponse.json({ results: searchGiguet(book, q || "") });
+  return NextResponse.json({ results: searchGiguet(book, q || "").map(enrich) });
 }
