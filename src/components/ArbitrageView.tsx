@@ -469,7 +469,7 @@ function GiguetPicker({ book, currentRef, gigChapters, defaultCh, selected, onTo
               <button type="button"
                 onClick={() => setExtract({ key, start: null })}
                 title="Lier seulement une partie du verset (plage de mots)"
-                className="btn btn-ghost btn-xs mr-1 mt-1.5 shrink-0 opacity-0 transition-opacity focus:opacity-100 group-hover:opacity-100">
+                className="btn btn-ghost btn-xs mr-1 mt-1.5 shrink-0 text-accent">
                 Extrait
               </button>
             </div>
