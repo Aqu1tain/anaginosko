@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import {
   letters,
   diphthongs,
@@ -69,7 +70,12 @@ export default function AlphabetView() {
         valeur et ses deux prononciations : l’<strong>érasmienne</strong>, héritée
         de l’enseignement classique, et la <strong>restituée</strong>, qui approche
         la prononciation du Ier siècle. Touchez une lettre pour le détail ; les
-        diphtongues, esprits et accents suivent plus bas.
+        diphtongues, esprits et accents suivent plus bas. Pour comprendre d’où
+        viennent ces deux systèmes et lequel choisir, lisez{" "}
+        <Link href="/prononciation" className="link link-primary">
+          notre page sur la prononciation du grec biblique
+        </Link>
+        .
       </p>
 
       <Section title="Les lettres">
