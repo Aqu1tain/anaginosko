@@ -111,21 +111,28 @@ export default function AdminView() {
     <div className="pb-10 pt-6">
       <h1 className="text-2xl font-bold">Tableau de bord</h1>
 
-      <div role="tablist" className="tabs tabs-boxed mt-3 w-fit">
-        <button
-          role="tab"
-          className={`tab ${tab === "annotations" ? "tab-active" : ""}`}
-          onClick={() => setTab("annotations")}
-        >
-          {annosTabLabel}
-        </button>
-        <button
-          role="tab"
-          className={`tab ${tab === "analytics" ? "tab-active" : ""}`}
-          onClick={() => setTab("analytics")}
-        >
-          Fréquentation
-        </button>
+      <div className="mt-3 flex flex-wrap items-center gap-2">
+        <div role="tablist" className="tabs tabs-boxed w-fit">
+          <button
+            role="tab"
+            className={`tab ${tab === "annotations" ? "tab-active" : ""}`}
+            onClick={() => setTab("annotations")}
+          >
+            {annosTabLabel}
+          </button>
+          <button
+            role="tab"
+            className={`tab ${tab === "analytics" ? "tab-active" : ""}`}
+            onClick={() => setTab("analytics")}
+          >
+            Fréquentation
+          </button>
+        </div>
+        {canEdit && (
+          <a href="/admin/arbitrage" className="btn btn-sm btn-outline border-base-300">
+            Arbitrage LXX →
+          </a>
+        )}
       </div>
 
       {tab === "analytics" && (
