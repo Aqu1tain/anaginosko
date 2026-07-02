@@ -6,7 +6,7 @@ import ResumeReading from "./_components/ResumeReading";
 
 export const metadata: Metadata = {
   description:
-    "Anaginosko : lire le grec koinè du Nouveau Testament, lettre par lettre. Prononciation érasmienne et restituée, alphabet interactif, concordance grecque et traduction française. Gratuit, sans publicité.",
+    "Anaginosko : lire la Bible en grec, lettre par lettre. Le Nouveau Testament en grec koinè, prononciation érasmienne et restituée, concordance et traduction française. Gratuit, sans publicité.",
   alternates: { canonical: "/" },
 };
 
@@ -80,7 +80,7 @@ export default function Home() {
           cadrée à droite. */}
       <section className="hidden pt-4 wide:grid wide:grid-cols-2 wide:items-stretch wide:gap-8">
         <div className="flex flex-col justify-center gap-5">
-          <h1 className="font-greek text-5xl leading-[1.1]">Lire le grec koinè</h1>
+          <h1 className="font-greek text-5xl leading-[1.1]">Lire la Bible en grec</h1>
           <p className="max-w-prose text-base leading-relaxed text-base-content/70">{INTRO}</p>
           <NtCta className="max-w-md" />
         </div>
@@ -107,7 +107,7 @@ export default function Home() {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
           <h1 className="font-greek absolute bottom-3 left-4 text-3xl text-white drop-shadow-md sm:text-4xl">
-            Lire le grec koinè
+            Lire la Bible en grec
           </h1>
         </div>
         <p className="mt-3 max-w-prose text-[0.95rem] leading-relaxed text-base-content/70">{INTRO}</p>

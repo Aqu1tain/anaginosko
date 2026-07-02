@@ -1,4 +1,5 @@
 import ConcordanceView from "@/src/components/ConcordanceView";
+import LemmaIndex from "@/app/_components/LemmaIndex";
 
 export const metadata = {
   title: "Concordance",
@@ -8,5 +9,10 @@ export const metadata = {
 };
 
 export default function ConcordancePage() {
-  return <ConcordanceView />;
+  return (
+    <>
+      <ConcordanceView />
+      <LemmaIndex />
+    </>
+  );
 }
