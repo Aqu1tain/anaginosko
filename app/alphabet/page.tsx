@@ -32,8 +32,10 @@ export default function AlphabetPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(termSet) }} />
       <BreadcrumbJsonLd items={[{ name: "Accueil", path: "/" }, { name: "L’alphabet grec", path: "/alphabet" }]} />
-      <Breadcrumb items={[{ label: "Accueil", href: "/", home: true }, { label: "L’alphabet grec" }]} />
-      <AlphabetView />
+      <div className="mx-auto max-w-2xl">
+        <Breadcrumb items={[{ label: "Accueil", href: "/", home: true }, { label: "L’alphabet grec" }]} />
+        <AlphabetView />
+      </div>
     </>
   );
 }

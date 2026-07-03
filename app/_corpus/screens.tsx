@@ -232,17 +232,19 @@ export async function ChapterScreen({
   };
 
   return (
-    <>
+    <div className="reading-page">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <h1 className="sr-only">{label}</h1>
-      <Breadcrumb
-        items={[
-          { label: "Accueil", href: "/", home: true },
-          { label: corpus.shortLabel, href: corpus.routePrefix },
-          { label: name, href: `${corpus.routePrefix}/${book}` },
-          { label: ch === 0 ? "Prologue" : String(ch) },
-        ]}
-      />
+      <div className="reading-col">
+        <Breadcrumb
+          items={[
+            { label: "Accueil", href: "/", home: true },
+            { label: corpus.shortLabel, href: corpus.routePrefix },
+            { label: name, href: `${corpus.routePrefix}/${book}` },
+            { label: ch === 0 ? "Prologue" : String(ch) },
+          ]}
+        />
+      </div>
       <Reader text={text} />
 
       <section className="sr-only" aria-label={`${label}, texte continu`}>
@@ -257,7 +259,7 @@ export async function ChapterScreen({
         {frenchBlock ? <p lang="fr">{frenchBlock}</p> : null}
       </section>
 
-      <nav className="mt-8 flex max-w-2xl items-center justify-between gap-3">
+      <nav className="reading-col mt-8 flex items-center justify-between gap-3">
         {prev != null ? (
           <Link href={`${corpus.routePrefix}/${book}/${prev}`} className="btn btn-sm btn-outline border-base-300">
             ← {prev === 0 ? "Prologue" : `Chapitre ${prev}`}
@@ -276,6 +278,6 @@ export async function ChapterScreen({
           <span />
         )}
       </nav>
-    </>
+    </div>
   );
 }
