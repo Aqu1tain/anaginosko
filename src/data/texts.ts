@@ -17,7 +17,7 @@ export type Text = {
   niveau: number;
   reference: string;
   grec: string;
-  /** Louis Segond 1910 (domaine public), par numéro de verset. */
+  /** Bible Crampon (néo-Crampon, domaine public), par numéro de verset. */
   francais: Record<string, string> | null;
   /** Versification française incompatible avec le grec (additions, réordonnancement) :
    *  afficher la traduction en bloc plutôt que de l'apparier verset par verset. */
