@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { texts, textById } from "@/src/data/texts";
 import Reader from "@/src/components/Reader";
 import Breadcrumb from "@/app/_components/Breadcrumb";
+import BreadcrumbJsonLd from "@/app/_components/BreadcrumbJsonLd";
 
 export const dynamicParams = false;
 
@@ -31,9 +32,12 @@ export default async function TextPage({ params }: { params: Promise<{ id: strin
   const text = textById(id);
   if (!text) notFound();
   return (
-    <>
-      <Breadcrumb items={[{ label: "Accueil", href: "/", home: true }, { label: text.reference }]} />
+    <div className="reading-page">
+      <BreadcrumbJsonLd items={[{ name: "Accueil", path: "/" }, { name: text.reference, path: `/text/${id}` }]} />
+      <div className="reading-col">
+        <Breadcrumb items={[{ label: "Accueil", href: "/", home: true }, { label: text.reference }]} />
+      </div>
       <Reader text={text} />
-    </>
+    </div>
   );
 }

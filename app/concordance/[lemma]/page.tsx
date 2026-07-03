@@ -8,6 +8,7 @@ import {
   loadOccurrencesFs,
 } from "@/lib/nt-server";
 import LemmaDetail from "@/src/components/LemmaDetail";
+import { glossFor } from "@/src/data/glosses";
 
 // Rendu serveur à la demande. Les données NT sont lues depuis NT_DATA_DIR (en
 // prod : le dossier servi par nginx, /var/www/anaginosko/nt), car elles ne sont
@@ -55,5 +56,27 @@ export default async function LemmaPage({ params }: { params: Promise<{ lemma: s
     loadCollocationsFs(entry.oid),
   ]);
 
-  return <LemmaDetail entry={entry} occ={occ} dist={dist} books={books} colloc={colloc} />;
+  // DefinedTerm : le lemme grec + sa definition Bailly (rendue serveur) comme
+  // terme lexical d'un rich result potentiel. inLanguage grc.
+  const gloss = glossFor(l);
+  const definedTerm = {
+    "@context": "https://schema.org",
+    "@type": "DefinedTerm",
+    name: l,
+    inLanguage: "grc",
+    url: `https://anaginosko.fr/concordance/${lemma}`,
+    ...(gloss?.excerpt ? { description: gloss.excerpt } : {}),
+    inDefinedTermSet: {
+      "@type": "DefinedTermSet",
+      name: "Concordance du Nouveau Testament",
+      url: "https://anaginosko.fr/concordance",
+    },
+  };
+
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(definedTerm) }} />
+      <LemmaDetail entry={entry} occ={occ} dist={dist} books={books} colloc={colloc} />
+    </>
+  );
 }

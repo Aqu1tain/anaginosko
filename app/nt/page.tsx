@@ -2,6 +2,7 @@ import Link from "next/link";
 import { loadBooksFs } from "../../lib/nt-server";
 import { NT_GROUPS, bookById } from "../../src/data/nt";
 import Breadcrumb from "../_components/Breadcrumb";
+import BreadcrumbJsonLd from "../_components/BreadcrumbJsonLd";
 
 export const metadata = {
   title: "Nouveau Testament",
@@ -13,6 +14,7 @@ export default async function NtTocPage() {
   const books = await loadBooksFs();
   return (
     <div className="pb-4">
+      <BreadcrumbJsonLd items={[{ name: "Accueil", path: "/" }, { name: "Nouveau Testament", path: "/nt" }]} />
       <Breadcrumb items={[{ label: "Accueil", href: "/", home: true }, { label: "Nouveau Testament" }]} />
       <h1 className="text-2xl font-bold">Nouveau Testament</h1>
       <p className="mt-1 mb-2 text-sm text-base-content/70">27 livres · texte grec SBLGNT</p>

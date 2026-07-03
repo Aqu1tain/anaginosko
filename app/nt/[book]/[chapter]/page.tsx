@@ -84,19 +84,21 @@ export default async function ChapterPage({
   };
 
   return (
-    <>
+    <div className="reading-page">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <h1 className="sr-only">
         {name} {ch}
       </h1>
-      <Breadcrumb
-        items={[
-          { label: "Accueil", href: "/", home: true },
-          { label: "NT", href: "/nt" },
-          { label: name, href: `/nt/${book}` },
-          { label: String(ch) },
-        ]}
-      />
+      <div className="reading-col">
+        <Breadcrumb
+          items={[
+            { label: "Accueil", href: "/", home: true },
+            { label: "NT", href: "/nt" },
+            { label: name, href: `/nt/${book}` },
+            { label: String(ch) },
+          ]}
+        />
+      </div>
       <Reader text={text} />
 
       <section className="sr-only" aria-label={`${name} ${ch}, texte continu`}>
@@ -110,7 +112,7 @@ export default async function ChapterPage({
         ))}
       </section>
 
-      <nav className="mt-8 flex max-w-2xl items-center justify-between gap-3">
+      <nav className="reading-col mt-8 flex items-center justify-between gap-3">
         {ch > 1 ? (
           <Link href={`/nt/${book}/${ch - 1}`} className="btn btn-sm btn-outline border-base-300">
             ← Chapitre {ch - 1}
@@ -129,6 +131,6 @@ export default async function ChapterPage({
           <span />
         )}
       </nav>
-    </>
+    </div>
   );
 }

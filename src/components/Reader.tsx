@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { textById, type Mot, type Text } from "../data/texts";
 import { loadChapter } from "../data/nt";
@@ -351,6 +351,18 @@ export default function Reader({ text }: { text: Text }) {
     !colsAvailable && translation === "columns" ? "verses" : translation;
   const transMode = hasFrench ? effectiveTranslation : "off";
 
+  // Signale au conteneur de page (.reading-page) si on est en mode colonnes, pour
+  // que le fil d'Ariane et la nav, rendus hors du lecteur, s'elargissent avec lui.
+  const rootRef = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const page = rootRef.current?.closest<HTMLElement>(".reading-page");
+    if (!page) return;
+    page.dataset.cols = String(transMode === "columns");
+    return () => {
+      page.dataset.cols = "false";
+    };
+  }, [transMode]);
+
   const greekProps = {
     spanWords: maps?.spanWords,
     charSpots: maps?.charSpots,
@@ -380,7 +392,7 @@ export default function Reader({ text }: { text: Text }) {
   const phraseNeedsEnd = sel?.scope === "phrase" && sel.anchorW === sel.headW;
 
   return (
-    <article>
+    <article ref={rootRef}>
       {annotateMode && (
         <div className="text-sm text-base-content/70">Touchez le texte pour sélectionner</div>
       )}
@@ -545,11 +557,11 @@ export default function Reader({ text }: { text: Text }) {
       </div>
 
       {transMode === "off" ? (
-        <div className="mt-5 max-w-2xl">
+        <div className="mt-5 mx-auto max-w-2xl">
           <GreekText text={text} size="lg" scale={textScale} translit={mode} manuscript={manuscript} highlightWord={highlight} {...greekProps} />
         </div>
       ) : transMode === "verses" ? (
-        <div className="mt-5 max-w-2xl">
+        <div className="mt-5 mx-auto max-w-2xl">
           {verses.map((v) => (
             <div key={v} className="border-b border-base-300/70 py-4 first:pt-0 last:border-0">
               <GreekText
@@ -576,7 +588,7 @@ export default function Reader({ text }: { text: Text }) {
         // Côte à côte : grec | français, alignés par verset. Sous 640px, dégrade
         // en colonne unique empilée (interligne) pour rester lisible (US-6). Sur
         // desktop, profite de la largeur (les deux colonnes respirent).
-        <div className="mt-5 wide:max-w-5xl">
+        <div className="mt-5 mx-auto wide:max-w-5xl">
           {verses.map((v) => (
             <div key={v} className="trans-row border-b border-base-300/70 py-3">
               <div className="trans-grec">

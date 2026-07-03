@@ -64,7 +64,7 @@ export default function AlphabetView() {
   return (
     <div className="pb-4">
       <h1 className="pt-6 text-2xl font-bold">L’alphabet grec</h1>
-      <p className="mt-2 max-w-prose text-[0.95rem] leading-relaxed text-base-content/70">
+      <p className="mt-2 text-[0.95rem] leading-relaxed text-base-content/70">
         Les 24 lettres de l’alphabet grec, d’alpha à oméga, telles qu’on les lit
         dans le grec koinè de la Bible. Chaque lettre est donnée avec son nom, sa
         valeur et ses deux prononciations : l’<strong>érasmienne</strong>, héritée
