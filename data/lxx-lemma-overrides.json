@@ -1,0 +1,13 @@
+{
+  "note": "Corrections de lemmatisation LXX (la morphologie auto CCAT confond parfois deux lemmes homographes). Rejouees a CHAQUE build, apres build-lxx et AVANT les downstream (distribution/collocations/glosses), par scripts/apply-lemma-overrides.mjs. Chaque regle reassigne lemme/nature/morph des mots qui matchent (forme + lemme courant, livres exclus optionnels). Autorite = Biblion.",
+  "rules": [
+    {
+      "id": "petron-petra",
+      "match": { "form": "πετρῶν", "lemma": "πέτρος" },
+      "exceptBooks": ["2ma"],
+      "set": { "lemma": "πέτρα", "nature": "Nom", "morph": "génitif féminin pluriel" },
+      "by": "Biblion",
+      "note": "La forme πετρῶν est le genitif pluriel de πέτρα (les rochers) dans toute la LXX. Le lemme masculin πέτρος n'apparait qu'en 2 Maccabees, sous la forme πέτρους (accusatif pluriel : lancer des pierres). L'auto-morpho avait etiquete les 11 πετρῶν comme genitif masculin pluriel de πέτρος a tort."
+    }
+  ]
+}

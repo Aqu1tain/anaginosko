@@ -106,10 +106,16 @@ for (const b of list) {
   // du chapitre (auto-résolu). Les chapitres bloqués n'ont PAS encore été traités
   // par la passe redondante -> pending-scale, VERROUILLÉS à Biblion : il suit la
   // passe, il ne la précède jamais. Ils N'ENTRENT PAS dans sa file (scale-first).
+  // Autorité = chapitres GRECS (Rahlfs), pas les clés de fr.json : un chapitre grec
+  // sans français (Job 26, prologue du Siracide, transpositions des Proverbes) doit
+  // rester arbitrable, sinon il est verrouillé hors de l'outil (« inexistant »).
   chapterState[id] = {};
-  for (const gCh of Object.keys(fr)) {
-    if (gCh === "_align") continue;
-    const ch = Number(gCh);
+  const greekChs = fs
+    .readdirSync(path.join(LXX, id))
+    .filter((f) => /^\d+\.json$/.test(f))
+    .map((f) => Number(f.slice(0, -5)))
+    .sort((a, b) => a - b);
+  for (const ch of greekChs) {
     const scaled = !blocks.has(ch);
     chapterState[id][ch] = { scaled, state: scaled ? "auto-resolved" : "pending-scale", pending: 0 };
   }
