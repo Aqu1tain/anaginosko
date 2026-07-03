@@ -23,11 +23,11 @@ export default function PrononciationPage() {
   const differing = letters.filter((l) => l.erasmien !== l.restituee);
 
   return (
-    <article className="pb-10">
+    <article className="mx-auto max-w-2xl pb-10">
       <Breadcrumb items={[{ label: "Accueil", href: "/", home: true }, { label: "Prononciation" }]} />
       <h1 className="text-2xl font-bold">Prononciation du grec biblique : érasmienne ou restituée ?</h1>
 
-      <div className="mt-3 max-w-prose space-y-3 text-[0.95rem] leading-relaxed text-base-content/85">
+      <div className="mt-3 space-y-3 text-[0.95rem] leading-relaxed text-base-content/85">
         <p>
           Comment prononçait-on le grec du Nouveau Testament et de la Septante ? Deux
           systèmes coexistent aujourd’hui dans l’étude du grec biblique, et Anaginosko
@@ -117,7 +117,7 @@ export default function PrononciationPage() {
         </div>
       </section>
 
-      <section className="mt-8 max-w-prose">
+      <section className="mt-8">
         <h2 className="text-lg font-bold">Pour aller plus loin</h2>
         <p className="mt-2 text-[0.95rem] leading-relaxed text-base-content/85">
           L’<Link href="/alphabet" className="link link-primary">alphabet grec complet</Link>{" "}

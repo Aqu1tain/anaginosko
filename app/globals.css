@@ -234,6 +234,19 @@ body {
   }
 }
 
+/* Colonne de lecture : centrée, étroite (42rem) en lecture simple, élargie
+   (64rem) en mode colonnes. Le lecteur pose data-cols sur .reading-page ; ainsi
+   le fil d'Ariane et la nav (rendus hors du lecteur) suivent la même largeur. */
+.reading-col {
+  margin-inline: auto;
+  max-width: 42rem;
+}
+@media (min-width: 75rem) {
+  .reading-page[data-cols="true"] .reading-col {
+    max-width: 64rem;
+  }
+}
+
 /* Numéro de verset, discret, pour se repérer. */
 .verse-num {
   font-family: var(--font-sans);
