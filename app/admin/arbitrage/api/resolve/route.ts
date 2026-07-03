@@ -1,7 +1,18 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { requireEditor, states, checkOverride, saveOverride, revokeOverride, applyToReader, effectiveSources, materialize, type Source } from "@/lib/arbitration";
 
 export const dynamic = "force-dynamic";
+
+// Le lecteur LXX est pré-rendu statiquement (generateStaticParams) : réécrire
+// fr.json ne suffit pas, il faut invalider la page pour qu'elle relise le fichier
+// frais au prochain accès. C'est ce qui rendait les corrections de Biblion
+// invisibles côté lecteur alors qu'elles étaient bien enregistrées.
+function syncReader(book: string, ref: string) {
+  applyToReader(book, ref); // matérialise fr.json
+  const ch = ref.split(":")[0];
+  revalidatePath(`/lxx/${book}/${ch}`); // régénère la page du chapitre
+}
 
 // Enregistre (ou révoque) une décision d'arbitrage. Intégrité sur CHAQUE écriture :
 // existence des versets Giguet, ref grec valide (round-trip), zéro-perte (aucun
@@ -20,7 +31,7 @@ export async function POST(req: Request) {
   // Révocation : retour à l'auto (l'humain corrige l'humain).
   if (body.revoke) {
     revokeOverride(book, ref);
-    applyToReader(book, ref);
+    syncReader(book, ref);
     const src = effectiveSources(book, ref);
     return NextResponse.json({ ok: true, revoked: true, preview: src ? materialize(book, src) : null });
   }
@@ -35,6 +46,6 @@ export async function POST(req: Request) {
   const check = checkOverride(book, ref, sources);
   if (!check.ok) return NextResponse.json({ ok: false, errors: check.errors }, { status: 422 });
   saveOverride(book, ref, sources, auth.name || "biblion", body.note);
-  applyToReader(book, ref); // matérialisation immédiate
+  syncReader(book, ref); // matérialise fr.json + régénère la page lecteur
   return NextResponse.json({ ok: true, preview: sources.length ? materialize(book, sources) : null });
 }
