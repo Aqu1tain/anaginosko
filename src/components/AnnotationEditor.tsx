@@ -33,10 +33,20 @@ export default function AnnotationEditor({
   target,
   onClose,
   onSaved,
+  title,
+  bodyLabel = "Note",
+  bodyPlaceholder = "Note philologique, neutre et factuelle…",
+  requireSource = true,
 }: {
   target: AnnotationTarget;
   onClose: () => void;
   onSaved: () => void;
+  /** Titre du modal (défaut : « Annoter » / « Modifier l’annotation »). */
+  title?: string;
+  bodyLabel?: string;
+  bodyPlaceholder?: string;
+  /** La source est obligatoire pour une annotation ; optionnelle pour une définition. */
+  requireSource?: boolean;
 }) {
   const editing = !!target.existing;
   const [body, setBody] = useState(target.existing?.body ?? "");
@@ -47,7 +57,8 @@ export default function AnnotationEditor({
 
   const linkUrl = link.trim() ? normalizeUrl(link) : null;
   const linkValid = link.trim() === "" || linkUrl != null;
-  const valid = body.trim().length > 0 && source.trim().length > 0 && linkValid;
+  const valid = body.trim().length > 0 && (!requireSource || source.trim().length > 0) && linkValid;
+  const heading = title ?? (editing ? "Modifier l’annotation" : "Annoter");
 
   const save = async () => {
     if (!valid) return;
@@ -78,7 +89,7 @@ export default function AnnotationEditor({
       <div className="absolute inset-0 bg-black/45 backdrop-blur-sm" onClick={onClose} aria-hidden="true" />
       <div
         role="dialog"
-        aria-label={editing ? "Modifier l’annotation" : "Ajouter une annotation"}
+        aria-label={heading}
         className="relative w-full max-w-lg rounded-t-3xl border border-base-300 bg-base-100 p-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))] shadow-2xl sm:rounded-3xl sm:pb-5"
       >
         <div className="mb-1 flex flex-wrap items-center gap-2 text-xs text-base-content/70">
@@ -86,24 +97,29 @@ export default function AnnotationEditor({
           <span className="font-mono">{target.ref}</span>
           {target.verse != null && <span>v. {target.verse}</span>}
         </div>
-        <h2 className="text-lg font-semibold">{editing ? "Modifier l’annotation" : "Annoter"}</h2>
+        <h2 className="text-lg font-semibold">{heading}</h2>
         {target.grec && <p className="mt-1 font-greek text-xl leading-snug text-primary">{target.grec}</p>}
 
         <label className="mt-4 block">
-          <span className="text-sm font-medium">Note</span>
+          <span className="text-sm font-medium">{bodyLabel}</span>
           <textarea
             value={body}
             onChange={(e) => setBody(e.target.value)}
             rows={4}
             autoFocus
-            placeholder="Note philologique, neutre et factuelle…"
+            placeholder={bodyPlaceholder}
             className="textarea textarea-bordered mt-1 w-full"
           />
         </label>
 
         <label className="mt-3 block">
           <span className="text-sm font-medium">
-            Source <span className="text-error">*</span>
+            Source{" "}
+            {requireSource ? (
+              <span className="text-error">*</span>
+            ) : (
+              <span className="font-normal text-base-content/70">(optionnel)</span>
+            )}
           </span>
           <input
             value={source}
