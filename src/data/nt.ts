@@ -137,6 +137,7 @@ export type Colloc = {
   score: number;
   n: number;
   verses?: VerseRef[];
+  hrefBase?: string; // vue croisee : base de concordance du voisin (NT vs LXX)
 };
 
 // Distribution par livre (non plafonnée), pour le profil de distribution.

@@ -8,7 +8,7 @@ import {
   loadOccurrencesFs,
 } from "@/lib/nt-server";
 import LemmaDetail from "@/src/components/LemmaDetail";
-import { NT } from "@/src/data/corpus";
+import { NT, LXX } from "@/src/data/corpus";
 import { glossFor } from "@/src/data/glosses";
 
 // Rendu serveur à la demande. Les données NT sont lues depuis NT_DATA_DIR (en
@@ -50,12 +50,24 @@ export default async function LemmaPage({ params }: { params: Promise<{ lemma: s
     );
   }
 
-  const [occ, dist, books, colloc] = await Promise.all([
+  const [occ, dist, books, colloc, lxxEntry] = await Promise.all([
     loadOccurrencesFs(entry.oid),
     loadDistributionFs(entry.oid),
     loadBooksFs(),
     loadCollocationsFs(entry.oid),
+    lemmaEntryFs(l, LXX),
   ]);
+
+  // Vue croisee : si le lemme existe aussi dans la Septante, on charge ses donnees
+  // pour la bascule NT / LXX / Les deux (la vie du mot sur toute la Bible grecque).
+  const cross = lxxEntry
+    ? await Promise.all([
+        loadOccurrencesFs(lxxEntry.oid, LXX),
+        loadDistributionFs(lxxEntry.oid, LXX),
+        loadBooksFs(LXX),
+        loadCollocationsFs(lxxEntry.oid, LXX),
+      ]).then(([o, d, b, c]) => ({ entry: lxxEntry, occ: o, dist: d, books: b, colloc: c, corpus: LXX }))
+    : undefined;
 
   // DefinedTerm : le lemme grec + sa définition Bailly (rendue serveur) comme
   // terme lexical d'un rich result potentiel. inLanguage grc.
@@ -77,7 +89,7 @@ export default async function LemmaPage({ params }: { params: Promise<{ lemma: s
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(definedTerm) }} />
-      <LemmaDetail entry={entry} occ={occ} dist={dist} books={books} colloc={colloc} corpus={NT} />
+      <LemmaDetail entry={entry} occ={occ} dist={dist} books={books} colloc={colloc} corpus={NT} cross={cross} />
     </>
   );
 }
