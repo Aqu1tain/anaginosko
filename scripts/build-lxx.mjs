@@ -12,6 +12,7 @@ import { dirname, resolve } from "node:path";
 import { grecToErasmien, grecToRestituee } from "./translit.mjs";
 import { decodeMorphCcat } from "./morph.mjs";
 import { BOOKS, resolveBook } from "./lib/lxx-books.mjs";
+import { loadLemmaOverrides, correctLemma } from "./lib/lemma-overrides.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const SRC = process.env.LXX_SRC || resolve(root, "data-sources/lxx-rahlfs");
@@ -90,6 +91,11 @@ const byBook = new Map(); // book.id -> Map<chapter, mots[]>
 const skipped = new Map(); // code source non retenu -> nb de mots
 let mapped = 0, nullMorph = 0, autre = 0;
 
+// Corrections de lemmatisation (Biblion) appliquees A LA SOURCE : lemmes.json,
+// occ, distribution et collocations en decoulent, donc corrects apres un rebuild.
+const lemmaRules = loadLemmaOverrides();
+let lemmaFixed = 0;
+
 for (let i = 1; i <= N; i++) {
   const m = meta[i];
   if (!m) continue;
@@ -100,10 +106,12 @@ for (let i = 1; i <= N; i++) {
   }
   const { book, chapter } = res;
   const grec = grecs[i - 1].replace(/[⸀-ⸯ]/g, "");
-  const lemme = lemmes[i - 1];
   const [pos, parse] = morphs[i - 1].split(".");
-  const nature = natureOf(pos);
-  const morph = decodeMorphCcat(pos, parse);
+  const corr = correctLemma(lemmaRules, book.id, grec, lemmes[i - 1], natureOf(pos), decodeMorphCcat(pos, parse));
+  if (corr.hit) lemmaFixed++;
+  const lemme = corr.lemme;
+  const nature = corr.nature;
+  const morph = corr.morph;
   if (nature === "Autre") autre++;
   if (!morph && pos !== "C" && pos !== "P" && pos !== "X" && pos !== "I" && pos !== "D") nullMorph++;
 
@@ -150,5 +158,6 @@ writeFileSync(resolve(outDir, "lemmas.json"), JSON.stringify(lemmaIndex));
 
 const skipTotal = [...skipped.values()].reduce((a, b) => a + b, 0);
 console.log(`\n\n${manifest.length} livres, ${mapped} mots, ${lemmaIndex.length} lemmes distincts.`);
+console.log(`Corrections de lemmatisation (Biblion) appliquees : ${lemmaFixed} mots (${lemmaRules.length} regles).`);
 console.log(`Couverture morpho : ${nullMorph} mots fléchis sans analyse, ${autre} POS « Autre ».`);
 console.log(`Ignorés (recensions non retenues) : ${skipTotal} mots - ${[...skipped.entries()].map(([c, n]) => `${c}:${n}`).join(", ")}`);
