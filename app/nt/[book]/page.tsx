@@ -4,6 +4,7 @@ import Link from "next/link";
 import { loadBooksFs } from "../../../lib/nt-server";
 import { bookById, BOOK_NAMES } from "../../../src/data/nt";
 import Breadcrumb from "../../_components/Breadcrumb";
+import BreadcrumbJsonLd from "../../_components/BreadcrumbJsonLd";
 
 export const dynamicParams = false;
 
@@ -38,6 +39,13 @@ export default async function NtBookPage({ params }: { params: Promise<{ book: s
 
   return (
     <div className="pb-4">
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Accueil", path: "/" },
+          { name: "Nouveau Testament", path: "/nt" },
+          { name: b.name, path: `/nt/${book}` },
+        ]}
+      />
       <Breadcrumb
         items={[
           { label: "Accueil", href: "/", home: true },
