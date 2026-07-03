@@ -1,26 +1,23 @@
-// Rejoue les corrections de lemmatisation de Biblion (data/lxx-lemma-overrides.json)
-// sur les chapitres LXX generes, puis met a jour les index derives (lemmas.json,
-// occ/, distribution/) pour les lemmes touches. Idempotent : rejoue a chaque build,
-// apres build-lxx et AVANT build-collocations (relancer les collocations ensuite).
+// Patch A CHAUD des corrections de lemmatisation (data/lxx-lemma-overrides.json)
+// sur des donnees LXX DEJA baties, sans rebuild complet : reassigne lemme/nature/
+// morph dans les chapitres, puis met a jour lemmas.json, occ/ et distribution/ pour
+// les lemmes touches. build-lxx.mjs applique deja ces memes regles a la source (lib
+// partagee scripts/lib/lemma-overrides.mjs) ; ce script sert quand on ne veut pas
+// relancer tout le pipeline Rahlfs. Relancer build-collocations ensuite (voisins).
 //
 //   node scripts/apply-lemma-overrides.mjs            (dry-run)
 //   node scripts/apply-lemma-overrides.mjs --apply    (ecrit)
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { loadLemmaOverrides, correctLemma } from "./lib/lemma-overrides.mjs";
 
 const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const LXX = process.env.LXX_DATA_DIR || path.join(repo, "public/lxx");
 const APPLY = process.argv.includes("--apply");
 const NFC = (s) => (s ?? "").normalize("NFC");
 
-const ovPath = path.join(repo, "data/lxx-lemma-overrides.json");
-const rules = (JSON.parse(fs.readFileSync(ovPath, "utf8")).rules || []).map((r) => ({
-  ...r,
-  form: NFC(r.match.form),
-  fromLemma: NFC(r.match.lemma),
-  except: new Set(r.exceptBooks || []),
-}));
+const rules = loadLemmaOverrides();
 
 const books = JSON.parse(fs.readFileSync(path.join(LXX, "books.json"), "utf8")).books;
 // Ordre numerique des chapitres (comme build-lxx) : occ/ reste en ordre source.
@@ -39,18 +36,15 @@ for (const b of books) {
     const data = JSON.parse(fs.readFileSync(p, "utf8"));
     let dirty = false;
     for (const m of data.mots) {
-      for (const r of rules) {
-        if (r.except.has(b.id)) continue;
-        if (NFC(m.grec) !== r.form || NFC(m.lemme) !== r.fromLemma) continue;
-        touched.add(r.fromLemma);
-        touched.add(NFC(r.set.lemma));
-        m.lemme = r.set.lemma;
-        if (r.set.nature) m.nature = r.set.nature;
-        if (r.set.morph) m.morph = r.set.morph;
-        dirty = true;
-        changed++;
-        break;
-      }
+      const corr = correctLemma(rules, b.id, m.grec, m.lemme, m.nature, m.morph);
+      if (!corr.hit) continue;
+      touched.add(NFC(m.lemme));
+      touched.add(NFC(corr.lemme));
+      m.lemme = corr.lemme;
+      m.nature = corr.nature;
+      if (corr.morph != null) m.morph = corr.morph;
+      dirty = true;
+      changed++;
     }
     if (dirty && APPLY) fs.writeFileSync(p, JSON.stringify({ reference: data.reference, mots: data.mots }));
   }

@@ -13,6 +13,8 @@
     "dev": "next dev",
     "build": "node scripts/build-data.mjs && node scripts/apply-overrides.mjs && next build",
     "arbitrage:data": "node scripts/build-giguet-source.mjs && node scripts/build-links.mjs",
+    "lxx:concordance": "CORPUS_DIR=public/lxx node scripts/build-nt-distribution.mjs && CORPUS_DIR=public/lxx node scripts/build-nt-collocations.mjs",
+    "lxx:rebuild": "node scripts/build-lxx.mjs && npm run lxx:concordance && CORPUS_DIR=public/lxx node scripts/fetch-nt-glosses.mjs",
     "start": "node .next/standalone/server.js",
     "lint": "next lint"
   },
