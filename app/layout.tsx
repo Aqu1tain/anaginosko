@@ -65,7 +65,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     "@type": "SearchAction",
                     target: {
                       "@type": "EntryPoint",
-                      urlTemplate: "https://anaginosko.fr/concordance/{search_term_string}",
+                      urlTemplate: "https://anaginosko.fr/concordance?q={search_term_string}",
                     },
                     "query-input": "required name=search_term_string",
                   },

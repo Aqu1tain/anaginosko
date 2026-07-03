@@ -50,6 +50,13 @@ const EXAMPLE_LEMMAS = ["λόγος", "ἀγάπη", "θεός", "πίστις",
 function List({ index, corpus }: { index: LemmaEntry[]; corpus: CorpusConfig }) {
   const [query, setQuery] = useState("");
   const results = useMemo(() => searchLemmaIndex(index, query), [index, query]);
+  // Amorce la recherche depuis ?q= (cible du SearchAction / sitelinks search box).
+  // Via window plutôt que useSearchParams pour ne pas forcer le rendu client de
+  // toute la page statique.
+  useEffect(() => {
+    const q = new URLSearchParams(window.location.search).get("q");
+    if (q) setQuery(q);
+  }, []);
   const examples = useMemo(() => {
     const byLemma = new Map(index.map((e) => [e.lemma, e]));
     return EXAMPLE_LEMMAS.map((l) => byLemma.get(l)).filter((e): e is LemmaEntry => !!e);
