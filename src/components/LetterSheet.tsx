@@ -12,6 +12,7 @@ import { playTranslit, playUrl } from "../lib/audio";
 import { useHasAudio } from "../hooks/useHasAudio";
 import { useAuth } from "../hooks/useAuth";
 import { useLemmaNotes } from "../hooks/useLemmaNotes";
+import { useLemmaDefinition } from "../hooks/useLemmaDefinition";
 import {
   fetchPronunciations,
   createPronunciation,
@@ -225,6 +226,7 @@ export default function LetterSheet({
   const { user } = useAuth();
   const canEdit = user?.role === "admin" || user?.role === "philologist";
   const { notes: lemmaNotes } = useLemmaNotes(stage === 2 && word ? word.lemme : null);
+  const { definition: lemmaDef } = useLemmaDefinition(stage === 2 && word ? word.lemme : null);
 
   // Overrides de prononciation pour ce texte (chargés une fois par ref).
   const [overrides, setOverrides] = useState<PronunciationOverride[]>([]);
@@ -495,12 +497,21 @@ export default function LetterSheet({
                     <span className="text-base-content/70"> · {word.nature}</span>
                   ) : null}
                 </div>
-                {anyGloss(word.lemme) && (
+                {lemmaDef ? (
+                  <div className="mt-1.5 rounded-lg border border-primary/40 bg-primary/5 px-3 py-2">
+                    <div className="text-[0.65rem] font-medium uppercase tracking-wide text-primary">
+                      Définition · Biblion
+                    </div>
+                    <p className="mt-1 whitespace-pre-wrap text-sm leading-snug text-base-content/90">
+                      {lemmaDef.body}
+                    </p>
+                  </div>
+                ) : anyGloss(word.lemme) ? (
                   <p className="mt-1 text-sm leading-snug text-base-content/70">
                     {anyGloss(word.lemme)!.excerpt}
                     <span className="text-base-content/70"> · Bailly</span>
                   </p>
-                )}
+                ) : null}
                 {lemmaNotes && lemmaNotes.length > 0 && (
                   <div className="mt-2 rounded-lg border border-primary/30 bg-primary/5 px-3 py-2">
                     <div className="text-[0.65rem] font-medium uppercase tracking-wide text-primary">

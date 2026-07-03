@@ -8,6 +8,7 @@ import Collocations from "./Collocations";
 import AnnotationEditor, { type AnnotationTarget } from "./AnnotationEditor";
 import { useAuth } from "../hooks/useAuth";
 import { useLemmaNotes } from "../hooks/useLemmaNotes";
+import { useLemmaDefinition } from "../hooks/useLemmaDefinition";
 import { type Annotation } from "../lib/api";
 import { glossFor } from "../data/glosses";
 import { pickBaillyEntry, baillyDefinition } from "../lib/bailly";
@@ -46,8 +47,9 @@ function formatDefinition(text: string): React.ReactNode {
 }
 
 // Définition Bailly : excerpt bundlé rendu côté serveur (indexable), puis
-// définition complète récupérée en direct côté client.
-function Definition({ lemma }: { lemma: string }) {
+// définition complète récupérée en direct côté client. `secondary` = une
+// définition Biblion la coiffe, on la présente en repli, plus discret.
+function Definition({ lemma, secondary = false }: { lemma: string; secondary?: boolean }) {
   const bundled = glossFor(lemma);
   const [text, setText] = useState<string | null>(bundled?.excerpt ?? null);
   const [uri, setUri] = useState<string | null>(bundled?.uri ?? null);
@@ -79,9 +81,9 @@ function Definition({ lemma }: { lemma: string }) {
   // « Recherche… » perpétuel quand Bailly n'a pas de définition exploitable).
   if (!text && state !== "loading") return null;
   return (
-    <div className="mt-3 rounded-box bg-base-200 px-4 py-3">
+    <div className={`rounded-box bg-base-200 px-4 py-3 ${secondary ? "mt-2 opacity-80" : "mt-3"}`}>
       <div className="text-[0.7rem] font-medium uppercase tracking-wide text-base-content/70">
-        Définition · Bailly
+        {secondary ? "Aussi · Bailly" : "Définition · Bailly"}
       </div>
       {text ? (
         <div className="mt-1.5 space-y-1.5">{formatDefinition(text)}</div>
@@ -131,6 +133,89 @@ function Occurrences({ entry, occ, corpus }: { entry: LemmaEntry; occ: Occ[]; co
         ))}
       </div>
     </div>
+  );
+}
+
+// Définition Biblion : système à part des annotations (ref « def:<lemma> »),
+// PRIORITAIRE sur Bailly. Quand elle existe, elle coiffe la fiche ; Bailly passe
+// en repli. Éditable par les philologues/admin.
+function LemmaDefinitions({ lemma }: { lemma: string }) {
+  const { user } = useAuth();
+  const canEdit = user?.role === "admin" || user?.role === "philologist";
+  const { definition, reload } = useLemmaDefinition(lemma);
+  const [editing, setEditing] = useState(false);
+
+  const target: AnnotationTarget = {
+    ref: `def:${lemma}`,
+    verse: null,
+    wordIndex: null,
+    endWordIndex: null,
+    graphemeIndex: null,
+    grec: lemma,
+    scopeLabel: "définition",
+    existing: definition ?? undefined,
+  };
+
+  return (
+    <>
+      {definition ? (
+        <>
+          <section className="mt-3 rounded-box border border-primary/40 bg-primary/5 px-4 py-3">
+            <div className="flex items-center justify-between gap-2">
+              <div className="text-[0.7rem] font-medium uppercase tracking-wide text-primary">
+                Définition · Biblion
+              </div>
+              {canEdit && (
+                <button onClick={() => setEditing(true)} className="btn btn-ghost btn-xs">
+                  Modifier
+                </button>
+              )}
+            </div>
+            <div className="mt-1.5 space-y-1.5 text-[0.95rem] leading-relaxed text-base-content/90">
+              {definition.body.split(/\n+/).filter(Boolean).map((p, i) => (
+                <p key={i}>{p}</p>
+              ))}
+            </div>
+            {(definition.author?.displayName || definition.source || definition.link) && (
+              <div className="mt-1.5 flex flex-wrap items-center gap-x-2 text-xs text-base-content/70">
+                {definition.author?.displayName && <span className="font-greek">{definition.author.displayName}</span>}
+                {definition.source && <span>· {definition.source}</span>}
+                {definition.link && (
+                  <a href={definition.link} target="_blank" rel="noreferrer" className="link text-primary">
+                    source ↗
+                  </a>
+                )}
+              </div>
+            )}
+          </section>
+          <Definition lemma={lemma} secondary />
+        </>
+      ) : (
+        <>
+          <Definition lemma={lemma} />
+          {canEdit && definition === null && (
+            <button onClick={() => setEditing(true)} className="btn btn-ghost btn-xs mt-2 text-primary">
+              + Définition Biblion
+            </button>
+          )}
+        </>
+      )}
+
+      {editing && (
+        <AnnotationEditor
+          target={target}
+          title="Définition Biblion"
+          bodyLabel="Définition"
+          bodyPlaceholder="Sens du mot dans le grec biblique, quand Bailly est imprécis ou absent…"
+          requireSource={false}
+          onClose={() => setEditing(false)}
+          onSaved={() => {
+            setEditing(false);
+            reload();
+          }}
+        />
+      )}
+    </>
   );
 }
 
@@ -248,12 +333,11 @@ export default function LemmaDetail({
         {entry.count} occurrence{entry.count > 1 ? "s" : ""} {corpus.locative}
       </p>
 
+      {/* Définition d'abord (Biblion prioritaire, Bailly en repli), puis les
+          annotations lemmatiques, puis répartition/voisins/occurrences. */}
+      <LemmaDefinitions lemma={entry.lemma} />
       <BiblionNote lemma={entry.lemma} />
 
-      {/* Empilement pleine largeur : chaque section respire sur deux colonnes
-          internes en desktop (livres de la répartition, voisins, occurrences),
-          aucune demi-colonne creuse. */}
-      <Definition lemma={entry.lemma} />
       <DistributionProfile entry={entry} dist={dist} books={books} occ={occ} corpus={corpus} />
       <Collocations items={colloc} occ={occ} corpus={corpus} />
       <Occurrences entry={entry} occ={occ} corpus={corpus} />
