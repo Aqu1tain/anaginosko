@@ -11,7 +11,7 @@ export async function generateStaticParams() {
   return texts.map((t) => ({ id: t.id }));
 }
 
-// Traduction française (Segond 1910) ordonnée par verset, en un texte continu.
+// Traduction française (Crampon) ordonnée par verset, en un texte continu.
 function frenchOrdered(text: Text): string {
   if (!text.francais) return "";
   return Object.keys(text.francais)
