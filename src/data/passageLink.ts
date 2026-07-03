@@ -45,6 +45,7 @@ export function linkedRef(ref: string): string | null {
 /** URL de lecture pour une annotation (corpus, passage, ou note de lemme). */
 export function refHref(ref: string, wordIndex: number | null): string {
   if (ref.startsWith("lemma:")) return `/concordance/${encodeURIComponent(ref.slice(6))}`;
+  if (ref.startsWith("def:")) return `/concordance/${encodeURIComponent(ref.slice(4))}`;
   const w = wordIndex != null ? `?w=${wordIndex}` : "";
   const parsed = parseRef(ref);
   if (parsed) return `${corpusById(parsed.corpus).routePrefix}/${parsed.book}/${parsed.chapter}${w}`;

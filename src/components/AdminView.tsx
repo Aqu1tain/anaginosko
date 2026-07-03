@@ -17,6 +17,7 @@ import AdminAnalytics from "./AdminAnalytics";
 
 function locationLabel(ref: string): string {
   if (ref.startsWith("lemma:")) return ref.slice(6);
+  if (ref.startsWith("def:")) return ref.slice(4);
   const p = parseRef(ref);
   if (p) {
     const names = corpusById(p.corpus).bookNames;
@@ -35,9 +36,12 @@ function formatDate(iso: string | null): string {
 }
 
 function scopeLabel(a: Annotation): string {
+  if (a.ref.startsWith("def:")) return "définition";
   if (a.ref.startsWith("lemma:")) return "lemme";
   return a.graphemeIndex != null ? "caractère" : a.endWordIndex != null ? "phrase" : "mot";
 }
+
+const isDefinition = (a: Annotation) => a.ref.startsWith("def:");
 
 function targetFromAnnotation(a: Annotation): AnnotationTarget {
   return {
@@ -65,22 +69,30 @@ export default function AdminView() {
   const [error, setError] = useState(false);
   const [editing, setEditing] = useState<AnnotationTarget | null>(null);
   const [pendingDelete, setPendingDelete] = useState<Annotation | null>(null);
-  const [tab, setTab] = useState<"annotations" | "analytics">("annotations");
+  const [tab, setTab] = useState<"annotations" | "definitions" | "analytics">("annotations");
   const [query, setQuery] = useState("");
+
+  // Les définitions Biblion (def:) sont un système à part : onglet dédié, hors
+  // de la liste des annotations.
+  const defs = useMemo(() => annos.filter(isDefinition), [annos]);
+  const plainAnnos = useMemo(() => annos.filter((a) => !isDefinition(a)), [annos]);
+  const baseList = tab === "definitions" ? defs : plainAnnos;
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    if (!q) return annos;
-    return annos.filter(
+    if (!q) return baseList;
+    return baseList.filter(
       (a) =>
         a.body.toLowerCase().includes(q) ||
         (a.source ?? "").toLowerCase().includes(q) ||
         locationLabel(a.ref).toLowerCase().includes(q) ||
         (a.author?.displayName ?? "").toLowerCase().includes(q),
     );
-  }, [annos, query]);
+  }, [baseList, query]);
 
   const annosTabLabel = seesAll ? "Annotations" : "Mes annotations";
+  const onList = tab === "annotations" || tab === "definitions";
+  const noun = tab === "definitions" ? "définition" : "annotation";
 
   const reload = () => {
     const jobs: Promise<unknown>[] = [fetchMyAnnotations().then(setAnnos)];
@@ -122,6 +134,13 @@ export default function AdminView() {
           </button>
           <button
             role="tab"
+            className={`tab ${tab === "definitions" ? "tab-active" : ""}`}
+            onClick={() => setTab("definitions")}
+          >
+            Définitions
+          </button>
+          <button
+            role="tab"
             className={`tab ${tab === "analytics" ? "tab-active" : ""}`}
             onClick={() => setTab("analytics")}
           >
@@ -145,20 +164,20 @@ export default function AdminView() {
         </section>
       )}
 
-      {tab === "annotations" && (
+      {onList && (
         <section className="mt-5">
           <div className="flex flex-wrap items-center gap-2">
             <input
               type="search"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Chercher : texte, source, livre, auteur…"
+              placeholder={tab === "definitions" ? "Chercher : lemme, texte, source…" : "Chercher : texte, source, livre, auteur…"}
               className="input input-bordered input-sm w-full max-w-md"
               autoComplete="off"
               spellCheck={false}
             />
             <span className="text-xs text-base-content/70">
-              {filtered.length}{query ? ` / ${annos.length}` : ""} annotation{filtered.length > 1 ? "s" : ""}
+              {filtered.length}{query ? ` / ${baseList.length}` : ""} {noun}{filtered.length > 1 ? "s" : ""}
             </span>
           </div>
           <div className="mt-3 grid grid-cols-1 gap-2">
@@ -215,7 +234,11 @@ export default function AdminView() {
             ))}
             {filtered.length === 0 && (
               <p className="text-sm text-base-content/70">
-                {query ? "Aucune annotation ne correspond." : "Aucune annotation pour l’instant."}
+                {query
+                  ? `Aucune ${noun} ne correspond.`
+                  : tab === "definitions"
+                    ? "Aucune définition pour l’instant. Créez-en une depuis une fiche de lemme."
+                    : "Aucune annotation pour l’instant."}
               </p>
             )}
           </div>
