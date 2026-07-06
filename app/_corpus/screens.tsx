@@ -207,6 +207,19 @@ export async function ChapterScreen({
   const prev = idx > 0 ? nums[idx - 1] : null;
   const next = idx < nums.length - 1 ? nums[idx + 1] : null;
 
+  // Aux frontières d'un livre, la lecture suivie continue sur le livre voisin (au
+  // lieu d'une impasse) : livres en ordre canonique, on saute au 1er/dernier chapitre.
+  const bIdx = books.findIndex((x) => x.id === book);
+  const nextBook = next == null && bIdx >= 0 && bIdx < books.length - 1 ? books[bIdx + 1] : null;
+  const prevBook = prev == null && bIdx > 0 ? books[bIdx - 1] : null;
+  const bookName = (id: string) => corpus.bookNames[id] ?? id;
+  const chLabel = (n: number) => (n === 0 ? "Prol." : String(n));
+  const firstCh = (bk: NtBook) => chapterNumbers(bk)[0];
+  const lastCh = (bk: NtBook) => {
+    const n = chapterNumbers(bk);
+    return n[n.length - 1];
+  };
+
   const name = corpus.bookNames[book] ?? "Livre";
   const label = chapterLabel(name, ch);
   const url = `${SITE}${corpus.routePrefix}/${book}/${ch}`;
@@ -267,6 +280,14 @@ export async function ChapterScreen({
           <Link href={`${corpus.routePrefix}/${book}/${prev}`} className="btn btn-sm btn-outline border-base-300">
             ← {prev === 0 ? "Prologue" : `Chapitre ${prev}`}
           </Link>
+        ) : prevBook ? (
+          <Link
+            href={`${corpus.routePrefix}/${prevBook.id}/${lastCh(prevBook)}`}
+            className="btn btn-sm btn-outline border-base-300"
+            title={`${bookName(prevBook.id)} ${chLabel(lastCh(prevBook))}`}
+          >
+            ← {bookName(prevBook.id)}
+          </Link>
         ) : (
           <span />
         )}
@@ -276,6 +297,14 @@ export async function ChapterScreen({
         {next != null ? (
           <Link href={`${corpus.routePrefix}/${book}/${next}`} className="btn btn-sm btn-outline border-base-300">
             Chapitre {next} →
+          </Link>
+        ) : nextBook ? (
+          <Link
+            href={`${corpus.routePrefix}/${nextBook.id}/${firstCh(nextBook)}`}
+            className="btn btn-sm btn-primary"
+            title={`${bookName(nextBook.id)} ${chLabel(firstCh(nextBook))}`}
+          >
+            {bookName(nextBook.id)} →
           </Link>
         ) : (
           <span />
