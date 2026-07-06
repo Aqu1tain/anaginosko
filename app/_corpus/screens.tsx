@@ -87,7 +87,9 @@ export async function TocScreen({ corpus }: { corpus: CorpusConfig }) {
         {books.length} livres · texte grec {corpus.sourceLabel}
       </p>
 
-      <RefJump books={books} routePrefix={corpus.routePrefix} />
+      <div className="mt-3 max-w-md">
+        <RefJump books={books} routePrefix={corpus.routePrefix} />
+      </div>
 
       {corpus.editorialGroups.map((group) => (
         <section key={group.title} className="pt-5">

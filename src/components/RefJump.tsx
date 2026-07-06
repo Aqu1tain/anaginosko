@@ -56,7 +56,20 @@ export default function RefJump({ books, routePrefix }: { books: Book[]; routePr
   };
 
   return (
-    <div className="relative mt-3">
+    <div className="relative w-full">
+      <svg
+        aria-hidden="true"
+        className="pointer-events-none absolute left-3.5 top-1/2 z-10 h-4 w-4 -translate-y-1/2 text-base-content/50"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <circle cx="11" cy="11" r="7" />
+        <path d="M21 21l-4-4" />
+      </svg>
       <input
         ref={inputRef}
         type="search"
@@ -70,10 +83,10 @@ export default function RefJump({ books, routePrefix }: { books: Book[]; routePr
         aria-label="Aller à une référence"
         autoComplete="off"
         spellCheck={false}
-        className="input input-bordered input-sm w-full max-w-md"
+        className="input input-bordered w-full pl-10"
       />
       {matches.length > 0 && (
-        <ul className="absolute z-20 mt-1 w-full max-w-md overflow-hidden rounded-box border border-base-300 bg-base-100 shadow-lg">
+        <ul className="absolute z-20 mt-1 w-full overflow-hidden rounded-box border border-base-300 bg-base-100 shadow-lg">
           {matches.map((b, idx) => (
             <li key={b.id}>
               <button
