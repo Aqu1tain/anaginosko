@@ -30,22 +30,6 @@ function IntroText({ className = "" }: { className?: string }) {
   );
 }
 
-// Accès aux deux corpus + une phrase qui dit ce qu'est la Septante (jamais expliquée
-// à un non-initié) + l'identité du projet, en une ligne discrète. Partagé entre le
-// héros desktop et le bloc mobile.
-function CorpusAccess({ ntSub, lxxSub, className = "" }: { ntSub: string; lxxSub: string; className?: string }) {
-  return (
-    <div className={`flex flex-col gap-3 ${className}`}>
-      <CorpusCta href="/nt" title="Nouveau Testament complet" subtitle={ntSub} primary />
-      <CorpusCta href="/lxx" title="Septante, l’Ancien Testament grec" subtitle={lxxSub} />
-      <p className="text-xs leading-relaxed text-base-content/70">
-        La Septante est la traduction grecque de l’Ancien Testament, lue par les premiers chrétiens. Projet
-        libre et indépendant, gratuit et sans publicité.
-      </p>
-    </div>
-  );
-}
-
 const TOOLS = [
   { href: "/alphabet", title: "Alphabet", desc: "Les 24 lettres : nom, tracé et prononciation." },
   { href: "/prononciation", title: "Prononciation", desc: "Érasmienne et restituée, comparées." },
@@ -95,7 +79,7 @@ function CorpusCta({
 }) {
   const style = primary
     ? "bg-primary text-primary-content shadow-sm hover:bg-primary/90"
-    : "border border-base-300 bg-base-100 hover:border-primary/40";
+    : "border border-base-300 bg-base-200 hover:border-primary/40";
   return (
     <Link
       href={href}
@@ -171,59 +155,80 @@ export default async function Home() {
   ];
   return (
     <div>
-      {/* Desktop : héros en deux temps - titre + intro + accès NT à gauche, image
-          cadrée à droite. */}
-      <section className="hidden pt-6 wide:grid wide:grid-cols-2 wide:items-stretch wide:gap-8">
-        <div className="flex flex-col justify-center gap-6">
-          <h1 className="font-greek text-5xl leading-[1.1]">Lire la Bible en grec</h1>
-          <IntroText className="max-w-prose text-base leading-relaxed text-base-content/70" />
-          <CorpusAccess ntSub={ntSub} lxxSub={lxxSub} className="max-w-md" />
-        </div>
-        <div className="relative min-h-[22rem] overflow-hidden rounded-box">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/scribe.jpg"
-            alt={SCRIBE_ALT}
-            className="absolute inset-0 h-full w-full object-cover object-center"
-            loading="eager"
-          />
+      {/* Pupitre : le poste de travail du lecteur récurrent, en tête - reprendre la
+          lecture et aller directement à une référence (NT ou Septante). */}
+      <section className="mt-4 rounded-box bg-primary px-4 py-4 text-primary-content wide:px-5">
+        <p className="mb-2.5 text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-primary-content/55">
+          Votre pupitre
+        </p>
+        <div className="flex flex-col gap-2.5 wide:flex-row wide:items-center wide:gap-3">
+          <ResumeReading />
+          <div className="min-w-0 wide:flex-1">
+            <RefJump books={allBooks} routePrefix={NT.routePrefix} />
+          </div>
         </div>
       </section>
 
-      {/* Mobile : image en bandeau avec titre incrusté (inchangé). */}
-      <section className="pt-6 pb-2 wide:hidden">
-        <div className="relative overflow-hidden rounded-box">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/scribe.jpg"
-            alt={SCRIBE_ALT}
-            className="h-48 w-full object-cover object-center sm:h-60"
-            loading="eager"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-          <h1 className="font-greek absolute bottom-3 left-4 text-3xl text-white drop-shadow-md sm:text-4xl">
-            Lire la Bible en grec
-          </h1>
+      {/* Héros éditorial : à gauche la promesse et les accès ; à droite un verset réel
+          (Jean 1,1) en carte « essayez ici » qui mène à la lecture. */}
+      <section className="mt-10 grid gap-8 wide:mt-14 wide:grid-cols-2 wide:items-center wide:gap-12">
+        <div>
+          <p className="text-xs font-bold uppercase tracking-[0.14em] text-accent">
+            Nouveau Testament · Septante — texte intégral
+          </p>
+          <h1 className="mt-3 font-greek text-4xl leading-[1.1] wide:text-5xl">Lire la Bible en grec</h1>
+          <IntroText className="mt-4 max-w-prose text-base leading-relaxed text-base-content/70" />
+          <div className="mt-6 flex max-w-lg flex-col gap-2.5">
+            <CorpusCta href="/nt" title="Nouveau Testament complet" subtitle={ntSub} primary />
+            <CorpusCta href="/lxx" title="Septante, l’Ancien Testament grec" subtitle={lxxSub} />
+          </div>
+          <p className="mt-3 max-w-lg text-xs leading-relaxed text-base-content/70">
+            La Septante est la traduction grecque de l’Ancien Testament, lue par les premiers chrétiens.
+            Projet libre et indépendant, gratuit et sans publicité.
+          </p>
         </div>
-        <IntroText className="mt-3 max-w-prose text-[0.95rem] leading-relaxed text-base-content/70" />
-      </section>
 
-      {/* Mobile : les accès aux corpus viennent juste après l'intro (dans le héros sur desktop). */}
-      <CorpusAccess ntSub={ntSub} lxxSub={lxxSub} className="mt-6 wide:hidden" />
-
-      {/* Accès rapide (lecteur récurrent) : une seule barre - reprendre la lecture (si
-          en cours, à gauche) et aller directement à une référence (NT ou Septante, la
-          recherche remplit le reste). Empilés sur mobile. ResumeReading est neutre en
-          marge (rendu null sans lecture en cours) : la recherche prend alors toute la
-          largeur. */}
-      <section className="mt-8 flex max-w-3xl flex-col gap-3 wide:mt-10 wide:flex-row wide:items-center">
-        <ResumeReading />
-        <div className="min-w-0 wide:flex-1">
-          <RefJump books={allBooks} routePrefix={NT.routePrefix} />
-        </div>
+        <Link
+          href="/nt/jn/1"
+          className="group block overflow-hidden rounded-box border border-base-300 shadow-sm transition hover:shadow-md"
+        >
+          <div className="flex items-center justify-between bg-primary px-4 py-2.5 text-primary-content">
+            <span className="text-sm font-medium">Jean 1 · verset 1</span>
+            <span className="text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-primary-content/70">
+              Essayez ici →
+            </span>
+          </div>
+          <div className="bg-base-200 p-5 wide:p-6">
+            <p className="font-greek text-2xl leading-relaxed wide:text-[1.7rem]">
+              <sup className="mr-0.5 text-sm text-accent">1</sup>
+              Ἐν ἀρχῇ ἦν ὁ{" "}
+              <span className="underline decoration-accent decoration-2 underline-offset-4">λόγος</span>, καὶ ὁ
+              λόγος ἦν πρὸς τὸν θεόν, καὶ θεὸς ἦν ὁ λόγος.
+            </p>
+            <p className="mt-4 flex flex-wrap items-center gap-2 text-sm text-base-content/70">
+              Touchez une lettre soulignée, ou
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-base-300 bg-base-100 px-3 py-1 font-medium text-base-content">
+                <span className="font-greek">λόγος</span> · le mot entier
+              </span>
+            </p>
+          </div>
+        </Link>
       </section>
 
       <Passages />
+
+      {/* Image du scribe, descendue plus bas : affichée en entier (pas de crop),
+          modeste et centrée, entre les passages et les outils. */}
+      <div className="mt-11 wide:mt-16">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/scribe.jpg"
+          alt={SCRIBE_ALT}
+          className="mx-auto w-full max-w-2xl rounded-box"
+          loading="lazy"
+        />
+      </div>
+
       <Tools />
 
       {/* Soutien : l'ask complet vit en bas de page (l'identité « projet libre et
