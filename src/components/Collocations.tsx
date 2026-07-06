@@ -14,7 +14,8 @@ function SharedVerses({ colloc, formByVerse, corpus }: { colloc: Colloc; formByV
     <div className="mt-1 mb-2 ml-2 grid gap-1 border-l-2 border-base-300 pl-2">
       {verses.map((vr, i) => {
         const o = formByVerse.get(`${vr.b}:${vr.c}:${vr.v}`);
-        const href = o ? `${corpus.routePrefix}/${vr.b}/${vr.c}?w=${o.w}` : `${corpus.routePrefix}/${vr.b}/${vr.c}`;
+        const prefix = corpus.routePrefixOf?.(vr.b) ?? corpus.routePrefix;
+        const href = o ? `${prefix}/${vr.b}/${vr.c}?w=${o.w}` : `${prefix}/${vr.b}/${vr.c}`;
         return (
           <Link
             key={i}
@@ -34,7 +35,7 @@ function SharedVerses({ colloc, formByVerse, corpus }: { colloc: Colloc; formByV
         </p>
       )}
       <Link
-        href={`${corpus.concordanceBase}/${encodeURIComponent(colloc.lemma)}`}
+        href={`${colloc.hrefBase ?? corpus.concordanceBase}/${encodeURIComponent(colloc.lemma)}`}
         className="link px-1.5 py-1 text-xs text-base-content/70"
       >
         Concordance de <span className="font-greek">{colloc.lemma}</span> →
@@ -71,7 +72,7 @@ export default function Collocations({ items, occ, corpus }: { items: Colloc[]; 
         {items.map((c, i) => {
           const isOpen = open === i;
           return (
-            <div key={c.oid}>
+            <div key={c.lemma}>
               <button
                 onClick={() => setOpen((p) => (p === i ? null : i))}
                 aria-expanded={isOpen}

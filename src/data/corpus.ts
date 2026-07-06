@@ -27,6 +27,9 @@ export type CorpusConfig = {
   bookNames: Record<string, string>;
   editorialGroups: EditorialGroup[]; // regroupement de la table des matières
   subGroups: SubGroup[]; // regroupement/couleurs du profil de répartition
+  // Vue combinée « toute la Bible grecque » : les livres NT et LXX cohabitent, la
+  // route de lecture depend du livre. Absent = corpus mono (routePrefix suffit).
+  routePrefixOf?: (book: string) => string;
 };
 
 export const NT: CorpusConfig = {
@@ -70,6 +73,35 @@ export const LXX: CorpusConfig = {
 };
 
 export const CORPORA: CorpusConfig[] = [NT, LXX];
+
+// Corpus synthetique pour la vue croisee NT + LXX (« Les deux ») : livres et
+// groupes des deux corpus concatenes, route de lecture resolue par livre. Sert
+// uniquement a l'affichage combine des fiches de lemme (jamais au routage ou aux
+// donnees). Ids de sous-groupes prefixes pour eviter toute collision NT/LXX.
+const lxxBooks = new Set(LXX.bookOrder);
+export const GREEK_BIBLE: CorpusConfig = {
+  ...NT,
+  id: "bible",
+  concordanceBase: "/concordance",
+  label: "toute la Bible grecque",
+  genitive: "de la Bible grecque",
+  locative: "dans toute la Bible grecque",
+  shortLabel: "NT+LXX",
+  bookOrder: [...NT.bookOrder, ...LXX.bookOrder],
+  bookNames: { ...NT.bookNames, ...LXX.bookNames },
+  editorialGroups: [...NT.editorialGroups, ...LXX.editorialGroups],
+  subGroups: [
+    ...NT.subGroups.map((g) => ({ ...g, id: `nt-${g.id}` })),
+    ...LXX.subGroups.map((g) => ({ ...g, id: `lxx-${g.id}` })),
+  ],
+  routePrefixOf: (book) => (lxxBooks.has(book) ? "/lxx" : "/nt"),
+};
+
+// Base de concordance d'un lemme voisin dans la vue croisee : NT prioritaire.
+export const concordanceBaseForBook = (book: string): string =>
+  lxxBooks.has(book) ? "/lxx/concordance" : "/concordance";
+
+export const otherCorpus = (c: CorpusConfig): CorpusConfig => (c.id === "lxx" ? NT : LXX);
 
 const byId = new Map(CORPORA.map((c) => [c.id, c]));
 

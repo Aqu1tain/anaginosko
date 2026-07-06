@@ -122,7 +122,7 @@ export default function DistributionProfile({
             />
           </div>
         </button>
-        {open && <Verses occ={occ} row={r} routePrefix={corpus.routePrefix} />}
+        {open && <Verses occ={occ} row={r} routePrefix={corpus.routePrefixOf?.(r.id) ?? corpus.routePrefix} />}
       </div>
     );
   };
