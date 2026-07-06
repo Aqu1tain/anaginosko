@@ -95,14 +95,17 @@ export default function TopBar({ dark, onToggleTheme }: { dark: boolean; onToggl
     <header className="sticky top-0 z-30 border-b border-base-300 bg-base-100/85 pt-[env(safe-area-inset-top)] backdrop-blur-md">
       <div className="navbar mx-auto min-h-14 w-full max-w-2xl gap-1 px-2 wide:max-w-[84rem] wide:px-6">
         <div className="flex min-w-0 flex-1 items-center gap-1">
-          {isLibrary ? (
-            <Link
-              href="/"
-              className="btn btn-ghost px-2 text-xl font-bold tracking-tight font-[family-name:var(--font-syne)]"
-            >
-              Anaginosko
-            </Link>
-          ) : (
+          {/* Wordmark : lien accueil permanent sur desktop (convention wordmark ->
+              accueil). Sur mobile, visible seulement sur l'accueil ; ailleurs la
+              place revient au chevron retour + titre. */}
+          <Link
+            href="/"
+            aria-label="Accueil"
+            className={`btn btn-ghost px-2 text-xl font-bold tracking-tight font-[family-name:var(--font-syne)] ${isLibrary ? "" : "hidden wide:inline-flex"}`}
+          >
+            Anaginosko
+          </Link>
+          {!isLibrary && (
             <>
               <button
                 type="button"

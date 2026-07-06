@@ -1,5 +1,6 @@
 import ConcordanceView from "@/src/components/ConcordanceView";
 import LemmaIndex from "@/app/_corpus/LemmaIndex";
+import Breadcrumb from "@/app/_components/Breadcrumb";
 import { LXX } from "@/src/data/corpus";
 
 export const metadata = {
@@ -12,6 +13,7 @@ export const metadata = {
 export default function LxxConcordancePage() {
   return (
     <>
+      <Breadcrumb items={[{ label: "Accueil", href: "/", home: true }, { label: "Concordance de la Septante" }]} />
       <ConcordanceView corpus={LXX} />
       <LemmaIndex corpus={LXX} />
     </>
