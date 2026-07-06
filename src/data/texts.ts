@@ -50,5 +50,11 @@ export const texts = data.texts as unknown as Text[];
 export const textById = (id: string): Text | undefined =>
   texts.find((t) => t.id === id);
 
+// Ordonnés par niveau croissant (les plus accessibles d'abord) : le champ niveau
+// pilote le parcours débutant, sans ordre codé en dur.
 export const textsByCollection = (collectionId: string): Text[] =>
-  texts.filter((t) => t.collection === collectionId);
+  texts.filter((t) => t.collection === collectionId).sort((a, b) => a.niveau - b.niveau);
+
+// Niveau le plus bas d'une collection : sert à marquer les passages « pour débuter ».
+export const minNiveau = (collectionId: string): number =>
+  Math.min(...texts.filter((t) => t.collection === collectionId).map((t) => t.niveau));
