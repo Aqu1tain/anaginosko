@@ -5,6 +5,7 @@ import { loadBooksFs } from "../lib/nt-server";
 import { NT, LXX } from "../src/data/corpus";
 import SupportBanner from "./_components/SupportBanner";
 import ResumeReading from "./_components/ResumeReading";
+import RefJump from "../src/components/RefJump";
 
 export const metadata: Metadata = {
   description:
@@ -160,6 +161,12 @@ export default async function Home() {
   const [ntBooks, lxxBooks] = await Promise.all([loadBooksFs(NT), loadBooksFs(LXX)]);
   const ntSub = corpusSubtitle(ntBooks);
   const lxxSub = corpusSubtitle(lxxBooks);
+  // Recherche de référence globale : NT et LXX fusionnés, chaque livre pointe vers
+  // son corpus (les noms et ids ne se chevauchent pas entre les deux).
+  const allBooks = [
+    ...ntBooks.map((b) => ({ id: b.id, name: b.name, chapters: b.chapters, routePrefix: NT.routePrefix })),
+    ...lxxBooks.map((b) => ({ id: b.id, name: b.name, chapters: b.chapters, routePrefix: LXX.routePrefix })),
+  ];
   return (
     <div>
       {/* Desktop : héros en deux temps - titre + intro + accès NT à gauche, image
@@ -201,6 +208,11 @@ export default async function Home() {
 
       {/* Mobile : les accès aux corpus viennent juste après l'intro (dans le héros sur desktop). */}
       <CorpusAccess ntSub={ntSub} lxxSub={lxxSub} className="mt-6 wide:hidden" />
+
+      {/* Aller directement à une référence (NT ou Septante), sans passer par les menus. */}
+      <div className="mt-6 wide:mt-8">
+        <RefJump books={allBooks} routePrefix={NT.routePrefix} />
+      </div>
 
       {/* Reprise : action primaire du lecteur récurrent (la reprise vit ici, plus sur
           l'onglet de nav). Taille du contenu, ne réserve aucun espace si absente. */}
