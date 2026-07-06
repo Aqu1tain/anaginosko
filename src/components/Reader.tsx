@@ -638,7 +638,7 @@ export default function Reader({ text }: { text: Text }) {
         // primaire, complet) puis la traduction en bloc continu, sans apparier.
         <div className="mt-5 mx-auto max-w-2xl">
           {verses.map((v) => (
-            <div key={v} className="border-b border-base-300/70 py-4 first:pt-0 last:border-0">
+            <div key={v} id={`v${v}`} className="scroll-mt-20 border-b border-base-300/70 py-4 first:pt-0 last:border-0">
               <GreekText
                 text={text}
                 size="lg"
@@ -656,7 +656,7 @@ export default function Reader({ text }: { text: Text }) {
       ) : transMode === "verses" ? (
         <div className="mt-5 mx-auto max-w-2xl">
           {verses.map((v) => (
-            <div key={v} className="border-b border-base-300/70 py-4 first:pt-0 last:border-0">
+            <div key={v} id={`v${v}`} className="scroll-mt-20 border-b border-base-300/70 py-4 first:pt-0 last:border-0">
               <GreekText
                 text={text}
                 size="lg"
@@ -683,7 +683,7 @@ export default function Reader({ text }: { text: Text }) {
         // desktop, profite de la largeur (les deux colonnes respirent).
         <div className="mt-5 mx-auto wide:max-w-5xl">
           {verses.map((v) => (
-            <div key={v} className="trans-row border-b border-base-300/70 py-3">
+            <div key={v} id={`v${v}`} className="trans-row scroll-mt-20 border-b border-base-300/70 py-3">
               <div className="trans-grec">
                 <GreekText
                   text={text}
