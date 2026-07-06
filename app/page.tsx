@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { collections, lengthLabel, minNiveau, textsByCollection, type Text } from "../src/data/texts";
-import { loadBooksFs } from "../lib/nt-server";
+import { loadBooksFs, loadChapterFs } from "../lib/nt-server";
 import { NT, LXX } from "../src/data/corpus";
 import SupportBanner from "./_components/SupportBanner";
 import ResumeReading from "./_components/ResumeReading";
 import RefJump from "../src/components/RefJump";
+import HeroVerse from "../src/components/HeroVerse";
 
 export const metadata: Metadata = {
   description:
@@ -153,8 +154,18 @@ export default async function Home() {
     ...ntBooks.map((b) => ({ id: b.id, name: b.name, chapters: b.chapters, routePrefix: NT.routePrefix })),
     ...lxxBooks.map((b) => ({ id: b.id, name: b.name, chapters: b.chapters, routePrefix: LXX.routePrefix })),
   ];
+  // Verset vitrine (Jean 1,1) : chargé côté serveur, réduit au 1er verset (charge
+  // légère), rendu interactif par HeroVerse via le SheetContext global.
+  const jn1 = await loadChapterFs("jn", 1, NT);
+  const heroVerse: Text = { ...jn1, francais: null, mots: (jn1.mots ?? []).filter((m) => m.verse === 1) };
   return (
     <div>
+      {/* Bandeau de soutien : fermable, donc placé tout en haut pour être vu (au-dessus
+          de la ligne de flottaison). data-nosnippet le garde hors du snippet Google. */}
+      <div className="pt-2">
+        <SupportBanner />
+      </div>
+
       {/* Pupitre : le poste de travail du lecteur récurrent, en tête - reprendre la
           lecture et aller directement à une référence (NT ou Septante). */}
       <section className="mt-4 rounded-box bg-primary px-4 py-4 text-primary-content wide:px-5">
@@ -185,31 +196,7 @@ export default async function Home() {
           </p>
         </div>
 
-        <Link
-          href="/nt/jn/1"
-          className="group block overflow-hidden rounded-box border border-base-300 shadow-sm transition hover:shadow-md"
-        >
-          <div className="flex items-center justify-between bg-primary px-4 py-2.5 text-primary-content">
-            <span className="text-sm font-medium">Jean 1 · verset 1</span>
-            <span className="text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-primary-content/70">
-              Essayez ici →
-            </span>
-          </div>
-          <div className="bg-base-200 p-5 wide:p-6">
-            <p className="font-greek text-2xl leading-relaxed wide:text-[1.7rem]">
-              <sup className="mr-0.5 text-sm text-accent">1</sup>
-              Ἐν ἀρχῇ ἦν ὁ{" "}
-              <span className="underline decoration-accent decoration-2 underline-offset-4">λόγος</span>, καὶ ὁ
-              λόγος ἦν πρὸς τὸν θεόν, καὶ θεὸς ἦν ὁ λόγος.
-            </p>
-            <p className="mt-4 flex flex-wrap items-center gap-2 text-sm text-base-content/70">
-              Touchez une lettre soulignée, ou
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-base-300 bg-base-100 px-3 py-1 font-medium text-base-content">
-                <span className="font-greek">λόγος</span> · le mot entier
-              </span>
-            </p>
-          </div>
-        </Link>
+        <HeroVerse text={heroVerse} />
       </section>
 
       <Passages />
@@ -227,13 +214,7 @@ export default async function Home() {
       </div>
 
       <Tools />
-
-      {/* Soutien : l'ask complet vit en bas de page (l'identité « projet libre et
-          indépendant » est déjà rappelée dans le héros). data-nosnippet le garde hors
-          du snippet Google. Le footer est rendu par le Shell (sitewide). */}
-      <div className="pt-11 wide:pt-16">
-        <SupportBanner />
-      </div>
+      {/* Le footer est rendu par le Shell (sitewide). */}
     </div>
   );
 }

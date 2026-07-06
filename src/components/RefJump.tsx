@@ -59,7 +59,7 @@ export default function RefJump({ books, routePrefix }: { books: Book[]; routePr
     <div className="relative w-full">
       <svg
         aria-hidden="true"
-        className="pointer-events-none absolute left-3.5 top-1/2 z-10 h-4 w-4 -translate-y-1/2 text-base-content/50"
+        className="pointer-events-none absolute left-4 top-1/2 z-10 h-[19px] w-[19px] -translate-y-1/2 text-base-content/45"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
@@ -79,11 +79,11 @@ export default function RefJump({ books, routePrefix }: { books: Book[]; routePr
           setActive(0);
         }}
         onKeyDown={onKeyDown}
-        placeholder="Aller à une référence… (ex. Jean 3)"
+        placeholder="Chercher un livre, un chapitre… (ex. Jean 3)"
         aria-label="Aller à une référence"
         autoComplete="off"
         spellCheck={false}
-        className="input input-bordered w-full pl-10"
+        className="input input-lg input-bordered w-full rounded-xl bg-base-100 pl-12 text-base text-base-content shadow-sm"
       />
       {matches.length > 0 && (
         <ul className="absolute z-20 mt-1 w-full overflow-hidden rounded-box border border-base-300 bg-base-100 shadow-lg">
