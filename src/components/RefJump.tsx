@@ -3,7 +3,10 @@
 import { useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
-type Book = { id: string; name: string; chapters: number };
+// routePrefix optionnel : sur l'accueil, on melange NT et LXX, chaque livre pointe
+// vers son corpus. Sur un sommaire (corpus unique), il est absent -> on retombe sur
+// le routePrefix passe en prop.
+type Book = { id: string; name: string; chapters: number; routePrefix?: string };
 
 const norm = (s: string) =>
   s.normalize("NFD").replace(/\p{M}/gu, "").toLowerCase().trim();
@@ -35,7 +38,7 @@ export default function RefJump({ books, routePrefix }: { books: Book[]; routePr
   const go = (b: Book | undefined) => {
     if (!b) return;
     setQ("");
-    router.push(`${routePrefix}/${b.id}/${chapterFor(b)}`);
+    router.push(`${b.routePrefix ?? routePrefix}/${b.id}/${chapterFor(b)}`);
   };
 
   const onKeyDown = (e: React.KeyboardEvent) => {
