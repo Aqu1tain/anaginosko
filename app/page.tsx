@@ -211,13 +211,14 @@ export default async function Home() {
       {/* Mobile : les accès aux corpus viennent juste après l'intro (dans le héros sur desktop). */}
       <CorpusAccess ntSub={ntSub} lxxSub={lxxSub} className="mt-6 wide:hidden" />
 
-      {/* Accès rapide (lecteur récurrent) : reprendre la lecture, ou aller directement
-          à un passage (NT ou Septante). Regroupés, avec un filet de séparation, pour
-          ne pas éparpiller la page. ResumeReading est neutre en marge (rendu null si
-          pas de lecture en cours) ; RefJump porte son propre espacement (mt-3). */}
-      <section className="mt-8 border-t border-base-200 pt-6 wide:mt-10">
+      {/* Accès rapide (lecteur récurrent) : une seule barre - reprendre la lecture (si
+          en cours, à gauche) et aller directement à une référence (NT ou Septante, la
+          recherche remplit le reste). Empilés sur mobile. ResumeReading est neutre en
+          marge (rendu null sans lecture en cours) : la recherche prend alors toute la
+          largeur. */}
+      <section className="mt-8 flex max-w-3xl flex-col gap-3 wide:mt-10 wide:flex-row wide:items-center">
         <ResumeReading />
-        <div className="max-w-md">
+        <div className="min-w-0 wide:flex-1">
           <RefJump books={allBooks} routePrefix={NT.routePrefix} />
         </div>
       </section>
