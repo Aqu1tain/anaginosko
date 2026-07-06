@@ -206,11 +206,12 @@ export default async function Home() {
           l'onglet de nav). Taille du contenu, ne réserve aucun espace si absente. */}
       <ResumeReading />
 
-      {/* Le nouveau venu voit d'abord par où commencer, puis les outils ; le bandeau de
-          soutien passe après le contenu (et n'est plus le snippet Google de la page). */}
+      {/* Identité « projet libre et indépendant » visible haut de page (data-nosnippet
+          la retire du snippet Google). Puis le parcours : par où commencer, outils. */}
+      <SupportBanner />
+
       <Passages />
       <Tools />
-      <SupportBanner />
 
       <footer className="mt-12 border-t border-base-300 pt-8 pb-4 text-sm text-base-content/70">
         <nav aria-label="Liens du site" className="flex flex-wrap justify-center gap-x-5 gap-y-2">

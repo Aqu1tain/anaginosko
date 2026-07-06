@@ -129,16 +129,17 @@ export default function Reader({ text }: { text: Text }) {
   }, []);
 
   // Clés de préférence distinctes par mode, pour que chaque mode garde son réglage.
-  // En mode passage (chemin débutant), la traduction française est affichée par
-  // défaut : la promesse « lecture guidée » doit tenir. Le mode chapitre reste à
-  // « off » par défaut (ne pas changer l'affichage des habitués). Les annotations
-  // restent masquées par défaut en passage.
+  // Passage (découverte lettre par lettre) : traduction masquée par défaut. Livre
+  // (lecture suivie) : traduction affichée par défaut, en colonnes si l'écran le
+  // permet (effectiveTranslation retombe sur « verses » quand les colonnes ne sont
+  // pas disponibles, ex. mobile). Les annotations restent masquées par défaut en
+  // passage.
   const isPassage = text.collection === "passages";
   const [manuscript, setManuscript] = usePersistentState<boolean>("anaginosko:manuscript", false);
   const [mode, setMode] = usePersistentState<TranslitMode>("anaginosko:translit", "off");
   const [translation, setTranslation] = usePersistentState<"off" | "verses" | "columns">(
     isPassage ? "anaginosko:translation:passage" : "anaginosko:translation",
-    isPassage ? "verses" : "off",
+    isPassage ? "off" : "columns",
   );
   const [showAnnotations, setShowAnnotations] = usePersistentState<boolean>(
     isPassage ? "anaginosko:annotations:passage" : "anaginosko:annotations",
