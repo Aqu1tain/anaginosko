@@ -173,10 +173,7 @@ export default async function Home() {
           (Jean 1,1) en carte « essayez ici » qui mène à la lecture. */}
       <section className="mt-10 grid gap-8 wide:mt-14 wide:grid-cols-2 wide:items-center wide:gap-12">
         <div>
-          <p className="text-xs font-bold uppercase tracking-[0.14em] text-accent">
-            Nouveau Testament · Septante — texte intégral
-          </p>
-          <h1 className="mt-3 font-greek text-4xl leading-[1.1] wide:text-5xl">Lire la Bible en grec</h1>
+          <h1 className="font-greek text-4xl leading-[1.1] wide:text-5xl">Lire la Bible en grec</h1>
           <IntroText className="mt-4 max-w-prose text-base leading-relaxed text-base-content/70" />
           <div className="mt-6 flex max-w-lg flex-col gap-2.5">
             <CorpusCta href="/nt" title="Nouveau Testament complet" subtitle={ntSub} primary />
