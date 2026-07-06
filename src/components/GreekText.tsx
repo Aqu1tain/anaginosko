@@ -184,8 +184,18 @@ function GreekText({
     return map;
   }, [words]);
 
-  const verseMark = (w: number) =>
-    !manuscript && verseAt.has(w) ? <span className="verse-num">{verseAt.get(w)}</span> : null;
+  // En mode continu (verseOnly null), le numéro de verset porte l'ancre id=v{n}
+  // pour les liens profonds ; dans les modes verset-par-verset, c'est le conteneur
+  // du lecteur qui la porte (on évite un id en double).
+  const verseMark = (w: number) => {
+    if (manuscript || !verseAt.has(w)) return null;
+    const v = verseAt.get(w)!;
+    return (
+      <span id={verseOnly == null ? `v${v}` : undefined} className="verse-num scroll-mt-20">
+        {v}
+      </span>
+    );
+  };
 
   const selFrom = selection ? Math.min(selection.from, selection.to) : -1;
   const selTo = selection ? Math.max(selection.from, selection.to) : -1;

@@ -17,6 +17,7 @@ import {
   type Annotation,
 } from "../lib/api";
 import GreekText, { type TranslitMode, type AnnoScope, type AnnoSelection } from "./GreekText";
+import CopyVerseLink from "./CopyVerseLink";
 import AnnotationEditor, { type AnnotationTarget } from "./AnnotationEditor";
 import Tour, { type TourStep } from "./Tour";
 
@@ -638,7 +639,8 @@ export default function Reader({ text }: { text: Text }) {
         // primaire, complet) puis la traduction en bloc continu, sans apparier.
         <div className="mt-5 mx-auto max-w-2xl">
           {verses.map((v) => (
-            <div key={v} id={`v${v}`} className="scroll-mt-20 border-b border-base-300/70 py-4 first:pt-0 last:border-0">
+            <div key={v} id={`v${v}`} className="group relative scroll-mt-20 border-b border-base-300/70 py-4 first:pt-0 last:border-0">
+              <div className="absolute right-0 top-2"><CopyVerseLink v={v} /></div>
               <GreekText
                 text={text}
                 size="lg"
@@ -656,7 +658,8 @@ export default function Reader({ text }: { text: Text }) {
       ) : transMode === "verses" ? (
         <div className="mt-5 mx-auto max-w-2xl">
           {verses.map((v) => (
-            <div key={v} id={`v${v}`} className="scroll-mt-20 border-b border-base-300/70 py-4 first:pt-0 last:border-0">
+            <div key={v} id={`v${v}`} className="group relative scroll-mt-20 border-b border-base-300/70 py-4 first:pt-0 last:border-0">
+              <div className="absolute right-0 top-2"><CopyVerseLink v={v} /></div>
               <GreekText
                 text={text}
                 size="lg"
@@ -683,7 +686,8 @@ export default function Reader({ text }: { text: Text }) {
         // desktop, profite de la largeur (les deux colonnes respirent).
         <div className="mt-5 mx-auto wide:max-w-5xl">
           {verses.map((v) => (
-            <div key={v} id={`v${v}`} className="trans-row scroll-mt-20 border-b border-base-300/70 py-3">
+            <div key={v} id={`v${v}`} className="trans-row group relative scroll-mt-20 border-b border-base-300/70 py-3">
+              <div className="absolute -right-1 top-1.5"><CopyVerseLink v={v} /></div>
               <div className="trans-grec">
                 <GreekText
                   text={text}
