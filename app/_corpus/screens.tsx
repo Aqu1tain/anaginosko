@@ -5,6 +5,7 @@ import { loadBooksFs, loadChapterFs } from "@/lib/nt-server";
 import { bookById, type NtBook } from "@/src/data/nt";
 import type { CorpusConfig } from "@/src/data/corpus";
 import Reader from "@/src/components/Reader";
+import RefJump from "@/src/components/RefJump";
 import Breadcrumb from "@/app/_components/Breadcrumb";
 import BreadcrumbJsonLd from "@/app/_components/BreadcrumbJsonLd";
 
@@ -85,6 +86,8 @@ export async function TocScreen({ corpus }: { corpus: CorpusConfig }) {
       <p className="mt-1 mb-2 text-sm text-base-content/70">
         {books.length} livres · texte grec {corpus.sourceLabel}
       </p>
+
+      <RefJump books={books} routePrefix={corpus.routePrefix} />
 
       {corpus.editorialGroups.map((group) => (
         <section key={group.title} className="pt-5">
