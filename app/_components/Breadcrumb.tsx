@@ -22,7 +22,9 @@ export default function Breadcrumb({ items }: { items: Crumb[] }) {
               <Link
                 href={it.href}
                 aria-label={it.home ? it.label : undefined}
-                className={`link-hover${it.greek ? " font-greek" : ""}`}
+                className={`link-hover${it.greek ? " font-greek" : ""}${
+                  it.home ? " -my-2 inline-flex min-h-[44px] min-w-[44px] items-center justify-center" : ""
+                }`}
               >
                 {it.home ? <HomeIcon /> : it.label}
               </Link>
