@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import TopBar from "./_components/TopBar";
 import TabBar from "./_components/TabBar";
 import SideNav from "./_components/SideNav";
+import SiteFooter from "./_components/SiteFooter";
 
 export default function Shell({ children }: { children: React.ReactNode }) {
   // dark = null tant qu'on n'a pas lu le thème réellement appliqué par le script
@@ -31,6 +32,7 @@ export default function Shell({ children }: { children: React.ReactNode }) {
         <SideNav />
         <main className="min-w-0 flex-1 pb-[calc(5rem+env(safe-area-inset-bottom))] wide:pb-16">
           {children}
+          <SiteFooter />
         </main>
       </div>
       <TabBar />
