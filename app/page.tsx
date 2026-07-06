@@ -31,14 +31,16 @@ function IntroText({ className = "" }: { className?: string }) {
 }
 
 // Accès aux deux corpus + une phrase qui dit ce qu'est la Septante (jamais expliquée
-// à un non-initié). Partagé entre le héros desktop et le bloc mobile.
+// à un non-initié) + l'identité du projet, en une ligne discrète. Partagé entre le
+// héros desktop et le bloc mobile.
 function CorpusAccess({ ntSub, lxxSub, className = "" }: { ntSub: string; lxxSub: string; className?: string }) {
   return (
     <div className={`flex flex-col gap-3 ${className}`}>
       <CorpusCta href="/nt" title="Nouveau Testament complet" subtitle={ntSub} primary />
       <CorpusCta href="/lxx" title="Septante, l’Ancien Testament grec" subtitle={lxxSub} />
       <p className="text-xs leading-relaxed text-base-content/70">
-        La Septante est la traduction grecque de l’Ancien Testament, lue par les premiers chrétiens.
+        La Septante est la traduction grecque de l’Ancien Testament, lue par les premiers chrétiens. Projet
+        libre et indépendant, gratuit et sans publicité.
       </p>
     </div>
   );
@@ -119,15 +121,15 @@ function TextCard({ text, highlight }: { text: Text; highlight?: boolean }) {
         highlight ? "border-primary/50 ring-1 ring-primary/20" : "border-base-300"
       }`}
     >
-      <div className="card-body min-w-0 gap-2 p-4">
+      <div className="card-body min-w-0 gap-1 p-3.5">
         <div className="flex items-baseline justify-between gap-3">
-          <h3 className="min-w-0 truncate text-[1.05rem] font-bold">{text.reference}</h3>
+          <h3 className="min-w-0 truncate text-[0.98rem] font-semibold">{text.reference}</h3>
           <span className={`badge badge-sm shrink-0 ${highlight ? "badge-primary" : "badge-ghost"}`}>
             {highlight ? "Commencer ici" : lengthLabel(text)}
           </span>
         </div>
-        <p className="font-greek line-clamp-1 border-t border-base-200 pt-2 text-lg text-base-content/70 wide:line-clamp-2">
-          {preview(text.grec)}
+        <p className="font-greek line-clamp-1 text-[0.95rem] text-base-content/55">
+          {preview(text.grec, 9)}
         </p>
       </div>
     </Link>
@@ -209,22 +211,26 @@ export default async function Home() {
       {/* Mobile : les accès aux corpus viennent juste après l'intro (dans le héros sur desktop). */}
       <CorpusAccess ntSub={ntSub} lxxSub={lxxSub} className="mt-6 wide:hidden" />
 
-      {/* Aller directement à une référence (NT ou Septante), sans passer par les menus. */}
-      <div className="mt-6 wide:mt-8">
-        <RefJump books={allBooks} routePrefix={NT.routePrefix} />
-      </div>
-
-      {/* Reprise : action primaire du lecteur récurrent (la reprise vit ici, plus sur
-          l'onglet de nav). Taille du contenu, ne réserve aucun espace si absente. */}
-      <ResumeReading />
-
-      {/* Identité « projet libre et indépendant » visible haut de page (data-nosnippet
-          la retire du snippet Google). Puis le parcours : par où commencer, outils. */}
-      <SupportBanner />
+      {/* Accès rapide (lecteur récurrent) : reprendre la lecture, ou aller directement
+          à un passage (NT ou Septante). Regroupés, avec un filet de séparation, pour
+          ne pas éparpiller la page. ResumeReading est neutre en marge (rendu null si
+          pas de lecture en cours) ; RefJump porte son propre espacement (mt-3). */}
+      <section className="mt-8 border-t border-base-200 pt-6 wide:mt-10">
+        <ResumeReading />
+        <div className="max-w-md">
+          <RefJump books={allBooks} routePrefix={NT.routePrefix} />
+        </div>
+      </section>
 
       <Passages />
       <Tools />
-      {/* Le footer est rendu par le Shell (sitewide), plus ici. */}
+
+      {/* Soutien : l'ask complet vit en bas de page (l'identité « projet libre et
+          indépendant » est déjà rappelée dans le héros). data-nosnippet le garde hors
+          du snippet Google. Le footer est rendu par le Shell (sitewide). */}
+      <div className="pt-11 wide:pt-16">
+        <SupportBanner />
+      </div>
     </div>
   );
 }

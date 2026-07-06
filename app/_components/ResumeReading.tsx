@@ -17,7 +17,7 @@ export default function ResumeReading() {
     <Link
       href={last.href}
       data-nosnippet=""
-      className="mt-5 flex w-fit items-center gap-2.5 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-content shadow-sm transition-colors hover:bg-primary/90 wide:mt-8"
+      className="flex w-fit items-center gap-2.5 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-content shadow-sm transition-colors hover:bg-primary/90"
     >
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
         <path d="M3 3v6h6" />
