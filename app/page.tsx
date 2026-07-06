@@ -33,7 +33,7 @@ function IntroText({ className = "" }: { className?: string }) {
 // à un non-initié). Partagé entre le héros desktop et le bloc mobile.
 function CorpusAccess({ ntSub, lxxSub, className = "" }: { ntSub: string; lxxSub: string; className?: string }) {
   return (
-    <div className={`flex flex-col gap-2.5 ${className}`}>
+    <div className={`flex flex-col gap-3 ${className}`}>
       <CorpusCta href="/nt" title="Nouveau Testament complet" subtitle={ntSub} primary />
       <CorpusCta href="/lxx" title="Septante, l’Ancien Testament grec" subtitle={lxxSub} />
       <p className="text-xs leading-relaxed text-base-content/70">
@@ -51,10 +51,10 @@ const TOOLS = [
 
 function Tools() {
   return (
-    <section className="pt-8 wide:pt-10">
+    <section className="pt-11 wide:pt-16">
       <h2 className="text-lg font-bold">Outils</h2>
       <p className="mb-3 text-sm text-base-content/70">Pour explorer la langue au-delà de la lecture.</p>
-      <div className="grid gap-2.5 sm:grid-cols-3">
+      <div className="grid gap-3 sm:grid-cols-3">
         {TOOLS.map((t) => (
           <Link
             key={t.href}
@@ -141,10 +141,10 @@ function Passages() {
       {collections.map((c, i) => {
         const list = textsByCollection(c.id);
         return (
-          <section key={c.id} className={i === 0 ? "pt-8 wide:pt-10" : "pt-7"}>
+          <section key={c.id} className={i === 0 ? "pt-11 wide:pt-16" : "pt-9"}>
             <h2 className="text-lg font-bold">{c.title}</h2>
             <p className="mb-3 text-sm text-base-content/70">{c.subtitle}</p>
-            <div className="grid gap-2.5 wide:grid-cols-2">
+            <div className="grid gap-3 wide:grid-cols-2">
               {list.map((t, idx) => (
                 <TextCard key={t.id} text={t} highlight={idx === 0 && t.niveau === minNiveau(c.id)} />
               ))}
@@ -164,8 +164,8 @@ export default async function Home() {
     <div>
       {/* Desktop : héros en deux temps - titre + intro + accès NT à gauche, image
           cadrée à droite. */}
-      <section className="hidden pt-4 wide:grid wide:grid-cols-2 wide:items-stretch wide:gap-8">
-        <div className="flex flex-col justify-center gap-5">
+      <section className="hidden pt-6 wide:grid wide:grid-cols-2 wide:items-stretch wide:gap-8">
+        <div className="flex flex-col justify-center gap-6">
           <h1 className="font-greek text-5xl leading-[1.1]">Lire la Bible en grec</h1>
           <IntroText className="max-w-prose text-base leading-relaxed text-base-content/70" />
           <CorpusAccess ntSub={ntSub} lxxSub={lxxSub} className="max-w-md" />
@@ -182,7 +182,7 @@ export default async function Home() {
       </section>
 
       {/* Mobile : image en bandeau avec titre incrusté (inchangé). */}
-      <section className="pt-4 pb-2 wide:hidden">
+      <section className="pt-6 pb-2 wide:hidden">
         <div className="relative overflow-hidden rounded-box">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
@@ -200,7 +200,7 @@ export default async function Home() {
       </section>
 
       {/* Mobile : les accès aux corpus viennent juste après l'intro (dans le héros sur desktop). */}
-      <CorpusAccess ntSub={ntSub} lxxSub={lxxSub} className="mt-4 wide:hidden" />
+      <CorpusAccess ntSub={ntSub} lxxSub={lxxSub} className="mt-6 wide:hidden" />
 
       {/* Reprise : action primaire du lecteur récurrent (la reprise vit ici, plus sur
           l'onglet de nav). Taille du contenu, ne réserve aucun espace si absente. */}
@@ -213,7 +213,7 @@ export default async function Home() {
       <Passages />
       <Tools />
 
-      <footer className="mt-12 border-t border-base-300 pt-8 pb-4 text-sm text-base-content/70">
+      <footer className="mt-16 border-t border-base-300 pt-8 pb-4 text-sm text-base-content/70">
         <nav aria-label="Liens du site" className="flex flex-wrap justify-center gap-x-5 gap-y-2">
           <Link href="/nt" className="link-hover">Nouveau Testament</Link>
           <Link href="/lxx" className="link-hover">Septante</Link>
