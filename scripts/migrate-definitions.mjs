@@ -35,7 +35,7 @@ if (mode === "review") {
   console.log(`${candidates.length} annotations « ${fromPrefix}<lemma> » :\n`);
   for (const a of candidates) {
     const lemma = a.ref.slice(fromPrefix.length);
-    console.log(`#${a.id}  ${lemma}  (source: ${a.source || "—"}${a.author ? ", " + a.author : ""})`);
+    console.log(`#${a.id}  ${lemma}  (source: ${a.source || "-"}${a.author ? ", " + a.author : ""})`);
     console.log(`      ${a.body.replace(/\s+/g, " ").slice(0, 180)}`);
   }
   console.log(`\nRéassigner en définitions : --apply <id1,id2,...>`);

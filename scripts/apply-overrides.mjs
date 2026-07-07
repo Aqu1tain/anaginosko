@@ -19,7 +19,7 @@ const overrides = fs.existsSync(ovPath) ? JSON.parse(fs.readFileSync(ovPath, "ut
 
 const gt = (b, c, v) => giguet[b]?.[String(c)]?.[String(v)] ?? null;
 // Source = [ch, v] (verset entier) ou [ch, v, de, à] (extrait : plage de mots,
-// indices 0-based inclusifs, découpage par espaces — même règle que lib/arbitration).
+// indices 0-based inclusifs, découpage par espaces - même règle que lib/arbitration).
 const slice = (b, s) => {
   const t = gt(b, s[0], s[1]);
   if (t == null) return null;

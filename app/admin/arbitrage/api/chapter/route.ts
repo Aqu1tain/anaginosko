@@ -14,7 +14,7 @@ export async function GET(req: Request) {
   const ch = Number(url.searchParams.get("ch"));
   const st = states()[book]?.[ch];
   if (!st) return NextResponse.json({ error: "Chapitre inconnu." }, { status: 404 });
-  if (!st.scaled) return NextResponse.json({ error: "Chapitre non scaled — verrouillé (la passe doit tourner)." }, { status: 403 });
+  if (!st.scaled) return NextResponse.json({ error: "Chapitre non scaled : verrouillé (la passe doit tourner)." }, { status: 403 });
   const gv = greekVerses(book, ch);
   if (!gv) return NextResponse.json({ error: "Chapitre grec introuvable." }, { status: 404 });
   const ov = overrides()[book] || {};

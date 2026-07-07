@@ -1,7 +1,7 @@
 // Inventaire de la passe « zéro orphelin » : tout ce qui reste sans vis-à-vis,
 // dans un sens ou dans l'autre, avec le contexte nécessaire pour trancher :
 //  - les items de la file d'arbitrage (divergences, orphelin-vs-scission…) ;
-//  - les versets grecs orphelins (lien []) ou non liés (null) — surtout les
+//  - les versets grecs orphelins (lien []) ou non liés (null) - surtout les
 //    « fusion : couvert par F x:y », désormais résolubles par EXTRAITS ;
 //  - les versets Giguet (ou restes de mots) non consommés par aucun lien.
 // Chaque item porte le grec, les liens voisins, et les versets Giguet candidats
@@ -39,7 +39,7 @@ const greekVerseNums = (b, ch) => {
   return [...new Set(JSON.parse(fs.readFileSync(p, "utf8")).mots.map((m) => m.verse).filter((v) => v != null))].sort((a, b2) => a - b2);
 };
 
-// Revendications par verset Giguet (liens auto uniquement — pas d'overrides en jeu ici).
+// Revendications par verset Giguet (liens auto uniquement - pas d'overrides en jeu ici).
 function claimsFor(book) {
   const m = new Map();
   for (const [ref, src] of Object.entries(links[book] || {})) {
@@ -68,7 +68,7 @@ const tokenized = (book, ch, vs) => {
   return out;
 };
 
-// 1) Items de file (sauf ceux des chapitres additions est/dan — KAN-55).
+// 1) Items de file (sauf ceux des chapitres additions est/dan - KAN-55).
 for (const it of queue) {
   add(it.book, {
     kind: it.kind, ref: it.ref, reason: it.reason, proposals: it.proposals,
@@ -87,7 +87,7 @@ for (const book of Object.keys(links)) {
   }
 }
 
-// 3) Versets Giguet non consommés (entiers) — trous côté français.
+// 3) Versets Giguet non consommés (entiers) - trous côté français.
 for (const book of Object.keys(giguet)) {
   const claims = claimsFor(book);
   for (const ch of Object.keys(giguet[book])) {
@@ -124,6 +124,6 @@ for (const book of Object.keys(inventory).sort()) {
   const byKind = {};
   for (const i of inventory[book]) byKind[i.kind] = (byKind[i.kind] || 0) + 1;
   total += inventory[book].length;
-  console.log(`${book}: ${inventory[book].length} — ${JSON.stringify(byKind)}`);
+  console.log(`${book}: ${inventory[book].length} - ${JSON.stringify(byKind)}`);
 }
 console.log(`TOTAL: ${total} issues -> ${path.join(OUT, "inventory.json")}`);

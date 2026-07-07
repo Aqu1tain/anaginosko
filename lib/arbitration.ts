@@ -9,7 +9,7 @@ import path from "node:path";
 
 // Source d'un lien : un verset Giguet ENTIER [ch, v], ou un EXTRAIT [ch, v, de, à]
 // (plage de mots, indices 0-based inclusifs, découpage par espaces). On pointe une
-// plage du texte immuable — on ne coupe jamais le texte lui-même. Cas type : la
+// plage du texte immuable ; on ne coupe jamais le texte lui-même. Cas type : la
 // versification de Giguet fusionne deux versets grecs en un (jdt 16:8 = la moitié
 // de Giguet 16:10) ; chaque verset grec lie alors son extrait.
 export type Source = [number, number] | [number, number, number, number];
@@ -183,7 +183,7 @@ export function sourceOwners(book: string): Record<string, { ref: string; partia
 
 // Couverture d'un chapitre : l'ALERTE de Biblion. Deux sens contrôlés :
 //  - versets grecs sans français (orphelins ou non arbitrés) ;
-//  - versets Giguet (ou restes de mots après extraits) non liés à aucun grec —
+//  - versets Giguet (ou restes de mots après extraits) non liés à aucun grec,
 //    ceux du chapitre Giguet homonyme, plus tout verset partiellement consommé
 //    par un lien de CE chapitre grec.
 export function chapterCoverage(book: string, ch: number) {

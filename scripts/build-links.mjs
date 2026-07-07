@@ -140,7 +140,7 @@ const ZONE_DIVERGENCES = [
       { reader: "H2a", sources: [["36", "22"]] },
       { reader: "H2b", sources: [["36", "21"]] },
     ],
-    reason: "Chevauchement : « exauce les suppliants » (F36:21) et « bénédiction d'Aaron » (F36:22) — deux moitiés du même verset grec.",
+    reason: "Chevauchement : « exauce les suppliants » (F36:21) et « bénédiction d'Aaron » (F36:22) - deux moitiés du même verset grec.",
   },
   {
     book: "sir", ref: "33:16", kind: "orphan-vs-split",
@@ -149,7 +149,7 @@ const ZONE_DIVERGENCES = [
       { reader: "H1a", sources: [["30", "29"]], orphan: [["36", "16"]] },
       { reader: "H1b", sources: [["30", "29"], ["36", "16"]] },
     ],
-    reason: "Doublet : Giguet traduit deux fois (F30:29 grappilleur + F36:16 « veillé le dernier ») — fusionner les deux, ou garder l'un et orphéliser l'autre ?",
+    reason: "Doublet : Giguet traduit deux fois (F30:29 grappilleur + F36:16 « veillé le dernier ») - fusionner les deux, ou garder l'un et orphéliser l'autre ?",
   },
 ];
 for (const d of ZONE_DIVERGENCES) {
@@ -166,7 +166,7 @@ for (const [id, key] of [["sus", "1:64"], ["bel", "1:42"]]) {
 }
 queue.push({
   book: "isa", ref: "63:19", kind: "low-confidence", grain: "verse", priority: 3, canon: "proto",
-  reason: "Fragment : le français courant est un morceau d'un verset Giguet scindé (G63:19 réparti sur 63:19/64:1) — vérifier le rattachement.",
+  reason: "Fragment : le français courant est un morceau d'un verset Giguet scindé (G63:19 réparti sur 63:19/64:1) - vérifier le rattachement.",
 });
 if (chapterState.isa?.[63]) chapterState.isa[63].pending++;
 
@@ -225,8 +225,8 @@ let scaled = 0,
   pendingScale = 0;
 for (const id of Object.keys(chapterState))
   for (const ch of Object.keys(chapterState[id])) (chapterState[id][ch].scaled ? scaled++ : pendingScale++);
-console.log(`Liens auto : ${matched} reconstruits, ${unmatched} manqués (bug matcher, mécanique — à re-dériver, PAS de l'arbitrage) : ${reconMiss.join(", ")}`);
+console.log(`Liens auto : ${matched} reconstruits, ${unmatched} manqués (bug matcher, mécanique - à re-dériver, PAS de l'arbitrage) : ${reconMiss.join(", ")}`);
 console.log(`Chapitres : ${scaled} scaled (auto-résolu) · ${pendingScale} pending-scale (verrouillés, la passe doit tourner avant Biblion).`);
 console.log(
-  `File d'arbitrage (VERSETS, chapitres scaled uniquement) : ${queue.length} — ${queue.filter((q) => q.kind === "reader-divergence").length} divergences lecteurs, ${queue.filter((q) => q.kind === "orphan-vs-split").length} orphelin/scission. Les ${pendingScale} chapitres pending-scale N'y entrent pas.`,
+  `File d'arbitrage (VERSETS, chapitres scaled uniquement) : ${queue.length} - ${queue.filter((q) => q.kind === "reader-divergence").length} divergences lecteurs, ${queue.filter((q) => q.kind === "orphan-vs-split").length} orphelin/scission. Les ${pendingScale} chapitres pending-scale N'y entrent pas.`,
 );

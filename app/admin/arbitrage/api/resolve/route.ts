@@ -16,7 +16,7 @@ function syncReader(book: string, ref: string) {
 
 // Enregistre (ou révoque) une décision d'arbitrage. Intégrité sur CHAQUE écriture :
 // existence des versets Giguet, ref grec valide (round-trip), zéro-perte (aucun
-// verset Giguet consommé deux fois). Refus si violation — jamais d'état faux.
+// verset Giguet consommé deux fois). Refus si violation : jamais d'état faux.
 export async function POST(req: Request) {
   const auth = await requireEditor(req.headers.get("authorization"));
   if (!auth.ok) return NextResponse.json({ error: "Réservé aux contributeurs." }, { status: 401 });
@@ -26,7 +26,7 @@ export async function POST(req: Request) {
   if (!book || !ref) return NextResponse.json({ error: "book et ref requis." }, { status: 400 });
 
   const st = states()[book]?.[Number(ref.split(":")[0])];
-  if (!st?.scaled) return NextResponse.json({ error: "Chapitre non scaled — verrouillé." }, { status: 403 });
+  if (!st?.scaled) return NextResponse.json({ error: "Chapitre non scaled : verrouillé." }, { status: 403 });
 
   // Révocation : retour à l'auto (l'humain corrige l'humain).
   if (body.revoke) {

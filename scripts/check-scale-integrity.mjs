@@ -68,5 +68,5 @@ for (const id of books) {
     `${id}: ${ok ? "OK" : "ÉCART"} (perdus-inattendus ${lostUnexpected}${exL.length ? " ex:" + exL.join(",") : ""} · gagnés ${gained}${exG.length ? " ex:" + exG.join(",") : ""} · en-attente ${pendCount}${pendingMissing ? " dont ENCORE AFFICHÉS " + pendingMissing + " mots" : ""})`,
   );
 }
-console.log(fail ? `\n${fail} livre(s) en écart — NE PAS expédier.` : "\nIntégrité conservée sur tous les livres (pertes = uniquement le français en attente d'arbitrage).");
+console.log(fail ? `\n${fail} livre(s) en écart - NE PAS expédier.` : "\nIntégrité conservée sur tous les livres (pertes = uniquement le français en attente d'arbitrage).");
 process.exit(fail ? 1 : 0);

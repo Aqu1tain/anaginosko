@@ -3,7 +3,7 @@
 // (data/lxx-links.json) + overrides Biblion (data/lxx-arbitration.json, gagnent).
 // Rejoué à CHAQUE build : un build n'efface jamais le jugement de Biblion.
 //
-// Garanties : (1) zéro-perte — chaque verset Giguet consommé exactement une fois
+// Garanties : (1) zéro-perte - chaque verset Giguet consommé exactement une fois
 // (lié ou orphelin) ; refus d'écrire sinon. (2) Les liens ne pointent que sur des
 // versets Giguet existants. (3) Verset grec sans lien -> grec seul (jamais deviné).
 //

@@ -60,7 +60,7 @@ const normOrph = (orphans) => JSON.stringify((orphans || []).map((o) => o.giguet
 let converged = [], diverged = [], missing = 0;
 for (const [gid, readers] of byGroup) {
   if (!readers.A || !readers.B) {
-    console.warn(`! groupe ${gid}: lecteur manquant — ignoré`);
+    console.warn(`! groupe ${gid}: lecteur manquant - ignoré`);
     continue;
   }
   const A = new Map(readers.A.map((i) => [i.id, i]));
@@ -144,7 +144,7 @@ for (const book of touchedBooks) {
             preexistingOverlaps++;
             continue;
           }
-          console.warn(`! ${book} ${k}: chevauchement ${cs[i].ref} / ${cs[j].ref} — refs de la passe nullifiées, en file`);
+          console.warn(`! ${book} ${k}: chevauchement ${cs[i].ref} / ${cs[j].ref} - refs de la passe nullifiées, en file`);
           for (const c of involved) {
             links[book][c.ref] = null;
             diverged.push({ id: `${book}|overlap|${c.ref}`, why: `chevauchement sur Giguet ${k}` });
