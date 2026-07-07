@@ -8,6 +8,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { materializeSources } from "../lib/lxx-materialize.mjs";
 
 const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const ARB_DIR = process.env.ARB_DIR || path.join(repo, "data");
@@ -17,15 +18,6 @@ const giguet = JSON.parse(fs.readFileSync(path.join(repo, "data/giguet-lxx.json"
 const ovPath = path.join(ARB_DIR, "lxx-arbitration.json");
 const overrides = fs.existsSync(ovPath) ? JSON.parse(fs.readFileSync(ovPath, "utf8")) : {};
 
-const gt = (b, c, v) => giguet[b]?.[String(c)]?.[String(v)] ?? null;
-// Source = [ch, v] (verset entier) ou [ch, v, de, à] (extrait : plage de mots,
-// indices 0-based inclusifs, découpage par espaces - même règle que lib/arbitration).
-const slice = (b, s) => {
-  const t = gt(b, s[0], s[1]);
-  if (t == null) return null;
-  if (s.length === 4) return t.split(/\s+/).filter(Boolean).slice(s[2], s[3] + 1).join(" ");
-  return t;
-};
 let applied = 0;
 for (const book of Object.keys(overrides)) {
   if (book.startsWith("_")) continue; // clés méta (_provenance), pas des livres
@@ -36,7 +28,7 @@ for (const book of Object.keys(overrides)) {
     const [ch, v] = ref.split(":");
     const sources = overrides[book][ref].sources || [];
     fr[ch] = fr[ch] || {};
-    const text = sources.map((s) => slice(book, s)).filter(Boolean).join(" ").trim();
+    const text = materializeSources(giguet[book], sources);
     if (text) fr[ch][v] = text;
     else delete fr[ch][v]; // orphelin-grec
     applied++;
