@@ -38,7 +38,7 @@ function SharedVerses({ colloc, formByVerse, corpus }: { colloc: Colloc; formByV
         href={`${colloc.hrefBase ?? corpus.concordanceBase}/${encodeURIComponent(colloc.lemma)}`}
         className="link px-1.5 py-1 text-xs text-base-content/70"
       >
-        Concordance de <span className="font-greek">{colloc.lemma}</span> →
+        Concordance de <span className="font-greek">{colloc.lemma}</span>
       </Link>
     </div>
   );

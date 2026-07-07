@@ -404,7 +404,7 @@ export default function LetterSheet({
 
             {word && (
               <p className="mt-4 border-t border-base-300 pt-3 text-sm text-base-content/70">
-                Touchez encore la lettre pour le mot entier →
+                Touchez encore la lettre pour le mot entier.
               </p>
             )}
           </>
@@ -533,7 +533,7 @@ export default function LetterSheet({
                   href={`/concordance/${encodeURIComponent(word.lemme)}`}
                   className="mt-1.5 inline-block text-sm font-medium text-accent"
                 >
-                  définition complète & occurrences →
+                  définition complète & occurrences
                 </Link>
               </div>
             )}
