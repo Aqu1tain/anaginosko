@@ -34,6 +34,13 @@ const gwords = (b, c, v) => {
   return t == null ? null : t.split(/\s+/).filter(Boolean);
 };
 const auditExcluded = []; // mots non couverts classés marqueur/ponctuation (journalisés, jamais ignorés)
+// File de travail Phase 2 (dump GAPS_OUT) : le travail OUVERT (aucune décision) +
+// les « à traduire (prouvé) » déjà documentés. Catégorie « à traduire (prouvé) »
+// remplace « orphelin » (charte : verset grec sans français = traduction maison).
+const gapGreekSansEtat = {}; // book -> [{ref, grec}]     verset grec sans lien/override/file/déclaration
+const gapTrous = {}; //         book -> [{ref, ranges, text}] contenu Giguet non servi, non déclaré, non en file
+const gapATraduire = {}; //     book -> [{ref, grec, cause}] grec documenté sans français (résolu)
+const pushGap = (bag, book, entry) => { (bag[book] = bag[book] || []).push(entry); };
 
 const ZERO = { greek: 0, greekLinked: 0, greekOrphan: 0, greekUnlinked: 0, greekQueued: 0, frVerses: 0, frCovered: 0, frDeclared: 0, frQueued: 0, frGap: 0, overlap: 0 };
 const T = { ...ZERO };
@@ -43,14 +50,17 @@ for (const book of Object.keys(giguet).sort()) {
   // côté grec
   for (const chFile of fs.readdirSync(path.join(LXX, book)).filter((f) => /^\d+\.json$/.test(f))) {
     const ch = chFile.replace(".json", "");
-    const verses = [...new Set(JSON.parse(fs.readFileSync(path.join(LXX, book, chFile), "utf8")).mots.map((m) => m.verse).filter((v) => v != null))];
-    for (const v of verses) {
+    const mots = JSON.parse(fs.readFileSync(path.join(LXX, book, chFile), "utf8")).mots;
+    const verseText = new Map(); // v -> texte grec reconstruit (pour la file de lecture)
+    for (const m of mots) if (m.verse != null) verseText.set(m.verse, (verseText.get(m.verse) ? verseText.get(m.verse) + " " : "") + m.grec);
+    for (const v of [...verseText.keys()].sort((a, b) => a - b)) {
       stats.greek++;
-      const src = effSources(book, `${ch}:${v}`);
+      const ref = `${ch}:${v}`;
+      const src = effSources(book, ref);
       if (Array.isArray(src) && src.length) stats.greekLinked++;
-      else if (Array.isArray(src)) stats.greekOrphan++;
-      else if (queueRefs.has(`${book}:${ch}:${v}`)) stats.greekQueued++;
-      else stats.greekUnlinked++;
+      else if (Array.isArray(src)) { stats.greekOrphan++; pushGap(gapATraduire, book, { ref, grec: verseText.get(v), cause: declared[book]?.[ref] ?? declared[book]?.["undefined"] ?? "grec sans français (déclaré)" }); }
+      else if (queueRefs.has(`${book}:${ref}`)) stats.greekQueued++;
+      else { stats.greekUnlinked++; pushGap(gapGreekSansEtat, book, { ref, grec: verseText.get(v) }); }
     }
   }
   // côté Giguet : couverture au mot
@@ -86,17 +96,18 @@ for (const book of Object.keys(giguet).sort()) {
         if (i < n && !cov[i]) { if (s < 0) s = i; }
         else if (s >= 0) { ranges.push([s, i - 1]); s = -1; }
       }
-      let hasContentGap = false;
+      const contentRanges = [];
       for (const [f, t] of ranges) {
         const seg = words.slice(f, t + 1).join(" ");
         if (isMarkerSegment(seg)) auditExcluded.push({ book, giguet: k, words: `${f + 1}-${t + 1}`, text: seg, reason: markerReason(seg) });
-        else hasContentGap = true;
+        else contentRanges.push([f, t]);
       }
-      if (!hasContentGap) stats.frCovered++;
+      if (!contentRanges.length) stats.frCovered++;
       else if (declared[book]?.[k] != null) stats.frDeclared++;
       else if (queueSources.has(`${book}:${k}`)) stats.frQueued++;
       else {
         stats.frGap++;
+        pushGap(gapTrous, book, { ref: k, ranges: contentRanges, text: contentRanges.map(([f, t]) => words.slice(f, t + 1).join(" ")).join(" … ") });
         if (VERBOSE) console.log(`  gap ${book} ${k}: contenu non couvert`);
       }
     }
@@ -113,5 +124,25 @@ console.log(
 if (process.env.EXCLUSIONS_OUT) {
   fs.writeFileSync(process.env.EXCLUSIONS_OUT, JSON.stringify(auditExcluded, null, 1));
   console.log(`exclusions nommées (marqueurs/ponctuation) -> ${process.env.EXCLUSIONS_OUT} (${auditExcluded.length} segments)`);
+}
+if (process.env.GAPS_OUT) {
+  const count = (bag) => Object.values(bag).reduce((a, l) => a + l.length, 0);
+  const gaps = {
+    generated: "audit-coverage.mjs (instrument unique, arbitrage + content-aware)",
+    summary: {
+      grecSansEtat: T.greekUnlinked,
+      trousOuverts: T.frGap,
+      aTraduireProuve: T.greekOrphan,
+      grecEnFile: T.greekQueued,
+      frDeclares: T.frDeclared,
+      frEnFile: T.frQueued,
+      chevauchementsConnus: T.overlap,
+    },
+    greekSansEtat: gapGreekSansEtat,
+    trous: gapTrous,
+    aTraduireProuve: gapATraduire,
+  };
+  fs.writeFileSync(process.env.GAPS_OUT, JSON.stringify(gaps, null, 1));
+  console.log(`file de couverture -> ${process.env.GAPS_OUT} (sans-état ${count(gapGreekSansEtat)}, trous ${count(gapTrous)}, à-traduire ${count(gapATraduire)})`);
 }
 process.exit(T.frGap + T.greekUnlinked + T.overlap > 0 ? 1 : 0);
