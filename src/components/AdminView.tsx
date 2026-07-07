@@ -149,7 +149,7 @@ export default function AdminView() {
         </div>
         {canEdit && (
           <a href="/admin/arbitrage" className="btn btn-sm btn-outline border-base-300">
-            Arbitrage LXX →
+            Arbitrage LXX
           </a>
         )}
       </div>
@@ -210,7 +210,7 @@ export default function AdminView() {
                   )}
                   <div className="mt-1.5 flex flex-wrap items-center gap-x-2 text-xs text-base-content/70">
                     <a href={refHref(a.ref, a.wordIndex)} className="font-medium text-primary hover:underline">
-                      {locationLabel(a.ref)}{a.verse != null ? `, v.${a.verse}` : ""} →
+                      {locationLabel(a.ref)}{a.verse != null ? `, v.${a.verse}` : ""}
                     </a>
                     <span>· {scopeLabel(a)}</span>
                     {a.createdAt && <span>· {formatDate(a.createdAt)}</span>}

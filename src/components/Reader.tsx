@@ -721,7 +721,7 @@ export default function Reader({ text }: { text: Text }) {
             href={`/admin/arbitrage?book=${parsedRef.book}&ch=${parsedRef.chapter}`}
             className="link text-base-content/60 underline-offset-2"
           >
-            Arbitrer les liens de ce chapitre →
+            Arbitrer les liens de ce chapitre
           </a>
         </p>
       )}
