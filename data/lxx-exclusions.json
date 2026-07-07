@@ -1,9 +1,9 @@
 {
- "_note": "Liste versionnée des mots Giguet EXCLUS du servi, avec raison nommée (marqueur Vulgate « (NN) » / ponctuation isolée). Générée par materialize-links.mjs (EXCLUSIONS_OUT). Invariant : chaque mot Giguet est servi OU exclu ici avec raison — jamais perdu en silence.",
- "generatedFrom": "materialize-links.mjs (zéro-perte au mot)",
- "count": 58,
+ "_note": "Liste versionnée des segments Giguet EXCLUS du servi, raison nommée (marqueur Vulgate / ponctuation). Grammaire STRICTE (lib/lxx-materialize.mjs isMarkerSegment) : romains MAJUSCULES seulement, full-match ; en cas de doute -> orphelin (fail-visible). Invariant : chaque mot Giguet servi OU exclu ici, jamais perdu en silence.",
+ "generatedFrom": "materialize-links.mjs (grammaire stricte)",
+ "count": 55,
  "byReason": {
-  "marqueur": 56,
+  "marqueur": 53,
   "ponctuation": 2
  },
  "exclusions": [
@@ -373,13 +373,6 @@
   },
   {
    "book": "sir",
-   "giguet": "30:29",
-   "words": "1-3",
-   "text": "(Vulg., XXXIII, 16.)",
-   "reason": "marqueur"
-  },
-  {
-   "book": "sir",
    "giguet": "31:1",
    "words": "1-2",
    "text": "(Vulg., XXXIV.)",
@@ -394,23 +387,9 @@
   },
   {
    "book": "sir",
-   "giguet": "32:3",
-   "words": "1-1",
-   "text": "(Vulg.,",
-   "reason": "marqueur"
-  },
-  {
-   "book": "sir",
    "giguet": "33:2",
    "words": "1-2",
    "text": "(Vulg., XXXVI.)",
-   "reason": "marqueur"
-  },
-  {
-   "book": "sir",
-   "giguet": "36:17",
-   "words": "1-3",
-   "text": "(Vulg., XXXVI, 14.)",
    "reason": "marqueur"
   }
  ]

@@ -8,6 +8,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { isMarkerSegment, markerReason } from "../lib/lxx-materialize.mjs";
 
 const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const LXX = path.join(repo, "public/lxx");
@@ -32,9 +33,7 @@ const gwords = (b, c, v) => {
   const t = giguet[b]?.[String(c)]?.[String(v)];
   return t == null ? null : t.split(/\s+/).filter(Boolean);
 };
-// Mot « non-contenu » (exclu avec raison, pas un trou) : marqueur Vulgate / ponctuation.
-const isNonContent = (w) =>
-  /[()]/.test(w) || /^[IVXLCDM]+[.,)]?$/i.test(w) || /^\d+[.,)]?$/.test(w) || /Vulg/i.test(w) || /^[.,;:…«»"'—-]+$/.test(w);
+const auditExcluded = []; // mots non couverts classés marqueur/ponctuation (journalisés, jamais ignorés)
 
 const ZERO = { greek: 0, greekLinked: 0, greekOrphan: 0, greekUnlinked: 0, greekQueued: 0, frVerses: 0, frCovered: 0, frDeclared: 0, frQueued: 0, frGap: 0, overlap: 0 };
 const T = { ...ZERO };
@@ -77,11 +76,23 @@ for (const book of Object.keys(giguet).sort()) {
       const spans = (claims.get(k) || []).sort((a, b) => a[0] - b[0]);
       // chevauchements
       for (let i = 1; i < spans.length; i++) if (spans[i][0] <= spans[i - 1][1]) stats.overlap++;
-      // couverture au mot ; un trou = mot de CONTENU non couvert (marqueurs/ponctuation exclus).
+      // couverture au mot ; on regroupe les mots non couverts en plages, puis
+      // chaque plage est soit un marqueur/ponctuation (exclusion nommée, journalisée),
+      // soit de l'Écriture (trou). Un mot non couvert n'est JAMAIS ignoré sans trace.
       const cov = new Array(n).fill(false);
       for (const [f, t] of spans) for (let i = Math.max(0, f); i <= Math.min(t, n - 1); i++) cov[i] = true;
-      const uncoveredContent = words.some((w, i) => !cov[i] && !isNonContent(w));
-      if (!uncoveredContent) stats.frCovered++;
+      const ranges = [];
+      for (let i = 0, s = -1; i <= n; i++) {
+        if (i < n && !cov[i]) { if (s < 0) s = i; }
+        else if (s >= 0) { ranges.push([s, i - 1]); s = -1; }
+      }
+      let hasContentGap = false;
+      for (const [f, t] of ranges) {
+        const seg = words.slice(f, t + 1).join(" ");
+        if (isMarkerSegment(seg)) auditExcluded.push({ book, giguet: k, words: `${f + 1}-${t + 1}`, text: seg, reason: markerReason(seg) });
+        else hasContentGap = true;
+      }
+      if (!hasContentGap) stats.frCovered++;
       else if (declared[book]?.[k] != null) stats.frDeclared++;
       else if (queueSources.has(`${book}:${k}`)) stats.frQueued++;
       else {
@@ -99,4 +110,8 @@ for (const book of Object.keys(giguet).sort()) {
 console.log(
   `\nTOTAL: grec ${T.greekLinked}/${T.greek} liés · ${T.greekOrphan} orphelins doc. · ${T.greekQueued} file · ${T.greekUnlinked} sans état || Giguet ${T.frCovered}/${T.frVerses} couverts · ${T.frDeclared} déclarés · ${T.frQueued} file · ${T.frGap} trous · ${T.overlap} chevauchements`,
 );
+if (process.env.EXCLUSIONS_OUT) {
+  fs.writeFileSync(process.env.EXCLUSIONS_OUT, JSON.stringify(auditExcluded, null, 1));
+  console.log(`exclusions nommées (marqueurs/ponctuation) -> ${process.env.EXCLUSIONS_OUT} (${auditExcluded.length} segments)`);
+}
 process.exit(T.frGap + T.greekUnlinked + T.overlap > 0 ? 1 : 0);

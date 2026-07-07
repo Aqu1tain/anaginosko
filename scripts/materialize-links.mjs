@@ -16,7 +16,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { materializeSources } from "../lib/lxx-materialize.mjs";
+import { materializeSources, isMarkerSegment, markerReason } from "../lib/lxx-materialize.mjs";
 
 const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const LXX = path.join(repo, "public/lxx");
@@ -45,11 +45,7 @@ let violations = 0,
   diffs = 0,
   books_done = 0;
 const residual = []; // { book, ref, current, materialized } — refs où fr.json diffère de la matérialisation
-const excluded = []; // mots Giguet exclus du servi (marqueur / ponctuation), refs nommées
-// Un mot est « non-contenu » (exclu, pas de l'Écriture) : marqueur Vulgate « (NN) »,
-// romain/nombre isolé, ou ponctuation seule.
-const isNonContent = (w) =>
-  /[()]/.test(w) || /^[IVXLCDM]+[.,)]?$/i.test(w) || /^\d+[.,)]?$/.test(w) || /Vulg/i.test(w) || /^[.,;:…«»"'—-]+$/.test(w);
+const excluded = []; // segments Giguet exclus du servi (marqueur / ponctuation), refs nommées
 
 for (const id of Object.keys(giguet)) {
   const frPath = path.join(LXX, id, "fr.json");
@@ -99,17 +95,16 @@ for (const id of Object.keys(giguet)) {
   // Place une plage non couverte : contenu -> orphelin (ligne sans grec) ; segment
   // entièrement non-contenu (marqueurs/ponctuation) -> exclu, raison nommée.
   const placeOrphan = (gigCh, gigV, words, f, t) => {
-    const seg = words.slice(f, t + 1);
-    if (seg.every(isNonContent)) {
-      const reason = seg.some((w) => /Vulg/i.test(w) || /^\(?[IVXLCDM0-9]+/.test(w) || /[()]/.test(w)) ? "marqueur" : "ponctuation";
-      excluded.push({ book: id, giguet: `${gigCh}:${gigV}`, words: `${f + 1}-${t + 1}`, text: seg.join(" "), reason });
+    const text = words.slice(f, t + 1).join(" ");
+    if (isMarkerSegment(text)) {
+      excluded.push({ book: id, giguet: `${gigCh}:${gigV}`, words: `${f + 1}-${t + 1}`, text, reason: markerReason(text) });
       return;
     }
     const home = homeChapter(auto, ov, gigCh) ?? gigCh;
     out[home] = out[home] || {};
     const gvs = greekVerses(id, home) || [0];
     const slot = Math.max(...gvs, ...Object.keys(out[home]).map(Number)) + 1;
-    out[home][slot] = seg.join(" ");
+    out[home][slot] = text;
   };
   for (const gigCh of Object.keys(gAll)) {
     for (const gigV of Object.keys(gAll[gigCh])) {
