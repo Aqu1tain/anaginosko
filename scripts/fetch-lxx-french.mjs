@@ -84,7 +84,15 @@ function parseChapters(text) {
   while ((m = re.exec(text))) marks.push({ ch: m[1] ? romanToInt(m[1]) : 0, start: m.index, end: re.lastIndex });
   const kept = [];
   let maxCh = -1;
-  for (const mk of marks) if (mk.ch > maxCh) { kept.push(mk); maxCh = mk.ch; }
+  for (let i = 0; i < marks.length; i++) {
+    const mk = marks[i];
+    if (mk.ch > maxCh) { kept.push(mk); maxCh = mk.ch; continue; }
+    // Non-monotone : soit un chapitre MAL-NUMÉROTÉ dans le corps (Giguet numérote
+    // deux « CHAPITRE XXV » : Baldad puis la réponse de Job = XXVI), reconnu si une
+    // marque ULTÉRIEURE est plus haute -> on lui donne maxCh+1 ; soit une réf de note
+    // de bas de page en queue (aucune marque plus haute ensuite) -> on ignore.
+    if (marks.slice(i + 1).some((x) => x.ch > maxCh)) { maxCh += 1; kept.push({ ...mk, ch: maxCh }); }
+  }
   const chapters = new Map();
   for (let i = 0; i < kept.length; i++) {
     const body = text.slice(kept[i].end, i + 1 < kept.length ? kept[i + 1].start : undefined);

@@ -13,6 +13,10 @@ import { fileURLToPath } from "node:url";
 
 const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const INGEST = "e442251a"; // ingestion Giguet d'origine (numérotation Giguet)
+// Livres re-parsés avec le parser corrigé (chapitres monotones + prologue) : leur
+// ingestion consolidée vit dans data/lxx-giguet-ingest/<id>.json (déjà nettoyée),
+// ré-épinglée ici. Provenance + oldids Wikisource : data/lxx-giguet-fixes.json.
+const INGEST_LOCAL = new Set(["job", "psa", "isa", "pro", "sir"]);
 const MARK = "↑";
 
 const books = JSON.parse(fs.readFileSync(path.join(repo, "public/lxx/books.json"), "utf8"));
@@ -38,9 +42,15 @@ let books_done = 0,
 for (const b of list) {
   const id = b.id;
   if (!id) continue;
-  // sus/bel n'existent pas à l'ingestion : on prend leur version HEAD (déjà propre).
-  const ref = id === "sus" || id === "bel" ? "HEAD" : INGEST;
-  const raw = fromGit(ref, `public/lxx/${id}/fr.json`);
+  let raw;
+  if (INGEST_LOCAL.has(id)) {
+    const p = path.join(repo, "data/lxx-giguet-ingest", `${id}.json`);
+    raw = fs.existsSync(p) ? JSON.parse(fs.readFileSync(p, "utf8")) : null;
+  } else {
+    // sus/bel n'existent pas à l'ingestion : on prend leur version HEAD (déjà propre).
+    const ref = id === "sus" || id === "bel" ? "HEAD" : INGEST;
+    raw = fromGit(ref, `public/lxx/${id}/fr.json`);
+  }
   if (!raw) continue;
   const book = {};
   for (const ch of Object.keys(raw)) {
