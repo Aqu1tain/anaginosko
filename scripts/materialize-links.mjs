@@ -19,14 +19,17 @@ import { fileURLToPath } from "node:url";
 import { materializeSources, isMarkerSegment, markerReason } from "../lib/lxx-materialize.mjs";
 
 const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const LXX = path.join(repo, "public/lxx");
+// LXX_DATA_DIR / ARB_DIR : au déploiement, on sert depuis le volume serveur et on
+// lit l'arbitrage VIVANT de Biblion (ARB_DIR), comme apply-overrides. En local, defaults repo.
+const LXX = process.env.LXX_DATA_DIR || path.join(repo, "public/lxx");
+const ARB_DIR = process.env.ARB_DIR || path.join(repo, "data");
 const APPLY = process.argv.includes("--apply");
 const CHECK = process.argv.includes("--check");
 const OUTDIR = process.env.MATERIALIZE_OUT; // écrit la matérialisation ailleurs (validation), sans toucher au repo
 
 const giguet = JSON.parse(fs.readFileSync(path.join(repo, "data/giguet-lxx.json"), "utf8"));
 const autoLinks = JSON.parse(fs.readFileSync(path.join(repo, "data/lxx-links.json"), "utf8"));
-const ovPath = path.join(repo, "data/lxx-arbitration.json");
+const ovPath = path.join(ARB_DIR, "lxx-arbitration.json");
 const overrides = fs.existsSync(ovPath) ? JSON.parse(fs.readFileSync(ovPath, "utf8")) : {};
 
 // Chevauchements auto pré-existants (bug build-links, servis en double sur préprod) :

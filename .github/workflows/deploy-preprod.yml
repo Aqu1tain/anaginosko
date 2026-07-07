@@ -35,8 +35,12 @@ jobs:
           cp -r .next/static deploy-out/.next/static
           rm -rf deploy-out/public
           rsync -a --exclude audio --exclude nt --exclude lxx public/ deploy-out/public/
-          # Script de re-matérialisation des overrides d'arbitrage (exécuté côté serveur).
-          mkdir -p deploy-out/scripts && cp scripts/apply-overrides.mjs deploy-out/scripts/
+          # Matérialiseur unique (zéro-perte) + son module partagé + sa donnée, exécuté
+          # côté serveur avec l'arbitrage VIVANT de Biblion (ARB_DIR).
+          mkdir -p deploy-out/scripts deploy-out/lib deploy-out/data
+          cp scripts/materialize-links.mjs deploy-out/scripts/
+          cp lib/lxx-materialize.mjs deploy-out/lib/
+          cp data/giguet-lxx.json data/lxx-links.json data/lxx-arbitration-gaps.json deploy-out/data/
           # La préprod lit sa propre data NT/LXX (branche next), pas celle de la prod.
           printf 'NT_DATA_DIR=/var/www/anaginosko-next/nt\nLXX_DATA_DIR=/var/www/anaginosko-next/lxx\n' > deploy-out/.env.production
 
@@ -70,10 +74,10 @@ jobs:
           # 4) Release Next préprod (bundle standalone immuable)
           $SSH "$HOST" "mkdir -p $REL"
           rsync -az --delete -e "$SSH" deploy-out/ "$HOST:$REL/"
-          # Re-matérialise les overrides Biblion (persistants dans arbitration/) dans les
-          # fr.json, que le rsync lxx --delete vient d'écraser : un déploiement n'efface
-          # jamais son jugement.
-          $SSH "$HOST" "cd $REL && ARB_DIR=/opt/anaginosko-web-next/arbitration LXX_DATA_DIR=/var/www/anaginosko-next/lxx node scripts/apply-overrides.mjs || true"
+          # BASCULE : matérialisation COMPLÈTE (matérialiseur unique zéro-perte) avec
+          # l'arbitrage vivant de Biblion (ARB_DIR persistant). Remplace apply-overrides
+          # (chirurgical, qui laissait fuir les queues). Refuse d'écrire si zéro-perte casse.
+          $SSH "$HOST" "cd $REL && ARB_DIR=/opt/anaginosko-web-next/arbitration LXX_DATA_DIR=/var/www/anaginosko-next/lxx node scripts/materialize-links.mjs --apply"
           $SSHTT "$HOST" "ln -sfn $REL /opt/anaginosko-web-next/current && sudo systemctl restart anaginosko-web-next"
           $SSH "$HOST" "ls -1dt /opt/anaginosko-web-next/releases/*/ | tail -n +4 | xargs -r rm -rf"
 
