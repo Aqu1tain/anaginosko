@@ -18,6 +18,11 @@ const links = JSON.parse(fs.readFileSync(path.join(repo, "data/lxx-links.json"),
 const queue = JSON.parse(fs.readFileSync(path.join(repo, "data/lxx-queue.json"), "utf8"));
 const orphansPath = path.join(repo, "data/lxx-orphans.json");
 const declared = fs.existsSync(orphansPath) ? JSON.parse(fs.readFileSync(orphansPath, "utf8")) : {};
+const arbPath = path.join(repo, "data/lxx-arbitration.json");
+const overrides = fs.existsSync(arbPath) ? JSON.parse(fs.readFileSync(arbPath, "utf8")) : {};
+// Lien EFFECTIF : override (Biblion) l'emporte sur l'auto. L'audit doit lire
+// l'arbitrage, sinon il sur-compte des « gaps » déjà résolus par les 151.
+const effSources = (book, ref) => (overrides[book]?.[ref] ? overrides[book][ref].sources : links[book]?.[ref]);
 
 const queueRefs = new Set(queue.map((q) => `${q.book}:${q.ref}`));
 const queueSources = new Set();
@@ -27,6 +32,9 @@ const gwords = (b, c, v) => {
   const t = giguet[b]?.[String(c)]?.[String(v)];
   return t == null ? null : t.split(/\s+/).filter(Boolean);
 };
+// Mot « non-contenu » (exclu avec raison, pas un trou) : marqueur Vulgate / ponctuation.
+const isNonContent = (w) =>
+  /[()]/.test(w) || /^[IVXLCDM]+[.,)]?$/i.test(w) || /^\d+[.,)]?$/.test(w) || /Vulg/i.test(w) || /^[.,;:…«»"'—-]+$/.test(w);
 
 const ZERO = { greek: 0, greekLinked: 0, greekOrphan: 0, greekUnlinked: 0, greekQueued: 0, frVerses: 0, frCovered: 0, frDeclared: 0, frQueued: 0, frGap: 0, overlap: 0 };
 const T = { ...ZERO };
@@ -39,7 +47,7 @@ for (const book of Object.keys(giguet).sort()) {
     const verses = [...new Set(JSON.parse(fs.readFileSync(path.join(LXX, book, chFile), "utf8")).mots.map((m) => m.verse).filter((v) => v != null))];
     for (const v of verses) {
       stats.greek++;
-      const src = links[book]?.[`${ch}:${v}`];
+      const src = effSources(book, `${ch}:${v}`);
       if (Array.isArray(src) && src.length) stats.greekLinked++;
       else if (Array.isArray(src)) stats.greekOrphan++;
       else if (queueRefs.has(`${book}:${ch}:${v}`)) stats.greekQueued++;
@@ -48,32 +56,37 @@ for (const book of Object.keys(giguet).sort()) {
   }
   // côté Giguet : couverture au mot
   const claims = new Map();
-  for (const [ref, src] of Object.entries(links[book] || {})) {
-    if (!Array.isArray(src)) continue;
+  const ov = overrides[book] || {};
+  const addClaims = (src) => {
+    if (!Array.isArray(src)) return;
     for (const s of src) {
       const k = `${s[0]}:${s[1]}`;
       if (!claims.has(k)) claims.set(k, []);
       const n = (gwords(book, s[0], s[1]) || []).length;
       claims.get(k).push(s.length === 4 ? [s[2], s[3]] : [0, n - 1]);
     }
-  }
+  };
+  for (const [ref, src] of Object.entries(links[book] || {})) if (!ov[ref]) addClaims(src); // auto non surchargé
+  for (const ref of Object.keys(ov)) addClaims(ov[ref].sources); // + overrides Biblion
   for (const ch of Object.keys(giguet[book])) {
     for (const v of Object.keys(giguet[book][ch])) {
       stats.frVerses++;
       const k = `${ch}:${v}`;
-      const n = (gwords(book, ch, v) || []).length;
+      const words = gwords(book, ch, v) || [];
+      const n = words.length;
       const spans = (claims.get(k) || []).sort((a, b) => a[0] - b[0]);
       // chevauchements
       for (let i = 1; i < spans.length; i++) if (spans[i][0] <= spans[i - 1][1]) stats.overlap++;
-      // couverture
-      let covered = 0, cursor = 0;
-      for (const [f, t] of spans) { covered += Math.max(0, Math.min(t, n - 1) - Math.max(f, cursor) + 1); cursor = Math.max(cursor, t + 1); }
-      if (covered >= n) stats.frCovered++;
+      // couverture au mot ; un trou = mot de CONTENU non couvert (marqueurs/ponctuation exclus).
+      const cov = new Array(n).fill(false);
+      for (const [f, t] of spans) for (let i = Math.max(0, f); i <= Math.min(t, n - 1); i++) cov[i] = true;
+      const uncoveredContent = words.some((w, i) => !cov[i] && !isNonContent(w));
+      if (!uncoveredContent) stats.frCovered++;
       else if (declared[book]?.[k] != null) stats.frDeclared++;
       else if (queueSources.has(`${book}:${k}`)) stats.frQueued++;
       else {
         stats.frGap++;
-        if (VERBOSE) console.log(`  gap ${book} ${k}: ${covered}/${n} mots couverts`);
+        if (VERBOSE) console.log(`  gap ${book} ${k}: contenu non couvert`);
       }
     }
   }
