@@ -70,16 +70,25 @@ async function fetchText(page) {
   return t.replace(/\s+/g, " ").trim();
 }
 
-// Chapitres : « CHAPITRE <roman> » (ou « PSAUME <roman> » pour les Psaumes).
+// Chapitres : « CHAPITRE <roman> » (ou « PSAUME <roman> ») ; « PROLOGUE » = ch. 0
+// (préface du traducteur grec, Siracide). Deux garde-fous :
+//  - strictement croissant : une marque non-monotone est une réf de note de bas
+//    de page (« CHAPITRE VII » cité dans les notes) et non un vrai chapitre ; on
+//    l'ignore, sinon la Map écrase le vrai chapitre (bug pro 7).
+//  - le texte AVANT la 1re marque est jeté (en-tête Wikisource) ; PROLOGUE le
+//    capture proprement pour Siracide (bug prologue).
 function parseChapters(text) {
-  const re = /(?:CHAPITRE|PSAUME)\s+([IVXLCDM]+)\b/g;
+  const re = /(?:CHAPITRE|PSAUME)\s+([IVXLCDM]+)\b|\bPROLOGUE\b/g;
   const marks = [];
   let m;
-  while ((m = re.exec(text))) marks.push({ ch: romanToInt(m[1]), start: m.index, end: re.lastIndex });
+  while ((m = re.exec(text))) marks.push({ ch: m[1] ? romanToInt(m[1]) : 0, start: m.index, end: re.lastIndex });
+  const kept = [];
+  let maxCh = -1;
+  for (const mk of marks) if (mk.ch > maxCh) { kept.push(mk); maxCh = mk.ch; }
   const chapters = new Map();
-  for (let i = 0; i < marks.length; i++) {
-    const body = text.slice(marks[i].end, i + 1 < marks.length ? marks[i + 1].start : undefined);
-    chapters.set(marks[i].ch, body);
+  for (let i = 0; i < kept.length; i++) {
+    const body = text.slice(kept[i].end, i + 1 < kept.length ? kept[i + 1].start : undefined);
+    chapters.set(kept[i].ch, body);
   }
   return chapters;
 }
@@ -150,7 +159,12 @@ for (const [page, id] of todo) {
     let chapters = parseChapters(text);
     if (chapters.size === 0) chapters = new Map([[1, text]]); // livre mono-chapitre
     const parsed = new Map();
-    for (const [ch, body] of chapters) parsed.set(ch, parseVerses(body));
+    for (const [ch, body] of chapters) {
+      const verses = parseVerses(body);
+      // Prose sans marqueur « N. » (préface non versifiée du prologue) : un seul
+      // verset. Le lien 1-français <-> N-grec se fait en arbitrage (Phase 3).
+      parsed.set(ch, Object.keys(verses).length || !body.trim() ? verses : { 1: body.trim() });
+    }
 
     if (SINGLE.has(id)) {
       // Page mono-chapitre (Suzanne/Bel) : aplatir tous les versets sur le ch.1.
