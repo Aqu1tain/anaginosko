@@ -12,5 +12,15 @@
   ],
   "exclusions_nommees": [
     { "book": "exo", "giguet": "40:32", "word": ".", "context": "…jusqu'à ce qu'elle s'élevât . …", "reason": "ponctuation", "note": "point isolé (typographie Giguet) exclu du servi ; l'ancien signalement d'une queue exo 36:8 était un faux positif — cette queue EST servie" }
+  ],
+  "auto_overlaps_phase2": [
+    { "book": "1ch", "giguet": "6:1", "greek": ["6:1", "6:16"], "cause": "build-links mappe un verset Giguet sur deux grecs (double-service)", "status": "préexistant, servi en double sur préprod ; correctif build-links en Phase 2" },
+    { "book": "1ch", "giguet": "6:2", "greek": ["6:2", "6:18"], "cause": "double-lien build-links", "status": "préexistant préprod, Phase 2" },
+    { "book": "psa", "giguet": "6:1", "greek": ["6:2", "6:3"], "cause": "double-lien build-links (décalage titre-verset)", "status": "préexistant préprod, Phase 2" },
+    { "book": "psa", "giguet": "7:15", "greek": ["7:16", "7:17"], "cause": "double-lien build-links", "status": "préexistant préprod, Phase 2" },
+    { "book": "psa", "giguet": "43:21", "greek": ["43:22", "43:23"], "cause": "double-lien build-links", "status": "préexistant préprod, Phase 2" },
+    { "book": "psa", "giguet": "55:11", "greek": ["55:11", "55:12"], "cause": "double-lien build-links", "status": "préexistant préprod, Phase 2" },
+    { "book": "psa", "giguet": "64:5", "greek": ["64:5", "64:6"], "cause": "double-lien build-links", "status": "préexistant préprod, Phase 2" },
+    { "book": "psa", "giguet": "99:1", "greek": ["99:1", "99:2"], "cause": "double-lien build-links", "status": "préexistant préprod, Phase 2" }
   ]
 }

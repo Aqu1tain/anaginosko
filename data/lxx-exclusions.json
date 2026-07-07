@@ -1,0 +1,417 @@
+{
+ "_note": "Liste versionnée des mots Giguet EXCLUS du servi, avec raison nommée (marqueur Vulgate « (NN) » / ponctuation isolée). Générée par materialize-links.mjs (EXCLUSIONS_OUT). Invariant : chaque mot Giguet est servi OU exclu ici avec raison — jamais perdu en silence.",
+ "generatedFrom": "materialize-links.mjs (zéro-perte au mot)",
+ "count": 58,
+ "byReason": {
+  "marqueur": 56,
+  "ponctuation": 2
+ },
+ "exclusions": [
+  {
+   "book": "exo",
+   "giguet": "36:8",
+   "words": "1-1",
+   "text": "(1)",
+   "reason": "marqueur"
+  },
+  {
+   "book": "exo",
+   "giguet": "36:8",
+   "words": "34-34",
+   "text": ".",
+   "reason": "ponctuation"
+  },
+  {
+   "book": "exo",
+   "giguet": "36:9",
+   "words": "1-1",
+   "text": "(2)",
+   "reason": "marqueur"
+  },
+  {
+   "book": "exo",
+   "giguet": "36:10",
+   "words": "1-1",
+   "text": "(3)",
+   "reason": "marqueur"
+  },
+  {
+   "book": "exo",
+   "giguet": "36:11",
+   "words": "1-1",
+   "text": "(4)",
+   "reason": "marqueur"
+  },
+  {
+   "book": "exo",
+   "giguet": "36:12",
+   "words": "1-1",
+   "text": "(5)",
+   "reason": "marqueur"
+  },
+  {
+   "book": "exo",
+   "giguet": "36:13",
+   "words": "1-1",
+   "text": "(6)",
+   "reason": "marqueur"
+  },
+  {
+   "book": "exo",
+   "giguet": "36:14",
+   "words": "1-1",
+   "text": "(7)",
+   "reason": "marqueur"
+  },
+  {
+   "book": "exo",
+   "giguet": "36:15",
+   "words": "1-1",
+   "text": "(8)",
+   "reason": "marqueur"
+  },
+  {
+   "book": "exo",
+   "giguet": "36:16",
+   "words": "1-1",
+   "text": "(9)",
+   "reason": "marqueur"
+  },
+  {
+   "book": "exo",
+   "giguet": "36:17",
+   "words": "1-1",
+   "text": "(10)",
+   "reason": "marqueur"
+  },
+  {
+   "book": "exo",
+   "giguet": "36:18",
+   "words": "1-1",
+   "text": "(11)",
+   "reason": "marqueur"
+  },
+  {
+   "book": "exo",
+   "giguet": "36:19",
+   "words": "1-1",
+   "text": "(12)",
+   "reason": "marqueur"
+  },
+  {
+   "book": "exo",
+   "giguet": "36:20",
+   "words": "1-1",
+   "text": "(13)",
+   "reason": "marqueur"
+  },
+  {
+   "book": "exo",
+   "giguet": "36:21",
+   "words": "1-1",
+   "text": "(14)",
+   "reason": "marqueur"
+  },
+  {
+   "book": "exo",
+   "giguet": "36:22",
+   "words": "1-1",
+   "text": "(15)",
+   "reason": "marqueur"
+  },
+  {
+   "book": "exo",
+   "giguet": "36:23",
+   "words": "1-1",
+   "text": "(16)",
+   "reason": "marqueur"
+  },
+  {
+   "book": "exo",
+   "giguet": "36:24",
+   "words": "1-1",
+   "text": "(17)",
+   "reason": "marqueur"
+  },
+  {
+   "book": "exo",
+   "giguet": "36:25",
+   "words": "1-1",
+   "text": "(17)",
+   "reason": "marqueur"
+  },
+  {
+   "book": "exo",
+   "giguet": "36:26",
+   "words": "1-1",
+   "text": "(18)",
+   "reason": "marqueur"
+  },
+  {
+   "book": "exo",
+   "giguet": "36:27",
+   "words": "1-1",
+   "text": "(19)",
+   "reason": "marqueur"
+  },
+  {
+   "book": "exo",
+   "giguet": "36:28",
+   "words": "1-1",
+   "text": "(19)",
+   "reason": "marqueur"
+  },
+  {
+   "book": "exo",
+   "giguet": "36:29",
+   "words": "1-1",
+   "text": "(20)",
+   "reason": "marqueur"
+  },
+  {
+   "book": "exo",
+   "giguet": "36:30",
+   "words": "1-1",
+   "text": "(21)",
+   "reason": "marqueur"
+  },
+  {
+   "book": "exo",
+   "giguet": "36:31",
+   "words": "1-1",
+   "text": "(22)",
+   "reason": "marqueur"
+  },
+  {
+   "book": "exo",
+   "giguet": "36:32",
+   "words": "1-1",
+   "text": "(23)",
+   "reason": "marqueur"
+  },
+  {
+   "book": "exo",
+   "giguet": "36:33",
+   "words": "1-1",
+   "text": "(24)",
+   "reason": "marqueur"
+  },
+  {
+   "book": "exo",
+   "giguet": "36:34",
+   "words": "1-1",
+   "text": "(25)",
+   "reason": "marqueur"
+  },
+  {
+   "book": "exo",
+   "giguet": "36:35",
+   "words": "1-1",
+   "text": "(27)",
+   "reason": "marqueur"
+  },
+  {
+   "book": "exo",
+   "giguet": "36:36",
+   "words": "1-1",
+   "text": "(28)",
+   "reason": "marqueur"
+  },
+  {
+   "book": "exo",
+   "giguet": "36:37",
+   "words": "1-1",
+   "text": "(29)",
+   "reason": "marqueur"
+  },
+  {
+   "book": "exo",
+   "giguet": "36:38",
+   "words": "1-1",
+   "text": "(30)",
+   "reason": "marqueur"
+  },
+  {
+   "book": "exo",
+   "giguet": "39:8",
+   "words": "1-1",
+   "text": "(31)",
+   "reason": "marqueur"
+  },
+  {
+   "book": "1ki",
+   "giguet": "3:1",
+   "words": "1-1",
+   "text": "-",
+   "reason": "ponctuation"
+  },
+  {
+   "book": "neh",
+   "giguet": "12:5",
+   "words": "1-1",
+   "text": "(8)",
+   "reason": "marqueur"
+  },
+  {
+   "book": "jer",
+   "giguet": "28:45",
+   "words": "1-2",
+   "text": "(Vulg., 49.)",
+   "reason": "marqueur"
+  },
+  {
+   "book": "jer",
+   "giguet": "28:46",
+   "words": "1-1",
+   "text": "(50.)",
+   "reason": "marqueur"
+  },
+  {
+   "book": "jer",
+   "giguet": "28:47",
+   "words": "1-1",
+   "text": "(51.)",
+   "reason": "marqueur"
+  },
+  {
+   "book": "jer",
+   "giguet": "28:48",
+   "words": "1-1",
+   "text": "(52.)",
+   "reason": "marqueur"
+  },
+  {
+   "book": "jer",
+   "giguet": "28:49",
+   "words": "1-1",
+   "text": "(53.)",
+   "reason": "marqueur"
+  },
+  {
+   "book": "jer",
+   "giguet": "28:50",
+   "words": "1-1",
+   "text": "(54.)",
+   "reason": "marqueur"
+  },
+  {
+   "book": "jer",
+   "giguet": "28:51",
+   "words": "1-1",
+   "text": "(55.)",
+   "reason": "marqueur"
+  },
+  {
+   "book": "jer",
+   "giguet": "28:52",
+   "words": "1-1",
+   "text": "(56.)",
+   "reason": "marqueur"
+  },
+  {
+   "book": "jer",
+   "giguet": "28:53",
+   "words": "1-1",
+   "text": "(57.)",
+   "reason": "marqueur"
+  },
+  {
+   "book": "jer",
+   "giguet": "28:54",
+   "words": "1-1",
+   "text": "(58.)",
+   "reason": "marqueur"
+  },
+  {
+   "book": "jer",
+   "giguet": "28:55",
+   "words": "1-1",
+   "text": "(59.)",
+   "reason": "marqueur"
+  },
+  {
+   "book": "jer",
+   "giguet": "28:56",
+   "words": "1-1",
+   "text": "(60.)",
+   "reason": "marqueur"
+  },
+  {
+   "book": "jer",
+   "giguet": "28:57",
+   "words": "1-1",
+   "text": "(61.)",
+   "reason": "marqueur"
+  },
+  {
+   "book": "jer",
+   "giguet": "28:58",
+   "words": "1-1",
+   "text": "(62.)",
+   "reason": "marqueur"
+  },
+  {
+   "book": "jer",
+   "giguet": "28:59",
+   "words": "1-1",
+   "text": "(63.)",
+   "reason": "marqueur"
+  },
+  {
+   "book": "jer",
+   "giguet": "28:60",
+   "words": "1-1",
+   "text": "(64.)",
+   "reason": "marqueur"
+  },
+  {
+   "book": "sir",
+   "giguet": "30:16",
+   "words": "1-2",
+   "text": "(Vulg. 14.)",
+   "reason": "marqueur"
+  },
+  {
+   "book": "sir",
+   "giguet": "30:29",
+   "words": "1-3",
+   "text": "(Vulg., XXXIII, 16.)",
+   "reason": "marqueur"
+  },
+  {
+   "book": "sir",
+   "giguet": "31:1",
+   "words": "1-2",
+   "text": "(Vulg., XXXIV.)",
+   "reason": "marqueur"
+  },
+  {
+   "book": "sir",
+   "giguet": "32:1",
+   "words": "1-2",
+   "text": "(Vulg., XXXV.)",
+   "reason": "marqueur"
+  },
+  {
+   "book": "sir",
+   "giguet": "32:3",
+   "words": "1-1",
+   "text": "(Vulg.,",
+   "reason": "marqueur"
+  },
+  {
+   "book": "sir",
+   "giguet": "33:2",
+   "words": "1-2",
+   "text": "(Vulg., XXXVI.)",
+   "reason": "marqueur"
+  },
+  {
+   "book": "sir",
+   "giguet": "36:17",
+   "words": "1-3",
+   "text": "(Vulg., XXXVI, 14.)",
+   "reason": "marqueur"
+  }
+ ]
+}

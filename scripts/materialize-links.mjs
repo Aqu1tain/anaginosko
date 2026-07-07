@@ -29,6 +29,12 @@ const autoLinks = JSON.parse(fs.readFileSync(path.join(repo, "data/lxx-links.jso
 const ovPath = path.join(repo, "data/lxx-arbitration.json");
 const overrides = fs.existsSync(ovPath) ? JSON.parse(fs.readFileSync(ovPath, "utf8")) : {};
 
+// Chevauchements auto pré-existants (bug build-links, servis en double sur préprod) :
+// allowlist stricte de refs nommées, versionnée. Toute AUTRE violation reste fatale.
+const gapsPath = path.join(repo, "data/lxx-arbitration-gaps.json");
+const gaps = fs.existsSync(gapsPath) ? JSON.parse(fs.readFileSync(gapsPath, "utf8")) : {};
+const OVERLAP_ALLOW = new Set((gaps.auto_overlaps_phase2 || []).map((o) => `${o.book} ${o.giguet}`));
+
 const greekVerses = (id, ch) => {
   const p = path.join(LXX, id, `${ch}.json`);
   if (!fs.existsSync(p)) return null;
@@ -39,6 +45,11 @@ let violations = 0,
   diffs = 0,
   books_done = 0;
 const residual = []; // { book, ref, current, materialized } — refs où fr.json diffère de la matérialisation
+const excluded = []; // mots Giguet exclus du servi (marqueur / ponctuation), refs nommées
+// Un mot est « non-contenu » (exclu, pas de l'Écriture) : marqueur Vulgate « (NN) »,
+// romain/nombre isolé, ou ponctuation seule.
+const isNonContent = (w) =>
+  /[()]/.test(w) || /^[IVXLCDM]+[.,)]?$/i.test(w) || /^\d+[.,)]?$/.test(w) || /Vulg/i.test(w) || /^[.,;:…«»"'—-]+$/.test(w);
 
 for (const id of Object.keys(giguet)) {
   const frPath = path.join(LXX, id, "fr.json");
@@ -85,12 +96,20 @@ for (const id of Object.keys(giguet)) {
   for (const ref of Object.keys(auto)) if (!ov[ref] && Array.isArray(auto[ref])) auto[ref].forEach(addClaim);
   for (const ref of Object.keys(ov)) ov[ref].sources.forEach(addClaim);
 
-  const emitOrphan = (gigCh, words, f, t) => {
+  // Place une plage non couverte : contenu -> orphelin (ligne sans grec) ; segment
+  // entièrement non-contenu (marqueurs/ponctuation) -> exclu, raison nommée.
+  const placeOrphan = (gigCh, gigV, words, f, t) => {
+    const seg = words.slice(f, t + 1);
+    if (seg.every(isNonContent)) {
+      const reason = seg.some((w) => /Vulg/i.test(w) || /^\(?[IVXLCDM0-9]+/.test(w) || /[()]/.test(w)) ? "marqueur" : "ponctuation";
+      excluded.push({ book: id, giguet: `${gigCh}:${gigV}`, words: `${f + 1}-${t + 1}`, text: seg.join(" "), reason });
+      return;
+    }
     const home = homeChapter(auto, ov, gigCh) ?? gigCh;
     out[home] = out[home] || {};
     const gvs = greekVerses(id, home) || [0];
     const slot = Math.max(...gvs, ...Object.keys(out[home]).map(Number)) + 1;
-    out[home][slot] = words.slice(f, t + 1).join(" ");
+    out[home][slot] = seg.join(" ");
   };
   for (const gigCh of Object.keys(gAll)) {
     for (const gigV of Object.keys(gAll[gigCh])) {
@@ -99,12 +118,13 @@ for (const id of Object.keys(giguet)) {
       let cursor = 0;
       for (const [f, t] of spans) {
         if (f < cursor) {
-          console.warn(`  ! ${id} ${gigCh}:${gigV}: chevauchement de mots (zéro-perte)`);
-          violations++;
-        } else if (f > cursor) emitOrphan(gigCh, words, cursor, f - 1);
+          const known = OVERLAP_ALLOW.has(`${id} ${gigCh}:${gigV}`);
+          console.warn(`  ${known ? "(connu)" : "!"} ${id} ${gigCh}:${gigV}: chevauchement de mots (zéro-perte)${known ? " [allowlist auto_overlaps]" : ""}`);
+          if (!known) violations++;
+        } else if (f > cursor) placeOrphan(gigCh, gigV, words, cursor, f - 1);
         cursor = Math.max(cursor, t + 1);
       }
-      if (cursor < words.length) emitOrphan(gigCh, words, cursor, words.length - 1);
+      if (cursor < words.length) placeOrphan(gigCh, gigV, words, cursor, words.length - 1);
     }
   }
 
@@ -149,5 +169,9 @@ console.log(`${APPLY ? "[APPLIED]" : CHECK ? "[CHECK]" : "[dry-run]"} ${books_do
 if (CHECK && process.env.RESIDUAL_OUT) {
   fs.writeFileSync(process.env.RESIDUAL_OUT, JSON.stringify(residual, null, 1));
   console.log(`  résidu détaillé -> ${process.env.RESIDUAL_OUT} (${residual.length} refs)`);
+}
+if (process.env.EXCLUSIONS_OUT) {
+  fs.writeFileSync(process.env.EXCLUSIONS_OUT, JSON.stringify(excluded, null, 1));
+  console.log(`  exclusions nommées (marqueurs/ponctuation) -> ${process.env.EXCLUSIONS_OUT} (${excluded.length} segments)`);
 }
 if (violations) process.exit(1);
