@@ -61,3 +61,43 @@ Tu avais déclaré grec Job 25 (Baldad) orphelin et lié grec 26 à Giguet 25. C
 > De grandes et nombreuses choses, au sujet desquelles il faut louer Israël de sa doctrine et de sa sagesse, nous ayant été transmises par la Loi, les Prophètes et autres qui les ont…
 
 _Note : le prologue est 1 prose française ↔ 36 versets grecs (lien 1↔N à poser en arbitrage)._
+
+## Re-placements d'orphelins (Écriture servie amputée, restaurée)
+
+Le matérialiseur unique pave désormais chaque verset Giguet AU MOT : toute plage non
+couverte par un extrait `[c,v,de,à]` est ré-émise (jamais perdue). Quatre queues
+d'Écriture qui fuyaient sous l'ancien apply-overrides sont restaurées :
+
+| livre | Giguet | queue restaurée | cause |
+|---|---|---|---|
+| sir | 36:16 | « et j'ai hérité de ceux qui m'ont devancé depuis le commencement. » | override sir 33:16 ne prenait que les mots 0-5 |
+| sir | 47:3 | « brebis. Dès sa jeunesse » | override sir 47:4 prenait mots 15-17 |
+| tob | 6:17 | « il entra dans Ecbatane. » | override tob 6:19 prenait mots 75-89 |
+| neh | (à localiser) | « les chants, » | gap de découpe |
+
+Deux titres de section transmis par Giguet dans le corps du verset, à rendre comme
+titres (KAN-55, pas comme Écriture) : sir 20:27 « TRAITÉ SUR LES PARABOLES »,
+sir 23:6 « DOCTRINE DE LA BOUCHE ».
+
+## Les 8 chevauchements auto (double-service build-links, à corriger en Phase 2)
+
+`build-links` mappe un verset Giguet sur DEUX versets grecs (servi en double sur
+préprod). Allowlist nommée, versionnée ; correctif en Phase 2, aucun autre
+chevauchement n'est toléré.
+
+| livre | Giguet | grecs | cause |
+|---|---|---|---|
+| 1ch | 6:1 | 6:1 + 6:16 | double-lien |
+| 1ch | 6:2 | 6:2 + 6:18 | double-lien |
+| psa | 6:1 | 6:2 + 6:3 | décalage titre-verset |
+| psa | 7:15 | 7:16 + 7:17 | double-lien |
+| psa | 43:21 | 43:22 + 43:23 | double-lien |
+| psa | 55:11 | 55:11 + 55:12 | double-lien |
+| psa | 64:5 | 64:5 + 64:6 | double-lien |
+| psa | 99:1 | 99:1 + 99:2 | double-lien |
+
+## Une exclusion nommée (ponctuation, pas Écriture)
+
+exo 40:32 : un point isolé « . » (typographie Giguet), exclu du servi avec raison
+nommée. L'ancien signalement d'une queue exo 36:8 était un faux positif — cette
+queue EST servie.
