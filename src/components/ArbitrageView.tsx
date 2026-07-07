@@ -9,7 +9,7 @@ import { useAuth } from "../hooks/useAuth";
 // On ne modifie jamais le texte Giguet ; on ne fait que le câbler.
 
 // Source : verset Giguet entier [ch, v] ou extrait [ch, v, motDébut, motFin]
-// (indices 0-based inclusifs — Giguet fusionne parfois deux versets grecs en un).
+// (indices 0-based inclusifs ; Giguet fusionne parfois deux versets grecs en un).
 type Src = [number, number] | [number, number, number, number];
 type State = { scaled: boolean; state: "auto-resolved" | "not-converged" | "pending-scale"; pending: number };
 type QItem = {
@@ -85,7 +85,7 @@ export default function ArbitrageView() {
       <h1 className="text-2xl font-bold">Arbitrage des liens</h1>
       <p className="mt-1 max-w-prose text-sm text-base-content/70">
         Le grec (Rahlfs) est la colonne autoritaire. Vous reliez chaque verset grec à un ou plusieurs
-        versets Giguet — jamais vous n’en modifiez le texte. Vous n’agissez que sur les chapitres déjà
+        versets Giguet ; jamais vous n’en modifiez le texte. Vous n’agissez que sur les chapitres déjà
         passés par l’alignement (scaled) ; les autres sont verrouillés.
       </p>
       {err && <div className="alert alert-warning mt-3 text-sm">{err}</div>}
@@ -149,7 +149,7 @@ function BrowseList({ states, onOpen }: { states: Record<string, Record<string, 
                 return (
                   <button key={c} onClick={() => onOpen(book, c)}
                     className={`btn btn-sm ${notConv ? "btn-warning btn-outline" : s.pending ? "btn-outline border-error/50" : "btn-ghost border border-base-300"}`}
-                    title={notConv ? "Non convergé — liage manuel (session)" : s.pending ? `${s.pending} arbitrage(s) en attente` : "Auto-résolu"}>
+                    title={notConv ? "Non convergé : liage manuel (session)" : s.pending ? `${s.pending} arbitrage(s) en attente` : "Auto-résolu"}>
                     {c}
                     {s.pending > 0 && <span className="badge badge-xs badge-error ml-1">{s.pending}</span>}
                     {notConv && <span className="ml-1 text-[0.65rem] uppercase">manuel</span>}
@@ -238,8 +238,8 @@ function VerseRow({ book, row, item, focused, heavy, gigChapters, defaultCh, onS
         <div className="min-w-0 flex-1">
           <p className="font-greek text-lg leading-snug">{row.greek}</p>
           <p className="mt-1 text-sm leading-relaxed text-base-content/85">
-            {row.orphanGreek ? <em className="text-base-content/50">— orphelin grec (aucun français)</em>
-              : row.french ?? <em className="text-base-content/50">— grec seul (non arbitré)</em>}
+            {row.orphanGreek ? <em className="text-base-content/50">orphelin grec (aucun français)</em>
+              : row.french ?? <em className="text-base-content/50">grec seul (non arbitré)</em>}
             {row.overridden && <span className="badge badge-xs badge-primary ml-2">Biblion</span>}
           </p>
           {item?.reason && !editing && <p className="mt-1 text-xs text-warning">{item.reason}</p>}
@@ -340,7 +340,7 @@ function Resolver({ book, row, item, gigChapters, defaultCh, onDone, onCancel }:
         <p className="font-greek mt-1 text-lg leading-snug">{row.greek}</p>
         <p className="mt-1 leading-relaxed text-base-content/85">
           <span className="verse-num">{row.v}</span>
-          {preview || <em className="text-base-content/40">— grec seul —</em>}
+          {preview || <em className="text-base-content/40">grec seul</em>}
         </p>
       </div>
 
@@ -356,7 +356,7 @@ function Resolver({ book, row, item, gigChapters, defaultCh, onDone, onCancel }:
 }
 
 // Panneau Giguet : on FEUILLETTE la traduction en contexte (chapitre par chapitre,
-// versets entiers) et on clique pour lier/délier — la recherche plein texte est le
+// versets entiers) et on clique pour lier/délier ; la recherche plein texte est le
 // chemin secondaire. Les versets déjà liés ailleurs sont signalés, pas cachés.
 function GiguetPicker({ book, currentRef, gigChapters, defaultCh, selected, onToggle, onAddSpan }: {
   book: string; currentRef: string; gigChapters: string[]; defaultCh: string;
@@ -425,7 +425,7 @@ function GiguetPicker({ book, currentRef, gigChapters, defaultCh, selected, onTo
               <div key={key} className="border-l-2 border-accent bg-accent/5 px-3 py-2">
                 <div className="flex items-center justify-between gap-2">
                   <span className="text-[0.7rem] font-medium uppercase tracking-wide text-accent">
-                    Extrait de {r.ch}:{r.v} — {extract.start == null ? "touchez le PREMIER mot" : "touchez le DERNIER mot"}
+                    Extrait de {r.ch}:{r.v} : {extract.start == null ? "touchez le PREMIER mot" : "touchez le DERNIER mot"}
                   </span>
                   <button type="button" className="btn btn-ghost btn-xs" onClick={() => setExtract(null)}>Annuler</button>
                 </div>
@@ -456,7 +456,7 @@ function GiguetPicker({ book, currentRef, gigChapters, defaultCh, selected, onTo
               isSel ? "border-primary bg-primary/10" : "border-transparent hover:bg-base-200"
             }`}>
               <button type="button" onClick={() => onToggle(r.ch, r.v, r.text)}
-                title={isSel ? "Cliquer pour délier" : elsewhere ? `Déjà lié au grec ${r.linkedTo} — le lier ici demandera une réattribution` : "Cliquer pour lier le verset entier"}
+                title={isSel ? "Cliquer pour délier" : elsewhere ? `Déjà lié au grec ${r.linkedTo} : le lier ici demandera une réattribution` : "Cliquer pour lier le verset entier"}
                 className="min-w-0 flex-1 px-3 py-2 text-left text-sm leading-relaxed">
                 <span className={`verse-num ${isSel ? "text-primary" : ""}`}>{searching ? `${r.ch}:${r.v}` : r.v}</span>
                 <span className={elsewhere && !isSel ? "text-base-content/45" : "text-base-content/85"}>{r.text}</span>

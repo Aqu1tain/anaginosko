@@ -15,7 +15,7 @@ export default function HeroVerse({ text }: { text: Text }) {
         <GreekText text={text} size="lg" scale={1.15} />
       </div>
       <p className="mt-5 text-sm leading-relaxed text-base-content/60">
-        <span className="font-greek text-base-content/80">Jean 1, 1</span> — touchez une lettre pour son nom et
+        <span className="font-greek text-base-content/80">Jean 1, 1</span> : touchez une lettre pour son nom et
         sa prononciation, ou{" "}
         <Link href="/nt/jn/1" className="font-medium text-accent hover:underline">
           lisez le chapitre&nbsp;→

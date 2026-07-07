@@ -101,7 +101,7 @@ const newQueueItems = [];
 
 for (const [gid, readers] of groups) {
   if (!readers.A || !readers.B) {
-    console.warn(`! groupe ${gid}: lecteur manquant — groupe ignoré (chapitres laissés pending-scale)`);
+    console.warn(`! groupe ${gid}: lecteur manquant - groupe ignoré (chapitres laissés pending-scale)`);
     continue;
   }
   const books = new Set([...Object.keys(readers.A), ...Object.keys(readers.B)]);
@@ -190,8 +190,8 @@ for (const rec of perChapter) {
         reason: missing
           ? `Source Giguet inexistante citée par les lecteurs : ${skey(missing)}`
           : conflict
-            ? `Giguet ${skey(conflict)} déjà lié au grec ${owners.get(skey(conflict))} — réattribution à trancher`
-            : `Source dans le chapitre Giguet ${blockDup[0]} encore en bloc — lier après résolution`,
+            ? `Giguet ${skey(conflict)} déjà lié au grec ${owners.get(skey(conflict))} - réattribution à trancher`
+            : `Source dans le chapitre Giguet ${blockDup[0]} encore en bloc - lier après résolution`,
         proposals: [{ reader: "A+B", sources: sources.map((s) => [String(s[0]), String(s[1])]) }],
       });
       deferred++;
@@ -246,7 +246,7 @@ for (const rec of perChapter) {
       addPending(rec.book, key);
       newQueueItems.push({
         book: rec.book, ref: `${rec.ch}:${h.gr}`, kind: "orphan-vs-split", grain: "verse", priority: 2,
-        reason: `Giguet ${key} rattaché au grec ${rec.ch}:${h.gr} par le lecteur ${h.reader} seul (scission disputée) — rattacher, orphéliser, ou autre verset`,
+        reason: `Giguet ${key} rattaché au grec ${rec.ch}:${h.gr} par le lecteur ${h.reader} seul (scission disputée) - rattacher, orphéliser, ou autre verset`,
         proposals: [{ reader: h.reader, sources: [[String(rec.ch), String(v)]] }],
       });
     } else {

@@ -5,7 +5,7 @@ export const dynamic = "force-dynamic";
 
 // Picker Giguet : parcourir un chapitre entier (ch) ou chercher dans tout le livre
 // par le texte (q). Chaque verset porte `linkedTo` : le verset grec qui le consomme
-// déjà (contexte pour Biblion — un verset déjà lié est signalé, pas caché).
+// déjà (contexte pour Biblion : un verset déjà lié est signalé, pas caché).
 export async function GET(req: Request) {
   const auth = await requireEditor(req.headers.get("authorization"));
   if (!auth.ok) return NextResponse.json({ error: "Réservé aux contributeurs." }, { status: 401 });
