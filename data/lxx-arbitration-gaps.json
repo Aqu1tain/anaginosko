@@ -10,7 +10,7 @@
     { "book": "sir", "giguet": "20:27", "title": "TRAITÉ SUR LES PARABOLES", "cause": "override sir 20:26 prend mots 0-13 de Giguet 20:27", "disposition": "titre de section transmis, à rendre comme titre (KAN-55)" },
     { "book": "sir", "giguet": "23:6", "title": "DOCTRINE DE LA BOUCHE", "cause": "override sir 23:6 prend mots 0-20 de Giguet 23:6", "disposition": "titre de section transmis (KAN-55)" }
   ],
-  "negligible": [
-    { "book": "exo", "lostWords": ".", "note": "ponctuation isolée, non significative" }
+  "exclusions_nommees": [
+    { "book": "exo", "giguet": "40:32", "word": ".", "context": "…jusqu'à ce qu'elle s'élevât . …", "reason": "ponctuation", "note": "point isolé (typographie Giguet) exclu du servi ; l'ancien signalement d'une queue exo 36:8 était un faux positif — cette queue EST servie" }
   ]
 }
