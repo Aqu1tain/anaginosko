@@ -19,6 +19,7 @@ const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const LXX = path.join(repo, "public/lxx");
 const APPLY = process.argv.includes("--apply");
 const CHECK = process.argv.includes("--check");
+const OUTDIR = process.env.MATERIALIZE_OUT; // écrit la matérialisation ailleurs (validation), sans toucher au repo
 
 const giguet = JSON.parse(fs.readFileSync(path.join(repo, "data/giguet-lxx.json"), "utf8"));
 const autoLinks = JSON.parse(fs.readFileSync(path.join(repo, "data/lxx-links.json"), "utf8"));
@@ -34,6 +35,7 @@ const greekVerses = (id, ch) => {
 let violations = 0,
   diffs = 0,
   books_done = 0;
+const residual = []; // { book, ref, current, materialized } — refs où fr.json diffère de la matérialisation
 
 for (const id of Object.keys(giguet)) {
   const frPath = path.join(LXX, id, "fr.json");
@@ -101,16 +103,21 @@ for (const id of Object.keys(giguet)) {
     for (const gCh of Object.keys(out)) {
       for (const gV of Object.keys(out[gCh])) {
         const now = current[gCh]?.[gV];
-        if (now != null && norm(now) !== norm(out[gCh][gV])) diffs++;
+        if (now != null && norm(now) !== norm(out[gCh][gV])) {
+          diffs++;
+          residual.push({ book: id, ref: `${gCh}:${gV}`, current: now, materialized: out[gCh][gV] });
+        }
       }
     }
   }
 
   out._align = current._align;
-  if (APPLY && !violations) {
-    const tmp = frPath + ".tmp";
+  if ((APPLY || OUTDIR) && !violations) {
+    const target = OUTDIR ? path.join(OUTDIR, id, "fr.json") : frPath;
+    fs.mkdirSync(path.dirname(target), { recursive: true });
+    const tmp = target + ".tmp";
     fs.writeFileSync(tmp, JSON.stringify(out));
-    fs.renameSync(tmp, frPath);
+    fs.renameSync(tmp, target);
   }
   books_done++;
 }
@@ -130,4 +137,8 @@ function homeChapter(auto, ov, gigCh) {
 }
 
 console.log(`${APPLY ? "[APPLIED]" : CHECK ? "[CHECK]" : "[dry-run]"} ${books_done} livres, ${violations} violations zéro-perte/existence${CHECK ? `, ${diffs} versets différents du fr.json actuel` : ""}`);
+if (CHECK && process.env.RESIDUAL_OUT) {
+  fs.writeFileSync(process.env.RESIDUAL_OUT, JSON.stringify(residual, null, 1));
+  console.log(`  résidu détaillé -> ${process.env.RESIDUAL_OUT} (${residual.length} refs)`);
+}
 if (violations) process.exit(1);
