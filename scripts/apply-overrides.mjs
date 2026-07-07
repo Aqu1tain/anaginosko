@@ -28,6 +28,7 @@ const slice = (b, s) => {
 };
 let applied = 0;
 for (const book of Object.keys(overrides)) {
+  if (book.startsWith("_")) continue; // clés méta (_provenance), pas des livres
   const frPath = path.join(LXX, book, "fr.json");
   if (!fs.existsSync(frPath)) continue;
   const fr = JSON.parse(fs.readFileSync(frPath, "utf8"));
