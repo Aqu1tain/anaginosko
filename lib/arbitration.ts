@@ -62,6 +62,12 @@ export type Proposition = {
 export type Psalm = { ref: string; grec: string; accord: boolean; maison_A: string; maison_B: string; choix: string | null; decomposition: string; confiance: string[] };
 export type Dismissal = { book: string; key: string; decision: string; note?: string; by: string; at: string };
 
+export type CoverageGaps = {
+  greekSansEtat?: Record<string, { ref: string; grec: string }[]>;
+  trous?: Record<string, { ref: string; text: string }[]>;
+  aTraduireProuve?: Record<string, { ref: string; grec: string; cause?: string }[]>;
+};
+export const coverageGaps = (): CoverageGaps => readJson("lxx-coverage-gaps.json", {});
 export const biblionQueue = (): BiblionCase[] => readJson("lxx-biblion-queue.json", []);
 export const psalmsKan67 = (): { suscriptions: Psalm[] } => readJson("lxx-psaumes-kan67.json", { suscriptions: [] });
 const DISMISS_PATH = path.join(ARB_DIR, "lxx-biblion-dismissed.json");
