@@ -83,7 +83,10 @@ jobs:
           #     L'ARB_DIR appartient au service (anag-web) : on écrit SOUS SON IDENTITÉ
           #     (sudo -u), sinon la clé de déploiement (debian) n'y a pas droit, ET pour
           #     préserver l'ownership afin que l'outil d'admin de Biblion garde l'écriture.
-          $SSHTT "$HOST" "sudo -u anag-web cp $ARB/lxx-arbitration.json $ARB/lxx-arbitration.json.bak.$TS && sudo -u anag-web node $REL/scripts/merge-arb-git-server.mjs --git $REL/data/lxx-arbitration.json --server $ARB/lxx-arbitration.json --out $ARB/lxx-arbitration.json --capture $ARB/biblion-fresh.json --prev $ARB/last-git-arbitration.json"
+          # sudo -n (non-interactif, NOPASSWD) sur $SSH SANS -tt : avec Defaults use_pty,
+          # la combinaison ssh -tt + sudo sans -n deadlocke en contexte CI (pas de terminal
+          # local). sudo -n sur ssh sans tty est prouvé fonctionnel pour cet hôte.
+          $SSH "$HOST" "sudo -n -u anag-web cp $ARB/lxx-arbitration.json $ARB/lxx-arbitration.json.bak.$TS && sudo -n -u anag-web node $REL/scripts/merge-arb-git-server.mjs --git $REL/data/lxx-arbitration.json --server $ARB/lxx-arbitration.json --out $ARB/lxx-arbitration.json --capture $ARB/biblion-fresh.json --prev $ARB/last-git-arbitration.json"
           # Remonte les ajouts frais de Biblion vers le runner (artefact) : ils ne restent
           # PAS un exemplaire unique sur le VPS. À versionner dans git ensuite.
           rsync -az -e "$SSH" "$HOST:$ARB/biblion-fresh.json" ./biblion-fresh.json 2>/dev/null || printf '[]' > ./biblion-fresh.json
