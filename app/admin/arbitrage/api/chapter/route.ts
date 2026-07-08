@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { requireEditor, states, queue, effectiveSources, materialize, greekVerses, overrides, giguet, chapterCoverage } from "@/lib/arbitration";
+import { requireEditor, states, queue, effectiveSources, servedText, greekVerses, overrides, giguet, chapterCoverage } from "@/lib/arbitration";
 
 export const dynamic = "force-dynamic";
 
@@ -21,11 +21,15 @@ export async function GET(req: Request) {
   const rows = gv.map(({ v, greek }) => {
     const ref = `${ch}:${v}`;
     const sources = effectiveSources(book, ref);
+    const maison = ov[ref]?.maison;
     return {
       v, greek, ref, sources,
-      french: sources && sources.length ? materialize(book, sources) : null,
-      orphanGreek: Array.isArray(sources) && sources.length === 0,
+      french: servedText(book, ref),
+      maison: maison || null,
+      orphanGreek: Array.isArray(sources) && sources.length === 0 && !maison,
       overridden: !!ov[ref],
+      by: ov[ref]?.by || null,
+      provenance: ov[ref]?.provenance || null,
     };
   });
   const items = queue().filter((q) => q.book === book && q.ref.split(":")[0] === String(ch));

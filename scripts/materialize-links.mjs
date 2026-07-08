@@ -16,7 +16,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { materializeSources, isMarkerSegment, markerReason } from "../lib/lxx-materialize.mjs";
+import { materializeSources, materializeEntry, isMarkerSegment, markerReason } from "../lib/lxx-materialize.mjs";
 
 const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 // LXX_DATA_DIR / ARB_DIR : au déploiement, on sert depuis le volume serveur et on
@@ -75,7 +75,10 @@ for (const id of Object.keys(giguet)) {
     if (!gvs) continue;
     out[gCh] = out[gCh] || {};
     for (const gV of gvs) {
-      const src = effSources(`${gCh}:${gV}`);
+      const ref = `${gCh}:${gV}`;
+      // Override maison (texte libre) servi tel quel ; sinon sources Giguet ; null = grec seul.
+      if (ov[ref]?.maison) { const t = ov[ref].maison.trim(); if (t) out[gCh][gV] = t; continue; }
+      const src = effSources(ref);
       if (src == null) continue; // grec seul
       const text = materializeSources(gAll, src);
       if (text) out[gCh][gV] = text;
