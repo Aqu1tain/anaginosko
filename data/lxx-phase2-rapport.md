@@ -142,9 +142,40 @@ les deux propositions de lecteurs (grec et français en regard) pour arbitrage.
 - `scripts/materialize-links.mjs --apply` — matérialisation complète gatée (build + déploiement).
 - Provenance : chaque appariement shippé porte `provenance: "phase2-convergence"` + la preuve textuelle des deux témoins.
 
+## Bascule — ce qui s'est réellement passé (2026-07-08)
+
+Pièce d'archive, pas récit lissé. La PR a été mergée dans `next` et le déploiement
+préprod est passé au vert. Mais les 155 corrections **ne servaient pas** sur
+préprod, et Job y a subi une **régression transitoire** (job 25:1 servi vide).
+
+Cause : le déploiement re-matérialise `fr.json` depuis l'`ARB_DIR` **serveur**
+(l'arbitrage vivant de Biblion, resté au baseline 151), pas depuis l'arbitrage
+git (295). Rien n'écrivait git -> serveur. Donc les corrections Phase 2 ne
+pouvaient pas atteindre le serveur, et les 11 overrides Job archivés en git mais
+encore actifs côté serveur entraient en conflit avec le nouveau giguet (Giguet 25
+= Baldad restauré) -> job 25 cassé. Prod non touchée (service distinct, port 3101).
+
+Preuve du diagnostic (lecture seule serveur) : `ARB_DIR` serveur = 151 overrides,
+1ki 5:1 absent, fr servi = « Hiram, roi de Tyr » (ancien faux) ; job 25:1 = vide.
+
+Remédiation, en deux temps :
+1. **Sync ponctuel** (`scripts/sync-arb-to-server.mjs`) : backup horodaté +
+   checksum, précondition « serveur == baseline 151 » (STOP si Biblion a écrit
+   entre-temps), remplacement par l'arbitrage git, re-matérialisation, preuves
+   (1ki 5:1 = « les officiers », job 25:1 = « Baldad », materialize --check = 0,
+   diff serveur borné EXACTEMENT à la partition attendue de 239 versets).
+2. **Correctif d'architecture durable** (`scripts/merge-arb-git-server.mjs` +
+   gate `scripts/check-sentinelles.mjs`, câblés dans `deploy-preprod.yml`) : git
+   devient la source de vérité, l'`ARB_DIR` serveur la copie de travail de
+   Biblion. Fusion à trois règles au déploiement (git-active installée ; archivée
+   retirée ; fraîche Biblion conservée + capturée ; conflit BLOQUANT en refs
+   nommées), puis gate sentinelle (un verset servi par lot de corrections
+   vérifié) qui aurait attrapé le bug du jour.
+
 ## Suite (hors périmètre de cette PR, gaté par revue)
 
 1. Revue Biblion des 292 (1 Chroniques en priorité) et des 28 suscriptions maison.
 2. Service des traductions maison KAN-67 (mécanisme de provenance « maison » à ajouter au matérialiseur).
 3. Correctif des 8 doubles-liens build-links.
-4. Bascule déploiement effective (config déjà en place, commit 9048bb42) après revue de la PR.
+4. Bascule prod : après revue de la PR, revue Biblion, sync serveur (option 1) et
+   fusion durable en place (option 2). Prod ne bouge pas avant.

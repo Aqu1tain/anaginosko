@@ -35,12 +35,13 @@ jobs:
           cp -r .next/static deploy-out/.next/static
           rm -rf deploy-out/public
           rsync -a --exclude audio --exclude nt --exclude lxx public/ deploy-out/public/
-          # Matérialiseur unique (zéro-perte) + son module partagé + sa donnée, exécuté
-          # côté serveur avec l'arbitrage VIVANT de Biblion (ARB_DIR).
+          # Matérialiseur unique (zéro-perte) + module partagé + fusion arbitrage git<->serveur
+          # + gate sentinelle, exécutés côté serveur. git est la SOURCE DE VÉRITÉ de
+          # l'arbitrage ; l'ARB_DIR serveur est la copie de travail de Biblion (fusion à 3 règles).
           mkdir -p deploy-out/scripts deploy-out/lib deploy-out/data
-          cp scripts/materialize-links.mjs deploy-out/scripts/
+          cp scripts/materialize-links.mjs scripts/merge-arb-git-server.mjs scripts/check-sentinelles.mjs deploy-out/scripts/
           cp lib/lxx-materialize.mjs deploy-out/lib/
-          cp data/giguet-lxx.json data/lxx-links.json data/lxx-arbitration-gaps.json deploy-out/data/
+          cp data/giguet-lxx.json data/lxx-links.json data/lxx-arbitration.json data/lxx-arbitration-gaps.json data/lxx-sentinelles.json deploy-out/data/
           # La préprod lit sa propre data NT/LXX (branche next), pas celle de la prod.
           printf 'NT_DATA_DIR=/var/www/anaginosko-next/nt\nLXX_DATA_DIR=/var/www/anaginosko-next/lxx\n' > deploy-out/.env.production
 
@@ -74,12 +75,35 @@ jobs:
           # 4) Release Next préprod (bundle standalone immuable)
           $SSH "$HOST" "mkdir -p $REL"
           rsync -az --delete -e "$SSH" deploy-out/ "$HOST:$REL/"
-          # BASCULE : matérialisation COMPLÈTE (matérialiseur unique zéro-perte) avec
-          # l'arbitrage vivant de Biblion (ARB_DIR persistant). Remplace apply-overrides
-          # (chirurgical, qui laissait fuir les queues). Refuse d'écrire si zéro-perte casse.
-          $SSH "$HOST" "cd $REL && ARB_DIR=/opt/anaginosko-web-next/arbitration LXX_DATA_DIR=/var/www/anaginosko-next/lxx node scripts/materialize-links.mjs --apply"
+          ARB="/opt/anaginosko-web-next/arbitration"
+          # 4a) FUSION arbitrage (git source de vérité <-> ARB_DIR serveur, copie de travail
+          #     Biblion). Backup horodaté, puis fusion à 3 règles : git-active installée,
+          #     archivée retirée, fraîche Biblion conservée+capturée, CONFLIT bloquant. Un
+          #     conflit ou une erreur fait échouer le déploiement (set -e), rien de silencieux.
+          $SSH "$HOST" "cp $ARB/lxx-arbitration.json $ARB/lxx-arbitration.json.bak.$TS && cd $REL && node scripts/merge-arb-git-server.mjs --git data/lxx-arbitration.json --server $ARB/lxx-arbitration.json --out $ARB/lxx-arbitration.json --capture $ARB/biblion-fresh.json --prev $ARB/last-git-arbitration.json"
+          # Remonte les ajouts frais de Biblion vers le runner (artefact) : ils ne restent
+          # PAS un exemplaire unique sur le VPS. À versionner dans git ensuite.
+          rsync -az -e "$SSH" "$HOST:$ARB/biblion-fresh.json" ./biblion-fresh.json 2>/dev/null || printf '[]' > ./biblion-fresh.json
+          if [ "$(node -e "process.stdout.write(String(JSON.parse(require('fs').readFileSync('./biblion-fresh.json')).length||0))")" != "0" ]; then
+            echo "::warning::Biblion a des entrées d'arbitrage non versionnées (voir l'artefact biblion-fresh) - à committer dans git."
+          fi
+          # 4b) Matérialisation COMPLÈTE (matérialiseur unique zéro-perte) depuis l'arbitrage FUSIONNÉ.
+          $SSH "$HOST" "cd $REL && ARB_DIR=$ARB LXX_DATA_DIR=/var/www/anaginosko-next/lxx node scripts/materialize-links.mjs --apply"
+          # 4c) GATE SENTINELLE : un verset servi par lot de corrections récentes doit contenir
+          #     sa sous-chaîne attendue (aurait attrapé la désync du 2026-07-08). Échec = pas de bascule.
+          $SSH "$HOST" "cd $REL && LXX_DATA_DIR=/var/www/anaginosko-next/lxx node scripts/check-sentinelles.mjs"
           $SSHTT "$HOST" "ln -sfn $REL /opt/anaginosko-web-next/current && sudo systemctl restart anaginosko-web-next"
           $SSH "$HOST" "ls -1dt /opt/anaginosko-web-next/releases/*/ | tail -n +4 | xargs -r rm -rf"
 
           # 5) Smoke-test local sur le VPS
           $SSH "$HOST" "curl -fsS -o /dev/null http://127.0.0.1:3101/ && echo 'préprod OK'"
+
+      # Remontée des ajouts frais de Biblion (fin du cul-de-sac serveur) : téléchargeable
+      # depuis le run, à versionner dans git. always() : même si un gate échoue en amont.
+      - name: Artefact biblion-fresh (arbitrage non versionné)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: biblion-fresh
+          path: biblion-fresh.json
+          if-no-files-found: ignore
