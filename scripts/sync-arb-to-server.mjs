@@ -117,8 +117,11 @@ console.log(`    backup: ${ARB_SERVER}.bak.${TS} · sha256=${shaBefore.slice(0, 
 console.log("\n[6] upload arbitrage git -> ARB serveur (atomique)…");
 scpUp(path.join(repo, "data/lxx-arbitration.json"), `${ARB_SERVER}.new`);
 ssh(`mv ${ARB_SERVER}.new ${ARB_SERVER}`);
+// Seed le snapshot git-actif attendu par le garde-fou anti-suppression-sèche de la
+// fusion durable (option 2), pour qu'il soit actif dès le tout premier déploiement.
+ssh(`cp ${ARB_SERVER} ${path.dirname(ARB_SERVER)}/last-git-arbitration.json`);
 const nSrv = canon(JSON.parse(ssh(`cat ${ARB_SERVER}`))).length;
-console.log(`    serveur désormais : ${nSrv} entrées`);
+console.log(`    serveur désormais : ${nSrv} entrées (+ snapshot last-git-arbitration.json)`);
 
 // 7) Re-matérialisation serveur + materialize --check = 0.
 console.log("\n[7] re-matérialisation serveur…");
