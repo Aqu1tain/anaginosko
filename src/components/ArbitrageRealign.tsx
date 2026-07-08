@@ -16,7 +16,10 @@ type Overview = { books: { book: string; label: string; total: number; chapters:
 
 // Affectation de travail d'un verset grec : indice dans la bande, orphelin, maison, ou
 // "garder" (source complexe d'origine : extrait/multi, qu'on ne touche pas au glissement).
-type Assign = { kind: "band"; index: number } | { kind: "orphan" } | { kind: "maison"; text: string } | { kind: "keep" };
+// "extract" : une PLAGE DE MOTS d'un verset Giguet (Giguet fusionne parfois deux
+// versets grecs en un ; chaque grec prend alors sa part). ch/v = le verset Giguet,
+// from/to = indices de mots 0-based inclusifs.
+type Assign = { kind: "band"; index: number } | { kind: "extract"; ch: number; v: number; from: number; to: number } | { kind: "orphan" } | { kind: "maison"; text: string } | { kind: "keep" };
 
 // ───────────────────────── Carte des erreurs (accueil) ─────────────────────────
 export function ErrorMap({ onOpen }: { onOpen: (book: string, ch: number) => void }) {
@@ -59,6 +62,7 @@ export function ChapterRealign({ book, ch, onClose }: { book: string; ch: number
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string[] | null>(null);
   const [focus, setFocus] = useState<number | null>(null);
+  const [extractMode, setExtractMode] = useState<{ i: number; start: number | null } | null>(null); // sélection d'une plage de mots
   const [valid, setValid] = useState<Set<string>>(new Set()); // versets « vérifiés, c'est bon » (local, reflète l'API)
   const toggleValid = async (ref: string) => {
     const on = !valid.has(ref);
@@ -97,6 +101,7 @@ export function ChapterRealign({ book, ch, onClose }: { book: string; ch: number
     const a: Assign[] = d.grec.map((g) => {
       if (g.maison) return { kind: "maison", text: g.maison };
       if (g.source.length === 0) return { kind: "orphan" };
+      if (g.source.length === 1 && g.source[0].length === 4) { const s = g.source[0]; return { kind: "extract", ch: s[0], v: s[1], from: s[2], to: s[3] }; }
       if (g.giguet && m.has(`${g.giguet.ch}:${g.giguet.v}`)) return { kind: "band", index: m.get(`${g.giguet.ch}:${g.giguet.v}`)! };
       return { kind: "keep" };
     });
@@ -130,9 +135,12 @@ export function ChapterRealign({ book, ch, onClose }: { book: string; ch: number
   };
   const setRow = (i: number, a: Assign) => setAssign((prev) => prev.map((x, j) => (j === i ? a : x)));
 
+  const wordsOf = (gc: number, gv: number): string[] => { const idx = bandIndexOf.get(`${gc}:${gv}`); return idx == null ? [] : band[idx].text.split(/\s+/).filter(Boolean); };
+  const assignedV = (i: number): { ch: number; v: number } | null => { const a = assign[i]; if (a.kind === "band") return { ch: band[a.index].ch, v: band[a.index].v }; if (a.kind === "extract") return { ch: a.ch, v: a.v }; return null; };
   const frenchOf = (i: number): { text: string; tag: string } => {
     const a = assign[i];
     if (a.kind === "band") return { text: band[a.index].text, tag: `Giguet ${band[a.index].ch}:${band[a.index].v}` };
+    if (a.kind === "extract") { const w = wordsOf(a.ch, a.v); return { text: w.slice(a.from, a.to + 1).join(" "), tag: `Giguet ${a.ch}:${a.v} · mots ${a.from + 1}-${a.to + 1}` }; }
     if (a.kind === "maison") return { text: a.text, tag: "maison" };
     if (a.kind === "orphan") return { text: "(grec seul, aucun français)", tag: "orphelin" };
     return { text: data.grec[i].french ?? "(inchangé)", tag: "extrait/multi (gardé)" };
@@ -141,6 +149,7 @@ export function ChapterRealign({ book, ch, onClose }: { book: string; ch: number
     const a = assign[i], o = orig[i];
     if (a.kind !== o.kind) return true;
     if (a.kind === "band" && o.kind === "band") return a.index !== o.index;
+    if (a.kind === "extract" && o.kind === "extract") return a.ch !== o.ch || a.v !== o.v || a.from !== o.from || a.to !== o.to;
     if (a.kind === "maison" && o.kind === "maison") return a.text !== o.text;
     return false;
   };
@@ -151,6 +160,7 @@ export function ChapterRealign({ book, ch, onClose }: { book: string; ch: number
     const changes = data.grec.map((g, i) => ({ g, i })).filter(({ i }) => changed(i)).map(({ g, i }) => {
       const a = assign[i];
       if (a.kind === "band") return { ref: g.ref, sources: [[band[a.index].ch, band[a.index].v]] };
+      if (a.kind === "extract") return { ref: g.ref, sources: [[a.ch, a.v, a.from, a.to]] };
       if (a.kind === "orphan") return { ref: g.ref, sources: [] };
       if (a.kind === "maison") return { ref: g.ref, sources: [], maison: a.text };
       return null;
@@ -214,9 +224,31 @@ export function ChapterRealign({ book, ch, onClose }: { book: string; ch: number
                       </span>
                     )}
                   </div>
-                  <p className={`mt-0.5 text-sm leading-relaxed ${fr.tag === "orphelin" ? "italic text-base-content/40" : ""}`}>{fr.text}</p>
-                  {focus === i && (
+                  {extractMode?.i === i && assignedV(i) ? (
+                    // Sélecteur d'extrait : les mots du verset Giguet assigné, 1er clic = début, 2e = fin.
+                    <div className="mt-0.5 rounded border-l-2 border-accent bg-accent/5 px-2 py-1.5">
+                      <div className="flex items-center justify-between text-[0.7rem] uppercase tracking-wide text-accent">
+                        <span>Extrait de {assignedV(i)!.ch}:{assignedV(i)!.v} : {extractMode.start == null ? "clique le 1er mot" : "clique le dernier mot"}</span>
+                        <button className="btn btn-ghost btn-xs" onClick={() => setExtractMode(null)}>annuler</button>
+                      </div>
+                      <p className="mt-1 text-sm leading-loose">
+                        {wordsOf(assignedV(i)!.ch, assignedV(i)!.v).map((w, wi) => (
+                          <button key={wi} type="button"
+                            className={`mr-1 rounded px-0.5 hover:bg-accent/25 ${extractMode.start != null && wi === extractMode.start ? "bg-accent text-accent-content" : ""}`}
+                            onClick={() => {
+                              const av = assignedV(i)!;
+                              if (extractMode.start == null) setExtractMode({ i, start: wi });
+                              else { const [from, to] = extractMode.start <= wi ? [extractMode.start, wi] : [wi, extractMode.start]; setRow(i, { kind: "extract", ch: av.ch, v: av.v, from, to }); setExtractMode(null); }
+                            }}>{w}</button>
+                        ))}
+                      </p>
+                    </div>
+                  ) : (
+                    <p className={`mt-0.5 text-sm leading-relaxed ${fr.tag === "orphelin" ? "italic text-base-content/40" : ""}`}>{fr.text}</p>
+                  )}
+                  {focus === i && extractMode?.i !== i && (
                     <div className="mt-1 flex flex-wrap gap-1">
+                      {assignedV(i) && <button className="btn btn-ghost btn-xs text-accent" title="Ne lier qu'une partie du verset Giguet (Giguet fusionne parfois deux versets)" onClick={() => setExtractMode({ i, start: null })}>extrait de mots</button>}
                       <MaisonInline current={assign[i].kind === "maison" ? (assign[i] as { text: string }).text : g.french || ""} onSet={(t) => setRow(i, { kind: "maison", text: t })} />
                       <button className="btn btn-ghost btn-xs" onClick={() => setRow(i, { kind: "orphan" })}>orphelin</button>
                       <button className={`btn btn-xs ${valid.has(g.ref) ? "btn-success" : "btn-ghost text-success"}`} title="Vérifié, ne plus signaler comme erreur" onClick={() => toggleValid(g.ref)}>{valid.has(g.ref) ? "✓ vérifié" : "c'est bon"}</button>
