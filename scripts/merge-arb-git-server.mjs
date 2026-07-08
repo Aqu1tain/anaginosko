@@ -82,7 +82,7 @@ if (conflicts.length) {
   console.error("Résous en refs nommées (git ou serveur) puis redéploie.");
   process.exit(1);
 }
-if (CAPTURE && fresh.length) fs.writeFileSync(CAPTURE, JSON.stringify(fresh, null, 1));
+if (CAPTURE) fs.writeFileSync(CAPTURE, JSON.stringify(fresh, null, 1)); // toujours écrit (même [] si aucun frais) : chown/remontée uniformes
 if (fresh.length && BLOCK_FRESH) { console.error(`\nBLOQUANT (--block-fresh) : ${fresh.length} entrées Biblion non versionnées dans git. Capture-les dans git (${CAPTURE || "voir --capture"}) avant de déployer en prod.`); process.exit(1); }
 
 const tmp = OUT + ".tmp";
