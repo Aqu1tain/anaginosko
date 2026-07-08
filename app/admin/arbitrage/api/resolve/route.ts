@@ -46,7 +46,7 @@ export async function POST(req: Request) {
   const maison = typeof body.maison === "string" ? body.maison.trim() : undefined;
   const check = checkOverride(book, ref, sources, maison);
   if (!check.ok) return NextResponse.json({ ok: false, errors: check.errors }, { status: 422 });
-  saveOverride(book, ref, sources, auth.name || "Βιβλίον", body.note, maison);
+  saveOverride(book, ref, sources, auth.credit || "Βιβλίον", body.note, maison);
   syncReader(book, ref); // matérialise fr.json + régénère la page lecteur
   return NextResponse.json({ ok: true, preview: maison || (sources.length ? materialize(book, sources) : null) });
 }

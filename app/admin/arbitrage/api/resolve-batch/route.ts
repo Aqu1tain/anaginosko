@@ -48,7 +48,7 @@ export async function POST(req: Request) {
   // 2) Écrire tout, puis matérialiser + revalider chaque chapitre touché une fois.
   for (const p of parsed) {
     if (p.revoke) revokeOverride(book, p.ref);
-    else saveOverride(book, p.ref, p.sources, auth.name || "Βιβλίον", body.note, p.maison);
+    else saveOverride(book, p.ref, p.sources, auth.credit || "Βιβλίον", body.note, p.maison);
   }
   const chapters = new Set<string>();
   for (const p of parsed) { applyToReader(book, p.ref); chapters.add(p.ref.split(":")[0]); }

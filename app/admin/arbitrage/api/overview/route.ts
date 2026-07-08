@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { requireEditor, coverageGaps, biblionQueue, overrides, states } from "@/lib/arbitration";
+import { requireEditor, coverageGaps, biblionQueue, overrides, states, validatedSet } from "@/lib/arbitration";
 
 export const dynamic = "force-dynamic";
 
@@ -21,12 +21,14 @@ export async function GET(req: Request) {
   const gaps = coverageGaps();
   const ov = overrides();
   const st = states();
+  const validated = validatedSet();
 
-  // book -> ch -> Set(ref) des versets à revoir (dédupliqués), hors ceux déjà tranchés.
+  // book -> ch -> Set(ref) des versets à revoir (dédupliqués), hors ceux déjà tranchés ou validés.
   const map: Record<string, Record<string, Set<string>>> = {};
   const add = (book: string, ref?: string) => {
     if (!ref || !/^\d+:\d+$/.test(ref)) return;
     if (ov[book]?.[ref]) return; // déjà tranché par Biblion -> pas re-signalé
+    if (validated.has(`${book}:${ref}`)) return; // vérifié à la main « c'est bon » -> pas re-signalé
     const ch = ref.split(":")[0];
     if (!st[book]?.[Number(ch)]?.scaled) return; // chapitre verrouillé : hors périmètre
     ((map[book] = map[book] || {})[ch] = map[book][ch] || new Set()).add(ref);
