@@ -2,6 +2,8 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useAuth } from "../hooks/useAuth";
+import { PsalmsQueue, ArchivedSection, SinceLastVisit, ProvenanceBadge } from "./ArbitrageBiblion";
+import { ErrorMap, ChapterRealign } from "./ArbitrageRealign";
 
 // Outil d'arbitrage des liens grec↔Giguet (réservé philologue/admin). Biblion suit
 // la passe : il ne voit et n'agit que sur les chapitres SCALED. Modèle de liens :
@@ -16,7 +18,7 @@ type QItem = {
   book: string; ref: string; kind: string; priority: number; reason?: string; greek?: string;
   proposals?: { reader: string; sources: [string, string][]; orphan?: [string, string][] }[];
 };
-type Row = { v: number; greek: string; ref: string; sources: Src[] | null; french: string | null; orphanGreek: boolean; overridden: boolean };
+type Row = { v: number; greek: string; ref: string; sources: Src[] | null; french: string | null; orphanGreek: boolean; overridden: boolean; by?: string | null; provenance?: string | null; maison?: string | null };
 type Coverage = {
   greekSide: { v: number; state: "orphan" | "unlinked" }[];
   frenchSide: { ch: number; v: number; part: string; preview: string }[];
@@ -48,7 +50,8 @@ const BOOK: Record<string, string> = { sir: "Siracide", isa: "Isaïe", psa: "Psa
 export default function ArbitrageView() {
   const { user, ready } = useAuth();
   const editor = user?.role === "admin" || user?.role === "philologist";
-  const [tab, setTab] = useState<"queue" | "browse">("queue");
+  const [tab, setTab] = useState<"corriger" | "psalms" | "archived" | "browse">("corriger");
+  const [realign, setRealign] = useState<{ book: string; ch: number } | null>(null);
   const [queue, setQueue] = useState<QItem[]>([]);
   const [states, setStates] = useState<Record<string, Record<string, State>>>({});
   const [open, setOpen] = useState<{ book: string; ch: number; focus?: string } | null>(null);
@@ -83,23 +86,22 @@ export default function ArbitrageView() {
   return (
     <div className="pb-12 pt-6">
       <h1 className="text-2xl font-bold">Arbitrage des liens</h1>
-      <p className="mt-1 max-w-prose text-sm text-base-content/70">
-        Le grec (Rahlfs) est la colonne autoritaire. Vous reliez chaque verset grec à un ou plusieurs
-        versets Giguet ; jamais vous n’en modifiez le texte. Vous n’agissez que sur les chapitres déjà
-        passés par l’alignement (scaled) ; les autres sont verrouillés.
-      </p>
       {err && <div className="alert alert-warning mt-3 text-sm">{err}</div>}
+      <SinceLastVisit />
 
       <div role="tablist" className="tabs tabs-boxed mt-4 w-fit">
-        <button className={`tab ${tab === "queue" ? "tab-active" : ""}`} onClick={() => setTab("queue")}>
-          File d’arbitrage <span className="badge badge-sm ml-2">{queue.length}</span>
-        </button>
-        <button className={`tab ${tab === "browse" ? "tab-active" : ""}`} onClick={() => setTab("browse")}>Parcourir</button>
+        <button className={`tab ${tab === "corriger" ? "tab-active" : ""}`} onClick={() => setTab("corriger")}>Corriger</button>
+        <button className={`tab ${tab === "psalms" ? "tab-active" : ""}`} onClick={() => setTab("psalms")}>Suscriptions</button>
+        <button className={`tab ${tab === "archived" ? "tab-active" : ""}`} onClick={() => setTab("archived")}>Archivées</button>
+        <button className={`tab ${tab === "browse" ? "tab-active" : ""}`} onClick={() => setTab("browse")}>Parcourir tout</button>
       </div>
 
-      {tab === "queue" && <QueueList queue={queue} onOpen={(book, ch, focus) => setOpen({ book, ch, focus })} />}
+      {tab === "corriger" && <ErrorMap onOpen={(book, ch) => setRealign({ book, ch })} />}
+      {tab === "psalms" && <PsalmsQueue />}
+      {tab === "archived" && <ArchivedSection />}
       {tab === "browse" && <BrowseList states={states} onOpen={(book, ch) => setOpen({ book, ch })} />}
 
+      {realign && <ChapterRealign book={realign.book} ch={realign.ch} onClose={() => setRealign(null)} />}
       {open && <ChapterEditor sel={open} onClose={() => { setOpen(null); reload(); }} />}
     </div>
   );
@@ -240,7 +242,7 @@ function VerseRow({ book, row, item, focused, heavy, gigChapters, defaultCh, onS
           <p className="mt-1 text-sm leading-relaxed text-base-content/85">
             {row.orphanGreek ? <em className="text-base-content/50">orphelin grec (aucun français)</em>
               : row.french ?? <em className="text-base-content/50">grec seul (non arbitré)</em>}
-            {row.overridden && <span className="badge badge-xs badge-primary ml-2">Biblion</span>}
+            {row.overridden && <span className="ml-2 inline-flex align-middle"><ProvenanceBadge by={row.by} provenance={row.provenance} maison={row.maison} /></span>}
           </p>
           {item?.reason && !editing && <p className="mt-1 text-xs text-warning">{item.reason}</p>}
         </div>
@@ -286,6 +288,35 @@ function Resolver({ book, row, item, gigChapters, defaultCh, onDone, onCancel }:
 
   const preview = sources.map((s) => srcText(s, gcache[`${s[0]}:${s[1]}`])).filter(Boolean).join(" ");
   const setFrom = (ss: [string, string][]) => setSources(ss.map(([c, v]) => [Number(c), Number(v)] as Src));
+
+  // Alerte de NON-PAVAGE : pour chaque verset Giguet couvert seulement par des extraits,
+  // les mots restants (non pris par ce lien) sont affichés AVANT validation. C'est le
+  // garde-fou contre l'Écriture amputée (ex. la queue sir 36:16 perdue). Non bloquant :
+  // ces mots peuvent légitimement servir un autre verset grec, mais Biblion doit le voir.
+  const uncovered = useMemo(() => {
+    const byVerse = new Map<string, { whole: boolean; spans: [number, number][]; text?: string }>();
+    for (const s of sources) {
+      const k = `${s[0]}:${s[1]}`;
+      if (!byVerse.has(k)) byVerse.set(k, { whole: false, spans: [], text: gcache[k] });
+      const e = byVerse.get(k)!;
+      if (s.length === 2) e.whole = true; else e.spans.push([s[2], s[3]]);
+    }
+    const out: { ref: string; words: string; count: number }[] = [];
+    for (const [k, e] of byVerse) {
+      if (e.whole || !e.text) continue;
+      const words = e.text.split(/\s+/).filter(Boolean);
+      const cov = new Array(words.length).fill(false);
+      for (const [f, t] of e.spans) for (let i = Math.max(0, f); i <= Math.min(t, words.length - 1); i++) cov[i] = true;
+      const gaps: string[] = [];
+      let n = 0;
+      for (let i = 0, st = -1; i <= words.length; i++) {
+        if (i < words.length && !cov[i]) { if (st < 0) st = i; }
+        else if (st >= 0) { gaps.push(words.slice(st, i).join(" ")); n += i - st; st = -1; }
+      }
+      if (n > 0) out.push({ ref: k, words: gaps.join(" … "), count: n });
+    }
+    return out;
+  }, [sources, gcache]);
 
   const save = async (revoke = false) => {
     setBusy(true); setErrors([]);
@@ -343,6 +374,15 @@ function Resolver({ book, row, item, gigChapters, defaultCh, onDone, onCancel }:
           {preview || <em className="text-base-content/40">grec seul</em>}
         </p>
       </div>
+
+      {uncovered.length > 0 && (
+        <div className="alert alert-warning mt-2 flex-col items-start gap-0.5 text-xs">
+          <span className="font-semibold">Mots Giguet non couverts par ce lien</span>
+          {uncovered.map((u) => (
+            <div key={u.ref}>Giguet {u.ref} : {u.count} mot(s) restant(s) : « {u.words} ». Vérifie qu'ils servent un autre verset grec (sinon Écriture amputée).</div>
+          ))}
+        </div>
+      )}
 
       {errors.length > 0 && <div className="alert alert-error mt-2 flex-col items-start gap-0.5 text-xs">{errors.map((e, i) => <div key={i}>{e}</div>)}</div>}
 

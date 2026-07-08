@@ -1,7 +1,7 @@
 import "server-only";
 import fs from "node:fs";
 import path from "node:path";
-import { materializeSources, giguetWords as giguetWordsOf } from "./lxx-materialize.mjs";
+import { materializeSources, materializeEntry, giguetWords as giguetWordsOf } from "./lxx-materialize.mjs";
 
 // Cœur serveur de l'arbitrage. Modèle de LIENS : un verset grec (Rahlfs, autorité)
 // -> suite ordonnée de versets Giguet source (0 = orphelin, 1 = paire, 2+ = scission ;
@@ -14,7 +14,9 @@ import { materializeSources, giguetWords as giguetWordsOf } from "./lxx-material
 // versification de Giguet fusionne deux versets grecs en un (jdt 16:8 = la moitié
 // de Giguet 16:10) ; chaque verset grec lie alors son extrait.
 export type Source = [number, number] | [number, number, number, number];
-export type Override = { sources: Source[]; by: string; at: string; note?: string };
+// `maison` : traduction propre en texte LIBRE (suscription de psaume que Giguet omet,
+// verset grec-seul traduit maison KAN-67). Servie telle quelle ; sources alors = [].
+export type Override = { sources: Source[]; by: string; at: string; note?: string; maison?: string; provenance?: string };
 export type ChapterState = { scaled: boolean; state: "auto-resolved" | "not-converged" | "pending-scale"; pending: number };
 export type QueueItem = {
   book: string; ref: string; kind: string; grain: string; priority: number; reason?: string;
@@ -45,6 +47,76 @@ export const links = (): Links => readJson("lxx-links.json", {});
 export const queue = (): QueueItem[] => readJson("lxx-queue.json", []);
 export const states = (): States => readJson("lxx-chapter-state.json", {});
 export const overrides = (): Overrides => readJson("lxx-arbitration.json", {}, ARB_DIR);
+
+// File de revue Phase 2 (292 cas à trancher) + traductions maison des suscriptions
+// (28, KAN-67), données statiques du bundle. Décisions « classées » (titre/marqueur
+// sans override grec) : persistées dans ARB_DIR à côté de l'arbitrage.
+export type BiblionCase = {
+  book: string; cause: string; grec?: string; giguet?: string; sources?: Source[];
+  preuve?: string; a?: Proposition; b?: Proposition;
+};
+export type Proposition = {
+  grec?: string; giguet?: string; disposition: string; sources?: Source[];
+  rattacheGrec?: string | null; sourcesEtendues?: Source[]; preuve?: string; confiance?: string;
+};
+export type Psalm = { ref: string; grec: string; accord: boolean; maison_A: string; maison_B: string; choix: string | null; decomposition: string; confiance: string[] };
+export type Dismissal = { book: string; key: string; decision: string; note?: string; by: string; at: string };
+
+export type CoverageGaps = {
+  greekSansEtat?: Record<string, { ref: string; grec: string }[]>;
+  trous?: Record<string, { ref: string; text: string }[]>;
+  aTraduireProuve?: Record<string, { ref: string; grec: string; cause?: string }[]>;
+};
+export const coverageGaps = (): CoverageGaps => readJson("lxx-coverage-gaps.json", {});
+export const biblionQueue = (): BiblionCase[] => readJson("lxx-biblion-queue.json", []);
+export const psalmsKan67 = (): { suscriptions: Psalm[] } => readJson("lxx-psaumes-kan67.json", { suscriptions: [] });
+const DISMISS_PATH = path.join(ARB_DIR, "lxx-biblion-dismissed.json");
+export const dismissals = (): Dismissal[] => readJson("lxx-biblion-dismissed.json", [], ARB_DIR);
+export function dismissCase(book: string, key: string, decision: string, by: string, note?: string) {
+  const all = dismissals();
+  const entry: Dismissal = { book, key, decision, by, at: new Date().toISOString() };
+  if (note) entry.note = note;
+  all.push(entry);
+  const tmp = DISMISS_PATH + ".tmp";
+  fs.writeFileSync(tmp, JSON.stringify(all, null, 2));
+  fs.renameSync(tmp, DISMISS_PATH);
+}
+
+// Entrées archivées (retraites justifiées, ex. les 11 overrides Job) : lues depuis
+// la section _archived de l'arbitrage, aplaties en liste pour l'affichage.
+export function archivedEntries(): { book: string; ref: string; sources: Source[]; reason: string; at: string | null }[] {
+  const arb = overrides() as Overrides & { _archived?: Record<string, unknown> };
+  const arch = (arb._archived || {}) as Record<string, unknown>;
+  const reason = (arch._reason as string) || "";
+  const at = (arch.archivedAt as string) || null;
+  const out: { book: string; ref: string; sources: Source[]; reason: string; at: string | null }[] = [];
+  for (const book of Object.keys(arch)) {
+    if (book.startsWith("_") || book === "archivedAt") continue;
+    const refs = arch[book] as Record<string, { sources: Source[] }>;
+    for (const ref of Object.keys(refs)) out.push({ book, ref, sources: refs[ref].sources, reason, at });
+  }
+  return out;
+}
+
+// Diff « depuis la dernière visite » : overrides actifs dont `at` > since (installés
+// ou frais de Biblion), et entrées archivées après `since`. Le timestamp de visite
+// est gardé côté client (localStorage), passé ici en paramètre.
+export function sinceLastVisit(since: string): { installed: { book: string; ref: string; by: string; at: string; maison?: string }[]; archived: { book: string; ref: string }[] } {
+  const cutoff = since ? Date.parse(since) : 0;
+  const installed: { book: string; ref: string; by: string; at: string; maison?: string }[] = [];
+  const arb = overrides();
+  for (const book of Object.keys(arb)) {
+    if (book.startsWith("_")) continue;
+    for (const ref of Object.keys(arb[book])) {
+      const e = arb[book][ref];
+      if (e.at && Date.parse(e.at) > cutoff) installed.push({ book, ref, by: e.by, at: e.at, maison: e.maison });
+    }
+  }
+  const archived: { book: string; ref: string }[] = [];
+  const archAt = archivedEntries()[0]?.at;
+  if (archAt && Date.parse(archAt) > cutoff) for (const a of archivedEntries()) archived.push({ book: a.book, ref: a.ref });
+  return { installed, archived };
+}
 
 const OV_PATH = path.join(ARB_DIR, "lxx-arbitration.json");
 
@@ -80,15 +152,25 @@ export function searchGiguet(book: string, q: string, limit = 40): { ch: number;
   return out;
 }
 
+// Texte français EFFECTIF servi pour un verset grec : override maison (texte libre)
+// > sources matérialisées > null (grec seul / orphelin). Une seule porte pour le
+// runtime (applyToReader) et l'affichage (route chapter) : maison et Giguet passent ici.
+export function servedText(book: string, ref: string): string | null {
+  const ov = overrides()[book]?.[ref];
+  if (ov?.maison && ov.maison.trim()) return ov.maison.trim();
+  const src = effectiveSources(book, ref);
+  return src && src.length ? materialize(book, src) : null;
+}
+
 // Applique le lien effectif d'un verset grec au fr.json servi (matérialisation
 // chirurgicale : le lecteur reflète l'override immédiatement ; le build rejoue tout).
 export function applyToReader(book: string, ref: string) {
   const [ch, v] = ref.split(":");
-  const src = effectiveSources(book, ref);
   const frPath = path.join(LXX_DIR, book, "fr.json");
   const fr = JSON.parse(fs.readFileSync(frPath, "utf8"));
   fr[ch] = fr[ch] || {};
-  if (src && src.length) fr[ch][v] = materialize(book, src);
+  const text = servedText(book, ref);
+  if (text != null) fr[ch][v] = text;
   else delete fr[ch][v]; // orphelin-grec -> pas de français (grec seul)
   const tmp = frPath + ".tmp";
   fs.writeFileSync(tmp, JSON.stringify(fr));
@@ -125,8 +207,16 @@ const spanOf = (s: Source): [number, number] => (s.length === 4 ? [s[2], s[3]] :
 const overlaps = (a: [number, number], b: [number, number]) => a[0] <= b[1] && b[0] <= a[1];
 
 // Intégrité, appliquée à CHAQUE écriture (auto ou Biblion).
-export function checkOverride(book: string, ref: string, sources: Source[]): { ok: boolean; errors: string[] } {
+export function checkOverride(book: string, ref: string, sources: Source[], maison?: string): { ok: boolean; errors: string[] } {
   const errors: string[] = [];
+  // Round-trip : la ref grec doit parser (grec = colonne fixe, jamais renumérotée).
+  if (!/^\d+:\d+$/.test(ref)) errors.push(`Ref grec invalide : ${ref}`);
+  // Entrée MAISON (texte libre) : ne pointe aucun mot Giguet, donc sources vide.
+  // On ne vérifie ni existence ni zéro-perte (elle ne revendique rien).
+  if (maison && maison.trim()) {
+    if (sources.length) errors.push("Une traduction maison ne lie aucun verset Giguet : sources doit être vide.");
+    return { ok: errors.length === 0, errors };
+  }
   // 1) Sources existantes ; extraits dans les bornes du verset.
   for (const s of sources) {
     if (!giguetExists(book, s)) {
@@ -139,8 +229,6 @@ export function checkOverride(book: string, ref: string, sources: Source[]): { o
         errors.push(`Extrait hors bornes : ${label(s)} (le verset a ${n} mots)`);
     }
   }
-  // 2) Round-trip : la ref grec doit parser (grec = colonne fixe, jamais renumérotée).
-  if (!/^\d+:\d+$/.test(ref)) errors.push(`Ref grec invalide : ${ref}`);
   // 3) Zéro-perte au MOT : aucune plage déjà revendiquée par un autre verset grec ne
   //    peut être recouverte (verset entier = tous les mots). Deux extraits disjoints
   //    du même verset par deux grecs différents sont légitimes (scission Giguet).
@@ -244,10 +332,13 @@ function verseClaims(book: string): Map<string, { ref: string; span: [number, nu
   return m;
 }
 
-export function saveOverride(book: string, ref: string, sources: Source[], by: string, note?: string) {
+export function saveOverride(book: string, ref: string, sources: Source[], by: string, note?: string, maison?: string) {
   const all = overrides();
   all[book] = all[book] || {};
-  all[book][ref] = { sources, by, at: new Date().toISOString(), note };
+  const entry: Override = { sources, by, at: new Date().toISOString() };
+  if (note) entry.note = note;
+  if (maison && maison.trim()) entry.maison = maison.trim();
+  all[book][ref] = entry;
   writeOverrides(all);
 }
 
