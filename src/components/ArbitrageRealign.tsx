@@ -9,7 +9,7 @@ import { arb, BOOK } from "./ArbitrageBiblion";
 // le chapitre affiché est enregistré. Les divergences de lecteurs = simple drapeau.
 
 type Src = [number, number] | [number, number, number, number];
-type Grec = { v: number; greek: string; ref: string; source: Src[]; giguet: { ch: number; v: number } | null; french: string | null; maison: string | null; by: string | null; overridden: boolean; flagged: boolean };
+type Grec = { v: number; greek: string; ref: string; source: Src[]; giguet: { ch: number; v: number } | null; french: string | null; maison: string | null; by: string | null; overridden: boolean; flagged: boolean; validated: boolean };
 type Band = { ch: number; v: number; text: string };
 type RealignData = { book: string; ch: number; grec: Grec[]; band: Band[]; chapterFirstIndex: number };
 type Overview = { books: { book: string; label: string; total: number; chapters: { ch: number; count: number }[] }[]; grandTotal: number };
@@ -59,6 +59,12 @@ export function ChapterRealign({ book, ch, onClose }: { book: string; ch: number
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string[] | null>(null);
   const [focus, setFocus] = useState<number | null>(null);
+  const [valid, setValid] = useState<Set<string>>(new Set()); // versets « vérifiés, c'est bon » (local, reflète l'API)
+  const toggleValid = async (ref: string) => {
+    const on = !valid.has(ref);
+    setValid((s) => { const n = new Set(s); if (on) n.add(ref); else n.delete(ref); return n; });
+    await arb("/validate", { method: "POST", body: JSON.stringify({ book, ref, on }) }).catch(() => {});
+  };
   // Plage de la bande où le glissement a le droit de puiser. Par DÉFAUT = le chapitre
   // courant seul (on s'arrête à sa frontière). On l'étend vers un voisin seulement si
   // le bon français y est (décalage inter-chapitres). Bornes en indices de bande.
@@ -95,6 +101,7 @@ export function ChapterRealign({ book, ch, onClose }: { book: string; ch: number
       return { kind: "keep" };
     });
     setAssign(a); setOrig(a.map((x) => ({ ...x })));
+    setValid(new Set(d.grec.filter((g) => g.validated).map((g) => g.ref)));
     const idx = d.band.map((b, i) => (b.ch === ch ? i : -1)).filter((i) => i >= 0);
     setRange({ lo: idx[0] ?? 0, hi: idx[idx.length - 1] ?? d.band.length - 1 });
   }, [book, ch]);
@@ -184,13 +191,14 @@ export function ChapterRealign({ book, ch, onClose }: { book: string; ch: number
             const fr = frenchOf(i);
             const isDirty = changed(i);
             return (
-              <div key={g.ref} className={`grid grid-cols-2 gap-3 rounded-box border p-2.5 ${isDirty ? "border-primary bg-primary/5" : g.flagged ? "border-warning/50" : "border-base-200"}`}
+              <div key={g.ref} className={`grid grid-cols-2 gap-3 rounded-box border p-2.5 ${isDirty ? "border-primary bg-primary/5" : valid.has(g.ref) ? "border-success/40 bg-success/5" : g.flagged ? "border-warning/50" : "border-base-200"}`}
                 onMouseEnter={() => setFocus(i)}>
                 {/* Colonne GAUCHE : grec (fixe, autorité) */}
                 <div className="min-w-0">
                   <div className="flex items-center gap-1.5">
                     <span className="text-xs font-semibold text-base-content/50">v.{g.v}</span>
-                    {g.flagged && <span className="badge badge-warning badge-xs" title="Signalé par les lecteurs, à vérifier">à vérifier</span>}
+                    {valid.has(g.ref) && <span className="badge badge-success badge-xs" title="Vérifié à la main, c'est bon">vérifié</span>}
+                    {g.flagged && !valid.has(g.ref) && <span className="badge badge-warning badge-xs" title="Signalé par les lecteurs, à vérifier">à vérifier</span>}
                     {g.overridden && <span className="badge badge-primary badge-xs">{g.by === "Βιβλίον" ? "toi" : g.by || "réglé"}</span>}
                   </div>
                   <p className="font-greek mt-0.5 leading-snug">{g.greek}</p>
@@ -198,7 +206,7 @@ export function ChapterRealign({ book, ch, onClose }: { book: string; ch: number
                 {/* Colonne DROITE : français (glissable) */}
                 <div className="min-w-0 border-l border-base-200 pl-3">
                   <div className="flex items-center gap-1.5">
-                    <span className="text-[0.7rem] uppercase tracking-wide text-base-content/45">{fr.tag}</span>
+                    <span className="text-[0.7rem] uppercase tracking-wide text-base-content/45">{fr.tag}{fr.tag === "maison" && g.by ? ` · ${g.by === "Βιβλίον" ? "Biblion" : g.by}` : ""}</span>
                     {focus === i && (
                       <span className="join ml-auto">
                         <button className="btn btn-ghost btn-xs join-item" title="À partir d'ici, remonter le français d'un cran" onClick={() => slide(i, -1)}>↑ d'ici</button>
@@ -211,6 +219,7 @@ export function ChapterRealign({ book, ch, onClose }: { book: string; ch: number
                     <div className="mt-1 flex flex-wrap gap-1">
                       <MaisonInline current={assign[i].kind === "maison" ? (assign[i] as { text: string }).text : g.french || ""} onSet={(t) => setRow(i, { kind: "maison", text: t })} />
                       <button className="btn btn-ghost btn-xs" onClick={() => setRow(i, { kind: "orphan" })}>orphelin</button>
+                      <button className={`btn btn-xs ${valid.has(g.ref) ? "btn-success" : "btn-ghost text-success"}`} title="Vérifié, ne plus signaler comme erreur" onClick={() => toggleValid(g.ref)}>{valid.has(g.ref) ? "✓ vérifié" : "c'est bon"}</button>
                       {isDirty && <button className="btn btn-ghost btn-xs" onClick={() => setRow(i, { ...orig[i] })}>annuler</button>}
                     </div>
                   )}

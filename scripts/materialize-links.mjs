@@ -59,6 +59,7 @@ for (const id of Object.keys(giguet)) {
   const gAll = giguet[id];
 
   const out = {}; // gCh -> {gV -> text}
+  const maisonBy = {}; // "gCh:gV" -> traducteur (crédit des traductions maison, servi au lecteur)
   const greekChapters = new Set(
     Object.keys(current).filter((k) => k !== "_align")
       .concat(Object.keys(auto).map((k) => k.split(":")[0]))
@@ -77,7 +78,7 @@ for (const id of Object.keys(giguet)) {
     for (const gV of gvs) {
       const ref = `${gCh}:${gV}`;
       // Override maison (texte libre) servi tel quel ; sinon sources Giguet ; null = grec seul.
-      if (ov[ref]?.maison) { const t = ov[ref].maison.trim(); if (t) out[gCh][gV] = t; continue; }
+      if (ov[ref]?.maison) { const t = ov[ref].maison.trim(); if (t) { out[gCh][gV] = t; if (ov[ref].by) maisonBy[ref] = ov[ref].by; } continue; }
       const src = effSources(ref);
       if (src == null) continue; // grec seul
       const text = materializeSources(gAll, src);
@@ -142,6 +143,7 @@ for (const id of Object.keys(giguet)) {
   }
 
   out._align = current._align;
+  if (Object.keys(maisonBy).length) out._maison = maisonBy; // crédits des traductions maison
   if ((APPLY || OUTDIR) && !violations) {
     const target = OUTDIR ? path.join(OUTDIR, id, "fr.json") : frPath;
     fs.mkdirSync(path.dirname(target), { recursive: true });

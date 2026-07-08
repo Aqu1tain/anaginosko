@@ -60,7 +60,9 @@ export type Proposition = {
   rattacheGrec?: string | null; sourcesEtendues?: Source[]; preuve?: string; confiance?: string;
 };
 export type Psalm = { ref: string; grec: string; accord: boolean; maison_A: string; maison_B: string; choix: string | null; decomposition: string; confiance: string[] };
-export type Dismissal = { book: string; key: string; decision: string; note?: string; by: string; at: string };
+// Verset VALIDÉ à la main : Biblion (ou un admin) l'a vérifié et déclaré bon. Il ne
+// remonte plus comme erreur, même s'il était signalé par les lecteurs. Persisté ARB_DIR.
+export type Validation = { book: string; ref: string; by: string; at: string };
 
 export type CoverageGaps = {
   greekSansEtat?: Record<string, { ref: string; grec: string }[]>;
@@ -70,16 +72,15 @@ export type CoverageGaps = {
 export const coverageGaps = (): CoverageGaps => readJson("lxx-coverage-gaps.json", {});
 export const biblionQueue = (): BiblionCase[] => readJson("lxx-biblion-queue.json", []);
 export const psalmsKan67 = (): { suscriptions: Psalm[] } => readJson("lxx-psaumes-kan67.json", { suscriptions: [] });
-const DISMISS_PATH = path.join(ARB_DIR, "lxx-biblion-dismissed.json");
-export const dismissals = (): Dismissal[] => readJson("lxx-biblion-dismissed.json", [], ARB_DIR);
-export function dismissCase(book: string, key: string, decision: string, by: string, note?: string) {
-  const all = dismissals();
-  const entry: Dismissal = { book, key, decision, by, at: new Date().toISOString() };
-  if (note) entry.note = note;
-  all.push(entry);
-  const tmp = DISMISS_PATH + ".tmp";
+const VALID_PATH = path.join(ARB_DIR, "lxx-biblion-validated.json");
+export const validations = (): Validation[] => readJson("lxx-biblion-validated.json", [], ARB_DIR);
+export const validatedSet = (): Set<string> => new Set(validations().map((v) => `${v.book}:${v.ref}`));
+export function setValidated(book: string, ref: string, on: boolean, by: string) {
+  const all = validations().filter((v) => !(v.book === book && v.ref === ref));
+  if (on) all.push({ book, ref, by, at: new Date().toISOString() });
+  const tmp = VALID_PATH + ".tmp";
   fs.writeFileSync(tmp, JSON.stringify(all, null, 2));
-  fs.renameSync(tmp, DISMISS_PATH);
+  fs.renameSync(tmp, VALID_PATH);
 }
 
 // Entrées archivées (retraites justifiées, ex. les 11 overrides Job) : lues depuis
@@ -172,6 +173,10 @@ export function applyToReader(book: string, ref: string) {
   const text = servedText(book, ref);
   if (text != null) fr[ch][v] = text;
   else delete fr[ch][v]; // orphelin-grec -> pas de français (grec seul)
+  // Crédit maison : maintenu à côté du texte pour l'affichage lecteur.
+  const ovEntry = overrides()[book]?.[ref];
+  if (ovEntry?.maison && ovEntry.by) { fr._maison = fr._maison || {}; fr._maison[ref] = ovEntry.by; }
+  else if (fr._maison) delete fr._maison[ref];
   const tmp = frPath + ".tmp";
   fs.writeFileSync(tmp, JSON.stringify(fr));
   fs.renameSync(tmp, frPath);
@@ -355,7 +360,9 @@ function writeOverrides(all: Overrides) {
 }
 
 // Vérifie le token auprès de l'API (AdonisJS /me) et exige un rôle éditeur.
-export async function requireEditor(authHeader: string | null): Promise<{ ok: boolean; role?: string; name?: string }> {
+// `credit` = signature d'attribution : le philologue (Biblion) signe TOUJOURS « Βιβλίον »
+// (jamais son vrai nom) ; un admin signe de son nom réel (Corentin Renard, Noah Jaubert…).
+export async function requireEditor(authHeader: string | null): Promise<{ ok: boolean; role?: string; name?: string; credit?: string }> {
   const token = authHeader?.replace(/^Bearer\s+/i, "");
   if (!token) return { ok: false };
   // Base ABSOLUE côté serveur (le /api relatif du client ne résout pas ici).
@@ -365,7 +372,8 @@ export async function requireEditor(authHeader: string | null): Promise<{ ok: bo
     if (!r.ok) return { ok: false };
     const { user } = await r.json();
     const ok = user?.role === "admin" || user?.role === "philologist";
-    return { ok, role: user?.role, name: user?.displayName };
+    const credit = user?.role === "philologist" ? "Βιβλίον" : user?.displayName || "Βιβλίον";
+    return { ok, role: user?.role, name: user?.displayName, credit };
   } catch {
     return { ok: false };
   }

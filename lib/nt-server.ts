@@ -64,6 +64,10 @@ export async function loadChapterFs(book: string, chapter: number, c?: CorpusCon
     readJson<{ reference: string; mots: Text["mots"] }>(`${book}/${chapter}.json`, c),
     readJson<FrenchByChapter>(`${book}/fr.json`, c).catch(() => null),
   ]);
+  // Crédits des traductions maison de CE chapitre : "ch:v" -> traducteur.
+  const maisonAll = (french as { _maison?: Record<string, string> } | null)?._maison || {};
+  const maison: Record<string, string> = {};
+  for (const k of Object.keys(maisonAll)) { const [mc, mv] = k.split(":"); if (mc === String(chapter)) maison[mv] = maisonAll[k]; }
   return {
     id: `${c?.refPrefix ?? "nt"}-${book}-${chapter}`,
     collection: c?.textCollection ?? "nt",
@@ -71,6 +75,7 @@ export async function loadChapterFs(book: string, chapter: number, c?: CorpusCon
     reference: data.reference,
     grec: "",
     francais: french?.[chapter] ?? null,
+    maison: Object.keys(maison).length ? maison : null,
     frenchBlock: blockedChapter(french, chapter),
     translitErasmien: null,
     translitRestituee: null,

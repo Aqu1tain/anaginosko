@@ -425,6 +425,15 @@ export default function Reader({ text }: { text: Text }) {
     !colsAvailable && translation === "columns" ? "verses" : translation;
   const transMode = hasFrench ? effectiveTranslation : "off";
 
+  // Crédit des traductions maison du chapitre : un seul traducteur -> crédit au
+  // chapitre ; sinon on liste les traducteurs. Se lit dans fr.json (_maison).
+  const maisonCredit = useMemo(() => {
+    const m = text.maison;
+    if (!m || !Object.keys(m).length) return null;
+    const names = [...new Set(Object.values(m))].map((n) => (n === "Βιβλίον" ? "Biblion" : n));
+    return names.length === 1 ? `Traduction maison : ${names[0]}` : `Traductions maison : ${names.join(", ")}`;
+  }, [text.maison]);
+
   // Signale au conteneur de page (.reading-page) si on est en mode colonnes, pour
   // que le fil d'Ariane et la nav, rendus hors du lecteur, s'élargissent avec lui.
   const rootRef = useRef<HTMLElement>(null);
@@ -712,6 +721,10 @@ export default function Reader({ text }: { text: Text }) {
           ))}
           <p className="mt-3 text-xs text-base-content/70">{translationCredit}</p>
         </div>
+      )}
+
+      {maisonCredit && (
+        <p className="mt-3 text-xs italic text-base-content/60">{maisonCredit}</p>
       )}
 
       {/* Philologue/admin, LXX : accès direct à l'arbitrage des liens du chapitre lu. */}

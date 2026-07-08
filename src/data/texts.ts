@@ -19,6 +19,7 @@ export type Text = {
   grec: string;
   /** Bible Crampon (néo-Crampon, domaine public), par numéro de verset. */
   francais: Record<string, string> | null;
+  maison?: Record<string, string> | null; // v -> traducteur (crédit des traductions maison)
   /** Versification française incompatible avec le grec (additions, réordonnancement) :
    *  afficher la traduction en bloc plutôt que de l'apparier verset par verset. */
   frenchBlock?: boolean;

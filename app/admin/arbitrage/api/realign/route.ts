@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { requireEditor, states, effectiveSources, servedText, greekVerses, overrides, giguet, biblionQueue, type Source } from "@/lib/arbitration";
+import { requireEditor, states, effectiveSources, servedText, greekVerses, overrides, giguet, biblionQueue, validatedSet, type Source } from "@/lib/arbitration";
 
 export const dynamic = "force-dynamic";
 
@@ -25,6 +25,7 @@ export async function GET(req: Request) {
 
   const ov = overrides()[book] || {};
   const flagged = new Set(biblionQueue().filter((c) => c.book === book).map((c) => c.grec).filter(Boolean));
+  const validated = validatedSet();
 
   const grec = gv.map(({ v, greek }) => {
     const ref = `${ch}:${v}`;
@@ -39,6 +40,7 @@ export async function GET(req: Request) {
       by: ov[ref]?.by || null,
       overridden: !!ov[ref],
       flagged: flagged.has(ref),
+      validated: validated.has(`${book}:${ref}`),
     };
   });
 
