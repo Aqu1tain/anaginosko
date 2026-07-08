@@ -1,0 +1,369 @@
+{
+ "_note": "Suscriptions de psaumes omises par Giguet, traduction maison (KAN-67) via gabarit Giguet. Deux témoins ; accord=true si identiques au mot. À revoir avant service.",
+ "suscriptions": [
+  {
+   "ref": "4:1",
+   "grec": "εἰς τὸ τέλος ἐν ψαλμοῖς ᾠδὴ τῷ Δαυιδ",
+   "accord": true,
+   "maison_A": "Pour la fin, parmi les psaumes, cantique de David.",
+   "maison_B": "Pour la fin, parmi les psaumes, cantique de David.",
+   "choix": "Pour la fin, parmi les psaumes, cantique de David.",
+   "decomposition": "εἰς τὸ τέλος = Pour la fin (gabarit) ; ἐν ψαλμοῖς = parmi les psaumes (gabarit) ; ᾠδὴ = cantique (gabarit) ; τῷ Δαυιδ = de David (gabarit). Tout au gabarit.",
+   "confiance": [
+    "haute",
+    "haute"
+   ]
+  },
+  {
+   "ref": "5:1",
+   "grec": "εἰς τὸ τέλος ὑπὲρ τῆς κληρονομούσης ψαλμὸς τῷ Δαυιδ",
+   "accord": true,
+   "maison_A": "Pour la fin, pour celle qui hérite, psaume de David.",
+   "maison_B": "Pour la fin, pour celle qui hérite, psaume de David.",
+   "choix": "Pour la fin, pour celle qui hérite, psaume de David.",
+   "decomposition": "εἰς τὸ τέλος = Pour la fin (gabarit) ; ὑπὲρ τῆς κληρονομούσης = pour celle qui hérite (HORS-GABARIT : participe fém. de κληρονομέω 'hériter' ; racine 'hérit-' attestée Giguet Ps 2:8 'héritage' mais entête obscur, hébr. Nehiloth) ; ψαλμὸς τῷ Δαυιδ = psaume de David (gabarit).",
+   "confiance": [
+    "moyenne",
+    "moyenne"
+   ]
+  },
+  {
+   "ref": "6:1",
+   "grec": "εἰς τὸ τέλος ἐν ὕμνοις ὑπὲρ τῆς ὀγδόης ψαλμὸς τῷ Δαυιδ",
+   "accord": true,
+   "maison_A": "Pour la fin, parmi les hymnes, pour l'octave, psaume de David.",
+   "maison_B": "Pour la fin, parmi les hymnes, pour l'octave, psaume de David.",
+   "choix": "Pour la fin, parmi les hymnes, pour l'octave, psaume de David.",
+   "decomposition": "εἰς τὸ τέλος = Pour la fin (gabarit) ; ἐν ὕμνοις = parmi les hymnes (gabarit, cf. Giguet Ps 53:1 'parmi les hymnes') ; ὑπὲρ τῆς ὀγδόης = pour l'octave (gabarit) ; ψαλμὸς τῷ Δαυιδ = psaume de David (gabarit). Tout au gabarit.",
+   "confiance": [
+    "haute",
+    "haute"
+   ]
+  },
+  {
+   "ref": "7:1",
+   "grec": "ψαλμὸς τῷ Δαυιδ ὃν ᾖσεν τῷ κυρίῳ ὑπὲρ τῶν λόγων Χουσι υἱοῦ Ιεμενι",
+   "accord": false,
+   "maison_A": "Psaume de David, qu'il chanta au Seigneur au sujet des paroles de Chusi, fils de Jémini.",
+   "maison_B": "Psaume de David, qu'il chanta au Seigneur à propos des paroles de Chusi, fils de Jéméni.",
+   "choix": null,
+   "decomposition": "ψαλμὸς τῷ Δαυιδ = psaume de David (gabarit) ; ὃν ᾖσεν τῷ κυρίῳ = qu'il chanta au Seigneur (HORS-GABARIT : entête narratif ; ᾖσεν aor. d'ᾄδω 'chanter', τῷ κυρίῳ 'au Seigneur') ; ὑπὲρ τῶν λόγων Χουσι = au sujet des paroles de Chusi (λόγων 'paroles' ; Χουσι nom propre, le Benjamite) ; υἱοῦ Ιεμενι = fils de Jémini (nom propre).",
+   "confiance": [
+    "moyenne",
+    "moyenne"
+   ]
+  },
+  {
+   "ref": "8:1",
+   "grec": "εἰς τὸ τέλος ὑπὲρ τῶν ληνῶν ψαλμὸς τῷ Δαυιδ",
+   "accord": false,
+   "maison_A": "Pour la fin, sur les pressoirs, psaume de David.",
+   "maison_B": "Pour la fin, pour les pressoirs, psaume de David.",
+   "choix": null,
+   "decomposition": "εἰς τὸ τέλος = Pour la fin (gabarit) ; ὑπὲρ τῶν ληνῶν = sur les pressoirs (attesté À L'IDENTIQUE chez Giguet Ps 80:1 'sur les pressoirs') ; ψαλμὸς τῷ Δαυιδ = psaume de David (gabarit).",
+   "confiance": [
+    "haute",
+    "moyenne"
+   ]
+  },
+  {
+   "ref": "9:1",
+   "grec": "εἰς τὸ τέλος ὑπὲρ τῶν κρυφίων τοῦ υἱοῦ ψαλμὸς τῷ Δαυιδ",
+   "accord": false,
+   "maison_A": "Pour la fin, sur les choses cachées du fils, psaume de David.",
+   "maison_B": "Pour la fin, pour les choses cachées du fils, psaume de David.",
+   "choix": null,
+   "decomposition": "εἰς τὸ τέλος = Pour la fin (gabarit) ; ὑπὲρ τῶν κρυφίων = sur les choses cachées (κρυφίων 'cachées/secrètes' du lexique de Giguet, Ps 9:29, 18:13) ; τοῦ υἱοῦ = du fils (HORS-GABARIT, obscur ; hébr. Muth-labben) ; ψαλμὸς τῷ Δαυιδ = psaume de David (gabarit).",
+   "confiance": [
+    "moyenne",
+    "moyenne"
+   ]
+  },
+  {
+   "ref": "11:1",
+   "grec": "εἰς τὸ τέλος ὑπὲρ τῆς ὀγδόης ψαλμὸς τῷ Δαυιδ",
+   "accord": true,
+   "maison_A": "Pour la fin, pour l'octave, psaume de David.",
+   "maison_B": "Pour la fin, pour l'octave, psaume de David.",
+   "choix": "Pour la fin, pour l'octave, psaume de David.",
+   "decomposition": "εἰς τὸ τέλος = Pour la fin (gabarit) ; ὑπὲρ τῆς ὀγδόης = pour l'octave (gabarit) ; ψαλμὸς τῷ Δαυιδ = psaume de David (gabarit). Tout au gabarit.",
+   "confiance": [
+    "haute",
+    "haute"
+   ]
+  },
+  {
+   "ref": "12:1",
+   "grec": "εἰς τὸ τέλος ψαλμὸς τῷ Δαυιδ",
+   "accord": true,
+   "maison_A": "Pour la fin, psaume de David.",
+   "maison_B": "Pour la fin, psaume de David.",
+   "choix": "Pour la fin, psaume de David.",
+   "decomposition": "εἰς τὸ τέλος = Pour la fin (gabarit) ; ψαλμὸς τῷ Δαυιδ = psaume de David (gabarit). Tout au gabarit.",
+   "confiance": [
+    "haute",
+    "haute"
+   ]
+  },
+  {
+   "ref": "18:1",
+   "grec": "εἰς τὸ τέλος ψαλμὸς τῷ Δαυιδ",
+   "accord": true,
+   "maison_A": "Pour la fin, psaume de David.",
+   "maison_B": "Pour la fin, psaume de David.",
+   "choix": "Pour la fin, psaume de David.",
+   "decomposition": "εἰς τὸ τέλος = Pour la fin (gabarit) ; ψαλμὸς τῷ Δαυιδ = psaume de David (gabarit). Tout au gabarit.",
+   "confiance": [
+    "haute",
+    "haute"
+   ]
+  },
+  {
+   "ref": "19:1",
+   "grec": "εἰς τὸ τέλος ψαλμὸς τῷ Δαυιδ",
+   "accord": true,
+   "maison_A": "Pour la fin, psaume de David.",
+   "maison_B": "Pour la fin, psaume de David.",
+   "choix": "Pour la fin, psaume de David.",
+   "decomposition": "εἰς τὸ τέλος = Pour la fin (gabarit) ; ψαλμὸς τῷ Δαυιδ = psaume de David (gabarit). Tout au gabarit.",
+   "confiance": [
+    "haute",
+    "haute"
+   ]
+  },
+  {
+   "ref": "20:1",
+   "grec": "εἰς τὸ τέλος ψαλμὸς τῷ Δαυιδ",
+   "accord": true,
+   "maison_A": "Pour la fin, psaume de David.",
+   "maison_B": "Pour la fin, psaume de David.",
+   "choix": "Pour la fin, psaume de David.",
+   "decomposition": "εἰς τὸ τέλος = Pour la fin (gabarit) ; ψαλμὸς τῷ Δαυιδ = psaume de David (gabarit). Tout au gabarit.",
+   "confiance": [
+    "haute",
+    "haute"
+   ]
+  },
+  {
+   "ref": "21:1",
+   "grec": "εἰς τὸ τέλος ὑπὲρ τῆς ἀντιλήμψεως τῆς ἑωθινῆς ψαλμὸς τῷ Δαυιδ",
+   "accord": true,
+   "maison_A": "Pour la fin, pour le secours du matin, psaume de David.",
+   "maison_B": "Pour la fin, pour le secours du matin, psaume de David.",
+   "choix": "Pour la fin, pour le secours du matin, psaume de David.",
+   "decomposition": "εἰς τὸ τέλος = Pour la fin (gabarit) ; ὑπὲρ τῆς ἀντιλήμψεως τῆς ἑωθινῆς = pour le secours du matin (HORS-GABARIT : hébr. Ayyéleth-ha-Shahar ; ἀντίλημψις 'secours', ἑωθινῆς 'du matin' — 'aurore/matin' est bien le lexique de Giguet, Ps 5:4 'dès l'aurore') ; ψαλμὸς τῷ Δαυιδ = psaume de David (gabarit).",
+   "confiance": [
+    "moyenne",
+    "moyenne"
+   ]
+  },
+  {
+   "ref": "29:1",
+   "grec": "εἰς τὸ τέλος ψαλμὸς ᾠδῆς τοῦ ἐγκαινισμοῦ τοῦ οἴκου τῷ Δαυιδ",
+   "accord": false,
+   "maison_A": "Pour la fin, psaume et cantique pour la dédicace de la maison, de David.",
+   "maison_B": "Pour la fin, psaume et cantique, pour la dédicace de la maison, de David.",
+   "choix": null,
+   "decomposition": "εἰς τὸ τέλος = Pour la fin (gabarit) ; ψαλμὸς ᾠδῆς = psaume et cantique (gabarit) ; τοῦ ἐγκαινισμοῦ τοῦ οἴκου = pour la dédicace de la maison (HORS-GABARIT : ἐγκαινισμός 'dédicace/inauguration', οἴκου 'de la maison') ; τῷ Δαυιδ = de David (gabarit).",
+   "confiance": [
+    "moyenne",
+    "moyenne"
+   ]
+  },
+  {
+   "ref": "30:1",
+   "grec": "εἰς τὸ τέλος ψαλμὸς τῷ Δαυιδ ἐκστάσεως",
+   "accord": false,
+   "maison_A": "Pour la fin, psaume de David, d'extase.",
+   "maison_B": "Pour la fin, psaume de David, sur l'extase.",
+   "choix": null,
+   "decomposition": "εἰς τὸ τέλος = Pour la fin (gabarit) ; ψαλμὸς τῷ Δαυιδ = psaume de David (gabarit) ; ἐκστάσεως = d'extase (génitif d'espèce placé en entête = HORS-GABARIT, mais 'extase' est bien le mot de Giguet, Ps 67:28 et 115:2 ; sens 'un psaume de transport/d'extase').",
+   "confiance": [
+    "moyenne",
+    "moyenne"
+   ]
+  },
+  {
+   "ref": "33:1",
+   "grec": "τῷ Δαυιδ ὁπότε ἠλλοίωσεν τὸ πρόσωπον αὐτοῦ ἐναντίον Αβιμελεχ καὶ ἀπέλυσεν αὐτόν καὶ ἀπῆλθεν",
+   "accord": false,
+   "maison_A": "De David, lorsqu'il changea son visage devant Abimélech, et qu'il le renvoya, et il s'en alla.",
+   "maison_B": "De David, lorsqu'il changea son visage devant Abimélech ; et Abimélech le renvoya, et il s'en alla.",
+   "choix": null,
+   "decomposition": "τῷ Δαυιδ = De David (gabarit) ; ὁπότε ἠλλοίωσεν τὸ πρόσωπον αὐτοῦ = lorsqu'il changea son visage (HORS-GABARIT : entête narratif au style de Giguet Ps 55:1 'lorsque…' ; 'changea' attesté Giguet Ps 104:25) ; ἐναντίον Αβιμελεχ = devant Abimélech ('Abimélech' attesté Giguet Ps 51:2) ; καὶ ἀπέλυσεν αὐτόν = et qu'il le renvoya ; καὶ ἀπῆλθεν = et il s'en alla.",
+   "confiance": [
+    "moyenne",
+    "moyenne"
+   ]
+  },
+  {
+   "ref": "35:1",
+   "grec": "εἰς τὸ τέλος τῷ δούλῳ κυρίου τῷ Δαυιδ",
+   "accord": true,
+   "maison_A": "Pour la fin, pour le serviteur du Seigneur, David.",
+   "maison_B": "Pour la fin, pour le serviteur du Seigneur, David.",
+   "choix": "Pour la fin, pour le serviteur du Seigneur, David.",
+   "decomposition": "εἰς τὸ τέλος = Pour la fin (gabarit) ; τῷ δούλῳ κυρίου = pour le serviteur du Seigneur (construction attestée chez Giguet, Ps 17:1 'David, serviteur de Dieu' pour τῷ παιδὶ κυρίου, quasi-synonyme de δοῦλος) ; τῷ Δαυιδ = David (gabarit).",
+   "confiance": [
+    "haute",
+    "moyenne"
+   ]
+  },
+  {
+   "ref": "37:1",
+   "grec": "ψαλμὸς τῷ Δαυιδ εἰς ἀνάμνησιν περὶ σαββάτου",
+   "accord": true,
+   "maison_A": "Psaume de David, en souvenir, au sujet du sabbat.",
+   "maison_B": "Psaume de David, en souvenir, au sujet du sabbat.",
+   "choix": "Psaume de David, en souvenir, au sujet du sabbat.",
+   "decomposition": "ψαλμὸς τῷ Δαυιδ = psaume de David (gabarit) ; εἰς ἀνάμνησιν = en souvenir (HORS-GABARIT : ἀνάμνησις 'souvenir/mémorial') ; περὶ σαββάτου = au sujet du sabbat (HORS-GABARIT : σάββατον 'sabbat').",
+   "confiance": [
+    "moyenne",
+    "moyenne"
+   ]
+  },
+  {
+   "ref": "38:1",
+   "grec": "εἰς τὸ τέλος τῷ Ιδιθουν ᾠδὴ τῷ Δαυιδ",
+   "accord": false,
+   "maison_A": "Pour la fin, pour Idithun, cantique de David.",
+   "maison_B": "Pour la fin, à Idithun, cantique de David.",
+   "choix": null,
+   "decomposition": "εἰς τὸ τέλος = Pour la fin (gabarit) ; τῷ Ιδιθουν = pour Idithun (entête attesté À L'IDENTIQUE chez Giguet, Ps 61:1 'Pour la fin, pour Idithun, psaume de David') ; ᾠδὴ = cantique (gabarit) ; τῷ Δαυιδ = de David (gabarit).",
+   "confiance": [
+    "haute",
+    "haute"
+   ]
+  },
+  {
+   "ref": "39:1",
+   "grec": "εἰς τὸ τέλος τῷ Δαυιδ ψαλμός",
+   "accord": true,
+   "maison_A": "Pour la fin, psaume de David.",
+   "maison_B": "Pour la fin, psaume de David.",
+   "choix": "Pour la fin, psaume de David.",
+   "decomposition": "εἰς τὸ τέλος = Pour la fin (gabarit) ; τῷ Δαυιδ ψαλμός = psaume de David (gabarit ; ordre grec inversé, remis en français normal 'psaume de David'). Tout au gabarit.",
+   "confiance": [
+    "haute",
+    "haute"
+   ]
+  },
+  {
+   "ref": "40:1",
+   "grec": "εἰς τὸ τέλος ψαλμὸς τῷ Δαυιδ",
+   "accord": true,
+   "maison_A": "Pour la fin, psaume de David.",
+   "maison_B": "Pour la fin, psaume de David.",
+   "choix": "Pour la fin, psaume de David.",
+   "decomposition": "εἰς τὸ τέλος = Pour la fin (gabarit) ; ψαλμὸς τῷ Δαυιδ = psaume de David (gabarit). Tout au gabarit.",
+   "confiance": [
+    "haute",
+    "haute"
+   ]
+  },
+  {
+   "ref": "41:1",
+   "grec": "εἰς τὸ τέλος εἰς σύνεσιν τοῖς υἱοῖς Κορε",
+   "accord": false,
+   "maison_A": "Pour la fin, instruction pour les fils de Coré.",
+   "maison_B": "Pour la fin, pour l'instruction, pour les fils de Coré.",
+   "choix": null,
+   "decomposition": "εἰς τὸ τέλος = Pour la fin (gabarit) ; εἰς σύνεσιν = instruction (gabarit ; σύνεσις 'instruction', cf. Giguet Ps 51:1 'instruction pour David') ; τοῖς υἱοῖς Κορε = pour les fils de Coré (gabarit). Rendu 'instruction pour les fils de Coré', sur le patron 'instruction pour David'.",
+   "confiance": [
+    "haute",
+    "haute"
+   ]
+  },
+  {
+   "ref": "43:1",
+   "grec": "εἰς τὸ τέλος τοῖς υἱοῖς Κορε εἰς σύνεσιν ψαλμός",
+   "accord": false,
+   "maison_A": "Pour la fin, instruction pour les fils de Coré, psaume.",
+   "maison_B": "Pour la fin, pour les fils de Coré, pour l'instruction, psaume.",
+   "choix": null,
+   "decomposition": "εἰς τὸ τέλος = Pour la fin (gabarit) ; τοῖς υἱοῖς Κορε = pour les fils de Coré (gabarit) ; εἰς σύνεσιν = instruction (gabarit, cf. Ps 51:1) ; ψαλμός = psaume (gabarit). Regroupé 'instruction pour les fils de Coré, psaume'.",
+   "confiance": [
+    "haute",
+    "haute"
+   ]
+  },
+  {
+   "ref": "44:1",
+   "grec": "εἰς τὸ τέλος ὑπὲρ τῶν ἀλλοιωθησομένων τοῖς υἱοῖς Κορε εἰς σύνεσιν ᾠδὴ ὑπὲρ τοῦ ἀγαπητοῦ",
+   "accord": false,
+   "maison_A": "Pour la fin, sur ceux qui seront changés, instruction pour les fils de Coré, cantique pour le bien-aimé.",
+   "maison_B": "Pour la fin, pour ceux qui seront changés, pour les fils de Coré, pour l'instruction, cantique pour le bien-aimé.",
+   "choix": null,
+   "decomposition": "εἰς τὸ τέλος = Pour la fin (gabarit) ; ὑπὲρ τῶν ἀλλοιωθησομένων = sur ceux qui seront changés (HORS-GABARIT : futur passif d'ἀλλοιόω ; racine 'changer' attestée Giguet Ps 104:25 mais entête obscur, hébr. shoshannim) ; τοῖς υἱοῖς Κορε = pour les fils de Coré (gabarit) ; εἰς σύνεσιν = instruction (gabarit) ; ᾠδὴ = cantique (gabarit) ; ὑπὲρ τοῦ ἀγαπητοῦ = pour le bien-aimé ('bien-aimé' est le mot de Giguet, Ps 59:6, 67:13).",
+   "confiance": [
+    "moyenne",
+    "moyenne"
+   ]
+  },
+  {
+   "ref": "45:1",
+   "grec": "εἰς τὸ τέλος ὑπὲρ τῶν υἱῶν Κορε ὑπὲρ τῶν κρυφίων ψαλμός",
+   "accord": false,
+   "maison_A": "Pour la fin, pour les fils de Coré, sur les choses cachées, psaume.",
+   "maison_B": "Pour la fin, pour les fils de Coré, pour les choses cachées, psaume.",
+   "choix": null,
+   "decomposition": "εἰς τὸ τέλος = Pour la fin (gabarit) ; ὑπὲρ τῶν υἱῶν Κορε = pour les fils de Coré (gabarit) ; ὑπὲρ τῶν κρυφίων = sur les choses cachées (κρυφίων 'cachées/secrètes' est du lexique de Giguet, Ps 9:29, 18:13, mais l'emploi comme entête reste maison) ; ψαλμός = psaume (gabarit).",
+   "confiance": [
+    "moyenne",
+    "moyenne"
+   ]
+  },
+  {
+   "ref": "48:1",
+   "grec": "εἰς τὸ τέλος τοῖς υἱοῖς Κορε ψαλμός",
+   "accord": false,
+   "maison_A": "Pour la fin, psaume pour les fils de Coré.",
+   "maison_B": "Pour la fin, pour les fils de Coré, psaume.",
+   "choix": null,
+   "decomposition": "εἰς τὸ τέλος = Pour la fin (gabarit) ; τοῖς υἱοῖς Κορε = pour les fils de Coré (gabarit) ; ψαλμός = psaume (gabarit). Rendu À L'IDENTIQUE de Giguet Ps 46:1 'Pour la fin, psaume pour les fils de Coré' (psaume antéposé au style de Giguet).",
+   "confiance": [
+    "haute",
+    "haute"
+   ]
+  },
+  {
+   "ref": "52:1",
+   "grec": "εἰς τὸ τέλος ὑπὲρ μαελεθ συνέσεως τῷ Δαυιδ",
+   "accord": false,
+   "maison_A": "Pour la fin, sur Maeleth, instruction de David.",
+   "maison_B": "Pour la fin, pour Maéleth, instruction de David.",
+   "choix": null,
+   "decomposition": "εἰς τὸ τέλος = Pour la fin (gabarit) ; ὑπὲρ μαελεθ = sur Maeleth (translittération hébr. non traduite ; orthographe attestée À L'IDENTIQUE chez Giguet Ps 87:1 'sur Maeleth') ; συνέσεως = instruction (gabarit, cf. Ps 51:1) ; τῷ Δαυιδ = de David (gabarit).",
+   "confiance": [
+    "haute",
+    "moyenne"
+   ]
+  },
+  {
+   "ref": "71:20",
+   "grec": "ἐξέλιπον οἱ ὕμνοι Δαυιδ τοῦ υἱοῦ Ιεσσαι",
+   "accord": true,
+   "maison_A": "Ici finissent les hymnes de David, fils de Jessé.",
+   "maison_B": "Ici finissent les hymnes de David, fils de Jessé.",
+   "choix": "Ici finissent les hymnes de David, fils de Jessé.",
+   "decomposition": "ἐξέλιπον = Ici finissent (ἐκλείπω 'cesser/prendre fin') ; οἱ ὕμνοι Δαυιδ = les hymnes de David (ὕμνοι ; cf. gabarit ἐν ὕμνοις 'hymnes') ; τοῦ υἱοῦ Ιεσσαι = fils de Jessé. Rendu = TEXTE PROPRE DE GIGUET : il a fondu cette souscription dans son v.71:19, littéralement 'Ici finissent les hymnes de David, fils de Jessé.'",
+   "confiance": [
+    "haute",
+    "moyenne"
+   ]
+  },
+  {
+   "ref": "139:1",
+   "grec": "εἰς τὸ τέλος ψαλμὸς τῷ Δαυιδ",
+   "accord": true,
+   "maison_A": "Pour la fin, psaume de David.",
+   "maison_B": "Pour la fin, psaume de David.",
+   "choix": "Pour la fin, psaume de David.",
+   "decomposition": "εἰς τὸ τέλος = Pour la fin (gabarit) ; ψαλμὸς τῷ Δαυιδ = psaume de David (gabarit). Tout au gabarit.",
+   "confiance": [
+    "haute",
+    "haute"
+   ]
+  }
+ ]
+}

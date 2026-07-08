@@ -1,8 +1,8 @@
 {
  "generated": "audit-coverage.mjs (instrument unique, arbitrage + content-aware)",
  "summary": {
-  "grecSansEtat": 182,
-  "trousOuverts": 67,
+  "grecSansEtat": 98,
+  "trousOuverts": 65,
   "aTraduireProuve": 13,
   "grecEnFile": 1,
   "frDeclares": 27,
@@ -60,20 +60,12 @@
     "grec": "ἡγεμὼν Μεγεδιηλ ἡγεμὼν Ηραμ οὗτοι ἡγεμόνες Εδωμ"
    },
    {
-    "ref": "11:47",
-    "grec": "Αλιηλ καὶ Ωβηδ καὶ Ιεσιηλ ὁ Μισαβια"
-   },
-   {
     "ref": "12:5",
     "grec": "Ιερμιας καὶ Ιεζιηλ καὶ Ιωαναν καὶ Ιωζαβαδ ὁ Γαδαραθι"
    },
    {
     "ref": "15:24",
     "grec": "καὶ Σοβνια καὶ Ιωσαφατ καὶ Ναθαναηλ καὶ Αμασαι καὶ Ζαχαρια καὶ Βαναι καὶ Ελιεζερ οἱ ἱερεῖς σαλπίζοντες ταῖς σάλπιγξιν ἔμπροσθεν τῆς κιβωτοῦ τοῦ θεοῦ καὶ Αβδεδομ καὶ Ιια πυλωροὶ τῆς κιβωτοῦ τοῦ θεοῦ"
-   },
-   {
-    "ref": "20:8",
-    "grec": "οὗτοι ἐγένοντο Ραφα ἐν Γεθ πάντες ἦσαν τέσσαρες γίγαντες καὶ ἔπεσον ἐν χειρὶ Δαυιδ καὶ ἐν χειρὶ παίδων αὐτοῦ"
    },
    {
     "ref": "5:27",
@@ -138,124 +130,8 @@
   ],
   "1ki": [
    {
-    "ref": "12:10",
-    "grec": "καὶ ἐλάλησαν πρὸς αὐτὸν τὰ παιδάρια τὰ ἐκτραφέντα μετ᾿ αὐτοῦ οἱ παρεστηκότες πρὸ προσώπου αὐτοῦ λέγοντες τάδε λαλήσεις τῷ λαῷ τούτῳ τοῖς λαλήσασι πρὸς σὲ λέγοντες ὁ πατήρ σου ἐβάρυνεν τὸν κλοιὸν ἡμῶν καὶ σὺ νῦν κούφισον ἀφ᾿ ἡμῶν τάδε λαλήσεις πρὸς αὐτούς ἡ μικρότης μου παχυτέρα τῆς ὀσφύος τοῦ πατρός μου"
-   },
-   {
-    "ref": "12:19",
-    "grec": "καὶ ἠθέτησεν Ισραηλ εἰς τὸν οἶκον Δαυιδ ἕως τῆς ἡμέρας ταύτης"
-   },
-   {
-    "ref": "13:34",
-    "grec": "καὶ ἐγένετο τὸ ῥῆμα τοῦτο εἰς ἁμαρτίαν τῷ οἴκῳ Ιεροβοαμ καὶ εἰς ὄλεθρον καὶ εἰς ἀφανισμὸν ἀπὸ προσώπου τῆς γῆς"
-   },
-   {
-    "ref": "15:33",
-    "grec": "καὶ ἐν τῷ ἔτει τῷ τρίτῳ τοῦ Ασα βασιλέως Ιουδα βασιλεύει Βαασα υἱὸς Αχια ἐπὶ Ισραηλ ἐν Θερσα εἴκοσι καὶ τέσσαρα ἔτη"
-   },
-   {
-    "ref": "22:51",
-    "grec": "καὶ ἐκοιμήθη Ιωσαφατ μετὰ τῶν πατέρων αὐτοῦ καὶ ἐτάφη παρὰ τοῖς πατράσιν αὐτοῦ ἐν πόλει Δαυιδ τοῦ πατρὸς αὐτοῦ καὶ ἐβασίλευσεν Ιωραμ υἱὸς αὐτοῦ ἀντ᾿ αὐτοῦ"
-   },
-   {
-    "ref": "22:52",
-    "grec": "καὶ Οχοζιας υἱὸς Αχααβ ἐβασίλευσεν ἐπὶ Ισραηλ ἐν Σαμαρείᾳ ἐν ἔτει ἑπτακαιδεκάτῳ Ιωσαφατ βασιλεῖ Ιουδα καὶ ἐβασίλευσεν ἐν Ισραηλ ἔτη δύο"
-   },
-   {
-    "ref": "22:53",
-    "grec": "καὶ ἐποίησεν τὸ πονηρὸν ἐναντίον κυρίου καὶ ἐπορεύθη ἐν ὁδῷ Αχααβ τοῦ πατρὸς αὐτοῦ καὶ ἐν ὁδῷ Ιεζαβελ τῆς μητρὸς αὐτοῦ καὶ ἐν ταῖς ἁμαρτίαις οἴκου Ιεροβοαμ υἱοῦ Ναβατ ὃς ἐξήμαρτεν τὸν Ισραηλ"
-   },
-   {
-    "ref": "22:54",
-    "grec": "καὶ ἐδούλευσεν τοῖς Βααλιμ καὶ προσεκύνησεν αὐτοῖς καὶ παρώργισεν τὸν κύριον θεὸν Ισραηλ κατὰ πάντα τὰ γενόμενα ἔμπροσθεν αὐτοῦ"
-   },
-   {
-    "ref": "3:12",
-    "grec": "ἰδοὺ πεποίηκα κατὰ τὸ ῥῆμά σου ἰδοὺ δέδωκά σοι καρδίαν φρονίμην καὶ σοφήν ὡς σὺ οὐ γέγονεν ἔμπροσθέν σου καὶ μετὰ σὲ οὐκ ἀναστήσεται ὅμοιός σοι"
-   },
-   {
-    "ref": "3:13",
-    "grec": "καὶ ἃ οὐκ ᾐτήσω δέδωκά σοι καὶ πλοῦτον καὶ δόξαν ὡς οὐ γέγονεν ἀνὴρ ὅμοιός σοι ἐν βασιλεῦσιν"
-   },
-   {
-    "ref": "3:14",
-    "grec": "καὶ ἐὰν πορευθῇς ἐν τῇ ὁδῷ μου φυλάσσειν τὰς ἐντολάς μου καὶ τὰ προστάγματά μου ὡς ἐπορεύθη Δαυιδ ὁ πατήρ σου καὶ πληθυνῶ τὰς ἡμέρας σου"
-   },
-   {
-    "ref": "3:15",
-    "grec": "καὶ ἐξυπνίσθη Σαλωμων καὶ ἰδοὺ ἐνύπνιον καὶ ἀνέστη καὶ παραγίνεται εἰς Ιερουσαλημ καὶ ἔστη κατὰ πρόσωπον τοῦ θυσιαστηρίου τοῦ κατὰ πρόσωπον κιβωτοῦ διαθήκης κυρίου ἐν Σιων καὶ ἀνήγαγεν ὁλοκαυτώσεις καὶ ἐποίησεν εἰρηνικὰς καὶ ἐποίησεν πότον μέγαν ἑαυτῷ καὶ πᾶσιν τοῖς παισὶν αὐτοῦ"
-   },
-   {
-    "ref": "3:16",
-    "grec": "τότε ὤφθησαν δύο γυναῖκες πόρναι τῷ βασιλεῖ καὶ ἔστησαν ἐνώπιον αὐτοῦ"
-   },
-   {
-    "ref": "3:17",
-    "grec": "καὶ εἶπεν ἡ γυνὴ ἡ μία ἐν ἐμοί κύριε ἐγὼ καὶ ἡ γυνὴ αὕτη οἰκοῦμεν ἐν οἴκῳ ἑνὶ καὶ ἐτέκομεν ἐν τῷ οἴκῳ"
-   },
-   {
-    "ref": "3:18",
-    "grec": "καὶ ἐγενήθη ἐν τῇ ἡμέρᾳ τῇ τρίτῃ τεκούσης μου καὶ ἔτεκεν καὶ ἡ γυνὴ αὕτη καὶ ἡμεῖς κατὰ τὸ αὐτό καὶ οὐκ ἔστιν οὐθεὶς μεθ᾿ ἡμῶν πάρεξ ἀμφοτέρων ἡμῶν ἐν τῷ οἴκῳ"
-   },
-   {
-    "ref": "3:19",
-    "grec": "καὶ ἀπέθανεν ὁ υἱὸς τῆς γυναικὸς ταύτης τὴν νύκτα ὡς ἐπεκοιμήθη ἐπ᾿ αὐτόν"
-   },
-   {
-    "ref": "3:20",
-    "grec": "καὶ ἀνέστη μέσης τῆς νυκτὸς καὶ ἔλαβεν τὸν υἱόν μου ἐκ τῶν ἀγκαλῶν μου καὶ ἐκοίμισεν αὐτὸν ἐν τῷ κόλπῳ αὐτῆς καὶ τὸν υἱὸν αὐτῆς τὸν τεθνηκότα ἐκοίμισεν ἐν τῷ κόλπῳ μου"
-   },
-   {
-    "ref": "3:21",
-    "grec": "καὶ ἀνέστην τὸ πρωὶ θηλάσαι τὸν υἱόν μου καὶ ἐκεῖνος ἦν τεθνηκώς καὶ ἰδοὺ κατενόησα αὐτὸν πρωί καὶ ἰδοὺ οὐκ ἦν ὁ υἱός μου ὃν ἔτεκον"
-   },
-   {
-    "ref": "3:22",
-    "grec": "καὶ εἶπεν ἡ γυνὴ ἡ ἑτέρα οὐχί ἀλλὰ ὁ υἱός μου ὁ ζῶν ὁ δὲ υἱός σου ὁ τεθνηκώς καὶ ἐλάλησαν ἐνώπιον τοῦ βασιλέως"
-   },
-   {
-    "ref": "3:23",
-    "grec": "καὶ εἶπεν ὁ βασιλεὺς αὐταῖς σὺ λέγεις οὗτος ὁ υἱός μου ὁ ζῶν καὶ ὁ υἱὸς ταύτης ὁ τεθνηκώς καὶ σὺ λέγεις οὐχί ἀλλὰ ὁ υἱός μου ὁ ζῶν καὶ ὁ υἱός σου ὁ τεθνηκώς"
-   },
-   {
-    "ref": "3:24",
-    "grec": "καὶ εἶπεν ὁ βασιλεύς λάβετέ μοι μάχαιραν καὶ προσήνεγκαν τὴν μάχαιραν ἐνώπιον τοῦ βασιλέως"
-   },
-   {
-    "ref": "3:25",
-    "grec": "καὶ εἶπεν ὁ βασιλεύς διέλετε τὸ παιδίον τὸ θηλάζον τὸ ζῶν εἰς δύο καὶ δότε τὸ ἥμισυ αὐτοῦ ταύτῃ καὶ τὸ ἥμισυ αὐτοῦ ταύτῃ"
-   },
-   {
-    "ref": "3:26",
-    "grec": "καὶ ἀπεκρίθη ἡ γυνή ἧς ἦν ὁ υἱὸς ὁ ζῶν καὶ εἶπεν πρὸς τὸν βασιλέα ὅτι ἐταράχθη ἡ μήτρα αὐτῆς ἐπὶ τῷ υἱῷ αὐτῆς καὶ εἶπεν ἐν ἐμοί κύριε δότε αὐτῇ τὸ παιδίον καὶ θανάτῳ μὴ θανατώσητε αὐτόν καὶ αὕτη εἶπεν μήτε ἐμοὶ μήτε αὐτῇ ἔστω διέλετε"
-   },
-   {
-    "ref": "3:27",
-    "grec": "καὶ ἀπεκρίθη ὁ βασιλεὺς καὶ εἶπεν δότε τὸ παιδίον τῇ εἰπούσῃ δότε αὐτῇ αὐτὸ καὶ θανάτῳ μὴ θανατώσητε αὐτόν αὐτὴ ἡ μήτηρ αὐτοῦ"
-   },
-   {
-    "ref": "3:28",
-    "grec": "καὶ ἤκουσαν πᾶς Ισραηλ τὸ κρίμα τοῦτο ὃ ἔκρινεν ὁ βασιλεύς καὶ ἐφοβήθησαν ἀπὸ προσώπου τοῦ βασιλέως ὅτι εἶδον ὅτι φρόνησις θεοῦ ἐν αὐτῷ τοῦ ποιεῖν δικαίωμα"
-   },
-   {
     "ref": "5:18",
     "grec": "καὶ νῦν ἀνέπαυσε κύριος ὁ θεός μου ἐμοὶ κυκλόθεν οὐκ ἔστιν ἐπίβουλος καὶ οὐκ ἔστιν ἀπάντημα πονηρόν"
-   },
-   {
-    "ref": "5:19",
-    "grec": "καὶ ἰδοὺ ἐγὼ λέγω οἰκοδομῆσαι οἶκον τῷ ὀνόματι κυρίου θεοῦ μου καθὼς ἐλάλησεν κύριος ὁ θεὸς πρὸς Δαυιδ τὸν πατέρα μου λέγων ὁ υἱός σου ὃν δώσω ἀντὶ σοῦ ἐπὶ τὸν θρόνον σου οὗτος οἰκοδομήσει τὸν οἶκον τῷ ὀνόματί μου"
-   },
-   {
-    "ref": "5:20",
-    "grec": "καὶ νῦν ἔντειλαι καὶ κοψάτωσάν μοι ξύλα ἐκ τοῦ Λιβάνου καὶ ἰδοὺ οἱ δοῦλοί μου μετὰ τῶν δούλων σου καὶ τὸν μισθὸν δουλείας σου δώσω σοι κατὰ πάντα ὅσα ἐὰν εἴπῃς ὅτι σὺ οἶδας ὅτι οὐκ ἔστιν ἡμῖν εἰδὼς ξύλα κόπτειν καθὼς οἱ Σιδώνιοι"
-   },
-   {
-    "ref": "5:21",
-    "grec": "καὶ ἐγενήθη καθὼς ἤκουσεν Χιραμ τῶν λόγων Σαλωμων ἐχάρη σφόδρα καὶ εἶπεν εὐλογητὸς ὁ θεὸς σήμερον ὃς ἔδωκεν τῷ Δαυιδ υἱὸν φρόνιμον ἐπὶ τὸν λαὸν τὸν πολὺν τοῦτον"
-   },
-   {
-    "ref": "5:22",
-    "grec": "καὶ ἀπέστειλεν πρὸς Σαλωμων λέγων ἀκήκοα περὶ πάντων ὧν ἀπέσταλκας πρός με ἐγὼ ποιήσω πᾶν θέλημά σου ξύλα κέδρινα καὶ πεύκινα"
    },
    {
     "ref": "5:23",
@@ -308,25 +184,9 @@
    {
     "ref": "6:36",
     "grec": "καὶ ᾠκοδόμησεν τὴν αὐλὴν τὴν ἐσωτάτην τρεῖς στίχους ἀπελεκήτων καὶ στίχος κατειργασμένης κέδρου κυκλόθεν καὶ ᾠκοδόμησε καταπέτασμα τῆς αὐλῆς τοῦ αιλαμ τοῦ οἴκου τοῦ κατὰ πρόσωπον τοῦ ναοῦ"
-   },
-   {
-    "ref": "9:26",
-    "grec": "καὶ ναῦν ὑπὲρ οὗ ἐποίησεν ὁ βασιλεὺς Σαλωμων ἐν Γασιωνγαβερ τὴν οὖσαν ἐχομένην Αιλαθ ἐπὶ τοῦ χείλους τῆς ἐσχάτης θαλάσσης ἐν γῇ Εδωμ"
-   },
-   {
-    "ref": "9:27",
-    "grec": "καὶ ἀπέστειλεν Χιραμ ἐν τῇ νηὶ τῶν παίδων αὐτοῦ ἄνδρας ναυτικοὺς ἐλαύνειν εἰδότας θάλασσαν μετὰ τῶν παίδων Σαλωμων"
-   },
-   {
-    "ref": "9:28",
-    "grec": "καὶ ἦλθον εἰς Σωφηρα καὶ ἔλαβον ἐκεῖθεν χρυσίου ἑκατὸν καὶ εἴκοσι τάλαντα καὶ ἤνεγκαν τῷ βασιλεῖ Σαλωμων"
    }
   ],
   "1sa": [
-   {
-    "ref": "12:25",
-    "grec": "καὶ ἐὰν κακίᾳ κακοποιήσητε καὶ ὑμεῖς καὶ ὁ βασιλεὺς ὑμῶν προστεθήσεσθε"
-   },
    {
     "ref": "18:9",
     "grec": "καὶ ἦν Σαουλ ὑποβλεπόμενος τὸν Δαυιδ ἀπὸ τῆς ἡμέρας ἐκείνης καὶ ἐπέκεινα"
@@ -368,30 +228,6 @@
    {
     "ref": "11:25",
     "grec": "καὶ ἐλάλησα πρὸς τὴν αἰχμαλωσίαν πάντας τοὺς λόγους τοῦ κυρίου οὓς ἔδειξέν μοι"
-   },
-   {
-    "ref": "2:10",
-    "grec": "καὶ ἀνείλησεν αὐτὴν ἐνώπιον ἐμοῦ καὶ ἐν αὐτῇ γεγραμμένα ἦν τὰ ὄπισθεν καὶ τὰ ἔμπροσθεν καὶ ἐγέγραπτο εἰς αὐτὴν θρῆνος καὶ μέλος καὶ οὐαί"
-   },
-   {
-    "ref": "7:13",
-    "grec": "διότι ὁ κτώμενος πρὸς τὸν πωλοῦντα οὐκέτι μὴ ἐπιστρέψῃ καὶ ἄνθρωπος ἐν ὀφθαλμῷ ζωῆς αὐτοῦ οὐ κρατήσει"
-   }
-  ],
-  "isa": [
-   {
-    "ref": "38:9",
-    "grec": "προσευχὴ Εζεκιου βασιλέως τῆς Ιουδαίας ἡνίκα ἐμαλακίσθη καὶ ἀνέστη ἐκ τῆς μαλακίας αὐτοῦ"
-   },
-   {
-    "ref": "38:15",
-    "grec": "καὶ ἀφείλατό μου τὴν ὀδύνην τῆς ψυχῆς"
-   }
-  ],
-  "jdt": [
-   {
-    "ref": "11:18",
-    "grec": "καὶ ἐλθοῦσα προσανοίσω σοι καὶ ἐξελεύσῃ σὺν πάσῃ τῇ δυνάμει σου καὶ οὐκ ἔστιν ὃς ἀντιστήσεταί σοι ἐξ αὐτῶν"
    }
   ],
   "jer": [
@@ -400,39 +236,7 @@
     "grec": "ὅσα ἐπροφήτευσεν Ιερεμιας ἐπὶ πάντα τὰ ἔθνη"
    }
   ],
-  "job": [
-   {
-    "ref": "42:17",
-    "grec": "καὶ ἐτελεύτησεν Ιωβ πρεσβύτερος καὶ πλήρης ἡμερῶν γέγραπται δὲ αὐτὸν πάλιν ἀναστήσεσθαι μεθ᾿ ὧν ὁ κύριος ἀνίστησιν οὗτος ἑρμηνεύεται ἐκ τῆς Συριακῆς βίβλου ἐν μὲν γῇ κατοικῶν τῇ Αυσίτιδι ἐπὶ τοῖς ὁρίοις τῆς Ιδουμαίας καὶ Ἀραβίας προϋπῆρχεν δὲ αὐτῷ ὄνομα Ιωβαβ λαβὼν δὲ γυναῖκα Ἀράβισσαν γεννᾷ υἱόν ᾧ ὄνομα Εννων ἦν δὲ αὐτὸς πατρὸς μὲν Ζαρε τῶν Ησαυ υἱῶν υἱός μητρὸς δὲ Βοσορρας ὥστε εἶναι αὐτὸν πέμπτον ἀπὸ Αβρααμ καὶ οὗτοι οἱ βασιλεῖς οἱ βασιλεύσαντες ἐν Εδωμ ἧς καὶ αὐτὸς ἦρξεν χώρας πρῶτος Βαλακ ὁ τοῦ Βεωρ καὶ ὄνομα τῇ πόλει αὐτοῦ Δενναβα μετὰ δὲ Βαλακ Ιωβαβ ὁ καλούμενος Ιωβ μετὰ δὲ τοῦτον Ασομ ὁ ὑπάρχων ἡγεμὼν ἐκ τῆς Θαιμανίτιδος χώρας μετὰ δὲ τοῦτον Αδαδ υἱὸς Βαραδ ὁ ἐκκόψας Μαδιαμ ἐν τῷ πεδίῳ Μωαβ καὶ ὄνομα τῇ πόλει αὐτοῦ Γεθθαιμ οἱ δὲ ἐλθόντες πρὸς αὐτὸν φίλοι Ελιφας τῶν Ησαυ υἱῶν Θαιμανων βασιλεύς Βαλδαδ ὁ Σαυχαίων τύραννος Σωφαρ ὁ Μιναίων βασιλεύς"
-   }
-  ],
-  "jol": [
-   {
-    "ref": "2:25",
-    "grec": "καὶ ἀνταποδώσω ὑμῖν ἀντὶ τῶν ἐτῶν ὧν κατέφαγεν ἡ ἀκρὶς καὶ ὁ βροῦχος καὶ ἡ ἐρυσίβη καὶ ἡ κάμπη ἡ δύναμίς μου ἡ μεγάλη ἣν ἐξαπέστειλα εἰς ὑμᾶς"
-   }
-  ],
   "jos": [
-   {
-    "ref": "12:21",
-    "grec": "βασιλέα Καδης βασιλέα Ταναχ"
-   },
-   {
-    "ref": "12:22",
-    "grec": "βασιλέα Μαγεδων βασιλέα Ιεκοναμ τοῦ Χερμελ"
-   },
-   {
-    "ref": "12:23",
-    "grec": "βασιλέα Δωρ τοῦ Ναφεδδωρ βασιλέα Γωιμ τῆς Γαλιλαίας"
-   },
-   {
-    "ref": "12:24",
-    "grec": "βασιλέα Θαρσα πάντες οὗτοι βασιλεῖς εἴκοσι ἐννέα"
-   },
-   {
-    "ref": "18:28",
-    "grec": "καὶ Ιεβους αὕτη ἐστὶν Ιερουσαλημ καὶ πόλεις καὶ Γαβαωθιαριμ πόλεις τρεῖς καὶ δέκα καὶ αἱ κῶμαι αὐτῶν αὕτη ἡ κληρονομία υἱῶν Βενιαμιν κατὰ δήμους αὐτῶν"
-   },
    {
     "ref": "21:44",
     "grec": "καὶ κατέπαυσεν αὐτοὺς κύριος κυκλόθεν καθότι ὤμοσεν τοῖς πατράσιν αὐτῶν οὐκ ἀνέστη οὐθεὶς κατενώπιον αὐτῶν ἀπὸ πάντων τῶν ἐχθρῶν αὐτῶν πάντας τοὺς ἐχθροὺς αὐτῶν παρέδωκεν κύριος εἰς τὰς χεῖρας αὐτῶν"
@@ -440,10 +244,6 @@
    {
     "ref": "21:45",
     "grec": "οὐ διέπεσεν ἀπὸ πάντων τῶν ῥημάτων τῶν καλῶν ὧν ἐλάλησεν κύριος τοῖς υἱοῖς Ισραηλ πάντα παρεγένετο"
-   },
-   {
-    "ref": "6:6",
-    "grec": "καὶ εἰσῆλθεν Ἰησοῦς ὁ τοῦ Ναυη πρὸς τοὺς ἱερεῖς"
    }
   ],
   "neh": [
@@ -454,16 +254,6 @@
    {
     "ref": "7:73",
     "grec": "καὶ ἐκάθισαν οἱ ἱερεῖς καὶ οἱ Λευῖται καὶ οἱ πυλωροὶ καὶ οἱ ᾄδοντες καὶ οἱ ἀπὸ τοῦ λαοῦ καὶ οἱ ναθινιμ καὶ πᾶς Ισραηλ ἐν πόλεσιν αὐτῶν καὶ ἔφθασεν ὁ μὴν ὁ ἕβδομος καὶ οἱ υἱοὶ Ισραηλ ἐν πόλεσιν αὐτῶν"
-   }
-  ],
-  "num": [
-   {
-    "ref": "11:35",
-    "grec": "ἀπὸ μνημάτων ἐπιθυμίας ἐξῆρεν ὁ λαὸς εἰς Ασηρωθ καὶ ἐγένετο ὁ λαὸς ἐν Ασηρωθ"
-   },
-   {
-    "ref": "4:15",
-    "grec": "καὶ συντελέσουσιν Ααρων καὶ οἱ υἱοὶ αὐτοῦ καλύπτοντες τὰ ἅγια καὶ πάντα τὰ σκεύη τὰ ἅγια ἐν τῷ ἐξαίρειν τὴν παρεμβολήν καὶ μετὰ ταῦτα εἰσελεύσονται υἱοὶ Κααθ αἴρειν καὶ οὐχ ἅψονται τῶν ἁγίων ἵνα μὴ ἀποθάνωσιν ταῦτα ἀροῦσιν οἱ υἱοὶ Κααθ ἐν τῇ σκηνῇ τοῦ μαρτυρίου"
    }
   ],
   "pro": [
@@ -600,16 +390,8 @@
   ],
   "sir": [
    {
-    "ref": "0:1",
-    "grec": "πολλῶν καὶ μεγάλων ἡμῖν διὰ τοῦ νόμου καὶ τῶν προφητῶν"
-   },
-   {
     "ref": "0:2",
     "grec": "καὶ τῶν ἄλλων τῶν κατ᾿ αὐτοὺς ἠκολουθηκότων δεδομένων"
-   },
-   {
-    "ref": "0:3",
-    "grec": "ὑπὲρ ὧν δέον ἐστὶν ἐπαινεῖν τὸν Ισραηλ παιδείας καὶ σοφίας"
    },
    {
     "ref": "0:4",
@@ -620,128 +402,12 @@
     "grec": "ἀλλὰ καὶ τοῖς ἐκτὸς δύνασθαι τοὺς φιλομαθοῦντας χρησίμους εἶναι"
    },
    {
-    "ref": "0:6",
-    "grec": "καὶ λέγοντας καὶ γράφοντας"
-   },
-   {
     "ref": "0:7",
     "grec": "ὁ πάππος μου Ἰησοῦς ἐπὶ πλεῖον ἑαυτὸν δοὺς"
    },
    {
-    "ref": "0:8",
-    "grec": "εἴς τε τὴν τοῦ νόμου"
-   },
-   {
-    "ref": "0:9",
-    "grec": "καὶ τῶν προφητῶν"
-   },
-   {
-    "ref": "0:10",
-    "grec": "καὶ τῶν ἄλλων πατρίων βιβλίων ἀνάγνωσιν"
-   },
-   {
-    "ref": "0:11",
-    "grec": "καὶ ἐν τούτοις ἱκανὴν ἕξιν περιποιησάμενος"
-   },
-   {
-    "ref": "0:12",
-    "grec": "προήχθη καὶ αὐτὸς συγγράψαι τι τῶν εἰς παιδείαν καὶ σοφίαν ἀνηκόντων"
-   },
-   {
-    "ref": "0:13",
-    "grec": "ὅπως οἱ φιλομαθεῖς καὶ τούτων ἔνοχοι γενόμενοι"
-   },
-   {
-    "ref": "0:14",
-    "grec": "πολλῷ μᾶλλον ἐπιπροσθῶσιν διὰ τῆς ἐννόμου βιώσεως"
-   },
-   {
-    "ref": "0:15",
-    "grec": "παρακέκλησθε οὖν"
-   },
-   {
-    "ref": "0:16",
-    "grec": "μετ᾿ εὐνοίας καὶ προσοχῆς"
-   },
-   {
-    "ref": "0:17",
-    "grec": "τὴν ἀνάγνωσιν ποιεῖσθαι"
-   },
-   {
-    "ref": "0:18",
-    "grec": "καὶ συγγνώμην ἔχειν"
-   },
-   {
-    "ref": "0:19",
-    "grec": "ἐφ᾿ οἷς ἂν δοκῶμεν"
-   },
-   {
-    "ref": "0:20",
-    "grec": "τῶν κατὰ τὴν ἑρμηνείαν πεφιλοπονημένων τισὶν τῶν λέξεων ἀδυναμεῖν"
-   },
-   {
-    "ref": "0:21",
-    "grec": "οὐ γὰρ ἰσοδυναμεῖ"
-   },
-   {
-    "ref": "0:22",
-    "grec": "αὐτὰ ἐν ἑαυτοῖς Εβραϊστὶ λεγόμενα καὶ ὅταν μεταχθῇ εἰς ἑτέραν γλῶσσαν"
-   },
-   {
-    "ref": "0:23",
-    "grec": "οὐ μόνον δὲ ταῦτα"
-   },
-   {
-    "ref": "0:24",
-    "grec": "ἀλλὰ καὶ αὐτὸς ὁ νόμος καὶ αἱ προφητεῖαι"
-   },
-   {
-    "ref": "0:25",
-    "grec": "καὶ τὰ λοιπὰ τῶν βιβλίων"
-   },
-   {
-    "ref": "0:26",
-    "grec": "οὐ μικρὰν ἔχει τὴν διαφορὰν ἐν ἑαυτοῖς λεγόμενα"
-   },
-   {
-    "ref": "0:27",
-    "grec": "ἐν γὰρ τῷ ὀγδόῳ καὶ τριακοστῷ ἔτει ἐπὶ τοῦ Εὐεργέτου βασιλέως"
-   },
-   {
-    "ref": "0:28",
-    "grec": "παραγενηθεὶς εἰς Αἴγυπτον καὶ συγχρονίσας"
-   },
-   {
-    "ref": "0:29",
-    "grec": "εὑρὼν οὐ μικρᾶς παιδείας ἀφόμοιον"
-   },
-   {
-    "ref": "0:30",
-    "grec": "ἀναγκαιότατον ἐθέμην καὶ αὐτός τινα προσενέγκασθαι σπουδὴν καὶ φιλοπονίαν τοῦ μεθερμηνεῦσαι τήνδε τὴν βίβλον"
-   },
-   {
-    "ref": "0:31",
-    "grec": "πολλὴν ἀγρυπνίαν καὶ ἐπιστήμην προσενεγκάμενος"
-   },
-   {
     "ref": "0:32",
     "grec": "ἐν τῷ διαστήματι τοῦ χρόνου"
-   },
-   {
-    "ref": "0:33",
-    "grec": "πρὸς τὸ ἐπὶ πέρας ἀγαγόντα τὸ βιβλίον ἐκδόσθαι"
-   },
-   {
-    "ref": "0:34",
-    "grec": "καὶ τοῖς ἐν τῇ παροικίᾳ βουλομένοις φιλομαθεῖν"
-   },
-   {
-    "ref": "0:35",
-    "grec": "προκατασκευαζομένους τὰ ἤθη"
-   },
-   {
-    "ref": "0:36",
-    "grec": "ἐννόμως βιοτεύειν"
    },
    {
     "ref": "32:21",
@@ -764,22 +430,6 @@
    {
     "ref": "1:1",
     "grec": "ᾆσμα ᾀσμάτων ὅ ἐστιν τῷ Σαλωμων"
-   }
-  ],
-  "sus": [
-   {
-    "ref": "1:56",
-    "grec": "καὶ μεταστήσας αὐτὸν ἐκέλευσεν προσαγαγεῖν τὸν ἕτερον καὶ εἶπεν αὐτῷ σπέρμα Χανααν καὶ οὐκ Ιουδα τὸ κάλλος ἐξηπάτησέν σε καὶ ἡ ἐπιθυμία διέστρεψεν τὴν καρδίαν σου"
-   }
-  ],
-  "tob": [
-   {
-    "ref": "10:14",
-    "grec": "μετὰ ταῦτα ἐπορεύετο Τωβιας εὐλογῶν τὸν θεόν ὅτι εὐόδωσεν τὴν ὁδὸν αὐτοῦ καὶ κατευλόγει Ραγουηλ καὶ Εδναν τὴν γυναῖκα αὐτοῦ"
-   },
-   {
-    "ref": "5:9",
-    "grec": "καὶ εἰσελθὼν εἶπεν τῷ πατρί ἰδοὺ εὕρηκα ὃς συμπορεύσεταί μοι ὁ δὲ εἶπεν φώνησον αὐτὸν πρός με ἵνα ἐπιγνῶ ποίας φυλῆς ἐστιν καὶ εἰ πιστὸς τοῦ πορευθῆναι μετὰ σοῦ"
    }
   ]
  },
@@ -1076,6 +726,26 @@
     "text": "Esébon et sa banlieue, Jazer et sa banlieue."
    },
    {
+    "ref": "12:4",
+    "ranges": [
+     [
+      10,
+      16
+     ]
+    ],
+    "text": "puis, Jérémie, Jézéel, Joanan, Joazobath de Garathiim,"
+   },
+   {
+    "ref": "15:25",
+    "ranges": [
+     [
+      0,
+      27
+     ]
+    ],
+    "text": "Somnia, Josaphat, Nathanaël, Amasaï, Zacharie, Banaïas et Eliézer, les prêtres, sonnaient de la trompette devant l’arche de Dieu. Abdedom et Jehia étaient portiers de l’arche de Dieu. 25."
+   },
+   {
     "ref": "16:24",
     "ranges": [
      [
@@ -1088,154 +758,178 @@
   ],
   "1ki": [
    {
-    "ref": "4:20",
+    "ref": "3:11",
+    "ranges": [
+     [
+      60,
+      61
+     ],
+     [
+      99,
+      100
+     ],
+     [
+      127,
+      128
+     ],
+     [
+      155,
+      156
+     ],
+     [
+      213,
+      214
+     ],
+     [
+      231,
+      232
+     ],
+     [
+      259,
+      260
+     ],
+     [
+      288,
+      289
+     ],
+     [
+      306,
+      307
+     ],
+     [
+      345,
+      346
+     ],
+     [
+      386,
+      387
+     ],
+     [
+      412,
+      413
+     ],
+     [
+      462,
+      463
+     ],
+     [
+      482,
+      483
+     ],
+     [
+      509,
+      510
+     ],
+     [
+      567,
+      568
+     ],
+     [
+      599,
+      600
+     ]
+    ],
+    "text": "23. (12) … 24. (13) … 25. (14) … 26. (15) … 27. (16) … 28. (17) … 29. (18) … 30. (19) … 31. (20) … 32. (21) … 33. (22) … 34. (23) … 35. (24) … 36. (25) … 37. (26) … 38. (27) … 39. (28)"
+   },
+   {
+    "ref": "5:4",
     "ranges": [
      [
       0,
-      29
+      23
      ]
     ],
-    "text": "(27) Ainsi, les officiers approvisionnaient le roi Salomon, et chacun avait son mois pour subvenir à ce qui était demandé pour sa table ; et ils n’intervertissaient jamais l’ordre établi."
+    "text": "Maintenant, le Seigneur mon Dieu m’a donné la paix tout alentour ; il n’est point de complot contre moi ni de mauvais desseins ."
    },
    {
-    "ref": "4:21",
-    "ranges": [
-     [
-      0,
-      31
-     ]
-    ],
-    "text": "(28) Ils faisaient transporter l’orge et la paille pour les chevaux de selle et les attelages du roi, en tout lieu où il se trouvait, chacun selon ce qui lui était prescrit."
-   },
-   {
-    "ref": "4:22",
-    "ranges": [
-     [
-      0,
-      21
-     ]
-    ],
-    "text": "Et voici ce qu’il fallait chaque jour à Salomon : trente mesures de fleur de farine, et soixante mesures de farine pétrie,"
-   },
-   {
-    "ref": "4:23",
-    "ranges": [
-     [
-      0,
-      20
-     ]
-    ],
-    "text": "Dix veaux choisis, vingt bœufs pris au pâturage, et cent brebis, et en outre des cerfs, des chevreuils parqués et engraissés."
-   },
-   {
-    "ref": "4:24",
-    "ranges": [
-     [
-      0,
-      21
-     ]
-    ],
-    "text": "Car il était chef de toute la contrée en deçà de l’Euphrate, et la paix régnait tout alentour de ses territoires ."
-   },
-   {
-    "ref": "4:25",
-    "ranges": [
-     [
-      0,
-      26
-     ]
-    ],
-    "text": "(29) Et le Seigneur avait doué Salomon d’une grande intelligence, d’une grande sagesse, et d’une richesse de cœur abondante comme le sable du rivage de la mer."
-   },
-   {
-    "ref": "4:26",
-    "ranges": [
-     [
-      0,
-      17
-     ]
-    ],
-    "text": "(30) La sagesse de Salomon s’accrut et surpassa celle des anciens, celle de tous les sages de l’Égypte."
-   },
-   {
-    "ref": "4:27",
-    "ranges": [
-     [
-      0,
-      26
-     ]
-    ],
-    "text": "(31) Et il était le plus sage des hommes ; il était plus sage que Géthan le Zarite, qu’Enan, que Chalcad et que Darala, fils de Mal."
-   },
-   {
-    "ref": "4:28",
-    "ranges": [
-     [
-      0,
-      11
-     ]
-    ],
-    "text": "(32) Et il dit trois mille proverbes et cinq mille cantiques ."
-   },
-   {
-    "ref": "4:29",
-    "ranges": [
-     [
-      0,
-      38
-     ]
-    ],
-    "text": "(33) Et il disserta sur tous les arbres, depuis le cèdre du Liban jusqu’à l’hysope qui sort des murailles ; il parla de tous les quadrupèdes, de tous les oiseaux, de tous les reptiles et de tous les poissons."
-   },
-   {
-    "ref": "4:30",
-    "ranges": [
-     [
-      0,
-      104
-     ]
-    ],
-    "text": "(34) Et tous les peuples venaient pour entendre la sagesse de Salomon ; et combien y eut-il de rois de la terre qui vinrent entendre la sagesse de Salomon ! Et Salomon avait épousé la fille du Pharaon d’Égypte ; il l’avait amenée dans la ville de David, en attendant qu’il eût achevé le temple du Seigneur, ainsi que son propre palais et les remparts de Jérusalem. Alors, le Pharaon vint d’Égypte ; il prit Gazer et il la livra aux flammes ; il extermina le Chananéen qui habitait Mergab, et il donna ces conquêtes à sa fille, femme de Salomon, et Salomon rebâtit Gazer."
-   },
-   {
-    "ref": "5:5",
+    "ref": "5:9",
     "ranges": [
      [
       0,
       44
      ]
     ],
-    "text": "Et voilà que j’ai résolu de bâtir un temple au nom du Seigneur mon Dieu, comme le Seigneur Dieu l’a dit à David mon père : C’est ton fils, que je mettrai sur le trône à ta place, qui bâtira un temple à mon nom."
+    "text": "Mes serviteurs transporteront tout du Liban à la mer ; on en formera des radeaux jusqu’au lieu que tu m’indiqueras ; là, je les ferai délier, et tu les enlèveras, et tu feras tout ce que je désire en donnant des vivres à ma maison."
    },
    {
-    "ref": "5:6",
+    "ref": "5:10",
     "ranges": [
      [
       0,
-      51
+      13
      ]
     ],
-    "text": "Donne donc tes ordres, et que l’on coupe des arbres du Liban ; voici mes serviteurs pour aider les tiens, et je te paierai le salaire de tes services comme tu le demanderas ; car tu sais que parmi nous personne n’est aussi habile que les Sidoniens à travailler le bois ."
+    "text": "Hiram donna donc à Salomon des cèdres, des sapins et tout ce qu’il voulut."
    },
    {
-    "ref": "5:7",
+    "ref": "5:11",
     "ranges": [
      [
       0,
-      30
+      29
      ]
     ],
-    "text": "Or, Hiram fut grandement réjoui d’entendre ces paroles, et il dit : Béni soit aujourd’hui le Seigneur, qui a donné à David un fils aussi sage pour gouverner ce peuple nombreux."
+    "text": "Et Salomon donna à Hiram vingt mille mesures de froment pour alimenter sa maison, et vingt mille mesures d’huile battue ; voilà ce que Salomon donna par an à Hiram."
    },
    {
-    "ref": "5:8",
+    "ref": "5:12",
     "ranges": [
      [
       0,
-      32
+      28
      ]
     ],
-    "text": "Puis, il envoya dire à Salomon : J’ai ouï toutes les choses au sujet desquelles tu as envoyé près de moi ; je ferai tout ce que tu veux ; cèdres et sapins,"
+    "text": "Or, le Seigneur avait donné à Salomon la sagesse comme il le lui avait dit. Et la paix régnait entre Hiram et Salomon, qui contractèrent entre eux une alliance."
+   },
+   {
+    "ref": "5:13",
+    "ranges": [
+     [
+      0,
+      16
+     ]
+    ],
+    "text": "Le roi imposa une corvée à tout Israël, et il requit pour ce service trente mille hommes."
+   },
+   {
+    "ref": "5:14",
+    "ranges": [
+     [
+      0,
+      34
+     ]
+    ],
+    "text": "Il les fit partir pour le Liban, dix mille par dix mille qui se relevaient mois par mois ; ils passaient un mois au Liban et deux mois chez eux. Adoniram était à leur tête."
+   },
+   {
+    "ref": "5:15",
+    "ranges": [
+     [
+      0,
+      19
+     ]
+    ],
+    "text": "Et Salomon employait soixante-dix mille hommes à transporter les matériaux, et quatre-vingt mille à tailler des pierres dans la montagne,"
+   },
+   {
+    "ref": "5:16",
+    "ranges": [
+     [
+      0,
+      19
+     ]
+    ],
+    "text": "Sans compter les conducteurs des travaux ; il y en avait trois mille six cents habiles à ces sortes d’œuvres."
+   },
+   {
+    "ref": "5:17",
+    "ranges": [
+     [
+      0,
+      11
+     ]
+    ],
+    "text": "Et l’on mit trois ans à préparer les pierres et les bois."
    },
    {
     "ref": "6:11",
@@ -1286,116 +980,76 @@
      ]
     ],
     "text": "(19) Jusqu’à la cloison qui la séparait de l’oracle, où devait être renfermée l’arche de l’alliance du Seigneur."
+   }
+  ],
+  "deu": [
+   {
+    "ref": "4:14",
+    "ranges": [
+     [
+      37,
+      68
+     ]
+    ],
+    "text": "13. Et vous veillerez attentivement sur vos âmes, car vous n’avez point vu d’image le jour où le Seigneur, en Horeb, vous parla du haut de la montagne, au milieu du feu."
    },
    {
-    "ref": "9:15",
+    "ref": "5:4",
+    "ranges": [
+     [
+      15,
+      59
+     ]
+    ],
+    "text": "3. Et moi, en ce temps-là, je me tenais entre le Seigneur et vous, pour vous rapporter les paroles du Seigneur ; car vous étiez épouvantés à l’aspect du feu, et vous ne montiez point sur la montagne ; et le Seigneur a dit :"
+   }
+  ],
+  "jol": [
+   {
+    "ref": "2:24",
+    "ranges": [
+     [
+      16,
+      17
+     ]
+    ],
+    "text": "25 :"
+   }
+  ],
+  "pro": [
+   {
+    "ref": "31:21",
     "ranges": [
      [
       0,
-      25
+      16
      ]
     ],
-    "text": "(26) C’est pourquoi, le roi Salomon construisit un vaisseau en Asion-Gaber, qui est limitrophe d’Elath, sur le rivage de la mer Rouge, en la terre d’Edom."
+    "text": "Elle étend les bras partout où il est utile, et ses mains ne quittent pas le fuseau."
    },
    {
-    "ref": "9:16",
+    "ref": "31:22",
     "ranges": [
      [
       0,
-      23
+      13
      ]
     ],
-    "text": "(27) Et le roi Hiram envoya sur le vaisseau des serviteurs, matelots exercés à naviguer sur mer, qui s’embarquérent avec les serviteurs de Salomon."
+    "text": "Elle a la main ouverte pour le pauvre, et présente un fruit au mendiant."
    },
    {
-    "ref": "9:17",
+    "ref": "31:27",
     "ranges": [
      [
-      0,
-      20
-     ]
-    ],
-    "text": "Et ils allèrent à Ophir ; et ils y prirent cent vingt talents d’or, et ils les apportèrent au roi Salomon."
-   },
-   {
-    "ref": "12:2",
-    "ranges": [
+      31,
+      50
+     ],
      [
-      0,
-      9
+      68,
+      78
      ]
     ],
-    "text": "(3) Et le peuple parla au roi Roboam, disant :"
-   },
-   {
-    "ref": "12:17",
-    "ranges": [
-     [
-      0,
-      28
-     ]
-    ],
-    "text": "(18) Alors, le roi leur envoya Adonisam, intendant des impôts ; ils le lapidèrent, il mourut ; et le roi Roboam s’empressa de fuir pour se renfermer dans Jérusalem."
-   },
-   {
-    "ref": "13:27",
-    "ranges": [
-     [
-      0,
-      35
-     ]
-    ],
-    "text": "Et il sortit, et il trouva le cadavre gisant sur le chemin, l’âne et le lion se tenant auprès du corps ; et le lion n’avait point mangé le mort, et il n’avait point déchiré l’âne."
-   },
-   {
-    "ref": "15:32",
-    "ranges": [
-     [
-      0,
-      21
-     ]
-    ],
-    "text": "En la troisième année du règne d’Asa en Juda, Baasa, fils d’Achias, fut proclamé roi d’Israël, et-il régna vingt-quatre ans à Thersa."
-   },
-   {
-    "ref": "22:47",
-    "ranges": [
-     [
-      0,
-      26
-     ]
-    ],
-    "text": "Et Josaphat s’endormit avec ses pères ; il fut enseveli auprès d’eux en la ville de David, son aïeul, et son fils Joram régna à sa place."
-   },
-   {
-    "ref": "22:48",
-    "ranges": [
-     [
-      0,
-      24
-     ]
-    ],
-    "text": "Et Ochozias, fils d’Achab, régna sur Israël en Samarie ; son règne commença la dix-septième année de celui de Josaphat, et il dura deux ans."
-   },
-   {
-    "ref": "22:49",
-    "ranges": [
-     [
-      0,
-      38
-     ]
-    ],
-    "text": "Et il fit le mal devant le Seigneur ; il marcha dans la voie d’Achab, son père, dans la voie de Jézabel, sa mère, et dans le péché où la maison de Jéroboam, fils de Nabat, fit tomber Israël."
-   },
-   {
-    "ref": "22:50",
-    "ranges": [
-     [
-      0,
-      21
-     ]
-    ],
-    "text": "Il servit Baal, et il l’adora ; il irrita le Seigneur Dieu d’Israël, de la même manière qu’on l’avait irrité avant lui."
+    "text": "25. Elle s’est revêtue de force et de beauté, et goûte une douce joie dans ses derniers jours . 26. … 27. Elle ouvre la bouche sagement et selon la loi ."
    }
   ],
   "sir": [
@@ -1403,11 +1057,15 @@
     "ref": "0:1",
     "ranges": [
      [
-      0,
-      310
+      28,
+      54
+     ],
+     [
+      58,
+      73
      ]
     ],
-    "text": "De grandes et nombreuses choses, au sujet desquelles il faut louer Israël de sa doctrine et de sa sagesse, nous ayant été transmises par la Loi, les Prophètes et autres qui les ont suivis ; comme il est nécessaire que les hommes qui les lisent, non-seulement soient instruits, mais encore puissent être des savants utiles, parlant et écrivant pour ceux qui y sont étrangers ; mon aïeul Jésus, s’étant adonné de toutes ses forces à l’étude de la Loi, des Prophètes et des autres livres de nos pères, et ayant acquis de la sorte une instruction suffisante, a été entraîné à consigner lui-même dans un écrit quelque chose concernant la discipline et la sagesse, afin que ceux qui ont le goût de la science, devenus eux-mêmes dociles à ses préceptes, s’attachent d’autant plus à un genre de vie conforme à la loi. Soyez donc invités à faire cette lecture avec bienveillance et attention, et à être indulgents si, en n’épargnant pas la peine pour traduire exactement, nous semblions en quelques passages n’avoir pu bien rendre les expressions ; car les choses dites en hébreu ne sont pas toujours transportées dans une autre langue avec la même force. Mais ce n’est pas tout la Loi aussi, et les Prophètes et les autres livres n’ont pas entre eux de médiocres variantes. Étant venu en Égypte la trente-huitième année du règne de Ptolémée Évergète , et y étant resté longtemps, j’ai trouvé un ouvrage d’une doctrine qui n’est pas sans importance. J’ai donc jugé nécessaire d’apporter quelque zèle et de mettre beaucoup de soin à traduire ce livre . Ayant consacré de longues veilles et beaucoup de savoir pour mener à fin mon œuvre, j’ai voulu la publier à l’usage de ceux qui, sur la terre étrangère, désirent apprendre et se sont préparés d’avance à régler leur vie et leurs habitudes selon la loi."
+    "text": "et autres qui les ont suivis ; comme il est nécessaire que les hommes qui les lisent, non-seulement soient instruits, mais encore puissent être des savants utiles, … pour ceux qui y sont étrangers ; mon aïeul Jésus, s’étant adonné de toutes ses forces"
    },
    {
     "ref": "20:27",
@@ -1440,6 +1098,26 @@
     "text": "CONCERNANT LES SERVITEURS"
    },
    {
+    "ref": "30:43",
+    "ranges": [
+     [
+      14,
+      26
+     ]
+    ],
+    "text": "mais ne commets d’excès contre aucune chair, et ne fais rien sans jugement."
+   },
+   {
+    "ref": "30:44",
+    "ranges": [
+     [
+      19,
+      38
+     ]
+    ],
+    "text": "Si tu as un esclave, traite-le comme toi-même ; car tu auras besoin de lui comme de ton âme ."
+   },
+   {
     "ref": "32:3",
     "ranges": [
      [
@@ -1450,6 +1128,26 @@
     "text": "(Vulg.,"
    },
    {
+    "ref": "35:25",
+    "ranges": [
+     [
+      13,
+      20
+     ]
+    ],
+    "text": "Ne te fie pas à un chemin inexploré,"
+   },
+   {
+    "ref": "36:10",
+    "ranges": [
+     [
+      20,
+      35
+     ]
+    ],
+    "text": "Ainsi les hommes sortent tous de la terre, de la terre dont Adam a été créé."
+   },
+   {
     "ref": "36:17",
     "ranges": [
      [
@@ -1458,6 +1156,18 @@
      ]
     ],
     "text": "(Vulg., XXXVI, 14.)"
+   }
+  ],
+  "sng": [
+   {
+    "ref": "1:1",
+    "ranges": [
+     [
+      0,
+      7
+     ]
+    ],
+    "text": "Cantique des cantiques, qui est de Salomon ."
    }
   ]
  },
