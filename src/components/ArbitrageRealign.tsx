@@ -233,6 +233,36 @@ export function ChapterRealign({ book, ch, onClose }: { book: string; ch: number
   );
 }
 
+// ───────────────────────── Logs (activité partagée) ─────────────────────────
+type LogEntry = { by: string; at: string; kind: "lien" | "maison" | "validation" | "orphelin"; book: string; ref: string; detail?: string };
+const KIND_LABEL: Record<string, string> = { lien: "lien", maison: "maison", validation: "vérifié", orphelin: "orphelin" };
+const KIND_CLASS: Record<string, string> = { lien: "badge-primary", maison: "badge-secondary", validation: "badge-success", orphelin: "badge-ghost" };
+const who = (by: string) => (by === "Βιβλίον" ? "Biblion" : by);
+const when = (iso: string) => { const d = new Date(iso); return isNaN(d.getTime()) ? iso : d.toLocaleString("fr-FR", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" }); };
+
+export function LogsSection() {
+  const [entries, setEntries] = useState<LogEntry[] | null>(null);
+  useEffect(() => { arb<{ entries: LogEntry[] }>("/logs").then((d) => setEntries(d.entries || [])).catch(() => setEntries([])); }, []);
+  if (!entries) return <p className="mt-6 text-sm text-base-content/60">Chargement…</p>;
+  if (!entries.length) return <p className="mt-6 text-sm text-base-content/60">Aucune activité pour l'instant.</p>;
+  return (
+    <div className="mt-4">
+      <p className="text-sm text-base-content/70">Ce que Biblion et les admins ont fait, du plus récent au plus ancien.</p>
+      <div className="mt-3 grid gap-1">
+        {entries.map((e, i) => (
+          <div key={i} className="flex flex-wrap items-center gap-2 rounded-box border border-base-200 bg-base-100 px-3 py-2 text-sm">
+            <span className={`badge badge-xs ${KIND_CLASS[e.kind] || "badge-ghost"}`}>{KIND_LABEL[e.kind] || e.kind}</span>
+            <span className="font-medium">{who(e.by)}</span>
+            <span className="text-base-content/70">{BOOK[e.book] ?? e.book} {e.ref}</span>
+            {e.detail && <span className="truncate text-xs text-base-content/50">{e.kind === "maison" ? `« ${e.detail}… »` : `← ${e.detail}`}</span>}
+            <span className="ml-auto text-xs text-base-content/45">{when(e.at)}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 // Traduction maison inline (texte libre servi tel quel).
 function MaisonInline({ current, onSet }: { current: string; onSet: (t: string) => void }) {
   const [open, setOpen] = useState(false);

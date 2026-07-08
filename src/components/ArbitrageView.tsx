@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { PsalmsQueue, ArchivedSection, SinceLastVisit, ProvenanceBadge } from "./ArbitrageBiblion";
-import { ErrorMap, ChapterRealign } from "./ArbitrageRealign";
+import { ErrorMap, ChapterRealign, LogsSection } from "./ArbitrageRealign";
 
 // Outil d'arbitrage des liens grec↔Giguet (réservé philologue/admin). Biblion suit
 // la passe : il ne voit et n'agit que sur les chapitres SCALED. Modèle de liens :
@@ -50,7 +50,7 @@ const BOOK: Record<string, string> = { sir: "Siracide", isa: "Isaïe", psa: "Psa
 export default function ArbitrageView() {
   const { user, ready } = useAuth();
   const editor = user?.role === "admin" || user?.role === "philologist";
-  const [tab, setTab] = useState<"corriger" | "psalms" | "archived" | "browse">("corriger");
+  const [tab, setTab] = useState<"corriger" | "psalms" | "archived" | "logs" | "browse">("corriger");
   const [realign, setRealign] = useState<{ book: string; ch: number } | null>(null);
   const [queue, setQueue] = useState<QItem[]>([]);
   const [states, setStates] = useState<Record<string, Record<string, State>>>({});
@@ -93,12 +93,14 @@ export default function ArbitrageView() {
         <button className={`tab ${tab === "corriger" ? "tab-active" : ""}`} onClick={() => setTab("corriger")}>Corriger</button>
         <button className={`tab ${tab === "psalms" ? "tab-active" : ""}`} onClick={() => setTab("psalms")}>Suscriptions</button>
         <button className={`tab ${tab === "archived" ? "tab-active" : ""}`} onClick={() => setTab("archived")}>Archivées</button>
+        <button className={`tab ${tab === "logs" ? "tab-active" : ""}`} onClick={() => setTab("logs")}>Logs</button>
         <button className={`tab ${tab === "browse" ? "tab-active" : ""}`} onClick={() => setTab("browse")}>Parcourir tout</button>
       </div>
 
       {tab === "corriger" && <ErrorMap onOpen={(book, ch) => setRealign({ book, ch })} />}
       {tab === "psalms" && <PsalmsQueue />}
       {tab === "archived" && <ArchivedSection />}
+      {tab === "logs" && <LogsSection />}
       {tab === "browse" && <BrowseList states={states} onOpen={(book, ch) => setOpen({ book, ch })} />}
 
       {realign && <ChapterRealign book={realign.book} ch={realign.ch} onClose={() => setRealign(null)} />}
