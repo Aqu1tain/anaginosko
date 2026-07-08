@@ -1,5 +1,6 @@
 {
  "_note": "Sentinelles de post-déploiement : un verset servi par lot de corrections récentes, vérifié APRÈS matérialisation serveur. Aurait attrapé la désync ARB_DIR/git du 2026-07-08 (1ki 5:1 servait encore « Hiram »). Le déploiement échoue si une sentinelle ne contient pas sa sous-chaîne attendue.",
+ "_regle": "RÈGLE : toute PR qui modifie l'arbitrage (data/lxx-arbitration.json) ou la matérialisation (lib/lxx-materialize.mjs, scripts/materialize-links.mjs) AJOUTE ici au moins une sentinelle couvrant son lot. Le gate grandit avec le corpus, il ne reste pas figé sur les lots de juillet 2026.",
  "sentinelles": [
   { "book": "1ki", "ref": "5:1", "expect": "officiers approvisionnaient", "lot": "1ki re-alignement 3 Règnes" },
   { "book": "1ki", "ref": "12:3", "expect": "le peuple parla au roi Roboam", "lot": "1ki 12 fusion intro/discours" },
