@@ -83,6 +83,28 @@ export function setValidated(book: string, ref: string, on: boolean, by: string)
   fs.renameSync(tmp, VALID_PATH);
 }
 
+// Journal d'activité : qui a fait quoi, quand. Agrège les overrides datés (liens et
+// traductions maison, par Biblion ou un admin) et les validations manuelles, triés du
+// plus récent au plus ancien. Sert l'onglet Logs (Biblion et les admins voient l'activité
+// de l'autre). On n'inclut que les actions HUMAINES (champ `at`), pas la campagne machine.
+export type LogEntry = { by: string; at: string; kind: "lien" | "maison" | "validation" | "orphelin"; book: string; ref: string; detail?: string };
+export function activityLog(limit = 200): LogEntry[] {
+  const out: LogEntry[] = [];
+  const arb = overrides();
+  for (const book of Object.keys(arb)) {
+    if (book.startsWith("_")) continue;
+    for (const ref of Object.keys(arb[book])) {
+      const e = arb[book][ref];
+      if (!e.at) continue; // entrées de campagne (sans horodatage) exclues
+      const kind = e.maison ? "maison" : e.sources.length === 0 ? "orphelin" : "lien";
+      out.push({ by: e.by, at: e.at, kind, book, ref, detail: e.maison ? e.maison.slice(0, 60) : e.sources.map((s) => (s.length === 4 ? `${s[0]}:${s[1]}·${s[2] + 1}-${s[3] + 1}` : `${s[0]}:${s[1]}`)).join(" + ") });
+    }
+  }
+  for (const v of validations()) out.push({ by: v.by, at: v.at, kind: "validation", book: v.book, ref: v.ref });
+  out.sort((a, b) => (a.at < b.at ? 1 : a.at > b.at ? -1 : 0));
+  return out.slice(0, limit);
+}
+
 // Entrées archivées (retraites justifiées, ex. les 11 overrides Job) : lues depuis
 // la section _archived de l'arbitrage, aplaties en liste pour l'affichage.
 export function archivedEntries(): { book: string; ref: string; sources: Source[]; reason: string; at: string | null }[] {
