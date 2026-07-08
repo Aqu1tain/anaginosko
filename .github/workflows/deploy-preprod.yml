@@ -80,7 +80,13 @@ jobs:
           #     Biblion). Backup horodaté, puis fusion à 3 règles : git-active installée,
           #     archivée retirée, fraîche Biblion conservée+capturée, CONFLIT bloquant. Un
           #     conflit ou une erreur fait échouer le déploiement (set -e), rien de silencieux.
-          $SSH "$HOST" "cp $ARB/lxx-arbitration.json $ARB/lxx-arbitration.json.bak.$TS && cd $REL && node scripts/merge-arb-git-server.mjs --git data/lxx-arbitration.json --server $ARB/lxx-arbitration.json --out $ARB/lxx-arbitration.json --capture $ARB/biblion-fresh.json"
+          $SSH "$HOST" "cp $ARB/lxx-arbitration.json $ARB/lxx-arbitration.json.bak.$TS && cd $REL && node scripts/merge-arb-git-server.mjs --git data/lxx-arbitration.json --server $ARB/lxx-arbitration.json --out $ARB/lxx-arbitration.json --capture $ARB/biblion-fresh.json --prev $ARB/last-git-arbitration.json"
+          # Remonte les ajouts frais de Biblion vers le runner (artefact) : ils ne restent
+          # PAS un exemplaire unique sur le VPS. À versionner dans git ensuite.
+          rsync -az -e "$SSH" "$HOST:$ARB/biblion-fresh.json" ./biblion-fresh.json 2>/dev/null || printf '[]' > ./biblion-fresh.json
+          if [ "$(node -e "process.stdout.write(String(JSON.parse(require('fs').readFileSync('./biblion-fresh.json')).length||0))")" != "0" ]; then
+            echo "::warning::Biblion a des entrées d'arbitrage non versionnées (voir l'artefact biblion-fresh) - à committer dans git."
+          fi
           # 4b) Matérialisation COMPLÈTE (matérialiseur unique zéro-perte) depuis l'arbitrage FUSIONNÉ.
           $SSH "$HOST" "cd $REL && ARB_DIR=$ARB LXX_DATA_DIR=/var/www/anaginosko-next/lxx node scripts/materialize-links.mjs --apply"
           # 4c) GATE SENTINELLE : un verset servi par lot de corrections récentes doit contenir
@@ -91,3 +97,13 @@ jobs:
 
           # 5) Smoke-test local sur le VPS
           $SSH "$HOST" "curl -fsS -o /dev/null http://127.0.0.1:3101/ && echo 'préprod OK'"
+
+      # Remontée des ajouts frais de Biblion (fin du cul-de-sac serveur) : téléchargeable
+      # depuis le run, à versionner dans git. always() : même si un gate échoue en amont.
+      - name: Artefact biblion-fresh (arbitrage non versionné)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: biblion-fresh
+          path: biblion-fresh.json
+          if-no-files-found: ignore
