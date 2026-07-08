@@ -20,7 +20,7 @@ function enrichProp(book: string, p?: Proposition): (Proposition & { apercu: str
   if (!p) return null;
   const sources = (p.sourcesEtendues || p.sources || []) as Source[];
   const cible = p.grec || p.rattacheGrec || null;
-  return { ...p, cible, apercu: sources.length ? materialize(book, sources) : p.disposition === "a-traduire" ? "(à traduire — grec seul)" : null };
+  return { ...p, cible, apercu: sources.length ? materialize(book, sources) : p.disposition === "a-traduire" ? "(à traduire : grec seul)" : null };
 }
 
 export async function GET(req: Request) {

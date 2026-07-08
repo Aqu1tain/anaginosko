@@ -84,11 +84,6 @@ export default function ArbitrageView() {
   return (
     <div className="pb-12 pt-6">
       <h1 className="text-2xl font-bold">Arbitrage des liens</h1>
-      <p className="mt-1 max-w-prose text-sm text-base-content/70">
-        Le grec (Rahlfs) est la colonne autoritaire. Vous reliez chaque verset grec à un ou plusieurs
-        versets Giguet ; jamais vous n’en modifiez le texte. Vous n’agissez que sur les chapitres déjà
-        passés par l’alignement (scaled) ; les autres sont verrouillés.
-      </p>
       {err && <div className="alert alert-warning mt-3 text-sm">{err}</div>}
       <SinceLastVisit />
 
@@ -385,7 +380,7 @@ function Resolver({ book, row, item, gigChapters, defaultCh, onDone, onCancel }:
         <div className="alert alert-warning mt-2 flex-col items-start gap-0.5 text-xs">
           <span className="font-semibold">Mots Giguet non couverts par ce lien</span>
           {uncovered.map((u) => (
-            <div key={u.ref}>Giguet {u.ref} : {u.count} mot(s) restant(s) — « {u.words} ». Vérifie qu'ils servent un autre verset grec (sinon Écriture amputée).</div>
+            <div key={u.ref}>Giguet {u.ref} : {u.count} mot(s) restant(s) : « {u.words} ». Vérifie qu'ils servent un autre verset grec (sinon Écriture amputée).</div>
           ))}
         </div>
       )}

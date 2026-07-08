@@ -15,7 +15,7 @@ export async function GET(req: Request) {
     return {
       ...e, greek,
       message: e.book === "job"
-        ? "Contournement d'un bug de donnée, corrigé. Ton alignement était juste : le parser réparé (Giguet 25 = Baldad restauré) rend le lien automatique correct, ton override n'est plus nécessaire — pas une correction de ta part."
+        ? "Contournement d'un bug de donnée, corrigé. Ton alignement était juste : le parser réparé (Giguet 25 = Baldad restauré) rend le lien automatique correct, ton override n'est plus nécessaire, pas une correction de ta part."
         : "Override archivé (retraite justifiée, provenance conservée).",
     };
   });
