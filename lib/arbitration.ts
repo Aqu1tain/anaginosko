@@ -48,6 +48,70 @@ export const queue = (): QueueItem[] => readJson("lxx-queue.json", []);
 export const states = (): States => readJson("lxx-chapter-state.json", {});
 export const overrides = (): Overrides => readJson("lxx-arbitration.json", {}, ARB_DIR);
 
+// File de revue Phase 2 (292 cas à trancher) + traductions maison des suscriptions
+// (28, KAN-67), données statiques du bundle. Décisions « classées » (titre/marqueur
+// sans override grec) : persistées dans ARB_DIR à côté de l'arbitrage.
+export type BiblionCase = {
+  book: string; cause: string; grec?: string; giguet?: string; sources?: Source[];
+  preuve?: string; a?: Proposition; b?: Proposition;
+};
+export type Proposition = {
+  grec?: string; giguet?: string; disposition: string; sources?: Source[];
+  rattacheGrec?: string | null; sourcesEtendues?: Source[]; preuve?: string; confiance?: string;
+};
+export type Psalm = { ref: string; grec: string; accord: boolean; maison_A: string; maison_B: string; choix: string | null; decomposition: string; confiance: string[] };
+export type Dismissal = { book: string; key: string; decision: string; note?: string; by: string; at: string };
+
+export const biblionQueue = (): BiblionCase[] => readJson("lxx-biblion-queue.json", []);
+export const psalmsKan67 = (): { suscriptions: Psalm[] } => readJson("lxx-psaumes-kan67.json", { suscriptions: [] });
+const DISMISS_PATH = path.join(ARB_DIR, "lxx-biblion-dismissed.json");
+export const dismissals = (): Dismissal[] => readJson("lxx-biblion-dismissed.json", [], ARB_DIR);
+export function dismissCase(book: string, key: string, decision: string, by: string, note?: string) {
+  const all = dismissals();
+  const entry: Dismissal = { book, key, decision, by, at: new Date().toISOString() };
+  if (note) entry.note = note;
+  all.push(entry);
+  const tmp = DISMISS_PATH + ".tmp";
+  fs.writeFileSync(tmp, JSON.stringify(all, null, 2));
+  fs.renameSync(tmp, DISMISS_PATH);
+}
+
+// Entrées archivées (retraites justifiées, ex. les 11 overrides Job) : lues depuis
+// la section _archived de l'arbitrage, aplaties en liste pour l'affichage.
+export function archivedEntries(): { book: string; ref: string; sources: Source[]; reason: string; at: string | null }[] {
+  const arb = overrides() as Overrides & { _archived?: Record<string, unknown> };
+  const arch = (arb._archived || {}) as Record<string, unknown>;
+  const reason = (arch._reason as string) || "";
+  const at = (arch.archivedAt as string) || null;
+  const out: { book: string; ref: string; sources: Source[]; reason: string; at: string | null }[] = [];
+  for (const book of Object.keys(arch)) {
+    if (book.startsWith("_") || book === "archivedAt") continue;
+    const refs = arch[book] as Record<string, { sources: Source[] }>;
+    for (const ref of Object.keys(refs)) out.push({ book, ref, sources: refs[ref].sources, reason, at });
+  }
+  return out;
+}
+
+// Diff « depuis la dernière visite » : overrides actifs dont `at` > since (installés
+// ou frais de Biblion), et entrées archivées après `since`. Le timestamp de visite
+// est gardé côté client (localStorage), passé ici en paramètre.
+export function sinceLastVisit(since: string): { installed: { book: string; ref: string; by: string; at: string; maison?: string }[]; archived: { book: string; ref: string }[] } {
+  const cutoff = since ? Date.parse(since) : 0;
+  const installed: { book: string; ref: string; by: string; at: string; maison?: string }[] = [];
+  const arb = overrides();
+  for (const book of Object.keys(arb)) {
+    if (book.startsWith("_")) continue;
+    for (const ref of Object.keys(arb[book])) {
+      const e = arb[book][ref];
+      if (e.at && Date.parse(e.at) > cutoff) installed.push({ book, ref, by: e.by, at: e.at, maison: e.maison });
+    }
+  }
+  const archived: { book: string; ref: string }[] = [];
+  const archAt = archivedEntries()[0]?.at;
+  if (archAt && Date.parse(archAt) > cutoff) for (const a of archivedEntries()) archived.push({ book: a.book, ref: a.ref });
+  return { installed, archived };
+}
+
 const OV_PATH = path.join(ARB_DIR, "lxx-arbitration.json");
 
 const LXX_DIR = process.env.LXX_DATA_DIR || path.join(process.cwd(), "public/lxx");
