@@ -1,0 +1,4871 @@
+[
+ {
+  "book": "sir",
+  "cause": "sources",
+  "grec": "0:2",
+  "a": {
+   "grec": "0:2",
+   "disposition": "apparier",
+   "sources": [
+    [
+     0,
+     1,
+     28,
+     34
+    ]
+   ],
+   "preuve": "τῶν ἄλλων τῶν κατ᾿ αὐτοὺς ἠκολουθηκότων = 'et autres qui les ont suivis'.",
+   "confiance": "haute"
+  },
+  "b": {
+   "grec": "0:2",
+   "disposition": "apparier",
+   "sources": [
+    [
+     0,
+     1,
+     28,
+     33
+    ]
+   ],
+   "preuve": "et autres qui les ont suivis = καὶ τῶν ἄλλων τῶν κατ᾿ αὐτοὺς ἠκολουθηκότων (autres=ἄλλων, ont suivis=ἠκολουθηκότων).",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "sir",
+  "cause": "sources",
+  "grec": "0:4",
+  "a": {
+   "grec": "0:4",
+   "disposition": "apparier",
+   "sources": [
+    [
+     0,
+     1,
+     35,
+     47
+    ]
+   ],
+   "preuve": "οὐ μόνον = 'non-seulement'; τοὺς ἀναγινώσκοντας = 'les hommes qui les lisent'; ἐπιστήμονας γίνεσθαι = 'soient instruits'.",
+   "confiance": "haute"
+  },
+  "b": {
+   "grec": "0:4",
+   "disposition": "apparier",
+   "sources": [
+    [
+     0,
+     1,
+     34,
+     47
+    ]
+   ],
+   "preuve": "comme il est nécessaire...que les hommes qui les lisent, non-seulement soient instruits = ὡς...δέον ἐστὶν...τοὺς ἀναγινώσκοντας...οὐ μόνον...ἐπιστήμονας γίνεσθαι (lisent=ἀναγινώσκοντας, non-seulement=οὐ μόνον).",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "sir",
+  "cause": "sources",
+  "grec": "0:5",
+  "a": {
+   "grec": "0:5",
+   "disposition": "apparier",
+   "sources": [
+    [
+     0,
+     1,
+     48,
+     54
+    ],
+    [
+     0,
+     1,
+     58,
+     64
+    ]
+   ],
+   "preuve": "ἀλλὰ καὶ = 'mais encore'; χρησίμους εἶναι = 'être des savants utiles'; τοῖς ἐκτὸς = 'pour ceux qui y sont étrangers'. La plage 55-57 (0:6) est enclavée.",
+   "confiance": "haute"
+  },
+  "b": {
+   "grec": "0:5",
+   "disposition": "apparier",
+   "sources": [
+    [
+     0,
+     1,
+     48,
+     54
+    ],
+    [
+     0,
+     1,
+     58,
+     63
+    ]
+   ],
+   "preuve": "mais encore puissent être des savants utiles...pour ceux qui y sont étrangers = ἀλλὰ καὶ...δύνασθαι τοὺς φιλομαθοῦντας χρησίμους εἶναι...τοῖς ἐκτὸς (utiles=χρησίμους, étrangers=ἐκτὸς); scindé car 0:6 (parlant et écrivant) intercalé.",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "sir",
+  "cause": "sources",
+  "grec": "0:7",
+  "a": {
+   "grec": "0:7",
+   "disposition": "apparier",
+   "sources": [
+    [
+     0,
+     1,
+     65,
+     73
+    ]
+   ],
+   "preuve": "ὁ πάππος μου = 'mon aïeul'; Ἰησοῦς = 'Jésus'; ἑαυτὸν δοὺς = 's'étant adonné de toutes ses forces'.",
+   "confiance": "haute"
+  },
+  "b": {
+   "grec": "0:7",
+   "disposition": "apparier",
+   "sources": [
+    [
+     0,
+     1,
+     64,
+     73
+    ]
+   ],
+   "preuve": "mon aïeul Jésus, s'étant adonné de toutes ses forces = ὁ πάππος μου Ἰησοῦς ἐπὶ πλεῖον ἑαυτὸν δοὺς (aïeul=πάππος, Jésus=Ἰησοῦς).",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "sir",
+  "cause": "trou: un seul témoin",
+  "giguet": "TRAITÉ SUR LES PARABOLES",
+  "a": {
+   "giguet": "TRAITÉ SUR LES PARABOLES",
+   "disposition": "titre",
+   "rattacheGrec": null,
+   "preuve": "Fragment en MAJUSCULES appendé à la fin de Giguet 20:27 (« Le déshonneur s'attache au mensonge, et la honte réside sans cesse avec le menteur. TRAITÉ SUR LES PARABOLES »). La partie de phrase précédente sert déjà le grec 20:26 (ἦθος ἀνθρώπου ψευδοῦς ἀτιμία : le déshonneur du menteur). « TRAITÉ SUR LES PARABOLES » n'a AUCUN correspondant dans le grec Rahlfs de sir 20 : c'est un intertitre éditorial de section introduisant le développement sur les paraboles (cf. grec 20:20 παραβολή). Cas identique à l'exemple canonique du cahier des charges -> KAN-55, non-Écriture.",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "sir",
+  "cause": "trou: un seul témoin",
+  "giguet": "20:27",
+  "b": {
+   "giguet": "20:27",
+   "disposition": "titre",
+   "rattacheGrec": null,
+   "preuve": "Le trou = mots 14-17 de Giguet 20:27, \"TRAITÉ SUR LES PARABOLES\", en MAJUSCULES : titre de section éditorial ajouté par Giguet (exemple type cité dans la consigne, KAN-55), sans aucun correspondant dans le grec Rahlfs. Le corps du verset \"Le déshonneur s'attache au mensonge, et la honte réside sans cesse avec le menteur.\" (mots 0-13) est déjà servi à grec 20:26 (ἦθος ἀνθρώπου ψευδοῦς ἀτιμία... ἡ αἰσχύνη αὐτοῦ). Le grec 20:27 suivant (ὁ σοφὸς ἐν λόγοις προάξει ἑαυτόν) sert Giguet 20:28 (\"Le sage s'élèvera aux honneurs par ses discours\"), donc aucun grec ne réclame ce titre.",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "sir",
+  "cause": "trou: un seul témoin",
+  "giguet": "DOCTRINE DE LA BOUCHE",
+  "a": {
+   "giguet": "DOCTRINE DE LA BOUCHE",
+   "disposition": "titre",
+   "rattacheGrec": null,
+   "preuve": "Fragment en MAJUSCULES accolé à la fin de Giguet 23:6 ('...à une âme impudique ! DOCTRINE DE LA BOUCHE'). Le grec Rahlfs 23:6 (κοιλίας ὄρεξις καὶ συνουσιασμὸς μὴ καταλαβέτωσάν με καὶ ψυχῇ ἀναιδεῖ μὴ παραδῷς με) est intégralement rendu par 23:6[0-20] ; le reste n'a aucun correspondant grec. 'DOCTRINE DE LA BOUCHE' est le titre de section annonçant l'unité sur la discipline de la parole (grec 23:7 : παιδείαν στόματος ἀκούσατε τέκνα = 'Enfants, écoutez la doctrine de la bouche'). Titre éditorial Giguet -> KAN-55, pas de l'Écriture.",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "sir",
+  "cause": "trou: un seul témoin",
+  "giguet": "23:6",
+  "b": {
+   "giguet": "23:6",
+   "disposition": "titre",
+   "rattacheGrec": null,
+   "preuve": "« DOCTRINE DE LA BOUCHE » figure en MAJUSCULES à la fin de Giguet 23:6 (mots 21-24), après « ...ne me livrez pas à une âme impudique ! ». C'est un intertitre éditorial (KAN-55) que Giguet place avant le v.7, reprenant le thème de παιδεία στόματος (« instruction/doctrine de la bouche »). Ce contenu n'est pas de l'Écriture flottante : le grec 23:7 le traduit déjà comme verset — « παιδείαν στόματος ἀκούσατε τέκνα » rendu par Giguet 23:7 « Enfants, écoutez la doctrine de la bouche ». Le titre en capitales est donc un doublon de section, à exclure du texte biblique servi.",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "sir",
+  "cause": "trou: un seul témoin",
+  "giguet": "30:37",
+  "a": {
+   "giguet": "30:37",
+   "disposition": "titre",
+   "rattacheGrec": null,
+   "preuve": "Le trou 'CONCERNANT LES SERVITEURS' (range [28,30]) est un titre de section en MAJUSCULES transmis par Giguet, annonçant le passage sur les esclaves qui suit (30:38 = grec 33:25 : 'Fourrage, coups de verge...à l'esclave'). Le corps du verset ('N'imprime pas de tache à ta gloire ; ...fais le partage de tes biens.') est déjà servi au grec 33:24[0-27]. Aucun grec Rahlfs ne porte ce titre : c'est un intertitre éditorial, pas de l'Écriture (KAN-55).",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "sir",
+  "cause": "trou: un seul témoin",
+  "giguet": "CONCERNANT LES SERVITEURS",
+  "b": {
+   "giguet": "CONCERNANT LES SERVITEURS",
+   "disposition": "titre",
+   "preuve": "Fragment en MAJUSCULES en fin de Giguet 30:37 (range [28,30]). Le corps du verset 30:37 (mots 0-27, '...fais le partage de tes biens') est déjà servi par grec sir 33:24 = 'ἐν ἡμέρᾳ συντελείας ἡμερῶν ζωῆς σου... διάδος κληρονομίαν', qui se termine à κληρονομίαν (héritage/biens) — aucun mot grec pour 'CONCERNANT LES SERVITEURS'. Le verset suivant, grec 33:25 'χορτάσματα... ἔργον οἰκέτῃ' (οἰκέτῃ = serviteur/esclave), est servi par Giguet 30:38 et commence à χορτάσματα (Fourrage). Le fragment est donc un titre de section introduisant le passage sur les serviteurs (33:25-33), pas de l'Écriture. Exemple canonique de la mission (KAN-55).",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "sir",
+  "cause": "disposition",
+  "grec": "32:21",
+  "a": {
+   "grec": "32:21",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     35,
+     25,
+     13,
+     20
+    ]
+   ],
+   "preuve": "Grec 32:21 « μὴ πιστεύσῃς ἐν ὁδῷ ἀπροσκόπῳ » (n'aie pas confiance en un chemin sans obstacle) = fin de Giguet 35:25 « Ne te fie pas à un chemin inexploré » (mots 13-20). Concordances : πιστεύσῃς↔fie/confiance, ὁδῷ↔chemin, ἀπροσκόπῳ (sans achoppement)↔inexploré. Giguet 35:25 porte DEUX versets grecs ; le flottement vient du lien 32:20→[35,25] entier qui absorbait ce texte.",
+   "confiance": "haute"
+  },
+  "b": {
+   "grec": "32:21",
+   "disposition": "apparier",
+   "sources": [
+    [
+     35,
+     25,
+     13,
+     20
+    ]
+   ],
+   "preuve": "Grec « μὴ πιστεύσῃς ἐν ὁδῷ ἀπροσκόπῳ » ↔ Giguet 35:25 mots 13-20 « Ne te fie pas à un chemin inexploré » : πιστεύσῃς=fie, ὁδῷ=chemin, ἀπροσκόπῳ=inexploré. C'est la 2e phrase de 35:25 ; la 1re (mots 0-12, achoppements/pierres) revient à grec 32:20.",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "sir",
+  "cause": "disposition",
+  "grec": "33:10",
+  "a": {
+   "grec": "33:10",
+   "disposition": "apparier",
+   "sources": [
+    [
+     36,
+     10,
+     20,
+     35
+    ]
+   ],
+   "preuve": "2e phrase de Giguet 36:10 (mots 20-35) 'Ainsi les hommes sortent tous de la terre, de la terre dont Adam a ete cree.' = grec 33:10 'και ανθρωποι παντες απο εδαφους και εκ γης εκτισθη Αδαμ' (ανθρωποι<->hommes, γης/εδαφους<->terre, Αδαμ<->Adam, εκτισθη<->cree). Concordance nette et unique dans tout le voisinage.",
+   "confiance": "haute"
+  },
+  "b": {
+   "grec": "33:10",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     36,
+     10,
+     20,
+     35
+    ]
+   ],
+   "preuve": "33:10 grec 'ανθρωποι παντες απο εδαφους και εκ γης εκτισθη Αδαμ' = Giguet 36:10 mots 20-35 'Ainsi les hommes sortent tous de la terre, de la terre dont Adam a ete cree.' Concordance : ανθρωποι παντες=les hommes tous, εκ γης=de la terre, εκτισθη Αδαμ=Adam a ete cree. Flottant car 33:9 revendiquait tout 36:10.",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "sir",
+  "cause": "disposition",
+  "grec": "33:30",
+  "a": {
+   "grec": "33:30",
+   "disposition": "apparier",
+   "sources": [
+    [
+     30,
+     43,
+     14,
+     26
+    ]
+   ],
+   "preuve": "2e partie de Giguet 30:43 (mots 14-26) 'mais ne commets d'exces contre aucune chair, et ne fais rien sans jugement.' = grec 33:30 'και μη περισσευσης επι παση σαρκι και ανευ κρισεως μη ποιησης μηδεν' (περισσευσης<->commets d'exces, παση σαρκι<->aucune chair, ανευ κρισεως<->sans jugement, μη ποιησης μηδεν<->ne fais rien). Introuvable ailleurs dans le voisinage.",
+   "confiance": "haute"
+  },
+  "b": {
+   "grec": "33:30",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     30,
+     43,
+     14,
+     26
+    ]
+   ],
+   "preuve": "33:30 grec 'και μη περισσευσης επι παση σαρκι και ανευ κρισεως μη ποιησης μηδεν' = Giguet 30:43 mots 14-26 'mais ne commets d'exces contre aucune chair, et ne fais rien sans jugement.' Concordance : περισσευσης=commets d'exces, παση σαρκι=aucune chair, ανευ κρισεως=sans jugement, μη ποιησης μηδεν=ne fais rien. Flottant car 33:29 revendiquait tout 30:43.",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "sir",
+  "cause": "disposition",
+  "grec": "33:32",
+  "a": {
+   "grec": "33:32",
+   "disposition": "apparier",
+   "sources": [
+    [
+     30,
+     44,
+     19,
+     38
+    ]
+   ],
+   "preuve": "2e phrase de Giguet 30:44 (mots 19-38) 'Si tu as un esclave, traite-le comme toi-meme ; car tu auras besoin de lui comme de ton ame .' = grec 33:32 'ει εστιν σοι οικετης αγε αυτον ως αδελφον οτι ως η ψυχη σου επιδεησεις αυτω' (αγε αυτον<->traite-le, ψυχη<->ame, επιδεησεις<->tu auras besoin). Le marqueur Vulgate '(32.)' manquant entre 30:44 '(31.)' et 30:46 '(33.)' confirme que le v.32 est enclave ici.",
+   "confiance": "haute"
+  },
+  "b": {
+   "grec": "33:32",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     30,
+     44,
+     19,
+     38
+    ]
+   ],
+   "preuve": "33:32 grec 'ει εστιν σοι οικετης αγε αυτον ως αδελφον οτι ως η ψυχη σου επιδεησεις αυτω' = Giguet 30:44 mots 19-38 (2e phrase du doublet) 'Si tu as un esclave, traite-le comme toi-meme ; car tu auras besoin de lui comme de ton ame.' Concordance : αγε αυτον=traite-le, ψυχη σου=ton ame, επιδεησεις αυτω=tu auras besoin de lui. Flottant car 33:31 revendiquait tout 30:44.",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ki",
+  "cause": "disposition",
+  "grec": "5:18",
+  "a": {
+   "grec": "5:18",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     5,
+     4
+    ]
+   ],
+   "preuve": "Grec 'νῦν ἀνέπαυσε κύριος ὁ θεός μου ἐμοὶ κυκλόθεν οὐκ ἔστιν ἐπίβουλος καὶ οὐκ ἔστιν ἀπάντημα πονηρόν' = Giguet 5:4 'Maintenant, le Seigneur mon Dieu m'a donné la paix tout alentour ; il n'est point de complot contre moi ni de mauvais desseins'. κυκλόθεν<->tout alentour, ἐπίβουλος<->complot, ἀπάντημα πονηρόν<->mauvais desseins. Décalage uniforme du ch. : Giguet 5:4 est pris à tort par le grec 5:4 (='ἄρχων πέραν τοῦ ποταμοῦ'=Giguet 4:24) — voir corriger-lien 5:4->4:24.",
+   "confiance": "haute"
+  },
+  "b": {
+   "grec": "5:18",
+   "disposition": "apparier",
+   "sources": [
+    [
+     5,
+     4
+    ]
+   ],
+   "preuve": "καὶ νῦν ἀνέπαυσε κύριος ὁ θεός μου...κυκλόθεν ↔ 'Maintenant, le Seigneur mon Dieu m'a donné la paix tout alentour' ; οὐκ ἔστιν ἐπίβουλος ↔ 'il n'est point de complot' ; ἀπάντημα πονηρόν ↔ 'mauvais desseins'. Giguet 5:4 est actuellement occupé par grec 5:4 (décalé) : voir corriger-lien 5:4.",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ki",
+  "cause": "disposition",
+  "grec": "5:23",
+  "a": {
+   "grec": "5:23",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     5,
+     9
+    ]
+   ],
+   "preuve": "Grec 'οἱ δοῦλοί μου κατάξουσιν αὐτὰ ἐκ τοῦ Λιβάνου εἰς τὴν θάλασσαν ἐγὼ θήσομαι αὐτὰ σχεδίας... τοῦ δοῦναι ἄρτους τῷ οἴκῳ μου' = Giguet 5:9 'Mes serviteurs transporteront tout du Liban à la mer ; on en formera des radeaux... en donnant des vivres à ma maison'. δοῦλοι... ἐκ τοῦ Λιβάνου εἰς τὴν θάλασσαν<->serviteurs... du Liban à la mer, σχεδίας<->radeaux. Giguet 5:9 pris à tort par le grec 5:9 (=Giguet 4:25) — voir corriger-lien 5:9->4:25.",
+   "confiance": "haute"
+  },
+  "b": {
+   "grec": "5:23",
+   "disposition": "apparier",
+   "sources": [
+    [
+     5,
+     9
+    ]
+   ],
+   "preuve": "οἱ δοῦλοί μου κατάξουσιν αὐτὰ ἐκ τοῦ Λιβάνου εἰς τὴν θάλασσαν ↔ 'Mes serviteurs transporteront tout du Liban à la mer' ; θήσομαι αὐτὰ σχεδίας ↔ 'on en formera des radeaux' ; δοῦναι ἄρτους τῷ οἴκῳ μου ↔ 'des vivres à ma maison'. Giguet 5:9 occupé par grec 5:9 décalé : voir corriger-lien 5:9.",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ki",
+  "cause": "disposition",
+  "grec": "5:24",
+  "a": {
+   "grec": "5:24",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     5,
+     10
+    ]
+   ],
+   "preuve": "Grec 'καὶ ἦν Χιραμ διδοὺς τῷ Σαλωμων κέδρους καὶ πᾶν θέλημα αὐτοῦ' = Giguet 5:10 'Hiram donna donc à Salomon des cèdres, des sapins et tout ce qu'il voulut'. Χιραμ διδοὺς κέδρους<->Hiram donna des cèdres, πᾶν θέλημα<->tout ce qu'il voulut. Giguet 5:10 pris à tort par le grec 5:10 (=Giguet 4:26) — voir corriger-lien 5:10->4:26.",
+   "confiance": "haute"
+  },
+  "b": {
+   "grec": "5:24",
+   "disposition": "apparier",
+   "sources": [
+    [
+     5,
+     10
+    ]
+   ],
+   "preuve": "ἦν Χιραμ διδοὺς τῷ Σαλωμων κέδρους καὶ πᾶν θέλημα αὐτοῦ ↔ 'Hiram donna donc à Salomon des cèdres...et tout ce qu'il voulut'. Giguet 5:10 occupé par grec 5:10 décalé : voir corriger-lien 5:10.",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ki",
+  "cause": "disposition",
+  "grec": "5:25",
+  "a": {
+   "grec": "5:25",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     5,
+     11
+    ]
+   ],
+   "preuve": "Grec 'καὶ Σαλωμων ἔδωκεν τῷ Χιραμ εἴκοσι χιλιάδας κόρους πυροῦ... καὶ εἴκοσι χιλιάδας βεθ ἐλαίου κεκομμένου κατὰ τοῦτο ἐδίδου Σαλωμων τῷ Χιραμ κατ᾿ ἐνιαυτόν' = Giguet 5:11 'Et Salomon donna à Hiram vingt mille mesures de froment... et vingt mille mesures d'huile battue ; voilà ce que Salomon donna par an à Hiram'. εἴκοσι χιλιάδας πυροῦ<->vingt mille froment, ἐλαίου<->huile, κατ᾿ ἐνιαυτόν<->par an. Giguet 5:11 pris à tort par le grec 5:11 (=Giguet 4:27) — voir corriger-lien 5:11->4:27.",
+   "confiance": "haute"
+  },
+  "b": {
+   "grec": "5:25",
+   "disposition": "apparier",
+   "sources": [
+    [
+     5,
+     11
+    ]
+   ],
+   "preuve": "Σαλωμων ἔδωκεν τῷ Χιραμ εἴκοσι χιλιάδας κόρους πυροῦ ↔ 'Salomon donna à Hiram vingt mille mesures de froment' ; ἐλαίου κεκομμένου ↔ 'huile battue' ; κατ' ἐνιαυτόν ↔ 'par an'. Giguet 5:11 occupé par grec 5:11 décalé : voir corriger-lien 5:11.",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ki",
+  "cause": "disposition",
+  "grec": "5:26",
+  "a": {
+   "grec": "5:26",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     5,
+     12
+    ]
+   ],
+   "preuve": "Grec 'καὶ κύριος ἔδωκεν σοφίαν τῷ Σαλωμων καθὼς ἐλάλησεν αὐτῷ καὶ ἦν εἰρήνη ἀνὰ μέσον Χιραμ καὶ ἀνὰ μέσον Σαλωμων καὶ διέθεντο διαθήκην' = Giguet 5:12 'le Seigneur avait donné à Salomon la sagesse comme il le lui avait dit. Et la paix régnait entre Hiram et Salomon, qui contractèrent entre eux une alliance'. σοφίαν<->sagesse, εἰρήνη ἀνὰ μέσον Χιραμ καὶ Σαλωμων<->paix entre Hiram et Salomon, διαθήκην<->alliance. Giguet 5:12 pris à tort par le grec 5:12 (=Giguet 4:28) — voir corriger-lien 5:12->4:28.",
+   "confiance": "haute"
+  },
+  "b": {
+   "grec": "5:26",
+   "disposition": "apparier",
+   "sources": [
+    [
+     5,
+     12
+    ]
+   ],
+   "preuve": "κύριος ἔδωκεν σοφίαν τῷ Σαλωμων καθὼς ἐλάλησεν αὐτῷ ↔ 'le Seigneur avait donné à Salomon la sagesse comme il le lui avait dit' ; εἰρήνη ἀνὰ μέσον Χιραμ καὶ...Σαλωμων ↔ 'la paix régnait entre Hiram et Salomon' ; διέθεντο διαθήκην ↔ 'une alliance'. Giguet 5:12 occupé par grec 5:12 décalé : voir corriger-lien 5:12.",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ki",
+  "cause": "disposition",
+  "grec": "5:27",
+  "a": {
+   "grec": "5:27",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     5,
+     13
+    ]
+   ],
+   "preuve": "Grec 'καὶ ἀνήνεγκεν ὁ βασιλεὺς φόρον ἐκ παντὸς Ισραηλ καὶ ἦν ὁ φόρος τριάκοντα χιλιάδες ἀνδρῶν' = Giguet 5:13 'Le roi imposa une corvée à tout Israël, et il requit pour ce service trente mille hommes'. βασιλεὺς φόρον... Ισραηλ<->le roi... corvée... Israël, τριάκοντα χιλιάδες ἀνδρῶν<->trente mille hommes. Giguet 5:13 pris à tort par le grec 5:13 (=Giguet 4:29) — voir corriger-lien 5:13->4:29.",
+   "confiance": "haute"
+  },
+  "b": {
+   "grec": "5:27",
+   "disposition": "apparier",
+   "sources": [
+    [
+     5,
+     13
+    ]
+   ],
+   "preuve": "ἀνήνεγκεν ὁ βασιλεὺς φόρον ἐκ παντὸς Ισραηλ ↔ 'Le roi imposa une corvée à tout Israël' ; τριάκοντα χιλιάδες ἀνδρῶν ↔ 'trente mille hommes'. Giguet 5:13 occupé par grec 5:13 décalé : voir corriger-lien 5:13.",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ki",
+  "cause": "disposition",
+  "grec": "5:28",
+  "a": {
+   "grec": "5:28",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     5,
+     14
+    ]
+   ],
+   "preuve": "Grec 'καὶ ἀπέστειλεν αὐτοὺς εἰς τὸν Λίβανον δέκα χιλιάδες ἐν τῷ μηνί ἀλλασσόμενοι μῆνα ἦσαν ἐν τῷ Λιβάνῳ καὶ δύο μῆνας ἐν οἴκῳ αὐτῶν καὶ Αδωνιραμ ἐπὶ τοῦ φόρου' = Giguet 5:14 'Il les fit partir pour le Liban, dix mille par dix mille qui se relevaient mois par mois ; ils passaient un mois au Liban et deux mois chez eux. Adoniram était à leur tête'. δέκα χιλιάδες... εἰς τὸν Λίβανον<->dix mille... pour le Liban, δύο μῆνας ἐν οἴκῳ<->deux mois chez eux, Αδωνιραμ<->Adoniram. Giguet 5:14 pris à tort par le grec 5:14 (=Giguet 4:30) — voir corriger-lien 5:14->4:30.",
+   "confiance": "haute"
+  },
+  "b": {
+   "grec": "5:28",
+   "disposition": "apparier",
+   "sources": [
+    [
+     5,
+     14
+    ]
+   ],
+   "preuve": "ἀπέστειλεν αὐτοὺς εἰς τὸν Λίβανον δέκα χιλιάδες ↔ 'Il les fit partir pour le Liban, dix mille' ; μῆνα...ἐν τῷ Λιβάνῳ καὶ δύο μῆνας ἐν οἴκῳ αὐτῶν ↔ 'un mois au Liban et deux mois chez eux' ; Αδωνιραμ ἐπὶ τοῦ φόρου ↔ 'Adoniram était à leur tête'. Giguet 5:14 occupé par grec 5:14 décalé : voir corriger-lien 5:14.",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ki",
+  "cause": "disposition",
+  "grec": "5:29",
+  "a": {
+   "grec": "5:29",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     5,
+     15
+    ]
+   ],
+   "preuve": "Grec 'καὶ ἦν τῷ Σαλωμων ἑβδομήκοντα χιλιάδες αἴροντες ἄρσιν καὶ ὀγδοήκοντα χιλιάδες λατόμων ἐν τῷ ὄρει' = Giguet 5:15 'Et Salomon employait soixante-dix mille hommes à transporter les matériaux, et quatre-vingt mille à tailler des pierres dans la montagne'. ἑβδομήκοντα χιλιάδες αἴροντες<->soixante-dix mille à transporter, ὀγδοήκοντα χιλιάδες λατόμων ἐν τῷ ὄρει<->quatre-vingt mille à tailler des pierres dans la montagne. Giguet 5:15 pris à tort par le grec 5:15 (=Giguet 5:1) — voir corriger-lien 5:15->5:1.",
+   "confiance": "haute"
+  },
+  "b": {
+   "grec": "5:29",
+   "disposition": "apparier",
+   "sources": [
+    [
+     5,
+     15
+    ]
+   ],
+   "preuve": "ἦν τῷ Σαλωμων ἑβδομήκοντα χιλιάδες αἴροντες ἄρσιν ↔ 'Salomon employait soixante-dix mille hommes à transporter les matériaux' ; ὀγδοήκοντα χιλιάδες λατόμων ἐν τῷ ὄρει ↔ 'quatre-vingt mille à tailler des pierres dans la montagne'. Giguet 5:15 occupé par grec 5:15 décalé : voir corriger-lien 5:15.",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ki",
+  "cause": "disposition",
+  "grec": "5:30",
+  "a": {
+   "grec": "5:30",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     5,
+     16
+    ]
+   ],
+   "preuve": "Grec 'χωρὶς ἀρχόντων τῶν καθεσταμένων ἐπὶ τῶν ἔργων τῶν Σαλωμων τρεῖς χιλιάδες καὶ ἑξακόσιοι ἐπιστάται οἱ ποιοῦντες τὰ ἔργα' = Giguet 5:16 'Sans compter les conducteurs des travaux ; il y en avait trois mille six cents habiles à ces sortes d'œuvres'. χωρὶς ἀρχόντων... ἐπὶ τῶν ἔργων<->sans compter les conducteurs des travaux, τρεῖς χιλιάδες καὶ ἑξακόσιοι<->trois mille six cents. Giguet 5:16 pris à tort par le grec 5:16 (=Giguet 5:2) — voir corriger-lien 5:16->5:2.",
+   "confiance": "haute"
+  },
+  "b": {
+   "grec": "5:30",
+   "disposition": "apparier",
+   "sources": [
+    [
+     5,
+     16
+    ]
+   ],
+   "preuve": "χωρὶς ἀρχόντων τῶν καθεσταμένων ἐπὶ τῶν ἔργων ↔ 'Sans compter les conducteurs des travaux' ; τρεῖς χιλιάδες καὶ ἑξακόσιοι ἐπιστάται ↔ 'trois mille six cents'. Giguet 5:16 occupé par grec 5:16 décalé : voir corriger-lien 5:16.",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ki",
+  "cause": "disposition",
+  "grec": "5:32",
+  "a": {
+   "grec": "5:32",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     5,
+     17
+    ]
+   ],
+   "preuve": "Grec 'καὶ ἡτοίμασαν τοὺς λίθους καὶ τὰ ξύλα τρία ἔτη' = Giguet 5:17 'Et l'on mit trois ans à préparer les pierres et les bois'. ἡτοίμασαν τοὺς λίθους καὶ τὰ ξύλα<->préparer les pierres et les bois, τρία ἔτη<->trois ans. Giguet 5:17 pris à tort par le grec 5:17 (=Giguet 5:3) — voir corriger-lien 5:17->5:3.",
+   "confiance": "haute"
+  },
+  "b": {
+   "grec": "5:32",
+   "disposition": "apparier",
+   "sources": [
+    [
+     5,
+     17
+    ]
+   ],
+   "preuve": "ἡτοίμασαν τοὺς λίθους καὶ τὰ ξύλα τρία ἔτη ↔ 'l'on mit trois ans à préparer les pierres et les bois'. Giguet 5:17 occupé par grec 5:17 décalé : voir corriger-lien 5:17.",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ki",
+  "cause": "disposition",
+  "grec": "6:21",
+  "a": {
+   "grec": "6:21",
+   "disposition": "a-traduire",
+   "sources": [],
+   "preuve": "G6:21 « κατὰ πρόσωπον τοῦ δαβιρ καὶ περιέσχεν αὐτὸ χρυσίῳ » (devant l'oracle, doré) : verset de dorure conflé par Giguet — sa clause « il fit devant l'oracle l'autel … et il le revêtit d'or » figure déjà dans Gig6:19 (=G6:20). Aucun verset Giguet dédié (marqueur 22 sauté). Règle de non-chevauchement : Gig6:19←G6:20, Gig6:20←G6:22 ne laissent pas de place à G6:21.",
+   "confiance": "moyenne"
+  },
+  "b": {
+   "grec": "6:21",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     19,
+     27,
+     28
+    ],
+    [
+     6,
+     19,
+     32,
+     36
+    ]
+   ],
+   "preuve": "Seconde moitié conflée de Gg6:19 : 'κατὰ πρόσωπον τοῦ δαβιρ καὶ περιέσχεν αὐτὸ χρυσίῳ' = mots 27-28 'devant l'oracle' + mots 32-36 'et il le revêtit d'or'. Le lien actuel 6:21<-Gg6:21 est faux (Gg6:21 = deux chérubins, cf. 6:23).",
+   "confiance": "moyenne"
+  }
+ },
+ {
+  "book": "1ki",
+  "cause": "sources",
+  "grec": "6:20",
+  "a": {
+   "grec": "6:20",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     19
+    ]
+   ],
+   "preuve": "G6:20 « εἴκοσι πήχεις μῆκος καὶ εἴκοσι … καὶ εἴκοσι πήχεις τὸ ὕψος … περιέσχεν αὐτὸν χρυσίῳ … ἐποίησεν θυσιαστήριον » ↔ Gig6:19 (marqueur 20) « cet oracle avait vingt coudées de long, vingt … vingt … de haut, et il le revêtit de lames d'or. Et il fit devant l'oracle l'autel ». triple εἴκοσι↔triple vingt, χρυσίῳ↔or, θυσιαστήριον↔autel.",
+   "confiance": "haute"
+  },
+  "b": {
+   "grec": "6:20",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     19,
+     0,
+     26
+    ],
+    [
+     6,
+     19,
+     29,
+     31
+    ]
+   ],
+   "preuve": "6:20 et 6:21 sont conflés dans le seul Gg6:19(20). Part de 6:20 : 'εἴκοσι πήχεις μῆκος... πλάτος... ὕψος... περιέσχεν αὐτὸν χρυσίῳ συγκεκλεισμένῳ καὶ ἐποίησεν θυσιαστήριον' = Gg6:19 mots 0-26 'cet oracle avait vingt coudées de long... revêtit de lames d'or. Et il fit' + mots 29-31 'l'autel du Seigneur'. Bornes de mots approchées (contenu certain).",
+   "confiance": "moyenne"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "disposition",
+  "grec": "1:43",
+  "a": {
+   "grec": "1:43",
+   "disposition": "apparier",
+   "sources": [
+    [
+     1,
+     31
+    ]
+   ],
+   "preuve": "Grec «Βαλακ υἱὸς Βεωρ … ὄνομα τῇ πόλει αὐτοῦ Δενναβα» = Giguet 1:31 «Balac, fils de Béor ; le nom de sa ville est Dennaba» ; marqueur Giguet (43).",
+   "confiance": "haute"
+  },
+  "b": {
+   "grec": "1:43",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     1,
+     31
+    ]
+   ],
+   "preuve": "«καὶ οὗτοι οἱ βασιλεῖς αὐτῶν Βαλακ υἱὸς Βεωρ...Δενναβα» = Giguet 1:31 «Et voici leurs rois : Balac, fils de Béor ; le nom de sa ville est Dennaba». Flottant libéré une fois le bloc voisin recalé.",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "disposition",
+  "grec": "1:44",
+  "a": {
+   "grec": "1:44",
+   "disposition": "apparier",
+   "sources": [
+    [
+     1,
+     32
+    ]
+   ],
+   "preuve": "Grec «ἀπέθανεν Βαλακ … Ιωβαβ υἱὸς Ζαρα ἐκ Βοσορρας» = Giguet 1:32 «Balac mourut, et Jobab, fils de Zara de Bosora» ; marqueur (44).",
+   "confiance": "haute"
+  },
+  "b": {
+   "grec": "1:44",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     1,
+     32
+    ]
+   ],
+   "preuve": "«καὶ ἀπέθανεν Βαλακ...Ιωβαβ υἱὸς Ζαρα ἐκ Βοσορρας» = Giguet 1:32 «Balac mourut, et Jobab, fils de Zara de Bosora, régna».",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "disposition",
+  "grec": "1:45",
+  "a": {
+   "grec": "1:45",
+   "disposition": "apparier",
+   "sources": [
+    [
+     1,
+     33
+    ]
+   ],
+   "preuve": "Grec «ἀπέθανεν Ιωβαβ … Ασομ ἐκ τῆς γῆς Θαιμανων» = Giguet 1:33 «Jobab mourut, et Asom, de la terre des Thêmanites» ; marqueur (45).",
+   "confiance": "haute"
+  },
+  "b": {
+   "grec": "1:45",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     1,
+     33
+    ]
+   ],
+   "preuve": "«ἀπέθανεν Ιωβαβ...Ασομ ἐκ τῆς γῆς Θαιμανων» = Giguet 1:33 «Jobab mourut, et Asom, de la terre des Thêmanites, régna».",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "disposition",
+  "grec": "1:46",
+  "a": {
+   "grec": "1:46",
+   "disposition": "apparier",
+   "sources": [
+    [
+     1,
+     34
+    ]
+   ],
+   "preuve": "Grec «Αδαδ υἱὸς Βαραδ ὁ πατάξας Μαδιαμ ἐν τῷ πεδίῳ Μωαβ … Γεθθαιμ» = Giguet 1:34 «Adad, fils de Barad … vainquit Madian dans le champ de Moab … Gethaïm» ; marqueur (46).",
+   "confiance": "haute"
+  },
+  "b": {
+   "grec": "1:46",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     1,
+     34
+    ]
+   ],
+   "preuve": "«Αδαδ υἱὸς Βαραδ ὁ πατάξας Μαδιαμ ἐν τῷ πεδίῳ Μωαβ...Γεθθαιμ» = Giguet 1:34 «Adad, fils de Barad... vainquit Madian dans le champ de Moab ; le nom de sa ville est Gethaïm».",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "disposition",
+  "grec": "1:47",
+  "a": {
+   "grec": "1:47",
+   "disposition": "apparier",
+   "sources": [
+    [
+     1,
+     35
+    ]
+   ],
+   "preuve": "Grec «ἀπέθανεν Αδαδ … Σαμαα ἐκ Μασεκκας» = Giguet 1:35 «Adad mourut, et Sebla (Samada) de Maseca» (Σαμαα=Samada, Μασεκκας=Maseca) ; marqueur (47).",
+   "confiance": "haute"
+  },
+  "b": {
+   "grec": "1:47",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     1,
+     35
+    ]
+   ],
+   "preuve": "«ἀπέθανεν Αδαδ...Σαμαα ἐκ Μασεκκας» = Giguet 1:35 «Adad mourut, et Sebla (Samada) de Maseca régna».",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "disposition",
+  "grec": "1:48",
+  "a": {
+   "grec": "1:48",
+   "disposition": "apparier",
+   "sources": [
+    [
+     1,
+     36
+    ]
+   ],
+   "preuve": "Grec «Σαουλ ἐκ Ροωβωθ τῆς παρὰ ποταμόν» = Giguet 1:36 «Saul de Rooboth, sur l’Euphrate» ; marqueur (48).",
+   "confiance": "haute"
+  },
+  "b": {
+   "grec": "1:48",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     1,
+     36
+    ]
+   ],
+   "preuve": "«Σαουλ ἐκ Ροωβωθ τῆς παρὰ ποταμόν» = Giguet 1:36 «Saul de Rooboth, sur l’Euphrate, régna».",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "disposition",
+  "grec": "1:49",
+  "a": {
+   "grec": "1:49",
+   "disposition": "apparier",
+   "sources": [
+    [
+     1,
+     37
+    ]
+   ],
+   "preuve": "Grec «Βαλαεννων υἱὸς Αχοβωρ» = Giguet 1:37 «Balaennor (Ballanan), fils d’Achobor» ; marqueur (49).",
+   "confiance": "haute"
+  },
+  "b": {
+   "grec": "1:49",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     1,
+     37
+    ]
+   ],
+   "preuve": "«ἀπέθανεν Σαουλ...Βαλαεννων υἱὸς Αχοβωρ» = Giguet 1:37 «Saul mourut, et Balaennor (Ballanan), fils d’Achobor, régna».",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "disposition",
+  "grec": "1:50",
+  "a": {
+   "grec": "1:50",
+   "disposition": "apparier",
+   "sources": [
+    [
+     1,
+     38
+    ]
+   ],
+   "preuve": "Grec «Βαλαεννων … Αδαδ υἱὸς Βαραδ … ὄνομα τῇ πόλει αὐτοῦ Φογωρ» = Giguet 1:38 «Balaennor mourut, et Arad, fils de Barad … Phogor» ; marqueur (50).",
+   "confiance": "haute"
+  },
+  "b": {
+   "grec": "1:50",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     1,
+     38
+    ]
+   ],
+   "preuve": "«Βαλαεννων υἱὸς Αχοβωρ...Αδαδ υἱὸς Βαραδ...Φογωρ» = Giguet 1:38 «Balaennor mourut, et Arad, fils de Barad, régna ; le nom de sa ville est Phogor».",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "disposition",
+  "grec": "1:51",
+  "a": {
+   "grec": "1:51",
+   "disposition": "apparier",
+   "sources": [
+    [
+     1,
+     39
+    ]
+   ],
+   "preuve": "Grec «ἡγεμόνες Εδωμ ἡγεμὼν Θαμανα ἡγεμὼν Γωλα ἡγεμὼν Ιεθετ» = Giguet 1:39 «Chefs d’Edom : le chef Thaman (Thamna), le chef Golada (Gola), le chef Jéther» ; marqueur (51).",
+   "confiance": "haute"
+  },
+  "b": {
+   "grec": "1:51",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     1,
+     39
+    ]
+   ],
+   "preuve": "«ἦσαν ἡγεμόνες Εδωμ ἡγεμὼν Θαμανα ἡγεμὼν Γωλα ἡγεμὼν Ιεθετ» = Giguet 1:39 «Chefs d’Edom : le chef Thaman (Thamna), le chef Golada (Gola), le chef Jéther».",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "disposition",
+  "grec": "1:52",
+  "a": {
+   "grec": "1:52",
+   "disposition": "apparier",
+   "sources": [
+    [
+     1,
+     40
+    ]
+   ],
+   "preuve": "Grec «ἡγεμὼν Ελιβαμας ἡγεμὼν Ηλας ἡγεμὼν Φινων» = Giguet 1:40 «Le chef Elibamas (Olibema), le chef Ela, le chef Phinon» ; marqueur (52).",
+   "confiance": "haute"
+  },
+  "b": {
+   "grec": "1:52",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     1,
+     40
+    ]
+   ],
+   "preuve": "«ἡγεμὼν Ελιβαμας ἡγεμὼν Ηλας ἡγεμὼν Φινων» = Giguet 1:40 «Le chef Elibamas (Olibema), le chef Ela, le chef Phinon».",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "disposition",
+  "grec": "1:53",
+  "a": {
+   "grec": "1:53",
+   "disposition": "apparier",
+   "sources": [
+    [
+     1,
+     41
+    ]
+   ],
+   "preuve": "Grec «ἡγεμὼν Κενεζ ἡγεμὼν Θαιμαν ἡγεμὼν Μαβσαρ» = Giguet 1:41 «Le chef Cenez, le chef Thêman, le chef Bassor (Mazar)» (Κενεζ/Θαιμαν/Μαβσαρ) ; marqueur Giguet typographié (52) mais les trois noms fixent le grec 53.",
+   "confiance": "haute"
+  },
+  "b": {
+   "grec": "1:53",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     1,
+     41
+    ]
+   ],
+   "preuve": "«ἡγεμὼν Κενεζ ἡγεμὼν Θαιμαν ἡγεμὼν Μαβσαρ» = Giguet 1:41 «Le chef Cenez, le chef Thêman, le chef Bassor (Mazar)».",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "disposition",
+  "grec": "1:54",
+  "a": {
+   "grec": "1:54",
+   "disposition": "apparier",
+   "sources": [
+    [
+     1,
+     42
+    ]
+   ],
+   "preuve": "Grec «ἡγεμὼν Μεγεδιηλ … οὗτοι ἡγεμόνες Εδωμ» = Giguet 1:42 «Le chef Magediel … voilà les chefs d’Edom» (Μεγεδιηλ=Magediel, formule finale identique) ; marqueur (54).",
+   "confiance": "haute"
+  },
+  "b": {
+   "grec": "1:54",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     1,
+     42
+    ]
+   ],
+   "preuve": "«ἡγεμὼν Μεγεδιηλ ἡγεμὼν Ηραμ οὗτοι ἡγεμόνες Εδωμ» = Giguet 1:42 «Le chef Magediel, le chef Zaphoïn voilà les chefs d’Edom» (Μεγεδιηλ=Magediel, οὗτοι ἡγεμόνες Εδωμ = voilà les chefs d’Edom).",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "sources",
+  "grec": "1:17",
+  "a": {
+   "grec": "1:17",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     1,
+     11
+    ]
+   ],
+   "preuve": "Lien actuel vers Giguet 1:17 («(29) …Ismaël») est faux. Grec «υἱοὶ Σημ Αιλαμ καὶ Ασσουρ» = Giguet 1:11 «Fils de Sem : Elam, Assur» ; marqueur (17). Libère Giguet 1:17 pour grec 1:29.",
+   "confiance": "haute"
+  },
+  "b": {
+   "grec": "1:17",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     1,
+     11
+    ],
+    [
+     1,
+     12,
+     1,
+     1
+    ]
+   ],
+   "preuve": "Grec 1:17 «υἱοὶ Σημ Αιλαμ καὶ Ασσουρ καὶ Αρφαξαδ» = Giguet 1:11 «Fils de Sem : Elam, Assur» + «Arphaxad» (1:12 mot 1). Lien actuel vers Giguet 1:17 (Ismaël) faux : tout le chapitre est décalé d'un bloc. Les n° entre parenthèses de Giguet = n° du verset grec.",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "sources",
+  "grec": "1:24",
+  "a": {
+   "grec": "1:24",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     1,
+     12
+    ]
+   ],
+   "preuve": "Grec «Σαλα» = Giguet 1:12 «Arphaxad, Salé» (Σαλα=Salé) ; marqueur (24). Libère Giguet 1:24 pour grec 1:36.",
+   "confiance": "haute"
+  },
+  "b": {
+   "grec": "1:24",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     1,
+     12,
+     3,
+     3
+    ]
+   ],
+   "preuve": "Grec 1:24 «Σαλα» = «Salé» (Giguet 1:12 mot 3). Lien actuel vers Giguet 1:24 (Eliphaz) faux.",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "trou: rattachement",
+  "giguet": "1:11",
+  "a": {
+   "giguet": "1:11",
+   "disposition": "rattacher",
+   "rattacheGrec": "1:17",
+   "sourcesEtendues": [
+    [
+     1,
+     11
+    ]
+   ],
+   "preuve": "Marqueur Giguet (17) ; «Fils de Sem : Elam, Assur» = grec 1:17 «υἱοὶ Σημ Αιλαμ καὶ Ασσουρ». Grec 1:11-16 omis par Rahlfs, d'où le trou apparent.",
+   "confiance": "haute"
+  },
+  "b": {
+   "giguet": "1:11",
+   "disposition": "rattacher",
+   "rattacheGrec": "1:17",
+   "sourcesEtendues": [
+    [
+     1,
+     11
+    ],
+    [
+     1,
+     12,
+     1,
+     1
+    ]
+   ],
+   "preuve": "Giguet 1:11 (17) «Fils de Sem : Elam, Assur» + «Arphaxad» = grec 1:17 «υἱοὶ Σημ Αιλαμ καὶ Ασσουρ καὶ Αρφαξαδ». Rahlfs omet les vv.11-16 et 18-23 (parallèle Gn 10) ; les n° parenthèses de Giguet donnent le n° grec.",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "trou: rattachement",
+  "giguet": "1:12",
+  "a": {
+   "giguet": "1:12",
+   "disposition": "rattacher",
+   "rattacheGrec": "1:24",
+   "sourcesEtendues": [
+    [
+     1,
+     12
+    ]
+   ],
+   "preuve": "Marqueur Giguet (24) ; «Arphaxad, Salé» → grec 1:24 «Σαλα» (Salé=Σαλα ; le grec Rahlfs ne conserve que Σαλα).",
+   "confiance": "haute"
+  },
+  "b": {
+   "giguet": "1:12",
+   "disposition": "rattacher",
+   "rattacheGrec": "1:24",
+   "sourcesEtendues": [
+    [
+     1,
+     12,
+     3,
+     3
+    ]
+   ],
+   "preuve": "Verset scindé : «Arphaxad» (mot 1) appartient au grec 1:17 ; «Salé» (mot 3) = grec 1:24 «Σαλα». Marqueur «(24)» (mot 0) exclu.",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:17",
+  "b": {
+   "grec": "6:17",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     32
+    ]
+   ],
+   "preuve": "'λειτουργοῦντες ... σκηνῆς ... ᾠκοδόμησεν Σαλωμων τὸν οἶκον κυρίου' = Giguet 6:32 's’accompagnaient ... tabernacle ... Salomon eût bâti le temple'. (+15). Corrige le décalage; évite le chevauchement créé par le déplacement de 6:2.",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:19",
+  "b": {
+   "grec": "6:19",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     34
+    ]
+   ],
+   "preuve": "'Ελκανα ... Ηδαδ ... Ελιηλ ... Θιε' = Giguet 6:34 'Elcana ... Jéroboam ... Eliel ... Thoü'. (+15).",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:20",
+  "b": {
+   "grec": "6:20",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     35
+    ]
+   ],
+   "preuve": "'Σουφ ... Ελκανα ... Μεθ ... Αμασιου' = Giguet 6:35 'Suph ... Elcana ... Maath ... Amathi'. (+15).",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:21",
+  "b": {
+   "grec": "6:21",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     36
+    ]
+   ],
+   "preuve": "'Ελκανα ... Ιωηλ ... Αζαρια ... Σαφανια' = Giguet 6:36 'Elcana ... Johel ... Azarias ... Saphanie'. (+15).",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:22",
+  "b": {
+   "grec": "6:22",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     37
+    ]
+   ],
+   "preuve": "'Θααθ ... Ασιρ ... Αβιασαφ ... Κορε' = Giguet 6:37 'Thaath ... Aser ... Abiasaph ... Coré'. (+15).",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:23",
+  "b": {
+   "grec": "6:23",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     38
+    ]
+   ],
+   "preuve": "'Ισσααρ ... Κααθ ... Λευι ... Ισραηλ' = Giguet 6:38 'Isaar ... Caath ... Lévi ... Israël'. (+15).",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:24",
+  "b": {
+   "grec": "6:24",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     39
+    ]
+   ],
+   "preuve": "'Ασαφ ὁ ἑστηκὼς ἐν δεξιᾷ ... Βαραχια ... Σαμαα' = Giguet 6:39 'Asaph ... se tenait à sa droite ... Barachias ... Samaa'. (+15).",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:25",
+  "b": {
+   "grec": "6:25",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     40
+    ]
+   ],
+   "preuve": "'Μιχαηλ ... Μαασια ... Μελχια' = Giguet 6:40 'Michel ... Baasie ... Melchias'. (+15).",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:26",
+  "b": {
+   "grec": "6:26",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     41
+    ]
+   ],
+   "preuve": "'Αθανι ... Ζαραι ... Αδια' = Giguet 6:41 'Athani ... Zaaraï ... Adaï'. (+15).",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:27",
+  "b": {
+   "grec": "6:27",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     42
+    ]
+   ],
+   "preuve": "'Αιθαν ... Ζαμμα ... Σεμεϊ' = Giguet 6:42 'Etham ... Zammam ... Sémeï'. (+15).",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:28",
+  "b": {
+   "grec": "6:28",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     43
+    ]
+   ],
+   "preuve": "'Ηχα ... Γεδσων ... Λευι' = Giguet 6:43 'Jeth, petit-fils de Gerson, fils de Lévi'. (+15).",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:29",
+  "b": {
+   "grec": "6:29",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     44
+    ]
+   ],
+   "preuve": "'υἱοὶ Μεραρι ... ἐξ ἀριστερῶν Αιθαν υἱὸς Κισαι ... Αβδι ... Μαλωχ' = Giguet 6:44 'de Mérari ... chantres qui se tenaient à gauche ... Ethan, fils de Cisa ... Abaï ... Maloch'. (+15).",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:30",
+  "b": {
+   "grec": "6:30",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     45
+    ]
+   ],
+   "preuve": "'υἱοῦ Ασεβι' = Giguet 6:45 'Fils d’Asebi'. (+15). Giguet isole ce fragment en un verset propre.",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:31",
+  "b": {
+   "grec": "6:31",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     46
+    ]
+   ],
+   "preuve": "'Αμασαι ... Βανι ... Σεμμηρ' = Giguet 6:46 'Amessias, fils de Bani, fils de Semer'. (+15).",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:32",
+  "b": {
+   "grec": "6:32",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     47
+    ]
+   ],
+   "preuve": "'Μοολι ... Μουσι ... Μεραρι ... Λευι' = Giguet 6:47 'Mooli ... Musi ... Mérari ... Lévi'. (+15).",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:33",
+  "b": {
+   "grec": "6:33",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     48
+    ]
+   ],
+   "preuve": "'οἱ Λευῖται δεδομένοι εἰς πᾶσαν ἐργασίαν λειτουργίας σκηνῆς οἴκου τοῦ θεοῦ' = Giguet 6:48 'les lévites leurs frères ... attachés aux divers services du tabernacle de Dieu'. (+15).",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:34",
+  "b": {
+   "grec": "6:34",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     49
+    ]
+   ],
+   "preuve": "'Ααρων ... θυμιῶντες ἐπὶ τὸ θυσιαστήριον τῶν ὁλοκαυτωμάτων ... ἐξιλάσκεσθαι περὶ Ισραηλ ... Μωυσῆς' = Giguet 6:49 'Aaron ... sacrifiaient sur l’autel des holocaustes ... priaient pour Israël ... Moïse'. (+15).",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:35",
+  "b": {
+   "grec": "6:35",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     50
+    ]
+   ],
+   "preuve": "'καὶ οὗτοι υἱοὶ Ααρων Ελεαζαρ ... Φινεες ... Αβισου' = Giguet 6:50 'Voici les fils d’Aaron : Eléazar ... Phinéès ... Abisué'. (+15).",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:36",
+  "b": {
+   "grec": "6:36",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     51
+    ]
+   ],
+   "preuve": "'Βωκαι ... Οζι ... Ζαραια' = Giguet 6:51 'Bocci ... Ozi ... Saraïa'. (+15).",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:37",
+  "b": {
+   "grec": "6:37",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     52
+    ]
+   ],
+   "preuve": "'Μαριηλ ... Αμαρια ... Αχιτωβ' = Giguet 6:52 'Mariel ... Amarias ... Achitob'. (+15).",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:38",
+  "b": {
+   "grec": "6:38",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     53
+    ]
+   ],
+   "preuve": "'Σαδωκ ... Αχιμαας' = Giguet 6:53 'Sadoc ... Achimaas'. (+15).",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:39",
+  "b": {
+   "grec": "6:39",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     54
+    ]
+   ],
+   "preuve": "'αὗται αἱ κατοικίαι αὐτῶν ... τοῖς υἱοῖς Ααρων τῇ πατριᾷ τοῦ Κααθι ... ὁ κλῆρος' = Giguet 6:54 'Voici les demeures ... assignés par le sort ... aux fils d’Aaron, et aux fils de Caath'. (+15).",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:40",
+  "b": {
+   "grec": "6:40",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     55
+    ]
+   ],
+   "preuve": "'τὴν Χεβρων ἐν γῇ Ιουδα καὶ τὰ περισπόρια αὐτῆς κύκλῳ' = Giguet 6:55 'Hébron, en la terre de Juda, et sa banlieue tout alentour'. (+15).",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:41",
+  "b": {
+   "grec": "6:41",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     56
+    ]
+   ],
+   "preuve": "'τὰ πεδία τῆς πόλεως ... ἔδωκαν τῷ Χαλεβ υἱῷ Ιεφοννη' = Giguet 6:56 'les champs de la ville ... appartenaient à Caleb, fils de Jéphoné'. (+15).",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:42",
+  "b": {
+   "grec": "6:42",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     57
+    ]
+   ],
+   "preuve": "'πόλεις τῶν φυγαδευτηρίων τὴν Χεβρων ... Λοβνα ... Σελνα ... Εσθαμω' = Giguet 6:57 'villes de refuge ... Hébron, Lobna ... Selna ... Esthamo'. (+15).",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:43",
+  "b": {
+   "grec": "6:43",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     58
+    ]
+   ],
+   "preuve": "'τὴν Ιεθθαρ ... τὴν Δαβιρ' = Giguet 6:58 'Jethar ... Dabir'. (+15).",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:44",
+  "b": {
+   "grec": "6:44",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     59
+    ]
+   ],
+   "preuve": "'τὴν Ασαν ... τὴν Βασαμυς' = Giguet 6:59 'Asan ... Bethsamys'. (+15).",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:45",
+  "b": {
+   "grec": "6:45",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     60
+    ]
+   ],
+   "preuve": "'ἐκ φυλῆς Βενιαμιν τὴν Γαβεε ... Γαλεμεθ ... Αγχωχ ... τρισκαίδεκα πόλεις' = Giguet 6:60 'tribu de Benjamin, Gabée ... Galemath ... Anathoth ... treize villes'. (+15).",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:46",
+  "b": {
+   "grec": "6:46",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     61
+    ]
+   ],
+   "preuve": "'τοῖς υἱοῖς Κααθ τοῖς καταλοίποις ... ἡμίσους φυλῆς Μανασση ... πόλεις δέκα' = Giguet 6:61 'reste des fils de Caath ... demi-tribu de Manassé ... dix villes'. (+15).",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:47",
+  "b": {
+   "grec": "6:47",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     62
+    ]
+   ],
+   "preuve": "'τοῖς υἱοῖς Γεδσων ... Ισσαχαρ ... Ασηρ ... Νεφθαλι ... Μανασση ἐν τῇ Βασαν πόλεις τρισκαίδεκα' = Giguet 6:62 'fils de Gerson ... Issachar, d’Aser, de Nephthali ... Manassé en Basan ... treize villes'. (+15).",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:48",
+  "b": {
+   "grec": "6:48",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     63
+    ]
+   ],
+   "preuve": "'τοῖς υἱοῖς Μεραρι ... Ρουβην ... Γαδ ... Ζαβουλων ... πόλεις δέκα δύο' = Giguet 6:63 'fils de Mérari ... Ruben, de Gad et de Zabulon ... douze villes'. (+15).",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:49",
+  "b": {
+   "grec": "6:49",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     64
+    ]
+   ],
+   "preuve": "'ἔδωκαν οἱ υἱοὶ Ισραηλ τοῖς Λευίταις τὰς πόλεις καὶ τὰ περισπόρια' = Giguet 6:64 'les fils d’Israël accordèrent aux lévites ces villes et leurs banlieues'. (+15).",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:50",
+  "b": {
+   "grec": "6:50",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     65
+    ]
+   ],
+   "preuve": "'ἔδωκαν ἐν κλήρῳ ἐκ φυλῆς υἱῶν Ιουδα καὶ ... Συμεων τὰς πόλεις ... ἐπ᾿ ὀνόματος' = Giguet 6:65 'Juda, de Siméon et de Benjamin, les villes auxquelles les lévites donnèrent leurs noms'. (+15).",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:51",
+  "b": {
+   "grec": "6:51",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     66
+    ]
+   ],
+   "preuve": "'ἀπὸ τῶν πατριῶν υἱῶν Κααθ ... πόλεις τῶν ὁρίων αὐτῶν ἐκ φυλῆς Εφραιμ' = Giguet 6:66 'd’après les familles des fils de Caath ... des villes du territoire d’Ephraïm'. (+15).",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:52",
+  "b": {
+   "grec": "6:52",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     67
+    ]
+   ],
+   "preuve": "'τὰς πόλεις τῶν φυγαδευτηρίων τὴν Συχεμ ... ἐν ὄρει Εφραιμ ... Γαζερ' = Giguet 6:67 'villes de refuge : Sichem ... dans la montagne d’Ephraïm, Gazer'. (+15).",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:53",
+  "b": {
+   "grec": "6:53",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     68
+    ]
+   ],
+   "preuve": "'τὴν Ιεκμααμ ... τὴν Βαιθωρων' = Giguet 6:68 'Jecmaan ... Béthoron'. (+15).",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:54",
+  "b": {
+   "grec": "6:54",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     69
+    ]
+   ],
+   "preuve": "'τὴν Εγλαμ ... τὴν Γεθρεμμων' = Giguet 6:69 'Aïlon ... Gethremmon'. (+15).",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:55",
+  "b": {
+   "grec": "6:55",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     70
+    ]
+   ],
+   "preuve": "'ἀπὸ τοῦ ἡμίσους φυλῆς Μανασση τὴν Αναρ ... τὴν Ιεβλααμ ... τοῖς υἱοῖς Κααθ' = Giguet 6:70 'demi-tribu de Manassé : Anar ... Jemblaan ... reste des fils de Caath'. (+15).",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:56",
+  "b": {
+   "grec": "6:56",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     71
+    ]
+   ],
+   "preuve": "'τοῖς υἱοῖς Γεδσων ... ἡμίσους φυλῆς Μανασση τὴν Γωλαν ἐκ τῆς Βασαν ... Ασηρωθ' = Giguet 6:71 'fils de Gerson ... l’autre demi-tribu de Manassé, Golan en Basan ... Aseroth'. (+15).",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:57",
+  "b": {
+   "grec": "6:57",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     72
+    ]
+   ],
+   "preuve": "'ἐκ φυλῆς Ισσαχαρ τὴν Κεδες ... τὴν Δεβερι' = Giguet 6:72 'tribu d’Issachar : Cédés ... Deberi'. (+15).",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:58",
+  "b": {
+   "grec": "6:58",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     73
+    ]
+   ],
+   "preuve": "'τὴν Δαβωρ ... τὴν Αναμ' = Giguet 6:73 'Ramoth, Aïnan et sa banlieue' (Αναμ = Aïnan). (+15).",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:59",
+  "b": {
+   "grec": "6:59",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     74
+    ]
+   ],
+   "preuve": "'ἐκ φυλῆς Ασηρ τὴν Μασαλ ... τὴν Αβαραν' = Giguet 6:74 'tribu d’Aser : Maasal ... Abdon'. (+15).",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:60",
+  "b": {
+   "grec": "6:60",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     75
+    ]
+   ],
+   "preuve": "'τὴν Ικακ ... τὴν Ροωβ' = Giguet 6:75 'Acac ... Rhoob'. (+15).",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:61",
+  "b": {
+   "grec": "6:61",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     76
+    ]
+   ],
+   "preuve": "'ἀπὸ φυλῆς Νεφθαλι τὴν Κεδες ἐν τῇ Γαλιλαίᾳ ... Χαμωθ ... Καριαθαιμ' = Giguet 6:76 'tribu de Nephthali : Cédés en Galilée ... Hamoth ... Cariathaïm'. (+15).",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:62",
+  "b": {
+   "grec": "6:62",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     77
+    ]
+   ],
+   "preuve": "'τοῖς υἱοῖς Μεραρι ... ἐκ φυλῆς Ζαβουλων τὴν Ρεμμων ... Θαχχια' = Giguet 6:77 'tribu de Zabulon ... reste des fils de Mérari, Remmon ... Thabor'. (+15).",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:63",
+  "b": {
+   "grec": "6:63",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     78
+    ]
+   ],
+   "preuve": "'ἐκ τοῦ πέραν τοῦ Ιορδάνου Ιεριχω ... ἐκ φυλῆς Ρουβην τὴν Βοσορ ... Ιασα' = Giguet 6:78 'vallée du Jourdain ... Jéricho, et dans la tribu de Ruben : Bosor ... Jasa'. (+15).",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:64",
+  "b": {
+   "grec": "6:64",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     79
+    ]
+   ],
+   "preuve": "'τὴν Καδημωθ ... τὴν Μωφααθ' = Giguet 6:79 'Cadmoth ... Maephla'. (+15).",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:65",
+  "b": {
+   "grec": "6:65",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     80
+    ]
+   ],
+   "preuve": "'ἐκ φυλῆς Γαδ τὴν Ραμωθ Γαλααδ ... τὴν Μααναιμ' = Giguet 6:80 'tribu de Gad : Ramoth-Galaad ... Maanaïm'. (+15).",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:66",
+  "b": {
+   "grec": "6:66",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     81
+    ]
+   ],
+   "preuve": "'τὴν Εσεβων ... τὴν Ιαζηρ' = Giguet 6:81 'Esébon ... Jazer'. Dernier verset grec du ch.6 = dernier Giguet 6:81 (+15); ferme la bijection Giguet 6:16-81 <- grec 6:1-66.",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:2",
+  "a": {
+   "grec": "6:2",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     17
+    ]
+   ],
+   "preuve": "grec 'υἱῶν Γεδσων Λοβενι καὶ Σεμεϊ' = 'Fils de Gerson : Lobeni et Sémeï' (G6:17); décalage chapitre +15 (Rahlfs 6=Giguet 6:16ss)",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:4",
+  "a": {
+   "grec": "6:4",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     19
+    ]
+   ],
+   "preuve": "grec 'υἱοὶ Μεραρι Μοολι... πατριαὶ τοῦ Λευι' = 'Fils de Mérari : Mooli et Musi ; familles de Lévi' (G6:19); +15",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:5",
+  "a": {
+   "grec": "6:5",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     20
+    ]
+   ],
+   "preuve": "grec 'Γεδσων... Λοβενι... Ιεεθ... Ζεμμα' = 'Gerson, Lobeni, Jeth, Zamath' (G6:20); +15",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:6",
+  "a": {
+   "grec": "6:6",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     21
+    ]
+   ],
+   "preuve": "grec 'Αδδι... Ζαρα... Ιεθρι' = 'Addi, Zara, Jethri' (G6:21); +15",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:7",
+  "a": {
+   "grec": "6:7",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     22
+    ]
+   ],
+   "preuve": "grec 'Κααθ Αμιναδαβ... Κορε' = 'De Caath : Aminadab, Coré' (G6:22); +15",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:8",
+  "a": {
+   "grec": "6:8",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     23
+    ]
+   ],
+   "preuve": "grec 'Ελκανα... Αβιασαφ... Ασιρ' = 'Elcana, Abisaph, Aser' (G6:23); +15",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:9",
+  "a": {
+   "grec": "6:9",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     24
+    ]
+   ],
+   "preuve": "grec 'Θααθ... Ουριηλ... Σαουλ' = 'Thaat, Uriel, Saül' (G6:24); +15",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:10",
+  "a": {
+   "grec": "6:10",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     25
+    ]
+   ],
+   "preuve": "grec 'υἱοὶ Ελκανα Αμασι καὶ Αχιμωθ' = 'D'Elcana : Amessi et Achimoth' (G6:25); +15",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:11",
+  "a": {
+   "grec": "6:11",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     26
+    ]
+   ],
+   "preuve": "grec 'Ελκανα... Σουφι... Νααθ' = 'Elcana, Saphi, Cénaath' (G6:26); +15",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:12",
+  "a": {
+   "grec": "6:12",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     27
+    ]
+   ],
+   "preuve": "grec 'Ελιαβ... Ελκανα' = 'Eliab... Elcana' (G6:27); +15",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:13",
+  "a": {
+   "grec": "6:13",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     28
+    ]
+   ],
+   "preuve": "grec 'υἱοὶ Σαμουηλ ὁ πρωτότοκος... Αβια' = 'Fils de Samuel... premier-né... Abias' (G6:28); +15",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:14",
+  "a": {
+   "grec": "6:14",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     29
+    ]
+   ],
+   "preuve": "grec 'Μεραρι Μοολι... Σεμεϊ... Οζα' = 'Fils de Mérari : Mooli, Sémeï, Oza' (G6:29); +15",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:15",
+  "a": {
+   "grec": "6:15",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     30
+    ]
+   ],
+   "preuve": "grec 'Σομεα... Αγγια... Ασαια' = 'Samaa, Aggia, Asaïas' (G6:30); +15",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:16",
+  "a": {
+   "grec": "6:16",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     31
+    ]
+   ],
+   "preuve": "grec 'κατέστησεν Δαυιδ... ᾀδόντων... κιβωτοῦ' = 'David institua... chœurs... arche' (G6:31); lien actuel 6:16→G6:1 faux; +15",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:17",
+  "a": {
+   "grec": "6:17",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     32
+    ]
+   ],
+   "preuve": "grec 'ἐν ὀργάνοις ἕως... Σαλωμων... σκηνῆς μαρτυρίου' = 'instruments... Salomon... tabernacle du témoignage' (G6:32); +15",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:18",
+  "a": {
+   "grec": "6:18",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     33
+    ]
+   ],
+   "preuve": "grec 'Αιμαν ὁ ψαλτῳδὸς υἱὸς Ιωηλ υἱοῦ Σαμουηλ' = 'Hêman, chantre... fils de Johel, fils de Samuel' (G6:33); lien actuel 6:18→G6:2 faux; +15",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:19",
+  "a": {
+   "grec": "6:19",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     34
+    ]
+   ],
+   "preuve": "grec 'Ελκανα... Ελιηλ... Θιε' = 'Elcana... Eliel... Thoü' (G6:34); +15",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:20",
+  "a": {
+   "grec": "6:20",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     35
+    ]
+   ],
+   "preuve": "grec 'Σουφ... Ελκανα... Μεθ... Αμασιου' = 'Suph, Elcana, Maath, Amathi' (G6:35); +15",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:21",
+  "a": {
+   "grec": "6:21",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     36
+    ]
+   ],
+   "preuve": "grec 'Ελκανα... Ιωηλ... Αζαρια... Σαφανια' = 'Elcana, Johel, Azarias, Saphanie' (G6:36); +15",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:22",
+  "a": {
+   "grec": "6:22",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     37
+    ]
+   ],
+   "preuve": "grec 'Θααθ... Ασιρ... Αβιασαφ... Κορε' = 'Thaath, Aser, Abiasaph, Coré' (G6:37); +15",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:23",
+  "a": {
+   "grec": "6:23",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     38
+    ]
+   ],
+   "preuve": "grec 'Ισσααρ... Κααθ... Λευι... Ισραηλ' = 'Isaar, Caath, Lévi, Israël' (G6:38); +15",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:24",
+  "a": {
+   "grec": "6:24",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     39
+    ]
+   ],
+   "preuve": "grec 'Ασαφ ὁ ἑστηκὼς ἐν δεξιᾷ... Βαραχια... Σαμαα' = 'Asaph... à sa droite... Barachias, Samaa' (G6:39); +15",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:25",
+  "a": {
+   "grec": "6:25",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     40
+    ]
+   ],
+   "preuve": "grec 'Μιχαηλ... Μαασια... Μελχια' = 'Michel, Baasie, Melchias' (G6:40); +15",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:26",
+  "a": {
+   "grec": "6:26",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     41
+    ]
+   ],
+   "preuve": "grec 'Αθανι... Ζαραι... Αδια' = 'Athani, Zaaraï, Adaï' (G6:41); +15",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:27",
+  "a": {
+   "grec": "6:27",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     42
+    ]
+   ],
+   "preuve": "grec 'Αιθαν... Ζαμμα... Σεμεϊ' = 'Etham, Zammam, Sémeï' (G6:42); +15",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:28",
+  "a": {
+   "grec": "6:28",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     43
+    ]
+   ],
+   "preuve": "grec 'Γεδσων υἱοῦ Λευι' = 'Gerson... fils de Lévi' (G6:43); +15",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:29",
+  "a": {
+   "grec": "6:29",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     44
+    ]
+   ],
+   "preuve": "grec 'Μεραρι... ἐξ ἀριστερῶν Αιθαν... Κισαι... Μαλωχ' = 'Mérari... à gauche : Ethan, Cisa, Maloch' (G6:44); +15",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:30",
+  "a": {
+   "grec": "6:30",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     45
+    ]
+   ],
+   "preuve": "grec 'υἱοῦ Ασεβι' = 'Fils d'Asebi' (G6:45); +15",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:31",
+  "a": {
+   "grec": "6:31",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     46
+    ]
+   ],
+   "preuve": "grec 'Αμασαι υἱοῦ Βανι υἱοῦ Σεμμηρ' = 'Amessias, Bani, Semer' (G6:46); +15",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:32",
+  "a": {
+   "grec": "6:32",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     47
+    ]
+   ],
+   "preuve": "grec 'Μοολι... Μουσι... Μεραρι... Λευι' = 'Mooli, Musi, Mérari, Lévi' (G6:47); +15",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:33",
+  "a": {
+   "grec": "6:33",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     48
+    ]
+   ],
+   "preuve": "grec 'ἀδελφοὶ... οἱ Λευῖται... σκηνῆς οἴκου τοῦ θεοῦ' = 'lévites leurs frères... tabernacle de Dieu' (G6:48); +15",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:34",
+  "a": {
+   "grec": "6:34",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     49
+    ]
+   ],
+   "preuve": "grec 'Ααρων... θυσιαστήριον τῶν ὁλοκαυτωμάτων... Μωυσῆς' = 'Aaron... autel des holocaustes... Moïse' (G6:49); +15",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:35",
+  "a": {
+   "grec": "6:35",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     50
+    ]
+   ],
+   "preuve": "grec 'υἱοὶ Ααρων Ελεαζαρ... Φινεες... Αβισου' = 'fils d'Aaron : Eléazar, Phinéès, Abisué' (G6:50); +15",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:36",
+  "a": {
+   "grec": "6:36",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     51
+    ]
+   ],
+   "preuve": "grec 'Βωκαι... Οζι... Ζαραια' = 'Bocci, Ozi, Saraïa' (G6:51); +15",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:37",
+  "a": {
+   "grec": "6:37",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     52
+    ]
+   ],
+   "preuve": "grec 'Μαριηλ... Αμαρια... Αχιτωβ' = 'Mariel, Amarias, Achitob' (G6:52); +15",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:38",
+  "a": {
+   "grec": "6:38",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     53
+    ]
+   ],
+   "preuve": "grec 'Σαδωκ... Αχιμαας' = 'Sadoc, Achimaas' (G6:53); +15",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:39",
+  "a": {
+   "grec": "6:39",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     54
+    ]
+   ],
+   "preuve": "grec 'κατοικίαι... κώμαις... ὁρίοις... υἱοῖς Ααρων... Κααθι' = 'demeures, bourgs, territoires... fils d'Aaron... Caath' (G6:54); +15",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:40",
+  "a": {
+   "grec": "6:40",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     55
+    ]
+   ],
+   "preuve": "grec 'Χεβρων ἐν γῇ Ιουδα... περισπόρια κύκλῳ' = 'Hébron en la terre de Juda... banlieue tout alentour' (G6:55); +15",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:41",
+  "a": {
+   "grec": "6:41",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     56
+    ]
+   ],
+   "preuve": "grec 'πεδία τῆς πόλεως... Χαλεβ υἱῷ Ιεφοννη' = 'champs de la ville... Caleb, fils de Jéphoné' (G6:56); +15",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:42",
+  "a": {
+   "grec": "6:42",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     57
+    ]
+   ],
+   "preuve": "grec 'πόλεις τῶν φυγαδευτηρίων Χεβρων... Λοβνα... Σελνα... Εσθαμω' = 'villes de refuge : Hébron, Lobna, Selna, Esthamo' (G6:57); +15",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:43",
+  "a": {
+   "grec": "6:43",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     58
+    ]
+   ],
+   "preuve": "grec 'Ιεθθαρ... Δαβιρ' = 'Jethar, Dabir' (G6:58); +15",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:44",
+  "a": {
+   "grec": "6:44",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     59
+    ]
+   ],
+   "preuve": "grec 'Ασαν... Βασαμυς' = 'Asan, Bethsamys' (G6:59); +15",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:45",
+  "a": {
+   "grec": "6:45",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     60
+    ]
+   ],
+   "preuve": "grec 'φυλῆς Βενιαμιν Γαβεε... Γαλεμεθ... τρισκαίδεκα' = 'tribu de Benjamin : Gabée, Galemath... treize villes' (G6:60); +15",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:46",
+  "a": {
+   "grec": "6:46",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     61
+    ]
+   ],
+   "preuve": "grec 'υἱοῖς Κααθ τοῖς καταλοίποις... ἡμίσους φυλῆς Μανασση... δέκα' = 'reste des fils de Caath... demi-tribu de Manassé... dix villes' (G6:61); +15",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:47",
+  "a": {
+   "grec": "6:47",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     62
+    ]
+   ],
+   "preuve": "grec 'υἱοῖς Γεδσων... Ισσαχαρ... Ασηρ... Νεφθαλι... Βασαν... τρισκαίδεκα' = 'fils de Gerson... Issachar, Aser, Nephthali... Basan... treize' (G6:62); +15",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:48",
+  "a": {
+   "grec": "6:48",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     63
+    ]
+   ],
+   "preuve": "grec 'υἱοῖς Μεραρι... Ρουβην... Γαδ... Ζαβουλων... δέκα δύο' = 'fils de Mérari... Ruben, Gad, Zabulon... douze' (G6:63); +15",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:49",
+  "a": {
+   "grec": "6:49",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     64
+    ]
+   ],
+   "preuve": "grec 'ἔδωκαν οἱ υἱοὶ Ισραηλ τοῖς Λευίταις τὰς πόλεις καὶ τὰ περισπόρια' = 'les fils d'Israël accordèrent aux lévites ces villes et leurs banlieues' (G6:64); +15",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:50",
+  "a": {
+   "grec": "6:50",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     65
+    ]
+   ],
+   "preuve": "grec 'ἐν κλήρῳ ἐκ φυλῆς Ιουδα... Συμεων... ἐπ' ὀνόματος' = 'le sort... tribus de Juda, Siméon... leurs noms' (G6:65); +15",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "un seul témoin",
+  "grec": "6:51",
+  "a": {
+   "grec": "6:51",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     6,
+     66
+    ]
+   ],
+   "preuve": "grec 'ἀπὸ τῶν πατριῶν υἱῶν Κααθ... ἐκ φυλῆς Εφραιμ' = 'familles des fils de Caath... territoire d'Ephraïm' (G6:66); +15",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "disposition",
+  "grec": "12:5",
+  "a": {
+   "grec": "12:5",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     12,
+     4,
+     10,
+     16
+    ]
+   ],
+   "preuve": "Giguet 12:4 fusionne deux versets Rahlfs (12:4 + 12:5). La seconde moitie (mots 10-16 : « puis, Jérémie, Jézéel, Joanan, Joazobath de Garathiim, ») rend exactement grec 12:5 « Ιερμιας καὶ Ιεζιηλ καὶ Ιωαναν καὶ Ιωζαβαδ ὁ Γαδαραθι » : Ιερμιας↔Jérémie, Ιεζιηλ↔Jézéel, Ιωαναν↔Joanan, Ιωζαβαδ↔Joazobath, Γαδαραθι↔Garathiim. Le flottant existe parce que le lien voisin grec 12:4 prend le verset Giguet entier ; d'ou la correction jointe de grec 12:4 vers [[12,4,0,9]] pour eviter le chevauchement.",
+   "confiance": "haute"
+  },
+  "b": {
+   "grec": "12:5",
+   "disposition": "apparier",
+   "sources": [
+    [
+     12,
+     4,
+     10,
+     16
+    ]
+   ],
+   "preuve": "Grec 12:5 « Ιερμιας καὶ Ιεζιηλ καὶ Ιωαναν καὶ Ιωζαβαδ ὁ Γαδαραθι » = 2e moitié de Giguet 12:4 (mots 10-16) « puis, Jérémie, Jézéel, Joanan, Joazobath de Garathiim, ». Concordance de noms propres : Ιερμιας↔Jérémie, Ιεζιηλ↔Jézéel, Ιωαναν↔Joanan, Ιωζαβαδ↔Joazobath, ὁ Γαδαραθι↔de Garathiim. Giguet fusionne grec 12:4+12:5 en son seul v.4, d'où le décalage +1 constant en aval (grec 12:6↔Giguet 12:5, grec 12:7↔Giguet 12:6, ...).",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ch",
+  "cause": "disposition",
+  "grec": "15:24",
+  "a": {
+   "grec": "15:24",
+   "disposition": "apparier",
+   "sources": [
+    [
+     15,
+     25,
+     0,
+     26
+    ]
+   ],
+   "preuve": "Grec 15:24 σαλπίζοντες ταῖς σάλπιγξιν ἔμπροσθεν τῆς κιβωτοῦ τοῦ θεοῦ… πυλωροὶ τῆς κιβωτοῦ = début de Giguet 15:25 mots 0-26 « Somnia (Σοβνια), Josaphat (Ιωσαφατ)… les prêtres (οἱ ἱερεῖς), sonnaient de la trompette (σαλπίζοντες ταῖς σάλπιγξιν) devant l’arche de Dieu… Abdedom (Αβδεδομ) et Jehia (Ιια) étaient portiers (πυλωροὶ) de l’arche de Dieu. ». Giguet a fusionné v.24 dans son entrée 15:25 en omettant le numéro (marqueur échappé « 25. » = mot 27). Concordance nominale et lexicale nette.",
+   "confiance": "haute"
+  },
+  "b": {
+   "grec": "15:24",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     15,
+     25,
+     0,
+     26
+    ]
+   ],
+   "preuve": "Giguet n'a pas de v.24 : son v.15:25 est un bloc fusionné dont la 1re moitié (mots 0-26) traduit exactement le grec 15:24. Concordance : Σοβνια=Somnia(0), Ιωσαφατ=Josaphat(1), Ναθαναηλ=Nathanaël(2), Αμασαι=Amasaï(3), Ζαχαρια=Zacharie(4), Βαναι=Banaïas(5), Ελιεζερ=Eliézer(7) ; οἱ ἱερεῖς σαλπίζοντες ταῖς σάλπιγξιν = 'les prêtres, sonnaient de la trompette'(8-13) ; ἔμπροσθεν τῆς κιβωτοῦ τοῦ θεοῦ = 'devant l'arche de Dieu'(14-17) ; καὶ Αβδεδομ καὶ Ιια πυλωροὶ τῆς κιβωτοῦ τοῦ θεοῦ = 'Abdedom et Jehia étaient portiers de l'arche de Dieu'(18-26). Le grec 15:24 est flottant uniquement parce que le lien de grec 15:25 réclamait tout le verset Giguet ; il faut le re-scoper (voir proposition 15:25). Le mot 27 = '25.' est un marqueur de verset échappé, exclu par le pipeline.",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "pro",
+  "cause": "disposition",
+  "grec": "31:19",
+  "a": {
+   "grec": "31:19",
+   "disposition": "apparier",
+   "sources": [
+    [
+     31,
+     21
+    ]
+   ],
+   "preuve": "G19 « τοὺς πήχεις αὐτῆς ἐκτείνει ἐπὶ τὰ συμφέροντα ... ἐρείδει εἰς ἄτρακτον » = Giguet 21 « Elle étend les bras partout où il est utile, et ses mains ne quittent pas le fuseau » : ἐκτείνει=étend, συμφέροντα=utile, ἄτρακτον=fuseau. Correspondance mot pour mot. Giguet 21 est aujourd'hui servi à tort par G21 (décalage) : voir corriger-lien 31:21.",
+   "confiance": "haute"
+  },
+  "b": {
+   "grec": "31:19",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     31,
+     21
+    ]
+   ],
+   "preuve": "Grec 31:19 ἐκτείνει ἐπὶ τὰ συμφέροντα / ἐρείδει εἰς ἄτρακτον = 'étend... où il est utile' / 'fuseau'. Giguet 31:21 'Elle étend les bras partout où il est utile, et ses mains ne quittent pas le fuseau' (ἄτρακτον=fuseau, συμφέροντα=utile). Flottant parce que le lien de 31:21 était décalé sur ce français ; on le lui rend et 31:21 part sur son vrai français (G31:24).",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "pro",
+  "cause": "disposition",
+  "grec": "31:20",
+  "a": {
+   "grec": "31:20",
+   "disposition": "apparier",
+   "sources": [
+    [
+     31,
+     22
+    ]
+   ],
+   "preuve": "G20 « χεῖρας δὲ αὐτῆς διήνοιξεν πένητι καρπὸν δὲ ἐξέτεινεν πτωχῷ » = Giguet 22 « Elle a la main ouverte pour le pauvre, et présente un fruit au mendiant » : διήνοιξεν=main ouverte, πένητι=pauvre, καρπὸν=fruit, πτωχῷ=mendiant. Giguet 22 est servi à tort par G22 : voir corriger-lien 31:22.",
+   "confiance": "haute"
+  },
+  "b": {
+   "grec": "31:20",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     31,
+     22
+    ]
+   ],
+   "preuve": "Grec 31:20 χεῖρας διήνοιξεν πένητι / καρπὸν ἐξέτεινεν πτωχῷ. Giguet 31:22 'Elle a la main ouverte pour le pauvre, et présente un fruit au mendiant' (πένητι=pauvre, πτωχῷ=mendiant, καρπὸν=fruit). G31:22 occupé à tort par 31:22 : on déplace 31:22 sur son vrai français (G31:25).",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "pro",
+  "cause": "disposition",
+  "grec": "31:23",
+  "a": {
+   "grec": "31:23",
+   "disposition": "apparier",
+   "sources": [
+    [
+     31,
+     26
+    ]
+   ],
+   "preuve": "G23 « περίβλεπτος δὲ γίνεται ἐν πύλαις ὁ ἀνὴρ αὐτῆς ... ἐν συνεδρίῳ μετὰ τῶν γερόντων » = Giguet 26 « Son mari est considéré devant les portes de la ville, lorsqu'il siège au conseil avec les anciens de la terre » : περίβλεπτος=considéré, πύλαις=portes, ἀνὴρ=mari, συνεδρίῳ=conseil, γερόντων=anciens. Giguet 26 est servi à tort par G26 : voir corriger-lien 31:26.",
+   "confiance": "haute"
+  },
+  "b": {
+   "grec": "31:23",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     31,
+     26
+    ]
+   ],
+   "preuve": "Grec 31:23 περίβλεπτος ἐν πύλαις ὁ ἀνὴρ... καθίσῃ ἐν συνεδρίῳ μετὰ τῶν γερόντων. Giguet 31:26 'Son mari est considéré devant les portes de la ville, lorsqu'il siège au conseil avec les anciens de la terre' (πύλαις=portes, συνεδρίῳ=conseil, γερόντων=anciens). G31:26 occupé à tort par 31:26 : on déplace 31:26 dans le bloc G31:27.",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "pro",
+  "cause": "sources",
+  "grec": "31:26",
+  "a": {
+   "grec": "31:26",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     31,
+     27,
+     32,
+     48
+    ]
+   ],
+   "preuve": "G26 « ἰσχὺν καὶ εὐπρέπειαν ἐνεδύσατο καὶ εὐφράνθη ἐν ἡμέραις ἐσχάταις » (ἰσχὺν=force, εὐπρέπειαν=beauté, ἐνεδύσατο=revêtue, εὐφράνθη=joie, ἡμέραις ἐσχάταις=derniers jours) sert à tort Giguet 26. Vrai français = bloc Giguet 27, mots 32-48 « Elle s'est revêtue de force et de beauté, et goûte une douce joie dans ses derniers jours ». Libère Giguet 26 pour G23. (le marqueur mot 31 « 25. » reste hors plage et sera exclu)",
+   "confiance": "haute"
+  },
+  "b": {
+   "grec": "31:26",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     31,
+     27,
+     32,
+     49
+    ]
+   ],
+   "preuve": "Grec 31:26 ἰσχὺν καὶ εὐπρέπειαν ἐνεδύσατο καὶ εὐφράνθη ἐν ἡμέραις ἐσχάταις. Bloc Giguet 31:27 mots 32-49 'Elle s'est revêtue de force et de beauté, et goûte une douce joie dans ses derniers jours .' (ἰσχὺν=force, εὐπρέπειαν=beauté, ἐσχάταις=derniers jours). Le mot 31 '25.' reste hors extrait = marqueur exclu. Lien décalé (servait G31:26) recorrigé vers l'extrait.",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "pro",
+  "cause": "sources",
+  "grec": "31:28",
+  "a": {
+   "grec": "31:28",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     31,
+     27,
+     69,
+     77
+    ],
+    [
+     31,
+     28
+    ]
+   ],
+   "preuve": "G28 = deux membres : « τὸ στόμα δὲ ἀνοίγει σοφῶς καὶ νομοθέσμως » = fin du bloc Giguet 27, mots 69-77 « Elle ouvre la bouche sagement et selon la loi » (orpheline après réduction de G27), + « ἡ δὲ ἐλεημοσύνη αὐτῆς ἀνέστησεν τὰ τέκνα αὐτῆς ... ὁ ἀνὴρ αὐτῆς ᾔνεσεν αὐτήν » = Giguet 28 « Elle a élevé ses enfants avec tendresse, et ils se sont enrichis ; et son époux a fait son éloge ». Rattacher les mots 69-77 clôt le bloc sans perte (marqueurs mots 68 « 27. » et 78 « . » exclus).",
+   "confiance": "haute"
+  },
+  "b": {
+   "grec": "31:28",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     31,
+     27,
+     69,
+     78
+    ],
+    [
+     31,
+     28
+    ]
+   ],
+   "preuve": "Grec 31:28 = deux clauses : τὸ στόμα ἀνοίγει σοφῶς καὶ νομοθέσμως → bloc G31:27 mots 69-78 'Elle ouvre la bouche sagement et selon la loi .' (σοφῶς=sagement, νομοθέσμως=selon la loi ; mot 68 '27.' = marqueur exclu) ; ἐλεημοσύνη ἀνέστησεν τὰ τέκνα... ἐπλούτησαν... ᾔνεσεν → Giguet 31:28 entier 'Elle a élevé ses enfants... et son époux a fait son éloge' (τέκνα=enfants, ἐπλούτησαν=enrichis). Extension pour ne pas orpheliner le français de la 1re clause après réduction de 31:27.",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "neh",
+  "cause": "sources",
+  "grec": "3:30",
+  "a": {
+   "grec": "3:30",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     3,
+     30,
+     0,
+     29
+    ]
+   ],
+   "preuve": "Grec 3:30 correspond à la tête de Giguet 3:30 (tokens 0-29 'Après celui-ci, Ananias... dont il était le gardien ;') : Ανανια=Ananias, Σελεμια=Sélémias, Ανουμ=Anom, Σελεφ=Séleph, ὁ ἕκτος=sixième, Μεσουλαμ=Mesulam, γαζοφυλακίου=trésor. Le réduire à cet extrait évite le chevauchement avec l'extrait 30-53 désormais pris par grec 3:31.",
+   "confiance": "haute"
+  },
+  "b": {
+   "grec": "3:30",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     3,
+     30,
+     0,
+     28
+    ]
+   ],
+   "preuve": "Grec 3:30 « Ανανια υἱὸς Σελεμια καὶ Ανουμ υἱὸς Σελεφ... Μεσουλαμ υἱὸς Βαρχια ἐξ ἐναντίας γαζοφυλακίου αὐτοῦ » = 1re moitié de Giguet 3:30 (tokens 0-28) « Ananias, fils de Sélémias (Ανανια...Σελεμια)... Anom (Ανουμ)... Séleph (Σελεφ)... Mesulam, fils de Barachias (Μεσουλαμ...Βαρχια)... en face du trésor (γαζοφυλακίου) dont il était le gardien ». Réduction d’extrait nécessaire : sans elle, Giguet 3:30 serait servi par les deux grecs 3:30 et 3:31 (chevauchement). Le token 29 « ; » séparateur reste hors extrait.",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "neh",
+  "cause": "disposition",
+  "grec": "7:73",
+  "a": {
+   "grec": "7:73",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     7,
+     72
+    ]
+   ],
+   "preuve": "Grec 7:73 'καὶ ἐκάθισαν οἱ ἱερεῖς καὶ οἱ Λευῖται καὶ οἱ πυλωροὶ καὶ οἱ ᾄδοντες... καὶ οἱ ναθινιμ καὶ πᾶς Ισραηλ ἐν πόλεσιν αὐτῶν' = Giguet 7:72 'les prêtres, les lévites, les portiers, les chantres... les Nathinéens, tout Israël, s'établirent dans leurs villes' (ἐκάθισαν=s'établirent, ναθινιμ=Nathinéens, ἐν πόλεσιν αὐτῶν=dans leurs villes). Flottant par décalage +1 des liens voisins; Giguet 7:72 est occupé à tort par grec 7:72. La queue 'καὶ ἔφθασεν ὁ μὴν ὁ ἕβδομος' = Giguet 8:1 (autre chapitre), non servie ici.",
+   "confiance": "haute"
+  },
+  "b": {
+   "grec": "7:73",
+   "disposition": "apparier",
+   "sources": [
+    [
+     7,
+     72
+    ]
+   ],
+   "preuve": "Grec 7:73 'καὶ ἐκάθισαν οἱ ἱερεῖς καὶ οἱ Λευῖται καὶ οἱ πυλωροὶ καὶ οἱ ᾄδοντες καὶ οἱ ἀπὸ τοῦ λαοῦ καὶ οἱ ναθινιμ καὶ πᾶς Ισραηλ ἐν πόλεσιν αὐτῶν' <-> Giguet 7:72 'les prêtres, et les lévites, et les portiers et les chantres, et ceux du peuple, et les Nathinéens, et tout Israël, s'établirent dans leurs villes'. Concordance mot à mot : ἐκάθισαν=s'établirent, ἱερεῖς=prêtres, Λευῖται=lévites, πυλωροὶ=portiers, ᾄδοντες=chantres, ἀπὸ τοῦ λαοῦ=ceux du peuple, ναθινιμ=Nathinéens, πᾶς Ισραηλ=tout Israël, ἐν πόλεσιν αὐτῶν=dans leurs villes. La 2e partie grecque (καὶ ἔφθασεν ὁ μὴν ὁ ἕβδομος... = le septième mois arriva) est un surplus grec que Giguet reporte au début de neh 8 ; voisinage vide, hors périmètre. Le verset Giguet 7:72 entier correspond à grec 7:73.",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "jos",
+  "cause": "disposition",
+  "grec": "21:44",
+  "a": {
+   "grec": "21:44",
+   "disposition": "apparier",
+   "sources": [
+    [
+     21,
+     42
+    ]
+   ],
+   "preuve": "κατέπαυσεν αὐτοὺς κύριος κυκλόθεν <-> 'le Seigneur... retablit la paix tout alentour' ; καθότι ὤμοσεν τοῖς πατράσιν αὐτῶν <-> 'comme il l'avait promis a leurs peres' ; οὐκ ἀνέστη οὐθεὶς κατενώπιον αὐτῶν <-> 'nul ne se souleva contre eux' ; πάντας τοὺς ἐχθροὺς αὐτῶν παρέδωκεν κύριος εἰς τὰς χεῖρας αὐτῶν <-> 'Le Seigneur avait livre tous leurs ennemis a leurs mains'. Giguet 21:42 est actuellement servi a tort par le grec 21:42 (decalage +2) ; correction du lien 21:42 proposee ci-dessous pour liberer la place.",
+   "confiance": "haute"
+  },
+  "b": {
+   "grec": "21:44",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     21,
+     42
+    ]
+   ],
+   "preuve": "Flottant car les liens voisins décalés occupent Gig 21:42. Grec 21:44 = καὶ κατέπαυσεν αὐτοὺς κύριος κυκλόθεν καθότι ὤμοσεν τοῖς πατράσιν...οὐκ ἀνέστη οὐθεὶς κατενώπιον...ἐχθροὺς...παρέδωκεν εἰς τὰς χεῖρας = Gig 21:42 'le Seigneur, comme il l'avait promis à leurs pères, rétablit la paix tout alentour ; nul ne se souleva contre eux... livré tous leurs ennemis à leurs mains.'. Concordance exacte ; Gig 21:42 libéré par correction de grec 21:42.",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "jos",
+  "cause": "disposition",
+  "grec": "21:45",
+  "a": {
+   "grec": "21:45",
+   "disposition": "apparier",
+   "sources": [
+    [
+     21,
+     43
+    ]
+   ],
+   "preuve": "οὐ διέπεσεν ἀπὸ πάντων τῶν ῥημάτων τῶν καλῶν <-> 'Aucune des bonnes paroles... ne tomba a terre' ; ὧν ἐλάλησεν κύριος τοῖς υἱοῖς Ισραηλ <-> 'que le Seigneur avait dites aux fils d'Israel' ; πάντα παρεγένετο <-> 'toutes furent verifiees'. Giguet 21:43 est le dernier verset du chapitre Giguet, servi a tort par le grec 21:43 ; correction du lien 21:43 proposee ci-dessous.",
+   "confiance": "haute"
+  },
+  "b": {
+   "grec": "21:45",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     21,
+     43
+    ]
+   ],
+   "preuve": "Flottant car les liens voisins décalés occupent Gig 21:43. Grec 21:45 = οὐ διέπεσεν ἀπὸ πάντων τῶν ῥημάτων τῶν καλῶν ὧν ἐλάλησεν κύριος τοῖς υἱοῖς Ισραηλ πάντα παρεγένετο = Gig 21:43 'Aucune des bonnes paroles que le Seigneur avait dites aux fils d'Israël ne tomba à terre ; toutes furent vérifiées.'. Concordance exacte ; Gig 21:43 libéré par correction de grec 21:43.",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "jos",
+  "cause": "sources",
+  "grec": "21:42",
+  "a": {
+   "grec": "21:42",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     21,
+     40
+    ]
+   ],
+   "preuve": "Contenu de Giguet 21:40, non de 21:42 : Θαμνασαραχ (x2) <-> 'Thamnasachar' ; ἐν τῷ ὄρει Εφραιμ <-> 'montagnes d'Ephraim' ; τὰς μαχαίρας τὰς πετρίνας ἐν αἷς περιέτεμεν τοὺς υἱοὺς Ισραηλ <-> 'les couteaux de pierre avec lesquels il avait circoncis les fils d'Israel' ; συνετέλεσεν Ἰησοῦς διαμερίσας τὴν γῆν <-> 'Josue eut alors acheve de visiter la terre promise'. Libere Giguet 21:42 pour le grec 21:44.",
+   "confiance": "haute"
+  },
+  "b": {
+   "grec": "21:42",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     21,
+     40,
+     4,
+     96
+    ]
+   ],
+   "preuve": "Grec 21:42 = συνετέλεσεν Ἰησοῦς διαμερίσας τὴν γῆν... Θαμνασαραχ... μαχαίρας τὰς πετρίνας = Gig 21:40 mots 4..96 'ils eurent chaque ville... Josué eut achevé... Thamnasachar... les couteaux de pierre... déposa en Thamnasachar.'. Le lien actuel grec 21:42 sert par erreur Gig 21:42 (la paix/ennemis = grec 21:44). Libère Gig 21:42 pour grec 21:44.",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "jos",
+  "cause": "sources",
+  "grec": "21:41",
+  "a": {
+   "grec": "21:41",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     21,
+     39
+    ]
+   ],
+   "preuve": "πᾶσαι αἱ πόλεις τῶν Λευιτῶν ἐν μέσῳ κατασχέσεως υἱῶν Ισραηλ τεσσαράκοντα ὀκτὼ πόλεις <-> Giguet 21:39 'Les levites eurent ainsi, au milieu des possessions des fils d'Israel, quarante-huit villes'. Grec 21:41 servait a tort Giguet 21:41. Libere Giguet 21:41 pour le grec 21:43.",
+   "confiance": "haute"
+  },
+  "b": {
+   "grec": "21:41",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     21,
+     39
+    ],
+    [
+     21,
+     40,
+     0,
+     3
+    ]
+   ],
+   "preuve": "Grec 21:41 = πᾶσαι αἱ πόλεις τῶν Λευιτῶν...τεσσαράκοντα ὀκτὼ πόλεις καὶ τὰ περισπόρια αὐτῶν = Gig 21:39 'Les lévites eurent ainsi... quarante-huit villes' + Gig 21:40 mots 0..3 'Et leurs banlieues ;'. Libère Gig 21:41 pour grec 21:43.",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "deu",
+  "cause": "disposition",
+  "grec": "4:15",
+  "a": {
+   "grec": "4:15",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     4,
+     14,
+     38,
+     68
+    ]
+   ],
+   "preuve": "Giguet n'a pas de verset 4:15 separe : son texte est enchasse dans Giguet 4:14 apres un marqueur parasite « 13. » (mot 37). Mots 38-68 = « Et vous veillerez attentivement sur vos ames, car vous n'avez point vu d'image le jour ou le Seigneur, en Horeb, vous parla du haut de la montagne, au milieu du feu. » Concordance nette avec Rahlfs 4:15 : φυλάξεσθε ... τὰς ψυχὰς ὑμῶν <-> « veillerez ... sur vos ames » ; σφόδρα <-> « attentivement » ; οὐκ εἴδετε ὁμοίωμα <-> « n'avez point vu d'image » ; ἐν Χωρηβ <-> « en Horeb » ; ἐν τῷ ὄρει <-> « du haut de la montagne » ; ἐκ μέσου τοῦ πυρός <-> « au milieu du feu ».",
+   "confiance": "haute"
+  },
+  "b": {
+   "grec": "4:15",
+   "disposition": "apparier",
+   "sources": [
+    [
+     4,
+     14,
+     38,
+     68
+    ]
+   ],
+   "preuve": "Giguet n'a pas de verset 4:15 propre : son français est enfoui dans l'enregistrement Giguet 4:14, après le marqueur '13.' (mot 37). L'extrait mots 38-68 = 'Et vous veillerez attentivement sur vos âmes, car vous n'avez point vu d'image le jour où le Seigneur, en Horeb, vous parla du haut de la montagne, au milieu du feu.' Concordance nette avec grec 4:15 : φυλάξεσθε τὰς ψυχὰς ὑμῶν = 'veillerez... sur vos âmes' ; οὐκ εἴδετε ὁμοίωμα = 'n'avez point vu d'image' ; Χωρηβ = 'Horeb' ; ἐν τῷ ὄρει = 'la montagne' ; ἐκ μέσου τοῦ πυρός = 'au milieu du feu'.",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "deu",
+  "cause": "disposition",
+  "grec": "5:5",
+  "a": {
+   "grec": "5:5",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     5,
+     4,
+     16,
+     59
+    ]
+   ],
+   "preuve": "Le francais de grec 5:5 est present, noye dans giguet 5:4 (2e partie, apres le marqueur \"3.\"). Concordance exacte: κἀγὼ εἱστήκειν ἀνὰ μέσον κυρίου καὶ ὑμῶν = 'Et moi ... je me tenais entre le Seigneur et vous' ; ἐν τῷ καιρῷ ἐκείνῳ = 'en ce temps-là' ; ἀναγγεῖλαι ὑμῖν τὰ ῥήματα κυρίου = 'pour vous rapporter les paroles du Seigneur' ; ὅτι ἐφοβήθητε ἀπὸ προσώπου τοῦ πυρός = 'car vous étiez épouvantés à l’aspect du feu' ; οὐκ ἀνέβητε εἰς τὸ ὄρος = 'vous ne montiez point sur la montagne' ; λέγων = 'et le Seigneur a dit :'. giguet 5:4 tokens 16-59 (split /\\s+/, materialize slice f..t+1). Le token 15 ('3.') est un marqueur de verset echappe, laisse non revendique.",
+   "confiance": "haute"
+  },
+  "b": {
+   "grec": "5:5",
+   "disposition": "apparier",
+   "sources": [
+    [
+     5,
+     4,
+     16,
+     59
+    ]
+   ],
+   "preuve": "Giguet 5:4 fusionne deux versets grecs et le flottant 5:5 est sa seconde moitié (mots 16-59) : « Et moi... je me tenais entre le Seigneur et vous » = κἀγὼ εἱστήκειν ἀνὰ μέσον κυρίου καὶ ὑμῶν ; « en ce temps-là » = ἐν τῷ καιρῷ ἐκείνῳ ; « pour vous rapporter les paroles du Seigneur » = ἀναγγεῖλαι ὑμῖν τὰ ῥήματα κυρίου ; « vous étiez épouvantés à l’aspect du feu » = ἐφοβήθητε ἀπὸ προσώπου τοῦ πυρὸς ; « vous ne montiez point sur la montagne » = οὐκ ἀνέβητε εἰς τὸ ὄρος ; « a dit » = λέγων. Concordance intégrale.",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "2ma",
+  "cause": "sources",
+  "grec": "9:24",
+  "a": {
+   "grec": "9:24",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     9,
+     24,
+     0,
+     24
+    ]
+   ],
+   "preuve": "Lien voisin a restreindre pour eviter le chevauchement: le lien actuel [[9,24]] reclame TOUT Giguet 9:24, y compris les mots 26-75 qui appartiennent au grec 9:25. On le borne aux mots 0-24 ('Pour qu'en cas d'accident... ne fussent point troubles ;') = ὅπως ἐάν τι παράδοξον ἀποβαίνῃ... μὴ ἐπιταράσσωνται. Le mot 25 '23.' reste non reclame et sera exclu comme marqueur.",
+   "confiance": "haute"
+  },
+  "b": {
+   "grec": "9:24",
+   "disposition": "corriger-lien",
+   "sources": [
+    [
+     9,
+     24,
+     0,
+     23
+    ]
+   ],
+   "preuve": "9:24 réclamait tout le verset Giguet 9:24, ce qui chevaucherait 9:25. Il ne doit garder que le 1er segment (mots 0-23) 'Pour qu'en cas d'accident imprévu ou de fâcheuse nouvelle ceux de son royaume, sachant à qui les affaires étaient remises, ne fussent point troublés': ὅπως ἐάν τι παράδοξον ἀποβαίνῃ = 'en cas d'accident imprévu'; προσαγγελθῇ τι δυσχερές = 'fâcheuse nouvelle'; ᾧ καταλέλειπται τὰ πράγματα μὴ ἐπιταράσσωνται = 'à qui les affaires étaient remises, ne fussent point troublés'. Libère les mots 26-75 pour 9:25; les mots 24 (';') et 25 ('23.') restent des marqueurs exclus.",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "sng",
+  "cause": "sources",
+  "grec": "1:1",
+  "a": {
+   "grec": "1:1",
+   "disposition": "apparier",
+   "sources": [
+    [
+     1,
+     1,
+     0,
+     7
+    ]
+   ],
+   "preuve": "Grec 1:1 «ᾆσμα ᾀσμάτων ὅ ἐστιν τῷ Σαλωμων» = suscription/titre. Giguet fusionne le titre et le v.1 dans son 1:1 ; ses mots 0-7 «Cantique des cantiques, qui est de Salomon .» concordent mot à mot : ᾆσμα ᾀσμάτων ↔ Cantique des cantiques, Σαλωμων ↔ Salomon. Le reste (mots 8-24 «Qu'il me baise…») appartient à grec 1:2. Extrait, pas a-traduire : le titre est bien présent dans Giguet.",
+   "confiance": "haute"
+  },
+  "b": {
+   "grec": "1:1",
+   "disposition": "apparier",
+   "sources": [
+    [
+     1,
+     1,
+     0,
+     6
+    ]
+   ],
+   "preuve": "Grec 1:1 = suscription 'ᾆσμα ᾀσμάτων ὅ ἐστιν τῷ Σαλωμων'. Giguet a fusionné le titre dans son v.1 : les mots 0-6 'Cantique des cantiques, qui est de Salomon' en sont la traduction exacte — ᾆσμα ᾀσμάτων <-> 'Cantique des cantiques', ὅ ἐστιν <-> 'qui est', τῷ Σαλωμων <-> 'de Salomon'. Le reste du v.1 Giguet (mots 8-24 'Qu'il me baise…vin') traduit le grec 1:2, d'où l'extrait limité aux mots 0-6.",
+   "confiance": "haute"
+  }
+ },
+ {
+  "book": "1ki",
+  "grec": "6:34",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    30
+   ]
+  ]
+ },
+ {
+  "book": "1ki",
+  "grec": "6:35",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    31
+   ]
+  ]
+ },
+ {
+  "book": "1ki",
+  "grec": "6:36",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    32
+   ]
+  ]
+ },
+ {
+  "book": "1ki",
+  "grec": "6:31",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    29
+   ]
+  ]
+ },
+ {
+  "book": "1ki",
+  "grec": "6:30",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    28
+   ]
+  ]
+ },
+ {
+  "book": "1ki",
+  "grec": "6:29",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    27
+   ]
+  ]
+ },
+ {
+  "book": "1ki",
+  "grec": "6:28",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    26
+   ]
+  ]
+ },
+ {
+  "book": "1ki",
+  "grec": "6:27",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    25
+   ]
+  ]
+ },
+ {
+  "book": "1ki",
+  "grec": "6:26",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    24
+   ]
+  ]
+ },
+ {
+  "book": "1ki",
+  "grec": "6:25",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    23
+   ]
+  ]
+ },
+ {
+  "book": "1ki",
+  "grec": "6:24",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    22
+   ]
+  ]
+ },
+ {
+  "book": "1ki",
+  "grec": "6:23",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    21
+   ]
+  ]
+ },
+ {
+  "book": "1ki",
+  "grec": "6:22",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    20
+   ]
+  ]
+ },
+ {
+  "book": "1ki",
+  "grec": "6:6",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    10
+   ]
+  ]
+ },
+ {
+  "book": "1ki",
+  "grec": "6:5",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    9
+   ]
+  ]
+ },
+ {
+  "book": "1ki",
+  "grec": "6:4",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    8
+   ]
+  ]
+ },
+ {
+  "book": "1ki",
+  "grec": "6:3",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    7
+   ]
+  ]
+ },
+ {
+  "book": "1ki",
+  "grec": "6:2",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    6
+   ]
+  ]
+ },
+ {
+  "book": "1ki",
+  "grec": "6:1",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    1
+   ],
+   [
+    6,
+    2
+   ],
+   [
+    6,
+    3
+   ],
+   [
+    6,
+    4
+   ],
+   [
+    6,
+    5
+   ]
+  ]
+ },
+ {
+  "book": "1ki",
+  "grec": "6:7",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    11
+   ]
+  ]
+ },
+ {
+  "book": "1ki",
+  "grec": "6:8",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    12
+   ]
+  ]
+ },
+ {
+  "book": "1ki",
+  "grec": "6:9",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    13
+   ]
+  ]
+ },
+ {
+  "book": "1ki",
+  "grec": "6:10",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    14
+   ]
+  ]
+ },
+ {
+  "book": "1ki",
+  "grec": "6:19",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    18
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "1:25",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    1,
+    13
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "1:26",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    1,
+    14
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "1:27",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    1,
+    15
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "1:28",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    1,
+    16
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "1:29",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    1,
+    17
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "1:30",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    1,
+    18
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "1:31",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    1,
+    19
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "1:32",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    1,
+    20
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "1:33",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    1,
+    21
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "1:34",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    1,
+    22
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "1:35",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    1,
+    23
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "1:36",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    1,
+    24
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "1:37",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    1,
+    25
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "1:38",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    1,
+    26
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "1:39",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    1,
+    27
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "1:40",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    1,
+    28
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "1:41",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    1,
+    29
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "1:42",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    1,
+    30
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "5:27",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    1
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "5:28",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    2
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "5:29",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    3
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "5:30",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    4
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "5:31",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    5
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "5:32",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    6
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "5:33",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    7
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "5:34",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    8
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "5:35",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    9
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "5:36",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    10
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "5:37",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    11
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "5:38",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    12
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "5:39",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    13
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "5:40",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    14
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "5:41",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    15
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "6:1",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    16
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "6:2",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    17
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "6:3",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    18
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "6:4",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    19
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "6:5",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    20
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "6:6",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    21
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "6:7",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    22
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "6:8",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    23
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "6:9",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    24
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "6:10",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    25
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "6:11",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    26
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "6:12",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    27
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "6:13",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    28
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "6:14",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    29
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "6:15",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    30
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "6:16",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    31
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "6:18",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    33
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "6:52",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    67
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "6:53",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    68
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "6:54",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    69
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "6:55",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    70
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "6:56",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    71
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "6:57",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    72
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "6:58",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    73
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "6:59",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    74
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "6:60",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    75
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "6:61",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    76
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "6:62",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    77
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "6:63",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    78
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "6:64",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    79
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "6:65",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    80
+   ]
+  ]
+ },
+ {
+  "book": "1ch",
+  "grec": "6:66",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    6,
+    81
+   ]
+  ]
+ },
+ {
+  "book": "pro",
+  "grec": "13:1",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    13,
+    1
+   ]
+  ]
+ },
+ {
+  "book": "pro",
+  "grec": "13:2",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    13,
+    2
+   ]
+  ]
+ },
+ {
+  "book": "pro",
+  "grec": "13:3",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    13,
+    3
+   ]
+  ]
+ },
+ {
+  "book": "pro",
+  "grec": "13:4",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    13,
+    4
+   ]
+  ]
+ },
+ {
+  "book": "pro",
+  "grec": "13:5",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    13,
+    5
+   ]
+  ]
+ },
+ {
+  "book": "neh",
+  "grec": "3:32",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    3,
+    31
+   ]
+  ]
+ },
+ {
+  "book": "neh",
+  "grec": "3:31",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    3,
+    30,
+    30,
+    53
+   ]
+  ]
+ },
+ {
+  "book": "neh",
+  "grec": "7:72",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    7,
+    71
+   ]
+  ]
+ },
+ {
+  "book": "neh",
+  "grec": "7:71",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    7,
+    70
+   ]
+  ]
+ },
+ {
+  "book": "neh",
+  "grec": "7:70",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    7,
+    69
+   ]
+  ]
+ },
+ {
+  "book": "neh",
+  "grec": "7:69",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    7,
+    68
+   ]
+  ]
+ },
+ {
+  "book": "jos",
+  "grec": "21:43",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    21,
+    41
+   ]
+  ]
+ },
+ {
+  "book": "jos",
+  "grec": "21:40",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    21,
+    38
+   ]
+  ]
+ },
+ {
+  "book": "jos",
+  "grec": "21:39",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    21,
+    37,
+    19,
+    30
+   ]
+  ]
+ },
+ {
+  "book": "jos",
+  "grec": "21:38",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    21,
+    37,
+    0,
+    18
+   ]
+  ]
+ },
+ {
+  "book": "jos",
+  "grec": "21:37",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    21,
+    36,
+    33,
+    44
+   ]
+  ]
+ },
+ {
+  "book": "jos",
+  "grec": "21:36",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    21,
+    36,
+    0,
+    32
+   ]
+  ]
+ },
+ {
+  "book": "ezk",
+  "grec": "11:24",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    11,
+    22
+   ]
+  ]
+ },
+ {
+  "book": "ezk",
+  "grec": "11:25",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    11,
+    23
+   ]
+  ]
+ },
+ {
+  "book": "ezk",
+  "grec": "11:13",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    11,
+    11
+   ]
+  ]
+ },
+ {
+  "book": "ezk",
+  "grec": "11:14",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    11,
+    12
+   ]
+  ]
+ },
+ {
+  "book": "ezk",
+  "grec": "11:15",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    11,
+    13
+   ]
+  ]
+ },
+ {
+  "book": "ezk",
+  "grec": "11:16",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    11,
+    14
+   ]
+  ]
+ },
+ {
+  "book": "ezk",
+  "grec": "11:17",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    11,
+    15
+   ]
+  ]
+ },
+ {
+  "book": "ezk",
+  "grec": "11:18",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    11,
+    16
+   ]
+  ]
+ },
+ {
+  "book": "ezk",
+  "grec": "11:19",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    11,
+    17
+   ]
+  ]
+ },
+ {
+  "book": "ezk",
+  "grec": "11:20",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    11,
+    18
+   ]
+  ]
+ },
+ {
+  "book": "ezk",
+  "grec": "11:21",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    11,
+    19
+   ]
+  ]
+ },
+ {
+  "book": "ezk",
+  "grec": "11:22",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    11,
+    20
+   ]
+  ]
+ },
+ {
+  "book": "ezk",
+  "grec": "11:23",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    11,
+    21
+   ]
+  ]
+ },
+ {
+  "book": "2ch",
+  "grec": "3:17",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    3,
+    16
+   ]
+  ]
+ },
+ {
+  "book": "2ch",
+  "grec": "3:16",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    3,
+    15
+   ]
+  ]
+ },
+ {
+  "book": "2ch",
+  "grec": "3:15",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    3,
+    14
+   ]
+  ]
+ },
+ {
+  "book": "2ch",
+  "grec": "3:14",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    3,
+    13
+   ]
+  ]
+ },
+ {
+  "book": "2ch",
+  "grec": "3:13",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    3,
+    12
+   ]
+  ]
+ },
+ {
+  "book": "2ma",
+  "grec": "9:25",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    9,
+    24,
+    26,
+    75
+   ]
+  ]
+ },
+ {
+  "book": "bar",
+  "grec": "4:19",
+  "cause": "quarantaine zéro-perte (cascade incomplète)",
+  "sources": [
+   [
+    4,
+    18
+   ]
+  ]
+ },
+ {
+  "book": "sir",
+  "grec": "0:32",
+  "cause": "à-traduire dans chapitre non résolu",
+  "preuve": "ἐν τῷ διαστήματι τοῦ χρόνου = 'dans l'intervalle du temps' : absent du bloc Giguet 0:1. Aucun token 'intervalle/durée/espace' ; le seul 'temps' est 'longtemps,' (token 236), déjà rendu par συγχρονίσας en 0:28. Giguet a compressé cette locution temporelle. || ἐν τῷ διαστήματι τοῦ χρόνου (dans l'intervalle du temps) n'a AUCUN rendu dans le bloc Giguet: le texte enchaîne directement 'beaucoup de savoir' (fin 0:31, mot 274) puis 'pour mener à fin' (début 0:33, mot 275) — vérifié, aucun mot entre les deux. La circonstancielle temporelle est omise par Giguet, absente de tout le voisinage."
+ },
+ {
+  "book": "1ki",
+  "grec": "6:33",
+  "cause": "à-traduire dans chapitre non résolu",
+  "preuve": "G6:33 « πυλῶνι τοῦ ναοῦ, φλιαὶ ξύλων ἀρκευθίνων, στοαὶ τετραπλῶς » (porte de la nef, poteaux de genièvre, portiques quadruples) : Giguet saute les marqueurs 32 et 33, passant de Gig6:29 (marqueur 31 = G6:31, porte de l'oracle) à Gig6:30 (marqueur 34 = G6:34). Contenu absent de tout le voisinage Giguet. || 6:33 'τῷ πυλῶνι τοῦ ναοῦ φλιαὶ ξύλων ἀρκευθίνων στοαὶ τετραπλῶς' concerne le portail de la NEF (ναός), doublet du portail du dabir de 6:31. Giguet a traduit le portail à genièvre (dabir) en Gg6:29(31) via 6:31 ; sa numérotation saute le n° MT 33 (passe de 31 à 34). Aucun verset Giguet du voisinage ne parle du 'porche du temple/de la nef' à genièvre quadruple — nulle part."
+ },
+ {
+  "book": "1ki",
+  "grec": "6:32",
+  "cause": "à-traduire dans chapitre non résolu",
+  "preuve": "G6:32 « δύο θύρας ξύλων πευκίνων … ἐγκεκολαμμένα χερουβιν καὶ φοίνικας καὶ πέταλα … περιέσχεν χρυσίῳ » est le DOUBLET des portes déjà décrit en G6:34+G6:35. Giguet n'a rendu qu'une occurrence (Gig6:30-31, marqueurs 34-35 = G6:34-35) ; il saute le marqueur 32. Cette occurrence-ci reste non traduite. Son lien lié actuel vers Gig6:32 est faux (Gig6:32 = G6:36). || 6:32 'δύο θύρας ξύλων πευκίνων... ἐγκεκολαμμένα χερουβιν καὶ φοίνικας καὶ πέταλα διαπεπετασμένα καὶ περιέσχεν χρυσίῳ' est le DOUBLET LXX conflant 6:34 (portes de sapin/pin) + 6:35 (chérubins, palmes, or). Giguet rend séparément 6:34->Gg6:30(34) et 6:35->Gg6:31(35) et saute ce doublet : sa numérotation passe de (31) à (34), n° MT 32 absent. Aucun français distinct au voisinage."
+ },
+ {
+  "book": "pro",
+  "grec": "13:6",
+  "cause": "à-traduire dans chapitre non résolu",
+  "preuve": "grec 13:6 'δικαιοσύνη φυλάσσει ἀκάκους τοὺς δὲ ἀσεβεῖς φαύλους ποιεῖ ἁμαρτία' ('la justice garde les innocents, le péché rend méchants les impies') n'existe NULLE PART chez Giguet ch.13 : les 24 versets Giguet s'apparient à grec 13:1-5 puis 13:7-25. Giguet passe directement de 13:5 (=grec 13:5, 'le juste hait les paroles injustes') à 13:6 (=grec 13:7, 'Les uns se donnent pour riches'). Verset LXX sauté par Giguet. Corrige l'ancien lien erroné [[13,5]]. || Grec 13:6 « δικαιοσύνη φυλάσσει ἀκάκους · τοὺς ἀσεβεῖς φαύλους ποιεῖ ἁμαρτία » (la justice garde les innocents ; le péché rend les impies méchants). Aucun verset Giguet ne porte ce contenu : Giguet saute de v.5 (Le juste hait les paroles injustes = Grec 13:5) directement à v.6 (Les uns se donnent pour riches = Grec 13:7). candidatsGiguetVoisinage vide, donc aucun atterrissage. Verset LXX non traduit par Giguet ; son lien actuel erroné vers Giguet 13:5 doit être rompu (Giguet 13:5 revient au Grec 13:5)."
+ },
+ {
+  "book": "neh",
+  "grec": "7:68",
+  "cause": "à-traduire dans chapitre non résolu",
+  "preuve": "Grec 7:68 'ἵπποι ἑπτακόσιοι τριάκοντα ἕξ ἡμίονοι διακόσιοι τεσσαράκοντα πέντε' (chevaux 736, mulets 245). Grep sur TOUT neh de Giguet: aucun verset ne mentionne chevaux ni mulets (seul 7:68 'ânes' et 13:15 'ânes'). Giguet ne traduit que la ligne des ânes (=grec 7:69) et saute la ligne chevaux/mulets. Aucun français Giguet ne correspond -> orphelin. || Grec 7:68 = 'ἵπποι ἑπτακόσιοι τριάκοντα ἕξ ἡμίονοι διακόσιοι τεσσαράκοντα πέντε' (736 chevaux, 245 mulets). J'ai lu Giguet neh 7 EN ENTIER : il n'a que 72 versets, aucun ne mentionne chevaux (ἵπποι) ni mulets (ἡμίονοι) ; son unique verset d'animaux est 7:68 'Deux mille sept cents ânes' (ânes = ὄνοι, mot absent de grec 7:68 mais présent en grec 7:69). Giguet a donc OMIS le verset chevaux/mulets, ce qui crée le décalage d'un cran à partir de 7:69. Le lien actuel 7:68->Giguet 7:68 sert 'ânes', contenu qui appartient à grec 7:69. Aucun français Giguet ne correspond aux chevaux/mulets : orphelin grec."
+ },
+ {
+  "book": "ezk",
+  "grec": "11:11",
+  "cause": "à-traduire dans chapitre non résolu",
+  "preuve": "Grec 11:11 « αὐτὴ ὑμῖν οὐκ ἔσται εἰς λέβητα καὶ ὑμεῖς οὐ μὴ γένησθε … εἰς κρέα ἐπὶ τῶν ὁρίων τοῦ Ισραηλ κρινῶ ὑμᾶς » reprend les images λέβης/κρέα déjà rendues en 11:3/11:7 et la clausule ὁρίων … κρινῶ de 11:10. Giguet l'OMET : sa v.11 imprimée est étiquetée « (Vulg., 13.) » et rend déjà le grec 11:13 (Phaltias). Aucun français Giguet distinct pour ce verset dans tout le chapitre (23 versets seulement). || Grec 11:11 « αὐτὴ ὑμῖν οὐκ ἔσται εἰς λέβητα καὶ ὑμεῖς οὐ μὴ γένησθε ... εἰς κρέα » (cette ville ne sera pas pour vous une chaudière, et vous ne serez pas la chair) est un doublet propre à la LXX. Giguet ne le rend NULLE PART : il enchaîne son v.10 (=grec 11:10) directement sur son v.11 marqué « (Vulg., 13.) » = grec 11:13 (Phaltias). Aucun français Giguet ne nie la chaudière/la chair. Libère aussi Giguet 11:11, capté à tort."
+ },
+ {
+  "book": "ezk",
+  "grec": "11:12",
+  "cause": "à-traduire dans chapitre non résolu",
+  "preuve": "Grec 11:12 « καὶ ἐπιγνώσεσθε διότι ἐγὼ κύριος » (et vous reconnaîtrez que je suis le Seigneur) reprend la clausule déjà rendue en fin de Giguet 11:10 (« vous reconnaîtrez que je suis le Seigneur » = grec 11:10 καὶ ἐπιγνώσεσθε ὅτι ἐγὼ κύριος). Giguet passe de sa v.10 à sa v.11 = grec 11:13 ; aucun français Giguet distinct pour 11:12. || Grec 11:12 « καὶ ἐπιγνώσεσθε διότι ἐγὼ κύριος » (et vous reconnaîtrez que je suis le Seigneur) est un doublet LXX isolé. Giguet n'a aucun verset autonome équivalent entre son v.10 et son v.11 ; la formule n'apparaît qu'en fin de Giguet 11:10 (« vous reconnaîtrez que je suis le Seigneur » = clausule de grec 11:10). Omis par Giguet. Libère aussi Giguet 11:12, capté à tort."
+ },
+ {
+  "book": "2ch",
+  "grec": "3:12",
+  "cause": "à-traduire dans chapitre non résolu",
+  "preuve": "Grec 3:12 = καὶ ἡ πτέρυξ τοῦ χερουβ τοῦ ἑνὸς πήχεων πέντε ἁπτομένη τοῦ τοίχου τοῦ οἴκου καὶ ἡ πτέρυξ ἡ ἑτέρα πήχεων πέντε ἁπτομένη τοῦ πτέρυγος τοῦ χερουβ τοῦ ἑτέρου — c'est le DOUBLET du second chérubin (LXX = TM 3:12), quasi identique à grec 3:11. Giguet a condensé les deux chérubins en son seul v.3:11 ('l'aile droite de l'un des chérubins touchait un mur, et l'aile gauche de l'autre chérubin touchait le mur opposé'), qui appartient déjà et exactement à grec 3:11. Aucun verset Giguet distinct (3:11 à 3:16) ne rend séparément ce doublet ; l'apparier créerait un chevauchement fatal sur Giguet 3:11. Giguet a donc omis ce verset : orphelin grec à traduire. || Grec 3:12 'ἡ πτέρυξ τοῦ χερουβ τοῦ ἑνὸς πήχεων πέντε ἁπτομένη τοῦ τοίχου τοῦ οἴκου καὶ ἡ πτέρυξ ἡ ἑτέρα... ἁπτομένη τοῦ πτέρυγος τοῦ χερουβ τοῦ ἑτέρου' est le doublet Rahlfs de l'aile qui touche le mur. Giguet ne le compte pas separement : il fond grec 3:11 ET 3:12 dans son unique v.11 ('l'aile droite de l'un des chérubins touchait un mur, et l'aile gauche de l'autre chérubin touchait le mur opposé'). Giguet 3:11 est deja et correctement servi par grec 3:11 ; aucun autre verset Giguet (chapitre 1-16, voisinage vide) ne correspond a ce doublet. Apres recalage, Giguet 3:11-3:16 sont chacun servis une seule fois par grec 3:11,3:13,3:14,3:15,3:16,3:17 : il ne reste aucune place pour grec 3:12."
+ },
+ {
+  "book": "bar",
+  "grec": "4:18",
+  "cause": "à-traduire dans chapitre non résolu",
+  "preuve": "Lien voisin à corriger pour éviter le chevauchement sur Giguet 4:18. grec 4:18 « ὁ γὰρ ἐπαγαγὼν τὰ κακὰ ὑμῖν ἐξελεῖται ὑμᾶς ἐκ χειρὸς ἐχθρῶν ὑμῶν » (celui qui a amené les maux vous délivrera de la main de vos ennemis) n'a aucun français Giguet propre : Giguet passe de 4:17 (« comment puis-je vous secourir ? ») à 4:18 = grec 4:19 (« Partez, enfants »). Le « délivrera des mains des ennemis » de Giguet 4:21 traduit grec 4:21 (θαρσεῖτε τέκνα βοήσατε…) et « celui qui a amené des maux » de Giguet 4:29 traduit grec 4:29 — verses distincts. Omission par homéotéleute ; son lien actuel [[4,18]] doit être libéré pour grec 4:19. || Grec 4:18 = 'ὁ γὰρ ἐπαγαγὼν τὰ κακὰ ὑμῖν ἐξελεῖται ὑμᾶς ἐκ χειρὸς ἐχθρῶν ὑμῶν' (celui qui a amene les maux vous delivrera de la main de vos ennemis). Aucun francais Giguet ne le rend: Giguet 4:17='Et moi, comment puis-je vous secourir ?' (=grec 4:17), Giguet 4:18='Partez, enfants, partez...' (=grec 4:19), pas de Giguet 4:19, Giguet 4:20=grec 4:20. Le voisinage (Giguet 4:21 deja lie a grec 4:21 ; candidat 5:13 'Vaincus, et non vainqueurs') ne contient nulle part ce contenu — Giguet a saute grec 4:18. Son lien actuel vers Giguet 4:18 est faux (c'est le francais de grec 4:19) ; le corriger en a-traduire (sources=[]) libere Giguet 4:18 pour grec 4:19, evitant tout chevauchement."
+ }
+]

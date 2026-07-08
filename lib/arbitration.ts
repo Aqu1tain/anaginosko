@@ -1,6 +1,7 @@
 import "server-only";
 import fs from "node:fs";
 import path from "node:path";
+import { materializeSources, giguetWords as giguetWordsOf } from "./lxx-materialize.mjs";
 
 // Cœur serveur de l'arbitrage. Modèle de LIENS : un verset grec (Rahlfs, autorité)
 // -> suite ordonnée de versets Giguet source (0 = orphelin, 1 = paire, 2+ = scission ;
@@ -108,23 +109,14 @@ export function effectiveSources(book: string, ref: string): Source[] | null {
 }
 
 // Découpage en mots du texte Giguet (déterministe : espaces). Les extraits
-// [de, à] indexent ce découpage.
-export const giguetWords = (book: string, ch: number, v: number): string[] | null => {
-  const t = giguetText(book, ch, v);
-  return t == null ? null : t.split(/\s+/).filter(Boolean);
-};
-
-const sliceSource = (book: string, s: Source): string | null => {
-  if (s.length === 2) return giguetText(book, s[0], s[1]);
-  const words = giguetWords(book, s[0], s[1]);
-  if (!words) return null;
-  return words.slice(s[2], s[3] + 1).join(" ");
-};
+// [de, à] indexent ce découpage. Délègue au module par-ref partagé.
+export const giguetWords = (book: string, ch: number, v: number): string[] | null =>
+  giguetWordsOf(giguet()[book], ch, v);
 
 // Texte matérialisé d'un lien : concaténation des sources (versets ou extraits),
-// dans l'ordre.
+// dans l'ordre. Source unique de vérité = lib/lxx-materialize.mjs.
 export const materialize = (book: string, sources: Source[]): string =>
-  sources.map((s) => sliceSource(book, s)).filter(Boolean).join(" ").trim();
+  materializeSources(giguet()[book], sources);
 
 const vkey = (s: Source) => `${s[0]}:${s[1]}`;
 const label = (s: Source) => (s.length === 4 ? `${s[0]}:${s[1]} (mots ${s[2] + 1}-${s[3] + 1})` : vkey(s));

@@ -1,194 +1,3690 @@
 {
+ "_provenance": {
+  "note": "Capture versionnee de l arbitrage LXX de Biblion (travail philologique). Source vivante = ARB_DIR du serveur preprod ; ce fichier en est le miroir git. Ne pas editer a la main : resynchroniser depuis le serveur.",
+  "source": "preprod ARB_DIR:/opt/anaginosko-web-next/arbitration/lxx-arbitration.json",
+  "capturedAt": "2026-07-07",
+  "author": "Βιβλίον",
+  "originChecksum": "sha256:5b0468e04edf20b48a6001611a28a52eddc5247a8c498523ea6d872ccd7f92d1",
+  "books": 10,
+  "entries": 151
+ },
+ "_archived": {
+  "_reason": "Overrides Job 25/26 : contournement d un bug parser (Giguet 25 clobbé = « Or Job », en réalité Baldad). Parser corrigé -> Giguet 25 = Baldad restauré ; alignement grec 25+26 <-> Giguet 25 (décalage de versification) part en ré-arbitrage Phase 2. Son jugement était juste sur une donnée qui mentait ; provenance conservée.",
+  "archivedAt": "2026-07-07",
   "job": {
-    "25:1": {
-      "sources": [],
-      "by": "Biblion",
-      "at": "2026-07-03T00:00:00.000Z",
-      "note": "Giguet n a pas de chapitre 26 ; son chapitre 25 = grec 26 (aligne 1 pour 1). Le discours de Baldad (grec 25) est absent de Giguet. Verrou durable contre une reconstruction des liens auto."
-    },
-    "25:2": {
-      "sources": [],
-      "by": "Biblion",
-      "at": "2026-07-03T00:00:00.000Z",
-      "note": "Giguet n a pas de chapitre 26 ; son chapitre 25 = grec 26 (aligne 1 pour 1). Le discours de Baldad (grec 25) est absent de Giguet. Verrou durable contre une reconstruction des liens auto."
-    },
-    "25:3": {
-      "sources": [],
-      "by": "Biblion",
-      "at": "2026-07-03T00:00:00.000Z",
-      "note": "Giguet n a pas de chapitre 26 ; son chapitre 25 = grec 26 (aligne 1 pour 1). Le discours de Baldad (grec 25) est absent de Giguet. Verrou durable contre une reconstruction des liens auto."
-    },
-    "25:4": {
-      "sources": [],
-      "by": "Biblion",
-      "at": "2026-07-03T00:00:00.000Z",
-      "note": "Giguet n a pas de chapitre 26 ; son chapitre 25 = grec 26 (aligne 1 pour 1). Le discours de Baldad (grec 25) est absent de Giguet. Verrou durable contre une reconstruction des liens auto."
-    },
-    "25:5": {
-      "sources": [],
-      "by": "Biblion",
-      "at": "2026-07-03T00:00:00.000Z",
-      "note": "Giguet n a pas de chapitre 26 ; son chapitre 25 = grec 26 (aligne 1 pour 1). Le discours de Baldad (grec 25) est absent de Giguet. Verrou durable contre une reconstruction des liens auto."
-    },
-    "25:6": {
-      "sources": [],
-      "by": "Biblion",
-      "at": "2026-07-03T00:00:00.000Z",
-      "note": "Giguet n a pas de chapitre 26 ; son chapitre 25 = grec 26 (aligne 1 pour 1). Le discours de Baldad (grec 25) est absent de Giguet. Verrou durable contre une reconstruction des liens auto."
-    },
-    "26:1": {
-      "sources": [
-        [
-          25,
-          1
-        ]
-      ],
-      "by": "Biblion",
-      "at": "2026-07-03T00:00:00.000Z",
-      "note": "Giguet n a pas de chapitre 26 ; son chapitre 25 = grec 26 (aligne 1 pour 1). Le discours de Baldad (grec 25) est absent de Giguet. Verrou durable contre une reconstruction des liens auto."
-    },
-    "26:2": {
-      "sources": [
-        [
-          25,
-          2
-        ]
-      ],
-      "by": "Biblion",
-      "at": "2026-07-03T00:00:00.000Z",
-      "note": "Giguet n a pas de chapitre 26 ; son chapitre 25 = grec 26 (aligne 1 pour 1). Le discours de Baldad (grec 25) est absent de Giguet. Verrou durable contre une reconstruction des liens auto."
-    },
-    "26:3": {
-      "sources": [
-        [
-          25,
-          3
-        ]
-      ],
-      "by": "Biblion",
-      "at": "2026-07-03T00:00:00.000Z",
-      "note": "Giguet n a pas de chapitre 26 ; son chapitre 25 = grec 26 (aligne 1 pour 1). Le discours de Baldad (grec 25) est absent de Giguet. Verrou durable contre une reconstruction des liens auto."
-    },
-    "26:4": {
-      "sources": [
-        [
-          25,
-          4
-        ]
-      ],
-      "by": "Biblion",
-      "at": "2026-07-03T00:00:00.000Z",
-      "note": "Giguet n a pas de chapitre 26 ; son chapitre 25 = grec 26 (aligne 1 pour 1). Le discours de Baldad (grec 25) est absent de Giguet. Verrou durable contre une reconstruction des liens auto."
-    },
-    "26:5": {
-      "sources": [
-        [
-          25,
-          5
-        ]
-      ],
-      "by": "Biblion",
-      "at": "2026-07-03T00:00:00.000Z",
-      "note": "Giguet n a pas de chapitre 26 ; son chapitre 25 = grec 26 (aligne 1 pour 1). Le discours de Baldad (grec 25) est absent de Giguet. Verrou durable contre une reconstruction des liens auto."
-    },
-    "26:6": {
-      "sources": [
-        [
-          25,
-          6
-        ]
-      ],
-      "by": "Biblion",
-      "at": "2026-07-03T00:00:00.000Z",
-      "note": "Giguet n a pas de chapitre 26 ; son chapitre 25 = grec 26 (aligne 1 pour 1). Le discours de Baldad (grec 25) est absent de Giguet. Verrou durable contre une reconstruction des liens auto."
-    },
-    "26:7": {
-      "sources": [
-        [
-          25,
-          7
-        ]
-      ],
-      "by": "Biblion",
-      "at": "2026-07-03T00:00:00.000Z",
-      "note": "Giguet n a pas de chapitre 26 ; son chapitre 25 = grec 26 (aligne 1 pour 1). Le discours de Baldad (grec 25) est absent de Giguet. Verrou durable contre une reconstruction des liens auto."
-    },
-    "26:8": {
-      "sources": [
-        [
-          25,
-          8
-        ]
-      ],
-      "by": "Biblion",
-      "at": "2026-07-03T00:00:00.000Z",
-      "note": "Giguet n a pas de chapitre 26 ; son chapitre 25 = grec 26 (aligne 1 pour 1). Le discours de Baldad (grec 25) est absent de Giguet. Verrou durable contre une reconstruction des liens auto."
-    },
-    "26:9": {
-      "sources": [
-        [
-          25,
-          9
-        ]
-      ],
-      "by": "Biblion",
-      "at": "2026-07-03T00:00:00.000Z",
-      "note": "Giguet n a pas de chapitre 26 ; son chapitre 25 = grec 26 (aligne 1 pour 1). Le discours de Baldad (grec 25) est absent de Giguet. Verrou durable contre une reconstruction des liens auto."
-    },
-    "26:10": {
-      "sources": [
-        [
-          25,
-          10
-        ]
-      ],
-      "by": "Biblion",
-      "at": "2026-07-03T00:00:00.000Z",
-      "note": "Giguet n a pas de chapitre 26 ; son chapitre 25 = grec 26 (aligne 1 pour 1). Le discours de Baldad (grec 25) est absent de Giguet. Verrou durable contre une reconstruction des liens auto."
-    },
-    "26:11": {
-      "sources": [
-        [
-          25,
-          11
-        ]
-      ],
-      "by": "Biblion",
-      "at": "2026-07-03T00:00:00.000Z",
-      "note": "Giguet n a pas de chapitre 26 ; son chapitre 25 = grec 26 (aligne 1 pour 1). Le discours de Baldad (grec 25) est absent de Giguet. Verrou durable contre une reconstruction des liens auto."
-    },
-    "26:12": {
-      "sources": [
-        [
-          25,
-          12
-        ]
-      ],
-      "by": "Biblion",
-      "at": "2026-07-03T00:00:00.000Z",
-      "note": "Giguet n a pas de chapitre 26 ; son chapitre 25 = grec 26 (aligne 1 pour 1). Le discours de Baldad (grec 25) est absent de Giguet. Verrou durable contre une reconstruction des liens auto."
-    },
-    "26:13": {
-      "sources": [
-        [
-          25,
-          13
-        ]
-      ],
-      "by": "Biblion",
-      "at": "2026-07-03T00:00:00.000Z",
-      "note": "Giguet n a pas de chapitre 26 ; son chapitre 25 = grec 26 (aligne 1 pour 1). Le discours de Baldad (grec 25) est absent de Giguet. Verrou durable contre une reconstruction des liens auto."
-    },
-    "26:14": {
-      "sources": [
-        [
-          25,
-          14
-        ]
-      ],
-      "by": "Biblion",
-      "at": "2026-07-03T00:00:00.000Z",
-      "note": "Giguet n a pas de chapitre 26 ; son chapitre 25 = grec 26 (aligne 1 pour 1). Le discours de Baldad (grec 25) est absent de Giguet. Verrou durable contre une reconstruction des liens auto."
-    }
+   "25:1": {
+    "sources": [],
+    "by": "Βιβλίον",
+    "at": "2026-07-03T16:13:29.629Z"
+   },
+   "25:2": {
+    "sources": [],
+    "by": "Βιβλίον",
+    "at": "2026-07-03T16:13:32.830Z"
+   },
+   "25:3": {
+    "sources": [],
+    "by": "Βιβλίον",
+    "at": "2026-07-03T16:13:39.375Z"
+   },
+   "25:4": {
+    "sources": [],
+    "by": "Βιβλίον",
+    "at": "2026-07-03T16:13:46.017Z"
+   },
+   "25:5": {
+    "sources": [],
+    "by": "Βιβλίον",
+    "at": "2026-07-03T16:13:52.493Z"
+   },
+   "25:6": {
+    "sources": [],
+    "by": "Βιβλίον",
+    "at": "2026-07-03T16:13:56.316Z"
+   },
+   "26:2": {
+    "sources": [
+     [
+      25,
+      2
+     ]
+    ],
+    "by": "Βιβλίον",
+    "at": "2026-07-03T23:35:33.300Z"
+   },
+   "26:3": {
+    "sources": [
+     [
+      25,
+      3
+     ]
+    ],
+    "by": "Βιβλίον",
+    "at": "2026-07-03T23:35:43.161Z"
+   },
+   "26:4": {
+    "sources": [
+     [
+      25,
+      4
+     ]
+    ],
+    "by": "Βιβλίον",
+    "at": "2026-07-03T23:35:54.913Z"
+   },
+   "26:5": {
+    "sources": [
+     [
+      25,
+      5
+     ]
+    ],
+    "by": "Βιβλίον",
+    "at": "2026-07-03T23:36:06.524Z"
+   },
+   "26:6": {
+    "sources": [
+     [
+      25,
+      6
+     ]
+    ],
+    "by": "Βιβλίον",
+    "at": "2026-07-03T23:36:15.060Z"
+   }
   }
+ },
+ "gen": {
+  "6:1": {
+   "sources": [
+    [
+     6,
+     1,
+     15,
+     36
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T09:41:50.677Z"
+  },
+  "5:32": {
+   "sources": [
+    [
+     6,
+     1,
+     0,
+     14
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T09:42:49.633Z"
+  }
+ },
+ "exo": {
+  "36:8": {
+   "sources": [
+    [
+     36,
+     8,
+     1,
+     32
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T12:51:01.695Z"
+  },
+  "36:9": {
+   "sources": [
+    [
+     36,
+     9,
+     1,
+     14
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T12:51:24.809Z"
+  },
+  "36:10": {
+   "sources": [
+    [
+     36,
+     10,
+     1,
+     34
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T12:51:40.556Z"
+  },
+  "36:11": {
+   "sources": [
+    [
+     36,
+     11,
+     1,
+     20
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T12:52:13.141Z"
+  },
+  "36:12": {
+   "sources": [
+    [
+     36,
+     12,
+     1,
+     23
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T12:52:22.689Z"
+  },
+  "36:13": {
+   "sources": [
+    [
+     36,
+     13,
+     1,
+     25
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T12:52:34.044Z"
+  },
+  "36:14": {
+   "sources": [
+    [
+     36,
+     14,
+     1,
+     23
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T12:52:43.804Z"
+  },
+  "36:15": {
+   "sources": [
+    [
+     36,
+     15,
+     1,
+     24
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T12:52:52.628Z"
+  },
+  "36:16": {
+   "sources": [
+    [
+     36,
+     16,
+     1,
+     15
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T12:53:03.801Z"
+  },
+  "36:17": {
+   "sources": [
+    [
+     36,
+     17,
+     1,
+     21
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T12:53:41.815Z"
+  },
+  "36:18": {
+   "sources": [
+    [
+     36,
+     18,
+     1,
+     9
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T12:53:54.388Z"
+  },
+  "36:19": {
+   "sources": [
+    [
+     36,
+     19,
+     1,
+     8
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T12:54:05.663Z"
+  },
+  "36:20": {
+   "sources": [
+    [
+     36,
+     20,
+     1,
+     19
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T12:54:15.458Z"
+  },
+  "36:21": {
+   "sources": [
+    [
+     36,
+     21,
+     1,
+     28
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T12:54:23.650Z"
+  },
+  "36:22": {
+   "sources": [
+    [
+     36,
+     22,
+     1,
+     14
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T12:54:32.727Z"
+  },
+  "36:23": {
+   "sources": [
+    [
+     36,
+     23,
+     1,
+     22
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T12:54:42.066Z"
+  },
+  "36:24": {
+   "sources": [
+    [
+     36,
+     24,
+     1,
+     15
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T12:54:52.202Z"
+  },
+  "36:25": {
+   "sources": [
+    [
+     36,
+     25,
+     1,
+     24
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T12:55:02.414Z"
+  },
+  "36:26": {
+   "sources": [
+    [
+     36,
+     26,
+     1,
+     25
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T12:55:09.358Z"
+  },
+  "36:27": {
+   "sources": [
+    [
+     36,
+     27,
+     1,
+     25
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T12:55:18.895Z"
+  },
+  "36:28": {
+   "sources": [
+    [
+     36,
+     28,
+     1,
+     40
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T12:55:30.736Z"
+  },
+  "36:29": {
+   "sources": [
+    [
+     36,
+     29,
+     1,
+     15
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T12:55:41.446Z"
+  },
+  "36:30": {
+   "sources": [
+    [
+     36,
+     30,
+     1,
+     16
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T12:55:52.669Z"
+  },
+  "36:31": {
+   "sources": [
+    [
+     36,
+     31,
+     1,
+     35
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T12:56:02.605Z"
+  },
+  "36:32": {
+   "sources": [
+    [
+     36,
+     32,
+     1,
+     26
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T12:56:17.671Z"
+  },
+  "36:33": {
+   "sources": [
+    [
+     36,
+     33,
+     1,
+     29
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T12:56:28.132Z"
+  },
+  "36:34": {
+   "sources": [
+    [
+     36,
+     34,
+     1,
+     12
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T12:56:36.588Z"
+  },
+  "36:35": {
+   "sources": [
+    [
+     36,
+     35,
+     1,
+     16
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T12:57:51.316Z"
+  },
+  "36:36": {
+   "sources": [
+    [
+     36,
+     36,
+     1,
+     20
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T12:59:01.759Z"
+  },
+  "36:37": {
+   "sources": [
+    [
+     36,
+     37,
+     1,
+     28
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T12:59:11.247Z"
+  },
+  "36:38": {
+   "sources": [
+    [
+     36,
+     38,
+     1,
+     22
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T12:59:21.108Z"
+  },
+  "39:8": {
+   "sources": [
+    [
+     39,
+     8,
+     1,
+     18
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T15:40:29.242Z"
+  },
+  "39:9": {
+   "sources": [
+    [
+     39,
+     8,
+     19,
+     33
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T15:40:52.032Z"
+  }
+ },
+ "lev": {
+  "8:18": {
+   "sources": [
+    [
+     8,
+     18,
+     0,
+     21
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T13:08:57.517Z"
+  },
+  "8:19": {
+   "sources": [
+    [
+     8,
+     18,
+     22,
+     31
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T13:09:43.597Z"
+  },
+  "8:20": {
+   "sources": [
+    [
+     8,
+     19,
+     0,
+     19
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T13:11:53.959Z"
+  },
+  "8:21": {
+   "sources": [
+    [
+     8,
+     19,
+     20,
+     30
+    ],
+    [
+     8,
+     20,
+     0,
+     25
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T13:13:06.681Z"
+  },
+  "8:22": {
+   "sources": [
+    [
+     8,
+     21,
+     0,
+     21
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T13:13:54.666Z"
+  },
+  "8:23": {
+   "sources": [
+    [
+     8,
+     22,
+     0,
+     31
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T13:15:20.914Z"
+  },
+  "8:24": {
+   "sources": [
+    [
+     8,
+     23,
+     0,
+     41
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T13:17:10.421Z"
+  },
+  "8:25": {
+   "sources": [
+    [
+     8,
+     24
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T13:17:31.126Z"
+  },
+  "8:26": {
+   "sources": [
+    [
+     8,
+     25
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T13:17:56.917Z"
+  },
+  "8:27": {
+   "sources": [
+    [
+     8,
+     26
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T13:18:13.651Z"
+  },
+  "8:28": {
+   "sources": [
+    [
+     8,
+     27
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T13:18:39.493Z"
+  },
+  "8:29": {
+   "sources": [
+    [
+     8,
+     28
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T13:19:45.882Z"
+  },
+  "8:30": {
+   "sources": [
+    [
+     8,
+     29
+    ],
+    [
+     8,
+     30
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T13:20:19.387Z"
+  },
+  "26:35": {
+   "sources": [
+    [
+     26,
+     35,
+     22,
+     39
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T13:35:55.406Z"
+  },
+  "26:34": {
+   "sources": [
+    [
+     26,
+     34
+    ],
+    [
+     26,
+     35,
+     0,
+     21
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T13:35:58.096Z"
+  }
+ },
+ "jer": {
+  "28:60": {
+   "sources": [
+    [
+     28,
+     56,
+     1,
+     22
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T15:55:59.065Z"
+  },
+  "28:64": {
+   "sources": [
+    [
+     28,
+     60,
+     1,
+     21
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T16:08:39.078Z"
+  },
+  "28:59": {
+   "sources": [
+    [
+     28,
+     55,
+     1,
+     45
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T15:56:24.054Z"
+  },
+  "28:58": {
+   "sources": [
+    [
+     28,
+     54,
+     1,
+     45
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T15:56:39.782Z"
+  },
+  "28:57": {
+   "sources": [
+    [
+     28,
+     53,
+     1,
+     26
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T15:56:51.014Z"
+  },
+  "28:62": {
+   "sources": [
+    [
+     28,
+     58,
+     1,
+     29
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T15:48:01.489Z"
+  },
+  "28:63": {
+   "sources": [
+    [
+     28,
+     59,
+     1,
+     22
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T15:48:03.379Z"
+  },
+  "28:61": {
+   "sources": [
+    [
+     28,
+     57,
+     1,
+     22
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T15:48:32.980Z"
+  },
+  "28:56": {
+   "sources": [
+    [
+     28,
+     52,
+     1,
+     27
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T15:57:03.118Z"
+  },
+  "28:55": {
+   "sources": [
+    [
+     28,
+     51,
+     1,
+     31
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T15:57:26.499Z"
+  },
+  "28:54": {
+   "sources": [
+    [
+     28,
+     50,
+     1,
+     21
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T15:58:04.369Z"
+  },
+  "28:53": {
+   "sources": [
+    [
+     28,
+     49,
+     1,
+     26
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T15:58:27.289Z"
+  },
+  "28:52": {
+   "sources": [
+    [
+     28,
+     48,
+     1,
+     29
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T15:58:54.967Z"
+  },
+  "28:51": {
+   "sources": [
+    [
+     28,
+     47,
+     1,
+     30
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T15:59:07.200Z"
+  },
+  "28:50": {
+   "sources": [
+    [
+     28,
+     46,
+     1,
+     30
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T16:07:26.699Z"
+  },
+  "28:49": {
+   "sources": [
+    [
+     28,
+     45,
+     2,
+     11
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T16:07:44.243Z"
+  }
+ },
+ "neh": {
+  "11:17": {
+   "sources": [
+    [
+     11,
+     16
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T21:17:47.981Z"
+  },
+  "11:18": {
+   "sources": [
+    [
+     11,
+     17
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T21:18:14.974Z"
+  },
+  "11:19": {
+   "sources": [
+    [
+     11,
+     18
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T21:18:30.796Z"
+  },
+  "11:22": {
+   "sources": [
+    [
+     11,
+     19
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T21:18:44.637Z"
+  },
+  "11:23": {
+   "sources": [
+    [
+     11,
+     20
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T21:19:26.962Z"
+  },
+  "11:24": {
+   "sources": [
+    [
+     11,
+     21
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T21:19:51.951Z"
+  },
+  "11:25": {
+   "sources": [
+    [
+     11,
+     22
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T21:20:05.065Z"
+  },
+  "11:26": {
+   "sources": [
+    [
+     11,
+     23
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T21:20:12.557Z"
+  },
+  "11:27": {
+   "sources": [
+    [
+     11,
+     24,
+     0,
+     2
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T21:27:19.243Z"
+  },
+  "11:30": {
+   "sources": [
+    [
+     11,
+     24,
+     3,
+     9
+    ],
+    [
+     11,
+     25
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T21:27:43.160Z"
+  },
+  "11:31": {
+   "sources": [
+    [
+     11,
+     26
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T21:25:18.879Z"
+  },
+  "11:36": {
+   "sources": [
+    [
+     11,
+     27
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T21:25:29.742Z"
+  },
+  "12:8": {
+   "sources": [
+    [
+     12,
+     5,
+     1,
+     12
+    ],
+    [
+     12,
+     5,
+     15,
+     19
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T21:34:12.805Z"
+  },
+  "12:9": {
+   "sources": [
+    [
+     12,
+     5,
+     20,
+     23
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-06T13:25:58.596Z"
+  }
+ },
+ "sir": {
+  "16:20": {
+   "sources": [
+    [
+     16,
+     20
+    ],
+    [
+     16,
+     21,
+     0,
+     6
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T21:47:00.214Z"
+  },
+  "16:21": {
+   "sources": [
+    [
+     16,
+     21,
+     7,
+     15
+    ],
+    [
+     16,
+     22,
+     0,
+     7
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T21:49:31.429Z"
+  },
+  "16:22": {
+   "sources": [
+    [
+     16,
+     22,
+     8,
+     26
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T21:50:51.777Z"
+  },
+  "24:5": {
+   "sources": [
+    [
+     24,
+     6,
+     0,
+     15
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T21:55:12.008Z"
+  },
+  "24:6": {
+   "sources": [
+    [
+     24,
+     6,
+     16,
+     21
+    ],
+    [
+     24,
+     7
+    ],
+    [
+     24,
+     8
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T21:55:59.486Z"
+  },
+  "24:9": {
+   "sources": [
+    [
+     24,
+     12,
+     0,
+     17
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T21:57:31.165Z"
+  },
+  "24:10": {
+   "sources": [
+    [
+     24,
+     12,
+     18,
+     30
+    ],
+    [
+     24,
+     13,
+     0,
+     8
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T21:58:30.497Z"
+  },
+  "24:11": {
+   "sources": [
+    [
+     24,
+     13,
+     9,
+     27
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T21:59:06.993Z"
+  },
+  "30:25": {
+   "sources": [
+    [
+     33,
+     13,
+     7,
+     18
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T22:09:16.561Z"
+  },
+  "33:14": {
+   "sources": [
+    [
+     36,
+     15,
+     0,
+     21
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T22:14:38.446Z"
+  },
+  "33:15": {
+   "sources": [
+    [
+     36,
+     15,
+     22,
+     37
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T22:15:03.671Z"
+  },
+  "33:16": {
+   "sources": [
+    [
+     36,
+     16,
+     0,
+     5
+    ],
+    [
+     30,
+     29,
+     3,
+     10
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-04T00:02:45.808Z"
+  },
+  "30:14": {
+   "sources": [
+    [
+     30,
+     16,
+     2,
+     20
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T22:27:23.601Z"
+  },
+  "36:1": {
+   "sources": [
+    [
+     33,
+     1
+    ],
+    [
+     33,
+     2,
+     2,
+     9
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T22:33:29.424Z"
+  },
+  "36:16": {
+   "sources": [
+    [
+     36,
+     21,
+     18,
+     24
+    ],
+    [
+     36,
+     22,
+     0,
+     8
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T22:34:32.047Z"
+  },
+  "36:26": {
+   "sources": [
+    [
+     36,
+     32,
+     0,
+     12
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T22:35:50.585Z"
+  },
+  "36:27": {
+   "sources": [
+    [
+     36,
+     32,
+     13,
+     29
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T22:35:53.092Z"
+  },
+  "40:27": {
+   "sources": [
+    [
+     40,
+     28
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T23:18:03.052Z"
+  },
+  "40:26": {
+   "sources": [
+    [
+     40,
+     26
+    ],
+    [
+     40,
+     27
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T23:17:00.183Z"
+  },
+  "40:28": {
+   "sources": [
+    [
+     40,
+     29
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T23:18:29.150Z"
+  },
+  "40:29": {
+   "sources": [
+    [
+     40,
+     30
+    ],
+    [
+     40,
+     31
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T23:19:20.221Z"
+  },
+  "40:30": {
+   "sources": [
+    [
+     40,
+     32
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T23:19:39.548Z"
+  },
+  "41:27": {
+   "sources": [
+    [
+     42,
+     1,
+     20,
+     35
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T23:26:27.422Z"
+  },
+  "43:4": {
+   "sources": [
+    [
+     43,
+     3,
+     15,
+     24
+    ],
+    [
+     43,
+     4
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T23:33:41.521Z"
+  },
+  "41:6": {
+   "sources": [
+    [
+     41,
+     9
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T23:33:57.368Z"
+  },
+  "41:7": {
+   "sources": [
+    [
+     41,
+     10
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T23:34:10.158Z"
+  },
+  "44:21": {
+   "sources": [
+    [
+     44,
+     22
+    ],
+    [
+     44,
+     23
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T23:41:55.340Z"
+  },
+  "45:3": {
+   "sources": [
+    [
+     45,
+     2,
+     19,
+     29
+    ],
+    [
+     45,
+     3
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-06T13:27:10.240Z"
+  },
+  "46:9": {
+   "sources": [
+    [
+     46,
+     11
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-06T13:28:01.157Z"
+  },
+  "47:4": {
+   "sources": [
+    [
+     47,
+     3,
+     15,
+     17
+    ],
+    [
+     47,
+     4
+    ],
+    [
+     47,
+     5
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-06T21:41:59.338Z"
+  },
+  "47:5": {
+   "sources": [
+    [
+     47,
+     6
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-06T21:42:09.761Z"
+  },
+  "49:9": {
+   "sources": [
+    [
+     49,
+     11
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T23:44:25.130Z"
+  },
+  "50:12": {
+   "sources": [
+    [
+     50,
+     13
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T23:44:39.416Z"
+  },
+  "51:3": {
+   "sources": [
+    [
+     51,
+     4
+    ],
+    [
+     51,
+     5
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T23:45:17.915Z"
+  },
+  "51:8": {
+   "sources": [
+    [
+     51,
+     11
+    ],
+    [
+     51,
+     12
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T23:45:43.666Z"
+  },
+  "51:9": {
+   "sources": [
+    [
+     51,
+     13
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T23:45:55.338Z"
+  },
+  "51:16": {
+   "sources": [
+    [
+     51,
+     21
+    ],
+    [
+     51,
+     22,
+     0,
+     7
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T23:49:24.052Z"
+  },
+  "51:23": {
+   "sources": [
+    [
+     51,
+     31
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T23:50:49.138Z"
+  },
+  "51:20": {
+   "sources": [
+    [
+     51,
+     27
+    ],
+    [
+     51,
+     28
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T23:51:35.832Z"
+  },
+  "48:25": {
+   "sources": [
+    [
+     48,
+     27,
+     19,
+     23
+    ],
+    [
+     48,
+     28
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T23:51:57.992Z"
+  },
+  "20:26": {
+   "sources": [
+    [
+     20,
+     27,
+     0,
+     13
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T23:59:28.119Z"
+  },
+  "23:6": {
+   "sources": [
+    [
+     23,
+     6,
+     0,
+     20
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-04T00:00:35.810Z"
+  },
+  "33:24": {
+   "sources": [
+    [
+     30,
+     37,
+     0,
+     27
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-04T00:03:06.386Z"
+  },
+  "34:1": {
+   "sources": [
+    [
+     31,
+     1,
+     2,
+     21
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-04T00:03:31.272Z"
+  },
+  "35:1": {
+   "sources": [
+    [
+     32,
+     1,
+     2,
+     8
+    ],
+    [
+     32,
+     2
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-04T00:04:20.490Z"
+  },
+  "35:2": {
+   "sources": [
+    [
+     32,
+     3,
+     1,
+     19
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-04T00:04:39.530Z"
+  },
+  "35:19": {
+   "sources": [
+    [
+     32,
+     20,
+     0,
+     15
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-04T00:07:14.323Z"
+  },
+  "35:21": {
+   "sources": [
+    [
+     32,
+     21,
+     8,
+     24
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-04T00:07:48.004Z"
+  },
+  "35:20": {
+   "sources": [
+    [
+     32,
+     20,
+     16,
+     22
+    ],
+    [
+     32,
+     21,
+     0,
+     7
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-04T00:08:13.931Z"
+  },
+  "35:17": {
+   "sources": [
+    [
+     32,
+     19,
+     0,
+     18
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-04T00:09:09.430Z"
+  },
+  "35:18": {
+   "sources": [
+    [
+     32,
+     19,
+     19,
+     39
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-04T00:09:23.357Z"
+  },
+  "36:11": {
+   "sources": [
+    [
+     36,
+     17,
+     3,
+     25
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-04T00:10:10.978Z"
+  },
+  "36:10": {
+   "sources": [
+    [
+     33,
+     13,
+     0,
+     6
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-04T00:22:57.147Z"
+  },
+  "38:7": {
+   "sources": [
+    [
+     38,
+     7,
+     0,
+     24
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-04T00:25:57.807Z"
+  },
+  "38:8": {
+   "sources": [
+    [
+     38,
+     7,
+     25,
+     35
+    ],
+    [
+     38,
+     8
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-04T00:26:17.429Z"
+  },
+  "3:13": {
+   "sources": [
+    [
+     3,
+     14,
+     0,
+     24
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-06T14:56:04.724Z"
+  },
+  "3:14": {
+   "sources": [
+    [
+     3,
+     14,
+     25,
+     34
+    ],
+    [
+     3,
+     15,
+     0,
+     6
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-06T14:56:19.447Z"
+  },
+  "0:1": {
+   "sources": [
+    [
+     0,
+     1,
+     0,
+     4
+    ],
+    [
+     0,
+     1,
+     19,
+     27
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Prologue: tout le bloc Giguet 0:1 traduit tout le prologue grec 0:1-0:36. πολλῶν καὶ μεγάλων = 'De grandes et nombreuses choses'; διὰ τοῦ νόμου καὶ τῶν προφητῶν = 'par la Loi, les Prophètes'; ἡμῖν = 'nous'. Giguet intervertit 0:1/0:3, d'où les deux plages. || grandes/nombreuses choses=πολλῶν καὶ μεγάλων; nous...par la Loi, les Prophètes=ἡμῖν διὰ τοῦ νόμου καὶ τῶν προφητῶν. Giguet fond le prologue "
+  },
+  "0:3": {
+   "sources": [
+    [
+     0,
+     1,
+     5,
+     18
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "ἐπαινεῖν τὸν Ισραηλ = 'louer Israël'; παιδείας καὶ σοφίας = 'de sa doctrine et de sa sagesse'; δέον ἐστὶν = 'il faut'. || au sujet desquelles il faut louer Israël de sa doctrine et de sa sagesse = ὑπὲρ ὧν δέον ἐστὶν ἐπαινεῖν τὸν Ισραηλ παιδείας καὶ σοφίας (louer=ἐπαινεῖν, Israël=Ισραηλ, doctrine=παιδείας, sagesse=σοφίας)."
+  },
+  "0:6": {
+   "sources": [
+    [
+     0,
+     1,
+     55,
+     57
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "λέγοντας = 'parlant'; γράφοντας = 'écrivant'. || parlant et écrivant = καὶ λέγοντας καὶ γράφοντας (parlant=λέγοντας, écrivant=γράφοντας)."
+  },
+  "0:8": {
+   "sources": [
+    [
+     0,
+     1,
+     74,
+     78
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "τὴν τοῦ νόμου (ἀνάγνωσιν) = 'à l'étude de la Loi'. || à l'étude de la Loi = εἴς τε τὴν τοῦ νόμου (Loi=νόμου)."
+  },
+  "0:9": {
+   "sources": [
+    [
+     0,
+     1,
+     79,
+     80
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "καὶ τῶν προφητῶν = 'des Prophètes'. || des Prophètes = καὶ τῶν προφητῶν (Prophètes=προφητῶν)."
+  },
+  "0:10": {
+   "sources": [
+    [
+     0,
+     1,
+     81,
+     87
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "τῶν ἄλλων ... βιβλίων = 'des autres livres'; πατρίων = 'de nos pères'. || et des autres livres de nos pères = καὶ τῶν ἄλλων πατρίων βιβλίων ἀνάγνωσιν (autres=ἄλλων, de nos pères=πατρίων, livres=βιβλίων)."
+  },
+  "0:11": {
+   "sources": [
+    [
+     0,
+     1,
+     88,
+     96
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "περιποιησάμενος = 'ayant acquis'; ἱκανὴν ἕξιν = 'une instruction suffisante'; ἐν τούτοις = 'de la sorte'. || ayant acquis de la sorte une instruction suffisante = καὶ ἐν τούτοις ἱκανὴν ἕξιν περιποιησάμενος (acquis=περιποιησάμενος, suffisante=ἱκανὴν, instruction=ἕξιν)."
+  },
+  "0:12": {
+   "sources": [
+    [
+     0,
+     1,
+     97,
+     113
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "προήχθη = 'a été entraîné'; συγγράψαι = 'consigner ... dans un écrit'; εἰς παιδείαν καὶ σοφίαν = 'concernant la discipline et la sagesse'. || a été entraîné à consigner...dans un écrit quelque chose concernant la discipline et la sagesse = προήχθη...συγγράψαι τι τῶν εἰς παιδείαν καὶ σοφίαν ἀνηκόντων (entraîné=προήχθη, consigner/écrit=συγγράψαι, discipline=παιδείαν, sagesse=σοφίαν)."
+  },
+  "0:13": {
+   "sources": [
+    [
+     0,
+     1,
+     114,
+     129
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "ὅπως = 'afin que'; οἱ φιλομαθεῖς = 'ceux qui ont le goût de la science'; τούτων ἔνοχοι γενόμενοι = 'devenus dociles à ses préceptes'. || afin que ceux qui ont le goût de la science, devenus...dociles à ses préceptes = ὅπως οἱ φιλομαθεῖς καὶ τούτων ἔνοχοι γενόμενοι (goût de la science=φιλομαθεῖς, devenus=γενόμενοι, dociles=ἔνοχοι)."
+  },
+  "0:14": {
+   "sources": [
+    [
+     0,
+     1,
+     130,
+     141
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "πολλῷ μᾶλλον ἐπιπροσθῶσιν = 's'attachent d'autant plus'; ἐννόμου βιώσεως = 'genre de vie conforme à la loi'. || s'attachent d'autant plus à un genre de vie conforme à la loi = πολλῷ μᾶλλον ἐπιπροσθῶσιν διὰ τῆς ἐννόμου βιώσεως (d'autant plus=πολλῷ μᾶλλον, vie conforme à la loi=ἐννόμου βιώσεως)."
+  },
+  "0:15": {
+   "sources": [
+    [
+     0,
+     1,
+     142,
+     144
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "παρακέκλησθε = 'Soyez ... invités'; οὖν = 'donc'. || Soyez donc invités = παρακέκλησθε οὖν (Soyez invités=παρακέκλησθε, donc=οὖν)."
+  },
+  "0:16": {
+   "sources": [
+    [
+     0,
+     1,
+     149,
+     152
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "μετ᾿ εὐνοίας καὶ προσοχῆς = 'avec bienveillance et attention'. Giguet place 0:17 avant 0:16. || avec bienveillance et attention = μετ᾿ εὐνοίας καὶ προσοχῆς (bienveillance=εὐνοίας, attention=προσοχῆς); placé après 0:17 (à faire cette lecture)."
+  },
+  "0:17": {
+   "sources": [
+    [
+     0,
+     1,
+     145,
+     148
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "τὴν ἀνάγνωσιν ποιεῖσθαι = 'à faire cette lecture'. || à faire cette lecture = τὴν ἀνάγνωσιν ποιεῖσθαι (lecture=ἀνάγνωσιν, faire=ποιεῖσθαι)."
+  },
+  "0:18": {
+   "sources": [
+    [
+     0,
+     1,
+     153,
+     156
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "συγγνώμην ἔχειν = 'être indulgents'. || et à être indulgents = καὶ συγγνώμην ἔχειν (indulgents=συγγνώμην ἔχειν)."
+  },
+  "0:19": {
+   "sources": [
+    [
+     0,
+     1,
+     157,
+     157
+    ],
+    [
+     0,
+     1,
+     166,
+     167
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "ἐφ᾿ οἷς ἂν δοκῶμεν = 'si, ... nous semblions'. La clause 0:20 (158-165) est enclavée entre 'si,' et 'nous semblions'. || si...nous semblions = ἐφ᾿ οἷς ἂν δοκῶμεν (si=ἐφ᾿ οἷς ἂν, nous semblions=δοκῶμεν); scindé car 0:20 intercalé (mots 158-165)."
+  },
+  "0:20": {
+   "sources": [
+    [
+     0,
+     1,
+     158,
+     165
+    ],
+    [
+     0,
+     1,
+     168,
+     177
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "κατὰ τὴν ἑρμηνείαν πεφιλοπονημένων = 'en n'épargnant pas la peine pour traduire exactement'; τισὶν τῶν λέξεων ἀδυναμεῖν = 'n'avoir pu bien rendre les expressions'. || en n'épargnant pas la peine pour traduire exactement...n'avoir pu bien rendre les expressions = τῶν κατὰ τὴν ἑρμηνείαν πεφιλοπονημένων τισὶν τῶν λέξεων ἀδυναμεῖν (traduire=ἑρμηνείαν, peine/labeur=πεφιλοπονημένων, expressions=λέξεων, "
+  },
+  "0:21": {
+   "sources": [
+    [
+     0,
+     1,
+     178,
+     178
+    ],
+    [
+     0,
+     1,
+     184,
+     187
+    ],
+    [
+     0,
+     1,
+     193,
+     196
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "οὐ γὰρ ἰσοδυναμεῖ = 'car ... ne sont pas ... avec la même force'. Le sujet 0:22 (179-183, 188-192) est enclavé. || car...ne sont pas...avec la même force = οὐ γὰρ ἰσοδυναμεῖ (car=γὰρ, même force=ἰσοδυναμεῖ); fondu avec 0:22 dans une seule phrase Giguet."
+  },
+  "0:22": {
+   "sources": [
+    [
+     0,
+     1,
+     179,
+     183
+    ],
+    [
+     0,
+     1,
+     188,
+     192
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Εβραϊστὶ λεγόμενα = 'les choses dites en hébreu'; μεταχθῇ εἰς ἑτέραν γλῶσσαν = 'transportées dans une autre langue'. || les choses dites en hébreu...transportées dans une autre langue = αὐτὰ...Εβραϊστὶ λεγόμενα καὶ ὅταν μεταχθῇ εἰς ἑτέραν γλῶσσαν (dites en hébreu=Εβραϊστὶ λεγόμενα, autre langue=ἑτέραν γλῶσσαν, transportées=μεταχθῇ)."
+  },
+  "0:23": {
+   "sources": [
+    [
+     0,
+     1,
+     197,
+     201
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "οὐ μόνον δὲ ταῦτα = 'Mais ce n'est pas tout'. || Mais ce n'est pas tout = οὐ μόνον δὲ ταῦτα (pas...seulement=οὐ μόνον δὲ, ce/cela=ταῦτα)."
+  },
+  "0:24": {
+   "sources": [
+    [
+     0,
+     1,
+     202,
+     207
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "αὐτὸς ὁ νόμος = 'la Loi aussi'; αἱ προφητεῖαι = 'les Prophètes'. || la Loi aussi, et les Prophètes = ἀλλὰ καὶ αὐτὸς ὁ νόμος καὶ αἱ προφητεῖαι (Loi=νόμος, Prophètes=προφητεῖαι)."
+  },
+  "0:25": {
+   "sources": [
+    [
+     0,
+     1,
+     208,
+     211
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "τὰ λοιπὰ τῶν βιβλίων = 'les autres livres'. || et les autres livres = καὶ τὰ λοιπὰ τῶν βιβλίων (autres/reste=λοιπὰ, livres=βιβλίων)."
+  },
+  "0:26": {
+   "sources": [
+    [
+     0,
+     1,
+     212,
+     218
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "οὐ μικρὰν ἔχει τὴν διαφορὰν = 'n'ont pas ... de médiocres variantes'; ἐν ἑαυτοῖς = 'entre eux'. || n'ont pas entre eux de médiocres variantes = οὐ μικρὰν ἔχει τὴν διαφορὰν ἐν ἑαυτοῖς λεγόμενα (pas médiocres=οὐ μικρὰν, variantes/différence=διαφορὰν, ont=ἔχει)."
+  },
+  "0:27": {
+   "sources": [
+    [
+     0,
+     1,
+     223,
+     231
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "ὀγδόῳ καὶ τριακοστῷ ἔτει = 'la trente-huitième année'; ἐπὶ τοῦ Εὐεργέτου βασιλέως = 'du règne de Ptolémée Évergète'. Giguet place 0:28 ('Étant venu en Égypte') avant. || la trente-huitième année du règne de Ptolémée Évergète = ἐν...τῷ ὀγδόῳ καὶ τριακοστῷ ἔτει ἐπὶ τοῦ Εὐεργέτου βασιλέως (trente-huitième année=ὀγδόῳ καὶ τριακοστῷ ἔτει, Évergète=Εὐεργέτου, règne/roi=βασιλέως); placé après 0:28 (Étant"
+  },
+  "0:28": {
+   "sources": [
+    [
+     0,
+     1,
+     219,
+     222
+    ],
+    [
+     0,
+     1,
+     232,
+     236
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "παραγενηθεὶς εἰς Αἴγυπτον = 'Étant venu en Égypte'; συγχρονίσας = 'et y étant resté longtemps'. || Étant venu en Égypte...et y étant resté longtemps = παραγενηθεὶς εἰς Αἴγυπτον καὶ συγχρονίσας (venu=παραγενηθεὶς, Égypte=Αἴγυπτον, resté longtemps=συγχρονίσας); scindé car 0:27 intercalé."
+  },
+  "0:29": {
+   "sources": [
+    [
+     0,
+     1,
+     237,
+     247
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "εὑρὼν = 'j'ai trouvé'; ἀφόμοιον = 'un ouvrage'; οὐ μικρᾶς παιδείας = 'd'une doctrine qui n'est pas sans importance'. || j'ai trouvé un ouvrage d'une doctrine qui n'est pas sans importance = εὑρὼν οὐ μικρᾶς παιδείας ἀφόμοιον (trouvé=εὑρὼν, doctrine=παιδείας, pas sans importance=οὐ μικρᾶς)."
+  },
+  "0:30": {
+   "sources": [
+    [
+     0,
+     1,
+     248,
+     265
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "ἀναγκαιότατον ἐθέμην = 'J'ai donc jugé nécessaire'; σπουδὴν καὶ φιλοπονίαν = 'quelque zèle ... beaucoup de soin'; μεθερμηνεῦσαι τήνδε τὴν βίβλον = 'traduire ce livre'. || j'ai donc jugé nécessaire d'apporter quelque zèle et...de soin à traduire ce livre = ἀναγκαιότατον ἐθέμην καὶ αὐτός τινα προσενέγκασθαι σπουδὴν καὶ φιλοπονίαν τοῦ μεθερμηνεῦσαι τήνδε τὴν βίβλον (jugé nécessaire=ἀναγκαιότατον ἐθέμ"
+  },
+  "0:31": {
+   "sources": [
+    [
+     0,
+     1,
+     266,
+     274
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "προσενεγκάμενος = 'Ayant consacré'; πολλὴν ἀγρυπνίαν = 'de longues veilles'; ἐπιστήμην = 'beaucoup de savoir'. || Ayant consacré de longues veilles et beaucoup de savoir = πολλὴν ἀγρυπνίαν καὶ ἐπιστήμην προσενεγκάμενος (veilles=ἀγρυπνίαν, beaucoup/longues=πολλὴν, savoir=ἐπιστήμην, consacré=προσενεγκάμενος)."
+  },
+  "0:33": {
+   "sources": [
+    [
+     0,
+     1,
+     275,
+     284
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "ἐπὶ πέρας ἀγαγόντα = 'pour mener à fin'; τὸ βιβλίον = 'mon œuvre'; ἐκδόσθαι = 'j'ai voulu la publier'. || pour mener à fin mon œuvre, j'ai voulu la publier = πρὸς τὸ ἐπὶ πέρας ἀγαγόντα τὸ βιβλίον ἐκδόσθαι (mener à fin=ἐπὶ πέρας ἀγαγόντα, œuvre/livre=βιβλίον, publier=ἐκδόσθαι)."
+  },
+  "0:34": {
+   "sources": [
+    [
+     0,
+     1,
+     285,
+     295
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "τοῖς ἐν τῇ παροικίᾳ = 'ceux qui, sur la terre étrangère'; βουλομένοις φιλομαθεῖν = 'désirent apprendre'. || à l'usage de ceux qui, sur la terre étrangère, désirent apprendre = καὶ τοῖς ἐν τῇ παροικίᾳ βουλομένοις φιλομαθεῖν (terre étrangère=παροικίᾳ, désirent=βουλομένοις, apprendre=φιλομαθεῖν)."
+  },
+  "0:35": {
+   "sources": [
+    [
+     0,
+     1,
+     296,
+     300
+    ],
+    [
+     0,
+     1,
+     305,
+     307
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "προκατασκευαζομένους = 'se sont préparés d'avance'; τὰ ἤθη = 'leurs habitudes'. Enclave 0:36 ('à régler leur vie') entre les deux. || se sont préparés d'avance...et leurs habitudes = προκατασκευαζομένους τὰ ἤθη (préparés d'avance=προκατασκευαζομένους, habitudes=ἤθη); scindé car 0:36 intercalé (à régler leur vie)."
+  },
+  "0:36": {
+   "sources": [
+    [
+     0,
+     1,
+     301,
+     304
+    ],
+    [
+     0,
+     1,
+     308,
+     310
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "βιοτεύειν = 'à régler leur vie'; ἐννόμως = 'selon la loi'. || à régler leur vie...selon la loi = ἐννόμως βιοτεύειν (régler leur vie/vivre=βιοτεύειν, selon la loi=ἐννόμως)."
+  },
+  "32:20": {
+   "sources": [
+    [
+     35,
+     25,
+     0,
+     12
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Grec 32:20 « ἐν ὁδῷ ἀντιπτώματος μὴ πορεύου καὶ μὴ προσκόψῃς ἐν λιθώδεσιν » = début de Giguet 35:25 « Évite la voie des achoppements, et ne te heurte pas contre des pierres. » (mots 0-12). Concordances : ἀντιπτώματος↔achoppements, προσκόψῃς↔heurte, λιθώδεσιν↔pierres. On réduit le lien à la 1re moitié pour libérer les mots 13-20 au profit de 32:21 (non-chevauchement). || Grec « ἐν ὁδῷ ἀντιπτώματος "
+  },
+  "33:9": {
+   "sources": [
+    [
+     36,
+     10,
+     0,
+     19
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Giguet 36:10 est sur-reclame par 33:9 : sa 1re phrase (mots 0-19) 'Il a glorifie les uns, il a sanctifie les autres ; il en a laisse dans le nombre des jours.' = grec 33:9 (ανυψωσεν<->glorifie, ηγιασεν<->sanctifie, εις αριθμον ημερων<->dans le nombre des jours). La 2e phrase (mots 20-35) appartient a 33:10 ; il faut donc borner ce lien a [0,19] pour liberer la place. || 33:9 grec ανυψωσεν/ηγιασεν/"
+  },
+  "33:29": {
+   "sources": [
+    [
+     30,
+     43,
+     0,
+     13
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Giguet 30:43 est sur-reclame par 33:29 : sa 1re partie (mots 0-13) '(30.)Emploie-le a des travaux selon aptitude, et s'il est indocile, appesantis ses entraves ;' = grec 33:29 (εις εργα<->travaux, καθως πρεπει<->selon aptitude, βαρυνον τας πεδας<->appesantis ses entraves). La 2e partie (mots 14-26) appartient a 33:30 ; borner ce lien a [0,13]. || 33:29 grec 'εις εργα καταστησον... βαρυνον τας πεδα"
+  },
+  "33:31": {
+   "sources": [
+    [
+     30,
+     44,
+     0,
+     18
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Giguet 30:44 concatene le doublet grec : sa 1re phrase (mots 0-18) '(31.)Si tu as un esclave, qu'il soit comme toi ; car tu l'as achete du meme sang que toi.' = grec 33:31 'ει εστιν σοι οικετης εστω ως συ οτι εν αιματι εκτησω αυτον' (εστω ως συ<->qu'il soit comme toi, εν αιματι εκτησω<->achete du meme sang). La 2e phrase (mots 19-38) appartient a 33:32 ; borner ce lien a [0,18]. || 33:31 grec 'ει "
+  }
+ },
+ "tob": {
+  "6:19": {
+   "sources": [
+    [
+     6,
+     17,
+     75,
+     89
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-03T23:47:45.785Z"
+  },
+  "5:9": {
+   "sources": [
+    [
+     5,
+     8,
+     11,
+     53
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Giguet a fusionné le grec 5:8 et 5:9 dans son seul v.8 (54 mots). Les mots 11-53 correspondent mot à mot au grec 5:9 : καὶ εἰσελθὼν εἶπεν τῷ πατρί ↔ 'Et, étant rentré, Tobie dit à son père' ; ἰδοὺ εὕρηκα ὃς συμπορεύσεταί μοι ↔ 'Voilà que j'ai trouvé quelqu'un pour venir avec moi' ; ὁ δὲ εἶπεν φώνησον αὐτὸν πρός με ↔ 'Et Tobit répondit : Appelle-le près de moi' ; ἵνα ἐπιγνῶ ποίας φυλῆς ἐστιν ↔ 'que"
+  },
+  "5:8": {
+   "sources": [
+    [
+     5,
+     8,
+     0,
+     10
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Le grec 5:8 (καὶ εἶπεν αὐτῷ πορεύου καὶ μὴ χρονίσῃς) ne couvre que les mots 0-10 de Giguet 5:8 : 'Et l'ange lui dit : Va, et ne sois pas longtemps.' — πορεύου ↔ 'Va', μὴ χρονίσῃς ↔ 'ne sois pas longtemps'. Le lien actuel prend tout le v.8 Giguet ([[5,8]]) : il faut le restreindre aux mots 0-10, sinon Giguet 5:8 serait servi deux fois (chevauchement) une fois le grec 5:9 apparié aux mots 11-53. || "
+  },
+  "10:14": {
+   "sources": [
+    [
+     11,
+     1,
+     0,
+     23
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Grec 10:14 « μετὰ ταῦτα ἐπορεύετο Τωβιας εὐλογῶν τὸν θεόν ὅτι εὐόδωσεν τὴν ὁδὸν αὐτοῦ καὶ κατευλόγει Ραγουηλ καὶ Εδναν τὴν γυναῖκα αὐτοῦ » <-> Giguet 11:1 mots 0-23 « Après cela, Tobie partit bénissant Dieu qui lui avait fait faire un si heureux voyage ; et il bénissait Raguel et Edna sa femme, ». Ancres nettes : Ραγουηλ<->Raguel, Εδναν<->Edna, εὐλογῶν<->bénissant, κατευλόγει<->bénissait, γυναῖκα<"
+  },
+  "11:1": {
+   "sources": [
+    [
+     11,
+     1,
+     24,
+     33
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Lien actuel 11:1 -> [[11,1]] réclame TOUT Giguet 11:1 (mots 0-33), y compris les mots 0-23 qui sont le contenu de grec 10:14. Correction obligatoire (règle de non-chevauchement) pour libérer les mots 0-23 au profit de 10:14. Grec 11:1 « καὶ ἐπορεύετο μέχρις οὗ ἐγγίσαι αὐτοὺς εἰς Νινευη » = Giguet 11:1 mots 24-33 « et il allait, jusqu'à ce qu'ils fussent près de Ninive. » (Νινευη<->Ninive, ἐπορεύετ"
+  }
+ },
+ "psa": {
+  "3:1": {
+   "sources": [],
+   "by": "Βιβλίον",
+   "at": "2026-07-06T13:17:27.029Z"
+  }
+ },
+ "isa": {
+  "63:19": {
+   "sources": [
+    [
+     63,
+     19
+    ],
+    [
+     64,
+     1
+    ]
+   ],
+   "by": "Βιβλίον",
+   "at": "2026-07-06T14:52:48.821Z"
+  },
+  "38:9": {
+   "sources": [
+    [
+     38,
+     8,
+     44,
+     57
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Grec 38:9 = suscription de la priere : «προσευχὴ Εζεκιου βασιλέως τῆς Ιουδαίας ἡνίκα ἐμαλακίσθη καὶ ἀνέστη ἐκ τῆς μαλακίας αὐτοῦ». Giguet la rend en MAJUSCULES a la fin de son v.8 (mots 44-57) : «ORAISON D’ÉZÉCHIAS, ROI DE JUDÉE LORSQU’IL FUT MALADE ET QU’IL RELEVA DE SA MALADIE». Concordance nette : προσευχὴ↔ORAISON, Εζεκιου↔D’ÉZÉCHIAS, βασιλέως τῆς Ιουδαίας↔ROI DE JUDÉE, ἐμαλακίσθη↔FUT MALADE, ἀ"
+  },
+  "38:8": {
+   "sources": [
+    [
+     38,
+     8,
+     0,
+     43
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Grec 38:8 (le miracle du cadran solaire, «...καὶ ἀνέβη ὁ ἥλιος τοὺς δέκα ἀναβαθμούς οὓς κατέβη ἡ σκιά») = mots 0-43 de Giguet 38:8 : «Voilà que je vais faire reculer l’ombre des marches... Et le soleil remonta les dix marches que l’ombre avait descendues.» Les mots 44-57 (le titre en MAJUSCULES) ne traduisent pas 38:8 mais la suscription 38:9 ; ce corriger-lien retire le titre du lien 38:8 pour li"
+  },
+  "38:15": {
+   "sources": [
+    [
+     38,
+     14,
+     32,
+     39
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Grec 38:15 = «καὶ ἀφείλατό μου τὴν ὀδύνην τῆς ψυχῆς» («et il ota la douleur de mon ame»). Giguet le fond a la fin de son v.14 (mots 32-39) : «qui m’a ôté les douleurs de mon âme.» Concordance : ἀφείλατό↔ôté, ὀδύνην↔douleurs, ψυχῆς↔âme. || Giguet a fondu le v.15 dans la queue de Giguet 38:14 (mots 32-39 : « qui m'a ôté les douleurs de mon âme. »). Concordance : ἀφείλατό↔ôté, τὴν ὀδύνην↔les douleurs"
+  },
+  "38:14": {
+   "sources": [
+    [
+     38,
+     14,
+     0,
+     31
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Grec 38:14 se termine par «...πρὸς τὸν κύριον ὃς ἐξείλατό με» = mots 0-31 de Giguet 38:14 : «Je crierai comme l’hirondelle... vers le Seigneur, qui enfin m’a relevé,» (ἐξείλατό με↔m’a relevé). La proposition finale (mots 32-39 «qui m’a ôté les douleurs de mon âme») traduit 38:15, non 38:14 ; ce corriger-lien retire cette clause du lien 38:14 pour liberer la place a 38:15 (non-chevauchement sur Gig"
+  }
+ },
+ "1ki": {
+  "3:11": {
+   "sources": [
+    [
+     3,
+     11,
+     0,
+     59
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Grec 3:11 (καὶ εἶπεν κύριος… ᾐτήσω σαυτῷ σύνεσιν τοῦ εἰσακούειν κρίμα) ne couvre que la 1re phrase du bloc Giguet 3:11 : mots 0-59 « Et le Seigneur lui dit… afin de discerner ce qui est juste, ». Le reste du bloc (mots 60+, marqueurs « 23. (12) » etc.) appartient aux grecs 3:12-3:28. Concordance : εἶπεν κύριος↔le Seigneur dit, ᾐτήσω↔demandé, ἡμέρας πολλὰς↔longs jours, πλοῦτον↔richesses, ψυχὰς ἐχθρ"
+  },
+  "3:12": {
+   "sources": [
+    [
+     3,
+     11,
+     62,
+     98
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Marqueur « (12) » (mot 61) précède l'extrait. πεποίηκα κατὰ τὸ ῥῆμά σου↔J'ai déjà fait selon ta parole ; καρδίαν φρονίμην καὶ σοφήν↔cœur prudent et sage ; οὐ γέγονεν ἔμπροσθέν σου… μετὰ σὲ… ὅμοιός σοι↔il n'a existé avant toi personne qui te ressemble, et après toi… ton semblable. || πεποίηκα κατὰ τὸ ῥῆμά σου = 'J'ai deja fait selon ta parole' ; δέδωκά σοι καρδίαν φρονίμην καὶ σοφήν = 'je t'ai doue"
+  },
+  "3:13": {
+   "sources": [
+    [
+     3,
+     11,
+     101,
+     126
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Marqueur « (13) » (mot 100). ἃ οὐκ ᾐτήσω↔ce que tu n'as pas demandé ; πλοῦτον καὶ δόξαν↔la richesse et la gloire ; ὅμοιός σοι ἐν βασιλεῦσιν↔nul des rois ne t'a jamais égalé. || ἃ οὐκ ᾐτήσω δέδωκά σοι = 'ce que tu n'as pas demande' ; πλοῦτον καὶ δόξαν = 'la richesse et la gloire' ; οὐ γέγονεν ἀνὴρ ὅμοιός σοι ἐν βασιλεῦσιν = 'nul des rois ne t'a jamais egale'."
+  },
+  "3:14": {
+   "sources": [
+    [
+     3,
+     11,
+     129,
+     154
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Marqueur « (14) » (mot 128). πορευθῇς ἐν τῇ ὁδῷ μου↔tu marches en ma voie ; φυλάσσειν τὰς ἐντολάς μου↔en gardant mes commandements ; ἐπορεύθη Δαυιδ ὁ πατήρ σου↔a marché David ton père ; πληθυνῶ τὰς ἡμέρας σου↔de longs jours. || ἐὰν πορευθῇς ἐν τῇ ὁδῷ μου = 'Si tu marches en ma voie' ; φυλάσσειν τὰς ἐντολάς μου = 'en gardant mes commandements' ; ὡς ἐπορεύθη Δαυιδ ὁ πατήρ σου = 'comme a marche David"
+  },
+  "3:15": {
+   "sources": [
+    [
+     3,
+     11,
+     157,
+     212
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Marqueur « (15) » (mot 156). ἐξυπνίσθη Σαλωμων↔Salomon s'éveilla ; ἐνύπνιον↔songe ; παραγίνεται εἰς Ιερουσαλημ↔rentra dans Jérusalem ; κιβωτοῦ διαθήκης… ἐν Σιων↔l'arche du Seigneur en Sion ; ὁλοκαυτώσεις… εἰρηνικὰς↔holocaustes… pacifiques ; πότον μέγαν↔un grand festin. || ἐξυπνίσθη Σαλωμων = 'Salomon s'eveilla' ; εἰς Ιερουσαλημ = 'dans Jerusalem' ; κιβωτοῦ διαθήκης κυρίου ἐν Σιων = 'l'arche du Sei"
+  },
+  "3:16": {
+   "sources": [
+    [
+     3,
+     11,
+     215,
+     230
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Marqueur « (16) » (mot 214). τότε↔Alors ; δύο γυναῖκες πόρναι↔deux femmes prostituées ; ὤφθησαν τῷ βασιλεῖ↔apparurent en présence du roi ; ἔστησαν ἐνώπιον αὐτοῦ↔se tinrent debout devant lui. || τότε ὤφθησαν δύο γυναῖκες πόρναι τῷ βασιλεῖ = 'Alors, deux femmes prostituees apparurent... du roi' ; ἔστησαν ἐνώπιον αὐτοῦ = 'elles se tinrent debout devant lui'."
+  },
+  "3:17": {
+   "sources": [
+    [
+     3,
+     11,
+     233,
+     258
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Marqueur « (17) » (mot 232). εἶπεν ἡ γυνὴ ἡ μία↔L'une des femmes dit ; ἐν ἐμοί κύριε↔Je te prie, Seigneur ; οἰκοῦμεν ἐν οἴκῳ ἑνὶ↔nous habitons la même maison ; ἐτέκομεν ἐν τῷ οἴκῳ↔dans cette maison nous avons enfanté. || ἡ γυνὴ ἡ μία... κύριε = 'L'une des... femmes dit : ... Seigneur' ; οἰκοῦμεν ἐν οἴκῳ ἑνὶ = 'nous habitons la meme maison' ; ἐτέκομεν ἐν τῷ οἴκῳ = 'dans cette maison nous avons enfa"
+  },
+  "3:18": {
+   "sources": [
+    [
+     3,
+     11,
+     261,
+     287
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Marqueur « (18) » (mot 260). ἐν τῇ ἡμέρᾳ τῇ τρίτῃ τεκούσης μου↔Trois jours après que je fus accouchée ; ἔτεκεν καὶ ἡ γυνὴ αὕτη↔cette femme est accouchée aussi ; οὐκ ἔστιν οὐθεὶς μεθ᾿ ἡμῶν… ἐν τῷ οἴκῳ↔il n'y avait personne que nous deux dans la maison. || ἐν τῇ ἡμέρᾳ τῇ τρίτῃ τεκούσης μου = 'Trois jours apres que je fus accouchee' ; ἔτεκεν καὶ ἡ γυνὴ αὕτη = 'cette femme est accouchee aussi' ; οὐκ ἔ"
+  },
+  "3:19": {
+   "sources": [
+    [
+     3,
+     11,
+     290,
+     305
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Marqueur « (19) » (mot 289). ἀπέθανεν ὁ υἱὸς τῆς γυναικὸς ταύτης↔l'enfant de cette femme est mort ; τὴν νύκτα↔la nuit ; ἐπεκοιμήθη ἐπ᾿ αὐτόν↔elle s'était couchée sur lui. || ἀπέθανεν ὁ υἱὸς τῆς γυναικὸς ταύτης = 'l'enfant de cette femme est mort' ; τὴν νύκτα = 'la nuit derniere' ; ὡς ἐπεκοιμήθη ἐπ' αὐτόν = 'parce qu'elle s'etait couchee sur lui'."
+  },
+  "3:20": {
+   "sources": [
+    [
+     3,
+     11,
+     308,
+     344
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Marqueur « (20) » (mot 307). ἀνέστη μέσης τῆς νυκτὸς↔elle s'est levée au milieu de la nuit ; ἔλαβεν τὸν υἱόν μου ἐκ τῶν ἀγκαλῶν μου↔elle a pris mon enfant dans mes bras ; ἐκοίμισεν… ἐν τῷ κόλπῳ αὐτῆς↔elle l'a mis en son sein ; τὸν υἱὸν αὐτῆς τὸν τεθνηκότα↔son fils mort. || ἀνέστη μέσης τῆς νυκτὸς = 'elle s'est levee au milieu de la nuit' ; ἔλαβεν τὸν υἱόν μου ἐκ τῶν ἀγκαλῶν μου = 'a pris mon enfan"
+  },
+  "3:21": {
+   "sources": [
+    [
+     3,
+     11,
+     347,
+     385
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Marqueur « (21) » (mot 346). ἀνέστην τὸ πρωὶ θηλάσαι τὸν υἱόν μου↔Je me suis réveillée de grand matin pour allaiter mon fils ; ἦν τεθνηκώς↔était mort ; κατενόησα αὐτὸν πρωί↔je le regardais… aux premières lueurs du jour ; οὐκ ἦν ὁ υἱός μου ὃν ἔτεκον↔ce n'était pas le fils que j'avais enfanté. || ἀνέστην τὸ πρωὶ θηλάσαι τὸν υἱόν μου = 'Je me suis reveillee de grand matin pour allaiter mon fils' ; ἦν"
+  },
+  "3:22": {
+   "sources": [
+    [
+     3,
+     11,
+     388,
+     411
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Marqueur « (22) » (mot 387). ἡ γυνὴ ἡ ἑτέρα↔L'autre femme ; οὐχί↔Du tout ; ὁ υἱός μου ὁ ζῶν↔mon fils est vivant ; υἱός σου ὁ τεθνηκώς↔ton fils qui est mort ; ἐλάλησαν ἐνώπιον τοῦ βασιλέως↔elles parlaient devant le roi. || ἡ γυνὴ ἡ ἑτέρα οὐχί = 'L'autre femme s'ecria : Du tout' ; ὁ υἱός μου ὁ ζῶν = 'mon fils est vivant' ; ὁ υἱός σου ὁ τεθνηκώς = 'c'est ton fils qui est mort' ; ἐλάλησαν ἐνώπιον τοῦ "
+  },
+  "3:23": {
+   "sources": [
+    [
+     3,
+     11,
+     414,
+     461
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Marqueur « (23) » (mot 413). εἶπεν ὁ βασιλεὺς… σὺ λέγεις↔le roi dit… Tu dis ; οὗτος ὁ υἱός μου ὁ ζῶν↔Celui-ci, le vivant, est mon fils ; ὁ υἱὸς ταύτης ὁ τεθνηκώς↔le fils de cette femme est mort ; répétition σὺ λέγεις οὐχί↔puis il dit à l'autre : Tu dis : Du tout. || εἶπεν ὁ βασιλεὺς... σὺ λέγεις = 'le roi dit... Tu dis' ; οὗτος ὁ υἱός μου ὁ ζῶν = 'Celui-ci, le vivant, est mon fils' ; σὺ λέγεις οὐχ"
+  },
+  "3:24": {
+   "sources": [
+    [
+     3,
+     11,
+     464,
+     481
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Marqueur « (24) » (mot 463). εἶπεν ὁ βασιλεύς↔le roi ajouta ; λάβετέ μοι μάχαιραν↔Que l'on prenne un glaive ; προσήνεγκαν τὴν μάχαιραν ἐνώπιον τοῦ βασιλέως↔l'on apporta un glaive devant le roi. || εἶπεν ὁ βασιλεύς λάβετέ μοι μάχαιραν = 'le roi... Que l'on prenne un glaive' ; προσήνεγκαν τὴν μάχαιραν ἐνώπιον τοῦ βασιλέως = 'l'on apporta un glaive devant le roi'."
+  },
+  "3:25": {
+   "sources": [
+    [
+     3,
+     11,
+     484,
+     508
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Marqueur « (25) » (mot 483). διέλετε… εἰς δύο↔Coupez en deux ; τὸ παιδίον τὸ θηλάζον τὸ ζῶν↔cet enfant vivant qui est à la mamelle ; δότε τὸ ἥμισυ… ταύτῃ… ταύτῃ↔donnez-en la moitié à celle-ci, la moitié à celle-là. || διέλετε τὸ παιδίον τὸ θηλάζον τὸ ζῶν εἰς δύο = 'Coupez en deux cet enfant vivant qui est a la mamelle' ; δότε τὸ ἥμισυ... τὸ ἥμισυ = 'donnez-en la moitie... la moitie'."
+  },
+  "3:26": {
+   "sources": [
+    [
+     3,
+     11,
+     511,
+     566
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Marqueur « (26) » (mot 510). ἡ γυνή ἧς ἦν ὁ υἱὸς ὁ ζῶν↔la femme à qui était l'enfant vivant ; ἐταράχθη ἡ μήτρα αὐτῆς↔ses entrailles étaient troublées ; δότε αὐτῇ τὸ παιδίον… θανάτῳ μὴ θανατώσητε↔qu'on lui donne l'enfant, qu'on ne le fasse pas mourir ; μήτε ἐμοὶ μήτε αὐτῇ… διέλετε↔ni pour elle, ni pour moi, partagez-le. || ἡ γυνή ἧς ἦν ὁ υἱὸς ὁ ζῶν = 'la femme a qui etait l'enfant vivant' ; ἐταράχθ"
+  },
+  "3:27": {
+   "sources": [
+    [
+     3,
+     11,
+     569,
+     598
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Marqueur « (27) » (mot 568). ἀπεκρίθη ὁ βασιλεὺς↔le roi prit la parole ; δότε τὸ παιδίον τῇ εἰπούσῃ↔Donnez l'enfant à celle qui a dit ; θανάτῳ μὴ θανατώσητε αὐτόν↔ne le faites pas mourir ; αὐτὴ ἡ μήτηρ αὐτοῦ↔celle-là est sa mère. || ἀπεκρίθη ὁ βασιλεὺς καὶ εἶπεν = 'le roi prit la parole, et il dit' ; δότε τὸ παιδίον τῇ εἰπούσῃ = 'Donnez l'enfant a celle qui a dit' ; μὴ θανατώσητε αὐτόν = 'ne le fa"
+  },
+  "3:28": {
+   "sources": [
+    [
+     3,
+     11,
+     601,
+     632
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Marqueur « (28) » (mot 600), fin du bloc (mot 632). ἤκουσαν πᾶς Ισραηλ τὸ κρίμα τοῦτο ὃ ἔκρινεν ὁ βασιλεύς↔tout Israël ouït le jugement qu'avait rendu le roi ; ἐφοβήθησαν ἀπὸ προσώπου τοῦ βασιλέως↔ils eurent crainte du roi ; φρόνησις θεοῦ ἐν αὐτῷ↔la sagesse de Dieu était en lui ; τοῦ ποιεῖν δικαίωμα↔quand il rendait la justice. || ἤκουσαν πᾶς Ισραηλ τὸ κρίμα τοῦτο = 'tout Israel ouit le jugement' "
+  },
+  "5:1": {
+   "sources": [
+    [
+     4,
+     20
+    ],
+    [
+     4,
+     21
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "MT 4:27 = grec 5:1a 'καὶ ἐχορήγουν οἱ καθεσταμένοι... τῷ βασιλεῖ Σαλωμων... ἕκαστος μῆνα αὐτοῦ οὐ παραλλάσσουσιν' <-> 'les officiers approvisionnaient le roi Salomon... chacun avait son mois... ils n'intervertissaient jamais l'ordre'. Bloc provisions Rahlfs 3Rg 5:1-14 = Giguet 4:20-30 (frontiere de chapitre); grec 5:1 fusionne MT 4:27+4:28 donc sert Giguet 4:20 et 4:21. Actuellement grec 5:1 sert "
+  },
+  "5:2": {
+   "sources": [
+    [
+     4,
+     22
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "grec 5:2 'καὶ ταῦτα τὰ δέοντα τῷ Σαλωμων ἐν ἡμέρᾳ μιᾷ τριάκοντα κόροι σεμιδάλεως καὶ ἑξήκοντα κόροι ἀλεύρου κεκοπανισμένου' <-> 'ce qu'il fallait chaque jour a Salomon: trente mesures de fleur de farine, et soixante mesures de farine petrie'. τριάκοντα/trente, σεμιδάλεως/fleur de farine, ἑξήκοντα/soixante, ἀλεύρου/farine. || Grec 5:2 : ταῦτα τὰ δέοντα τῷ Σαλωμων ἐν ἡμέρᾳ μιᾷ = « ce qu'il fallait c"
+  },
+  "5:3": {
+   "sources": [
+    [
+     4,
+     23
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "grec 5:3 'καὶ δέκα μόσχοι ἐκλεκτοὶ καὶ εἴκοσι βόες νομάδες καὶ ἑκατὸν πρόβατα ἐκτὸς ἐλάφων καὶ δορκάδων' <-> 'Dix veaux choisis, vingt boeufs pris au paturage, et cent brebis, et en outre des cerfs, des chevreuils'. δέκα μόσχοι/dix veaux, εἴκοσι βόες/vingt boeufs, ἑκατὸν πρόβατα/cent brebis, ἐλάφων/cerfs, δορκάδων/chevreuils. || Grec 5:3 : δέκα μόσχοι ἐκλεκτοὶ = « Dix veaux choisis » ; εἴκοσι βόες"
+  },
+  "5:4": {
+   "sources": [
+    [
+     4,
+     24
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "grec 5:4 'ὅτι ἦν ἄρχων πέραν τοῦ ποταμοῦ καὶ ἦν αὐτῷ εἰρήνη ἐκ πάντων τῶν μερῶν κυκλόθεν' <-> 'il etait chef de toute la contree en deca de l'Euphrate, et la paix regnait tout alentour'. ἄρχων/chef, πέραν τοῦ ποταμοῦ/en deca du fleuve, εἰρήνη/paix, κυκλόθεν/alentour. La lacune grec 5:4->5:9 correspond exactement au saut Giguet 4:24->4:25. || Grec 5:4 : ἦν ἄρχων πέραν τοῦ ποταμοῦ = « il était chef "
+  },
+  "5:9": {
+   "sources": [
+    [
+     4,
+     25
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "MT 4:29 = grec 5:9 'καὶ ἔδωκεν κύριος φρόνησιν τῷ Σαλωμων καὶ σοφίαν πολλὴν σφόδρα καὶ χύμα καρδίας ὡς ἡ ἄμμος ἡ παρὰ τὴν θάλασσαν' <-> 'le Seigneur avait doue Salomon d'une grande intelligence, d'une grande sagesse, et d'une richesse de coeur abondante comme le sable du rivage de la mer'. ἔδωκεν κύριος/le Seigneur avait doue, φρόνησιν/intelligence, σοφίαν/sagesse, ἄμμος παρὰ τὴν θάλασσαν/sable de"
+  },
+  "5:10": {
+   "sources": [
+    [
+     4,
+     26
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "MT 4:30 = grec 5:10 'καὶ ἐπληθύνθη Σαλωμων σφόδρα ὑπὲρ τὴν φρόνησιν πάντων ἀρχαίων ἀνθρώπων καὶ ὑπὲρ πάντας φρονίμους Αἰγύπτου' <-> 'La sagesse de Salomon s'accrut et surpassa celle des anciens, celle de tous les sages de l'Egypte'. ἐπληθύνθη/s'accrut, ὑπὲρ... ἀρχαίων/surpassa les anciens, φρονίμους Αἰγύπτου/sages de l'Egypte. || Grec 5:10 : ἐπληθύνθη Σαλωμων σφόδρα ὑπὲρ τὴν φρόνησιν πάντων ἀρχαίω"
+  },
+  "5:11": {
+   "sources": [
+    [
+     4,
+     27
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "MT 4:31 = grec 5:11 'καὶ ἐσοφίσατο ὑπὲρ πάντας τοὺς ἀνθρώπους... ὑπὲρ Γαιθαν τὸν Εζραΐτην καὶ τὸν Αιμαν καὶ τὸν Χαλκαλ καὶ Δαρδα υἱοὺς Μαλ' <-> 'le plus sage des hommes; plus sage que Gethan le Zarite, qu'Enan, que Chalcad et que Darala, fils de Mal'. ἐσοφίσατο ὑπὲρ πάντας ἀνθρώπους/plus sage des hommes, Γαιθαν Εζραΐτην/Gethan le Zarite, Χαλκαλ/Chalcad, Δαρδα υἱοὺς Μαλ/Darala fils de Mal. || Grec "
+  },
+  "5:12": {
+   "sources": [
+    [
+     4,
+     28
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "MT 4:32 = grec 5:12 'καὶ ἐλάλησεν Σαλωμων τρισχιλίας παραβολάς καὶ ἦσαν ᾠδαὶ αὐτοῦ πεντακισχίλιαι' <-> 'il dit trois mille proverbes et cinq mille cantiques'. τρισχιλίας παραβολάς/trois mille proverbes, πεντακισχίλιαι ᾠδαὶ/cinq mille cantiques. || Grec 5:12 : ἐλάλησεν Σαλωμων τρισχιλίας παραβολάς = « il dit trois mille proverbes » ; ἦσαν ᾠδαὶ αὐτοῦ πεντακισχίλιαι = « cinq mille cantiques »."
+  },
+  "5:13": {
+   "sources": [
+    [
+     4,
+     29
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "MT 4:33 = grec 5:13 'καὶ ἐλάλησεν περὶ τῶν ξύλων ἀπὸ τῆς κέδρου τῆς ἐν τῷ Λιβάνῳ καὶ ἕως τῆς ὑσσώπου... περὶ τῶν κτηνῶν... πετεινῶν... ἑρπετῶν... ἰχθύων' <-> 'disserta sur tous les arbres, depuis le cedre du Liban jusqu'a l'hysope... quadrupedes... oiseaux... reptiles... poissons'. κέδρου τῷ Λιβάνῳ/cedre du Liban, ὑσσώπου/hysope, κτηνῶν/quadrupedes, πετεινῶν/oiseaux, ἑρπετῶν/reptiles, ἰχθύων/poiss"
+  },
+  "5:14": {
+   "sources": [
+    [
+     4,
+     30
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "MT 4:34 + LXX plus = grec 5:14 'καὶ παρεγίνοντο πάντες οἱ λαοὶ ἀκοῦσαι τῆς σοφίας Σαλωμων... βασιλέων τῆς γῆς... ἔλαβεν Σαλωμων τὴν θυγατέρα Φαραω... εἰς τὴν πόλιν Δαυιδ... τὸ τεῖχος Ιερουσαλημ... προκατελάβετο τὴν Γαζερ καὶ ἐνεπύρισεν... τὸν Χανανίτην... ἐν Μεργαβ... Σαλωμων ᾠκοδόμησεν τὴν Γαζερ' <-> 'tous les peuples venaient pour entendre la sagesse de Salomon... rois de la terre... epouse la f"
+  },
+  "5:19": {
+   "sources": [
+    [
+     5,
+     5
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Grec 'ἰδοὺ ἐγὼ λέγω οἰκοδομῆσαι οἶκον τῷ ὀνόματι κυρίου θεοῦ μου... ὁ υἱός σου ὃν δώσω ἀντὶ σοῦ ἐπὶ τὸν θρόνον σου οὗτος οἰκοδομήσει τὸν οἶκον' = Giguet 5:5 'j'ai résolu de bâtir un temple au nom du Seigneur mon Dieu... C'est ton fils, que je mettrai sur le trône à ta place, qui bâtira un temple à mon nom'. οἰκοδομῆσαι οἶκον<->bâtir un temple, ὁ υἱός σου... θρόνον<->ton fils... trône. Giguet 5:5 l"
+  },
+  "5:20": {
+   "sources": [
+    [
+     5,
+     6
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Grec 'ἔντειλαι καὶ κοψάτωσάν μοι ξύλα ἐκ τοῦ Λιβάνου... οὐκ ἔστιν ἡμῖν εἰδὼς ξύλα κόπτειν καθὼς οἱ Σιδώνιοι' = Giguet 5:6 'Donne donc tes ordres, et que l'on coupe des arbres du Liban... personne n'est aussi habile que les Sidoniens à travailler le bois'. κοψάτωσάν ξύλα ἐκ τοῦ Λιβάνου<->coupe des arbres du Liban, Σιδώνιοι<->Sidoniens. Giguet 5:6 libre (trou). || νῦν ἔντειλαι καὶ κοψάτωσάν μοι ξύλα"
+  },
+  "5:21": {
+   "sources": [
+    [
+     5,
+     7
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Grec 'ἐγενήθη καθὼς ἤκουσεν Χιραμ τῶν λόγων Σαλωμων ἐχάρη σφόδρα καὶ εἶπεν εὐλογητὸς ὁ θεὸς σήμερον ὃς ἔδωκεν τῷ Δαυιδ υἱὸν φρόνιμον ἐπὶ τὸν λαὸν τὸν πολὺν' = Giguet 5:7 'Or, Hiram fut grandement réjoui d'entendre ces paroles... Béni soit aujourd'hui le Seigneur, qui a donné à David un fils aussi sage pour gouverner ce peuple nombreux'. ἐχάρη σφόδρα<->grandement réjoui, εὐλογητὸς<->Béni, υἱὸν φρόν"
+  },
+  "5:22": {
+   "sources": [
+    [
+     5,
+     8
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Grec 'ἀπέστειλεν πρὸς Σαλωμων λέγων ἀκήκοα περὶ πάντων ὧν ἀπέσταλκας πρός με ἐγὼ ποιήσω πᾶν θέλημά σου ξύλα κέδρινα καὶ πεύκινα' = Giguet 5:8 'il envoya dire à Salomon : J'ai ouï toutes les choses au sujet desquelles tu as envoyé près de moi ; je ferai tout ce que tu veux ; cèdres et sapins'. ἀκήκοα<->J'ai ouï, ξύλα κέδρινα καὶ πεύκινα<->cèdres et sapins. Giguet 5:8 libre (trou). || ἀπέστειλεν πρὸ"
+  },
+  "5:15": {
+   "sources": [
+    [
+     5,
+     1
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Grec 'καὶ ἀπέστειλεν Χιραμ βασιλεὺς Τύρου τοὺς παῖδας αὐτοῦ χρῖσαι τὸν Σαλωμων ἀντὶ Δαυιδ τοῦ πατρὸς αὐτοῦ ὅτι ἀγαπῶν ἦν Χιραμ τὸν Δαυιδ' = Giguet 5:1 'Et Hiram, roi de Tyr, envoya ses serviteurs, sachant que Salomon avait été oint à la place de David, son père ; car Hiram avait aimé David'. Χιραμ βασιλεὺς Τύρου<->Hiram roi de Tyr, χρῖσαι... ἀντὶ Δαυιδ<->oint à la place de David, ἀγαπῶν<->avait ai"
+  },
+  "5:16": {
+   "sources": [
+    [
+     5,
+     2
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Grec 'καὶ ἀπέστειλεν Σαλωμων πρὸς Χιραμ λέγων' = Giguet 5:2 'Salomon envoya aussi des messagers à Hiram, disant :'. ἀπέστειλεν Σαλωμων πρὸς Χιραμ λέγων<->Salomon envoya... à Hiram, disant. Lien 5:16->Giguet 5:16 FAUX ; vraie cible Giguet 5:2. || ἀπέστειλεν Σαλωμων πρὸς Χιραμ λέγων ↔ Giguet 5:2 'Salomon envoya aussi des messagers à Hiram, disant :'. Libère Giguet 5:16 pour grec 5:30."
+  },
+  "5:17": {
+   "sources": [
+    [
+     5,
+     3
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Grec 'σὺ οἶδας Δαυιδ τὸν πατέρα μου ὅτι οὐκ ἐδύνατο οἰκοδομῆσαι οἶκον τῷ ὀνόματι κυρίου θεοῦ μου ἀπὸ προσώπου τῶν πολέμων' = Giguet 5:3 'Tu sais que David, mon père, n'a pu bâtir un temple au nom du Seigneur mon Dieu, à cause des guerres'. σὺ οἶδας<->Tu sais, οὐκ ἐδύνατο οἰκοδομῆσαι οἶκον<->n'a pu bâtir un temple, πολέμων<->guerres. Lien 5:17->Giguet 5:17 FAUX ; vraie cible Giguet 5:3. || σὺ οἶδας"
+  },
+  "9:26": {
+   "sources": [
+    [
+     9,
+     15
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Grec ναῦν ... ἐποίησεν ὁ βασιλεὺς Σαλωμων ἐν Γασιωνγαβερ ... Αιλαθ ... ἐν γῇ Εδωμ <-> Giguet 9:15 'le roi Salomon construisit un vaisseau en Asion-Gaber, qui est limitrophe d'Elath ... en la terre d'Edom'. Concordance des noms propres Γασιωνγαβερ=Asion-Gaber, Αιλαθ=Elath, Εδωμ=Edom, et ναῦν=vaisseau. Le marqueur Giguet '(26)' en tête = numéro du verset Rahlfs. || Σαλωμων=Salomon ; Γασιωνγαβερ=Asio"
+  },
+  "9:27": {
+   "sources": [
+    [
+     9,
+     16
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Grec ἀπέστειλεν Χιραμ ... ἄνδρας ναυτικοὺς ... εἰδότας θάλασσαν μετὰ τῶν παίδων Σαλωμων <-> Giguet 9:16 'le roi Hiram envoya ... des serviteurs, matelots exercés à naviguer sur mer, qui s'embarquèrent avec les serviteurs de Salomon'. Concordance Χιραμ=Hiram, ναυτικοὺς=matelots, θάλασσαν=mer, παίδων Σαλωμων=serviteurs de Salomon. Marqueur Giguet '(27)' = numéro Rahlfs. || ἀπέστειλεν Χιραμ=le roi Hi"
+  },
+  "9:28": {
+   "sources": [
+    [
+     9,
+     17
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Grec ἦλθον εἰς Σωφηρα καὶ ἔλαβον ... χρυσίου ἑκατὸν καὶ εἴκοσι τάλαντα καὶ ἤνεγκαν τῷ βασιλεῖ Σαλωμων <-> Giguet 9:17 'ils allèrent à Ophir; et ils y prirent cent vingt talents d'or, et ils les apportèrent au roi Salomon'. Concordance Σωφηρα=Ophir, ἑκατὸν καὶ εἴκοσι τάλαντα χρυσίου=cent vingt talents d'or, ἤνεγκαν τῷ βασιλεῖ Σαλωμων=apportèrent au roi Salomon. || ἦλθον εἰς Σωφηρα=ils allèrent à Op"
+  },
+  "12:10": {
+   "sources": [
+    [
+     12,
+     9
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "grec τὰ παιδάρια τὰ ἐκτραφέντα... ἡ μικρότης μου παχυτέρα τῆς ὀσφύος τοῦ πατρός μου = Giguet 12:9 (marqueur «(10)») «les jeunes gens élevés avec lui... Mon petit doigt est plus gros que les reins de mon père». Flottant car Giguet omet son propre v.10 ; Giguet 12:9 est occupé à tort par grec 12:9 (décalage +1 sur toute la chaîne 3-10). || Grec 12:10 : τὰ παιδάρια τὰ ἐκτραφέντα μετ᾿ αὐτοῦ ... ἡ μικρ"
+  },
+  "12:9": {
+   "sources": [
+    [
+     12,
+     8
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "grec τί ὑμεῖς συμβουλεύετε... κούφισον ἀπὸ τοῦ κλοιοῦ οὗ ἔδωκεν ὁ πατήρ σου = Giguet 12:8 (marqueur «(9)») «Que me conseillez-vous ?... Allége le joug que nous a mis ton père». Libère Giguet 12:9 pour grec 12:10. || τί ὑμεῖς συμβουλεύετε ... κούφισον ἀπὸ τοῦ κλοιοῦ οὗ ἔδωκεν ὁ πατήρ σου ἐφ᾿ ἡμᾶς <-> Giguet 12:8 (parenthèse (9)) 'Que me conseillez-vous ? ... Allége le joug que nous a mis ton père'."
+  },
+  "12:8": {
+   "sources": [
+    [
+     12,
+     7
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "grec ἐγκατέλιπεν τὴν βουλὴν τῶν πρεσβυτέρων... συνεβουλεύσατο μετὰ τῶν παιδαρίων = Giguet 12:7 (marqueur «(8)») «il dédaigna le conseil que les anciens... il consulta les jeunes gens élevés avec lui». Libère Giguet 12:8 pour grec 12:9. || ἐγκατέλιπεν τὴν βουλὴν τῶν πρεσβυτέρων ... συνεβουλεύσατο μετὰ τῶν παιδαρίων τῶν ἐκτραφέντων μετ᾿ αὐτοῦ <-> Giguet 12:7 (parenthèse (8)) 'il dédaigna le conseil "
+  },
+  "12:7": {
+   "sources": [
+    [
+     12,
+     6
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "grec εἰ ἐν τῇ ἡμέρᾳ ταύτῃ ἔσῃ δοῦλος τῷ λαῷ τούτῳ... ἔσονταί σοι δοῦλοι πάσας τὰς ἡμέρας = Giguet 12:6 (marqueur «(7)») «Si aujourd’hui tu te montres le serviteur de ce peuple... ils seront tes serviteurs tous les jours». Libère Giguet 12:7 pour grec 12:8. || εἰ ἐν τῇ ἡμέρᾳ ταύτῃ ἔσῃ δοῦλος τῷ λαῷ τούτῳ ... καὶ ἔσονταί σοι δοῦλοι πάσας τὰς ἡμέρας <-> Giguet 12:6 (parenthèse (7)) 'Si aujourd'hui tu"
+  },
+  "12:6": {
+   "sources": [
+    [
+     12,
+     5
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "grec παρήγγειλεν ὁ βασιλεὺς τοῖς πρεσβυτέροις οἳ ἦσαν παρεστῶτες ἐνώπιον Σαλωμων = Giguet 12:5 (marqueur «(6)») «le roi consulta les anciens qui, du vivant de Salomon, son père, se tenaient auprès de lui». Libère Giguet 12:6 pour grec 12:7. || παρήγγειλεν ὁ βασιλεὺς τοῖς πρεσβυτέροις ... ἐνώπιον Σαλωμων τοῦ πατρὸς αὐτοῦ <-> Giguet 12:5 (parenthèse (6)) 'le roi consulta les anciens ... du vivant de"
+  },
+  "12:5": {
+   "sources": [
+    [
+     12,
+     4
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "grec ἀπέλθετε ἕως ἡμερῶν τριῶν καὶ ἀναστρέψατε πρός με καὶ ἀπῆλθον = Giguet 12:4 (marqueur «(5)») «Allez-vous-en pendant trois jours, puis, revenez près de moi, et ils s’en allèrent». Libère Giguet 12:5 pour grec 12:6. || ἀπέλθετε ἕως ἡμερῶν τριῶν καὶ ἀναστρέψατε πρός με καὶ ἀπῆλθον <-> Giguet 12:4 (parenthèse (5)) 'Allez-vous-en pendant trois jours ... et ils s'en allèrent'. Décale de Giguet 12:5"
+  },
+  "12:4": {
+   "sources": [
+    [
+     12,
+     3
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "grec ὁ πατήρ σου ἐβάρυνεν τὸν κλοιὸν ἡμῶν καὶ σὺ νῦν κούφισον... δουλεύσομέν σοι = Giguet 12:3 (marqueur «(4)») «Ton père a rendu pesant notre joug ; allége donc... et nous te servirons». Libère Giguet 12:4 pour grec 12:5. || ὁ πατήρ σου ἐβάρυνεν τὸν κλοιὸν ἡμῶν ... καὶ δουλεύσομέν σοι <-> Giguet 12:3 (parenthèse (4)) 'Ton père a rendu pesant notre joug ... et nous te servirons'. Décale de Giguet "
+  },
+  "12:3": {
+   "sources": [
+    [
+     12,
+     2
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "grec καὶ ἐλάλησεν ὁ λαὸς πρὸς τὸν βασιλέα Ροβοαμ λέγοντες = Giguet 12:2 (marqueur «(3)») «Et le peuple parla au roi Roboam, disant :». Grec 12:3 sert actuellement Giguet 12:3 (contenu de grec 12:4) : origine du décalage +1 ; le rattacher à Giguet 12:2 (le trou) clôt la chaîne. || καὶ ἐλάλησεν ὁ λαὸς πρὸς τὸν βασιλέα Ροβοαμ λέγοντες <-> Giguet 12:2 (parenthèse (3)) 'Et le peuple parla au roi Roboam"
+  },
+  "12:19": {
+   "sources": [
+    [
+     12,
+     18
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "grec καὶ ἠθέτησεν Ισραηλ εἰς τὸν οἶκον Δαυιδ ἕως τῆς ἡμέρας ταύτης = Giguet 12:18 (marqueur «(19)») «Et jusqu’à nos jours la maison de David a été rejetée par Israël». Flottant car Giguet omet son propre v.19 ; Giguet 12:18 occupé à tort par grec 12:18. || καὶ ἠθέτησεν Ισραηλ εἰς τὸν οἶκον Δαυιδ ἕως τῆς ἡμέρας ταύτης <-> Giguet 12:18 (parenthèse (19)) 'jusqu'à nos jours la maison de David a été re"
+  },
+  "12:18": {
+   "sources": [
+    [
+     12,
+     17
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "grec ἀπέστειλεν ὁ βασιλεὺς τὸν Αδωνιραμ τὸν ἐπὶ τοῦ φόρου καὶ ἐλιθοβόλησαν αὐτὸν... ἀπέθανεν... ἔφθασεν... φυγεῖν εἰς Ιερουσαλημ = Giguet 12:17 (marqueur «(18)») «le roi leur envoya Adonisam, intendant des impôts ; ils le lapidèrent, il mourut ; et le roi Roboam s’empressa de fuir... Jérusalem». Libère Giguet 12:18 pour grec 12:19. || ἀπέστειλεν ὁ βασιλεὺς τὸν Αδωνιραμ τὸν ἐπὶ τοῦ φόρου καὶ ἐλιθοβ"
+  },
+  "13:34": {
+   "sources": [
+    [
+     13,
+     33
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Grec 13:34 «ἐγένετο τὸ ῥῆμα τοῦτο εἰς ἁμαρτίαν τῷ οἴκῳ Ιεροβοαμ… εἰς ἀφανισμὸν ἀπὸ προσώπου τῆς γῆς» = Giguet 13:33 «Ce fut le péché de la maison de Jéroboam, cause de sa perte et de sa disparition de la face de la terre». Concordance : ἁμαρτίαν τῷ οἴκῳ Ιεροβοαμ↔le péché de la maison de Jéroboam ; ἀπὸ προσώπου τῆς γῆς↔de la face de la terre. Flottant car le lien Giguet 13:33 est occupé par le grec"
+  },
+  "13:33": {
+   "sources": [
+    [
+     13,
+     32
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Grec 13:33 «οὐκ ἐπέστρεψεν Ιεροβοαμ ἀπὸ τῆς κακίας αὐτοῦ… ἐποίησεν… ἱερεῖς ὑψηλῶν» = Giguet 13:32 «Jéroboam ne se repentit point de sa méchanceté ; il continua… des prêtres des hauts lieux». Le lien actuel 13:33→Giguet 13:33 est faux (Giguet 13:33 parle du péché/disparition, = grec 13:34). || Grec 'οὐκ ἐπέστρεψεν Ιεροβοαμ ἀπὸ τῆς κακίας αὐτοῦ... ἐποίησεν ἐκ μέρους τοῦ λαοῦ ἱερεῖς ὑψηλῶν ὁ βουλόμεν"
+  },
+  "13:32": {
+   "sources": [
+    [
+     13,
+     31
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Grec 13:32 «γινόμενον ἔσται τὸ ῥῆμα… ἐπὶ τοῦ θυσιαστηρίου τοῦ ἐν Βαιθηλ καὶ… ἐν Σαμαρείᾳ» = Giguet 13:31 «Car la chose qu'il a dite… concernant l'autel de Béthel et les temples des hauts lieux en Samarie, s'accomplira». Concordance θυσιαστηρίου ἐν Βαιθηλ↔l'autel de Béthel ; ἐν Σαμαρείᾳ↔en Samarie. Lien actuel 13:32→Giguet 13:32 faux. || Grec 'γινόμενον ἔσται τὸ ῥῆμα ὃ ἐλάλησεν ἐν λόγῳ κυρίου ἐπὶ τ"
+  },
+  "13:31": {
+   "sources": [
+    [
+     13,
+     30
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Grec 13:31 «ἐὰν ἀποθάνω θάψατέ με ἐν τῷ τάφῳ τούτῳ οὗ ὁ ἄνθρωπος τοῦ θεοῦ τέθαπται… ἵνα σωθῶσι τὰ ὀστᾶ μου» = Giguet 13:30 «Quand je mourrai, ensevelissez-moi dans le sépulcre où l'homme de Dieu a été enseveli… afin que mes ossements soient sauvés». Lien actuel 13:31→Giguet 13:31 faux. || Grec 'εἶπεν τοῖς υἱοῖς αὐτοῦ... ἐὰν ἀποθάνω θάψατέ με ἐν τῷ τάφῳ τούτῳ... παρὰ τὰ ὀστᾶ αὐτοῦ θέτε με ἵνα σωθῶσ"
+  },
+  "13:30": {
+   "sources": [
+    [
+     13,
+     29
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Grec 13:30 «ἐν τῷ τάφῳ ἑαυτοῦ καὶ ἐκόψαντο αὐτόν οὐαὶ ἀδελφέ» = Giguet 13:29 «Dans son propre sépulcre ; et ils pleurèrent sur lui, disant : Hélas ! frère». Concordance ἐν τῷ τάφῳ ἑαυτοῦ↔son propre sépulcre ; οὐαὶ ἀδελφέ↔Hélas! frère. Lien actuel 13:30→Giguet 13:30 faux. || Grec 'ἐν τῷ τάφῳ ἑαυτοῦ καὶ ἐκόψαντο αὐτόν οὐαὶ ἀδελφέ' = Giguet 13:29 'Dans son propre sépulcre ; et ils pleurèrent sur lui,"
+  },
+  "13:29": {
+   "sources": [
+    [
+     13,
+     28
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Grec 13:29 «ἦρεν ὁ προφήτης τὸ σῶμα τοῦ ἀνθρώπου τοῦ θεοῦ καὶ ἐπέθηκεν αὐτὸ ἐπὶ τὸν ὄνον… τοῦ θάψαι αὐτόν» = Giguet 13:28 «Le prophète souleva le corps de l'homme de Dieu, le plaça sur son âne… afin de l'ensevelir». Concordance ἦρεν ὁ προφήτης τὸ σῶμα↔Le prophète souleva le corps ; ἐπὶ τὸν ὄνον↔sur son âne. Lien actuel 13:29→Giguet 13:29 faux. || Grec 'ἦρεν ὁ προφήτης τὸ σῶμα τοῦ ἀνθρώπου τοῦ θεοῦ"
+  },
+  "13:28": {
+   "sources": [
+    [
+     13,
+     27
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Grec 13:28 «ἐπορεύθη καὶ εὗρεν τὸ σῶμα αὐτοῦ ἐρριμμένον ἐν τῇ ὁδῷ… οὐκ ἔφαγεν ὁ λέων τὸ σῶμα… οὐ συνέτριψεν τὸν ὄνον» = Giguet 13:27 (le TROU) «Et il sortit, et il trouva le cadavre gisant sur le chemin… le lion n'avait point mangé le mort, et il n'avait point déchiré l'âne». Concordance εὗρεν τὸ σῶμα ἐρριμμένον↔trouva le cadavre gisant ; οὐκ ἔφαγεν ὁ λέων↔le lion n'avait point mangé. Rahlfs n'a p"
+  },
+  "15:33": {
+   "sources": [
+    [
+     15,
+     32
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Décalage de numérotation : Rahlfs omet le doublet 15:32 (guerre Asa/Baasa) donc grec 15:33 = Giguet 15:32. Concordance intégrale : τῷ ἔτει τῷ τρίτῳ τοῦ Ασα ↔ 'la troisième année du règne d'Asa' ; Βαασα υἱὸς Αχια ↔ 'Baasa, fils d'Achias' ; ἐπὶ Ισραηλ ↔ 'roi d'Israël' ; ἐν Θερσα ↔ 'à Thersa' ; εἴκοσι καὶ τέσσαρα ἔτη ↔ 'vingt-quatre ans'. Giguet 15:32 entièrement libre (22/22 mots non réclamés). || C"
+  },
+  "22:51": {
+   "sources": [
+    [
+     22,
+     47
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "ἐκοιμήθη Ιωσαφατ μετὰ τῶν πατέρων / ἐτάφη ... ἐν πόλει Δαυιδ / ἐβασίλευσεν Ιωραμ υἱὸς αὐτοῦ = 'Josaphat s'endormit avec ses pères ; il fut enseveli ... en la ville de David ... et son fils Joram régna à sa place' (Giguet 22:47). Décalage de numérotation Rahlfs 51 = Giguet 47. || Décalage de versification -4 : le grec omet MT 22:47-50 (Édom/navires) et numérote ses formules régnales finales 51-54, "
+  },
+  "22:52": {
+   "sources": [
+    [
+     22,
+     48
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Οχοζιας υἱὸς Αχααβ ἐβασίλευσεν ἐπὶ Ισραηλ ἐν Σαμαρείᾳ / ἐν ἔτει ἑπτακαιδεκάτῳ Ιωσαφατ / ἔτη δύο = 'Ochozias, fils d'Achab, régna sur Israël en Samarie ; ... la dix-septième année de ... Josaphat, et il dura deux ans' (Giguet 22:48). || Οχοζιας υἱὸς Αχααβ = 'Ochozias, fils d'Achab' ; ἐβασίλευσεν ἐπὶ Ισραηλ ἐν Σαμαρείᾳ = 'régna sur Israël en Samarie' ; ἐν ἔτει ἑπτακαιδεκάτῳ Ιωσαφατ = 'la dix-septièm"
+  },
+  "22:53": {
+   "sources": [
+    [
+     22,
+     49
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "ἐποίησεν τὸ πονηρὸν ἐναντίον κυρίου / ὁδῷ Αχααβ τοῦ πατρὸς / ὁδῷ Ιεζαβελ τῆς μητρὸς / ἁμαρτίαις οἴκου Ιεροβοαμ υἱοῦ Ναβατ = 'il fit le mal devant le Seigneur ; ... voie d'Achab, son père, ... voie de Jézabel, sa mère, ... le péché où la maison de Jéroboam, fils de Nabat...' (Giguet 22:49). || ἐποίησεν τὸ πονηρὸν ἐναντίον κυρίου = 'il fit le mal devant le Seigneur' ; ἐπορεύθη ἐν ὁδῷ Αχααβ τοῦ πατρὸ"
+  },
+  "22:54": {
+   "sources": [
+    [
+     22,
+     50
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "ἐδούλευσεν τοῖς Βααλιμ καὶ προσεκύνησεν αὐτοῖς / παρώργισεν τὸν κύριον θεὸν Ισραηλ = 'Il servit Baal, et il l'adora ; il irrita le Seigneur Dieu d'Israël...' (Giguet 22:50). || ἐδούλευσεν τοῖς Βααλιμ = 'Il servit Baal' ; προσεκύνησεν αὐτοῖς = 'il l'adora' ; παρώργισεν τὸν κύριον θεὸν Ισραηλ = 'il irrita le Seigneur Dieu d'Israël' ; κατὰ πάντα τὰ γενόμενα ἔμπροσθεν αὐτοῦ = 'de la même manière qu'on"
+  }
+ },
+ "1ch": {
+  "11:47": {
+   "sources": [
+    [
+     11,
+     46,
+     13,
+     19
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Greek 11:47 «Αλιηλ καὶ Ωβηδ καὶ Ιεσιηλ ὁ Μισαβια» = queue de Giguet 11:46 «Daliel, et Obeth, et Jersiel le Mesobéen.» (mots 13-19). Concordance nette : Ωβηδ<->Obeth, Ιεσιηλ<->Jersiel, ὁ Μισαβια<->le Mesobéen (Αλιηλ<->Daliel). Giguet a fusionné les grecs 46 et 47 dans son unique v.46. || Giguet fusionne les grecs 46 et 47 dans son unique v.46 (dernier du chapitre, pas de 11:47 Giguet). La queue mot"
+  },
+  "11:46": {
+   "sources": [
+    [
+     11,
+     46,
+     0,
+     12
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Greek 11:46 «Ελιηλ ὁ Μιι καὶ Ιαριβι καὶ Ιωσια υἱὸς αὐτοῦ Ελνααμ καὶ Ιεθεμα ὁ Μωαβίτης» = tête de Giguet 11:46 «Elihel le Mahoïte, et Jaribi, et Josias son fils, et Jethama le Moabite,» (mots 0-12) : Ελιηλ<->Elihel, Ιαριβι<->Jaribi, Ιωσια υἱὸς αὐτοῦ<->Josias son fils, Ιεθεμα ὁ Μωαβίτης<->Jethama le Moabite. Le lien actuel prend tout le v.46 ; on le réduit à la tête pour libérer la queue (mots 13-19"
+  },
+  "12:4": {
+   "sources": [
+    [
+     12,
+     4,
+     0,
+     9
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "grec 12:4 « καὶ Σαμαιας ὁ Γαβαωνίτης δυνατὸς ἐν τοῖς τριάκοντα καὶ ἐπὶ τῶν τριάκοντα » ne couvre que la premiere moitie de Giguet 12:4 (mots 0-9 : « Samaïas de Gabaon, vaillant parmi les trente, et leur chef, ») : Σαμαιας↔Samaïas, Γαβαωνίτης↔Gabaon, δυνατὸς↔vaillant, τριάκοντα↔trente. Le lien actuel [[12,4]] sur-sert tout le verset et vole la seconde moitie qui revient a grec 12:5 ; restreindre a "
+  },
+  "15:25": {
+   "sources": [
+    [
+     15,
+     25,
+     28,
+     51
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Le lien 15:25 servait toute l’entrée Giguet 15:25, englobant à tort le contenu du v.24 (mots 0-26). Corrigé à la seconde moitié, mots 28-51 : « David (Δαυιδ), et les anciens d’Israël (πρεσβύτεροι Ισραηλ)… les chefs de mille hommes (χιλίαρχοι)… pour transférer l’arche de l’alliance (ἀναγαγεῖν τὴν κιβωτὸν τῆς διαθήκης)… de la maison d’Abdedom (ἐξ οἴκου Αβδεδομ), avec allégresse (ἐν εὐφροσύνῃ). ». Né"
+  },
+  "20:8": {
+   "sources": [
+    [
+     20,
+     7,
+     15,
+     42
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Grec 20:8 « οὗτοι ἐγένοντο Ραφα ἐν Γεθ … τέσσαρες γίγαντες καὶ ἔπεσον ἐν χειρὶ Δαυιδ … παίδων αὐτοῦ » = seconde moitié de Giguet 20:7, mots 15-42 « Ces hommes étaient de la race de Rhapha de Geth ; ils étaient quatre, tous géants, et ils tombèrent sous les coups de David et de ses serviteurs ». Concordances : Ραφα↔Rhapha, Γεθ↔Geth, τέσσαρες↔quatre, γίγαντες↔géants, ἔπεσον↔tombèrent, χειρὶ Δαυιδ↔(c"
+  },
+  "20:7": {
+   "sources": [
+    [
+     20,
+     7,
+     0,
+     14
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Le lien actuel de 20:7 pointe sur TOUT Giguet 20:7 (verset entier), englobant à tort le contenu du grec 20:8 (mots 15-42). Grec 20:7 « καὶ ὠνείδισεν τὸν Ισραηλ … ἐπάταξεν αὐτὸν Ιωναθαν υἱὸς Σαμαα ἀδελφοῦ Δαυιδ » ne correspond qu'aux mots 0-14 « Et il insulta Israël ; et Jonathas, fils de Samaa, frère de David, le tua. » (ὠνείδισεν↔insulta, Ισραηλ↔Israël, Ιωναθαν↔Jonathas, Σαμαα↔Samaa, ἀδελφοῦ Δαυι"
+  }
+ },
+ "pro": {
+  "31:21": {
+   "sources": [
+    [
+     31,
+     24
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "G21 « οὐ φροντίζει τῶν ἐν οἴκῳ ὁ ἀνὴρ αὐτῆς ... πάντες γὰρ οἱ παρ᾿ αὐτῆς ἐνδιδύσκονται » (φροντίζει=s'inquiéter, ἀνὴρ=mari, ἐνδιδύσκονται=vêtus) sert aujourd'hui à tort Giguet 21 (fuseau). Vrai français = Giguet 24 « Son mari n'a pas à s'inquiéter des gens de sa maison ... car elle a vêtu tous ceux qui sont auprès d'elle ». Ce déplacement libère Giguet 21 pour G19. || Grec 31:21 οὐ φροντίζει τῶν ἐ"
+  },
+  "31:22": {
+   "sources": [
+    [
+     31,
+     25
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "G22 « δισσὰς χλαίνας ἐποίησεν τῷ ἀνδρὶ αὐτῆς ἐκ δὲ βύσσου καὶ πορφύρας ἑαυτῇ ἐνδύματα » (δισσὰς χλαίνας=manteaux doubles, βύσσου=fin lin, πορφύρας=pourpre) sert à tort Giguet 22. Vrai français = Giguet 25 « Elle a fait pour son mari des manteaux doubles, et pour elle-même des manteaux de fin lin et de pourpre ». Libère Giguet 22 pour G20. || Grec 31:22 δισσὰς χλαίνας ἐποίησεν τῷ ἀνδρὶ... ἐκ βύσσου"
+  },
+  "31:24": {
+   "sources": [
+    [
+     31,
+     27,
+     0,
+     13
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "G24 « σινδόνας ἐποίησεν καὶ ἀπέδοτο περιζώματα δὲ τοῖς Χαναναίοις » (σινδόνας=toiles de fin lin, περιζώματα=ceintures, Χαναναίοις=Chananéens) sert à tort Giguet 24. Vrai français = début du bloc Giguet 27, mots 0-13 « Elle fait des toiles de fin lin ; elle vend des ceintures aux Chananéens. ». Libère Giguet 24 pour G21. || Grec 31:24 σινδόνας ἐποίησεν καὶ ἀπέδοτο, περιζώματα τοῖς Χαναναίοις. Fondu"
+  },
+  "31:25": {
+   "sources": [
+    [
+     31,
+     27,
+     14,
+     30
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "G25 « στόμα αὐτῆς διήνοιξεν προσεχόντως καὶ ἐννόμως καὶ τάξιν ἐστείλατο τῇ γλώσσῃ αὐτῆς » (στόμα διήνοιξεν=ouvre la bouche, ἐννόμως=selon la loi/mesure, γλώσσῃ=langue) sert à tort Giguet 25. Vrai français = bloc Giguet 27, mots 14-30 « Elle ouvre la bouche avec prudence et mesure ; elle a mis un frein à sa langue. ». Libère Giguet 25 pour G22. || Grec 31:25 στόμα διήνοιξεν προσεχόντως καὶ ἐννόμως."
+  },
+  "31:27": {
+   "sources": [
+    [
+     31,
+     27,
+     51,
+     67
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "G27 « στεγναὶ διατριβαὶ οἴκων αὐτῆς σῖτα δὲ ὀκνηρὰ οὐκ ἔφαγεν » (στεγναὶ διατριβαὶ οἴκων=habitudes de sa maison réglées, σῖτα ὀκνηρὰ οὐκ ἔφαγεν=ne mange pas les fruits de la paresse) sert aujourd'hui le bloc Giguet 27 ENTIER, ce qui chevauche G24/G25/G26. Le réduire aux mots 51-67 « Les habitudes de sa maison sont réglées ; elle ne mange point les fruits de la paresse. » libère les mots 0-48 pour "
+  }
+ },
+ "jos": {
+  "6:6": {
+   "sources": [
+    [
+     6,
+     7,
+     0,
+     7
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Giguet 6:7 fusionne le grec 6:6 et 6:7. Ses mots 0-7 « Josué, fils de Nau, alla auprès des prêtres, » traduisent exactement le grec 6:6 : Ἰησοῦς ὁ τοῦ Ναυη <-> « Josué, fils de Nau » (mots 0-3) ; εἰσῆλθεν ... πρὸς τοὺς ἱερεῖς <-> « alla auprès des prêtres » (mots 4-7). ἱερεῖς = prêtres. || Giguet n'a pas de verset 6:6 : il fusionne le grec 6:6+6:7 dans son unique verset 6:7. La 1re moitié de Gigue"
+  },
+  "6:7": {
+   "sources": [
+    [
+     6,
+     7,
+     8,
+     33
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Le lien actuel prend le verset Giguet 6:7 ENTIER ; comme 6:6 réclame désormais les mots 0-7, je restreins 6:7 aux mots 8-33 pour éviter le chevauchement. καὶ εἶπεν αὐτοῖς λέγων <-> « et il leur parla, disant » (8-13) ; παραγγείλατε τῷ λαῷ <-> « Annoncez au peuple » (14-16) ; κυκλῶσαι τὴν πόλιν <-> « à investir la ville » (20-22) ; οἱ μάχιμοι <-> « les hommes de guerre » (24-27) ; ἐνωπλισμένοι <-> "
+  },
+  "12:18": {
+   "sources": [
+    [
+     12,
+     18,
+     0,
+     3
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Grec 12:18 = βασιλέα Αφεκ τῆς Σαρων ; Αφεκ↔« d’Ophec » (mot 2), τῆς Σαρων↔« d’Aroc » (mot 3). Le lien actuel réclame TOUT Giguet 12:18 (9 rois, mots 0-36), or ce verset condense grec 12:18-22. Réduire à l’extrait mots 0-3 pour libérer les rois suivants. || grec Αφεκ τῆς Σαρων ↔ Giguet 12:18 mots 0-3 « Le roi d’Ophec d’Aroc » (Αφεκ=Ophec, Σαρων=Aroc). Le lien actuel réclame le verset Giguet 12:18 E"
+  },
+  "12:19": {
+   "sources": [
+    [
+     12,
+     18,
+     4,
+     6
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Grec 12:19 = βασιλέα Ασωρ ; Ασωρ↔« d’Asom » (mot 6, 2e roi de Giguet 12:18). Le lien actuel pointe à tort vers TOUT Giguet 12:19 (qui appartient au grec 12:23) ; corriger vers l’extrait Giguet 12:18 mots 4-6. || grec Ασωρ ↔ Giguet 12:18 mots 4-6 « le roi d’Asom » (Ασωρ=Asom, 2e roi). Le lien actuel pointe à tort sur Giguet 12:19 (Odollam de Phennéaldor / Géi en Galilée), qui appartient en réalité "
+  },
+  "12:20": {
+   "sources": [
+    [
+     12,
+     18,
+     7,
+     17
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Grec 12:20 = βασιλέα Συμοων βασιλέα Μαρρων βασιλέα Αζιφ ; Συμοων↔Symoon (mot 10), Μαρρων↔Mambroth (mot 14), Αζιφ↔« d’Aziph » (mot 17). Le lien actuel pointe à tort vers TOUT Giguet 12:20 (qui appartient au grec 12:24) ; corriger vers l’extrait Giguet 12:18 mots 7-17. || grec Συμοων / Μαρρων / Αζιφ (3 rois) ↔ Giguet 12:18 mots 7-17 « le roi de Symoon, le roi de Mambroth, le roi d’Aziph » (Συμοων=Sy"
+  },
+  "12:21": {
+   "sources": [
+    [
+     12,
+     18,
+     18,
+     25
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Grec 12:21 = βασιλέα Καδης βασιλέα Ταναχ ; Καδης↔Cadès (mot 21), Ταναχ↔Zachac (mot 25). Contenu présent dans Giguet 12:18, aujourd’hui capté en entier par le grec 12:18 ; assigner l’extrait mots 18-25. || grec Καδης / Ταναχ ↔ Giguet 12:18 mots 18-25 « le roi de Cadès, le roi de Zachac » (Καδης=Cadès, exact ; Ταναχ=Zachac, verrouillé par position entre l’ancre Cadès et Maredoth). Flottant parce que"
+  },
+  "12:22": {
+   "sources": [
+    [
+     12,
+     18,
+     26,
+     36
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Grec 12:22 = βασιλέα Μαγεδων βασιλέα Ιεκοναμ τοῦ Χερμελ ; Μαγεδων↔Maredoth (mot 29), Ιεκοναμ τοῦ Χερμελ↔« Jécom du mont Carmel » (mots 33-36). Extrait final de Giguet 12:18, mots 26-36 (couvre jusqu’au dernier roi). || grec Μαγεδων / Ιεκοναμ τοῦ Χερμελ ↔ Giguet 12:18 mots 26-36 « le roi de Maredoth, le roi de Jécom du mont Carmel » (Μαγεδων=Maredoth, Ιεκοναμ=Jécom, Χερμελ=Carmel). Fin de Giguet 12"
+  },
+  "12:23": {
+   "sources": [
+    [
+     12,
+     19
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Grec 12:23 = βασιλέα Δωρ τοῦ Ναφεδδωρ βασιλέα Γωιμ τῆς Γαλιλαίας ; Ναφεδδωρ↔Phennéaldor, Γωιμ τῆς Γαλιλαίας↔« Géi en Galilée » (Γαλιλαίας↔Galilée). = Giguet 12:19 entier, à libérer du grec 12:19. || grec Δωρ τοῦ Ναφεδδωρ / Γωιμ τῆς Γαλιλαίας ↔ Giguet 12:19 entier « Le roi d’Odollam de Phennéaldor, le roi de Géi en Galilée » (Ναφεδδωρ=Phennéaldor, Γαλιλαίας=Galilée). Occupé aujourd’hui par le lien "
+  },
+  "12:24": {
+   "sources": [
+    [
+     12,
+     20
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Grec 12:24 = βασιλέα Θαρσα πάντες οὗτοι βασιλεῖς εἴκοσι ἐννέα ; Θαρσα↔Thersa, εἴκοσι ἐννέα↔« vingt-neuf », βασιλεῖς↔rois. = Giguet 12:20 entier (« Le roi de Thersa ; en tout : vingt-neuf rois. »), à libérer du grec 12:20. || grec Θαρσα πάντες οὗτοι βασιλεῖς εἴκοσι ἐννέα ↔ Giguet 12:20 entier « Le roi de Thersa ; en tout : vingt-neuf rois » (Θαρσα=Thersa, εἴκοσι ἐννέα = 20+9 = vingt-neuf). Occupé a"
+  },
+  "18:28": {
+   "sources": [
+    [
+     18,
+     27,
+     5,
+     28
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Giguet a fusionné grec 18:27+18:28 dans son unique v.27. La 2e moitié (mots 5-28) est la part de grec 18:28 : « Ιεβους αὕτη ἐστὶν Ιερουσαλημ » <-> « Jébus, la même que Jérusalem »; « Γαβαωθιαριμ » <-> « Gabaoth et Jarin »; « πόλεις τρεῖς καὶ δέκα » <-> « treize villes »; « αἱ κῶμαι αὐτῶν » <-> « leurs villages »; « αὕτη ἡ κληρονομία υἱῶν Βενιαμιν κατὰ δήμους αὐτῶν » <-> « tel est l’héritage des fi"
+  },
+  "18:27": {
+   "sources": [
+    [
+     18,
+     27,
+     0,
+     4
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Grec 18:27 = « καὶ Φιρα καὶ Καφαν καὶ Νακαν καὶ Σεληκαν καὶ Θαρεηλα » <-> seulement les mots 0-4 « Phira, Caphan, Nacan, Sélécan, Tharéila, ». Le lien actuel [[18,27]] prend TOUT le v.27 Giguet, ce qui crée un chevauchement avec grec 18:28. Il faut le réduire aux mots 0-4 pour libérer les mots 5-28 au profit de grec 18:28 (règle de non-chevauchement). || Le lien actuel [[18,27]] prend le verset Gi"
+  }
+ },
+ "num": {
+  "4:15": {
+   "sources": [
+    [
+     4,
+     14,
+     68,
+     126
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Le contenu du grec 4:15 est collé en queue de Giguet 4:14, après le marqueur de verset égaré « 13. » (mot 67). Extrait mots 68-126. Concordances nettes : συντελέσουσιν = « auront achevé » ; Ααρων καὶ οἱ υἱοὶ αὐτοῦ = « Aaron et ses fils » ; καλύπτοντες τὰ ἅγια = « d'envelopper les choses saintes » ; ἐν τῷ ἐξαίρειν τὴν παρεμβολήν = « aux levers du camp » ; πάντα τὰ σκεύη τὰ ἅγια = « tous les vases s"
+  },
+  "4:14": {
+   "sources": [
+    [
+     4,
+     14,
+     0,
+     66
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Non-chevauchement : Giguet 4:14 est actuellement lié en entier au grec 4:14 alors qu'il fusionne le grec 4:14 (tête) et le grec 4:15 (queue). On restreint le lien de 4:14 à la tête (mots 0-66) pour libérer la queue au profit du grec 4:15. La tête concorde avec le grec 4:14 : τὰ σκεύη ... τοῦ θυσιαστηρίου = « tous les vases... de l'autel » ; ἱμάτιον πορφυροῦν / λουτῆρα καὶ τὴν βάσιν αὐτοῦ = « une n"
+  },
+  "11:35": {
+   "sources": [
+    [
+     11,
+     34,
+     19,
+     34
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Grec 11:35 « ἀπὸ μνημάτων ἐπιθυμίας ἐξῆρεν ὁ λαὸς εἰς Ασηρωθ καὶ ἐγένετο ὁ λαὸς ἐν Ασηρωθ » ↔ Giguet 11:34 mots 19-34 « Des Sépulcres de la concupiscence le peuple partit pour Aseroth, et le peuple s’arrêta en Aseroth ». Concordance : μνημάτων=Sépulcres, ἐπιθυμίας=concupiscence, ἐξῆρεν=partit, ὁ λαὸς=le peuple, εἰς Ασηρωθ=pour Aseroth, ἐγένετο ἐν Ασηρωθ=s’arrêta en Aseroth. Giguet a fusionné les g"
+  },
+  "11:34": {
+   "sources": [
+    [
+     11,
+     34,
+     0,
+     18
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Grec 11:34 « καὶ ἐκλήθη τὸ ὄνομα τοῦ τόπου ἐκείνου μνήματα τῆς ἐπιθυμίας ὅτι ἐκεῖ ἔθαψαν τὸν λαὸν τὸν ἐπιθυμητήν » ↔ Giguet 11:34 mots 0-18 « Et l’on nomma ce lieu Sépulcres de la concupiscence, parce qu’on y ensevelit le peuple qui avait trop désiré ». Le lien actuel [[11,34]] prend le verset entier ; restreint à l’extrait 0-18 pour libérer les mots 19-34 (contenu du grec 11:35) et éviter le chev"
+  }
+ },
+ "deu": {
+  "4:14": {
+   "sources": [
+    [
+     4,
+     14,
+     0,
+     36
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Le lien existant [[4,14]] engloutit tout Giguet 4:14, y compris le francais du grec 4:15 (mots 38-68) et le marqueur « 13. » (mot 37) : c'est ce qui laisse 4:15 flottant. Restreindre aux mots 0-36 « En ce temps-la... vous partager. » qui traduisent exactement 4:14 : ἐν τῷ καιρῷ ἐκείνῳ <-> « En ce temps-la » ; ἐνετείλατο κύριος ... διδάξαι ὑμᾶς <-> « le Seigneur me prescrivit de vous enseigner » ; "
+  },
+  "5:4": {
+   "sources": [
+    [
+     5,
+     4,
+     0,
+     14
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Lien voisin a corriger pour eviter le chevauchement: grec 5:4 revendique actuellement giguet 5:4 en entier ([[5,4]]), qui contient aussi le francais de grec 5:5. On le restreint a la 1re partie (tokens 0-14): πρόσωπον κατὰ πρόσωπον = 'face à face' ; ἐλάλησεν κύριος πρὸς ὑμᾶς = 'Le Seigneur vous a parlé' ; ἐν τῷ ὄρει = 'en la montagne' ; ἐκ μέσου τοῦ πυρός = 'au milieu du feu'. Ceci libere les toke"
+  }
+ },
+ "1sa": {
+  "12:25": {
+   "sources": [
+    [
+     12,
+     24,
+     26,
+     38
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Giguet 12:24 emballe deux versets. Après « ...faites parmi vous. » (fin du grec 12:24) vient le marqueur de verset échappé « 23. » (mot 25), puis « Et si vous retombez dans le péché, vous périrez vous et votre roi. » (mots 26-38). Ce fragment traduit précisément le grec 12:25 : ἐὰν κακίᾳ κακοποιήσητε ↔ « si vous retombez dans le péché » ; ὑμεῖς καὶ ὁ βασιλεὺς ὑμῶν ↔ « vous et votre roi » ; προστεθ"
+  },
+  "12:24": {
+   "sources": [
+    [
+     12,
+     24,
+     0,
+     24
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Le lien existant 12:24→[12,24] réclame le verset Giguet entier, or celui-ci contient aussi le fragment du grec 12:25 (mots 26-38). Non-chevauchement : restreindre 12:24 à l'extrait mots 0-24 (« Mais craignez le Seigneur... faites parmi vous. »), qui seul traduit le grec 12:24 : φοβεῖσθε τὸν κύριον ↔ « craignez le Seigneur » ; δουλεύσατε αὐτῷ ἐν ἀληθείᾳ ↔ « servez-le dans la vérité » ; εἴδετε ἃ ἐμε"
+  }
+ },
+ "ezk": {
+  "2:10": {
+   "sources": [
+    [
+     2,
+     9,
+     18,
+     50
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Giguet a fusionne grec 2:9+2:10 dans son unique v.2:9 (ch.2 Giguet = 9 versets seulement). L'extrait mots 18-50 rend exactement grec 2:10 : 'deroula' <-> ανειλησεν, 'devant moi' <-> ενωπιον εμου, 'des deux cotes des pages' <-> τα οπισθεν και τα εμπροσθεν (dos/devant), 'ecrit' <-> εγεγραπτο, 'Une lamentation' <-> θρηνος, 'un chant' <-> μελος, 'des helas' <-> ουαι. Concordance nette bout a bout. || "
+  },
+  "2:9": {
+   "sources": [
+    [
+     2,
+     9,
+     0,
+     17
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Non-chevauchement : le lien actuel de grec 2:9 sert TOUT Giguet 2:9 (mots 0-50), englobant le contenu de grec 2:10. Le restreindre a l'extrait mots 0-17 rend le seul grec 2:9 : 'Et je vis' <-> και ειδον, 'voila' <-> ιδου, 'main etait etendue' <-> χειρ εκτεταμενη, 'vers moi' <-> προς με, 'rouleau d'un livre' <-> κεφαλις βιβλιου. Cela libere les mots 18-50 pour grec 2:10. || Non-chevauchement : le l"
+  },
+  "7:13": {
+   "sources": [
+    [
+     7,
+     12
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "G7:13 « ὁ κτώμενος πρὸς τὸν πωλοῦντα οὐκέτι μὴ ἐπιστρέψῃ … ἄνθρωπος ἐν ὀφθαλμῷ ζωῆς αὐτοῦ οὐ κρατήσει » = Giguet 7:12 « Car l'acheteur ne retournera pas vers le vendeur, et l'homme ne prévaudra pas avec l'œil de sa vie » ; Giguet 7:12 porte le renvoi « (13.) » = Vulg. 13 = LXX 7:13. Actuellement Giguet 7:12 est capté à tort par G7:12 : tout le bloc 7:4-7:13 est décalé d'un cran, ce flottant en est"
+  },
+  "7:12": {
+   "sources": [
+    [
+     7,
+     11
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "G7:12 « ἥκει ὁ καιρός ἰδοὺ ἡ ἡμέρα ὁ κτώμενος μὴ χαιρέτω καὶ ὁ πωλῶν μὴ θρηνείτω » = Giguet 7:11 « Le temps est venu, voilà le jour. Que l'acheteur ne se réjouisse pas, que le vendeur ne se lamente pas » (renvoi « (12.) »). Déplacement qui libère Giguet 7:12 pour G7:13. || G12 «ἥκει ὁ καιρός ἰδοὺ ἡ ἡμέρα ὁ κτώμενος μὴ χαιρέτω καὶ ὁ πωλῶν μὴ θρηνείτω» = Giguet 7:11 «(12.) Le temps est venu, voilà l"
+  },
+  "7:11": {
+   "sources": [
+    [
+     7,
+     10
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "G7:11 « καὶ συντρίψει στήριγμα ἀνόμου καὶ οὐ μετὰ θορύβου οὐδὲ μετὰ σπουδῆς » = Giguet 7:10 « Et le Seigneur brisera la force de l'impie, et cela sans trouble et sans hâte » (renvoi « (11.) »). συντρίψει στήριγμα ἀνόμου = « brisera la force de l'impie » ; οὐ μετὰ θορύβου οὐδὲ μετὰ σπουδῆς = « sans trouble et sans hâte ». || G11 «καὶ συντρίψει στήριγμα ἀνόμου καὶ οὐ μετὰ θορύβου οὐδὲ μετὰ σπουδῆς» "
+  },
+  "7:10": {
+   "sources": [
+    [
+     7,
+     9
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "G7:10 « ἰδοὺ τὸ πέρας ἥκει ἰδοὺ ἡμέρα κυρίου … ἡ ῥάβδος ἤνθηκεν ἡ ὕβρις ἐξανέστηκεν » = Giguet 7:9 « Voilà que la fin est venue, voilà le jour du Seigneur, puisque la verge a fleuri et que l'orgueil a germé » (renvoi « (10.) »). ῥάβδος ἤνθηκεν = « la verge a fleuri » ; ὕβρις ἐξανέστηκεν = « l'orgueil a germé ». || G10 «ἰδοὺ τὸ πέρας ἥκει ἰδοὺ ἡμέρα κυρίου εἰ καὶ ἡ ῥάβδος ἤνθηκεν ἡ ὕβρις ἐξανέστηκε"
+  },
+  "7:9": {
+   "sources": [
+    [
+     7,
+     8
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "G7:9 « διότι τάδε λέγει κύριος » = Giguet 7:8 « Car ainsi dit le Seigneur » (renvoi « (5.) »). διότι = « Car » ; τάδε λέγει κύριος = « ainsi dit le Seigneur ». || G9 «διότι τάδε λέγει κύριος» = Giguet 7:8 «(5.) Car ainsi dit le Seigneur.» ; διότι↔Car, τάδε λέγει↔ainsi dit, κύριος↔le Seigneur. Lien actuel [[7,9]] sert à tort le texte de G10."
+  },
+  "7:8": {
+   "sources": [
+    [
+     7,
+     7
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "G7:8 « οὐ φείσεται ὁ ὀφθαλμός μου … καὶ ἐπιγνώσῃ διότι ἐγὼ κύριος » (SANS ὁ τύπτων) = Giguet 7:7 « Mon œil sera sans pitié … et tu sauras que je suis le Seigneur » (finit SANS « qui te frappe » ; renvoi « (4.) »). L'absence de ὁ τύπτων / « qui te frappe » distingue G7:8 de G7:6. || G8 «οὐ φείσεται ὁ ὀφθαλμός μου ἐπὶ σέ οὐδὲ μὴ ἐλεήσω... καὶ ἐπιγνώσῃ διότι ἐγὼ κύριος» = Giguet 7:7 «(4.) Mon œil ser"
+  },
+  "7:7": {
+   "sources": [
+    [
+     7,
+     6
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "G7:7 « νῦν τὸ πέρας πρὸς σέ καὶ ἀποστελῶ … ἐκδικήσω σε ἐν ταῖς ὁδοῖς σου … πάντα τὰ βδελύγματά σου » = Giguet 7:6 « Maintenant ta fin est proche ; et j'enverrai mon jugement contre toi, et je te punirai dans tes voies … pour toutes tes abominations » (renvoi « (3.) »). νῦν τὸ πέρας πρὸς σέ = « Maintenant ta fin est proche » ; ἐκδικήσω = « je te punirai ». || G7 «νῦν τὸ πέρας πρὸς σέ καὶ ἀποστελῶ ἐ"
+  },
+  "7:6": {
+   "sources": [
+    [
+     7,
+     5
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "G7:6 « οὐ φείσεται ὁ ὀφθαλμός μου … καὶ ἐπιγνώσῃ διότι ἐγώ εἰμι κύριος ὁ τύπτων » = Giguet 7:5 « Mon œil sera sans pitié … et tu sauras que je suis le Seigneur, et que c'est moi qui te frappe » (renvoi « (9.) »). Le final ὁ τύπτων = « c'est moi qui te frappe » distingue G7:6 de G7:8. || G6 «οὐ φείσεται ὁ ὀφθαλμός μου οὐδὲ μὴ ἐλεήσω... διότι ἐγώ εἰμι κύριος ὁ τύπτων» = Giguet 7:5 «(9.) Mon œil sera"
+  },
+  "7:5": {
+   "sources": [
+    [
+     7,
+     4
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "G7:5 « νῦν ἐγγύθεν ἐκχεῶ τὴν ὀργήν μου … συντελέσω τὸν θυμόν μου … κρινῶ σε ἐν ταῖς ὁδοῖς σου » = Giguet 7:4 « Maintenant, à portée de ma main, je répandrai sur toi ma colère, j'assouvirai sur toi ma fureur, et je te jugerai pour tes voies » (renvoi « (8.) »). νῦν ἐγγύθεν = « à portée de ma main » ; ἐκχεῶ τὴν ὀργήν = « je répandrai ma colère » ; κρινῶ = « je te jugerai » (vs ἐκδικήσω/ « punirai » "
+  },
+  "7:4": {
+   "sources": [
+    [
+     7,
+     3,
+     4,
+     28
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Giguet 7:3 FUSIONNE G7:3+G7:4. G7:4 « ἐπὶ σὲ τὸν κατοικοῦντα τὴν γῆν ἥκει ὁ καιρός ἤγγικεν ἡ ἡμέρα οὐ μετὰ θορύβων οὐδὲ μετὰ ὠδίνων » = extrait mots 4-28 de Giguet 7:3 « pour toi, habitant de la terre ; le temps est venu, le jour est proche ; il est venu sans troubles et sans douleurs ». ἐπὶ σὲ τὸν κατοικοῦντα τὴν γῆν = « pour toi, habitant de la terre » ; ἥκει ὁ καιρός = « le temps est venu » ; ἤ"
+  },
+  "7:3": {
+   "sources": [
+    [
+     7,
+     3,
+     0,
+     3
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "G7:3 « ἥκει τὸ πέρας » = extrait mots 0-3 de Giguet 7:3 « La fin est venue ». On restreint le lien (actuellement verset entier) à ces 4 premiers mots pour laisser à G7:4 les mots 4-28 : sans cette réduction, Giguet 7:3 serait revendiqué en chevauchement par G7:3 et G7:4 (fusion des deux versets grecs par Giguet). || G3 «ἥκει τὸ πέρας» = début de Giguet 7:3 (mots 0-3) «La fin est venue» ; ἥκει↔est "
+  }
+ },
+ "jdt": {
+  "11:18": {
+   "sources": [
+    [
+     11,
+     17,
+     50,
+     70
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Giguet a fusionné grec 11:17 + 11:18 dans son unique v.17, les deux séparés par un marqueur de verset échappé « 48. » (mot 49). Le français de grec 11:18 est l'extrait mots 50-70 : ἐλθοῦσα προσανοίσω σοι ↔ « Et je viendrai te le rapporter » (50-55) ; ἐξελεύσῃ σὺν πάσῃ τῇ δυνάμει σου ↔ « tu sortiras avec toutes tes forces » (56-62) ; οὐκ ἔστιν ὃς ἀντιστήσεταί σοι ἐξ αὐτῶν ↔ « et nul chez eux ne te "
+  },
+  "11:17": {
+   "sources": [
+    [
+     11,
+     17,
+     0,
+     48
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Le lien actuel [[11,17]] revendique TOUT le v.17 Giguet (span [0,MAXI]), ce qui chevaucherait les mots 50-70 désormais pris par grec 11:18 — chevauchement fatal. Grec 11:17 s'arrête en fait à καὶ ἐρεῖ μοι πότε ἐποίησαν τὰ ἁμαρτήματα αὐτῶν ↔ « ...et il me dira quand ils commettront leurs péchés » (mots 0-48). On restreint son lien à [[11,17,0,48]] ; le mot 49 « 48. » (marqueur de verset échappé) de"
+  }
+ },
+ "job": {
+  "42:17": {
+   "sources": [
+    [
+     42,
+     16,
+     39,
+     230
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Giguet a fondu grec 42:16+42:17 dans son unique verset 42:16 ; la queue (mots 39-230) rend mot pour mot grec 42:17 : ἐτελεύτησεν ... πλήρης ἡμερῶν <-> 'finit ... plein de jours' (39-48) ; ἀναστήσεσθαι <-> 'ressuscitera' (54) ; ἐκ τῆς Συριακῆς βίβλου <-> 'tiré de la traduction syriaque du livre' (66-72) ; Ιωβαβ <-> 'Jobab' (96, 169) ; οἱ βασιλεῖς ... ἐν Εδωμ <-> 'les rois qui ont régné sur Édom' (1"
+  },
+  "42:16": {
+   "sources": [
+    [
+     42,
+     16,
+     0,
+     38
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Le lien actuel [[42,16]] prend TOUT le verset Giguet 42:16, mais ce dernier contient aussi la matière de grec 42:17 (mots 39-230). Grec 42:16 (ἔζησεν ... ἔτη ἑκατὸν ἑβδομήκοντα ... τετάρτην γενεάν) ne correspond qu'à la tête, mots 0-38 : 'Et Job ... vécut cent soixante-dix ans ... jusqu'à la quatrième génération,'. On restreint le lien à [42,16,0,38] pour libérer les mots 39-230 au profit de 42:17"
+  }
+ },
+ "jol": {
+  "2:25": {
+   "sources": [
+    [
+     2,
+     24,
+     18,
+     48
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Giguet n'a pas de clé 2:25 séparée : le français de v.25 est enfoui dans l'entrée Giguet 2:24 après le marqueur inline '25 :' (mots 18-48). Concordance lexicale nette : ἀνταποδώσω='dédommagerai', ἀντὶ τῶν ἐτῶν='pendant des années', ἡ ἀκρὶς='la sauterelle', ὁ βροῦχος='la grande sauterelle', ἡ ἐρυσίβη='la nielle', ἡ κάμπη='la chenille', ἡ δύναμίς μου ἡ μεγάλη='ma grande armée', ἣν ἐξαπέστειλα εἰς ὑμ"
+  },
+  "2:24": {
+   "sources": [
+    [
+     2,
+     24,
+     0,
+     15
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "grec 2:24 sert actuellement l'entrée Giguet 2:24 ENTIÈRE (son francaisServi contient le '25 :' et tout le v.25). Il doit être restreint à ses mots 0-15 (son propre contenu) pour libérer 18-48 au profit de grec 2:25, sinon Giguet 2:24 serait pris par DEUX grecs (chevauchement). Concordance 2:24 : αἱ ἅλωνες σίτου='vos granges... remplies de blé', αἱ ληνοὶ οἴνου καὶ ἐλαίου='vos pressoirs regorgeront "
+  }
+ },
+ "sng": {
+  "1:2": {
+   "sources": [
+    [
+     1,
+     1,
+     8,
+     24
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Grec 1:2 «φιλησάτω με ἀπὸ φιλημάτων στόματος αὐτοῦ ὅτι ἀγαθοὶ μαστοί σου ὑπὲρ οἶνον» ↔ Giguet 1:1 mots 8-24 «Qu'il me baise des baisers de sa bouche ; car tes mamelles sont meilleures que le vin». Le lien actuel [[1,1]] réclame le verset entier (mots 0-MAXI) et chevauche le titre (mots 0-7) que grec 1:1 doit prendre ; réduire ce lien aux mots 8-24 libère les mots 0-7 et évite le chevauchement fata"
+  }
+ },
+ "sus": {
+  "1:56": {
+   "sources": [
+    [
+     1,
+     55,
+     35,
+     67
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Giguet a fondu deux versets grecs dans son 1:55. Les mots 35-67 traduisent exactement le grec 1:56 : μεταστήσας αὐτὸν <-> «ayant fait retirer celui-ci» ; ἐκέλευσεν προσαγαγεῖν τὸν ἕτερον <-> «il ordonna qu'on amenât l'autre» ; σπέρμα Χανααν καὶ οὐκ Ιουδα <-> «Race de Chanaan, et non de Juda» ; τὸ κάλλος ἐξηπάτησέν σε <-> «la beauté t'a séduit» ; ἡ ἐπιθυμία διέστρεψεν τὴν καρδίαν σου <-> «la concup"
+  },
+  "1:55": {
+   "sources": [
+    [
+     1,
+     55,
+     0,
+     33
+    ]
+   ],
+   "provenance": "phase2-convergence",
+   "preuve": "Non-chevauchement obligatoire : le lien actuel de 1:55 est le verset ENTIER [[1,55]], qui prend aussi les mots 35-67 désormais attribués à 1:56. Je le restreins aux mots 0-33, qui SEULS traduisent le grec 1:55 : εἶπεν δὲ Δανιηλ ὀρθῶς ἔψευσαι εἰς τὴν σεαυτοῦ κεφαλήν <-> «Et Daniel reprit : Tu as menti justement contre ta tête» ; ἄγγελος τοῦ θεοῦ ... σχίσει σε μέσον <-> «l'ange qui reçoit de Dieu la"
+  }
+ }
 }
