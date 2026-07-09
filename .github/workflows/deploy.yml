@@ -7,7 +7,9 @@ on:
 
 concurrency:
   group: deploy
-  cancel-in-progress: true
+  # false : les déploiements se SÉRIALISENT au lieu de s'annuler. Annuler un run en plein
+  # rsync --delete de l'arbre servi laisserait un arbre mixte ancien/nouveau en ligne.
+  cancel-in-progress: false
 
 jobs:
   deploy:
