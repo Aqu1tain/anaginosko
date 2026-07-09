@@ -6,7 +6,7 @@
   { "book": "1ki", "ref": "12:3", "expect": "le peuple parla au roi Roboam", "lot": "1ki 12 fusion intro/discours" },
   { "book": "job", "ref": "25:1", "expect": "Baldad le Sauchite", "lot": "Job restauré (overrides périmés retirés)" },
   { "book": "ezk", "ref": "7:3", "expect": "La fin est venue", "lot": "ezk 7 décalage" },
-  { "book": "sir", "ref": "0:1", "expect": "grandes et nombreuses choses", "lot": "prologue Siracide 1 vers 36" },
+  { "book": "sir", "ref": "0:1", "expect": "nous ayant été données par la Loi", "lot": "prologue Siracide traduit maison par Biblion/admin (prime sur la campagne machine)" },
   { "book": "jos", "ref": "12:24", "expect": "vingt-neuf rois", "lot": "jos 12 liste des rois" }
  ]
 }
