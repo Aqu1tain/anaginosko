@@ -63,6 +63,7 @@ export function ChapterRealign({ book, ch, onClose }: { book: string; ch: number
   const [orig, setOrig] = useState<Assign[]>([]);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string[] | null>(null);
+  const [notice, setNotice] = useState<string | null>(null); // message doux (ex. « servi au prochain déploiement »)
   const [extractMode, setExtractMode] = useState<{ i: number; start: number | null } | null>(null); // sélection d'une plage de mots
   const [pickMode, setPickMode] = useState<number | null>(null); // cherry-pick : quel verset choisit un Giguet
   const [valid, setValid] = useState<Set<string>>(new Set()); // versets « vérifiés, c'est bon » (local, reflète l'API)
@@ -195,7 +196,7 @@ export function ChapterRealign({ book, ch, onClose }: { book: string; ch: number
   const tryClose = () => { if (dirty && !window.confirm(`${dirty} modification(s) non enregistrée(s) seront perdues. Fermer sans enregistrer ?`)) return; onClose(); };
 
   const save = async () => {
-    setBusy(true); setErr(null);
+    setBusy(true); setErr(null); setNotice(null);
     const changes = data.grec.map((g, i) => ({ g, i })).filter(({ i }) => changed(i)).map(({ g, i }) => {
       const a = assign[i];
       if (a.kind === "band") return { ref: g.ref, sources: inRange(a.index) ? [[band[a.index].ch, band[a.index].v]] : [] };
@@ -205,9 +206,17 @@ export function ChapterRealign({ book, ch, onClose }: { book: string; ch: number
       if (a.kind === "maison") return { ref: g.ref, sources: [], maison: a.text };
       return null;
     }).filter(Boolean);
-    const d = await arb<{ ok: boolean; errors?: string[] }>("/resolve-batch", { method: "POST", body: JSON.stringify({ book, changes }) });
-    setBusy(false);
-    if (d.ok) { await load(); } else setErr(d.errors || ["Échec de l'enregistrement."]);
+    // try/finally : une réponse 500/HTML (arb() rejette) ne doit pas figer le bouton en
+    // « busy » pour toujours. On rend la main et on affiche une erreur lisible.
+    try {
+      const d = await arb<{ ok: boolean; errors?: string[]; warning?: string }>("/resolve-batch", { method: "POST", body: JSON.stringify({ book, changes }) });
+      if (d.ok) { setNotice(d.warning || null); await load(); }
+      else setErr(d.errors || ["Échec de l'enregistrement."]);
+    } catch {
+      setErr(["Enregistrement impossible (réseau ou serveur). Réessaie ; ton travail à l'écran est conservé."]);
+    } finally {
+      setBusy(false);
+    }
   };
 
   return (
@@ -241,6 +250,7 @@ export function ChapterRealign({ book, ch, onClose }: { book: string; ch: number
         </div>
 
         {err && <div className="alert alert-error mt-3 flex-col items-start gap-0.5 text-xs">{err.map((e, i) => <div key={i}>{e}</div>)}</div>}
+        {notice && <div className="alert alert-info mt-3 text-xs">{notice}</div>}
 
         <div className="mt-3 grid gap-1.5">
           {data.grec.map((g, i) => {
