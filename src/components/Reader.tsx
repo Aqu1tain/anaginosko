@@ -51,9 +51,10 @@ const creditName = (by: string) => CREDIT_NAMES[by] ?? by;
 function TranslatorTip({ by }: { by: string }) {
   const maison = !!CREDIT_NAMES[by];
   return (
-    <span className="tooltip tooltip-left align-middle" data-tip={`Traduit par ${creditName(by)}`}>
-      <sup className={`ml-0.5 cursor-help select-none text-[0.7em] ${maison ? "text-secondary/80" : "text-base-content/30"}`}>ⓘ</sup>
-    </span>
+    <span
+      className={`tooltip tooltip-left ml-1 inline-block cursor-help select-none align-middle text-[0.85em] ${maison ? "text-secondary/90" : "text-base-content/45"}`}
+      data-tip={`Traduit par ${creditName(by)}`}
+    >ⓘ</span>
   );
 }
 
@@ -416,12 +417,16 @@ export default function Reader({ text }: { text: Text }) {
   // Lien profond d’un verset : ancré à droite de la zone, révélé au survol (cf. classes
   // de CopyVerseLink), sur un fond opaque pour ne jamais chevaucher le texte. Masqué en
   // scriptio continua (le manuscrit continu n’a pas de découpe par verset).
+  // Desktop : dans la marge à gauche de la colonne, révélé au survol, jamais sur le texte.
   const copyLink = (v: number) =>
     manuscript ? null : (
-      // À gauche, à CÔTÉ du texte, dans la marge de la colonne (right-full), jamais dessus.
-      // Desktop seulement : sur mobile la marge est trop étroite (le bouton déborderait et
-      // serait intouchable), on ne l'affiche donc pas.
       <div className="absolute right-full top-3 z-10 mr-1 hidden wide:block"><CopyVerseLink v={v} /></div>
+    );
+  // Mobile : pas de survol ni de marge — un bouton discret mais toujours visible, à la fin
+  // du verset, donc atteignable au doigt. Masqué sur desktop (la marge prend le relais).
+  const copyLinkInline = (v: number) =>
+    manuscript ? null : (
+      <span className="ml-1.5 inline-flex align-middle wide:hidden"><CopyVerseLink v={v} /></span>
     );
 
   const greekVerses = useMemo(
@@ -682,6 +687,7 @@ export default function Reader({ text }: { text: Text }) {
               <div key={v} id={`v${v}`} className="group relative scroll-mt-20 border-b border-base-300/70 py-4 first:pt-0 last:border-0">
                 {copyLink(v)}
                 <GreekText text={text} size="lg" scale={textScale} translit={mode} manuscript={manuscript} verseOnly={v} highlightWord={highlight} {...greekProps} />
+                {copyLinkInline(v)}
               </div>
             ))
           )}
@@ -703,6 +709,7 @@ export default function Reader({ text }: { text: Text }) {
                 highlightWord={highlight}
                 {...greekProps}
               />
+              {copyLinkInline(v)}
             </div>
           ))}
           <FrenchChapterBlock french={french!} credit={translatedBy} />
@@ -727,6 +734,7 @@ export default function Reader({ text }: { text: Text }) {
                   <span className="verse-num">{v}</span>
                   {french![v]}
                   <TranslatorTip by={text.maison?.[v] ?? baseTranslator} />
+                  {copyLinkInline(v)}
                 </p>
               )}
             </div>
@@ -759,6 +767,7 @@ export default function Reader({ text }: { text: Text }) {
                     <span className="verse-num">{v}</span>
                     {french![v]}
                     <TranslatorTip by={text.maison?.[v] ?? baseTranslator} />
+                    {copyLinkInline(v)}
                   </>
                 )}
               </div>
