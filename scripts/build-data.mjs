@@ -12,8 +12,8 @@ const passages = read("data-sources/passages.json");
 const collections = [
   {
     id: "passages",
-    title: "Passages",
-    subtitle: "Lecture suivie, prononciation érasmienne et restituée",
+    title: "Par où commencer ?",
+    subtitle: "Des extraits courts pour se lancer, les plus accessibles en premier. Touchez une lettre, puis un mot.",
   },
 ];
 
@@ -132,7 +132,7 @@ ${t.translitRestituee ? `<p><strong>Restituée :</strong> ${esc(t.translitRestit
 
 const llmsTxt = `# Anaginosko
 
-> Lire le grec koinè de la Bible, lettre par lettre. Application web
+> Lire la Bible en grec (koinè), lettre par lettre. Application web
 > (Next.js, rendu statique) : prononciation érasmienne et restituée, alphabet
 > interactif, concordance, mode manuscrit, traduction française.
 
