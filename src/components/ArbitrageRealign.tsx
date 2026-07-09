@@ -191,6 +191,8 @@ export function ChapterRealign({ book, ch, onClose }: { book: string; ch: number
     return false;
   };
   const dirty = assign.map((_, i) => changed(i)).filter(Boolean).length;
+  // Fermeture protégée : des heures de cherry-pick ne partent pas sur un clic hors panneau.
+  const tryClose = () => { if (dirty && !window.confirm(`${dirty} modification(s) non enregistrée(s) seront perdues. Fermer sans enregistrer ?`)) return; onClose(); };
 
   const save = async () => {
     setBusy(true); setErr(null);
@@ -210,7 +212,7 @@ export function ChapterRealign({ book, ch, onClose }: { book: string; ch: number
 
   return (
     <div className="fixed inset-0 z-[80] flex justify-end">
-      <div className="absolute inset-0 bg-black/40" onClick={onClose} />
+      <div className="absolute inset-0 bg-black/40" onClick={tryClose} />
       <div className="relative h-full w-full max-w-4xl overflow-y-auto bg-base-100 p-5 shadow-2xl">
         <div className="sticky -top-5 z-10 -mx-5 -mt-5 flex flex-wrap items-center gap-2 border-b border-base-200 bg-base-100 px-5 py-3">
           <h2 className="text-lg font-bold">{BOOK[book] ?? book} {ch}</h2>
@@ -234,7 +236,7 @@ export function ChapterRealign({ book, ch, onClose }: { book: string; ch: number
               </button>
             ) : <span className="badge badge-success badge-sm">chapitre vérifié</span>; })()}
             <button className="btn btn-sm btn-primary" disabled={busy || !dirty} onClick={save}>Enregistrer{dirty ? ` (${dirty})` : ""}</button>
-            <button className="btn btn-sm btn-ghost" onClick={onClose}>Fermer</button>
+            <button className="btn btn-sm btn-ghost" onClick={tryClose}>Fermer</button>
           </div>
         </div>
 
