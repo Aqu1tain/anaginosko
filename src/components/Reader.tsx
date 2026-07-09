@@ -46,11 +46,13 @@ const TOUR_STEPS: TourStep[] = [
 const CREDIT_NAMES: Record<string, string> = { "Βιβλίον": "Biblion", Admin: "Corentin Renard" };
 const creditName = (by: string) => CREDIT_NAMES[by] ?? by;
 
-// Petit « i » discret après un verset traduit maison : au survol, il révèle le traducteur.
-function MaisonInfo({ by }: { by: string }) {
+// Petit « i » après CHAQUE verset : au survol, il révèle son traducteur (Giguet par
+// défaut, ou le traducteur maison). Les versets maison ont un « i » un peu plus marqué.
+function TranslatorTip({ by }: { by: string }) {
+  const maison = !!CREDIT_NAMES[by];
   return (
     <span className="tooltip tooltip-left align-middle" data-tip={`Traduit par ${creditName(by)}`}>
-      <sup className="ml-0.5 cursor-help select-none text-[0.7em] text-secondary/70">ⓘ</sup>
+      <sup className={`ml-0.5 cursor-help select-none text-[0.7em] ${maison ? "text-secondary/80" : "text-base-content/30"}`}>ⓘ</sup>
     </span>
   );
 }
@@ -406,8 +408,8 @@ export default function Reader({ text }: { text: Text }) {
     [text.maison],
   );
   const translatedBy = isLxx
-    ? `Traduit par : ${["Pierre Giguet", ...maisonNames].join(", ")} · d’après les Septante, 1872 — domaine public.`
-    : `Traduit par : ${["Bible Crampon", ...maisonNames].join(", ")} · néo-Crampon — domaine public.`;
+    ? `Traduit par : ${["Pierre Giguet", ...maisonNames].join(", ")} · d’après les Septante (1872, domaine public).`
+    : `Traduit par : ${["Bible Crampon", ...maisonNames].join(", ")} · néo-Crampon (domaine public).`;
 
   const greekVerses = useMemo(
     () =>
@@ -701,7 +703,7 @@ export default function Reader({ text }: { text: Text }) {
                 <p className="mt-2 leading-relaxed text-base-content/85">
                   <span className="verse-num">{v}</span>
                   {french![v]}
-                  {text.maison?.[v] && <MaisonInfo by={text.maison[v]} />}
+                  {isLxx && <TranslatorTip by={text.maison?.[v] ?? "Pierre Giguet"} />}
                 </p>
               )}
             </div>
@@ -733,7 +735,7 @@ export default function Reader({ text }: { text: Text }) {
                   <>
                     <span className="verse-num">{v}</span>
                     {french![v]}
-                    {text.maison?.[v] && <MaisonInfo by={text.maison[v]} />}
+                    {isLxx && <TranslatorTip by={text.maison?.[v] ?? "Pierre Giguet"} />}
                   </>
                 )}
               </div>
