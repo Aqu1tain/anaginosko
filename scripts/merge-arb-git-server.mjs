@@ -51,14 +51,26 @@ const merged = {};
 for (const k of Object.keys(git)) if (!isBook(k)) merged[k] = git[k];
 for (const [, { book, ref, entry }] of gitActive) { (merged[book] = merged[book] || {})[ref] = entry; }
 
-const conflicts = [], fresh = [], removed = [], installed = [], illegalDeletions = [];
+// Une entrée git SANS `by` = arbitrage MACHINE (campagne, provenance de convergence) ;
+// une entrée signée (`by` : Admin, Βιβλίον, un vrai nom) = décision HUMAINE. Règle
+// absolue : quand Biblion ou un admin décide, ça prime sur toute campagne machine.
+const isMachine = (e) => !e || !e.by;
+
+const conflicts = [], fresh = [], removed = [], installed = [], illegalDeletions = [], humanWins = [];
 for (const [, { book, ref }] of gitActive) if (!(server[book] && server[book][ref])) installed.push(`${book} ${ref}`);
 
 for (const b of Object.keys(server).filter(isBook)) {
   for (const r of Object.keys(server[b])) {
     const key = `${b}:::${r}`;
     if (gitActive.has(key)) {
-      if (srcOf(gitActive.get(key).entry) !== srcOf(server[b][r])) conflicts.push({ book: b, ref: r, git: gitActive.get(key).entry.sources, serveur: server[b][r].sources });
+      const gitEntry = gitActive.get(key).entry;
+      if (srcOf(gitEntry) !== srcOf(server[b][r])) {
+        // Décision HUMAINE côté serveur contre CAMPAGNE MACHINE côté git : l'humain gagne
+        // automatiquement, on installe la version serveur (jamais bloquant, jamais perdu).
+        if (isMachine(gitEntry)) { merged[b][r] = server[b][r]; humanWins.push(`${b} ${r}`); continue; }
+        // Humain contre humain (les deux signés) : vrai conflit, résolution manuelle.
+        conflicts.push({ book: b, ref: r, git: gitEntry.sources, serveur: server[b][r].sources });
+      }
       continue; // identique : déjà posé par git
     }
     if (archived.has(key)) { removed.push(`${b} ${r}`); continue; } // git l'a archivée -> retirée
@@ -71,7 +83,8 @@ for (const b of Object.keys(server).filter(isBook)) {
   }
 }
 
-console.log(`fusion arbitrage : installées ${installed.length} · retirées(archivées) ${removed.length} · fraîches Biblion ${fresh.length} · conflits ${conflicts.length} · suppressions sèches ${illegalDeletions.length}`);
+console.log(`fusion arbitrage : installées ${installed.length} · retirées(archivées) ${removed.length} · fraîches Biblion ${fresh.length} · humain>machine ${humanWins.length} · conflits ${conflicts.length} · suppressions sèches ${illegalDeletions.length}`);
+if (humanWins.length) console.log(`  humain prime sur campagne machine: ${humanWins.join(", ")}`);
 if (removed.length) console.log(`  retirées: ${removed.join(", ")}`);
 if (fresh.length) console.log(`  fraîches (conservées${CAPTURE ? ", capturées" : ""}): ${fresh.map((f) => f.book + " " + f.ref).join(", ")}`);
 
