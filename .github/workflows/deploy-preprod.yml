@@ -93,6 +93,11 @@ jobs:
           if [ "$(node -e "process.stdout.write(String(JSON.parse(require('fs').readFileSync('./biblion-fresh.json')).length||0))")" != "0" ]; then
             echo "::warning::Biblion a des entrées d'arbitrage non versionnées (voir l'artefact biblion-fresh) - à committer dans git."
           fi
+          # Validations manuelles (« c'est bon ») : exemplaire unique sur le VPS, hors
+          # fusion. On en fait un backup horodaté et on le remonte en artefact, comme
+          # l'arbitrage, pour qu'un crash du VPS ne les perde pas.
+          $SSHTT "$HOST" "[ -f $ARB/lxx-biblion-validated.json ] && sudo cp $ARB/lxx-biblion-validated.json $ARB/lxx-biblion-validated.json.bak.$TS || true"
+          rsync -az -e "$SSH" "$HOST:$ARB/lxx-biblion-validated.json" ./lxx-biblion-validated.json 2>/dev/null || printf '[]' > ./lxx-biblion-validated.json
           # 4b) Matérialisation COMPLÈTE (matérialiseur unique zéro-perte) depuis l'arbitrage FUSIONNÉ.
           $SSH "$HOST" "cd $REL && ARB_DIR=$ARB LXX_DATA_DIR=/var/www/anaginosko-next/lxx node scripts/materialize-links.mjs --apply"
           # 4c) GATE SENTINELLE : un verset servi par lot de corrections récentes doit contenir
@@ -116,5 +121,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: biblion-fresh
-          path: biblion-fresh.json
+          path: |
+            biblion-fresh.json
+            lxx-biblion-validated.json
           if-no-files-found: ignore
