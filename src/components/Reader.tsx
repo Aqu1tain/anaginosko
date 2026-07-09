@@ -401,6 +401,13 @@ export default function Reader({ text }: { text: Text }) {
   const parsedRef = useMemo(() => parseRef(text.id), [text.id]);
   const corpus = parsedRef ? corpusById(parsedRef.corpus) : null;
   const isLxx = corpus?.id === "lxx";
+  const greekVerses = useMemo(
+    () =>
+      [...new Set((text.mots ?? []).map((m) => m.verse).filter((v): v is number => v != null))].sort(
+        (a, b) => a - b,
+      ),
+    [text.mots],
+  );
   // « Traduit par : <traducteur de base>[, <traducteurs maison distincts>] » : le
   // traducteur de base (Giguet pour la LXX, Crampon pour le NT) plus, le cas échéant,
   // qui a traduit maison des versets de CE chapitre. Détail par verset via le « i ».
@@ -409,11 +416,13 @@ export default function Reader({ text }: { text: Text }) {
     () => (text.maison ? [...new Set(Object.values(text.maison))].map(creditName) : []),
     [text.maison],
   );
-  // Le traducteur de base n’est crédité que s’il traduit AU MOINS un verset du chapitre :
-  // si tout est traduit maison (Giguet totalement absent), on ne l’affiche pas, ni sa provenance.
+  // Le traducteur de base n’est crédité que s’il traduit AU MOINS un verset RÉELLEMENT
+  // AFFICHÉ : on regarde les versets grecs (pas les lignes Giguet orphelines, présentes
+  // dans le fr.json mais masquées au lecteur). Tout maison => Giguet absent => non crédité.
+  // Le NT (pas de maison) garde toujours son traducteur de base.
   const hasBase = useMemo(
-    () => (french ? Object.keys(french).some((v) => !text.maison?.[v]) : false),
-    [french, text.maison],
+    () => (isLxx ? greekVerses.some((v) => french != null && v in french && !text.maison?.[v]) : hasFrench),
+    [isLxx, greekVerses, french, text.maison, hasFrench],
   );
   const who = [...(hasBase ? [baseTranslator] : []), ...maisonNames].join(", ");
   const provenance = !hasBase ? "" : isLxx ? " · d’après les Septante (1872, domaine public)" : " · néo-Crampon (domaine public)";
@@ -434,13 +443,6 @@ export default function Reader({ text }: { text: Text }) {
       <span className="ml-1.5 inline-flex align-middle wide:hidden"><CopyVerseLink v={v} /></span>
     );
 
-  const greekVerses = useMemo(
-    () =>
-      [...new Set((text.mots ?? []).map((m) => m.verse).filter((v): v is number => v != null))].sort(
-        (a, b) => a - b,
-      ),
-    [text.mots],
-  );
   // La traduction n'est appariée verset par verset que si ses clés recouvrent
   // exactement celles du grec. Pour le NT (Crampon), les écarts sont purement
   // additifs (versets du TR omis par SBLGNT) : apparier par numéro reste juste,
