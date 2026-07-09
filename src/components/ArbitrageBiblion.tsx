@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { LXX_BOOK_NAMES } from "../data/lxx";
 
 // Fondations partagées de l'outil d'arbitrage : client API (token + fetch), table des
 // noms de livres, et l'encart « depuis ta dernière visite ». Tout le travail passe par
@@ -13,12 +14,9 @@ export async function arb<T>(p: string, opts?: RequestInit): Promise<T> {
   return r.json();
 }
 
-export const BOOK: Record<string, string> = {
-  gen: "Genèse", exo: "Exode", num: "Nombres", deu: "Deutéronome", jos: "Josué", "1sa": "1 Samuel", "1ki": "1 Rois",
-  "1ch": "1 Chroniques", "2ch": "2 Chroniques", neh: "Néhémie", job: "Job", psa: "Psaumes", pro: "Proverbes",
-  sir: "Siracide", isa: "Isaïe", jer: "Jérémie", ezk: "Ézéchiel", jol: "Joël", jdt: "Judith", tob: "Tobie",
-  bar: "Baruch", "2ma": "2 Maccabées", sng: "Cantique", sus: "Suzanne",
-};
+// Table des noms de livres : la carte canonique complète de la Septante (tous les
+// livres, pas un sous-ensemble codé en dur), partagée avec le lecteur et la concordance.
+export const BOOK = LXX_BOOK_NAMES;
 
 // ─────────────────────────────── Depuis ta dernière visite ───────────────────────────────
 const LAST_VISIT_KEY = "anaginosko:arb:lastvisit";
