@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { requireEditor, setValidated } from "@/lib/arbitration";
+import { requireEditor, setValidatedMany } from "@/lib/arbitration";
 
 export const dynamic = "force-dynamic";
 
@@ -11,9 +11,11 @@ export async function POST(req: Request) {
   if (!auth.ok) return NextResponse.json({ error: "Réservé aux contributeurs." }, { status: 401 });
   const body = await req.json().catch(() => null);
   const book = body?.book as string;
-  const ref = body?.ref as string;
   const on = body?.on !== false; // défaut : valider
-  if (!book || !ref || !/^\d+:\d+$/.test(ref)) return NextResponse.json({ error: "book et ref requis." }, { status: 400 });
-  setValidated(book, ref, on, auth.credit || "Βιβλίον");
-  return NextResponse.json({ ok: true, validated: on });
+  // Un verset (ref) ou tout un lot (refs) : « tout ce chapitre est bon ».
+  const refs: string[] = Array.isArray(body?.refs) ? body.refs : body?.ref ? [body.ref] : [];
+  const valid = refs.filter((r) => typeof r === "string" && /^\d+:\d+$/.test(r));
+  if (!book || !valid.length) return NextResponse.json({ error: "book et ref(s) requis." }, { status: 400 });
+  setValidatedMany(book, valid, on, auth.credit || "Βιβλίον");
+  return NextResponse.json({ ok: true, validated: on, count: valid.length });
 }

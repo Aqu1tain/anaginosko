@@ -76,8 +76,14 @@ const VALID_PATH = path.join(ARB_DIR, "lxx-biblion-validated.json");
 export const validations = (): Validation[] => readJson("lxx-biblion-validated.json", [], ARB_DIR);
 export const validatedSet = (): Set<string> => new Set(validations().map((v) => `${v.book}:${v.ref}`));
 export function setValidated(book: string, ref: string, on: boolean, by: string) {
-  const all = validations().filter((v) => !(v.book === book && v.ref === ref));
-  if (on) all.push({ book, ref, by, at: new Date().toISOString() });
+  setValidatedMany(book, [ref], on, by);
+}
+// Valide (ou dévalide) plusieurs versets d'un coup : « tout ce chapitre est bon »
+// couvre toutes les erreurs du chapitre (grec sans français ET trous côté Giguet).
+export function setValidatedMany(book: string, refs: string[], on: boolean, by: string) {
+  const drop = new Set(refs.map((r) => `${book}:${r}`));
+  const all = validations().filter((v) => !drop.has(`${v.book}:${v.ref}`));
+  if (on) { const at = new Date().toISOString(); for (const ref of refs) all.push({ book, ref, by, at }); }
   const tmp = VALID_PATH + ".tmp";
   fs.writeFileSync(tmp, JSON.stringify(all, null, 2));
   fs.renameSync(tmp, VALID_PATH);

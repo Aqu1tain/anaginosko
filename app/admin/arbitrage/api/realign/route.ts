@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { requireEditor, states, effectiveSources, servedText, greekVerses, overrides, giguet, biblionQueue, validatedSet, type Source } from "@/lib/arbitration";
+import { requireEditor, states, effectiveSources, servedText, greekVerses, overrides, giguet, biblionQueue, validatedSet, coverageGaps, type Source } from "@/lib/arbitration";
 
 export const dynamic = "force-dynamic";
 
@@ -52,5 +52,14 @@ export async function GET(req: Request) {
     for (const v of Object.keys(g).map(Number).sort((a, b) => a - b)) band.push({ ch: c, v, text: g[String(v)] });
   }
 
-  return NextResponse.json({ book, ch, grec, band, chapterFirstIndex: band.findIndex((b) => b.ch === ch) });
+  // Erreurs OUVERTES de ce chapitre (grec sans français + trous côté Giguet + signalés),
+  // hors résolues/validées : sert le bouton « tout ce chapitre est bon » et le compteur.
+  const gaps = coverageGaps();
+  const errorSet = new Set<string>();
+  const addErr = (r?: string) => { if (r && /^\d+:\d+$/.test(r) && r.split(":")[0] === String(ch) && !ov[r] && !validated.has(`${book}:${r}`)) errorSet.add(r); };
+  for (const e of gaps.greekSansEtat?.[book] || []) addErr(e.ref);
+  for (const e of gaps.trous?.[book] || []) addErr(e.ref);
+  for (const c of biblionQueue()) if (c.book === book) addErr(c.grec);
+
+  return NextResponse.json({ book, ch, grec, band, chapterFirstIndex: band.findIndex((b) => b.ch === ch), errorRefs: [...errorSet] });
 }
