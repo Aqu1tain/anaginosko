@@ -46,6 +46,15 @@ const TOUR_STEPS: TourStep[] = [
 const CREDIT_NAMES: Record<string, string> = { "Βιβλίον": "Biblion", Admin: "Corentin Renard" };
 const creditName = (by: string) => CREDIT_NAMES[by] ?? by;
 
+// Petit « i » discret après un verset traduit maison : au survol, il révèle le traducteur.
+function MaisonInfo({ by }: { by: string }) {
+  return (
+    <span className="tooltip tooltip-left align-middle" data-tip={`Traduit par ${creditName(by)}`}>
+      <sup className="ml-0.5 cursor-help select-none text-[0.7em] text-secondary/70">ⓘ</sup>
+    </span>
+  );
+}
+
 function SlidersIcon() {
   return (
     <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
@@ -389,9 +398,16 @@ export default function Reader({ text }: { text: Text }) {
   const parsedRef = useMemo(() => parseRef(text.id), [text.id]);
   const corpus = parsedRef ? corpusById(parsedRef.corpus) : null;
   const isLxx = corpus?.id === "lxx";
-  const translationCredit = isLxx
-    ? "Traduction : Pierre Giguet, d’après les Septante (1872, domaine public)."
-    : "Traduction : Bible Crampon (néo-Crampon, domaine public).";
+  // « Traduit par : <traducteur de base>[, <traducteurs maison distincts>] » : le
+  // traducteur de base (Giguet pour la LXX, Crampon pour le NT) plus, le cas échéant,
+  // qui a traduit maison des versets de CE chapitre. Détail par verset via le « i ».
+  const maisonNames = useMemo(
+    () => (text.maison ? [...new Set(Object.values(text.maison))].map(creditName) : []),
+    [text.maison],
+  );
+  const translatedBy = isLxx
+    ? `Traduit par : ${["Pierre Giguet", ...maisonNames].join(", ")} · d’après les Septante, 1872 — domaine public.`
+    : `Traduit par : ${["Bible Crampon", ...maisonNames].join(", ")} · néo-Crampon — domaine public.`;
 
   const greekVerses = useMemo(
     () =>
@@ -435,15 +451,6 @@ export default function Reader({ text }: { text: Text }) {
   const effectiveTranslation =
     !colsAvailable && translation === "columns" ? "verses" : translation;
   const transMode = hasFrench ? effectiveTranslation : "off";
-
-  // Crédit des traductions maison du chapitre : un seul traducteur -> crédit au
-  // chapitre ; sinon on liste les traducteurs. Se lit dans fr.json (_maison).
-  const maisonCredit = useMemo(() => {
-    const m = text.maison;
-    if (!m || !Object.keys(m).length) return null;
-    const names = [...new Set(Object.values(m))].map(creditName);
-    return names.length === 1 ? `Traduction maison : ${names[0]}` : `Traductions maison : ${names.join(", ")}`;
-  }, [text.maison]);
 
   // Signale au conteneur de page (.reading-page) si on est en mode colonnes, pour
   // que le fil d'Ariane et la nav, rendus hors du lecteur, s'élargissent avec lui.
@@ -673,7 +680,7 @@ export default function Reader({ text }: { text: Text }) {
               />
             </div>
           ))}
-          <FrenchChapterBlock french={french!} credit={translationCredit} />
+          <FrenchChapterBlock french={french!} credit={translatedBy} />
         </div>
       ) : transMode === "verses" ? (
         <div className="mt-5 mx-auto max-w-2xl">
@@ -694,11 +701,12 @@ export default function Reader({ text }: { text: Text }) {
                 <p className="mt-2 leading-relaxed text-base-content/85">
                   <span className="verse-num">{v}</span>
                   {french![v]}
+                  {text.maison?.[v] && <MaisonInfo by={text.maison[v]} />}
                 </p>
               )}
             </div>
           ))}
-          <p className="mt-3 text-xs text-base-content/70">{translationCredit}</p>
+          <p className="mt-3 text-xs text-base-content/70">{translatedBy}</p>
         </div>
       ) : (
         // Côte à côte : grec | français, alignés par verset. Sous 640px, dégrade
@@ -725,22 +733,14 @@ export default function Reader({ text }: { text: Text }) {
                   <>
                     <span className="verse-num">{v}</span>
                     {french![v]}
-                    {text.maison?.[v] && (
-                      <span className="ml-1.5 align-baseline text-xs italic text-secondary/80" title={`Traduction maison de ${creditName(text.maison[v])}`}>
-                        — trad. maison : {creditName(text.maison[v])}
-                      </span>
-                    )}
+                    {text.maison?.[v] && <MaisonInfo by={text.maison[v]} />}
                   </>
                 )}
               </div>
             </div>
           ))}
-          <p className="mt-3 text-xs text-base-content/70">{translationCredit}</p>
+          <p className="mt-3 text-xs text-base-content/70">{translatedBy}</p>
         </div>
-      )}
-
-      {maisonCredit && (
-        <p className="mt-3 text-xs italic text-base-content/60">{maisonCredit}</p>
       )}
 
       {/* Philologue/admin, LXX : accès direct à l'arbitrage des liens du chapitre lu. */}
