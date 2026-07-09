@@ -62,12 +62,17 @@ export function PsalmsQueue() {
   useEffect(() => { reload(); }, [reload]);
   if (!list) return <p className="mt-6 text-sm text-base-content/60">Chargement…</p>;
   const served = list.filter((p) => p.servie).length;
+  const todo = list.filter((p) => !p.servie); // servies = traitées -> sorties de la liste
   return (
     <div className="mt-4">
       <p className="text-sm text-base-content/70">Suscriptions omises par Giguet, traduites en maison via son propre gabarit. <span className="font-semibold text-primary">{served}</span> / {list.length} servies.</p>
-      <div className="mt-3 grid gap-3">
-        {list.map((p) => <PsalmCard key={p.ref} p={p} onDone={reload} />)}
-      </div>
+      {todo.length === 0 ? (
+        <p className="mt-4 text-sm text-success">Toutes les suscriptions sont servies.</p>
+      ) : (
+        <div className="mt-3 grid gap-3">
+          {todo.map((p) => <PsalmCard key={p.ref} p={p} onDone={reload} />)}
+        </div>
+      )}
     </div>
   );
 }
