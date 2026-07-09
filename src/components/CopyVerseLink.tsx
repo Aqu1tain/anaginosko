@@ -26,14 +26,14 @@ export default function CopyVerseLink({ v }: { v: number }) {
       onClick={copy}
       aria-label={`Copier le lien du verset ${v}`}
       title={copied ? "Lien copié" : "Copier le lien du verset"}
-      className="btn btn-ghost btn-xs btn-circle text-base-content/40 opacity-60 transition hover:text-primary hover:opacity-100 focus-visible:opacity-100 wide:opacity-0 wide:group-hover:opacity-100"
+      className="btn btn-ghost btn-sm btn-circle text-base-content/50 opacity-70 transition hover:text-primary hover:opacity-100 focus-visible:opacity-100 wide:opacity-0 wide:group-hover:opacity-100"
     >
       {copied ? (
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
           <path d="M20 6 9 17l-5-5" />
         </svg>
       ) : (
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
           <path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1.5 1.5" />
           <path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1.5-1.5" />
         </svg>
