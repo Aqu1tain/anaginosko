@@ -409,10 +409,15 @@ export default function Reader({ text }: { text: Text }) {
     () => (text.maison ? [...new Set(Object.values(text.maison))].map(creditName) : []),
     [text.maison],
   );
-  const who = [baseTranslator, ...maisonNames].join(", ");
-  const translatedBy = isLxx
-    ? `Traduit par : ${who} · d’après les Septante (1872, domaine public).`
-    : `Traduit par : ${who} · néo-Crampon (domaine public).`;
+  // Le traducteur de base n’est crédité que s’il traduit AU MOINS un verset du chapitre :
+  // si tout est traduit maison (Giguet totalement absent), on ne l’affiche pas, ni sa provenance.
+  const hasBase = useMemo(
+    () => (french ? Object.keys(french).some((v) => !text.maison?.[v]) : false),
+    [french, text.maison],
+  );
+  const who = [...(hasBase ? [baseTranslator] : []), ...maisonNames].join(", ");
+  const provenance = !hasBase ? "" : isLxx ? " · d’après les Septante (1872, domaine public)" : " · néo-Crampon (domaine public)";
+  const translatedBy = `Traduit par : ${who}${provenance}.`;
 
   // Lien profond d’un verset : ancré à droite de la zone, révélé au survol (cf. classes
   // de CopyVerseLink), sur un fond opaque pour ne jamais chevaucher le texte. Masqué en
