@@ -29,7 +29,10 @@ if (!GIT || !SERVER || !OUT) { console.error("usage: --git <f> --server <f> --ou
 const git = JSON.parse(fs.readFileSync(GIT, "utf8"));
 const server = JSON.parse(fs.readFileSync(SERVER, "utf8"));
 const isBook = (k) => !k.startsWith("_");
-const srcOf = (e) => JSON.stringify((e && e.sources) || e);
+// Empreinte SÉMANTIQUE d'une entrée : sources ET texte maison. Comparer les seules
+// sources rendait deux traductions maison différentes « identiques » (sources [] des
+// deux côtés) : la fusion posait alors la version git amputée et perdait la traduction.
+const srcOf = (e) => JSON.stringify(e && typeof e === "object" && !Array.isArray(e) ? { sources: e.sources || [], maison: e.maison || "" } : e);
 
 // git-active + git-archivé
 const gitActive = new Map(); // "book ref" -> entry
@@ -62,7 +65,9 @@ for (const b of Object.keys(server).filter(isBook)) {
     if (prevActive.has(key)) { illegalDeletions.push(`${b} ${r}`); continue; } // était git-managée, disparue de git-actif SANS archivage
     // jamais vue par git -> travail frais de Biblion : conservé + capturé
     (merged[b] = merged[b] || {})[r] = server[b][r];
-    fresh.push({ book: b, ref: r, sources: server[b][r].sources });
+    // Entrée COMPLÈTE (sources + maison + by + at) : la capture ne doit RIEN amputer,
+    // sinon la commiter dans git perdrait la traduction maison et sortirait du journal.
+    fresh.push({ book: b, ref: r, entry: server[b][r] });
   }
 }
 
