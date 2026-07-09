@@ -40,6 +40,12 @@ const TOUR_STEPS: TourStep[] = [
   },
 ];
 
+// Nom affiché d'un traducteur maison. Le philologue signe « Βιβλίον » -> « Biblion » ;
+// le compte admin signe de son displayName (« Admin » -> « Corentin Renard »). Idéalement
+// les displayName des comptes portent le vrai nom ; cette table couvre les valeurs actuelles.
+const CREDIT_NAMES: Record<string, string> = { "Βιβλίον": "Biblion", Admin: "Corentin Renard" };
+const creditName = (by: string) => CREDIT_NAMES[by] ?? by;
+
 function SlidersIcon() {
   return (
     <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
@@ -414,10 +420,15 @@ export default function Reader({ text }: { text: Text }) {
   // d'aucun côté (versets-seulement-grec ou versets-seulement-français du NT).
   const verses = useMemo(() => {
     if (useFrenchBlock || !hasFrench) return greekVerses;
+    // LXX : on n'affiche QUE les versets grecs et leur français lié. Un verset Giguet
+    // non lié (versification surnuméraire) ne remonte PAS comme ligne française orpheline :
+    // hors du grec et de son verset associé, on ne garde rien.
+    if (isLxx) return greekVerses;
+    // NT : union grec ∪ français, pour garder les versets que SBLGNT omet (écart additif).
     const union = new Set(greekVerses);
     for (const k of Object.keys(french!)) union.add(Number(k));
     return [...union].sort((a, b) => a - b);
-  }, [useFrenchBlock, hasFrench, greekVerses, french]);
+  }, [useFrenchBlock, hasFrench, greekVerses, french, isLxx]);
 
   // Sur mobile, « colonnes » retombe sur « versets » (même rendu) et n'est pas
   // proposé dans les contrôles.
@@ -430,7 +441,7 @@ export default function Reader({ text }: { text: Text }) {
   const maisonCredit = useMemo(() => {
     const m = text.maison;
     if (!m || !Object.keys(m).length) return null;
-    const names = [...new Set(Object.values(m))].map((n) => (n === "Βιβλίον" ? "Biblion" : n));
+    const names = [...new Set(Object.values(m))].map(creditName);
     return names.length === 1 ? `Traduction maison : ${names[0]}` : `Traductions maison : ${names.join(", ")}`;
   }, [text.maison]);
 
@@ -714,6 +725,11 @@ export default function Reader({ text }: { text: Text }) {
                   <>
                     <span className="verse-num">{v}</span>
                     {french![v]}
+                    {text.maison?.[v] && (
+                      <span className="ml-1.5 align-baseline text-xs italic text-secondary/80" title={`Traduction maison de ${creditName(text.maison[v])}`}>
+                        — trad. maison : {creditName(text.maison[v])}
+                      </span>
+                    )}
                   </>
                 )}
               </div>
