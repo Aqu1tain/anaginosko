@@ -239,8 +239,13 @@ const label = (s: Source) => (s.length === 4 ? `${s[0]}:${s[1]} (mots ${s[2] + 1
 const spanOf = (s: Source): [number, number] => (s.length === 4 ? [s[2], s[3]] : [0, Number.MAX_SAFE_INTEGER]);
 const overlaps = (a: [number, number], b: [number, number]) => a[0] <= b[1] && b[0] <= a[1];
 
-// Intégrité, appliquée à CHAQUE écriture (auto ou Biblion).
-export function checkOverride(book: string, ref: string, sources: Source[], maison?: string): { ok: boolean; errors: string[] } {
+type Claims = Map<string, { ref: string; span: [number, number] }[]>;
+
+// Intégrité, appliquée à CHAQUE écriture (auto ou Biblion). `claims` optionnel : carte
+// des revendications à confronter pour le zéro-perte. Par défaut = état courant ; un lot
+// passe la carte APRÈS application de tout le lot (voir checkBatch) pour ne pas voir de
+// faux conflit pendant un simple décalage.
+export function checkOverride(book: string, ref: string, sources: Source[], maison?: string, claims?: Claims): { ok: boolean; errors: string[] } {
   const errors: string[] = [];
   // Round-trip : la ref grec doit parser (grec = colonne fixe, jamais renumérotée).
   if (!/^\d+:\d+$/.test(ref)) errors.push(`Ref grec invalide : ${ref}`);
@@ -265,10 +270,10 @@ export function checkOverride(book: string, ref: string, sources: Source[], mais
   // 3) Zéro-perte au MOT : aucune plage déjà revendiquée par un autre verset grec ne
   //    peut être recouverte (verset entier = tous les mots). Deux extraits disjoints
   //    du même verset par deux grecs différents sont légitimes (scission Giguet).
-  const claims = verseClaims(book);
+  const claimMap = claims ?? verseClaims(book);
   for (const s of sources) {
     const mine = spanOf(s);
-    for (const c of claims.get(vkey(s)) || []) {
+    for (const c of claimMap.get(vkey(s)) || []) {
       if (c.ref !== ref && overlaps(mine, c.span)) {
         errors.push(`Zéro-perte : Giguet ${label(s)} chevauche la part déjà liée au grec ${c.ref}`);
         break;
@@ -281,6 +286,41 @@ export function checkOverride(book: string, ref: string, sources: Source[], mais
       if (vkey(sources[i]) === vkey(sources[j]) && overlaps(spanOf(sources[i]), spanOf(sources[j])))
         errors.push(`Extraits en chevauchement dans le lien : ${label(sources[i])} / ${label(sources[j])}`);
   return { ok: errors.length === 0, errors };
+}
+
+// Zéro-perte à l'échelle d'un LOT. Un réalignement décale plusieurs versets à la fois
+// (glisser toute la colonne française). Validé verset par verset contre l'état COURANT,
+// un simple décalage paraît revendiquer deux fois chaque Giguet — l'ancien lien identitaire
+// ET le nouveau — alors que le lot est une permutation cohérente. On valide donc contre
+// l'état APRÈS application du lot : on retire d'abord les revendications des grecs que le
+// lot réécrit, puis on ajoute leurs nouvelles sources, et on confronte chaque changement
+// à cette carte recalée. Un vrai double-emploi (deux grecs sur le même Giguet à l'arrivée)
+// reste détecté ; seul le conflit transitoire du décalage disparaît.
+export function checkBatch(book: string, changes: { ref: string; sources: Source[]; maison?: string; revoke?: boolean }[]): { ref: string; errors: string[] }[] {
+  // Sources effectives post-lot de chaque grec touché (revoke -> retour au lien auto).
+  const touched = new Map<string, Source[]>();
+  for (const c of changes) {
+    if (c.maison && c.maison.trim()) { touched.set(c.ref, []); continue; }
+    if (c.revoke) { const auto = links()[book]?.[c.ref]; touched.set(c.ref, Array.isArray(auto) ? auto : []); continue; }
+    touched.set(c.ref, c.sources);
+  }
+  // Carte des revendications recalée sur l'état post-lot.
+  const claims = verseClaims(book);
+  for (const [k, cs] of claims) claims.set(k, cs.filter((c) => !touched.has(c.ref)));
+  for (const [ref, srcs] of touched)
+    for (const s of srcs) {
+      const k = vkey(s);
+      if (!claims.has(k)) claims.set(k, []);
+      claims.get(k)!.push({ ref, span: spanOf(s) });
+    }
+  // Valide chaque changement (intégrité par-source + zéro-perte contre la carte recalée).
+  const out: { ref: string; errors: string[] }[] = [];
+  for (const c of changes) {
+    if (c.revoke) continue;
+    const chk = checkOverride(book, c.ref, c.sources, c.maison, claims);
+    if (!chk.ok) out.push({ ref: c.ref, errors: chk.errors });
+  }
+  return out;
 }
 
 // Version sérialisable pour l'UI (contexte du picker) : par verset Giguet, le

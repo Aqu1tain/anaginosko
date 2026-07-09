@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
-import { requireEditor, states, checkOverride, saveOverride, revokeOverride, applyToReader, type Source } from "@/lib/arbitration";
+import { requireEditor, states, checkBatch, saveOverride, revokeOverride, applyToReader, type Source } from "@/lib/arbitration";
 
 export const dynamic = "force-dynamic";
 
@@ -36,14 +36,11 @@ export async function POST(req: Request) {
     parsed.push({ ref: c.ref, sources, maison });
   }
 
-  // 1) Valider TOUT (intégrité, zéro-perte) avant d'écrire quoi que ce soit.
-  const errors: string[] = [];
-  for (const p of parsed) {
-    if (p.revoke) continue;
-    const chk = checkOverride(book, p.ref, p.sources, p.maison);
-    if (!chk.ok) errors.push(`${p.ref} : ${chk.errors.join(" ; ")}`);
-  }
-  if (errors.length) return NextResponse.json({ ok: false, errors }, { status: 422 });
+  // 1) Valider TOUT (intégrité, zéro-perte à l'échelle du lot) avant d'écrire. Un
+  //    décalage de chapitre est une permutation cohérente : le zéro-perte se juge sur
+  //    l'état APRÈS application du lot, pas verset par verset contre l'état courant.
+  const failures = checkBatch(book, parsed);
+  if (failures.length) return NextResponse.json({ ok: false, errors: failures.map((f) => `${f.ref} : ${f.errors.join(" ; ")}`) }, { status: 422 });
 
   // 2) Écrire tout, puis matérialiser + revalider chaque chapitre touché une fois.
   for (const p of parsed) {
