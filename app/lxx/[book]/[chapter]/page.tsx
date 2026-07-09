@@ -1,14 +1,14 @@
-import { ChapterScreen, chapterStaticParams, chapterMetadata } from "@/app/_corpus/screens";
+import { ChapterScreen, chapterMetadata } from "@/app/_corpus/screens";
 import { LXX } from "@/src/data/corpus";
 
-// dynamicParams=true (et non false) : les chapitres sont pré-rendus au build,
-// mais la route reste régénérable à la demande. Indispensable pour que
-// revalidatePath (appelé quand Biblion arbitre) refabrique la page depuis le
-// fr.json frais ; avec false, la revalidation sort la page du manifeste et
-// renvoie 404 (NoFallbackError). Les URLs invalides restent gérées par le
-// notFound() de ChapterScreen.
-export const dynamicParams = true;
-export const generateStaticParams = () => chapterStaticParams(LXX);
+// RENDU À LA DEMANDE (et non SSG). La LXX est en cours d'arbitrage : son fr.json
+// change en dehors du build (matérialisation git+serveur au déploiement, écriture
+// chirurgicale d'applyToReader quand Biblion arbitre). Un pré-rendu au build figerait
+// la traduction à l'état git du moment — le travail serveur de Biblion n'apparaîtrait
+// JAMAIS, et revalidatePath ne peut pas le corriger (le service ne peut pas écrire le
+// cache .next de la release, possédé par le CI). On rend donc chaque requête depuis le
+// fr.json VIVANT lu sur LXX_DATA_DIR. Le NT (pas d'arbitrage vivant) reste SSG.
+export const dynamic = "force-dynamic";
 export const generateMetadata = ({ params }: { params: Promise<{ book: string; chapter: string }> }) =>
   chapterMetadata(LXX, params);
 
