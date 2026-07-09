@@ -403,13 +403,23 @@ export default function Reader({ text }: { text: Text }) {
   // « Traduit par : <traducteur de base>[, <traducteurs maison distincts>] » : le
   // traducteur de base (Giguet pour la LXX, Crampon pour le NT) plus, le cas échéant,
   // qui a traduit maison des versets de CE chapitre. Détail par verset via le « i ».
+  const baseTranslator = isLxx ? "Pierre Giguet" : "Bible Crampon";
   const maisonNames = useMemo(
     () => (text.maison ? [...new Set(Object.values(text.maison))].map(creditName) : []),
     [text.maison],
   );
+  const who = [baseTranslator, ...maisonNames].join(", ");
   const translatedBy = isLxx
-    ? `Traduit par : ${["Pierre Giguet", ...maisonNames].join(", ")} · d’après les Septante (1872, domaine public).`
-    : `Traduit par : ${["Bible Crampon", ...maisonNames].join(", ")} · néo-Crampon (domaine public).`;
+    ? `Traduit par : ${who} · d’après les Septante (1872, domaine public).`
+    : `Traduit par : ${who} · néo-Crampon (domaine public).`;
+
+  // Lien profond d’un verset : ancré à droite de la zone, révélé au survol (cf. classes
+  // de CopyVerseLink), sur un fond opaque pour ne jamais chevaucher le texte. Masqué en
+  // scriptio continua (le manuscrit continu n’a pas de découpe par verset).
+  const copyLink = (v: number) =>
+    manuscript ? null : (
+      <div className="absolute right-0 top-1 z-10 rounded-full bg-base-100/85"><CopyVerseLink v={v} /></div>
+    );
 
   const greekVerses = useMemo(
     () =>
@@ -661,7 +671,17 @@ export default function Reader({ text }: { text: Text }) {
 
       {transMode === "off" ? (
         <div className="mt-5 mx-auto max-w-2xl">
-          <GreekText text={text} size="lg" scale={textScale} translit={mode} manuscript={manuscript} highlightWord={highlight} {...greekProps} />
+          {manuscript ? (
+            // Scriptio continua : tout le grec en continu, sans découpe ni lien de verset.
+            <GreekText text={text} size="lg" scale={textScale} translit={mode} manuscript={manuscript} highlightWord={highlight} {...greekProps} />
+          ) : (
+            verses.map((v) => (
+              <div key={v} id={`v${v}`} className="group relative scroll-mt-20 border-b border-base-300/70 py-4 first:pt-0 last:border-0">
+                {copyLink(v)}
+                <GreekText text={text} size="lg" scale={textScale} translit={mode} manuscript={manuscript} verseOnly={v} highlightWord={highlight} {...greekProps} />
+              </div>
+            ))
+          )}
         </div>
       ) : useFrenchBlock ? (
         // Versification divergente : on rend le grec verset par verset (texte
@@ -669,7 +689,7 @@ export default function Reader({ text }: { text: Text }) {
         <div className="mt-5 mx-auto max-w-2xl">
           {verses.map((v) => (
             <div key={v} id={`v${v}`} className="group relative scroll-mt-20 border-b border-base-300/70 py-4 first:pt-0 last:border-0">
-              <div className="absolute right-0 top-2"><CopyVerseLink v={v} /></div>
+              {copyLink(v)}
               <GreekText
                 text={text}
                 size="lg"
@@ -688,7 +708,7 @@ export default function Reader({ text }: { text: Text }) {
         <div className="mt-5 mx-auto max-w-2xl">
           {verses.map((v) => (
             <div key={v} id={`v${v}`} className="group relative scroll-mt-20 border-b border-base-300/70 py-4 first:pt-0 last:border-0">
-              <div className="absolute right-0 top-2"><CopyVerseLink v={v} /></div>
+              {copyLink(v)}
               <GreekText
                 text={text}
                 size="lg"
@@ -703,7 +723,7 @@ export default function Reader({ text }: { text: Text }) {
                 <p className="mt-2 leading-relaxed text-base-content/85">
                   <span className="verse-num">{v}</span>
                   {french![v]}
-                  {isLxx && <TranslatorTip by={text.maison?.[v] ?? "Pierre Giguet"} />}
+                  <TranslatorTip by={text.maison?.[v] ?? baseTranslator} />
                 </p>
               )}
             </div>
@@ -717,7 +737,7 @@ export default function Reader({ text }: { text: Text }) {
         <div className="mt-5 mx-auto wide:max-w-5xl">
           {verses.map((v) => (
             <div key={v} id={`v${v}`} className="trans-row group relative scroll-mt-20 border-b border-base-300/70 py-3">
-              <div className="absolute -right-1 top-1.5"><CopyVerseLink v={v} /></div>
+              {copyLink(v)}
               <div className="trans-grec">
                 <GreekText
                   text={text}
@@ -735,7 +755,7 @@ export default function Reader({ text }: { text: Text }) {
                   <>
                     <span className="verse-num">{v}</span>
                     {french![v]}
-                    {isLxx && <TranslatorTip by={text.maison?.[v] ?? "Pierre Giguet"} />}
+                    <TranslatorTip by={text.maison?.[v] ?? baseTranslator} />
                   </>
                 )}
               </div>
