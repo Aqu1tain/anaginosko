@@ -48,7 +48,12 @@ export async function POST(req: Request) {
     else saveOverride(book, p.ref, p.sources, auth.credit || "Βιβλίον", body.note, p.maison);
   }
   const chapters = new Set<string>();
-  for (const p of parsed) { applyToReader(book, p.ref); chapters.add(p.ref.split(":")[0]); }
+  let refreshed = 0;
+  for (const p of parsed) { if (applyToReader(book, p.ref)) refreshed++; chapters.add(p.ref.split(":")[0]); }
   for (const ch of chapters) revalidatePath(`/lxx/${book}/${ch}`);
-  return NextResponse.json({ ok: true, applied: parsed.length });
+  // L'arbitrage est sauvegardé (durable). Si le lecteur n'a pas pu être rafraîchi en
+  // direct (fr.json non inscriptible par le service), on le signale sans échouer :
+  // le prochain déploiement le sert.
+  const stale = parsed.length - refreshed;
+  return NextResponse.json({ ok: true, applied: parsed.length, ...(stale ? { warning: `Enregistré. ${stale} verset(s) apparaîtront dans le lecteur au prochain déploiement.` } : {}) });
 }

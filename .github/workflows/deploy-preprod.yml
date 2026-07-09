@@ -98,6 +98,11 @@ jobs:
           # 4c) GATE SENTINELLE : un verset servi par lot de corrections récentes doit contenir
           #     sa sous-chaîne attendue (aurait attrapé la désync du 2026-07-08). Échec = pas de bascule.
           $SSH "$HOST" "cd $REL && LXX_DATA_DIR=/var/www/anaginosko-next/lxx node scripts/check-sentinelles.mjs"
+          # 4d) L'arbre lxx servi passe au service (anag-web) pour qu'applyToReader
+          #     réécrive fr.json EN DIRECT quand Biblion arbitre (sinon EACCES : arbre
+          #     possédé par le CI, cf. provision.sh). provision.sh le rechown au CI au
+          #     prochain déploiement, avant le rsync. Même pattern que l'ARB_DIR (l.89).
+          $SSHTT "$HOST" "sudo chown -R anag-web:anag-web /var/www/anaginosko-next/lxx"
           $SSHTT "$HOST" "ln -sfn $REL /opt/anaginosko-web-next/current && sudo systemctl restart anaginosko-web-next"
           $SSH "$HOST" "ls -1dt /opt/anaginosko-web-next/releases/*/ | tail -n +4 | xargs -r rm -rf"
 

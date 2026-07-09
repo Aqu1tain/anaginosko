@@ -8,11 +8,15 @@ export const dynamic = "force-dynamic";
 // fr.json ne suffit pas, il faut invalider la page pour qu'elle relise le fichier
 // frais au prochain accès. C'est ce qui rendait les corrections de Biblion
 // invisibles côté lecteur alors qu'elles étaient bien enregistrées.
-function syncReader(book: string, ref: string) {
-  applyToReader(book, ref); // matérialise fr.json
+// Rafraîchit le lecteur ; renvoie false si le fr.json servi n'a pas pu être réécrit
+// (best-effort : l'arbitrage reste sauvegardé, servi au prochain déploiement).
+function syncReader(book: string, ref: string): boolean {
+  const ok = applyToReader(book, ref); // matérialise fr.json
   const ch = ref.split(":")[0];
   revalidatePath(`/lxx/${book}/${ch}`); // régénère la page du chapitre
+  return ok;
 }
+const staleWarning = (ok: boolean) => (ok ? {} : { warning: "Enregistré. Le verset apparaîtra dans le lecteur au prochain déploiement." });
 
 // Enregistre (ou révoque) une décision d'arbitrage. Intégrité sur CHAQUE écriture :
 // existence des versets Giguet, ref grec valide (round-trip), zéro-perte (aucun
@@ -31,9 +35,9 @@ export async function POST(req: Request) {
   // Révocation : retour à l'auto (l'humain corrige l'humain).
   if (body.revoke) {
     revokeOverride(book, ref);
-    syncReader(book, ref);
+    const ok = syncReader(book, ref);
     const src = effectiveSources(book, ref);
-    return NextResponse.json({ ok: true, revoked: true, preview: src ? materialize(book, src) : null });
+    return NextResponse.json({ ok: true, revoked: true, preview: src ? materialize(book, src) : null, ...staleWarning(ok) });
   }
 
   // Sources : [ch, v] (verset entier) ou [ch, v, de, à] (extrait) - entiers only.
@@ -47,6 +51,6 @@ export async function POST(req: Request) {
   const check = checkOverride(book, ref, sources, maison);
   if (!check.ok) return NextResponse.json({ ok: false, errors: check.errors }, { status: 422 });
   saveOverride(book, ref, sources, auth.credit || "Βιβλίον", body.note, maison);
-  syncReader(book, ref); // matérialise fr.json + régénère la page lecteur
-  return NextResponse.json({ ok: true, preview: maison || (sources.length ? materialize(book, sources) : null) });
+  const ok = syncReader(book, ref); // matérialise fr.json + régénère la page lecteur
+  return NextResponse.json({ ok: true, preview: maison || (sources.length ? materialize(book, sources) : null), ...staleWarning(ok) });
 }

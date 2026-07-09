@@ -193,21 +193,31 @@ export function servedText(book: string, ref: string): string | null {
 
 // Applique le lien effectif d'un verset grec au fr.json servi (matérialisation
 // chirurgicale : le lecteur reflète l'override immédiatement ; le build rejoue tout).
-export function applyToReader(book: string, ref: string) {
+// BEST-EFFORT : la vérité durable est l'ARB_DIR (déjà écrit) + la matérialisation au
+// déploiement. Si le fr.json servi n'est pas inscriptible (ex. arbre lxx encore possédé
+// par le CI, pas par le service), on journalise et on rend true/false ; on ne fait JAMAIS
+// échouer l'enregistrement de l'arbitrage pour un rafraîchissement de lecteur raté.
+export function applyToReader(book: string, ref: string): boolean {
   const [ch, v] = ref.split(":");
   const frPath = path.join(LXX_DIR, book, "fr.json");
-  const fr = JSON.parse(fs.readFileSync(frPath, "utf8"));
-  fr[ch] = fr[ch] || {};
-  const text = servedText(book, ref);
-  if (text != null) fr[ch][v] = text;
-  else delete fr[ch][v]; // orphelin-grec -> pas de français (grec seul)
-  // Crédit maison : maintenu à côté du texte pour l'affichage lecteur.
-  const ovEntry = overrides()[book]?.[ref];
-  if (ovEntry?.maison && ovEntry.by) { fr._maison = fr._maison || {}; fr._maison[ref] = ovEntry.by; }
-  else if (fr._maison) delete fr._maison[ref];
-  const tmp = frPath + ".tmp";
-  fs.writeFileSync(tmp, JSON.stringify(fr));
-  fs.renameSync(tmp, frPath);
+  try {
+    const fr = JSON.parse(fs.readFileSync(frPath, "utf8"));
+    fr[ch] = fr[ch] || {};
+    const text = servedText(book, ref);
+    if (text != null) fr[ch][v] = text;
+    else delete fr[ch][v]; // orphelin-grec -> pas de français (grec seul)
+    // Crédit maison : maintenu à côté du texte pour l'affichage lecteur.
+    const ovEntry = overrides()[book]?.[ref];
+    if (ovEntry?.maison && ovEntry.by) { fr._maison = fr._maison || {}; fr._maison[ref] = ovEntry.by; }
+    else if (fr._maison) delete fr._maison[ref];
+    const tmp = frPath + ".tmp";
+    fs.writeFileSync(tmp, JSON.stringify(fr));
+    fs.renameSync(tmp, frPath);
+    return true;
+  } catch (e) {
+    console.error(`applyToReader ${book} ${ref} : rafraîchissement du lecteur impossible (arbitrage sauvegardé, servi au prochain déploiement) :`, (e as Error).message);
+    return false;
+  }
 }
 
 export const giguetText = (book: string, ch: number, v: number): string | null =>
