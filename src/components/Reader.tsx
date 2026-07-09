@@ -418,7 +418,10 @@ export default function Reader({ text }: { text: Text }) {
   // scriptio continua (le manuscrit continu n’a pas de découpe par verset).
   const copyLink = (v: number) =>
     manuscript ? null : (
-      <div className="absolute right-0 top-1 z-10 rounded-full bg-base-100/85"><CopyVerseLink v={v} /></div>
+      // À gauche, à CÔTÉ du texte, dans la marge de la colonne (right-full), jamais dessus.
+      // Desktop seulement : sur mobile la marge est trop étroite (le bouton déborderait et
+      // serait intouchable), on ne l'affiche donc pas.
+      <div className="absolute right-full top-3 z-10 mr-1 hidden wide:block"><CopyVerseLink v={v} /></div>
     );
 
   const greekVerses = useMemo(
