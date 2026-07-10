@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { usePathname } from "next/navigation";
 import { AuthProvider } from "../src/hooks/useAuth";
+import { useAnalytics } from "../src/hooks/useAnalytics";
 import {
   SheetContext,
   type ActiveLetter,
@@ -28,6 +29,7 @@ type SheetState = {
 export default function Providers({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [sheet, setSheet] = useState<SheetState | null>(null);
+  useAnalytics();
 
   // Fermer la fiche quand on change d'écran.
   useEffect(() => {
