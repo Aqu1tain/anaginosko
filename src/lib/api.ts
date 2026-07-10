@@ -154,6 +154,18 @@ export type AdminStats = {
 export const fetchAdminStats = (days?: number) =>
   apiFetch<AdminStats>(`/admin/stats${days ? `?days=${days}` : ""}`);
 
+export type NamedCount = { label: string; visits: number };
+export type MatomoAnalytics = {
+  configured: boolean;
+  visitsByDay: { day: string; visits: number }[];
+  referrerTypes: NamedCount[];
+  topReferrers: NamedCount[];
+  devices: NamedCount[];
+  countries: NamedCount[];
+};
+export const fetchMatomoAnalytics = (days?: number) =>
+  apiFetch<MatomoAnalytics>(`/admin/analytics${days ? `?days=${days}` : ""}`);
+
 export type AdminAnnotation = {
   id: number;
   ref: string;
