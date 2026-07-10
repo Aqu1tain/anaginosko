@@ -3,6 +3,8 @@
 // (qui produit θ/x/v). La clé de fichier = hash FNV-1a de la translittération
 // (même fonction côté build, voir scripts/build-audio-azure.mjs).
 
+import { trackEvent } from "./analytics";
+
 export function audioKey(s: string): string {
   let h = 2166136261 >>> 0;
   const str = s.toLowerCase();
@@ -48,6 +50,7 @@ export function playUrl(url: string): void {
   a.play().catch(() => {
     /* fichier absent ou lecture bloquée */
   });
+  trackEvent("Audio", "play");
 }
 
 export function playTranslit(translit: string): void {

@@ -99,6 +99,16 @@ export default function MentionsView() {
         ))}
       </dl>
 
+      <section className="mt-5 rounded-box border border-base-300 bg-base-100 px-4 py-3">
+        <h2 className="text-sm font-semibold">Confidentialité et mesure d’audience</h2>
+        <p className="mt-1 max-w-prose text-sm leading-relaxed text-base-content/75">
+          La mesure d’audience est <strong>anonyme et sans cookie</strong> : adresse IP anonymisée,
+          aucun identifiant persistant, aucun profilage et aucune donnée transmise à un tiers. Elle
+          nous sert seulement à connaître la fréquentation du site et la provenance des visites. À ce
+          titre, elle ne requiert pas votre consentement.
+        </p>
+      </section>
+
       <p className="mt-5 max-w-prose text-xs leading-relaxed text-base-content/70">
         © 2026{" "}
         <a className="link" href="https://corentinrenard.com" target="_blank" rel="noreferrer">
