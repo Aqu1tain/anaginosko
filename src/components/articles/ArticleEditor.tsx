@@ -61,6 +61,13 @@ export default function ArticleEditor({ articleId, initialContent, editable, dar
       group: "Anaginosko",
       onItemClick: () => setPicker({ mode: "chapter", initialQuery: "" }),
     },
+    {
+      title: "Carte, vidéo ou graphique",
+      subtext: "Intégrer YouTube, Maps, Datawrapper…",
+      aliases: ["embed", "carte", "video", "graphique", "iframe"],
+      group: "Anaginosko",
+      onItemClick: () => editor.insertBlocks([{ type: "embed" }], editor.getTextCursorPosition().block, "after"),
+    },
   ];
 
   const handleConfirm = (props: VerseQuoteProps | ChapterRefProps) => {

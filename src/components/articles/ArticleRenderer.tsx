@@ -3,6 +3,8 @@ import { loadChapterFs } from "@/lib/nt-server";
 import { corpusById } from "@/src/data/corpus";
 import VerseQuoteView from "./VerseQuoteView";
 import ChapterRefLink from "./ChapterRefLink";
+import EmbedView from "./EmbedView";
+import { normalizeEmbedUrl } from "@/src/data/embed";
 import type { VerseLine, VerseQuoteProps, ChapterRefProps } from "./citationTypes";
 
 // Rendu public d'un article : mappe le JSON BlockNote vers du JSX serveur, sans
@@ -121,6 +123,10 @@ function renderBlock(block: Block): ReactNode {
     }
     case "verseQuote":
       return <VerseQuoteServer key={key} props={block.props as unknown as VerseQuoteProps} />;
+    case "embed": {
+      const src = normalizeEmbedUrl(String(block.props?.url ?? ""));
+      return src ? <EmbedView key={key} src={src} title={block.props?.title ? String(block.props.title) : undefined} /> : null;
+    }
     case "bulletListItem":
     case "numberedListItem":
     case "checkListItem":
