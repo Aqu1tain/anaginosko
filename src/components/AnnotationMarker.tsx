@@ -10,11 +10,13 @@ export default function AnnotationMarker({
   canManage,
   onEdit,
   onDelete,
+  onReport,
 }: {
   annotations: Annotation[];
   canManage?: (a: Annotation) => boolean;
   onEdit?: (a: Annotation) => void;
   onDelete?: (a: Annotation) => void;
+  onReport?: (a: Annotation) => void;
 }) {
   const wide = useIsWide();
   const { open, setOpen, close, triggerRef, popRef, triggerProps, popProps } = useSafeHover({
@@ -49,30 +51,44 @@ export default function AnnotationMarker({
         ) : (
           <span />
         )}
-        {canManage?.(a) && (
-          <span className="flex gap-1">
+        <span className="flex gap-1">
+          {onReport && (
             <button
               onClick={(e) => {
                 e.stopPropagation();
                 close();
-                onEdit?.(a);
+                onReport(a);
               }}
-              className="btn btn-ghost btn-xs"
+              className="btn btn-ghost btn-xs text-base-content/60"
             >
-              Modifier
+              Signaler
             </button>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                close();
-                onDelete?.(a);
-              }}
-              className="btn btn-ghost btn-xs text-error"
-            >
-              Supprimer
-            </button>
-          </span>
-        )}
+          )}
+          {canManage?.(a) && (
+            <>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  close();
+                  onEdit?.(a);
+                }}
+                className="btn btn-ghost btn-xs"
+              >
+                Modifier
+              </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  close();
+                  onDelete?.(a);
+                }}
+                className="btn btn-ghost btn-xs text-error"
+              >
+                Supprimer
+              </button>
+            </>
+          )}
+        </span>
       </span>
     </span>
   ));

@@ -30,6 +30,7 @@ function GreekText({
   canManage,
   onEditAnnotation,
   onDeleteAnnotation,
+  onReportAnnotation,
   pronOverrides,
 }: {
   text: Text;
@@ -55,6 +56,7 @@ function GreekText({
   canManage?: (a: Annotation) => boolean;
   onEditAnnotation?: (a: Annotation) => void;
   onDeleteAnnotation?: (a: Annotation) => void;
+  onReportAnnotation?: (a: Annotation) => void;
   /** Translittérations overridées, clé `${grec}:${system}` -> translit affichée. */
   pronOverrides?: Map<string, string>;
 }) {
@@ -236,6 +238,7 @@ function GreekText({
         canManage={canManage}
         onEdit={onEditAnnotation}
         onDelete={onDeleteAnnotation}
+        onReport={onReportAnnotation}
       />
     );
   };
