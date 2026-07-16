@@ -71,7 +71,7 @@ function EmbedBlockView({
           value={draft}
           onChange={(e) => setDraft(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && submit()}
-          placeholder="Coller le lien d'intégration"
+          placeholder="Coller le lien (ex. https://youtu.be/…)"
           className="input input-bordered input-sm w-full"
         />
         <button type="button" className="btn btn-primary btn-sm" onClick={submit}>
@@ -81,7 +81,9 @@ function EmbedBlockView({
       {error ? (
         <p className="mt-2 text-xs text-error">{error}</p>
       ) : (
-        <p className="mt-2 text-xs text-base-content/50">Sources : {EMBED_ALLOWLIST}.</p>
+        <p className="mt-2 text-xs text-base-content/50">
+          YouTube : le lien de la vidéo. Google Maps / Datawrapper : le lien « Intégrer » (iframe). Sources : {EMBED_ALLOWLIST}.
+        </p>
       )}
     </div>
   );

@@ -65,6 +65,10 @@ export default function ArticleWorkbench({ id }: { id: string }) {
   const revRef = useRef(0);
   const pending = useRef<Partial<ArticlePatch>>({});
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Éditabilité relue au moment du flush : BlockNote peut émettre un onChange tardif
+  // pendant la bascule en lecture seule ; sans ce garde, la sauvegarde différée
+  // partirait après le changement de statut et le serveur la rejetterait (faux conflit).
+  const editableRef = useRef(false);
 
   useEffect(() => {
     fetchArticle(id)
@@ -78,13 +82,14 @@ export default function ArticleWorkbench({ id }: { id: string }) {
   const editable =
     !!article &&
     (article.status === "draft" || article.status === "changes_requested") &&
-    (user?.role === "admin" || article.author.userId === user?.id) &&
+    article.author.userId === user?.id &&
     saveState !== "conflict";
+  editableRef.current = editable;
 
   const flush = useCallback(async () => {
     const patch = pending.current;
     pending.current = {};
-    if (Object.keys(patch).length === 0) return;
+    if (!editableRef.current || Object.keys(patch).length === 0) return;
     try {
       const updated = await saveArticle(id, { rev: revRef.current, ...patch });
       revRef.current = updated.rev;
@@ -97,6 +102,7 @@ export default function ArticleWorkbench({ id }: { id: string }) {
 
   const queueSave = useCallback(
     (patch: Partial<ArticlePatch>) => {
+      if (!editableRef.current) return;
       pending.current = { ...pending.current, ...patch };
       setSaveState("saving");
       if (timer.current) clearTimeout(timer.current);
@@ -105,7 +111,7 @@ export default function ArticleWorkbench({ id }: { id: string }) {
     [flush],
   );
 
-  const [lastBlockId, setLastBlockId] = useState<string | null>(null);
+  const [selected, setSelected] = useState<{ id: string; excerpt: string } | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
 
   const runTransition = async (action: TransitionAction) => {
@@ -118,6 +124,7 @@ export default function ArticleWorkbench({ id }: { id: string }) {
       revRef.current = updated.rev;
       setArticle(updated);
       setActionError(null);
+      setSaveState("idle");
     } catch (e) {
       setActionError((e as Error).message);
     }
@@ -133,7 +140,7 @@ export default function ArticleWorkbench({ id }: { id: string }) {
   const captureBlock = (e: React.MouseEvent) => {
     const el = (e.target as HTMLElement).closest("[data-id]");
     const bid = el?.getAttribute("data-id");
-    if (bid) setLastBlockId(bid);
+    if (bid) setSelected({ id: bid, excerpt: (el?.textContent || "").trim().slice(0, 70) });
   };
   const jumpTo = (blockId: string) => {
     const el = document.querySelector(`[data-id="${blockId}"]`);
@@ -228,7 +235,9 @@ export default function ArticleWorkbench({ id }: { id: string }) {
               initialContent={article.content}
               editable={editable}
               dark={dark}
-              onChange={(content) => queueSave({ content })}
+              onChange={(content) => {
+                if (editable) queueSave({ content });
+              }}
             />
           </div>
         </div>
@@ -251,7 +260,8 @@ export default function ArticleWorkbench({ id }: { id: string }) {
           <ReviewPanel
             comments={article.comments}
             canComment={canComment}
-            lastBlockId={lastBlockId}
+            selected={selected}
+            onClearSelected={() => setSelected(null)}
             onAdd={handleAddComment}
             onResolve={handleResolve}
             onJumpTo={jumpTo}

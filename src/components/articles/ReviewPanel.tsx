@@ -3,25 +3,26 @@
 import { useState } from "react";
 import type { ArticleComment } from "@/lib/articles";
 
-// Fil de revue façon GitHub : commentaires généraux ou ancrés à un bloc, résolubles.
-// L'ancrage se fait en cliquant un bloc de l'article (capté par le workbench).
+// Fil de revue façon GitHub. Commentaire ligne par ligne : cliquer une ligne de
+// l'article la sélectionne, le commentaire s'y attache ; sinon il est général.
 export default function ReviewPanel({
   comments,
   canComment,
-  lastBlockId,
+  selected,
+  onClearSelected,
   onAdd,
   onResolve,
   onJumpTo,
 }: {
   comments: ArticleComment[];
   canComment: boolean;
-  lastBlockId: string | null;
+  selected: { id: string; excerpt: string } | null;
+  onClearSelected: () => void;
   onAdd: (text: string, blockId: string | null) => Promise<void>;
   onResolve: (commentId: string, resolved: boolean) => Promise<void>;
   onJumpTo: (blockId: string) => void;
 }) {
   const [text, setText] = useState("");
-  const [anchor, setAnchor] = useState(false);
   const [busy, setBusy] = useState(false);
   const unresolved = comments.filter((c) => !c.resolved).length;
 
@@ -29,9 +30,9 @@ export default function ReviewPanel({
     if (!text.trim() || busy) return;
     setBusy(true);
     try {
-      await onAdd(text.trim(), anchor ? lastBlockId : null);
+      await onAdd(text.trim(), selected?.id ?? null);
       setText("");
-      setAnchor(false);
+      onClearSelected();
     } finally {
       setBusy(false);
     }
@@ -54,7 +55,7 @@ export default function ReviewPanel({
             </div>
             {c.blockId && (
               <button type="button" className="mt-1 text-xs text-primary hover:underline" onClick={() => onJumpTo(c.blockId!)}>
-                Aller au passage commenté
+                Voir la ligne commentée
               </button>
             )}
             <p className="mt-1 whitespace-pre-wrap text-base-content/90">{c.text}</p>
@@ -69,17 +70,25 @@ export default function ReviewPanel({
 
       {canComment && (
         <div className="mt-4">
+          {selected ? (
+            <div className="mb-1 flex items-start justify-between gap-2 rounded bg-primary/10 px-2 py-1.5 text-xs text-primary">
+              <span className="min-w-0">
+                Sur la ligne : <span className="italic opacity-80">« {selected.excerpt || "(vide)"} »</span>
+              </span>
+              <button type="button" onClick={onClearSelected} className="shrink-0 hover:underline">
+                Général
+              </button>
+            </div>
+          ) : (
+            <p className="mb-1 text-xs text-base-content/50">Cliquez une ligne de l&apos;article pour la commenter, ou écrivez un commentaire général.</p>
+          )}
           <textarea
             value={text}
             onChange={(e) => setText(e.target.value)}
-            placeholder="Commentaire…"
+            placeholder={selected ? "Commenter cette ligne…" : "Commentaire général…"}
             rows={3}
             className="textarea textarea-bordered w-full text-sm"
           />
-          <label className={`mt-1 flex items-center gap-2 text-xs ${lastBlockId ? "" : "opacity-40"}`}>
-            <input type="checkbox" className="checkbox checkbox-xs" checked={anchor} disabled={!lastBlockId} onChange={(e) => setAnchor(e.target.checked)} />
-            Ancrer au passage sélectionné
-          </label>
           <button className="btn btn-primary btn-sm mt-2 w-full" disabled={!text.trim() || busy} onClick={submit}>
             Commenter
           </button>

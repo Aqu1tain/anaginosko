@@ -211,7 +211,8 @@ export function saveArticle(
 ): { ok: true; article: Article } | { ok: false; status: number; error: string } {
   const a = getArticle(id);
   if (!a) return { ok: false, status: 404, error: "Article introuvable." };
-  if (!isAdmin(auth) && !isAuthor(a, auth)) return { ok: false, status: 403, error: "Accès refusé." };
+  // Seul l'auteur écrit le contenu ; l'admin relit et arbitre (à la GitHub).
+  if (!isAuthor(a, auth)) return { ok: false, status: 403, error: "Seul l'auteur peut modifier le texte." };
   if (a.status !== "draft" && a.status !== "changes_requested")
     return { ok: false, status: 409, error: "Article non modifiable dans cet état." };
   if (patch.rev !== a.rev) return { ok: false, status: 409, error: "Version périmée, rechargez l'article." };
