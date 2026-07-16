@@ -93,7 +93,7 @@ export default function RefJump({ books, routePrefix }: { books: Book[]; routePr
                 type="button"
                 onMouseEnter={() => setActive(idx)}
                 onClick={() => go(b)}
-                className={`flex w-full items-baseline justify-between gap-3 px-3.5 py-2 text-left text-sm transition-colors ${
+                className={`flex w-full items-baseline justify-between gap-3 px-3.5 py-2 text-left text-sm text-base-content transition-colors ${
                   idx === active ? "bg-primary/10" : "hover:bg-base-200"
                 }`}
               >
