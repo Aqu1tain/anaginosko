@@ -215,9 +215,14 @@ export default function AdminView() {
           )}
         </div>
         {canEdit && (
-          <a href="/admin/arbitrage" className="btn btn-sm btn-outline border-base-300">
-            Arbitrage LXX
-          </a>
+          <div className="flex gap-2">
+            <a href="/admin/articles" className="btn btn-sm btn-outline border-base-300">
+              Articles
+            </a>
+            <a href="/admin/arbitrage" className="btn btn-sm btn-outline border-base-300">
+              Arbitrage LXX
+            </a>
+          </div>
         )}
       </div>
 
