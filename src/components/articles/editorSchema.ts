@@ -1,9 +1,10 @@
 import { BlockNoteSchema, defaultBlockSpecs, defaultInlineContentSpecs } from "@blocknote/core";
+import { verseQuoteBlock } from "./blocks/verseQuoteBlock";
+import { chapterRefInline } from "./blocks/chapterRefInline";
 
-// Schéma de l'éditeur d'article. Blocs et inline par défaut ; la citation biblique
-// (bloc verseQuote) et la référence de chapitre (inline chapterRef) sont ajoutées en
-// Phase 3. Un seul point pour l'éditeur et le rendu.
+// Schéma de l'éditeur d'article : blocs et inline par défaut, plus la citation biblique
+// (bloc verseQuote) et le renvoi de chapitre (inline chapterRef). Un seul point de vérité.
 export const schema = BlockNoteSchema.create({
-  blockSpecs: { ...defaultBlockSpecs },
-  inlineContentSpecs: { ...defaultInlineContentSpecs },
+  blockSpecs: { ...defaultBlockSpecs, verseQuote: verseQuoteBlock() },
+  inlineContentSpecs: { ...defaultInlineContentSpecs, chapterRef: chapterRefInline },
 });
