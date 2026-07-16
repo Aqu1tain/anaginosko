@@ -17,6 +17,12 @@ const ICONS = {
       <path d="M16 16l4 4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
     </svg>
   ),
+  articles: (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M6 4h9l3 3v13H6z" />
+      <path d="M9 9h6M9 13h6M9 17h4" />
+    </svg>
+  ),
 };
 
 export type NavTab = { href: string; label: string; icon: React.ReactNode; active: boolean };
@@ -36,5 +42,6 @@ export function useNavTabs(): NavTab[] {
     { href: "/", label: "Accueil", icon: ICONS.home, active: reading },
     { href: "/alphabet", label: "Alphabet", icon: ICONS.alphabet, active: pathname.startsWith("/alphabet") },
     { href: "/concordance", label: "Concordance", icon: ICONS.concordance, active: isConcordance },
+    { href: "/articles", label: "Articles", icon: ICONS.articles, active: pathname.startsWith("/articles") },
   ];
 }
