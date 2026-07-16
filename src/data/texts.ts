@@ -31,6 +31,10 @@ export type Text = {
 export const wordCount = (text: Text): number =>
   text.mots?.length ?? text.grec.split(/\s+/).filter(Boolean).length;
 
+/** Nombre de versets distincts d'un passage (dérivé des jetons). */
+export const verseCount = (text: Text): number =>
+  new Set((text.mots ?? []).map((m) => m.verse).filter((v): v is number => v != null)).size;
+
 /** Libellé de longueur, calculé sur le nombre réel de mots. */
 export const lengthLabel = (text: Text): string => {
   const n = wordCount(text);
