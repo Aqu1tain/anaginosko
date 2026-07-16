@@ -1,0 +1,1434 @@
+[
+  {
+    "book": "exo",
+    "ref": "39:9",
+    "kind": "span-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "reason": "Passe zéro-orphelin : lectures différentes. À trancher avec le picker (extraits).",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "39",
+            "7",
+            "0",
+            "11"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "39",
+            "8",
+            "0",
+            "18"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "book": "jer",
+    "ref": "28:45",
+    "kind": "span-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "reason": "Passe zéro-orphelin : lectures différentes. À trancher avec le picker (extraits).",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "28",
+            "45"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "28",
+            "45"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "book": "jer",
+    "ref": "28:46",
+    "kind": "span-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "reason": "Passe zéro-orphelin : lectures différentes. À trancher avec le picker (extraits).",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "28",
+            "46"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "28",
+            "46"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "book": "jer",
+    "ref": "28:47",
+    "kind": "span-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "reason": "Passe zéro-orphelin : lectures différentes. À trancher avec le picker (extraits).",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "28",
+            "47"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "28",
+            "47"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "book": "jer",
+    "ref": "28:48",
+    "kind": "span-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "reason": "Passe zéro-orphelin : lectures différentes. À trancher avec le picker (extraits).",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "28",
+            "48"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "28",
+            "48"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "book": "job",
+    "ref": "26:2",
+    "kind": "span-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "reason": "Passe zéro-orphelin : chevauchement sur Giguet 25:2. À trancher avec le picker (extraits).",
+    "proposals": []
+  },
+  {
+    "book": "job",
+    "ref": "26:3",
+    "kind": "span-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "reason": "Passe zéro-orphelin : chevauchement sur Giguet 25:3. À trancher avec le picker (extraits).",
+    "proposals": []
+  },
+  {
+    "book": "job",
+    "ref": "26:4",
+    "kind": "span-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "reason": "Passe zéro-orphelin : chevauchement sur Giguet 25:4. À trancher avec le picker (extraits).",
+    "proposals": []
+  },
+  {
+    "book": "job",
+    "ref": "26:5",
+    "kind": "span-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "reason": "Passe zéro-orphelin : chevauchement sur Giguet 25:5. À trancher avec le picker (extraits).",
+    "proposals": []
+  },
+  {
+    "book": "job",
+    "ref": "26:6",
+    "kind": "span-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "reason": "Passe zéro-orphelin : chevauchement sur Giguet 25:6. À trancher avec le picker (extraits).",
+    "proposals": []
+  },
+  {
+    "book": "neh",
+    "ref": "11:16",
+    "kind": "span-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "reason": "Passe zéro-orphelin : lectures différentes. À trancher avec le picker (extraits).",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "11",
+            "16"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "11",
+            "16"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "book": "neh",
+    "ref": "11:20",
+    "kind": "span-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "reason": "Passe zéro-orphelin : lectures différentes. À trancher avec le picker (extraits).",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "11",
+            "20"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "11",
+            "20"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "book": "neh",
+    "ref": "11:21",
+    "kind": "span-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "reason": "Passe zéro-orphelin : lectures différentes. À trancher avec le picker (extraits).",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "11",
+            "21"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "11",
+            "21"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "book": "neh",
+    "ref": "12:9",
+    "kind": "span-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "reason": "Passe zéro-orphelin : lectures différentes. À trancher avec le picker (extraits).",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "12",
+            "5",
+            "0",
+            "17"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "12",
+            "5",
+            "0",
+            "19"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "book": "neh",
+    "ref": "12:39",
+    "kind": "span-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "reason": "Passe zéro-orphelin : lectures différentes. À trancher avec le picker (extraits).",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "12",
+            "32",
+            "0",
+            "28"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "12",
+            "32",
+            "0",
+            "30"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "book": "neh",
+    "ref": "12:42",
+    "kind": "span-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "reason": "Passe zéro-orphelin : chevauchement sur Giguet 12:32. À trancher avec le picker (extraits).",
+    "proposals": []
+  },
+  {
+    "book": "sir",
+    "ref": "16:22",
+    "kind": "span-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "reason": "Passe zéro-orphelin : lectures différentes. À trancher avec le picker (extraits).",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "16",
+            "20"
+          ],
+          [
+            "16",
+            "21",
+            "0",
+            "6"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "16",
+            "22",
+            "0",
+            "7"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "book": "sir",
+    "ref": "24:11",
+    "kind": "span-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "reason": "Passe zéro-orphelin : lectures différentes. À trancher avec le picker (extraits).",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "24",
+            "12",
+            "0",
+            "17"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "24",
+            "13",
+            "0",
+            "8"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "book": "sir",
+    "ref": "30:42",
+    "kind": "span-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "reason": "Passe zéro-orphelin : lectures différentes. À trancher avec le picker (extraits).",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "30",
+            "41",
+            "11",
+            "20"
+          ],
+          [
+            "30",
+            "42"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "30",
+            "40"
+          ],
+          [
+            "30",
+            "41",
+            "0",
+            "10"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "book": "sir",
+    "ref": "33:16",
+    "kind": "span-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "reason": "Passe zéro-orphelin : lectures différentes. À trancher avec le picker (extraits).",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "36",
+            "16"
+          ],
+          [
+            "30",
+            "29"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "30",
+            "29"
+          ],
+          [
+            "36",
+            "16"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "book": "sir",
+    "ref": "36:16",
+    "kind": "span-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "reason": "Passe zéro-orphelin : lectures différentes. À trancher avec le picker (extraits).",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "36",
+            "16"
+          ],
+          [
+            "30",
+            "29"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "30",
+            "29"
+          ],
+          [
+            "36",
+            "16"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "book": "sir",
+    "ref": "40:31",
+    "kind": "span-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "reason": "Passe zéro-orphelin : lectures différentes. À trancher avec le picker (extraits).",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "40",
+            "26"
+          ],
+          [
+            "40",
+            "27"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "40",
+            "26"
+          ],
+          [
+            "40",
+            "27"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "book": "sir",
+    "ref": "40:32",
+    "kind": "span-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "reason": "Passe zéro-orphelin : lectures différentes. À trancher avec le picker (extraits).",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "40",
+            "32"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "40",
+            "30"
+          ],
+          [
+            "40",
+            "31"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "book": "sir",
+    "ref": "41:6",
+    "kind": "span-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "reason": "Passe zéro-orphelin : lectures différentes. À trancher avec le picker (extraits).",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "41",
+            "5",
+            "21",
+            "29"
+          ],
+          [
+            "41",
+            "6"
+          ],
+          [
+            "41",
+            "7"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "41",
+            "5",
+            "0",
+            "20"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "book": "sir",
+    "ref": "41:7",
+    "kind": "span-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "reason": "Passe zéro-orphelin : lectures différentes. À trancher avec le picker (extraits).",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "41",
+            "5",
+            "21",
+            "29"
+          ],
+          [
+            "41",
+            "6"
+          ],
+          [
+            "41",
+            "7"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "41",
+            "5",
+            "0",
+            "20"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "book": "sir",
+    "ref": "41:27",
+    "kind": "span-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "reason": "Passe zéro-orphelin : lectures différentes. À trancher avec le picker (extraits).",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "42",
+            "1",
+            "20",
+            "35"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "42",
+            "1",
+            "20",
+            "35"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "book": "sir",
+    "ref": "43:4",
+    "kind": "span-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "reason": "Passe zéro-orphelin : lectures différentes. À trancher avec le picker (extraits).",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "43",
+            "3",
+            "15",
+            "24"
+          ],
+          [
+            "43",
+            "4"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "43",
+            "3",
+            "0",
+            "14"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "book": "sir",
+    "ref": "44:21",
+    "kind": "span-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "reason": "Passe zéro-orphelin : lectures différentes. À trancher avec le picker (extraits).",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "44",
+            "20",
+            "16",
+            "29"
+          ],
+          [
+            "44",
+            "21"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "44",
+            "20",
+            "0",
+            "15"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "book": "sir",
+    "ref": "45:3",
+    "kind": "span-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "reason": "Passe zéro-orphelin : lectures différentes. À trancher avec le picker (extraits).",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "45",
+            "2",
+            "19",
+            "29"
+          ],
+          [
+            "45",
+            "3"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "45",
+            "2",
+            "0",
+            "18"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "book": "sir",
+    "ref": "45:10",
+    "kind": "span-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "reason": "Passe zéro-orphelin : lectures différentes. À trancher avec le picker (extraits).",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "45",
+            "9",
+            "8",
+            "24"
+          ],
+          [
+            "45",
+            "10",
+            "0",
+            "8"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "45",
+            "8"
+          ],
+          [
+            "45",
+            "9",
+            "0",
+            "7"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "book": "sir",
+    "ref": "46:9",
+    "kind": "span-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "reason": "Passe zéro-orphelin : lectures différentes. À trancher avec le picker (extraits).",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "46",
+            "8",
+            "21",
+            "26"
+          ],
+          [
+            "46",
+            "9"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "46",
+            "7"
+          ],
+          [
+            "46",
+            "8",
+            "0",
+            "20"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "book": "sir",
+    "ref": "46:15",
+    "kind": "span-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "reason": "Passe zéro-orphelin : lectures différentes. À trancher avec le picker (extraits).",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "46",
+            "14",
+            "6",
+            "13"
+          ],
+          [
+            "46",
+            "15"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "46",
+            "13"
+          ],
+          [
+            "46",
+            "14",
+            "0",
+            "5"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "book": "sir",
+    "ref": "47:4",
+    "kind": "span-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "reason": "Passe zéro-orphelin : lectures différentes. À trancher avec le picker (extraits).",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "47",
+            "3",
+            "15",
+            "17"
+          ],
+          [
+            "47",
+            "4"
+          ],
+          [
+            "47",
+            "5"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "47",
+            "3",
+            "0",
+            "14"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "book": "sir",
+    "ref": "47:5",
+    "kind": "span-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "reason": "Passe zéro-orphelin : lectures différentes. À trancher avec le picker (extraits).",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "47",
+            "3",
+            "15",
+            "17"
+          ],
+          [
+            "47",
+            "4"
+          ],
+          [
+            "47",
+            "5"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "47",
+            "3",
+            "0",
+            "14"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "book": "sir",
+    "ref": "48:28",
+    "kind": "span-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "reason": "Passe zéro-orphelin : lectures différentes. À trancher avec le picker (extraits).",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "48",
+            "27",
+            "19",
+            "23"
+          ],
+          [
+            "48",
+            "28"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "48",
+            "27",
+            "0",
+            "18"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "book": "sir",
+    "ref": "49:9",
+    "kind": "span-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "reason": "Passe zéro-orphelin : lectures différentes. À trancher avec le picker (extraits).",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "49",
+            "8",
+            "21",
+            "26"
+          ],
+          [
+            "49",
+            "9"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "49",
+            "8",
+            "0",
+            "20"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "book": "sir",
+    "ref": "50:12",
+    "kind": "span-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "reason": "Passe zéro-orphelin : lectures différentes. À trancher avec le picker (extraits).",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "50",
+            "11",
+            "13",
+            "32"
+          ],
+          [
+            "50",
+            "12"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "50",
+            "11",
+            "0",
+            "12"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "book": "sir",
+    "ref": "51:3",
+    "kind": "span-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "reason": "Passe zéro-orphelin : lectures différentes. À trancher avec le picker (extraits).",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "51",
+            "2",
+            "6",
+            "14"
+          ],
+          [
+            "51",
+            "3"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "51",
+            "1"
+          ],
+          [
+            "51",
+            "2",
+            "0",
+            "5"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "book": "sir",
+    "ref": "51:8",
+    "kind": "span-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "reason": "Passe zéro-orphelin : lectures différentes. À trancher avec le picker (extraits).",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "51",
+            "7",
+            "16",
+            "23"
+          ],
+          [
+            "51",
+            "8"
+          ],
+          [
+            "51",
+            "9"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "51",
+            "7",
+            "0",
+            "15"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "book": "sir",
+    "ref": "51:9",
+    "kind": "span-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "reason": "Passe zéro-orphelin : lectures différentes. À trancher avec le picker (extraits).",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "51",
+            "7",
+            "16",
+            "23"
+          ],
+          [
+            "51",
+            "8"
+          ],
+          [
+            "51",
+            "9"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "51",
+            "7",
+            "0",
+            "15"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "book": "sir",
+    "ref": "51:16",
+    "kind": "span-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "reason": "Passe zéro-orphelin : lectures différentes. À trancher avec le picker (extraits).",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "51",
+            "15",
+            "13",
+            "19"
+          ],
+          [
+            "51",
+            "16"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "51",
+            "14"
+          ],
+          [
+            "51",
+            "15",
+            "0",
+            "12"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "book": "sir",
+    "ref": "51:20",
+    "kind": "span-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "reason": "Passe zéro-orphelin : lectures différentes. À trancher avec le picker (extraits).",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "51",
+            "19",
+            "20",
+            "28"
+          ],
+          [
+            "51",
+            "20"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "51",
+            "19",
+            "0",
+            "19"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "book": "sir",
+    "ref": "51:23",
+    "kind": "span-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "reason": "Passe zéro-orphelin : lectures différentes. À trancher avec le picker (extraits).",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "51",
+            "22",
+            "8",
+            "15"
+          ],
+          [
+            "51",
+            "23"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "51",
+            "21"
+          ],
+          [
+            "51",
+            "22",
+            "0",
+            "7"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "book": "tob",
+    "ref": "6:19",
+    "kind": "span-divergence",
+    "grain": "verse",
+    "priority": 1,
+    "reason": "Passe zéro-orphelin : lectures différentes. À trancher avec le picker (extraits).",
+    "proposals": [
+      {
+        "reader": "A",
+        "sources": [
+          [
+            "6",
+            "17",
+            "75",
+            "94"
+          ]
+        ]
+      },
+      {
+        "reader": "B",
+        "sources": [
+          [
+            "6",
+            "17",
+            "75",
+            "89"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "book": "sir",
+    "ref": "33:16",
+    "kind": "orphan-vs-split",
+    "greek": "κἀγὼ ἔσχατος ἠγρύπνησα ὡς καλαμώμενος ὀπίσω τρυγητῶν",
+    "proposals": [
+      {
+        "reader": "H1a",
+        "sources": [
+          [
+            "30",
+            "29"
+          ]
+        ],
+        "orphan": [
+          [
+            "36",
+            "16"
+          ]
+        ]
+      },
+      {
+        "reader": "H1b",
+        "sources": [
+          [
+            "30",
+            "29"
+          ],
+          [
+            "36",
+            "16"
+          ]
+        ]
+      }
+    ],
+    "reason": "Doublet : Giguet traduit deux fois (F30:29 grappilleur + F36:16 « veillé le dernier ») — fusionner les deux, ou garder l'un et orphéliser l'autre ?",
+    "grain": "verse",
+    "priority": 2,
+    "canon": "deutero"
+  }
+]

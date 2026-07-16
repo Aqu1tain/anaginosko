@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import Breadcrumb from "../../app/_components/Breadcrumb";
 import DistributionProfile from "./DistributionProfile";
@@ -13,13 +13,13 @@ import { type Annotation } from "../lib/api";
 import { glossFor } from "../data/glosses";
 import { pickBaillyEntry, baillyDefinition } from "../lib/bailly";
 import {
-  BOOK_NAMES,
   type Colloc,
   type Distribution,
   type LemmaEntry,
   type NtBook,
   type Occ,
 } from "../data/nt";
+import { type CorpusConfig, NT, LXX, GREEK_BIBLE } from "../data/corpus";
 
 // Met en forme la notation Bailly : « || » sépare les grands sens, on met en
 // gras la vedette et les repères (A, I, 1…).
@@ -107,7 +107,7 @@ function Definition({ lemma, secondary = false }: { lemma: string; secondary?: b
   );
 }
 
-function Occurrences({ entry, occ }: { entry: LemmaEntry; occ: Occ[] }) {
+function Occurrences({ entry, occ, corpus }: { entry: LemmaEntry; occ: Occ[]; corpus: CorpusConfig }) {
   return (
     <div className="mt-4">
       <div className="text-[0.7rem] font-medium uppercase tracking-wide text-base-content/70">
@@ -122,12 +122,12 @@ function Occurrences({ entry, occ }: { entry: LemmaEntry; occ: Occ[] }) {
         {occ.map((o, i) => (
           <Link
             key={i}
-            href={`/nt/${o.b}/${o.c}?w=${o.w}`}
+            href={`${corpus.routePrefixOf?.(o.b) ?? corpus.routePrefix}/${o.b}/${o.c}?w=${o.w}`}
             className="flex items-center gap-3 rounded-box border border-base-300 bg-base-100 px-3.5 py-2.5 transition-colors hover:border-primary/40"
           >
             <span className="font-greek min-w-0 flex-1 truncate text-lg">{o.f}</span>
             <span className="shrink-0 text-sm text-base-content/70">
-              {BOOK_NAMES[o.b] ?? o.b} {o.c}:{o.v}
+              {corpus.bookNames[o.b] ?? o.b} {o.c}:{o.v}
             </span>
           </Link>
         ))}
@@ -136,8 +136,6 @@ function Occurrences({ entry, occ }: { entry: LemmaEntry; occ: Occ[] }) {
   );
 }
 
-// Note philologique de Biblion attachée au lemme (ref « lemma:<lemma> », sans
-// index de mot). Affichée pour tous ; un contributeur peut l'ajouter/modifier.
 // Définition Biblion : système à part des annotations (ref « def:<lemma> »),
 // PRIORITAIRE sur Bailly. Quand elle existe, elle coiffe la fiche ; Bailly passe
 // en repli. Éditable par les philologues/admin.
@@ -221,6 +219,8 @@ function LemmaDefinitions({ lemma }: { lemma: string }) {
   );
 }
 
+// Note philologique de Biblion attachée au lemme (ref « lemma:<lemma> », sans
+// index de mot). Affichée pour tous ; un contributeur peut l'ajouter/modifier.
 function BiblionNote({ lemma }: { lemma: string }) {
   const { user } = useAuth();
   const canEdit = user?.role === "admin" || user?.role === "philologist";
@@ -299,55 +299,117 @@ function BiblionNote({ lemma }: { lemma: string }) {
   );
 }
 
+type LemmaData = {
+  entry: LemmaEntry;
+  occ: Occ[];
+  dist: Distribution;
+  books: NtBook[];
+  colloc: Colloc[];
+  corpus: CorpusConfig;
+};
+
+// Fusion « toute la Bible grecque » : livres NT et LXX sont disjoints, donc dist,
+// occurrences et comptes se concatenent. Les voisins se fusionnent par lemme (n
+// cumule = versets partagés des deux corpus). Le PMI n'est pas comparable entre
+// corpus (tailles differentes) : on garde le max comme force d'affichage.
+function combineData(nt: LemmaData, lxx: LemmaData): LemmaData {
+  const ntNeighbors = new Set(nt.colloc.map((c) => c.lemma));
+  const byLemma = new Map<string, Colloc>();
+  for (const c of [...nt.colloc, ...lxx.colloc]) {
+    const prev = byLemma.get(c.lemma);
+    if (!prev) {
+      byLemma.set(c.lemma, { ...c, verses: [...(c.verses ?? [])] });
+      continue;
+    }
+    prev.n += c.n;
+    prev.score = Math.max(prev.score, c.score);
+    prev.verses = [...(prev.verses ?? []), ...(c.verses ?? [])];
+  }
+  const colloc = [...byLemma.values()]
+    .map((c) => ({ ...c, hrefBase: ntNeighbors.has(c.lemma) ? NT.concordanceBase : LXX.concordanceBase }))
+    .sort((a, b) => b.score - a.score || b.n - a.n)
+    .slice(0, 12);
+  return {
+    entry: { ...nt.entry, count: nt.entry.count + lxx.entry.count },
+    occ: [...nt.occ, ...lxx.occ],
+    dist: { ...nt.dist, ...lxx.dist },
+    books: [...nt.books, ...lxx.books],
+    colloc,
+    corpus: GREEK_BIBLE,
+  };
+}
+
 export default function LemmaDetail({
   entry,
   occ,
   dist,
   books,
   colloc,
-}: {
-  entry: LemmaEntry;
-  occ: Occ[];
-  dist: Distribution;
-  books: NtBook[];
-  colloc: Colloc[];
-}) {
+  corpus,
+  cross,
+}: LemmaData & { cross?: LemmaData }) {
+  const self: LemmaData = { entry, occ, dist, books, colloc, corpus };
+  const [view, setView] = useState<"nt" | "lxx" | "both">(corpus.id === "lxx" ? "lxx" : "nt");
+
+  const nt = corpus.id === "nt" ? self : cross;
+  const lxx = corpus.id === "lxx" ? self : cross;
+  const both = useMemo(() => (nt && lxx ? combineData(nt, lxx) : null), [nt, lxx]);
+
+  const shown: LemmaData = (view === "both" ? both : view === "lxx" ? lxx : nt) ?? self;
+
   return (
     <div className="pb-4">
       <Breadcrumb
         items={[
           { label: "Accueil", href: "/", home: true },
-          { label: "Concordance", href: "/concordance" },
+          { label: "Concordance", href: corpus.concordanceBase },
           { label: entry.lemma, greek: true },
         ]}
       />
       <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
         <h1 className="font-greek text-3xl">{entry.lemma}</h1>
-        <span className="text-sm text-base-content/70">{entry.translitR}</span>
+        <span className="text-sm text-base-content/70">restituée&nbsp;: {entry.translitR}</span>
         <span className="text-xs text-base-content/70">érasmien&nbsp;: {entry.translit}</span>
         <span className="text-sm text-base-content/70">· {entry.nature}</span>
       </div>
       <p className="mt-1 text-sm text-base-content/70">
-        {entry.count} occurrence{entry.count > 1 ? "s" : ""} dans le NT
+        {shown.entry.count} occurrence{shown.entry.count > 1 ? "s" : ""} {shown.corpus.locative}
       </p>
 
+      {cross && (
+        <div className="join mt-3">
+          <Seg active={view === "nt"} onClick={() => setView("nt")}>
+            {NT.shortLabel}&nbsp;· {nt?.entry.count ?? 0}
+          </Seg>
+          <Seg active={view === "lxx"} onClick={() => setView("lxx")}>
+            {LXX.shortLabel}&nbsp;· {lxx?.entry.count ?? 0}
+          </Seg>
+          <Seg active={view === "both"} onClick={() => setView("both")}>
+            Les deux&nbsp;· {both?.entry.count ?? 0}
+          </Seg>
+        </div>
+      )}
+
+      {/* Définition d'abord (Biblion prioritaire, Bailly en repli), puis les
+          annotations lemmatiques, puis répartition/voisins/occurrences. */}
+      <LemmaDefinitions lemma={entry.lemma} />
       <BiblionNote lemma={entry.lemma} />
 
-      {/* Desktop : on éclate la pile. En haut, deux colonnes d'analyse — sens +
-          répartition à gauche, voisins à droite. En dessous, les occurrences en
-          pleine largeur, réparties en colonnes. Quand la grille retombe en une
-          colonne (mobile), l'ordre source reste Définition → Répartition →
-          Associés → Occurrences. */}
-      <div className="wide:grid wide:grid-cols-2 wide:items-start wide:gap-8">
-        <div className="min-w-0">
-          <LemmaDefinitions lemma={entry.lemma} />
-          <DistributionProfile entry={entry} dist={dist} books={books} occ={occ} />
-        </div>
-        <div className="min-w-0">
-          <Collocations items={colloc} occ={occ} />
-        </div>
-      </div>
-      <Occurrences entry={entry} occ={occ} />
+      <DistributionProfile entry={shown.entry} dist={shown.dist} books={shown.books} occ={shown.occ} corpus={shown.corpus} />
+      <Collocations items={shown.colloc} occ={shown.occ} corpus={shown.corpus} />
+      <Occurrences entry={shown.entry} occ={shown.occ} corpus={shown.corpus} />
     </div>
+  );
+}
+
+function Seg({ active, onClick, children }: { active: boolean; onClick: () => void; children: React.ReactNode }) {
+  return (
+    <button
+      onClick={onClick}
+      aria-pressed={active}
+      className={`btn join-item btn-sm ${active ? "btn-primary" : "btn-outline border-base-300"}`}
+    >
+      {children}
+    </button>
   );
 }

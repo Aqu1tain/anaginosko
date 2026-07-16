@@ -187,3 +187,69 @@ export function recordView(ref: string): void {
     keepalive: true,
   }).catch(() => {});
 }
+
+export type ReportCategory =
+  | "traduction"
+  | "texte"
+  | "commentaire"
+  | "definition"
+  | "demande_note";
+export type ReportStatus = "pending" | "in_progress" | "resolved" | "rejected";
+
+export type ReportInput = {
+  category: ReportCategory;
+  email: string;
+  message: string;
+  ref?: string | null;
+  verse?: number | null;
+  wordIndex?: number | null;
+  endWordIndex?: number | null;
+  graphemeIndex?: number | null;
+  annotationId?: number | null;
+  website?: string; // honeypot
+};
+
+export type AdminReport = {
+  id: number;
+  category: ReportCategory;
+  status: ReportStatus;
+  email: string;
+  verified: boolean;
+  verifiedAt: string | null;
+  ref: string | null;
+  verse: number | null;
+  wordIndex: number | null;
+  endWordIndex: number | null;
+  graphemeIndex: number | null;
+  annotationId: number | null;
+  annotation: { body: string; source: string } | null;
+  message: string;
+  createdAt: string;
+};
+
+// Dépôt anonyme d'un signalement (apiFetch fonctionne sans jeton).
+export const createReport = (input: ReportInput) =>
+  apiFetch<{ ok: boolean; message: string }>("/reports", {
+    method: "POST",
+    body: JSON.stringify(input),
+  });
+
+export const verifyReport = (token: string) =>
+  apiFetch<{ ok: boolean; message: string }>("/reports/verify", {
+    method: "POST",
+    body: JSON.stringify({ token }),
+  });
+
+export const fetchAdminReports = (filters?: { status?: ReportStatus; category?: ReportCategory }) => {
+  const q = new URLSearchParams();
+  if (filters?.status) q.set("status", filters.status);
+  if (filters?.category) q.set("category", filters.category);
+  const qs = q.toString();
+  return apiFetch<AdminReport[]>(`/admin/reports${qs ? `?${qs}` : ""}`);
+};
+
+export const updateReportStatus = (id: number, status: ReportStatus) =>
+  apiFetch<AdminReport>(`/admin/reports/${id}`, {
+    method: "PATCH",
+    body: JSON.stringify({ status }),
+  });

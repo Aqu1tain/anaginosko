@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { BOOK_NAMES } from "../../src/data/nt";
+import { corpusByDataPrefix } from "../../src/data/corpus";
 import { textById } from "../../src/data/texts";
 
 function ThemeToggle({ dark, onToggle }: { dark: boolean; onToggle: () => void }) {
@@ -52,12 +52,19 @@ function chrome(pathname: string): { title: string | null; back: string; isLibra
   if (seg[0] === "text") {
     return { title: textById(seg[1])?.reference ?? "Texte", back: "/", isLibrary: false };
   }
-  if (seg[0] === "nt") {
-    if (seg.length === 1) return { title: "Nouveau Testament", back: "/", isLibrary: false };
-    if (seg.length === 2) return { title: BOOK_NAMES[seg[1]] ?? "Livre", back: "/nt", isLibrary: false };
+  const corpus = corpusByDataPrefix(seg[0]);
+  if (corpus) {
+    // Concordance d'un corpus (ex. /lxx/concordance) avant la lecture.
+    if (seg[1] === "concordance") {
+      const back = seg.length > 2 ? corpus.concordanceBase : "/";
+      return { title: "Concordance", back, isLibrary: false };
+    }
+    if (seg.length === 1) return { title: corpus.label, back: "/", isLibrary: false };
+    if (seg.length === 2) return { title: corpus.bookNames[seg[1]] ?? "Livre", back: corpus.routePrefix, isLibrary: false };
+    const chap = seg[2] === "0" ? "prologue" : seg[2];
     return {
-      title: `${BOOK_NAMES[seg[1]] ?? ""} ${seg[2]}`.trim(),
-      back: `/nt/${seg[1]}`,
+      title: `${corpus.bookNames[seg[1]] ?? ""} ${chap}`.trim(),
+      back: `${corpus.routePrefix}/${seg[1]}`,
       isLibrary: false,
     };
   }
@@ -88,14 +95,17 @@ export default function TopBar({ dark, onToggleTheme }: { dark: boolean; onToggl
     <header className="sticky top-0 z-30 border-b border-base-300 bg-base-100/85 pt-[env(safe-area-inset-top)] backdrop-blur-md">
       <div className="navbar mx-auto min-h-14 w-full max-w-2xl gap-1 px-2 wide:max-w-[84rem] wide:px-6">
         <div className="flex min-w-0 flex-1 items-center gap-1">
-          {isLibrary ? (
-            <Link
-              href="/"
-              className="btn btn-ghost px-2 text-xl font-bold tracking-tight font-[family-name:var(--font-syne)]"
-            >
-              Anaginosko
-            </Link>
-          ) : (
+          {/* Wordmark : lien accueil permanent sur desktop (convention wordmark ->
+              accueil). Sur mobile, visible seulement sur l'accueil ; ailleurs la
+              place revient au chevron retour + titre. */}
+          <Link
+            href="/"
+            aria-label="Accueil"
+            className={`btn btn-ghost px-2 text-xl font-bold tracking-tight font-[family-name:var(--font-syne)] ${isLibrary ? "" : "hidden wide:inline-flex"}`}
+          >
+            Anaginosko
+          </Link>
+          {!isLibrary && (
             <>
               <button
                 type="button"
@@ -118,7 +128,7 @@ export default function TopBar({ dark, onToggleTheme }: { dark: boolean; onToggl
             target="_blank"
             rel="noreferrer noopener"
             aria-label="Soutenir le projet sur Tipeee"
-            className="btn btn-ghost btn-sm gap-1.5 px-2 text-[var(--tipeee-text)]"
+            className="btn btn-ghost btn-sm gap-1.5 px-2 text-[var(--tipeee-text)] max-sm:min-h-11 max-sm:min-w-11"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/tipeee-icon.webp" alt="" aria-hidden="true" className="h-[18px] w-auto" />

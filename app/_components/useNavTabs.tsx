@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { getLastRead } from "../../src/lib/lastRead";
+import { CORPORA } from "../../src/data/corpus";
 
 const ICONS = {
-  read: (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path d="M4 5.5A1.5 1.5 0 015.5 4H11v15H5.5A1.5 1.5 0 014 17.5v-12zM20 5.5A1.5 1.5 0 0018.5 4H13v15h5.5a1.5 1.5 0 001.5-1.5v-12z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
+  home: (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M3 10.5 12 4l9 6.5" />
+      <path d="M5 9.5V20h14V9.5" />
     </svg>
   ),
   alphabet: <span className="font-greek text-[1.15rem] leading-none">Αα</span>,
@@ -22,23 +22,19 @@ const ICONS = {
 export type NavTab = { href: string; label: string; icon: React.ReactNode; active: boolean };
 
 // Onglets de navigation, partagés par la barre du bas (mobile) et le rail
-// latéral (desktop). « Lire » ramène là où on a quitté la section lecture.
+// latéral (desktop). Des destinations stables (Accueil / Alphabet / Concordance) :
+// « Accueil » ramène toujours à la racine ; la reprise de lecture vit sur la
+// pastille « Reprendre » de l'accueil, pas ici (un onglet = une destination).
 export function useNavTabs(): NavTab[] {
   const pathname = usePathname();
-  const reading = pathname === "/" || pathname.startsWith("/nt") || pathname.startsWith("/text");
-
-  const [readHref, setReadHref] = useState("/");
-  useEffect(() => {
-    const last = getLastRead();
-    if (last?.href) setReadHref(last.href);
-  }, []);
-  useEffect(() => {
-    if (reading) setReadHref(pathname);
-  }, [pathname, reading]);
+  const isConcordance = /\/concordance(\/|$)/.test(pathname);
+  const reading =
+    !isConcordance &&
+    (pathname === "/" || pathname.startsWith("/text") || CORPORA.some((c) => pathname.startsWith(c.routePrefix)));
 
   return [
-    { href: readHref, label: "Lire", icon: ICONS.read, active: reading },
+    { href: "/", label: "Accueil", icon: ICONS.home, active: reading },
     { href: "/alphabet", label: "Alphabet", icon: ICONS.alphabet, active: pathname.startsWith("/alphabet") },
-    { href: "/concordance", label: "Concordance", icon: ICONS.concordance, active: pathname.startsWith("/concordance") },
+    { href: "/concordance", label: "Concordance", icon: ICONS.concordance, active: isConcordance },
   ];
 }

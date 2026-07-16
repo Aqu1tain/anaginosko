@@ -1,5 +1,7 @@
 import ConcordanceView from "@/src/components/ConcordanceView";
-import LemmaIndex from "@/app/_components/LemmaIndex";
+import LemmaIndex from "@/app/_corpus/LemmaIndex";
+import Breadcrumb from "@/app/_components/Breadcrumb";
+import { NT } from "@/src/data/corpus";
 
 export const metadata = {
   title: "Concordance",
@@ -11,8 +13,9 @@ export const metadata = {
 export default function ConcordancePage() {
   return (
     <>
-      <ConcordanceView />
-      <LemmaIndex />
+      <Breadcrumb items={[{ label: "Accueil", href: "/", home: true }, { label: "Concordance" }]} />
+      <ConcordanceView corpus={NT} />
+      <LemmaIndex corpus={NT} />
     </>
   );
 }

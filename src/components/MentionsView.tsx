@@ -8,8 +8,14 @@ const sources: Source[] = [
     title: "Texte grec",
     body: (
       <>
-        <strong>SBLGNT</strong>, The Greek New Testament, éd. Michael W. Holmes, Society of
-        Biblical Literature & Logos Bible Software. Utilisé selon la licence SBLGNT.
+        <strong>Nouveau Testament :</strong> SBLGNT, The Greek New Testament, éd. Michael W. Holmes
+        (Society of Biblical Literature & Logos Bible Software), selon la licence SBLGNT.
+        <br />
+        <strong>Septante :</strong> texte de Rahlfs (1935), via{" "}
+        <a className="link" href="https://github.com/eliranwong/LXX-Rahlfs-1935" target="_blank" rel="noreferrer">
+          eliranwong/LXX-Rahlfs-1935
+        </a>
+        , licence CC BY-NC-SA 4.0 (données CCAT/TLG).
       </>
     ),
   },
@@ -17,11 +23,14 @@ const sources: Source[] = [
     title: "Versets, lemmes et nature des mots",
     body: (
       <>
-        <strong>MorphGNT / SBLGNT</strong> (analyse morphologique), licence CC BY-SA 3.0 ·{" "}
+        <strong>NT :</strong> MorphGNT / SBLGNT (analyse morphologique), CC BY-SA 3.0 ·{" "}
         <a className="link" href="https://github.com/morphgnt/sblgnt" target="_blank" rel="noreferrer">
           github.com/morphgnt/sblgnt
         </a>
         .
+        <br />
+        <strong>LXX :</strong> morphologie CCAT, corrigée par James Tauber, via le dépôt
+        eliranwong/LXX-Rahlfs-1935 (CC BY-NC-SA 4.0).
       </>
     ),
   },
@@ -29,11 +38,18 @@ const sources: Source[] = [
     title: "Traduction française",
     body: (
       <>
-        <strong>Bible Crampon</strong> (édition « néo-Crampon libre »), domaine public, via{" "}
+        <strong>NT :</strong> Bible Crampon (« néo-Crampon libre »), domaine public, via{" "}
         <a className="link" href="https://bible.helloao.org" target="_blank" rel="noreferrer">
           Free Use Bible API
         </a>
         .
+        <br />
+        <strong>LXX :</strong> Pierre Giguet, <em>La Sainte Bible d'après les Septante</em> (1872),
+        domaine public, transcription{" "}
+        <a className="link" href="https://fr.wikisource.org/wiki/Traduction_de_la_Septante_et_du_Nouveau_Testament" target="_blank" rel="noreferrer">
+          Wikisource
+        </a>{" "}
+        (CC BY-SA).
       </>
     ),
   },
@@ -86,7 +102,7 @@ export default function MentionsView() {
       <h1 className="text-2xl font-bold">Mentions légales</h1>
       <p className="mt-2 max-w-prose text-[0.95rem] leading-relaxed text-base-content/70">
         Anaginosko est un projet <strong>pédagogique</strong> et <strong>catholique</strong>, non
-        commercial et <strong>libre d'accès</strong>, pour lire le Nouveau Testament dans sa langue
+        commercial et <strong>libre d'accès</strong>, pour lire la Bible dans sa langue
         originale. Il s'appuie sur des ressources ouvertes, créditées ci-dessous.
       </p>
 
@@ -106,6 +122,18 @@ export default function MentionsView() {
           aucun identifiant persistant, aucun profilage et aucune donnée transmise à un tiers. Elle
           nous sert seulement à connaître la fréquentation du site et la provenance des visites. À ce
           titre, elle ne requiert pas votre consentement.
+        </p>
+      </section>
+
+      <section className="mt-3 rounded-box border border-base-300 bg-base-100 px-4 py-3">
+        <h2 className="text-sm font-semibold">Signalements et données personnelles</h2>
+        <p className="mt-1 max-w-prose text-sm leading-relaxed text-base-content/75">
+          Lorsque vous signalez une erreur ou demandez une note, votre adresse e-mail est collectée
+          dans le seul but de <strong>vérifier votre demande</strong> (double confirmation) et d’en
+          assurer le suivi. Elle n’est <strong>jamais partagée</strong> ni utilisée à des fins
+          commerciales. Les signalements non confirmés sont supprimés sous 48&nbsp;heures ; les
+          demandes traitées sont anonymisées passé un délai. Aucune adresse IP en clair n’est
+          conservée.
         </p>
       </section>
 

@@ -6,12 +6,12 @@
 //   public/nt/distribution/<oid>.json   { <bookId>: count }
 //   public/nt/books.json        manifeste enrichi d'un champ `words` par livre
 // Run: node scripts/build-nt-distribution.mjs
-import { readFileSync, writeFileSync, mkdirSync, rmSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdirSync, rmSync, readdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, resolve } from "node:path";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const ntDir = resolve(root, "public/nt");
+const ntDir = resolve(root, process.env.CORPUS_DIR || "public/nt");
 
 const books = JSON.parse(readFileSync(resolve(ntDir, "books.json"), "utf8")).books;
 const lemmas = JSON.parse(readFileSync(resolve(ntDir, "lemmas.json"), "utf8"));
@@ -22,8 +22,9 @@ const bookWords = {}; // bookId -> nombre total de mots
 
 for (const b of books) {
   bookWords[b.id] = 0;
-  for (let ch = 1; ch <= b.chapters; ch++) {
-    const data = JSON.parse(readFileSync(resolve(ntDir, b.id, `${ch}.json`), "utf8"));
+  const files = readdirSync(resolve(ntDir, b.id)).filter((f) => /^\d+\.json$/.test(f));
+  for (const f of files) {
+    const data = JSON.parse(readFileSync(resolve(ntDir, b.id, f), "utf8"));
     for (const m of data.mots) {
       bookWords[b.id]++;
       const oid = oidByLemma.get(m.lemme);
@@ -52,7 +53,9 @@ writeFileSync(
 
 const grandTotal = Object.values(bookWords).reduce((a, c) => a + c, 0);
 console.log(`${distByOid.size} profils, ${grandTotal} mots au total.`);
-const agapeOid = oidByLemma.get("ἀγάπη");
-const agape = distByOid.get(agapeOid);
-const agapeSum = Object.values(agape).reduce((a, c) => a + c, 0);
-console.log(`ἀγάπη (oid ${agapeOid}) → ${JSON.stringify(agape)}  somme=${agapeSum} (count attendu 116)`);
+if (!process.env.CORPUS_DIR) {
+  const agapeOid = oidByLemma.get("ἀγάπη");
+  const agape = distByOid.get(agapeOid);
+  const agapeSum = Object.values(agape).reduce((a, c) => a + c, 0);
+  console.log(`ἀγάπη (oid ${agapeOid}) → ${JSON.stringify(agape)}  somme=${agapeSum} (count attendu 116)`);
+}

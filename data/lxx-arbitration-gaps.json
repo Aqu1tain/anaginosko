@@ -1,0 +1,26 @@
+{
+  "_note": "Trous d'arbitrage constatés au miroir préprod 2026-07-07 : mots Giguet servis amputés parce que les extraits [c,v,de,à] ne pavent pas tout le verset. Refs nommées, deux files. Le gate zéro-perte-vs-Giguet (à venir, correctif racine) rendra cette liste exhaustive : chaque mot Giguet est servi ou exclu avec raison nommée.",
+  "queues_phase2": [
+    { "book": "sir", "giguet": "36:16", "lostTail": "et j'ai hérité de ceux qui m'ont devancé depuis le commencement.", "cause": "override sir 33:16 ne prend que les mots 0-5 de Giguet 36:16", "priority": "high", "reason": "Écriture servie amputée" },
+    { "book": "sir", "giguet": "47:3", "lostTail": "brebis. Dès sa jeunesse", "cause": "override sir 47:4 prend mots 15-17 de Giguet 47:3", "priority": "high", "reason": "Écriture servie amputée" },
+    { "book": "tob", "giguet": "6:17", "lostTail": "il entra dans Ecbatane.", "cause": "override tob 6:19 prend mots 75-89 de Giguet 6:17", "priority": "high", "reason": "Écriture servie amputée" },
+    { "book": "neh", "lostWords": "les chants,", "cause": "gap de découpe (verset à localiser en Phase 2)", "priority": "high", "reason": "Écriture servie amputée" }
+  ],
+  "titles_kan55": [
+    { "book": "sir", "giguet": "20:27", "title": "TRAITÉ SUR LES PARABOLES", "cause": "override sir 20:26 prend mots 0-13 de Giguet 20:27", "disposition": "titre de section transmis, à rendre comme titre (KAN-55)" },
+    { "book": "sir", "giguet": "23:6", "title": "DOCTRINE DE LA BOUCHE", "cause": "override sir 23:6 prend mots 0-20 de Giguet 23:6", "disposition": "titre de section transmis (KAN-55)" }
+  ],
+  "exclusions_nommees": [
+    { "book": "exo", "giguet": "40:32", "word": ".", "context": "…jusqu'à ce qu'elle s'élevât . …", "reason": "ponctuation", "note": "point isolé (typographie Giguet) exclu du servi ; l'ancien signalement d'une queue exo 36:8 était un faux positif — cette queue EST servie" }
+  ],
+  "auto_overlaps_phase2": [
+    { "book": "1ch", "giguet": "6:1", "greek": ["6:1", "6:16"], "cause": "build-links mappe un verset Giguet sur deux grecs (double-service)", "status": "préexistant, servi en double sur préprod ; correctif build-links en Phase 2" },
+    { "book": "1ch", "giguet": "6:2", "greek": ["6:2", "6:18"], "cause": "double-lien build-links", "status": "préexistant préprod, Phase 2" },
+    { "book": "psa", "giguet": "6:1", "greek": ["6:2", "6:3"], "cause": "double-lien build-links (décalage titre-verset)", "status": "préexistant préprod, Phase 2" },
+    { "book": "psa", "giguet": "7:15", "greek": ["7:16", "7:17"], "cause": "double-lien build-links", "status": "préexistant préprod, Phase 2" },
+    { "book": "psa", "giguet": "43:21", "greek": ["43:22", "43:23"], "cause": "double-lien build-links", "status": "préexistant préprod, Phase 2" },
+    { "book": "psa", "giguet": "55:11", "greek": ["55:11", "55:12"], "cause": "double-lien build-links", "status": "préexistant préprod, Phase 2" },
+    { "book": "psa", "giguet": "64:5", "greek": ["64:5", "64:6"], "cause": "double-lien build-links", "status": "préexistant préprod, Phase 2" },
+    { "book": "psa", "giguet": "99:1", "greek": ["99:1", "99:2"], "cause": "double-lien build-links", "status": "préexistant préprod, Phase 2" }
+  ]
+}

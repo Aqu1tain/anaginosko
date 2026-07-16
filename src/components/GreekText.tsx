@@ -30,6 +30,7 @@ function GreekText({
   canManage,
   onEditAnnotation,
   onDeleteAnnotation,
+  onReportAnnotation,
   pronOverrides,
 }: {
   text: Text;
@@ -55,6 +56,7 @@ function GreekText({
   canManage?: (a: Annotation) => boolean;
   onEditAnnotation?: (a: Annotation) => void;
   onDeleteAnnotation?: (a: Annotation) => void;
+  onReportAnnotation?: (a: Annotation) => void;
   /** Translittérations overridées, clé `${grec}:${system}` -> translit affichée. */
   pronOverrides?: Map<string, string>;
 }) {
@@ -184,8 +186,18 @@ function GreekText({
     return map;
   }, [words]);
 
-  const verseMark = (w: number) =>
-    !manuscript && verseAt.has(w) ? <span className="verse-num">{verseAt.get(w)}</span> : null;
+  // En mode continu (verseOnly null), le numéro de verset porte l'ancre id=v{n}
+  // pour les liens profonds ; dans les modes verset-par-verset, c'est le conteneur
+  // du lecteur qui la porte (on évite un id en double).
+  const verseMark = (w: number) => {
+    if (manuscript || !verseAt.has(w)) return null;
+    const v = verseAt.get(w)!;
+    return (
+      <span id={verseOnly == null ? `v${v}` : undefined} className="verse-num scroll-mt-20">
+        {v}
+      </span>
+    );
+  };
 
   const selFrom = selection ? Math.min(selection.from, selection.to) : -1;
   const selTo = selection ? Math.max(selection.from, selection.to) : -1;
@@ -226,6 +238,7 @@ function GreekText({
         canManage={canManage}
         onEdit={onEditAnnotation}
         onDelete={onDeleteAnnotation}
+        onReport={onReportAnnotation}
       />
     );
   };
@@ -277,7 +290,7 @@ function GreekText({
               {markerFor(w)}
             </span>
             {tr && (
-              <span className="mt-0.5 font-sans text-[0.42em] leading-tight text-base-content/70">
+              <span className="mt-0.5 font-sans text-[0.5em] leading-tight text-base-content/70">
                 <Translit value={tr} stressedClass="text-accent" />
               </span>
             )}

@@ -2,18 +2,20 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { BOOK_NAMES, type Colloc, type Occ } from "../data/nt";
+import { type Colloc, type Occ } from "../data/nt";
+import type { CorpusConfig } from "../data/corpus";
 
 // Versets communs au lemme courant et au voisin, dépliés sous celui-ci (comme la
 // répartition déplie les versets d'un livre). On retrouve la forme fléchie et
 // l'index du mot du lemme courant via ses occurrences pour pointer + surligner.
-function SharedVerses({ colloc, formByVerse }: { colloc: Colloc; formByVerse: Map<string, Occ> }) {
+function SharedVerses({ colloc, formByVerse, corpus }: { colloc: Colloc; formByVerse: Map<string, Occ>; corpus: CorpusConfig }) {
   const verses = colloc.verses ?? [];
   return (
     <div className="mt-1 mb-2 ml-2 grid gap-1 border-l-2 border-base-300 pl-2">
       {verses.map((vr, i) => {
         const o = formByVerse.get(`${vr.b}:${vr.c}:${vr.v}`);
-        const href = o ? `/nt/${vr.b}/${vr.c}?w=${o.w}` : `/nt/${vr.b}/${vr.c}`;
+        const prefix = corpus.routePrefixOf?.(vr.b) ?? corpus.routePrefix;
+        const href = o ? `${prefix}/${vr.b}/${vr.c}?w=${o.w}` : `${prefix}/${vr.b}/${vr.c}`;
         return (
           <Link
             key={i}
@@ -22,7 +24,7 @@ function SharedVerses({ colloc, formByVerse }: { colloc: Colloc; formByVerse: Ma
           >
             {o && <span className="font-greek min-w-0 flex-1 truncate">{o.f}</span>}
             <span className={`shrink-0 text-xs text-base-content/70 ${o ? "" : "flex-1"}`}>
-              {BOOK_NAMES[vr.b] ?? vr.b} {vr.c}:{vr.v}
+              {corpus.bookNames[vr.b] ?? vr.b} {vr.c}:{vr.v}
             </span>
           </Link>
         );
@@ -33,10 +35,10 @@ function SharedVerses({ colloc, formByVerse }: { colloc: Colloc; formByVerse: Ma
         </p>
       )}
       <Link
-        href={`/concordance/${encodeURIComponent(colloc.lemma)}`}
+        href={`${colloc.hrefBase ?? corpus.concordanceBase}/${encodeURIComponent(colloc.lemma)}`}
         className="link px-1.5 py-1 text-xs text-base-content/70"
       >
-        Concordance de <span className="font-greek">{colloc.lemma}</span> →
+        Concordance de <span className="font-greek">{colloc.lemma}</span>
       </Link>
     </div>
   );
@@ -45,7 +47,7 @@ function SharedVerses({ colloc, formByVerse }: { colloc: Colloc; formByVerse: Ma
 // Voisins lexicaux : mots qui apparaissent dans les mêmes versets plus souvent
 // que le hasard (PMI), classés par force d'association. On peut déplier chaque
 // mot pour voir les versets qu'il partage avec le lemme courant.
-export default function Collocations({ items, occ }: { items: Colloc[]; occ: Occ[] }) {
+export default function Collocations({ items, occ, corpus }: { items: Colloc[]; occ: Occ[]; corpus: CorpusConfig }) {
   const [open, setOpen] = useState<number | null>(null);
   const formByVerse = useMemo(() => {
     const m = new Map<string, Occ>();
@@ -62,14 +64,15 @@ export default function Collocations({ items, occ }: { items: Colloc[]; occ: Occ
         Mots associés
       </div>
       <p className="mt-1 text-sm text-base-content/70">
-        Voisins qui partagent souvent un verset. Touchez un mot pour ses versets communs.
+        Voisins classés par affinité (la barre) ; «&nbsp;N&nbsp;versets&nbsp;» compte les versets partagés.
+        Touchez un mot pour les voir.
       </p>
 
-      <div className="mt-3 grid gap-0.5">
+      <div className="mt-3 grid gap-0.5 wide:grid-cols-2 wide:gap-x-8">
         {items.map((c, i) => {
           const isOpen = open === i;
           return (
-            <div key={c.oid}>
+            <div key={c.lemma}>
               <button
                 onClick={() => setOpen((p) => (p === i ? null : i))}
                 aria-expanded={isOpen}
@@ -84,14 +87,14 @@ export default function Collocations({ items, occ }: { items: Colloc[]; occ: Occ
                     {c.n} versets
                   </span>
                 </div>
-                <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-base-200">
+                <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-base-200" title="Affinité (PMI)">
                   <div
                     className="h-full rounded-full bg-secondary"
                     style={{ width: `${Math.max((c.score / max) * 100, 4)}%` }}
                   />
                 </div>
               </button>
-              {isOpen && <SharedVerses colloc={c} formByVerse={formByVerse} />}
+              {isOpen && <SharedVerses colloc={c} formByVerse={formByVerse} corpus={corpus} />}
             </div>
           );
         })}

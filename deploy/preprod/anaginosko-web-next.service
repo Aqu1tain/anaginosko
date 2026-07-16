@@ -1,0 +1,33 @@
+[Unit]
+Description=Anaginosko Next.js préprod (standalone)
+After=network.target
+
+[Service]
+Type=simple
+User=anag-web
+Group=anag-web
+WorkingDirectory=/opt/anaginosko-web-next/current
+Environment=NODE_ENV=production
+Environment=PORT=3101
+Environment=HOSTNAME=127.0.0.1
+# Données statiques propres à la préprod (issues de la branche next, dont la LXX
+# qui n'est pas encore en prod). L'audio reste partagé avec la prod via nginx.
+Environment=NT_DATA_DIR=/var/www/anaginosko-next/nt
+Environment=LXX_DATA_DIR=/var/www/anaginosko-next/lxx
+# Arbitrage : overrides Biblion persistants (hors release --delete) + API pour /me.
+Environment=ARB_DIR=/opt/anaginosko-web-next/arbitration
+Environment=ARB_API_URL=http://127.0.0.1:3901/api
+ExecStart=/usr/bin/node server.js
+Restart=on-failure
+RestartSec=2
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+# /opt : release + overrides d'arbitrage ; /var/www/.../lxx : matérialisation
+# chirurgicale des liens dans fr.json (reflétée par le lecteur).
+ReadWritePaths=/opt/anaginosko-web-next /var/www/anaginosko-next/lxx
+MemoryMax=512M
+
+[Install]
+WantedBy=multi-user.target

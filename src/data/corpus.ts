@@ -1,0 +1,123 @@
+import { BOOK_ORDER, BOOK_NAMES, NT_GROUPS, CORPUS_GROUPS } from "./nt";
+import { LXX_BOOK_ORDER, LXX_BOOK_NAMES, LXX_GROUPS, LXX_SUBGROUPS } from "./lxx";
+
+// Registre des corpus. Module pur (ni server-only ni "use client") : importé par
+// les loaders fs serveur, les loaders fetch client, les pages serveur et les
+// composants client. Les valeurs NT reproduisent les littéraux historiques, donc
+// tout ce qui passe par la config rend la sortie actuelle à l'identique.
+
+export type SubGroup = { id: string; title: string; short: string; books: string[]; color: string };
+export type EditorialGroup = { title: string; ids: string[] };
+
+export type CorpusConfig = {
+  id: string; // "nt" | "lxx" - clé du registre
+  routePrefix: string; // "/nt" | "/lxx" - base des routes de lecture
+  dataPrefix: string; // "nt" | "lxx" - sous-dossier public + chemin fetch client + chemin nginx
+  dataDirEnv: string; // "NT_DATA_DIR" | "LXX_DATA_DIR" - override fs serveur
+  refPrefix: string; // "nt" | "lxx" - ref d'annotation `${refPrefix}-${book}-${ch}`
+  textCollection: string; // "nt" | "lxx" - valeur Text.collection
+  concordanceBase: string; // "/concordance" | "/lxx/concordance"
+  label: string; // "Nouveau Testament" | "Septante"
+  genitive: string; // "du Nouveau Testament" | "de la Septante" (libellés SEO)
+  locative: string; // "dans le Nouveau Testament" | "dans la Septante"
+  shortLabel: string; // "NT" | "LXX"
+  sourceLabel: string; // "SBLGNT" | "Rahlfs 1935"
+  sourceUrl: string; // isBasedOn (JSON-LD)
+  bookOrder: readonly string[];
+  bookNames: Record<string, string>;
+  editorialGroups: EditorialGroup[]; // regroupement de la table des matières
+  subGroups: SubGroup[]; // regroupement/couleurs du profil de répartition
+  // Vue combinée « toute la Bible grecque » : les livres NT et LXX cohabitent, la
+  // route de lecture depend du livre. Absent = corpus mono (routePrefix suffit).
+  routePrefixOf?: (book: string) => string;
+};
+
+export const NT: CorpusConfig = {
+  id: "nt",
+  routePrefix: "/nt",
+  dataPrefix: "nt",
+  dataDirEnv: "NT_DATA_DIR",
+  refPrefix: "nt",
+  textCollection: "nt",
+  concordanceBase: "/concordance",
+  label: "Nouveau Testament",
+  genitive: "du Nouveau Testament",
+  locative: "dans le Nouveau Testament",
+  shortLabel: "NT",
+  sourceLabel: "SBLGNT",
+  sourceUrl: "https://sblgnt.com/",
+  bookOrder: BOOK_ORDER,
+  bookNames: BOOK_NAMES,
+  editorialGroups: NT_GROUPS,
+  subGroups: CORPUS_GROUPS,
+};
+
+export const LXX: CorpusConfig = {
+  id: "lxx",
+  routePrefix: "/lxx",
+  dataPrefix: "lxx",
+  dataDirEnv: "LXX_DATA_DIR",
+  refPrefix: "lxx",
+  textCollection: "lxx",
+  concordanceBase: "/lxx/concordance",
+  label: "Septante",
+  genitive: "de la Septante",
+  locative: "dans la Septante",
+  shortLabel: "LXX",
+  sourceLabel: "Rahlfs 1935",
+  sourceUrl: "https://github.com/eliranwong/LXX-Rahlfs-1935",
+  bookOrder: LXX_BOOK_ORDER,
+  bookNames: LXX_BOOK_NAMES,
+  editorialGroups: LXX_GROUPS,
+  subGroups: LXX_SUBGROUPS,
+};
+
+export const CORPORA: CorpusConfig[] = [NT, LXX];
+
+// Corpus synthetique pour la vue croisee NT + LXX (« Les deux ») : livres et
+// groupes des deux corpus concatenes, route de lecture resolue par livre. Sert
+// uniquement a l'affichage combine des fiches de lemme (jamais au routage ou aux
+// donnees). Ids de sous-groupes prefixes pour eviter toute collision NT/LXX.
+const lxxBooks = new Set(LXX.bookOrder);
+export const GREEK_BIBLE: CorpusConfig = {
+  ...NT,
+  id: "bible",
+  concordanceBase: "/concordance",
+  label: "toute la Bible grecque",
+  genitive: "de la Bible grecque",
+  locative: "dans toute la Bible grecque",
+  shortLabel: "NT+LXX",
+  bookOrder: [...NT.bookOrder, ...LXX.bookOrder],
+  bookNames: { ...NT.bookNames, ...LXX.bookNames },
+  editorialGroups: [...NT.editorialGroups, ...LXX.editorialGroups],
+  subGroups: [
+    ...NT.subGroups.map((g) => ({ ...g, id: `nt-${g.id}` })),
+    ...LXX.subGroups.map((g) => ({ ...g, id: `lxx-${g.id}` })),
+  ],
+  routePrefixOf: (book) => (lxxBooks.has(book) ? "/lxx" : "/nt"),
+};
+
+// Base de concordance d'un lemme voisin dans la vue croisee : NT prioritaire.
+export const concordanceBaseForBook = (book: string): string =>
+  lxxBooks.has(book) ? "/lxx/concordance" : "/concordance";
+
+export const otherCorpus = (c: CorpusConfig): CorpusConfig => (c.id === "lxx" ? NT : LXX);
+
+const byId = new Map(CORPORA.map((c) => [c.id, c]));
+
+export const corpusById = (id: string): CorpusConfig => byId.get(id) ?? NT;
+
+export const corpusByDataPrefix = (seg: string): CorpusConfig | undefined =>
+  CORPORA.find((c) => c.dataPrefix === seg);
+
+export const makeRef = (c: CorpusConfig, book: string, chapter: number): string =>
+  `${c.refPrefix}-${book}-${chapter}`;
+
+// Préfixes connus assemblés depuis le registre : une ref est `<prefix>-<book>-<ch>`.
+// Contrainte : un id de livre ne finit jamais par `-<chiffres>`.
+const refPattern = () => new RegExp(`^(${CORPORA.map((c) => c.refPrefix).join("|")})-(.+)-(\\d+)$`);
+
+export function parseRef(ref: string): { corpus: string; book: string; chapter: number } | null {
+  const m = ref.match(refPattern());
+  return m ? { corpus: m[1], book: m[2], chapter: Number(m[3]) } : null;
+}

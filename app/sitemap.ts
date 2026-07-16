@@ -1,30 +1,37 @@
 import type { MetadataRoute } from "next";
 import { loadBooksFs, loadLemmasFs } from "@/lib/nt-server";
+import { CORPORA } from "@/src/data/corpus";
 import { texts } from "@/src/data/texts";
 
 const BASE = "https://anaginosko.fr";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const books = await loadBooksFs();
-  // Les fiches-lemmes : le plus gros actif de contenu du site (definitions
-  // Bailly, occurrences, repartition). Sans elles, le corpus lexical est
-  // invisible des moteurs.
-  const lemmas = await loadLemmasFs();
   const lastModified = new Date();
   const url = (p: string) => ({ url: `${BASE}${p}`, lastModified });
 
+  const corpusUrls: MetadataRoute.Sitemap = [];
+  for (const c of CORPORA) {
+    const books = await loadBooksFs(c);
+    corpusUrls.push(url(c.routePrefix), url(c.concordanceBase));
+    for (const b of books) {
+      corpusUrls.push(url(`${c.routePrefix}/${b.id}`));
+      const chs = b.chapterList ?? Array.from({ length: b.chapters }, (_, i) => i + 1);
+      for (const ch of chs) corpusUrls.push(url(`${c.routePrefix}/${b.id}/${ch}`));
+    }
+    // Les fiches-lemmes : le plus gros actif de contenu du site (définitions
+    // Bailly, occurrences, répartition). Sans elles, le corpus lexical est
+    // invisible des moteurs.
+    for (const e of await loadLemmasFs(c)) {
+      corpusUrls.push(url(`${c.concordanceBase}/${encodeURIComponent(e.lemma)}`));
+    }
+  }
+
   return [
     url("/"),
-    url("/nt"),
     url("/alphabet"),
     url("/prononciation"),
-    url("/concordance"),
     url("/mentions"),
-    ...books.map((b) => url(`/nt/${b.id}`)),
-    ...lemmas.map((e) => url(`/concordance/${encodeURIComponent(e.lemma)}`)),
-    ...books.flatMap((b) =>
-      Array.from({ length: b.chapters }, (_, i) => url(`/nt/${b.id}/${i + 1}`)),
-    ),
+    ...corpusUrls,
     ...texts.map((t) => url(`/text/${t.id}`)),
   ];
 }

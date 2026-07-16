@@ -1,0 +1,47 @@
+{
+ "_note": "Provenance des 5 livres re-parsés (parser corrigé : chapitres monotones + prologue). L ingestion consolidée vit dans data/lxx-giguet-ingest/<id>.json, ré-épinglée dans build-giguet-source (remplace e442251a pour ces livres). Ce fichier n est PAS une couche vivante : il documente le correctif.",
+ "parser": "fetch-lxx-french.mjs (monotone + renumérotage chapitre mal-numéroté + prologue)",
+ "books": {
+  "job": {
+   "wikisourceOldid": 14551553,
+   "chaptersChanged": [
+    "25",
+    "26"
+   ],
+   "reason": "Source Giguet numérote deux « CHAPITRE XXV » (Baldad puis réponse de Job) ; renumérotés en 25 (Baldad) + 26 (réponse de Job), alignés sur le grec.",
+   "wikisourcePage": "Traduction de la Septante et du Nouveau Testament/Job"
+  },
+  "psa": {
+   "wikisourceOldid": 15323991,
+   "chaptersChanged": [
+    "14"
+   ],
+   "reason": "chapitre restauré (perdu par marque non-monotone)",
+   "wikisourcePage": "Traduction de la Septante et du Nouveau Testament/Psaumes"
+  },
+  "isa": {
+   "wikisourceOldid": 14619253,
+   "chaptersChanged": [
+    "17"
+   ],
+   "reason": "chapitre restauré (perdu par marque non-monotone)",
+   "wikisourcePage": "Traduction de la Septante et du Nouveau Testament/Isaïe"
+  },
+  "pro": {
+   "wikisourceOldid": 15622411,
+   "chaptersChanged": [
+    "7"
+   ],
+   "reason": "ch.7 restauré (clobbé par 2e CHAPITRE VII en note)",
+   "wikisourcePage": "Traduction de la Septante et du Nouveau Testament/Proverbes"
+  },
+  "sir": {
+   "wikisourceOldid": 14551595,
+   "chaptersChanged": [
+    "0"
+   ],
+   "reason": "prologue (ch.0) capturé",
+   "wikisourcePage": "Traduction de la Septante et du Nouveau Testament/Ecclésiastique"
+  }
+ }
+}

@@ -102,13 +102,10 @@ export default function Tour({
 
   return createPortal(
     <div className="fixed inset-0 z-[60]" role="dialog" aria-modal="true" aria-label="Tutoriel">
-      <button
-        type="button"
-        aria-hidden="true"
-        tabIndex={-1}
-        onClick={next}
-        className="absolute inset-0 cursor-default"
-      />
+      {/* Voile : bloque l'interaction avec la page pendant le tour, mais n'avance
+          PAS le tour (un tap hors bouton faisait sauter une étape, genant sur
+          mobile). Progression via Suivant, sortie via Passer. */}
+      <div aria-hidden="true" className="absolute inset-0" />
 
       {spot ? (
         <>

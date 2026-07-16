@@ -8,7 +8,7 @@ import { dirname, resolve } from "node:path";
 import { pickEntry } from "./lib/bailly-pick.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const ntDir = resolve(root, "public/nt");
+const ntDir = resolve(root, process.env.CORPUS_DIR || "public/nt");
 const out = resolve(ntDir, "glosses.json");
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 

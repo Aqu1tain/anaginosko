@@ -4,7 +4,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { textById, type Mot, type Text } from "../data/texts";
 import { loadChapter } from "../data/nt";
-import { linkedRef, parseNtRef, remapAnnotation, type PlacedAnnotation } from "../data/passageLink";
+import { corpusById, parseRef } from "../data/corpus";
+import { linkedRef, remapAnnotation, type PlacedAnnotation } from "../data/passageLink";
 import { usePersistentState } from "../hooks/usePersistentState";
 import { setLastRead } from "../lib/lastRead";
 import { useAuth } from "../hooks/useAuth";
@@ -16,13 +17,16 @@ import {
   type Annotation,
 } from "../lib/api";
 import GreekText, { type TranslitMode, type AnnoScope, type AnnoSelection } from "./GreekText";
+import CopyVerseLink from "./CopyVerseLink";
+import ReportButton from "./ReportButton";
+import ReportEditor, { type ReportTarget } from "./ReportEditor";
 import AnnotationEditor, { type AnnotationTarget } from "./AnnotationEditor";
 import Tour, { type TourStep } from "./Tour";
 
 const TOUR_STEPS: TourStep[] = [
   {
     title: "Bienvenue sur Anaginosko",
-    body: "Le grec du Nouveau Testament, lettre par lettre. Trois repères pour commencer.",
+    body: "Le grec de la Bible, lettre par lettre. Trois repères pour commencer.",
   },
   {
     target: ".glyph",
@@ -34,9 +38,27 @@ const TOUR_STEPS: TourStep[] = [
   },
   {
     target: 'a[href="/concordance"]',
-    body: "Cherchez un mot grec dans tout le Nouveau Testament depuis la concordance.",
+    body: "Cherchez un mot grec dans toute la Bible depuis la concordance.",
   },
 ];
+
+// Nom affiché d'un traducteur maison. Le philologue signe « Βιβλίον » -> « Biblion » ;
+// le compte admin signe de son displayName (« Admin » -> « Corentin Renard »). Idéalement
+// les displayName des comptes portent le vrai nom ; cette table couvre les valeurs actuelles.
+const CREDIT_NAMES: Record<string, string> = { "Βιβλίον": "Biblion", Admin: "Corentin Renard" };
+const creditName = (by: string) => CREDIT_NAMES[by] ?? by;
+
+// Petit « i » après CHAQUE verset : au survol, il révèle son traducteur (Giguet par
+// défaut, ou le traducteur maison). Les versets maison ont un « i » un peu plus marqué.
+function TranslatorTip({ by }: { by: string }) {
+  const maison = !!CREDIT_NAMES[by];
+  return (
+    <span
+      className={`tooltip tooltip-left ml-1 inline-block cursor-help select-none align-middle text-[0.85em] ${maison ? "text-secondary/90" : "text-base-content/45"}`}
+      data-tip={`Traduit par ${creditName(by)}`}
+    >ⓘ</span>
+  );
+}
 
 function SlidersIcon() {
   return (
@@ -46,6 +68,35 @@ function SlidersIcon() {
       <circle cx="8" cy="12" r="2" fill="currentColor" stroke="none" />
       <circle cx="16" cy="18" r="2" fill="currentColor" stroke="none" />
     </svg>
+  );
+}
+
+// Traduction d'un chapitre dont la versification diffère du grec : on affiche le
+// texte français en continu, avec ses propres numéros, sans l'apparier au grec.
+function FrenchChapterBlock({ french, credit }: { french: Record<string, string>; credit: string }) {
+  const keys = Object.keys(french)
+    .map(Number)
+    .sort((a, b) => a - b);
+  return (
+    <div className="mt-6 rounded-box bg-base-200 px-4 py-3">
+      <div className="text-[0.7rem] font-medium uppercase tracking-wide text-base-content/70">
+        Traduction · versification distincte
+      </div>
+      <p className="mt-1 text-xs text-base-content/70">
+        Ce chapitre n’est pas numéroté de la même façon dans le grec et dans la
+        traduction ; l’alignement verset par verset n’est pas affiché ici pour ne
+        pas créer de fausses correspondances.
+      </p>
+      <p className="mt-2 leading-relaxed text-base-content/85">
+        {keys.map((v) => (
+          <span key={v}>
+            <span className="verse-num">{v}</span>
+            {french[String(v)]}{" "}
+          </span>
+        ))}
+      </p>
+      <p className="mt-3 text-xs text-base-content/70">{credit}</p>
+    </div>
   );
 }
 
@@ -98,14 +149,18 @@ export default function Reader({ text }: { text: Text }) {
     setHighlight(w ? Number(w) : null);
   }, []);
 
-  // En mode passage, traduction et annotations sont masquées par défaut (clés de
-  // préférence distinctes du mode NT, pour que chaque mode garde son réglage).
+  // Clés de préférence distinctes par mode, pour que chaque mode garde son réglage.
+  // Passage (découverte lettre par lettre) : traduction masquée par défaut. Livre
+  // (lecture suivie) : traduction affichée par défaut, en colonnes si l'écran le
+  // permet (effectiveTranslation retombe sur « verses » quand les colonnes ne sont
+  // pas disponibles, ex. mobile). Les annotations restent masquées par défaut en
+  // passage.
   const isPassage = text.collection === "passages";
   const [manuscript, setManuscript] = usePersistentState<boolean>("anaginosko:manuscript", false);
   const [mode, setMode] = usePersistentState<TranslitMode>("anaginosko:translit", "off");
   const [translation, setTranslation] = usePersistentState<"off" | "verses" | "columns">(
     isPassage ? "anaginosko:translation:passage" : "anaginosko:translation",
-    "off",
+    isPassage ? "off" : "columns",
   );
   const [showAnnotations, setShowAnnotations] = usePersistentState<boolean>(
     isPassage ? "anaginosko:annotations:passage" : "anaginosko:annotations",
@@ -147,6 +202,7 @@ export default function Reader({ text }: { text: Text }) {
   const [foreign, setForeign] = useState<PlacedAnnotation[]>([]);
   const [sel, setSel] = useState<Sel | null>(null);
   const [editTarget, setEditTarget] = useState<AnnotationTarget | null>(null);
+  const [reportTarget, setReportTarget] = useState<ReportTarget | null>(null);
   const [pendingDelete, setPendingDelete] = useState<Annotation | null>(null);
   // Overrides de prononciation (par forme) -> translittération affichée dans
   // l'interlinéaire, cohérente avec la fiche du mot.
@@ -175,9 +231,9 @@ export default function Reader({ text }: { text: Text }) {
     const lref = linkedRef(ref);
     if (!lref || !mots) return;
     try {
-      const nt = parseNtRef(lref);
-      const srcMots: Mot[] | null = nt
-        ? (await loadChapter(nt.book, nt.chapter)).mots
+      const p = parseRef(lref);
+      const srcMots: Mot[] | null = p
+        ? (await loadChapter(p.book, p.chapter, corpusById(p.corpus))).mots
         : (textById(lref)?.mots ?? null);
       if (!srcMots) return;
       const anns = await fetchAnnotations(lref);
@@ -344,7 +400,100 @@ export default function Reader({ text }: { text: Text }) {
   const hasRestituee = !!text.translitRestituee || !!text.mots?.[0]?.restituee;
   const french = text.francais;
   const hasFrench = !!french && Object.keys(french).length > 0;
-  const verses = hasFrench ? Object.keys(french!).map(Number).sort((a, b) => a - b) : [];
+
+  const parsedRef = useMemo(() => parseRef(text.id), [text.id]);
+  const corpus = parsedRef ? corpusById(parsedRef.corpus) : null;
+  const isLxx = corpus?.id === "lxx";
+  const greekVerses = useMemo(
+    () =>
+      [...new Set((text.mots ?? []).map((m) => m.verse).filter((v): v is number => v != null))].sort(
+        (a, b) => a - b,
+      ),
+    [text.mots],
+  );
+  // « Traduit par : <traducteur de base>[, <traducteurs maison distincts>] » : le
+  // traducteur de base (Giguet pour la LXX, Crampon pour le NT) plus, le cas échéant,
+  // qui a traduit maison des versets de CE chapitre. Détail par verset via le « i ».
+  const baseTranslator = isLxx ? "Pierre Giguet" : "Bible Crampon";
+  const maisonNames = useMemo(
+    () => (text.maison ? [...new Set(Object.values(text.maison))].map(creditName) : []),
+    [text.maison],
+  );
+  // Le traducteur de base n’est crédité que s’il traduit AU MOINS un verset RÉELLEMENT
+  // AFFICHÉ : on regarde les versets grecs (pas les lignes Giguet orphelines, présentes
+  // dans le fr.json mais masquées au lecteur). Tout maison => Giguet absent => non crédité.
+  // Le NT (pas de maison) garde toujours son traducteur de base.
+  const hasBase = useMemo(
+    () => (isLxx ? greekVerses.some((v) => french != null && v in french && !text.maison?.[v]) : hasFrench),
+    [isLxx, greekVerses, french, text.maison, hasFrench],
+  );
+  const who = [...(hasBase ? [baseTranslator] : []), ...maisonNames].join(", ");
+  const provenance = !hasBase ? "" : isLxx ? " · d’après les Septante (1872, domaine public)" : " · néo-Crampon (domaine public)";
+  const translatedBy = `Traduit par : ${who}${provenance}.`;
+
+  // Lien profond d’un verset : ancré à droite de la zone, révélé au survol (cf. classes
+  // de CopyVerseLink), sur un fond opaque pour ne jamais chevaucher le texte. Masqué en
+  // scriptio continua (le manuscrit continu n’a pas de découpe par verset).
+  // Desktop : dans la marge à gauche de la colonne, révélé au survol, jamais sur le texte.
+  // Cible de signalement au niveau d'un verset : erreur de traduction/texte ou
+  // demande d'ajout de note. Ouvert à tous les visiteurs.
+  const verseReportTarget = (v: number): ReportTarget => ({
+    ref,
+    verse: v,
+    wordIndex: null,
+    endWordIndex: null,
+    graphemeIndex: null,
+    annotationId: null,
+    scopeLabel: "verset",
+    categories: ["traduction", "texte", "demande_note"],
+  });
+  const copyLink = (v: number) =>
+    manuscript ? null : (
+      <div className="absolute right-full top-3 z-10 mr-1 hidden flex-col items-center wide:flex">
+        <CopyVerseLink v={v} />
+        <ReportButton target={verseReportTarget(v)} />
+      </div>
+    );
+  // Mobile : pas de survol ni de marge — un bouton discret mais toujours visible, à la fin
+  // du verset, donc atteignable au doigt. Masqué sur desktop (la marge prend le relais).
+  const copyLinkInline = (v: number) =>
+    manuscript ? null : (
+      <span className="ml-1.5 inline-flex align-middle wide:hidden">
+        <CopyVerseLink v={v} />
+        <ReportButton target={verseReportTarget(v)} />
+      </span>
+    );
+
+  // La traduction n'est appariée verset par verset que si ses clés recouvrent
+  // exactement celles du grec. Pour le NT (Crampon), les écarts sont purement
+  // additifs (versets du TR omis par SBLGNT) : apparier par numéro reste juste,
+  // on garde donc le rendu historique. Pour la LXX, Giguet (1872) suit une
+  // versification renumérotée (ex. Is 8,23 = Is 9,1) : quand les ensembles
+  // diffèrent, apparier par numéro ment sur l'alignement → bloc continu.
+  const exactlyAligned = useMemo(() => {
+    if (!hasFrench) return false;
+    const fr = new Set(Object.keys(french!).map(Number));
+    return greekVerses.length === fr.size && greekVerses.every((v) => fr.has(v));
+  }, [hasFrench, french, greekVerses]);
+  // Décision d'affichage : le manifeste `_align` (précalculé par realign-lxx-french)
+  // fait foi ; sans manifeste, on retombe sur l'heuristique (LXX + ensembles de
+  // versets non identiques).
+  const useFrenchBlock =
+    hasFrench && (text.frenchBlock ?? (isLxx && !exactlyAligned));
+  // Ossature des versets : union grec ∪ français, pour ne perdre aucun verset
+  // d'aucun côté (versets-seulement-grec ou versets-seulement-français du NT).
+  const verses = useMemo(() => {
+    if (useFrenchBlock || !hasFrench) return greekVerses;
+    // LXX : on n'affiche QUE les versets grecs et leur français lié. Un verset Giguet
+    // non lié (versification surnuméraire) ne remonte PAS comme ligne française orpheline :
+    // hors du grec et de son verset associé, on ne garde rien.
+    if (isLxx) return greekVerses;
+    // NT : union grec ∪ français, pour garder les versets que SBLGNT omet (écart additif).
+    const union = new Set(greekVerses);
+    for (const k of Object.keys(french!)) union.add(Number(k));
+    return [...union].sort((a, b) => a - b);
+  }, [useFrenchBlock, hasFrench, greekVerses, french, isLxx]);
+
   // Sur mobile, « colonnes » retombe sur « versets » (même rendu) et n'est pas
   // proposé dans les contrôles.
   const effectiveTranslation =
@@ -352,7 +501,7 @@ export default function Reader({ text }: { text: Text }) {
   const transMode = hasFrench ? effectiveTranslation : "off";
 
   // Signale au conteneur de page (.reading-page) si on est en mode colonnes, pour
-  // que le fil d'Ariane et la nav, rendus hors du lecteur, s'elargissent avec lui.
+  // que le fil d'Ariane et la nav, rendus hors du lecteur, s'élargissent avec lui.
   const rootRef = useRef<HTMLElement>(null);
   useEffect(() => {
     const page = rootRef.current?.closest<HTMLElement>(".reading-page");
@@ -373,6 +522,17 @@ export default function Reader({ text }: { text: Text }) {
     canManage,
     onEditAnnotation: openEditorForExisting,
     onDeleteAnnotation: (a: Annotation) => setPendingDelete(a),
+    onReportAnnotation: (a: Annotation) =>
+      setReportTarget({
+        ref: a.ref,
+        verse: a.verse,
+        wordIndex: a.wordIndex,
+        endWordIndex: a.endWordIndex,
+        graphemeIndex: a.graphemeIndex,
+        annotationId: a.id,
+        scopeLabel: "commentaire",
+        categories: ["commentaire"],
+      }),
     pronOverrides,
   };
 
@@ -558,12 +718,26 @@ export default function Reader({ text }: { text: Text }) {
 
       {transMode === "off" ? (
         <div className="mt-5 mx-auto max-w-2xl">
-          <GreekText text={text} size="lg" scale={textScale} translit={mode} manuscript={manuscript} highlightWord={highlight} {...greekProps} />
+          {manuscript ? (
+            // Scriptio continua : tout le grec en continu, sans découpe ni lien de verset.
+            <GreekText text={text} size="lg" scale={textScale} translit={mode} manuscript={manuscript} highlightWord={highlight} {...greekProps} />
+          ) : (
+            verses.map((v) => (
+              <div key={v} id={`v${v}`} className="group relative scroll-mt-20 border-b border-base-300/70 py-4 first:pt-0 last:border-0">
+                {copyLink(v)}
+                <GreekText text={text} size="lg" scale={textScale} translit={mode} manuscript={manuscript} verseOnly={v} highlightWord={highlight} {...greekProps} />
+                {copyLinkInline(v)}
+              </div>
+            ))
+          )}
         </div>
-      ) : transMode === "verses" ? (
+      ) : useFrenchBlock ? (
+        // Versification divergente : on rend le grec verset par verset (texte
+        // primaire, complet) puis la traduction en bloc continu, sans apparier.
         <div className="mt-5 mx-auto max-w-2xl">
           {verses.map((v) => (
-            <div key={v} className="border-b border-base-300/70 py-4 first:pt-0 last:border-0">
+            <div key={v} id={`v${v}`} className="group relative scroll-mt-20 border-b border-base-300/70 py-4 first:pt-0 last:border-0">
+              {copyLink(v)}
               <GreekText
                 text={text}
                 size="lg"
@@ -574,15 +748,37 @@ export default function Reader({ text }: { text: Text }) {
                 highlightWord={highlight}
                 {...greekProps}
               />
-              <p className="mt-2 leading-relaxed text-base-content/85">
-                <span className="verse-num">{v}</span>
-                {french![v]}
-              </p>
+              {copyLinkInline(v)}
             </div>
           ))}
-          <p className="mt-3 text-xs text-base-content/70">
-            Traduction : Bible Crampon (néo-Crampon, domaine public).
-          </p>
+          <FrenchChapterBlock french={french!} credit={translatedBy} />
+        </div>
+      ) : transMode === "verses" ? (
+        <div className="mt-5 mx-auto max-w-2xl">
+          {verses.map((v) => (
+            <div key={v} id={`v${v}`} className="group relative scroll-mt-20 border-b border-base-300/70 py-4 first:pt-0 last:border-0">
+              {copyLink(v)}
+              <GreekText
+                text={text}
+                size="lg"
+                scale={textScale}
+                translit={mode}
+                manuscript={manuscript}
+                verseOnly={v}
+                highlightWord={highlight}
+                {...greekProps}
+              />
+              {v in french! && (
+                <p className="mt-2 leading-relaxed text-base-content/85">
+                  <span className="verse-num">{v}</span>
+                  {french![v]}
+                  <TranslatorTip by={text.maison?.[v] ?? baseTranslator} />
+                  {copyLinkInline(v)}
+                </p>
+              )}
+            </div>
+          ))}
+          <p className="mt-3 text-xs text-base-content/70">{translatedBy}</p>
         </div>
       ) : (
         // Côte à côte : grec | français, alignés par verset. Sous 640px, dégrade
@@ -590,7 +786,8 @@ export default function Reader({ text }: { text: Text }) {
         // desktop, profite de la largeur (les deux colonnes respirent).
         <div className="mt-5 mx-auto wide:max-w-5xl">
           {verses.map((v) => (
-            <div key={v} className="trans-row border-b border-base-300/70 py-3">
+            <div key={v} id={`v${v}`} className="trans-row group relative scroll-mt-20 border-b border-base-300/70 py-3">
+              {copyLink(v)}
               <div className="trans-grec">
                 <GreekText
                   text={text}
@@ -604,15 +801,31 @@ export default function Reader({ text }: { text: Text }) {
                 />
               </div>
               <div className="trans-fr leading-relaxed text-base-content/85">
-                <span className="verse-num">{v}</span>
-                {french![v]}
+                {v in french! && (
+                  <>
+                    <span className="verse-num">{v}</span>
+                    {french![v]}
+                    <TranslatorTip by={text.maison?.[v] ?? baseTranslator} />
+                    {copyLinkInline(v)}
+                  </>
+                )}
               </div>
             </div>
           ))}
-          <p className="mt-3 text-xs text-base-content/70">
-            Traduction : Bible Crampon (néo-Crampon, domaine public).
-          </p>
+          <p className="mt-3 text-xs text-base-content/70">{translatedBy}</p>
         </div>
+      )}
+
+      {/* Philologue/admin, LXX : accès direct à l'arbitrage des liens du chapitre lu. */}
+      {isLxx && canAnnotate && parsedRef && (
+        <p className="mt-4 text-xs">
+          <a
+            href={`/admin/arbitrage?book=${parsedRef.book}&ch=${parsedRef.chapter}`}
+            className="link text-base-content/60 underline-offset-2"
+          >
+            Arbitrer les liens de ce chapitre
+          </a>
+        </p>
       )}
 
       <Tour
@@ -672,6 +885,10 @@ export default function Reader({ text }: { text: Text }) {
             reload();
           }}
         />
+      )}
+
+      {reportTarget && (
+        <ReportEditor target={reportTarget} onClose={() => setReportTarget(null)} />
       )}
 
       {pendingDelete &&

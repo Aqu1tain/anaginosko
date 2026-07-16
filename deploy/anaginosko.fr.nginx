@@ -25,6 +25,12 @@ server {
         add_header Cache-Control "public, max-age=300";
     }
 
+    # données LXX (Septante) : revalidation rapide
+    location /lxx/ {
+        expires 5m;
+        add_header Cache-Control "public, max-age=300";
+    }
+
     # le shell HTML doit rester frais
     location = /index.html {
         add_header Cache-Control "no-cache";
