@@ -198,17 +198,14 @@ export default async function Home() {
   const heroVerse: Text = { ...jn1, francais: null, mots: (jn1.mots ?? []).filter((m) => m.verse === 1) };
   return (
     <div>
-      {/* Bandeau de soutien en tête (préférence : visible d'emblée). Son titre est un
-          <p> et non un titre, pour que le H1 « Lire la Bible en grec » reste le
-          premier titre du document (hiérarchie correcte). data-nosnippet côté banner. */}
-      <div className="pt-2">
-        <SupportBanner />
-      </div>
-
-      {/* Héros éditorial : la promesse et les accès. À droite, un verset réel
-          (Jean 1,1) interactif. */}
-      <section className="mt-8 grid gap-8 wide:mt-10 wide:grid-cols-2 wide:items-center wide:gap-12">
-        <div>
+      {/* SEO : le héros (H1 + promesse) vient EN PREMIER dans le DOM/source. Le bandeau
+          de soutien est remonté VISUELLEMENT au-dessus via `order`, sans passer avant
+          le contenu principal pour Google (+ data-nosnippet côté banner). */}
+      <div className="flex flex-col">
+        {/* Héros éditorial : la promesse et les accès. À droite, un verset réel
+            (Jean 1,1) interactif. */}
+        <section className="order-2 mt-8 grid gap-8 wide:mt-10 wide:grid-cols-2 wide:items-center wide:gap-12">
+          <div>
           <h1 className="font-greek text-4xl leading-[1.1] wide:text-5xl">Lire la Bible en grec</h1>
           <IntroText className="mt-4 max-w-prose text-base leading-relaxed text-base-content/70" />
           <div className="mt-6 flex max-w-lg flex-col gap-2.5">
@@ -222,7 +219,14 @@ export default async function Home() {
         </div>
 
         <HeroVerse text={heroVerse} />
-      </section>
+        </section>
+
+        {/* Bandeau de soutien : remonté visuellement en tête (order-1) mais placé
+            APRÈS le héros dans le DOM (SEO). Fermable ; data-nosnippet le sort du snippet. */}
+        <div className="order-1 pt-2">
+          <SupportBanner />
+        </div>
+      </div>
 
       {/* Pupitre : le poste de travail du lecteur récurrent, sous la promesse -
           reprendre la lecture et aller directement à une référence (NT ou Septante). */}
