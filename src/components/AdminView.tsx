@@ -6,14 +6,41 @@ import {
   fetchAdminStats,
   fetchMyAnnotations,
   deleteAnnotation,
+  fetchAdminReports,
+  updateReportStatus,
   type AdminStats,
   type Annotation,
+  type AdminReport,
+  type ReportStatus,
+  type ReportCategory,
 } from "../lib/api";
 import { corpusById, parseRef } from "../data/corpus";
 import { textById } from "../data/texts";
 import { refHref } from "../data/passageLink";
 import AnnotationEditor, { type AnnotationTarget } from "./AnnotationEditor";
+import { CATEGORY_LABEL } from "./ReportEditor";
 import AdminAnalytics from "./AdminAnalytics";
+
+const STATUS_LABEL: Record<ReportStatus, string> = {
+  pending: "En attente",
+  in_progress: "En cours",
+  resolved: "Résolu",
+  rejected: "Rejeté",
+};
+const STATUS_BADGE: Record<ReportStatus, string> = {
+  pending: "badge-warning",
+  in_progress: "badge-info",
+  resolved: "badge-success",
+  rejected: "badge-error",
+};
+const STATUS_ORDER: ReportStatus[] = ["pending", "in_progress", "resolved", "rejected"];
+const CATEGORY_ORDER: ReportCategory[] = [
+  "traduction",
+  "texte",
+  "commentaire",
+  "definition",
+  "demande_note",
+];
 
 function locationLabel(ref: string): string {
   if (ref.startsWith("lemma:")) return ref.slice(6);
@@ -69,8 +96,13 @@ export default function AdminView() {
   const [error, setError] = useState(false);
   const [editing, setEditing] = useState<AnnotationTarget | null>(null);
   const [pendingDelete, setPendingDelete] = useState<Annotation | null>(null);
-  const [tab, setTab] = useState<"annotations" | "definitions" | "analytics">("annotations");
+  const [tab, setTab] = useState<"annotations" | "definitions" | "analytics" | "reports">(
+    "annotations",
+  );
   const [query, setQuery] = useState("");
+  const [reports, setReports] = useState<AdminReport[]>([]);
+  const [reportStatus, setReportStatus] = useState<ReportStatus | "all">("all");
+  const [reportCategory, setReportCategory] = useState<ReportCategory | "all">("all");
 
   // Les définitions Biblion (def:) sont un système à part : onglet dédié, hors
   // de la liste des annotations.
@@ -94,11 +126,32 @@ export default function AdminView() {
   const onList = tab === "annotations" || tab === "definitions";
   const noun = tab === "definitions" ? "définition" : "annotation";
 
+  // Signalements filtrés côté client (statut + catégorie + recherche).
+  const filteredReports = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return reports.filter(
+      (r) =>
+        (reportStatus === "all" || r.status === reportStatus) &&
+        (reportCategory === "all" || r.category === reportCategory) &&
+        (!q ||
+          r.message.toLowerCase().includes(q) ||
+          r.email.toLowerCase().includes(q) ||
+          (r.ref ? locationLabel(r.ref).toLowerCase().includes(q) : false)),
+    );
+  }, [reports, reportStatus, reportCategory, query]);
+
   const reload = () => {
     const jobs: Promise<unknown>[] = [fetchMyAnnotations().then(setAnnos)];
     // Stats non bloquantes : si l'API ne les autorise pas (rôle), on garde le reste.
     if (canViewDashboard) jobs.push(fetchAdminStats().then(setStats).catch(() => setStats(null)));
+    // Signalements réservés à admin + philologue.
+    if (canEdit) jobs.push(fetchAdminReports().then(setReports).catch(() => setReports([])));
     Promise.all(jobs).catch(() => setError(true));
+  };
+
+  const setStatus = async (id: number, status: ReportStatus) => {
+    await updateReportStatus(id, status);
+    setReports((rs) => rs.map((r) => (r.id === id ? { ...r, status } : r)));
   };
 
   useEffect(() => {
@@ -146,6 +199,20 @@ export default function AdminView() {
           >
             Fréquentation
           </button>
+          {canEdit && (
+            <button
+              role="tab"
+              className={`tab ${tab === "reports" ? "tab-active" : ""}`}
+              onClick={() => setTab("reports")}
+            >
+              Signalements
+              {reports.some((r) => r.status === "pending") && (
+                <span className="badge badge-warning badge-xs ml-1.5">
+                  {reports.filter((r) => r.status === "pending").length}
+                </span>
+              )}
+            </button>
+          )}
         </div>
         {canEdit && (
           <a href="/admin/arbitrage" className="btn btn-sm btn-outline border-base-300">
@@ -161,6 +228,107 @@ export default function AdminView() {
           ) : (
             <p className="text-sm text-base-content/70">Statistiques indisponibles.</p>
           )}
+        </section>
+      )}
+
+      {tab === "reports" && canEdit && (
+        <section className="mt-5">
+          <div className="flex flex-col gap-2">
+            <input
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Chercher : message, e-mail, emplacement…"
+              className="input input-bordered input-sm w-full max-w-md"
+              autoComplete="off"
+              spellCheck={false}
+            />
+            <div className="flex flex-wrap items-center gap-1.5">
+              <button
+                onClick={() => setReportStatus("all")}
+                className={`btn btn-xs ${reportStatus === "all" ? "btn-primary" : "btn-ghost border border-base-300"}`}
+              >
+                Tous statuts
+              </button>
+              {STATUS_ORDER.map((s) => (
+                <button
+                  key={s}
+                  onClick={() => setReportStatus(s)}
+                  className={`btn btn-xs ${reportStatus === s ? "btn-primary" : "btn-ghost border border-base-300"}`}
+                >
+                  {STATUS_LABEL[s]}
+                </button>
+              ))}
+            </div>
+            <div className="flex flex-wrap items-center gap-1.5">
+              <button
+                onClick={() => setReportCategory("all")}
+                className={`btn btn-xs ${reportCategory === "all" ? "btn-accent" : "btn-ghost border border-base-300"}`}
+              >
+                Toutes catégories
+              </button>
+              {CATEGORY_ORDER.map((c) => (
+                <button
+                  key={c}
+                  onClick={() => setReportCategory(c)}
+                  className={`btn btn-xs ${reportCategory === c ? "btn-accent" : "btn-ghost border border-base-300"}`}
+                >
+                  {CATEGORY_LABEL[c]}
+                </button>
+              ))}
+            </div>
+            <span className="text-xs text-base-content/70">
+              {filteredReports.length} signalement{filteredReports.length > 1 ? "s" : ""}
+            </span>
+          </div>
+
+          <div className="mt-3 grid grid-cols-1 gap-2">
+            {filteredReports.map((r) => (
+              <div key={r.id} className="rounded-2xl border border-base-300 bg-base-100 p-3.5">
+                <div className="flex flex-wrap items-center gap-2 text-xs">
+                  <span className="badge badge-sm badge-primary badge-soft">
+                    {CATEGORY_LABEL[r.category]}
+                  </span>
+                  <span className={`badge badge-sm badge-soft ${STATUS_BADGE[r.status]}`}>
+                    {STATUS_LABEL[r.status]}
+                  </span>
+                  {r.ref && (
+                    <a href={refHref(r.ref, r.wordIndex)} className="font-medium text-primary hover:underline">
+                      {locationLabel(r.ref)}{r.verse != null ? `, v.${r.verse}` : ""}
+                    </a>
+                  )}
+                  {r.createdAt && <span className="text-base-content/60">· {formatDate(r.createdAt)}</span>}
+                </div>
+                <p className="mt-2 whitespace-pre-wrap text-sm leading-relaxed [overflow-wrap:anywhere]">
+                  {r.message}
+                </p>
+                {r.annotation && (
+                  <p className="mt-1.5 rounded-lg border border-base-300 bg-base-200/50 px-2.5 py-1.5 text-xs text-base-content/70">
+                    Annotation visée : « {r.annotation.body} »
+                  </p>
+                )}
+                <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
+                  <a href={`mailto:${r.email}`} className="text-xs text-base-content/60 hover:underline">
+                    {r.email}
+                  </a>
+                  <div className="flex flex-wrap gap-1">
+                    {STATUS_ORDER.filter((s) => s !== r.status && s !== "pending").map((s) => (
+                      <button
+                        key={s}
+                        onClick={() => setStatus(r.id, s)}
+                        className={`btn btn-ghost btn-xs ${s === "rejected" ? "text-error" : s === "resolved" ? "text-success" : ""}`}
+                      >
+                        {STATUS_LABEL[s]}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ))}
+            {filteredReports.length === 0 && (
+              <p className="text-sm text-base-content/70">Aucun signalement pour ces filtres.</p>
+            )}
+          </div>
         </section>
       )}
 

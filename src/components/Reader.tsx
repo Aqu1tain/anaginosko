@@ -18,6 +18,8 @@ import {
 } from "../lib/api";
 import GreekText, { type TranslitMode, type AnnoScope, type AnnoSelection } from "./GreekText";
 import CopyVerseLink from "./CopyVerseLink";
+import ReportButton from "./ReportButton";
+import ReportEditor, { type ReportTarget } from "./ReportEditor";
 import AnnotationEditor, { type AnnotationTarget } from "./AnnotationEditor";
 import Tour, { type TourStep } from "./Tour";
 
@@ -200,6 +202,7 @@ export default function Reader({ text }: { text: Text }) {
   const [foreign, setForeign] = useState<PlacedAnnotation[]>([]);
   const [sel, setSel] = useState<Sel | null>(null);
   const [editTarget, setEditTarget] = useState<AnnotationTarget | null>(null);
+  const [reportTarget, setReportTarget] = useState<ReportTarget | null>(null);
   const [pendingDelete, setPendingDelete] = useState<Annotation | null>(null);
   // Overrides de prononciation (par forme) -> translittération affichée dans
   // l'interlinéaire, cohérente avec la fiche du mot.
@@ -432,15 +435,33 @@ export default function Reader({ text }: { text: Text }) {
   // de CopyVerseLink), sur un fond opaque pour ne jamais chevaucher le texte. Masqué en
   // scriptio continua (le manuscrit continu n’a pas de découpe par verset).
   // Desktop : dans la marge à gauche de la colonne, révélé au survol, jamais sur le texte.
+  // Cible de signalement au niveau d'un verset : erreur de traduction/texte ou
+  // demande d'ajout de note. Ouvert à tous les visiteurs.
+  const verseReportTarget = (v: number): ReportTarget => ({
+    ref,
+    verse: v,
+    wordIndex: null,
+    endWordIndex: null,
+    graphemeIndex: null,
+    annotationId: null,
+    scopeLabel: "verset",
+    categories: ["traduction", "texte", "demande_note"],
+  });
   const copyLink = (v: number) =>
     manuscript ? null : (
-      <div className="absolute right-full top-3 z-10 mr-1 hidden wide:block"><CopyVerseLink v={v} /></div>
+      <div className="absolute right-full top-3 z-10 mr-1 hidden flex-col items-center wide:flex">
+        <CopyVerseLink v={v} />
+        <ReportButton target={verseReportTarget(v)} />
+      </div>
     );
   // Mobile : pas de survol ni de marge — un bouton discret mais toujours visible, à la fin
   // du verset, donc atteignable au doigt. Masqué sur desktop (la marge prend le relais).
   const copyLinkInline = (v: number) =>
     manuscript ? null : (
-      <span className="ml-1.5 inline-flex align-middle wide:hidden"><CopyVerseLink v={v} /></span>
+      <span className="ml-1.5 inline-flex align-middle wide:hidden">
+        <CopyVerseLink v={v} />
+        <ReportButton target={verseReportTarget(v)} />
+      </span>
     );
 
   // La traduction n'est appariée verset par verset que si ses clés recouvrent
@@ -501,6 +522,17 @@ export default function Reader({ text }: { text: Text }) {
     canManage,
     onEditAnnotation: openEditorForExisting,
     onDeleteAnnotation: (a: Annotation) => setPendingDelete(a),
+    onReportAnnotation: (a: Annotation) =>
+      setReportTarget({
+        ref: a.ref,
+        verse: a.verse,
+        wordIndex: a.wordIndex,
+        endWordIndex: a.endWordIndex,
+        graphemeIndex: a.graphemeIndex,
+        annotationId: a.id,
+        scopeLabel: "commentaire",
+        categories: ["commentaire"],
+      }),
     pronOverrides,
   };
 
@@ -853,6 +885,10 @@ export default function Reader({ text }: { text: Text }) {
             reload();
           }}
         />
+      )}
+
+      {reportTarget && (
+        <ReportEditor target={reportTarget} onClose={() => setReportTarget(null)} />
       )}
 
       {pendingDelete &&

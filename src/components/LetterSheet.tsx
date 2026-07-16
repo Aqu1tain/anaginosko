@@ -13,6 +13,7 @@ import { useHasAudio } from "../hooks/useHasAudio";
 import { useAuth } from "../hooks/useAuth";
 import { useLemmaNotes } from "../hooks/useLemmaNotes";
 import { useLemmaDefinition } from "../hooks/useLemmaDefinition";
+import ReportButton from "./ReportButton";
 import {
   fetchPronunciations,
   createPronunciation,
@@ -529,12 +530,30 @@ export default function LetterSheet({
                     </div>
                   </div>
                 )}
-                <Link
-                  href={`/concordance/${encodeURIComponent(word.lemme)}`}
-                  className="mt-1.5 inline-block text-sm font-medium text-accent"
-                >
-                  définition complète & occurrences
-                </Link>
+                <div className="mt-1.5 flex flex-wrap items-center justify-between gap-2">
+                  <Link
+                    href={`/concordance/${encodeURIComponent(word.lemme)}`}
+                    className="inline-block text-sm font-medium text-accent"
+                  >
+                    définition complète & occurrences
+                  </Link>
+                  <ReportButton
+                    label="Signaler la définition ou demander une note"
+                    target={{
+                      ref: `def:${word.lemme}`,
+                      verse: null,
+                      wordIndex: null,
+                      endWordIndex: null,
+                      graphemeIndex: null,
+                      annotationId: null,
+                      grec: word.lemme,
+                      scopeLabel: "définition",
+                      categories: ["definition", "demande_note"],
+                    }}
+                  >
+                    Signaler
+                  </ReportButton>
+                </div>
               </div>
             )}
           </div>
