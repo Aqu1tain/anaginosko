@@ -19,6 +19,8 @@ export default function RefJump({ books, routePrefix }: { books: Book[]; routePr
   const router = useRouter();
   const [q, setQ] = useState("");
   const [active, setActive] = useState(0);
+  // `open` permet à Échap de fermer les suggestions sans vider la saisie.
+  const [open, setOpen] = useState(true);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const { bookQ, chapter } = useMemo(() => {
@@ -41,8 +43,18 @@ export default function RefJump({ books, routePrefix }: { books: Book[]; routePr
     router.push(`${b.routePrefix ?? routePrefix}/${b.id}/${chapterFor(b)}`);
   };
 
+  const show = open && matches.length > 0;
+  const optionId = (idx: number) => `refjump-opt-${idx}`;
+
   const onKeyDown = (e: React.KeyboardEvent) => {
-    if (!matches.length) return;
+    if (e.key === "Escape") {
+      if (show) {
+        e.preventDefault();
+        setOpen(false);
+      }
+      return;
+    }
+    if (!show) return;
     if (e.key === "ArrowDown") {
       e.preventDefault();
       setActive((a) => Math.min(a + 1, matches.length - 1));
@@ -77,20 +89,32 @@ export default function RefJump({ books, routePrefix }: { books: Book[]; routePr
         onChange={(e) => {
           setQ(e.target.value);
           setActive(0);
+          setOpen(true);
         }}
         onKeyDown={onKeyDown}
         placeholder="Chercher un livre, un chapitre… (ex. Jean 3)"
         aria-label="Aller à une référence"
+        role="combobox"
+        aria-expanded={show}
+        aria-controls="refjump-listbox"
+        aria-autocomplete="list"
+        aria-activedescendant={show ? optionId(active) : undefined}
         autoComplete="off"
         spellCheck={false}
         className="input input-lg input-bordered w-full rounded-xl bg-base-100 pl-12 text-base text-base-content shadow-sm"
       />
-      {matches.length > 0 && (
-        <ul className="absolute z-20 mt-1 w-full overflow-hidden rounded-box border border-base-300 bg-base-100 shadow-lg">
+      {show && (
+        <ul
+          id="refjump-listbox"
+          role="listbox"
+          aria-label="Références proposées"
+          className="absolute z-20 mt-1 w-full overflow-hidden rounded-box border border-base-300 bg-base-100 shadow-lg"
+        >
           {matches.map((b, idx) => (
-            <li key={b.id}>
+            <li key={b.id} role="option" aria-selected={idx === active} id={optionId(idx)}>
               <button
                 type="button"
+                tabIndex={-1}
                 onMouseEnter={() => setActive(idx)}
                 onClick={() => go(b)}
                 className={`flex w-full items-baseline justify-between gap-3 px-3.5 py-2 text-left text-sm text-base-content transition-colors ${
