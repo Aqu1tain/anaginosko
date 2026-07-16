@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { createPortal } from "react-dom";
 import { createAnnotation, updateAnnotation, type Annotation } from "../lib/api";
+import { trackEvent } from "../lib/analytics";
 
 export type AnnotationTarget = {
   ref: string;
@@ -76,7 +77,10 @@ export default function AnnotationEditor({
     };
     try {
       if (editing) await updateAnnotation(target.existing!.id, input);
-      else await createAnnotation(input);
+      else {
+        await createAnnotation(input);
+        trackEvent("Annotation", "create", target.ref);
+      }
       onSaved();
     } catch (e) {
       setError(e instanceof Error ? e.message : "Erreur");

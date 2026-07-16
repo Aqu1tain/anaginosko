@@ -22,6 +22,11 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
+        env:
+          # Variables publiques Matomo, inlinées au build (non secrètes : elles
+          # finissent dans le bundle client). Sans elles, le tracking est inerte.
+          NEXT_PUBLIC_MATOMO_URL: https://analytics.anaginosko.fr/
+          NEXT_PUBLIC_MATOMO_SITE_ID: "1"
 
       # Assemble le bundle Next « standalone » : serveur Node minimal + assets
       # statiques + public SANS audio ni nt (servis depuis le disque par nginx).
