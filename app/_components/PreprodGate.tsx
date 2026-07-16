@@ -34,7 +34,9 @@ export default function PreprodGate({ children }: { children: React.ReactNode })
   const pathname = usePathname();
   const { user, ready } = useAuth();
   if (!PREPROD) return <>{children}</>;
-  if (pathname === "/login") return <>{children}</>;
+  // /login et /verify (confirmation d'un signalement par un visiteur anonyme)
+  // restent accessibles sans compte, même derrière le mur de préproduction.
+  if (pathname === "/login" || pathname.startsWith("/verify")) return <>{children}</>;
   if (!ready) {
     return (
       <div className="grid min-h-screen place-items-center">

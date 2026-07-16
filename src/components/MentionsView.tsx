@@ -115,6 +115,18 @@ export default function MentionsView() {
         ))}
       </dl>
 
+      <section className="mt-5 rounded-box border border-base-300 bg-base-100 px-4 py-3">
+        <h2 className="text-sm font-semibold">Signalements et données personnelles</h2>
+        <p className="mt-1 max-w-prose text-sm leading-relaxed text-base-content/75">
+          Lorsque vous signalez une erreur ou demandez une note, votre adresse e-mail est collectée
+          dans le seul but de <strong>vérifier votre demande</strong> (double confirmation) et d’en
+          assurer le suivi. Elle n’est <strong>jamais partagée</strong> ni utilisée à des fins
+          commerciales. Les signalements non confirmés sont supprimés sous 48&nbsp;heures ; les
+          demandes traitées sont anonymisées passé un délai. Aucune adresse IP en clair n’est
+          conservée.
+        </p>
+      </section>
+
       <p className="mt-5 max-w-prose text-xs leading-relaxed text-base-content/70">
         © 2026{" "}
         <a className="link" href="https://corentinrenard.com" target="_blank" rel="noreferrer">
