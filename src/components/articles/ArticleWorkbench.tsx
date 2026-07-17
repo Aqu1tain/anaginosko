@@ -3,9 +3,20 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useAuth } from "@/src/hooks/useAuth";
-import { fetchArticle, saveArticle, transitionArticle, addComment, resolveComment } from "@/src/lib/articlesApi";
-import type { Article, ArticlePatch, ArticleSignature, ArticleStatus, TransitionAction } from "@/lib/articles";
+import { getToken } from "@/src/lib/api";
+import {
+  fetchArticle,
+  saveArticle,
+  transitionArticle,
+  addComment,
+  resolveComment,
+  deleteArticle,
+  uploadImage,
+} from "@/src/lib/articlesApi";
+import { compressImage } from "./compressImage";
+import type { Article, ArticlePatch, ArticleSignature, ArticleStatus, ArticleEvent, TransitionAction } from "@/lib/articles";
 import { STATUS_LABEL, STATUS_DOT, CATEGORY_LABEL } from "./labels";
 import ReviewPanel from "./ReviewPanel";
 
@@ -41,6 +52,16 @@ function availableActions(status: ArticleStatus, isAdmin: boolean, isAuthor: boo
 
 const ArticleEditor = dynamic(() => import("./ArticleEditor"), { ssr: false });
 
+const EVENT_LABEL: Record<ArticleEvent["type"], string> = {
+  created: "Création",
+  submitted: "Soumis à la relecture",
+  changes_requested: "Modifications demandées",
+  approved: "Approuvé et publié",
+  unpublished: "Dépublié",
+  archived: "Archivé",
+  restored: "Restauré en brouillon",
+};
+
 type SaveState = "idle" | "saving" | "saved" | "error" | "conflict";
 
 function useIsDark(): boolean {
@@ -57,6 +78,7 @@ function useIsDark(): boolean {
 
 export default function ArticleWorkbench({ id }: { id: string }) {
   const { user, ready } = useAuth();
+  const router = useRouter();
   const dark = useIsDark();
   const [article, setArticle] = useState<Article | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -77,6 +99,31 @@ export default function ArticleWorkbench({ id }: { id: string }) {
         setArticle(a);
       })
       .catch((e) => setError(e.message));
+  }, [id]);
+
+  // Ne pas perdre les dernières frappes : l'autosave est débouncée (1,5 s), donc on
+  // pousse ce qui reste en attente à la fermeture de l'onglet (keepalive, best-effort)
+  // et au démontage du composant (navigation interne : le fetch survit à l'unmount).
+  useEffect(() => {
+    const flushPending = () => {
+      if (!editableRef.current) return;
+      const patch = pending.current;
+      if (Object.keys(patch).length === 0) return;
+      pending.current = {};
+      if (timer.current) clearTimeout(timer.current);
+      const token = getToken();
+      fetch(`/admin/articles/api/articles/${id}`, {
+        method: "PUT",
+        keepalive: true,
+        headers: { "Content-Type": "application/json", ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+        body: JSON.stringify({ rev: revRef.current, ...patch }),
+      }).catch(() => {});
+    };
+    window.addEventListener("pagehide", flushPending);
+    return () => {
+      window.removeEventListener("pagehide", flushPending);
+      flushPending();
+    };
   }, [id]);
 
   const editable =
@@ -113,20 +160,42 @@ export default function ArticleWorkbench({ id }: { id: string }) {
 
   const [selected, setSelected] = useState<{ id: string; excerpt: string } | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
+  const [noteOpen, setNoteOpen] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
 
-  const runTransition = async (action: TransitionAction) => {
+  const runTransition = async (action: TransitionAction, note?: string) => {
     if (timer.current) {
       clearTimeout(timer.current);
       await flush();
     }
     try {
-      const updated = await transitionArticle(id, action);
+      const updated = await transitionArticle(id, action, note);
       revRef.current = updated.rev;
       setArticle(updated);
       setActionError(null);
       setSaveState("idle");
     } catch (e) {
       setActionError((e as Error).message);
+    }
+  };
+
+  const onCover = async (file: File) => {
+    try {
+      const url = await uploadImage(id, await compressImage(file));
+      setArticle((a) => (a ? { ...a, cover: url } : a));
+      queueSave({ cover: url });
+    } catch (e) {
+      setActionError((e as Error).message);
+    }
+  };
+
+  const doDelete = async () => {
+    try {
+      await deleteArticle(id);
+      router.push("/admin/articles");
+    } catch (e) {
+      setActionError((e as Error).message);
+      setConfirmDelete(false);
     }
   };
 
@@ -164,6 +233,7 @@ export default function ArticleWorkbench({ id }: { id: string }) {
   const isAdmin = user.role === "admin";
   const isAuthor = article.author.userId === user.id;
   const canComment = isAdmin || isAuthor;
+  const canDelete = isAdmin || (isAuthor && article.status === "draft");
   const actions = availableActions(article.status, isAdmin, isAuthor);
 
   return (
@@ -233,6 +303,47 @@ export default function ArticleWorkbench({ id }: { id: string }) {
             className="mt-2 w-full resize-none bg-transparent text-base text-base-content/70 focus:outline-none"
           />
 
+          {(article.cover || editable) && (
+            <div className="mt-3">
+              {article.cover ? (
+                <div className="relative overflow-hidden rounded-xl border border-base-300">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={article.cover} alt="Couverture" className="max-h-64 w-full object-cover" />
+                  {editable && (
+                    <button
+                      type="button"
+                      className="btn btn-xs absolute right-2 top-2"
+                      onClick={() => {
+                        setArticle((a) => (a ? { ...a, cover: null } : a));
+                        queueSave({ cover: null });
+                      }}
+                    >
+                      Retirer la couverture
+                    </button>
+                  )}
+                </div>
+              ) : (
+                <label className="btn btn-ghost btn-xs cursor-pointer gap-1.5 px-0 text-base-content/50 hover:text-base-content">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <rect x="3" y="3" width="18" height="18" rx="2" />
+                    <circle cx="9" cy="9" r="2" />
+                    <path d="M21 15l-5-5L5 21" />
+                  </svg>
+                  Ajouter une couverture
+                  <input
+                    type="file"
+                    accept="image/png,image/jpeg,image/webp"
+                    className="sr-only"
+                    onChange={(e) => {
+                      if (e.target.files?.[0]) onCover(e.target.files[0]);
+                      e.target.value = "";
+                    }}
+                  />
+                </label>
+              )}
+            </div>
+          )}
+
           {saveState === "conflict" && (
             <div className="alert alert-error my-3 text-sm">
               Version périmée (édité ailleurs). Rechargez la page pour continuer.
@@ -254,14 +365,28 @@ export default function ArticleWorkbench({ id }: { id: string }) {
         </div>
 
         <aside className="space-y-4 lg:sticky lg:top-4 lg:self-start">
-          {actions.length > 0 && (
+          {(actions.length > 0 || article.status === "published" || canDelete) && (
             <div className="rounded-xl border border-base-300 bg-base-100 p-4 shadow-sm">
               <div className="flex flex-col gap-2">
                 {actions.map((a) => (
-                  <button key={a.action} className={`btn btn-sm ${a.style}`} onClick={() => runTransition(a.action)}>
+                  <button
+                    key={a.action}
+                    className={`btn btn-sm ${a.style}`}
+                    onClick={() => (a.action === "request_changes" ? setNoteOpen(true) : runTransition(a.action))}
+                  >
                     {a.label}
                   </button>
                 ))}
+                {article.status === "published" && (
+                  <a href={`/articles/${article.slug}`} target="_blank" rel="noreferrer" className="btn btn-ghost btn-sm">
+                    Voir l&apos;article publié
+                  </a>
+                )}
+                {canDelete && (
+                  <button className="btn btn-ghost btn-sm text-error" onClick={() => setConfirmDelete(true)}>
+                    Supprimer l&apos;article
+                  </button>
+                )}
               </div>
               {actionError && <p className="mt-2 text-sm text-error">{actionError}</p>}
             </div>
@@ -278,7 +403,75 @@ export default function ArticleWorkbench({ id }: { id: string }) {
               onJumpTo={jumpTo}
             />
           </div>
+
+          {article.events.length > 0 && (
+            <div className="rounded-xl border border-base-300 bg-base-100 p-4 shadow-sm">
+              <h2 className="text-sm font-semibold uppercase tracking-wide text-base-content/60">Historique</h2>
+              <ul className="mt-2 space-y-2 text-xs">
+                {[...article.events].reverse().map((e, i) => (
+                  <li key={i}>
+                    <span className="font-medium">{EVENT_LABEL[e.type] ?? e.type}</span>
+                    <span className="text-base-content/50">
+                      {" "}· {e.by || "?"} · {new Date(e.at).toLocaleDateString("fr-FR")}
+                    </span>
+                    {e.note && <p className="mt-0.5 whitespace-pre-wrap rounded bg-base-200/60 px-2 py-1 text-base-content/80">{e.note}</p>}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </aside>
+      </div>
+
+      {noteOpen && (
+        <NoteDialog
+          onClose={() => setNoteOpen(false)}
+          onSend={(note) => {
+            setNoteOpen(false);
+            runTransition("request_changes", note);
+          }}
+        />
+      )}
+
+      {confirmDelete && (
+        <div className="fixed inset-0 z-[80] flex items-center justify-center bg-black/40 p-4" onClick={() => setConfirmDelete(false)}>
+          <div className="w-full max-w-xs rounded-box bg-base-100 p-5 shadow-xl" onClick={(e) => e.stopPropagation()}>
+            <p className="text-sm font-medium">Supprimer cet article ?</p>
+            <p className="mt-1 text-xs text-base-content/60">« {article.title} » et ses images seront supprimés définitivement.</p>
+            <div className="mt-4 flex justify-end gap-2">
+              <button className="btn btn-ghost btn-sm" onClick={() => setConfirmDelete(false)}>Annuler</button>
+              <button className="btn btn-error btn-sm" onClick={doDelete}>Supprimer</button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function NoteDialog({ onClose, onSend }: { onClose: () => void; onSend: (note?: string) => void }) {
+  const [note, setNote] = useState("");
+  return (
+    <div className="fixed inset-0 z-[80] flex items-center justify-center bg-black/40 p-4" onClick={onClose}>
+      <div className="w-full max-w-md rounded-box bg-base-100 p-5 shadow-xl" onClick={(e) => e.stopPropagation()}>
+        <h2 className="text-lg font-bold">Demander des modifications</h2>
+        <p className="mt-1 text-sm text-base-content/60">
+          Expliquez à l&apos;auteur ce qui doit changer. La note apparaîtra dans l&apos;historique de l&apos;article.
+        </p>
+        <textarea
+          autoFocus
+          value={note}
+          onChange={(e) => setNote(e.target.value)}
+          rows={4}
+          placeholder="Ce qui doit être revu…"
+          className="textarea textarea-bordered mt-3 w-full text-sm"
+        />
+        <div className="mt-4 flex justify-end gap-2">
+          <button className="btn btn-ghost btn-sm" onClick={onClose}>Annuler</button>
+          <button className="btn btn-primary btn-sm" onClick={() => onSend(note.trim() || undefined)}>
+            Renvoyer à l&apos;auteur
+          </button>
+        </div>
       </div>
     </div>
   );

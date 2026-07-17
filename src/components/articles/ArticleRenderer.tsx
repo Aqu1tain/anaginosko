@@ -127,6 +127,37 @@ function renderBlock(block: Block): ReactNode {
       const src = normalizeEmbedUrl(String(block.props?.url ?? ""));
       return src ? <EmbedView key={key} src={src} title={block.props?.title ? String(block.props.title) : undefined} /> : null;
     }
+    case "table": {
+      const content = block.content as { rows?: { cells?: unknown[] }[]; headerRows?: number } | undefined;
+      const rows = Array.isArray(content?.rows) ? content.rows : [];
+      if (!rows.length) return null;
+      const headerRows = content?.headerRows ?? 0;
+      // Cellule = tableau d'inline content, ou objet tableCell { content } selon l'origine.
+      const cellInline = (cell: unknown) => (Array.isArray(cell) ? cell : (cell as { content?: unknown })?.content);
+      return (
+        <div key={key} className="my-4 overflow-x-auto">
+          <table className="table table-sm w-full border border-base-300">
+            <tbody>
+              {rows.map((row, ri) => (
+                <tr key={ri}>
+                  {(row.cells ?? []).map((cell, ci) =>
+                    ri < headerRows ? (
+                      <th key={ci} className="border border-base-300 bg-base-200/60">
+                        {renderInline(cellInline(cell))}
+                      </th>
+                    ) : (
+                      <td key={ci} className="border border-base-300">
+                        {renderInline(cellInline(cell))}
+                      </td>
+                    ),
+                  )}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      );
+    }
     case "bulletListItem":
     case "numberedListItem":
     case "checkListItem":
