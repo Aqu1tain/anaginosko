@@ -3,6 +3,7 @@ import { loadBooksFs, loadLemmasFs } from "@/lib/nt-server";
 import { CORPORA } from "@/src/data/corpus";
 import { texts } from "@/src/data/texts";
 import { listPublished } from "@/lib/articles";
+import { listProfiles } from "@/lib/profiles";
 
 const BASE = "https://anaginosko.fr";
 
@@ -17,6 +18,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const articleUrls: MetadataRoute.Sitemap = listPublished().map((a) => ({
     url: `${BASE}/articles/${a.slug}`,
     lastModified: new Date(a.updatedAt),
+  }));
+
+  const profileUrls: MetadataRoute.Sitemap = listProfiles().map((p) => ({
+    url: `${BASE}/contributeurs/${p.slug}`,
+    lastModified: new Date(p.updatedAt),
   }));
 
   const corpusUrls: MetadataRoute.Sitemap = [];
@@ -45,5 +51,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...corpusUrls,
     ...texts.map((t) => url(`/text/${t.id}`)),
     ...articleUrls,
+    ...profileUrls,
   ];
 }

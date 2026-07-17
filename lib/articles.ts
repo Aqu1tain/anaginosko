@@ -368,6 +368,23 @@ export function detectImage(buf: Buffer): { ext: string; mime: string } | null {
   return IMAGE_TYPES.find((t) => t.test(buf)) ?? null;
 }
 
+// Primitive d'upload d'image (validée + nommée par hash), partagée par les articles
+// et les photos de profil. `subdir` est un segment sûr ([a-z0-9-]).
+export function saveImageUpload(
+  subdir: string,
+  buf: Buffer,
+): { ok: true; url: string } | { ok: false; status: number; error: string } {
+  if (buf.length > MAX_IMAGE_BYTES) return { ok: false, status: 413, error: "Image trop volumineuse." };
+  const kind = detectImage(buf);
+  if (!kind) return { ok: false, status: 415, error: "Format d'image non supporté (png, jpeg, webp)." };
+  const hash = createHash("sha256").update(buf).digest("hex").slice(0, 16);
+  const dir = path.join(UPLOADS_SUB, subdir);
+  fs.mkdirSync(dir, { recursive: true });
+  const file = `${hash}.${kind.ext}`;
+  fs.writeFileSync(path.join(dir, file), buf);
+  return { ok: true, url: `/articles/uploads/${subdir}/${file}` };
+}
+
 export function saveUpload(
   id: string,
   auth: { id?: number; role?: string },
@@ -376,15 +393,7 @@ export function saveUpload(
   const a = getArticle(id);
   if (!a) return { ok: false, status: 404, error: "Article introuvable." };
   if (!isAdmin(auth) && !isAuthor(a, auth)) return { ok: false, status: 403, error: "Accès refusé." };
-  if (buf.length > MAX_IMAGE_BYTES) return { ok: false, status: 413, error: "Image trop volumineuse." };
-  const kind = detectImage(buf);
-  if (!kind) return { ok: false, status: 415, error: "Format d'image non supporté (png, jpeg, webp)." };
-  const hash = createHash("sha256").update(buf).digest("hex").slice(0, 16);
-  const dir = path.join(UPLOADS_SUB, id);
-  fs.mkdirSync(dir, { recursive: true });
-  const file = `${hash}.${kind.ext}`;
-  fs.writeFileSync(path.join(dir, file), buf);
-  return { ok: true, url: `/articles/uploads/${id}/${file}` };
+  return saveImageUpload(id, buf);
 }
 
 // Sert un fichier uploadé (route publique). Garde anti-traversée + allowlist d'extension.

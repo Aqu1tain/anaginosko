@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getPublishedBySlug } from "@/lib/articles";
+import { getProfileByUserId } from "@/lib/profiles";
 import { byline } from "@/src/components/articles/labels";
 import ArticleRenderer from "@/src/components/articles/ArticleRenderer";
 
@@ -29,6 +30,9 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
   const { slug } = await params;
   const a = getPublishedBySlug(slug);
   if (!a) notFound();
+
+  // Signature liée au profil seulement si l'auteur signe de son nom (pas « Βιβλίον »).
+  const authorProfile = a.signature === "author" ? getProfileByUserId(a.author.userId) : null;
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -62,7 +66,11 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
       <a href="/articles" className="link text-sm text-base-content/60">← Articles</a>
       <h1 className="mt-3 text-4xl font-bold leading-tight">{a.title}</h1>
       <p className="mt-3 text-sm text-base-content/60">
-        {byline(a)}
+        {authorProfile ? (
+          <a href={`/contributeurs/${authorProfile.slug}`} className="link link-hover font-medium">{byline(a)}</a>
+        ) : (
+          byline(a)
+        )}
         {a.publishedAt && (
           <>
             {" · "}

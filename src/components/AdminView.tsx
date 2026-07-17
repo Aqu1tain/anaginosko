@@ -214,16 +214,21 @@ export default function AdminView() {
             </button>
           )}
         </div>
-        {canEdit && (
-          <div className="flex gap-2">
-            <a href="/admin/articles" className="btn btn-sm btn-outline border-base-300">
-              Articles
-            </a>
-            <a href="/admin/arbitrage" className="btn btn-sm btn-outline border-base-300">
-              Arbitrage LXX
-            </a>
-          </div>
-        )}
+        <div className="flex gap-2">
+          <a href="/mon-profil" className="btn btn-sm btn-outline border-base-300">
+            Mon profil
+          </a>
+          {canEdit && (
+            <>
+              <a href="/admin/articles" className="btn btn-sm btn-outline border-base-300">
+                Articles
+              </a>
+              <a href="/admin/arbitrage" className="btn btn-sm btn-outline border-base-300">
+                Arbitrage LXX
+              </a>
+            </>
+          )}
+        </div>
       </div>
 
       {tab === "analytics" && (
