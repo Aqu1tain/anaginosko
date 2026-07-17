@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/src/hooks/useAuth";
 import { fetchMyProfile, saveMyProfile, uploadProfilePhoto } from "@/src/lib/profileApi";
@@ -13,7 +13,6 @@ export default function ProfileEditor() {
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
   const [busy, setBusy] = useState(false);
-  const fileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!user) return;
@@ -77,19 +76,18 @@ export default function ProfileEditor() {
             {profile.photo && <img src={profile.photo} alt="" className="h-full w-full rounded-full object-cover" />}
           </div>
         </div>
-        <button type="button" className="btn btn-outline btn-sm" disabled={busy} onClick={() => fileRef.current?.click()}>
+        <label className="btn btn-outline btn-sm cursor-pointer">
           {busy ? "…" : "Changer la photo"}
-        </button>
-        <input
-          ref={fileRef}
-          type="file"
-          accept="image/png,image/jpeg,image/webp"
-          className="hidden"
-          onChange={(e) => {
-            if (e.target.files?.[0]) onPhoto(e.target.files[0]);
-            e.target.value = "";
-          }}
-        />
+          <input
+            type="file"
+            accept="image/png,image/jpeg,image/webp"
+            className="sr-only"
+            onChange={(e) => {
+              if (e.target.files?.[0]) onPhoto(e.target.files[0]);
+              e.target.value = "";
+            }}
+          />
+        </label>
       </div>
 
       <div className="mt-6 space-y-4">

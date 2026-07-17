@@ -46,34 +46,18 @@ export default function ArticleEditor({ articleId, initialContent, editable, dar
     uploadFile: async (file: File) => uploadImage(articleId, await compressImage(file)),
   });
 
-  // Upload direct : ouvre le sélecteur de fichier immédiatement (un clic depuis le
-  // menu « / »), compresse, envoie, puis insère l'image. Évite le parcours à
-  // plusieurs étapes du bloc image par défaut.
-  const uploadImageDirect = () => {
-    const input = document.createElement("input");
-    input.type = "file";
-    input.accept = "image/png,image/jpeg,image/webp";
-    input.onchange = async () => {
-      const file = input.files?.[0];
-      if (!file) return;
-      try {
-        const url = await uploadImage(articleId, await compressImage(file));
-        editor.insertBlocks([{ type: "image", props: { url } }], editor.getTextCursorPosition().block, "after");
-      } catch (e) {
-        console.error("Upload image échoué :", e);
-      }
-    };
-    input.click();
+  // Insertion d'image via un input NATIF (le <label> ci-dessous) : un input.click()
+  // programmatique serait bloqué hors « user activation » par les navigateurs.
+  const onPickImage = async (file: File) => {
+    try {
+      const url = await uploadImage(articleId, await compressImage(file));
+      editor.insertBlocks([{ type: "image", props: { url } }], editor.getTextCursorPosition().block, "after");
+    } catch (e) {
+      console.error("Upload image échoué :", e);
+    }
   };
 
   const citationItems = (): DefaultReactSuggestionItem[] => [
-    {
-      title: "Image",
-      subtext: "Téléverser depuis votre ordinateur",
-      aliases: ["image", "photo", "téléverser", "upload"],
-      group: "Anaginosko",
-      onItemClick: uploadImageDirect,
-    },
     {
       title: "Citation biblique",
       subtext: "Passage grec avec traduction",
@@ -121,6 +105,27 @@ export default function ArticleEditor({ articleId, initialContent, editable, dar
 
   return (
     <CitationContext.Provider value={{ editVerse }}>
+      {editable && (
+        <div className="flex items-center gap-2 border-b border-base-200 px-3 py-2">
+          <label className="btn btn-ghost btn-xs cursor-pointer gap-1.5">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18" rx="2" />
+              <circle cx="9" cy="9" r="2" />
+              <path d="M21 15l-5-5L5 21" />
+            </svg>
+            Ajouter une image
+            <input
+              type="file"
+              accept="image/png,image/jpeg,image/webp"
+              className="sr-only"
+              onChange={(e) => {
+                if (e.target.files?.[0]) onPickImage(e.target.files[0]);
+                e.target.value = "";
+              }}
+            />
+          </label>
+        </div>
+      )}
       <BlockNoteView
         editor={editor}
         editable={editable}
@@ -131,10 +136,7 @@ export default function ArticleEditor({ articleId, initialContent, editable, dar
         <SuggestionMenuController
           triggerCharacter="/"
           getItems={async (query) =>
-            filterSuggestionItems(
-              [...getDefaultReactSlashMenuItems(editor).filter((i) => i.title !== "Image"), ...citationItems()],
-              query,
-            )
+            filterSuggestionItems([...getDefaultReactSlashMenuItems(editor), ...citationItems()], query)
           }
         />
       </BlockNoteView>
