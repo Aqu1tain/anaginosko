@@ -46,7 +46,34 @@ export default function ArticleEditor({ articleId, initialContent, editable, dar
     uploadFile: async (file: File) => uploadImage(articleId, await compressImage(file)),
   });
 
+  // Upload direct : ouvre le sélecteur de fichier immédiatement (un clic depuis le
+  // menu « / »), compresse, envoie, puis insère l'image. Évite le parcours à
+  // plusieurs étapes du bloc image par défaut.
+  const uploadImageDirect = () => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/png,image/jpeg,image/webp";
+    input.onchange = async () => {
+      const file = input.files?.[0];
+      if (!file) return;
+      try {
+        const url = await uploadImage(articleId, await compressImage(file));
+        editor.insertBlocks([{ type: "image", props: { url } }], editor.getTextCursorPosition().block, "after");
+      } catch (e) {
+        console.error("Upload image échoué :", e);
+      }
+    };
+    input.click();
+  };
+
   const citationItems = (): DefaultReactSuggestionItem[] => [
+    {
+      title: "Image",
+      subtext: "Téléverser depuis votre ordinateur",
+      aliases: ["image", "photo", "téléverser", "upload"],
+      group: "Anaginosko",
+      onItemClick: uploadImageDirect,
+    },
     {
       title: "Citation biblique",
       subtext: "Passage grec avec traduction",
@@ -104,7 +131,10 @@ export default function ArticleEditor({ articleId, initialContent, editable, dar
         <SuggestionMenuController
           triggerCharacter="/"
           getItems={async (query) =>
-            filterSuggestionItems([...getDefaultReactSlashMenuItems(editor), ...citationItems()], query)
+            filterSuggestionItems(
+              [...getDefaultReactSlashMenuItems(editor).filter((i) => i.title !== "Image"), ...citationItems()],
+              query,
+            )
           }
         />
       </BlockNoteView>
