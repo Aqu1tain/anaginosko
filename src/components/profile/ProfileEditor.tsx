@@ -96,14 +96,14 @@ export default function ProfileEditor() {
 
         <div>
           <label className="text-sm font-medium">Adresse de la page</label>
-          <div className="mt-1 flex items-center gap-1">
-            <span className="text-sm text-base-content/50">/contributeurs/</span>
+          <label className="input input-bordered mt-1 flex w-full items-center gap-0.5 pl-3">
+            <span className="whitespace-nowrap text-sm text-base-content/40">/contributeurs/</span>
             <input
               value={profile.slug}
               onChange={(e) => set({ slug: e.target.value })}
-              className="input input-bordered w-full"
+              className="grow bg-transparent focus:outline-none"
             />
-          </div>
+          </label>
         </div>
 
         <div>
