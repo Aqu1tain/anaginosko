@@ -275,7 +275,7 @@ export default function AdminView() {
       </div>
 
       {tab === "analytics" && (
-        <section className="mt-5">
+        <section className="mt-6">
           {stats ? (
             <AdminAnalytics stats={stats} refLabel={locationLabel} />
           ) : (
@@ -285,7 +285,7 @@ export default function AdminView() {
       )}
 
       {tab === "reports" && canEdit && (
-        <section className="mt-5">
+        <section className="mt-6">
           <div className="flex flex-col gap-2">
             <input
               type="search"
@@ -335,9 +335,9 @@ export default function AdminView() {
             </span>
           </div>
 
-          <div className="mt-3 grid grid-cols-1 gap-2">
+          <div className="mt-4 grid grid-cols-1 gap-2.5">
             {filteredReports.map((r) => (
-              <div key={r.id} className="rounded-2xl border border-base-300 bg-base-100 p-3.5">
+              <div key={r.id} className="rounded-2xl border border-base-300 bg-base-100 p-4">
                 <div className="flex flex-wrap items-center gap-2 text-xs">
                   <span className="badge badge-sm badge-primary badge-soft">
                     {CATEGORY_LABEL[r.category]}
@@ -386,7 +386,7 @@ export default function AdminView() {
       )}
 
       {onList && (
-        <section className="mt-5">
+        <section className="mt-6">
           <div className="flex flex-wrap items-center gap-2">
             <input
               type="search"
@@ -401,9 +401,9 @@ export default function AdminView() {
               {filtered.length}{query ? ` / ${baseList.length}` : ""} {noun}{filtered.length > 1 ? "s" : ""}
             </span>
           </div>
-          <div className="mt-3 grid grid-cols-1 gap-2">
+          <div className="mt-4 grid grid-cols-1 gap-2.5">
             {filtered.map((a) => (
-              <div key={a.id} className="rounded-2xl border border-base-300 bg-base-100 p-3.5">
+              <div key={a.id} className="rounded-2xl border border-base-300 bg-base-100 p-4">
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0 break-words">
                   <a

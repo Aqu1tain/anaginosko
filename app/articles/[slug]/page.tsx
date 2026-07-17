@@ -64,7 +64,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
     <article className="mx-auto max-w-3xl pb-20 pt-6">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <a href="/articles" className="link text-sm text-base-content/60">← Articles</a>
-      <h1 className="mt-3 text-4xl font-bold leading-tight">{a.title}</h1>
+      <h1 className="mt-3 text-3xl font-bold leading-tight sm:text-4xl">{a.title}</h1>
       <p className="mt-3 text-sm text-base-content/60">
         {authorProfile ? (
           <a href={`/contributeurs/${authorProfile.slug}`} className="link link-hover font-medium">{byline(a)}</a>

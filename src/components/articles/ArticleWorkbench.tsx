@@ -218,7 +218,7 @@ export default function ArticleWorkbench({ id }: { id: string }) {
               queueSave({ title });
             }}
             placeholder="Titre de l'article"
-            className="w-full bg-transparent text-4xl font-bold leading-tight focus:outline-none disabled:text-base-content"
+            className="w-full bg-transparent text-2xl font-bold leading-tight focus:outline-none disabled:text-base-content sm:text-3xl lg:text-4xl"
           />
           <textarea
             value={article.excerpt}
