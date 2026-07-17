@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useAuth } from "@/src/hooks/useAuth";
 import { fetchArticles, createArticle } from "@/src/lib/articlesApi";
 import type { ArticleSummary, ArticleCategory, ArticleStatus, ArticleSignature } from "@/lib/articles";
-import { STATUS_LABEL, STATUS_BADGE, CATEGORY_LABEL } from "./labels";
+import { STATUS_LABEL, STATUS_DOT, CATEGORY_LABEL } from "./labels";
 
 const FILTERS: { key: "all" | ArticleStatus; label: string }[] = [
   { key: "all", label: "Tous" },
@@ -51,53 +51,77 @@ export default function ArticlesAdminView() {
     );
 
   return (
-    <div className="pb-16 pt-6">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-2xl font-bold">Articles</h1>
-        <button className="btn btn-primary btn-sm" onClick={() => setCreating(true)}>
+    <div className="mx-auto max-w-4xl pb-16 pt-8">
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">Articles</h1>
+          <p className="mt-1 text-sm text-base-content/60">Rédaction, relecture et publication.</p>
+        </div>
+        <button className="btn btn-primary gap-2" onClick={() => setCreating(true)}>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+            <path d="M12 5v14M5 12h14" />
+          </svg>
           Nouvel article
         </button>
       </div>
 
-      {error && <div className="alert alert-warning mt-3 text-sm">{error}</div>}
-      {isAdmin && reviewCount > 0 && (
-        <p className="mt-3 text-sm text-base-content/70">
-          {reviewCount} article{reviewCount > 1 ? "s" : ""} en attente de relecture.
-        </p>
-      )}
+      {error && <div className="alert alert-warning mt-4 text-sm">{error}</div>}
 
-      <div role="tablist" className="tabs tabs-boxed mt-4 w-fit">
+      <div className="mt-6 flex flex-wrap items-center gap-2">
         {FILTERS.map((f) => (
           <button
             key={f.key}
-            className={`tab ${filter === f.key ? "tab-active" : ""}`}
             onClick={() => setFilter(f.key)}
+            className={`rounded-full border px-3.5 py-1.5 text-sm transition-colors ${
+              filter === f.key
+                ? "border-primary bg-primary text-primary-content"
+                : "border-base-300 text-base-content/70 hover:bg-base-200"
+            }`}
           >
             {f.label}
-            {f.key === "in_review" && reviewCount > 0 ? ` (${reviewCount})` : ""}
+            {f.key === "in_review" && reviewCount > 0 ? ` · ${reviewCount}` : ""}
           </button>
         ))}
       </div>
 
-      <ul className="mt-4 divide-y divide-base-300 rounded-box border border-base-300">
-        {shown.length === 0 && <li className="px-4 py-6 text-center text-sm text-base-content/60">Aucun article.</li>}
-        {shown.map((a) => (
-          <li key={a.id}>
-            <Link
-              href={`/admin/articles/${a.id}`}
-              className="flex flex-wrap items-center gap-3 px-4 py-3 transition-colors hover:bg-base-200"
-            >
-              <span className={`badge badge-sm ${STATUS_BADGE[a.status]}`}>{STATUS_LABEL[a.status]}</span>
-              <span className="badge badge-sm badge-outline">{CATEGORY_LABEL[a.category]}</span>
-              <span className="min-w-0 flex-1 truncate font-medium">{a.title || "Sans titre"}</span>
-              {a.unresolvedComments > 0 && (
-                <span className="badge badge-sm badge-warning">{a.unresolvedComments} note{a.unresolvedComments > 1 ? "s" : ""}</span>
-              )}
-              <time className="shrink-0 text-xs text-base-content/50">{new Date(a.updatedAt).toLocaleDateString("fr-FR")}</time>
-            </Link>
-          </li>
-        ))}
-      </ul>
+      {shown.length === 0 ? (
+        <div className="mt-8 rounded-box border border-dashed border-base-300 py-16 text-center">
+          <p className="text-base-content/60">Aucun article ici.</p>
+          <button className="btn btn-primary btn-sm mt-4" onClick={() => setCreating(true)}>Créer un article</button>
+        </div>
+      ) : (
+        <ul className="mt-5 space-y-2.5">
+          {shown.map((a) => (
+            <li key={a.id}>
+              <Link
+                href={`/admin/articles/${a.id}`}
+                className="group flex items-center gap-4 rounded-xl border border-base-300 bg-base-100 px-4 py-3.5 shadow-sm transition-all hover:border-base-content/20 hover:shadow-md"
+              >
+                <span className={`h-2.5 w-2.5 shrink-0 rounded-full ${STATUS_DOT[a.status]}`} title={STATUS_LABEL[a.status]} />
+                <div className="min-w-0 flex-1">
+                  <p className="truncate font-semibold group-hover:text-primary">{a.title || "Sans titre"}</p>
+                  <p className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-base-content/50">
+                    <span>{CATEGORY_LABEL[a.category]}</span>
+                    <span aria-hidden>·</span>
+                    <span>{STATUS_LABEL[a.status]}</span>
+                    <span aria-hidden>·</span>
+                    <time>modifié le {new Date(a.updatedAt).toLocaleDateString("fr-FR")}</time>
+                  </p>
+                </div>
+                {a.unresolvedComments > 0 && (
+                  <span className="badge badge-warning badge-sm shrink-0 gap-1">
+                    {a.unresolvedComments}
+                    <span className="hidden sm:inline">note{a.unresolvedComments > 1 ? "s" : ""}</span>
+                  </span>
+                )}
+                <svg className="shrink-0 text-base-content/30 transition-transform group-hover:translate-x-0.5" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M9 18l6-6-6-6" />
+                </svg>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
 
       {creating && (
         <CreateDialog

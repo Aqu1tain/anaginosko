@@ -20,6 +20,14 @@ export const STATUS_BADGE: Record<ArticleStatus, string> = {
   archived: "badge-neutral",
 };
 
+export const STATUS_DOT: Record<ArticleStatus, string> = {
+  draft: "bg-base-content/30",
+  in_review: "bg-warning",
+  changes_requested: "bg-error",
+  published: "bg-success",
+  archived: "bg-base-content/20",
+};
+
 export const CATEGORY_LABEL: Record<ArticleCategory, string> = {
   site: "Site",
   philologie: "Philologie",

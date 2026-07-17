@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useAuth } from "@/src/hooks/useAuth";
 import { fetchArticle, saveArticle, transitionArticle, addComment, resolveComment } from "@/src/lib/articlesApi";
 import type { Article, ArticlePatch, ArticleSignature, ArticleStatus, TransitionAction } from "@/lib/articles";
-import { STATUS_LABEL, STATUS_BADGE, CATEGORY_LABEL } from "./labels";
+import { STATUS_LABEL, STATUS_DOT, CATEGORY_LABEL } from "./labels";
 import ReviewPanel from "./ReviewPanel";
 
 type ActionDef = { action: TransitionAction; label: string; style: string };
@@ -167,19 +167,30 @@ export default function ArticleWorkbench({ id }: { id: string }) {
   const actions = availableActions(article.status, isAdmin, isAuthor);
 
   return (
-    <div className="pb-16 pt-4">
-      <div className="mb-4 flex items-center justify-between gap-3">
-        <Link href="/admin/articles" className="link text-sm text-base-content/70">← Articles</Link>
-        <SaveIndicator state={saveState} />
+    <div className="mx-auto max-w-5xl pb-16 pt-4">
+      <div className="mb-5 flex items-center justify-between gap-3 border-b border-base-300 pb-3">
+        <Link href="/admin/articles" className="flex items-center gap-1.5 text-sm text-base-content/60 hover:text-base-content">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M15 18l-6-6 6-6" />
+          </svg>
+          Articles
+        </Link>
+        <div className="flex items-center gap-3">
+          <SaveIndicator state={saveState} />
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-base-200 px-3 py-1 text-xs font-medium">
+            <span className={`h-2 w-2 rounded-full ${STATUS_DOT[article.status]}`} />
+            {STATUS_LABEL[article.status]}
+          </span>
+        </div>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
+      <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_300px]">
         <div>
-          <div className="mb-4 flex flex-wrap items-center gap-2 text-xs text-base-content/60">
-            <span className="badge badge-outline">{CATEGORY_LABEL[article.category]}</span>
+          <div className="mb-4 flex flex-wrap items-center gap-3 text-xs text-base-content/60">
+            <span className="rounded-full border border-base-300 px-2.5 py-0.5">{CATEGORY_LABEL[article.category]}</span>
             {article.category === "philologie" && (
-              <label className="flex items-center gap-1">
-                Signature
+              <label className="flex items-center gap-1.5">
+                Signé
                 <select
                   className="select select-xs select-bordered"
                   value={article.signature}
@@ -190,7 +201,7 @@ export default function ArticleWorkbench({ id }: { id: string }) {
                     queueSave({ signature });
                   }}
                 >
-                  <option value="author">Mon nom ({article.author.name})</option>
+                  <option value="author">{article.author.name}</option>
                   <option value="collective">Βιβλίον</option>
                 </select>
               </label>
@@ -207,7 +218,7 @@ export default function ArticleWorkbench({ id }: { id: string }) {
               queueSave({ title });
             }}
             placeholder="Titre de l'article"
-            className="input input-ghost w-full px-0 text-3xl font-bold focus:outline-none"
+            className="w-full bg-transparent text-4xl font-bold leading-tight focus:outline-none disabled:text-base-content"
           />
           <textarea
             value={article.excerpt}
@@ -217,9 +228,9 @@ export default function ArticleWorkbench({ id }: { id: string }) {
               setArticle((a) => (a ? { ...a, excerpt } : a));
               queueSave({ excerpt });
             }}
-            placeholder="Résumé (liste et référencement)"
+            placeholder="Résumé (affiché dans la liste et le référencement)"
             rows={2}
-            className="textarea textarea-ghost mt-1 w-full resize-none px-0 text-base text-base-content/80 focus:outline-none"
+            className="mt-2 w-full resize-none bg-transparent text-base text-base-content/70 focus:outline-none"
           />
 
           {saveState === "conflict" && (
@@ -229,7 +240,7 @@ export default function ArticleWorkbench({ id }: { id: string }) {
           )}
 
           {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events */}
-          <div className="mt-4 rounded-box border border-base-300 bg-base-100" onClick={captureBlock}>
+          <div className="mt-5 overflow-hidden rounded-xl border border-base-300 bg-base-100 shadow-sm" onClick={captureBlock}>
             <ArticleEditor
               articleId={article.id}
               initialContent={article.content}
@@ -242,30 +253,31 @@ export default function ArticleWorkbench({ id }: { id: string }) {
           </div>
         </div>
 
-        <aside className="space-y-6">
-          <div>
-            <span className={`badge ${STATUS_BADGE[article.status]}`}>{STATUS_LABEL[article.status]}</span>
-            {actions.length > 0 && (
-              <div className="mt-3 flex flex-col gap-2">
+        <aside className="space-y-4 lg:sticky lg:top-4 lg:self-start">
+          {actions.length > 0 && (
+            <div className="rounded-xl border border-base-300 bg-base-100 p-4 shadow-sm">
+              <div className="flex flex-col gap-2">
                 {actions.map((a) => (
                   <button key={a.action} className={`btn btn-sm ${a.style}`} onClick={() => runTransition(a.action)}>
                     {a.label}
                   </button>
                 ))}
               </div>
-            )}
-            {actionError && <p className="mt-2 text-sm text-error">{actionError}</p>}
-          </div>
+              {actionError && <p className="mt-2 text-sm text-error">{actionError}</p>}
+            </div>
+          )}
 
-          <ReviewPanel
-            comments={article.comments}
-            canComment={canComment}
-            selected={selected}
-            onClearSelected={() => setSelected(null)}
-            onAdd={handleAddComment}
-            onResolve={handleResolve}
-            onJumpTo={jumpTo}
-          />
+          <div className="rounded-xl border border-base-300 bg-base-100 p-4 shadow-sm">
+            <ReviewPanel
+              comments={article.comments}
+              canComment={canComment}
+              selected={selected}
+              onClearSelected={() => setSelected(null)}
+              onAdd={handleAddComment}
+              onResolve={handleResolve}
+              onJumpTo={jumpTo}
+            />
+          </div>
         </aside>
       </div>
     </div>
