@@ -52,7 +52,7 @@ export default function PrivacyView() {
             d’identifiant persistant dans le navigateur. Les données servent uniquement à produire
             des statistiques agrégées de fréquentation, sur la base de notre intérêt légitime à
             comprendre l’usage du service. Elles ne sont ni vendues ni utilisées pour la publicité
-            ou le profilage intersites.
+            ou le profilage intersites. Les données de visite sont conservées pendant 13 mois.
           </p>
         </section>
 
@@ -63,7 +63,8 @@ export default function PrivacyView() {
             réglages de lecture. Ce stockage est fonctionnel et n’est pas transmis à Anaginosko.
             L’hébergeur et le serveur web peuvent par ailleurs traiter temporairement l’adresse IP,
             la date, la ressource demandée et des informations techniques dans leurs journaux, pour
-            la sécurité, le diagnostic et le bon fonctionnement du service.
+            la sécurité, le diagnostic et le bon fonctionnement du service. Les journaux du serveur
+            web sont conservés pendant 14 jours.
           </p>
         </section>
 
