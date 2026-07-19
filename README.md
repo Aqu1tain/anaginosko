@@ -47,15 +47,23 @@ Pour la review locale avec le backend, `next.config.ts` proxifie `/api` vers
   occurrences et glose Bailly.
 - **Alphabet** de référence interactif : lettres, diphtongues, esprits, accents.
 - **Mode manuscrit** (capitales, scriptio continua), **taille de texte** réglable,
-  traduction française (néo-Crampon), thème, préférences mémorisées.
+  traduction française (néo-Crampon Libre), thème, préférences mémorisées.
 - **Annotations** philologiques (rôle contributeur), partagées entre un passage et
   son chapitre NT correspondant.
 
 ## Données et prononciation
 
-- Texte grec : **SBLGNT** ; analyse morphologique : **MorphGNT** (CC BY-SA).
-- Gloses : **Bailly** (via api.bailly.app, CC BY-NC-ND), couche philologique.
-- Traduction française : **néo-Crampon** (domaine public).
+- Texte grec NT : **SBLGNT** (CC BY 4.0) ; analyse morphologique :
+  **MorphGNT 6.12** (CC BY-SA 3.0).
+- Texte grec LXX et morphologie : **LXX-Rahlfs-1935**, © 2017 Eliran Wong
+  (CC BY-NC-SA 4.0), transformé et indexé par Anaginosko.
+- Gloses : **Bailly 2020** (via api.bailly.app, CC BY-NC-ND 4.0), couche
+  philologique reproduite sans modification.
+- Traduction française NT : **Sainte Bible néo-Crampon Libre**, © 2022
+  Fraternité de Tibériade (CC BY-SA 4.0).
+- Traduction française LXX : **Giguet** (1872, domaine public), transcription
+  Wikisource et adaptation sous CC BY-SA 4.0 ; versets expressément marqués
+  « traduction Anaginosko » sous droits réservés.
 - `scripts/build-data.mjs` dérive les passages des données NT (`public/nt/`) ;
   `scripts/build-nt-audio.mjs` génère l'audio via Azure.
 - Règles de prononciation (`scripts/lib/translit-ipa.mjs`) :
@@ -77,6 +85,7 @@ Pour la review locale avec le backend, `next.config.ts` proxifie `/api` vers
 
 ## Licence
 
-Tous droits réservés (voir [LICENSE](LICENSE)). Code et interface : Corentin
-Renard. Les annotations et notes philologiques sont la propriété intellectuelle
-de Biblion (Noah Jaubert).
+Le code, l’interface et les contributions originales sont sous droits réservés
+(voir [LICENSE](LICENSE)). Les données tierces conservent leurs propres régimes,
+détaillés dans [DATA-LICENSES.md](DATA-LICENSES.md) et
+[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).

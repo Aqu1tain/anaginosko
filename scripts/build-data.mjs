@@ -125,7 +125,9 @@ ${t.translitRestituee ? `<p><strong>Restituée :</strong> ${esc(t.translitRestit
 </article>`,
   )
   .join("\n")}
-<footer><p>Texte grec : SBLGNT (domaine public).</p></footer>
+<footer><p>Texte grec : SBLGNT, éd. Michael W. Holmes, sous licence
+<a href="https://sblgnt.com/license/">CC BY 4.0</a>. Conversion, découpage et
+translittération par Anaginosko.</p></footer>
 </body>
 </html>
 `;

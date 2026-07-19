@@ -1,7 +1,7 @@
-// Mesure d'audience via Matomo auto-hébergé. Anonyme et sans cookie : IP
-// anonymisée côté serveur, aucun identifiant persistant. Conforme à l'exemption
-// de consentement (mesure d'audience) : aucun bandeau requis. La provenance des
-// visiteurs (référent : TikTok, Google, direct…) est captée automatiquement.
+// Mesure d'audience via Matomo auto-hébergé, sans cookie ni identifiant
+// persistant côté navigateur. La conformité de l'exemption de consentement
+// dépend aussi de la configuration serveur Matomo (notamment minimisation de
+// l'adresse IP, finalités et durées), pas seulement de ce code client.
 //
 // Tout est inerte tant que NEXT_PUBLIC_MATOMO_URL / _SITE_ID ne sont pas définis :
 // la branche peut donc vivre en prod sans rien émettre avant l'installation de

@@ -42,16 +42,21 @@ const TOUR_STEPS: TourStep[] = [
   },
 ];
 
-// Nom affiché d'un traducteur maison. Le philologue signe « Βιβλίον » -> « Biblion » ;
-// le compte admin signe de son displayName (« Admin » -> « Corentin Renard »). Idéalement
-// les displayName des comptes portent le vrai nom ; cette table couvre les valeurs actuelles.
-const CREDIT_NAMES: Record<string, string> = { "Βιβλίον": "Biblion", Admin: "Corentin Renard" };
-const creditName = (by: string) => CREDIT_NAMES[by] ?? by;
+// Les données conservent une signature interne du traducteur. L'interface publie
+// la signature éditoriale commune choisie par les auteurs. Les identifiants nommés
+// sont reconnus sans imposer une migration du corpus vivant dans cette branche.
+const ANAGINOSKO_TRANSLATORS = new Set([
+  "corentin-renard",
+  "noah-jaubert",
+  "Admin",
+  "Βιβλίον",
+]);
+const creditName = (by: string) => ANAGINOSKO_TRANSLATORS.has(by) ? "Anaginosko" : by;
 
 // Petit « i » après CHAQUE verset : au survol, il révèle son traducteur (Giguet par
 // défaut, ou le traducteur maison). Les versets maison ont un « i » un peu plus marqué.
 function TranslatorTip({ by }: { by: string }) {
-  const maison = !!CREDIT_NAMES[by];
+  const maison = ANAGINOSKO_TRANSLATORS.has(by);
   return (
     <span
       className={`tooltip tooltip-left ml-1 inline-block cursor-help select-none align-middle text-[0.85em] ${maison ? "text-secondary/90" : "text-base-content/45"}`}
@@ -414,7 +419,7 @@ export default function Reader({ text }: { text: Text }) {
   // « Traduit par : <traducteur de base>[, <traducteurs maison distincts>] » : le
   // traducteur de base (Giguet pour la LXX, Crampon pour le NT) plus, le cas échéant,
   // qui a traduit maison des versets de CE chapitre. Détail par verset via le « i ».
-  const baseTranslator = isLxx ? "Pierre Giguet" : "Bible Crampon";
+  const baseTranslator = isLxx ? "Pierre Giguet" : "Sainte Bible néo-Crampon Libre";
   const maisonNames = useMemo(
     () => (text.maison ? [...new Set(Object.values(text.maison))].map(creditName) : []),
     [text.maison],
@@ -428,7 +433,11 @@ export default function Reader({ text }: { text: Text }) {
     [isLxx, greekVerses, french, text.maison, hasFrench],
   );
   const who = [...(hasBase ? [baseTranslator] : []), ...maisonNames].join(", ");
-  const provenance = !hasBase ? "" : isLxx ? " · d’après les Septante (1872, domaine public)" : " · néo-Crampon (domaine public)";
+  const provenance = !hasBase
+    ? ""
+    : isLxx
+      ? " · transcription Wikisource adaptée, CC BY-SA 4.0"
+      : " · © 2022 Fraternité de Tibériade, CC BY-SA 4.0";
   const translatedBy = `Traduit par : ${who}${provenance}.`;
 
   // Lien profond d’un verset : ancré à droite de la zone, révélé au survol (cf. classes
