@@ -2,6 +2,7 @@ import "server-only";
 import fs from "node:fs";
 import path from "node:path";
 import { createHash } from "node:crypto";
+import { isArticleCategory, isAdminOnlyCategory } from "../src/data/articleCategories";
 
 // Stockage éditorial des articles, côté Next (pas d'API AdonisJS : la préprod tourne
 // sur l'image API de prod). Un fichier JSON par article dans ARTICLES_DIR, écritures
@@ -13,7 +14,8 @@ import { createHash } from "node:crypto";
 // la séquence est atomique. Le compteur `rev` détecte en plus les sauvegardes sur une
 // version périmée (deux onglets de l'auteur) et répond 409.
 
-export type ArticleCategory = "site" | "philologie";
+// Catégorie : id du registre partagé src/data/articleCategories.ts.
+export type ArticleCategory = string;
 export type ArticleStatus = "draft" | "in_review" | "changes_requested" | "published" | "archived";
 export type TransitionAction = "submit" | "request_changes" | "approve" | "unpublish" | "archive" | "restore";
 
@@ -163,10 +165,9 @@ export function createArticle(
   const title = (input.title || "").trim();
   if (!title) return { ok: false, status: 400, error: "Titre requis." };
   if (title.length > MAX_TITLE) return { ok: false, status: 400, error: "Titre trop long." };
-  if (input.category !== "site" && input.category !== "philologie")
-    return { ok: false, status: 400, error: "Catégorie invalide." };
-  if (input.category === "site" && !isAdmin(auth))
-    return { ok: false, status: 403, error: "Catégorie « Site » réservée aux admins." };
+  if (!isArticleCategory(input.category)) return { ok: false, status: 400, error: "Catégorie invalide." };
+  if (isAdminOnlyCategory(input.category) && !isAdmin(auth))
+    return { ok: false, status: 403, error: "Catégorie « Vie du site » réservée aux admins." };
   if (auth.id == null) return { ok: false, status: 401, error: "Non authentifié." };
 
   const ts = now();
@@ -197,6 +198,7 @@ export type ArticlePatch = {
   title?: string;
   excerpt?: string;
   cover?: string | null;
+  category?: ArticleCategory;
   content?: unknown[];
 };
 
@@ -227,6 +229,12 @@ export function saveArticle(
   if (patch.cover !== undefined) {
     if (patch.cover !== null && !isUploadUrl(patch.cover)) return { ok: false, status: 400, error: "Couverture invalide." };
     a.cover = patch.cover;
+  }
+  if (patch.category !== undefined) {
+    if (!isArticleCategory(patch.category)) return { ok: false, status: 400, error: "Catégorie invalide." };
+    if (isAdminOnlyCategory(patch.category) && !isAdmin(auth))
+      return { ok: false, status: 403, error: "Catégorie « Vie du site » réservée aux admins." };
+    a.category = patch.category;
   }
   if (patch.content !== undefined) {
     if (!Array.isArray(patch.content)) return { ok: false, status: 400, error: "Contenu invalide." };

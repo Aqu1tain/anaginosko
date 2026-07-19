@@ -1,4 +1,5 @@
-import type { ArticleStatus, ArticleCategory } from "@/lib/articles";
+import type { ArticleStatus } from "@/lib/articles";
+import { ARTICLE_CATEGORIES } from "@/src/data/articleCategories";
 
 export const STATUS_LABEL: Record<ArticleStatus, string> = {
   draft: "Brouillon",
@@ -24,7 +25,6 @@ export const STATUS_DOT: Record<ArticleStatus, string> = {
   archived: "bg-base-content/20",
 };
 
-export const CATEGORY_LABEL: Record<ArticleCategory, string> = {
-  site: "Site",
-  philologie: "Philologie",
-};
+export const CATEGORY_LABEL: Record<string, string> = Object.fromEntries(
+  ARTICLE_CATEGORIES.map((c) => [c.id, c.label]),
+);

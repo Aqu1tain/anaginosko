@@ -18,6 +18,7 @@ import {
 import { compressImage } from "./compressImage";
 import type { Article, ArticleComment, ArticlePatch, ArticleStatus, ArticleEvent, TransitionAction } from "@/lib/articles";
 import { STATUS_LABEL, STATUS_DOT, CATEGORY_LABEL } from "./labels";
+import { ARTICLE_CATEGORIES, isAdminOnlyCategory } from "@/src/data/articleCategories";
 import ReviewPanel from "./ReviewPanel";
 
 type ActionDef = { action: TransitionAction; label: string; style: string };
@@ -313,7 +314,27 @@ export default function ArticleWorkbench({ id }: { id: string }) {
       <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_300px]">
         <div>
           <div className="mb-4 flex flex-wrap items-center gap-3 text-xs text-base-content/60">
-            <span className="rounded-full border border-base-300 px-2.5 py-0.5">{CATEGORY_LABEL[article.category]}</span>
+            {editable ? (
+              <select
+                className="select select-xs select-bordered"
+                value={article.category}
+                onChange={(e) => {
+                  const category = e.target.value;
+                  setArticle((a) => (a ? { ...a, category } : a));
+                  queueSave({ category });
+                }}
+              >
+                {ARTICLE_CATEGORIES.filter((c) => isAdmin || !isAdminOnlyCategory(c.id)).map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.label}
+                  </option>
+                ))}
+              </select>
+            ) : (
+              <span className="rounded-full border border-base-300 px-2.5 py-0.5">
+                {CATEGORY_LABEL[article.category] ?? article.category}
+              </span>
+            )}
             <span>
               Signé du nom d&apos;affichage de votre <Link href="/mon-profil" className="link">profil</Link>
             </span>

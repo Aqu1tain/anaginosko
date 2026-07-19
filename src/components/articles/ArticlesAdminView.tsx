@@ -7,6 +7,7 @@ import { useAuth } from "@/src/hooks/useAuth";
 import { fetchArticles, createArticle } from "@/src/lib/articlesApi";
 import type { ArticleSummary, ArticleCategory, ArticleStatus } from "@/lib/articles";
 import { STATUS_LABEL, STATUS_DOT, CATEGORY_LABEL } from "./labels";
+import { ARTICLE_CATEGORIES, isAdminOnlyCategory } from "@/src/data/articleCategories";
 
 const FILTERS: { key: "all" | ArticleStatus; label: string }[] = [
   { key: "all", label: "Tous" },
@@ -180,8 +181,11 @@ function CreateDialog({
           value={category}
           onChange={(e) => setCategory(e.target.value as ArticleCategory)}
         >
-          <option value="philologie">Philologie</option>
-          {isAdmin && <option value="site">Site</option>}
+          {ARTICLE_CATEGORIES.filter((c) => isAdmin || !isAdminOnlyCategory(c.id)).map((c) => (
+            <option key={c.id} value={c.id}>
+              {c.label}
+            </option>
+          ))}
         </select>
         <p className="mt-3 text-xs text-base-content/50">
           L&apos;article sera signé du nom d&apos;affichage de votre profil, avec votre photo.

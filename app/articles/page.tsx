@@ -3,6 +3,7 @@ import Link from "next/link";
 import { listPublished, type ArticleSummary } from "@/lib/articles";
 import { publicAuthor, type PublicAuthor } from "@/lib/profiles";
 import { CATEGORY_LABEL } from "@/src/components/articles/labels";
+import { ARTICLE_CATEGORIES } from "@/src/data/articleCategories";
 import Avatar from "@/src/components/profile/Avatar";
 import BreadcrumbJsonLd from "@/app/_components/BreadcrumbJsonLd";
 
@@ -14,11 +15,6 @@ export const metadata: Metadata = {
   alternates: { canonical: "/articles" },
 };
 
-const TABS: { key: "" | "site" | "philologie"; label: string; href: string }[] = [
-  { key: "", label: "Tous", href: "/articles" },
-  { key: "philologie", label: "Philologie", href: "/articles?categorie=philologie" },
-  { key: "site", label: "Vie du site", href: "/articles?categorie=site" },
-];
 
 const dateLabel = (iso: string | null) =>
   iso ? new Date(iso).toLocaleDateString("fr-FR", { year: "numeric", month: "long", day: "numeric" }) : null;
@@ -85,8 +81,18 @@ function ArticleCard({ a, author }: { a: ArticleSummary; author: PublicAuthor })
 
 export default async function ArticlesPage({ searchParams }: { searchParams: Promise<{ categorie?: string }> }) {
   const { categorie } = await searchParams;
-  const active = categorie === "site" || categorie === "philologie" ? categorie : "";
   const all = listPublished();
+  // Onglets dynamiques : seules les catégories réellement publiées apparaissent.
+  const present = new Set(all.map((a) => a.category));
+  const tabs = [
+    { key: "", label: "Tous", href: "/articles" },
+    ...ARTICLE_CATEGORIES.filter((c) => present.has(c.id)).map((c) => ({
+      key: c.id,
+      label: c.label,
+      href: `/articles?categorie=${c.id}`,
+    })),
+  ];
+  const active = categorie && present.has(categorie) ? categorie : "";
   const articles = active ? all.filter((a) => a.category === active) : all;
   const authors = new Map(articles.map((a) => [a.author.userId, publicAuthor(a.author.userId, a.author.name)]));
   const [featured, ...rest] = articles;
@@ -100,7 +106,7 @@ export default async function ArticlesPage({ searchParams }: { searchParams: Pro
       </p>
 
       <div className="mt-6 flex flex-wrap items-center gap-2">
-        {TABS.map((t) => (
+        {tabs.map((t) => (
           <Link
             key={t.key}
             href={t.href}
