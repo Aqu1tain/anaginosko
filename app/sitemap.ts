@@ -31,6 +31,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     url("/alphabet"),
     url("/prononciation"),
     url("/mentions"),
+    url("/confidentialite"),
     ...corpusUrls,
     ...texts.map((t) => url(`/text/${t.id}`)),
   ];

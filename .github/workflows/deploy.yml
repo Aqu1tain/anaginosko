@@ -4,6 +4,12 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      deploy_corpus:
+        description: "Synchroniser explicitement les corpus NT/LXX vers la production"
+        required: true
+        default: false
+        type: boolean
 
 concurrency:
   group: deploy
@@ -56,14 +62,25 @@ jobs:
           TS=$(date +%Y%m%d%H%M%S)
           REL="/opt/anaginosko-web/releases/$TS"
 
-          # 1) Données NT + LXX : lues au runtime par le client, servies par nginx
-          #    depuis /var/www/anaginosko/{nt,lxx}. L'audio n'est JAMAIS touché.
-          rsync -az --delete -e "$SSH" public/nt/ "$HOST:/var/www/anaginosko/nt/"
-          rsync -az --delete -e "$SSH" public/lxx/ "$HOST:/var/www/anaginosko/lxx/"
+          # 1) Les corpus de production peuvent contenir du travail éditorial qui
+          #    n'est pas encore revenu dans Git. Un push sur main ne les touche donc
+          #    JAMAIS. Leur synchronisation destructive exige un lancement manuel et
+          #    l'option explicite deploy_corpus=true. L'audio n'est jamais touché.
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.deploy_corpus }}" = "true" ]; then
+            rsync -az --delete -e "$SSH" public/nt/ "$HOST:/var/www/anaginosko/nt/"
+            rsync -az --delete -e "$SSH" public/lxx/ "$HOST:/var/www/anaginosko/lxx/"
+          else
+            echo "Corpus NT/LXX de production préservés (aucune synchronisation)."
+          fi
 
           # 2) Nouvelle release (bundle standalone immuable)
           $SSH "$HOST" "mkdir -p $REL"
           rsync -az --delete -e "$SSH" deploy-out/ "$HOST:$REL/"
+
+          # L'arbitrage de production peut lui aussi être plus récent que Git.
+          # Recopier les deux fichiers mutables de la release active dans la nouvelle
+          # empêche une release applicative de revenir à leur version du dépôt.
+          $SSH "$HOST" "set -eu; CURRENT=/opt/anaginosko-web/current/data; NEW=$REL/data; mkdir -p \"\$NEW\"; for FILE in lxx-arbitration.json lxx-biblion-validated.json; do if [ -f \"\$CURRENT/\$FILE\" ]; then cp -p \"\$CURRENT/\$FILE\" \"\$NEW/\$FILE\"; echo \"Arbitrage préservé: \$FILE\"; fi; done"
 
           # 3) Bascule atomique du symlink + redémarrage du service
           $SSH "$HOST" "ln -sfn $REL /opt/anaginosko-web/current && sudo systemctl restart anaginosko-web"
