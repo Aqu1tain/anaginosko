@@ -208,6 +208,9 @@ export default function ArticleWorkbench({ id }: { id: string }) {
   };
 
   const captureBlock = (e: React.MouseEvent) => {
+    // En écriture, un clic pose le curseur dans l'éditeur, rien d'autre. La
+    // sélection d'une ligne à commenter n'existe qu'en mode relecture (lecture seule).
+    if (editableRef.current) return;
     const el = (e.target as HTMLElement).closest("[data-id]");
     const bid = el?.getAttribute("data-id");
     if (bid) setSelected({ id: bid, excerpt: (el?.textContent || "").trim().slice(0, 70) });
@@ -476,6 +479,7 @@ export default function ArticleWorkbench({ id }: { id: string }) {
             <ReviewPanel
               comments={article.comments}
               canComment={canComment}
+              selectable={!editable}
               selected={selected}
               highlightId={highlightId}
               excerptFor={excerptFor}

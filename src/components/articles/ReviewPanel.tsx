@@ -9,6 +9,7 @@ import type { ArticleComment } from "@/lib/articles";
 export default function ReviewPanel({
   comments,
   canComment,
+  selectable,
   selected,
   highlightId,
   excerptFor,
@@ -19,6 +20,8 @@ export default function ReviewPanel({
 }: {
   comments: ArticleComment[];
   canComment: boolean;
+  // Sélection de ligne possible seulement en relecture (éditeur en lecture seule).
+  selectable: boolean;
   selected: { id: string; excerpt: string } | null;
   highlightId: string | null;
   excerptFor: (blockId: string) => string | null;
@@ -76,11 +79,11 @@ export default function ReviewPanel({
                 ✕
               </button>
             </div>
-          ) : (
+          ) : selectable ? (
             <p className="mb-1 text-xs text-base-content/50">
               Cliquez une ligne de l&apos;article pour la commenter, ou écrivez un commentaire général.
             </p>
-          )}
+          ) : null}
           <textarea
             ref={composerRef}
             value={text}
