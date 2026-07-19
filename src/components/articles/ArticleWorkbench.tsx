@@ -20,6 +20,7 @@ import type { Article, ArticleComment, ArticlePatch, ArticleStatus, ArticleEvent
 import { STATUS_LABEL, STATUS_DOT, CATEGORY_LABEL } from "./labels";
 import { ARTICLE_CATEGORIES, isAdminOnlyCategory } from "@/src/data/articleCategories";
 import ReviewPanel from "./ReviewPanel";
+import CommentThread from "./CommentThread";
 
 type ActionDef = { action: TransitionAction; label: string; style: string };
 
@@ -159,7 +160,6 @@ export default function ArticleWorkbench({ id }: { id: string }) {
     [flush],
   );
 
-  const [selected, setSelected] = useState<{ id: string; excerpt: string } | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
   const [noteOpen, setNoteOpen] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -207,29 +207,56 @@ export default function ArticleWorkbench({ id }: { id: string }) {
     setArticle(await resolveComment(id, commentId, resolved));
   };
 
+  // Fils ancrés façon Google Docs : ils s'ouvrent SUR la ligne (popover flottant à
+  // sa hauteur), une bulle « + » apparaît au survol en relecture, et les lignes déjà
+  // commentées portent une pastille de compte dans la marge.
+  const editorBoxRef = useRef<HTMLDivElement>(null);
+  const [markers, setMarkers] = useState<{ blockId: string; top: number; count: number; hot: boolean; firstId: string }[]>([]);
+  const [openThread, setOpenThread] = useState<{ blockId: string; top: number } | null>(null);
+  const [hoverAdd, setHoverAdd] = useState<{ blockId: string; top: number } | null>(null);
+  const comments = article?.comments;
+
+  const topOf = (el: Element): number =>
+    el.getBoundingClientRect().top - (editorBoxRef.current?.getBoundingClientRect().top ?? 0);
+
   const captureBlock = (e: React.MouseEvent) => {
-    // En écriture, un clic pose le curseur dans l'éditeur, rien d'autre. La
-    // sélection d'une ligne à commenter n'existe qu'en mode relecture (lecture seule).
+    // En écriture, un clic pose le curseur dans l'éditeur, rien d'autre. Ouvrir un
+    // fil au clic d'une ligne n'existe qu'en relecture (lecture seule).
     if (editableRef.current) return;
     const el = (e.target as HTMLElement).closest("[data-id]");
     const bid = el?.getAttribute("data-id");
-    if (bid) setSelected({ id: bid, excerpt: (el?.textContent || "").trim().slice(0, 70) });
-  };
-  const jumpTo = (blockId: string) => {
-    const el = document.querySelector(`[data-id="${blockId}"]`);
-    if (!el) return;
-    el.scrollIntoView({ behavior: "smooth", block: "center" });
-    el.classList.add("ring-2", "ring-primary", "rounded");
-    setTimeout(() => el.classList.remove("ring-2", "ring-primary", "rounded"), 1600);
+    if (bid && el) setOpenThread({ blockId: bid, top: topOf(el) });
   };
 
-  // Pastilles de marge : signalent, au niveau de chaque ligne commentée, le nombre
-  // de commentaires (ambre = non résolus). Clic : le fil correspondant est amené à
-  // l'écran et surligné dans le panneau de revue.
-  const editorBoxRef = useRef<HTMLDivElement>(null);
-  const [markers, setMarkers] = useState<{ blockId: string; top: number; count: number; hot: boolean; firstId: string }[]>([]);
-  const [highlightId, setHighlightId] = useState<string | null>(null);
-  const comments = article?.comments;
+  const trackHover = (e: React.MouseEvent) => {
+    if (editableRef.current || openThread) return;
+    const el = (e.target as HTMLElement).closest("[data-id]");
+    const bid = el?.getAttribute("data-id");
+    if (!bid || !el) {
+      setHoverAdd(null);
+      return;
+    }
+    if (hoverAdd?.blockId !== bid) setHoverAdd({ blockId: bid, top: topOf(el) });
+  };
+
+  const openThreadFor = (blockId: string) => {
+    const el = editorBoxRef.current?.querySelector(`[data-id="${blockId}"]`);
+    if (!el) return;
+    el.scrollIntoView({ behavior: "smooth", block: "center" });
+    setOpenThread({ blockId, top: topOf(el) });
+  };
+
+  // Clic hors du fil ouvert : fermeture (les déclencheurs portent data-thread-trigger).
+  useEffect(() => {
+    if (!openThread) return;
+    const onDown = (e: MouseEvent) => {
+      const t = e.target as HTMLElement;
+      if (t.closest("[data-thread-popover]") || t.closest("[data-thread-trigger]")) return;
+      setOpenThread(null);
+    };
+    document.addEventListener("mousedown", onDown);
+    return () => document.removeEventListener("mousedown", onDown);
+  }, [openThread]);
 
   useEffect(() => {
     const compute = () => {
@@ -272,11 +299,6 @@ export default function ArticleWorkbench({ id }: { id: string }) {
   const excerptFor = (blockId: string): string | null => {
     const t = editorBoxRef.current?.querySelector(`[data-id="${blockId}"]`)?.textContent?.trim();
     return t ? t.slice(0, 60) : null;
-  };
-
-  const focusThread = (firstId: string) => {
-    setHighlightId(firstId);
-    setTimeout(() => setHighlightId(null), 2200);
   };
 
   if (!ready) return null;
@@ -417,7 +439,13 @@ export default function ArticleWorkbench({ id }: { id: string }) {
 
           {/* Zone d'écriture intégrée à la page (pas de cadre), comme Notion. */}
           {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events */}
-          <div ref={editorBoxRef} className="article-editor relative mt-2" onClick={captureBlock}>
+          <div
+            ref={editorBoxRef}
+            className="article-editor relative mt-2"
+            onClick={captureBlock}
+            onMouseMove={trackHover}
+            onMouseLeave={() => setHoverAdd(null)}
+          >
             <ArticleEditor
               articleId={article.id}
               initialContent={article.content}
@@ -427,14 +455,16 @@ export default function ArticleWorkbench({ id }: { id: string }) {
                 if (editable) queueSave({ content });
               }}
             />
+
             {markers.map((m) => (
               <button
                 key={m.blockId}
                 type="button"
-                title="Voir le commentaire"
+                data-thread-trigger
+                title="Ouvrir le fil de commentaires"
                 onClick={(e) => {
                   e.stopPropagation();
-                  focusThread(m.firstId);
+                  setOpenThread({ blockId: m.blockId, top: m.top });
                 }}
                 className={`absolute hidden h-6 min-w-6 items-center justify-center rounded-full px-1.5 text-[11px] font-semibold shadow-sm transition-transform hover:scale-110 lg:flex ${
                   m.hot ? "bg-warning text-warning-content" : "bg-base-200 text-base-content/60"
@@ -444,6 +474,40 @@ export default function ArticleWorkbench({ id }: { id: string }) {
                 {m.count}
               </button>
             ))}
+
+            {hoverAdd && !markers.some((m) => m.blockId === hoverAdd.blockId) && (
+              <button
+                type="button"
+                data-thread-trigger
+                title="Commenter cette ligne"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setOpenThread(hoverAdd);
+                  setHoverAdd(null);
+                }}
+                className="absolute hidden h-6 w-6 items-center justify-center rounded-full border border-base-300 bg-base-100 text-sm text-base-content/50 shadow-sm transition-all hover:scale-110 hover:text-primary lg:flex"
+                style={{ top: hoverAdd.top, right: -34 }}
+              >
+                +
+              </button>
+            )}
+
+            {openThread && (
+              <div
+                data-thread-popover
+                className="absolute z-30 left-0 right-0 lg:left-auto lg:right-[-332px] lg:w-80"
+                style={{ top: openThread.top }}
+              >
+                <CommentThread
+                  excerpt={excerptFor(openThread.blockId)}
+                  comments={article.comments.filter((c) => c.blockId === openThread.blockId)}
+                  canComment={canComment}
+                  onAdd={(text) => handleAddComment(text, openThread.blockId)}
+                  onResolve={handleResolve}
+                  onClose={() => setOpenThread(null)}
+                />
+              </div>
+            )}
           </div>
         </div>
 
@@ -479,14 +543,10 @@ export default function ArticleWorkbench({ id }: { id: string }) {
             <ReviewPanel
               comments={article.comments}
               canComment={canComment}
-              selectable={!editable}
-              selected={selected}
-              highlightId={highlightId}
               excerptFor={excerptFor}
-              onClearSelected={() => setSelected(null)}
-              onAdd={handleAddComment}
+              onAddGeneral={(text) => handleAddComment(text, null)}
               onResolve={handleResolve}
-              onJumpTo={jumpTo}
+              onOpenThread={openThreadFor}
             />
           </div>
 
