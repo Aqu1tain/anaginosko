@@ -230,7 +230,10 @@ export default function ArticleWorkbench({ id }: { id: string }) {
 
   const trackHover = (e: React.MouseEvent) => {
     if (editableRef.current || openThread) return;
-    const el = (e.target as HTMLElement).closest("[data-id]");
+    const target = e.target as HTMLElement;
+    // Survoler la bulle « + » ou une pastille ne doit pas la faire disparaître.
+    if (target.closest("[data-thread-trigger],[data-thread-popover]")) return;
+    const el = target.closest("[data-id]");
     const bid = el?.getAttribute("data-id");
     if (!bid || !el) {
       setHoverAdd(null);
@@ -476,20 +479,26 @@ export default function ArticleWorkbench({ id }: { id: string }) {
             ))}
 
             {hoverAdd && !markers.some((m) => m.blockId === hoverAdd.blockId) && (
-              <button
-                type="button"
+              // Conteneur qui CHEVAUCHE le bord de l'éditeur : aucun espace mort entre
+              // le texte et la bulle, sinon elle se démonte avant d'être atteinte.
+              <div
                 data-thread-trigger
-                title="Commenter cette ligne"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setOpenThread(hoverAdd);
-                  setHoverAdd(null);
-                }}
-                className="absolute hidden h-6 w-6 items-center justify-center rounded-full border border-base-300 bg-base-100 text-sm text-base-content/50 shadow-sm transition-all hover:scale-110 hover:text-primary lg:flex"
-                style={{ top: hoverAdd.top, right: -34 }}
+                className="absolute z-20 hidden items-center justify-end lg:flex"
+                style={{ top: hoverAdd.top - 3, right: -46, width: 64, height: 30 }}
               >
-                +
-              </button>
+                <button
+                  type="button"
+                  title="Commenter cette ligne"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setOpenThread(hoverAdd);
+                    setHoverAdd(null);
+                  }}
+                  className="flex h-6 w-6 items-center justify-center rounded-full border border-base-300 bg-base-100 text-sm text-base-content/50 shadow-sm transition-all hover:scale-110 hover:text-primary"
+                >
+                  +
+                </button>
+              </div>
             )}
 
             {openThread && (
