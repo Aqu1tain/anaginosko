@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/src/hooks/useAuth";
 import { fetchArticles, createArticle } from "@/src/lib/articlesApi";
-import type { ArticleSummary, ArticleCategory, ArticleStatus, ArticleSignature } from "@/lib/articles";
+import type { ArticleSummary, ArticleCategory, ArticleStatus } from "@/lib/articles";
 import { STATUS_LABEL, STATUS_DOT, CATEGORY_LABEL } from "./labels";
 
 const FILTERS: { key: "all" | ArticleStatus; label: string }[] = [
@@ -127,9 +127,9 @@ export default function ArticlesAdminView() {
         <CreateDialog
           isAdmin={!!isAdmin}
           onClose={() => setCreating(false)}
-          onCreate={async (title, category, signature) => {
+          onCreate={async (title, category) => {
             try {
-              const article = await createArticle({ title, category, signature });
+              const article = await createArticle({ title, category });
               router.push(`/admin/articles/${article.id}`);
             } catch (e) {
               setError((e as Error).message);
@@ -149,17 +149,16 @@ function CreateDialog({
 }: {
   isAdmin: boolean;
   onClose: () => void;
-  onCreate: (title: string, category: ArticleCategory, signature: ArticleSignature) => void;
+  onCreate: (title: string, category: ArticleCategory) => void;
 }) {
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState<ArticleCategory>("philologie");
-  const [signature, setSignature] = useState<ArticleSignature>("author");
   const [submitting, setSubmitting] = useState(false);
 
   const submit = () => {
     if (!title.trim() || submitting) return;
     setSubmitting(true);
-    onCreate(title.trim(), category, signature);
+    onCreate(title.trim(), category);
   };
 
   return (
@@ -184,19 +183,9 @@ function CreateDialog({
           <option value="philologie">Philologie</option>
           {isAdmin && <option value="site">Site</option>}
         </select>
-        {category === "philologie" && (
-          <>
-            <label className="mt-4 block text-sm font-medium">Signature</label>
-            <select
-              className="select select-bordered mt-1 w-full"
-              value={signature}
-              onChange={(e) => setSignature(e.target.value as ArticleSignature)}
-            >
-              <option value="author">Mon nom</option>
-              <option value="collective">Βιβλίον</option>
-            </select>
-          </>
-        )}
+        <p className="mt-3 text-xs text-base-content/50">
+          L&apos;article sera signé du nom d&apos;affichage de votre profil, avec votre photo.
+        </p>
         <div className="mt-5 flex justify-end gap-2">
           <button className="btn btn-ghost btn-sm" onClick={onClose}>Annuler</button>
           <button className="btn btn-primary btn-sm" disabled={!title.trim() || submitting} onClick={submit}>

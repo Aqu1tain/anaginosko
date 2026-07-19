@@ -10,16 +10,30 @@ export type ProfileLink = { label: string; url: string };
 export type Profile = {
   userId: number;
   slug: string;
+  // Identité choisie par la personne : le nom d'affichage signe les articles et
+  // les pages publiques ; le nom complet est affiché sur le profil.
   displayName: string;
+  fullName: string;
   bio: string;
   photo: string | null;
   links: ProfileLink[];
   updatedAt: string;
 };
 
+// Byline publique d'un auteur d'article, résolue par le profil (règle unique :
+// le profil est la source de vérité). `fallbackName` = nom de compte historique
+// stocké sur l'article, pour les auteurs sans profil persisté.
+export type PublicAuthor = { name: string; photo: string | null; slug: string | null };
+export function publicAuthor(userId: number, fallbackName: string): PublicAuthor {
+  const p = readProfile(userId);
+  if (!p) return { name: fallbackName || "Anaginosko", photo: null, slug: null };
+  return { name: p.displayName || fallbackName || "Anaginosko", photo: p.photo, slug: p.slug };
+}
+
 const MAX_BIO = 2000;
 const MAX_LINKS = 8;
 const MAX_LABEL = 60;
+const MAX_NAME = 80;
 
 const ARTICLES_DIR = process.env.ARTICLES_DIR || path.join(process.cwd(), ".articles");
 const PROFILES_SUB = path.join(ARTICLES_DIR, "profiles");
@@ -75,11 +89,12 @@ function uniqueSlug(base: string, userId: number): string {
 export function getMyProfile(auth: { id?: number; name?: string }): Profile {
   if (auth.id == null) throw new Error("Non authentifié.");
   const existing = readProfile(auth.id);
-  if (existing) return existing;
+  if (existing) return { ...existing, fullName: existing.fullName ?? "" };
   return {
     userId: auth.id,
     slug: uniqueSlug(auth.name || `contributeur-${auth.id}`, auth.id),
     displayName: auth.name || "Contributeur",
+    fullName: "",
     bio: "",
     photo: null,
     links: [],
@@ -87,11 +102,25 @@ export function getMyProfile(auth: { id?: number; name?: string }): Profile {
   };
 }
 
+// Garantit qu'un profil persisté existe (règle : tout auteur a une page publique).
+// Appelé à la création d'article ; no-op si le profil existe déjà.
+export function ensureProfile(auth: { id?: number; name?: string }): void {
+  if (auth.id == null || readProfile(auth.id)) return;
+  writeProfile(getMyProfile(auth));
+}
+
 export const getProfileBySlug = (slug: string): Profile | null => readAll().find((p) => p.slug === slug) ?? null;
 export const getProfileByUserId = (userId: number): Profile | null => readProfile(userId);
 export const listProfiles = (): Profile[] => readAll();
 
-export type ProfilePatch = { slug?: string; bio?: string; photo?: string | null; links?: ProfileLink[] };
+export type ProfilePatch = {
+  displayName?: string;
+  fullName?: string;
+  slug?: string;
+  bio?: string;
+  photo?: string | null;
+  links?: ProfileLink[];
+};
 
 export function saveProfile(
   auth: { id?: number; name?: string },
@@ -99,8 +128,18 @@ export function saveProfile(
 ): { ok: true; profile: Profile } | { ok: false; status: number; error: string } {
   if (auth.id == null) return { ok: false, status: 401, error: "Non authentifié." };
   const current = getMyProfile(auth);
-  const next: Profile = { ...current, displayName: auth.name || current.displayName, updatedAt: now() };
+  const next: Profile = { ...current, updatedAt: now() };
 
+  if (patch.displayName !== undefined) {
+    const n = patch.displayName.trim();
+    if (!n) return { ok: false, status: 400, error: "Le nom d'affichage est requis." };
+    if (n.length > MAX_NAME) return { ok: false, status: 400, error: "Nom d'affichage trop long." };
+    next.displayName = n;
+  }
+  if (patch.fullName !== undefined) {
+    if (patch.fullName.length > MAX_NAME) return { ok: false, status: 400, error: "Nom complet trop long." };
+    next.fullName = patch.fullName.trim();
+  }
   if (patch.slug !== undefined) {
     const clean = slugify(patch.slug);
     if (!clean) return { ok: false, status: 400, error: "Adresse de profil invalide." };

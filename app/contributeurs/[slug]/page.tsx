@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { getProfileBySlug } from "@/lib/profiles";
 import { listPublished } from "@/lib/articles";
 import { CATEGORY_LABEL } from "@/src/components/articles/labels";
+import Avatar from "@/src/components/profile/Avatar";
 
 export const dynamic = "force-dynamic";
 
@@ -33,6 +34,7 @@ export default async function ContributorPage({ params }: { params: Promise<{ sl
     mainEntity: {
       "@type": "Person",
       name: p.displayName,
+      ...(p.fullName && p.fullName !== p.displayName ? { alternateName: p.fullName } : {}),
       ...(p.bio ? { description: p.bio } : {}),
       ...(p.photo ? { image: `${SITE}${p.photo}` } : {}),
       ...(p.links.length ? { sameAs: p.links.map((l) => l.url) } : {}),
@@ -45,11 +47,11 @@ export default async function ContributorPage({ params }: { params: Promise<{ sl
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       <header className="flex flex-col items-center text-center">
-        <div className="h-28 w-28 overflow-hidden rounded-full bg-base-300">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          {p.photo && <img src={p.photo} alt={p.displayName} className="h-full w-full object-cover" />}
-        </div>
+        <Avatar name={p.displayName} photo={p.photo} size={112} />
         <h1 className="mt-4 text-3xl font-bold">{p.displayName}</h1>
+        {p.fullName && p.fullName !== p.displayName && (
+          <p className="mt-1 text-base-content/55">{p.fullName}</p>
+        )}
         {p.bio && <p className="mt-3 max-w-prose whitespace-pre-wrap text-base-content/80">{p.bio}</p>}
         {p.links.length > 0 && (
           <ul className="mt-4 flex flex-wrap justify-center gap-2">

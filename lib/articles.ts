@@ -15,7 +15,6 @@ import { createHash } from "node:crypto";
 
 export type ArticleCategory = "site" | "philologie";
 export type ArticleStatus = "draft" | "in_review" | "changes_requested" | "published" | "archived";
-export type ArticleSignature = "author" | "collective";
 export type TransitionAction = "submit" | "request_changes" | "approve" | "unpublish" | "archive" | "restore";
 
 export type ArticleAuthor = { userId: number; name: string; role: string };
@@ -47,7 +46,6 @@ export type Article = {
   cover: string | null;
   status: ArticleStatus;
   author: ArticleAuthor;
-  signature: ArticleSignature;
   createdAt: string;
   updatedAt: string;
   publishedAt: string | null;
@@ -160,7 +158,7 @@ const isAuthor = (a: Article, auth: { id?: number }) => a.author.userId === auth
 
 export function createArticle(
   auth: { id?: number; role?: string; name?: string },
-  input: { title: string; category: ArticleCategory; signature?: ArticleSignature },
+  input: { title: string; category: ArticleCategory },
 ): { ok: true; article: Article } | { ok: false; status: number; error: string } {
   const title = (input.title || "").trim();
   if (!title) return { ok: false, status: 400, error: "Titre requis." };
@@ -183,7 +181,6 @@ export function createArticle(
     cover: null,
     status: "draft",
     author: { userId: auth.id, name: auth.name || "", role: auth.role || "" },
-    signature: input.signature === "collective" ? "collective" : "author",
     createdAt: ts,
     updatedAt: ts,
     publishedAt: null,
@@ -200,7 +197,6 @@ export type ArticlePatch = {
   title?: string;
   excerpt?: string;
   cover?: string | null;
-  signature?: ArticleSignature;
   content?: unknown[];
 };
 
@@ -232,7 +228,6 @@ export function saveArticle(
     if (patch.cover !== null && !isUploadUrl(patch.cover)) return { ok: false, status: 400, error: "Couverture invalide." };
     a.cover = patch.cover;
   }
-  if (patch.signature !== undefined) a.signature = patch.signature === "collective" ? "collective" : "author";
   if (patch.content !== undefined) {
     if (!Array.isArray(patch.content)) return { ok: false, status: 400, error: "Contenu invalide." };
     if (JSON.stringify(patch.content).length > MAX_CONTENT_BYTES)

@@ -16,7 +16,7 @@ import {
   uploadImage,
 } from "@/src/lib/articlesApi";
 import { compressImage } from "./compressImage";
-import type { Article, ArticlePatch, ArticleSignature, ArticleStatus, ArticleEvent, TransitionAction } from "@/lib/articles";
+import type { Article, ArticleComment, ArticlePatch, ArticleStatus, ArticleEvent, TransitionAction } from "@/lib/articles";
 import { STATUS_LABEL, STATUS_DOT, CATEGORY_LABEL } from "./labels";
 import ReviewPanel from "./ReviewPanel";
 
@@ -219,6 +219,62 @@ export default function ArticleWorkbench({ id }: { id: string }) {
     setTimeout(() => el.classList.remove("ring-2", "ring-primary", "rounded"), 1600);
   };
 
+  // Pastilles de marge : signalent, au niveau de chaque ligne commentée, le nombre
+  // de commentaires (ambre = non résolus). Clic : le fil correspondant est amené à
+  // l'écran et surligné dans le panneau de revue.
+  const editorBoxRef = useRef<HTMLDivElement>(null);
+  const [markers, setMarkers] = useState<{ blockId: string; top: number; count: number; hot: boolean; firstId: string }[]>([]);
+  const [highlightId, setHighlightId] = useState<string | null>(null);
+  const comments = article?.comments;
+
+  useEffect(() => {
+    const compute = () => {
+      const box = editorBoxRef.current;
+      if (!box || !comments?.length) {
+        setMarkers([]);
+        return;
+      }
+      const groups = new Map<string, ArticleComment[]>();
+      for (const c of comments) if (c.blockId) groups.set(c.blockId, [...(groups.get(c.blockId) ?? []), c]);
+      const boxTop = box.getBoundingClientRect().top;
+      const out: { blockId: string; top: number; count: number; hot: boolean; firstId: string }[] = [];
+      for (const [blockId, cs] of groups) {
+        const el = box.querySelector(`[data-id="${blockId}"]`);
+        if (!el) continue;
+        const unres = cs.filter((c) => !c.resolved);
+        out.push({
+          blockId,
+          top: el.getBoundingClientRect().top - boxTop,
+          count: cs.length,
+          hot: unres.length > 0,
+          firstId: (unres[0] ?? cs[0]).id,
+        });
+      }
+      setMarkers(out);
+    };
+    compute();
+    // L'éditeur monte en différé et le texte bouge en cours de frappe : on recale
+    // périodiquement (peu coûteux, quelques mesures DOM).
+    const late = setTimeout(compute, 700);
+    const tick = setInterval(compute, 2000);
+    window.addEventListener("resize", compute);
+    return () => {
+      clearTimeout(late);
+      clearInterval(tick);
+      window.removeEventListener("resize", compute);
+    };
+  }, [comments]);
+
+  const excerptFor = (blockId: string): string | null => {
+    const t = editorBoxRef.current?.querySelector(`[data-id="${blockId}"]`)?.textContent?.trim();
+    return t ? t.slice(0, 60) : null;
+  };
+
+  const focusThread = (firstId: string) => {
+    setHighlightId(firstId);
+    setTimeout(() => setHighlightId(null), 2200);
+  };
+
   if (!ready) return null;
   if (!user || (user.role !== "admin" && user.role !== "philologist"))
     return (
@@ -258,24 +314,9 @@ export default function ArticleWorkbench({ id }: { id: string }) {
         <div>
           <div className="mb-4 flex flex-wrap items-center gap-3 text-xs text-base-content/60">
             <span className="rounded-full border border-base-300 px-2.5 py-0.5">{CATEGORY_LABEL[article.category]}</span>
-            {article.category === "philologie" && (
-              <label className="flex items-center gap-1.5">
-                Signé
-                <select
-                  className="select select-xs select-bordered"
-                  value={article.signature}
-                  disabled={!editable}
-                  onChange={(e) => {
-                    const signature = e.target.value as ArticleSignature;
-                    setArticle((a) => (a ? { ...a, signature } : a));
-                    queueSave({ signature });
-                  }}
-                >
-                  <option value="author">{article.author.name}</option>
-                  <option value="collective">Βιβλίον</option>
-                </select>
-              </label>
-            )}
+            <span>
+              Signé du nom d&apos;affichage de votre <Link href="/mon-profil" className="link">profil</Link>
+            </span>
           </div>
 
           <input
@@ -323,7 +364,7 @@ export default function ArticleWorkbench({ id }: { id: string }) {
                   )}
                 </div>
               ) : (
-                <label className="btn btn-ghost btn-xs cursor-pointer gap-1.5 px-0 text-base-content/50 hover:text-base-content">
+                <label className="inline-flex cursor-pointer items-center gap-1.5 text-xs text-base-content/50 transition-colors hover:text-base-content">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                     <rect x="3" y="3" width="18" height="18" rx="2" />
                     <circle cx="9" cy="9" r="2" />
@@ -350,8 +391,9 @@ export default function ArticleWorkbench({ id }: { id: string }) {
             </div>
           )}
 
+          {/* Zone d'écriture intégrée à la page (pas de cadre), comme Notion. */}
           {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events */}
-          <div className="mt-5 overflow-hidden rounded-xl border border-base-300 bg-base-100 shadow-sm" onClick={captureBlock}>
+          <div ref={editorBoxRef} className="article-editor relative mt-2" onClick={captureBlock}>
             <ArticleEditor
               articleId={article.id}
               initialContent={article.content}
@@ -361,6 +403,23 @@ export default function ArticleWorkbench({ id }: { id: string }) {
                 if (editable) queueSave({ content });
               }}
             />
+            {markers.map((m) => (
+              <button
+                key={m.blockId}
+                type="button"
+                title="Voir le commentaire"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  focusThread(m.firstId);
+                }}
+                className={`absolute hidden h-6 min-w-6 items-center justify-center rounded-full px-1.5 text-[11px] font-semibold shadow-sm transition-transform hover:scale-110 lg:flex ${
+                  m.hot ? "bg-warning text-warning-content" : "bg-base-200 text-base-content/60"
+                }`}
+                style={{ top: m.top, right: -34 }}
+              >
+                {m.count}
+              </button>
+            ))}
           </div>
         </div>
 
@@ -397,6 +456,8 @@ export default function ArticleWorkbench({ id }: { id: string }) {
               comments={article.comments}
               canComment={canComment}
               selected={selected}
+              highlightId={highlightId}
+              excerptFor={excerptFor}
               onClearSelected={() => setSelected(null)}
               onAdd={handleAddComment}
               onResolve={handleResolve}

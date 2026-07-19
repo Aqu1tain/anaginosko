@@ -77,27 +77,36 @@ async function VerseQuoteServer({ props }: { props: VerseQuoteProps }) {
 }
 
 const headingTag = (level: unknown) => (level === 2 ? "h3" : level === 3 ? "h4" : "h2");
+// Le reset Tailwind neutralise les tailles des titres : on les redonne explicitement,
+// calées sur la hiérarchie visuelle de l'éditeur (H1 > H2 > H3 sous le titre de page).
+const headingSize = (level: unknown) => (level === 2 ? "text-2xl" : level === 3 ? "text-xl" : "text-3xl");
+
+// Alignement choisi dans l'éditeur (prop BlockNote textAlignment).
+const alignClass = (block: Block): string => {
+  const a = block.props?.textAlignment;
+  return a === "center" ? " text-center" : a === "right" ? " text-right" : a === "justify" ? " text-justify" : "";
+};
 
 function renderBlock(block: Block): ReactNode {
   const key = block.id;
   switch (block.type) {
     case "paragraph":
       return (
-        <p key={key} className="my-3 leading-relaxed">
+        <p key={key} className={`my-3 leading-relaxed${alignClass(block)}`}>
           {renderInline(block.content)}
         </p>
       );
     case "heading": {
       const Tag = headingTag(block.props?.level) as "h2" | "h3" | "h4";
       return (
-        <Tag key={key} className="mt-8 mb-3 font-bold">
+        <Tag key={key} className={`mt-8 mb-3 font-bold leading-tight ${headingSize(block.props?.level)}${alignClass(block)}`}>
           {renderInline(block.content)}
         </Tag>
       );
     }
     case "quote":
       return (
-        <blockquote key={key} className="my-4 border-l-4 border-base-300 pl-4 italic text-base-content/80">
+        <blockquote key={key} className={`my-4 border-l-4 border-base-300 pl-4 italic text-base-content/80${alignClass(block)}`}>
           {renderInline(block.content)}
         </blockquote>
       );
@@ -113,10 +122,21 @@ function renderBlock(block: Block): ReactNode {
       const url = String(block.props?.url ?? "");
       if (!(url.startsWith("/articles/uploads/") || /^https:\/\//.test(url))) return null;
       const caption = block.props?.caption ? String(block.props.caption) : "";
+      // Fidélité à l'éditeur : largeur redimensionnée (previewWidth) et alignement.
+      const width = typeof block.props?.previewWidth === "number" ? block.props.previewWidth : null;
+      const align = block.props?.textAlignment;
+      const marginClass = align === "center" ? "mx-auto" : align === "right" ? "ml-auto" : "";
       return (
         <figure key={key} className="my-5">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={url} alt={caption} loading="lazy" decoding="async" className="mx-auto max-w-full rounded-lg" />
+          <img
+            src={url}
+            alt={caption}
+            loading="lazy"
+            decoding="async"
+            className={`max-w-full rounded-lg ${marginClass}`}
+            style={width ? { width } : undefined}
+          />
           {caption && <figcaption className="mt-1 text-center text-sm text-base-content/60">{caption}</figcaption>}
         </figure>
       );

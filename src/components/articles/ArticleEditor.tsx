@@ -106,7 +106,7 @@ export default function ArticleEditor({ articleId, initialContent, editable, dar
   return (
     <CitationContext.Provider value={{ editVerse }}>
       {editable && (
-        <div className="flex flex-wrap items-center gap-1 border-b border-base-200 px-2 py-1.5">
+        <div className="mb-1 flex flex-wrap items-center gap-1 text-base-content/80">
           <label className="btn btn-ghost btn-xs cursor-pointer gap-1.5">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <rect x="3" y="3" width="18" height="18" rx="2" />

@@ -3,7 +3,6 @@ import type {
   Article,
   ArticleSummary,
   ArticleCategory,
-  ArticleSignature,
   ArticlePatch,
   TransitionAction,
 } from "@/lib/articles";
@@ -44,7 +43,7 @@ export const fetchArticles = () =>
 export const fetchArticle = (id: string) =>
   articleFetch<{ article: Article }>(`/articles/${id}`).then((d) => d.article);
 
-export const createArticle = (input: { title: string; category: ArticleCategory; signature?: ArticleSignature }) =>
+export const createArticle = (input: { title: string; category: ArticleCategory }) =>
   articleFetch<{ article: Article }>("/articles", { method: "POST", body: JSON.stringify(input) }).then((d) => d.article);
 
 export const saveArticle = (id: string, patch: ArticlePatch) =>

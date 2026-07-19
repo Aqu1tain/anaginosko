@@ -16,8 +16,10 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
   if (!ACTIONS.includes(action)) return NextResponse.json({ error: "Action inconnue." }, { status: 400 });
   const result = applyTransition(id, action, auth, body?.note);
   if (!result.ok) return NextResponse.json({ error: result.error }, { status: result.status });
-  // Publication ou retrait : rafraîchir la liste et la page publique.
+  // Publication ou retrait : rafraîchir la liste, la page publique et l'accueil
+  // (section « Derniers articles », sinon régénérée toutes les 5 minutes).
   revalidatePath("/articles");
   revalidatePath(`/articles/${result.article.slug}`);
+  revalidatePath("/");
   return NextResponse.json({ article: result.article });
 }

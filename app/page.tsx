@@ -3,6 +3,10 @@ import Link from "next/link";
 import { collections, verseCount, minNiveau, textsByCollection, type Text } from "../src/data/texts";
 import { loadBooksFs, loadChapterFs } from "../lib/nt-server";
 import { NT, LXX } from "../src/data/corpus";
+import { listPublished } from "../lib/articles";
+import { publicAuthor } from "../lib/profiles";
+import { CATEGORY_LABEL } from "../src/components/articles/labels";
+import Avatar from "../src/components/profile/Avatar";
 import SupportBanner from "./_components/SupportBanner";
 import ResumeReading from "./_components/ResumeReading";
 import RefJump from "../src/components/RefJump";
@@ -13,6 +17,11 @@ export const metadata: Metadata = {
     "Anaginosko : lire la Bible en grec, lettre par lettre. Nouveau Testament et Septante en grec koinè, prononciation érasmienne et restituée, concordance et traduction française. Gratuit, sans publicité.",
   alternates: { canonical: "/" },
 };
+
+// Les articles sont publiés au runtime (ARTICLES_DIR) : l'accueil se régénère
+// périodiquement pour les refléter (et immédiatement via revalidatePath à la
+// publication). Sans cela, la page resterait figée à l'état du build.
+export const revalidate = 300;
 
 const SCRIBE_ALT = "Un scribe copiant l’Évangile sur un rouleau de papyrus";
 
@@ -182,6 +191,51 @@ function Passages() {
   );
 }
 
+// Derniers articles publiés : vitrine éditoriale de l'accueil. Absente tant que
+// rien n'est publié (pas de section vide).
+function LatestArticles() {
+  const latest = listPublished().slice(0, 3);
+  if (latest.length === 0) return null;
+  return (
+    <section className="pt-11 wide:pt-16">
+      <div className="flex items-baseline justify-between gap-3">
+        <h2 className="text-lg font-bold">Derniers articles</h2>
+        <Link href="/articles" className="text-sm text-primary hover:underline">
+          Tous les articles
+        </Link>
+      </div>
+      <div className="mt-3 grid gap-3 wide:grid-cols-3">
+        {latest.map((a) => {
+          const author = publicAuthor(a.author.userId, a.author.name);
+          return (
+            <Link
+              key={a.id}
+              href={`/articles/${a.slug}`}
+              className="group flex flex-col overflow-hidden rounded-box border border-base-300 bg-base-100 transition-all hover:border-base-content/20 hover:shadow-md"
+            >
+              {a.cover && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={a.cover} alt="" className="h-32 w-full object-cover" loading="lazy" />
+              )}
+              <div className="flex flex-1 flex-col p-4">
+                <p className="text-[0.68rem] font-semibold uppercase tracking-wide text-primary/80">
+                  {CATEGORY_LABEL[a.category]}
+                </p>
+                <h3 className="mt-1 font-semibold leading-snug group-hover:text-primary">{a.title}</h3>
+                {a.excerpt && <p className="mt-1 line-clamp-2 text-sm text-base-content/65">{a.excerpt}</p>}
+                <div className="mt-auto flex items-center gap-2 pt-3 text-xs text-base-content/55">
+                  <Avatar name={author.name} photo={author.photo} size={22} />
+                  <span className="min-w-0 truncate">{author.name}</span>
+                </div>
+              </div>
+            </Link>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
 export default async function Home() {
   const [ntBooks, lxxBooks] = await Promise.all([loadBooksFs(NT), loadBooksFs(LXX)]);
   const ntSub = corpusSubtitle(ntBooks);
@@ -243,6 +297,8 @@ export default async function Home() {
       </section>
 
       <Passages />
+
+      <LatestArticles />
 
       {/* Illustration du scribe, contextualisée par une légende : elle relie la
           lecture au geste de transmission manuscrite plutôt que d'interrompre. */}
