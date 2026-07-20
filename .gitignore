@@ -14,3 +14,9 @@ next-env.d.ts
 
 # Source LXX (Rahlfs) - données générées dans public/lxx, source non versionnée
 data-sources/lxx-rahlfs/
+
+# Articles (KAN-47) : stockage local de dev ; en prod/préprod = ARTICLES_DIR persistant
+.articles/
+
+# IDE
+.idea/

@@ -48,6 +48,7 @@ function chrome(pathname: string): { title: string | null; back: string; isLibra
   }
   if (seg[0] === "mentions") return { title: "Mentions légales", back: "/", isLibrary: false };
   if (seg[0] === "confidentialite") return { title: "Confidentialité", back: "/", isLibrary: false };
+  if (seg[0] === "articles") return { title: "Articles", back: seg.length > 1 ? "/articles" : "/", isLibrary: false };
   if (seg[0] === "login") return { title: "Connexion", back: "/", isLibrary: false };
   if (seg[0] === "admin") return { title: "Tableau de bord", back: "/", isLibrary: false };
   if (seg[0] === "text") {

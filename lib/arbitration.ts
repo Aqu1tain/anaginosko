@@ -437,22 +437,7 @@ function writeOverrides(all: Overrides) {
   fs.renameSync(tmp, OV_PATH); // écriture atomique
 }
 
-// Vérifie le token auprès de l'API (AdonisJS /me) et exige un rôle éditeur.
-// `credit` = signature d'attribution : le philologue (Biblion) signe TOUJOURS « Βιβλίον »
-// (jamais son vrai nom) ; un admin signe de son nom réel (Corentin Renard, Noah Jaubert…).
-export async function requireEditor(authHeader: string | null): Promise<{ ok: boolean; role?: string; name?: string; credit?: string }> {
-  const token = authHeader?.replace(/^Bearer\s+/i, "");
-  if (!token) return { ok: false };
-  // Base ABSOLUE côté serveur (le /api relatif du client ne résout pas ici).
-  const base = process.env.ARB_API_URL || "http://127.0.0.1:3333/api";
-  try {
-    const r = await fetch(`${base}/me`, { headers: { Authorization: `Bearer ${token}` } });
-    if (!r.ok) return { ok: false };
-    const { user } = await r.json();
-    const ok = user?.role === "admin" || user?.role === "philologist";
-    const credit = user?.role === "philologist" ? "Βιβλίον" : user?.displayName || "Βιβλίον";
-    return { ok, role: user?.role, name: user?.displayName, credit };
-  } catch {
-    return { ok: false };
-  }
-}
+// Auth éditeur : déplacée dans ./auth (partagée avec les articles). Re-exportée ici
+// pour ne rien casser des handlers d'arbitrage qui l'importent depuis ce module.
+export { requireEditor } from "./auth";
+export type { EditorAuth } from "./auth";
