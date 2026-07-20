@@ -5,6 +5,8 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { corpusByDataPrefix } from "../../src/data/corpus";
 import { textById } from "../../src/data/texts";
+import { useAuth } from "../../src/hooks/useAuth";
+import Avatar from "../../src/components/profile/Avatar";
 
 function ThemeToggle({ dark, onToggle }: { dark: boolean; onToggle: () => void }) {
   return (
@@ -76,6 +78,7 @@ function chrome(pathname: string): { title: string | null; back: string; isLibra
 export default function TopBar({ dark, onToggleTheme }: { dark: boolean; onToggleTheme: () => void }) {
   const pathname = usePathname();
   const router = useRouter();
+  const { user, photo } = useAuth();
   const { title, back, isLibrary } = chrome(pathname);
 
   // Le bouton retour suit l'historique réel dès qu'on a navigué dans l'app
@@ -136,11 +139,19 @@ export default function TopBar({ dark, onToggleTheme }: { dark: boolean; onToggl
             <img src="/tipeee-icon.webp" alt="" aria-hidden="true" className="h-[18px] w-auto" />
             <span className="hidden font-semibold sm:inline">Soutenir</span>
           </a>
-          <Link href="/login" aria-label="Espace contributeurs" className="btn btn-ghost btn-circle">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <circle cx="12" cy="8" r="4" />
-              <path d="M12 13.5c-4 0-7.2 2.4-7.5 5.6A1 1 0 005.5 20.5h13a1 1 0 001-1.4c-.3-3.2-3.5-5.6-7.5-5.6z" />
-            </svg>
+          <Link
+            href={user ? "/admin" : "/login"}
+            aria-label={user ? "Tableau de bord" : "Espace contributeurs"}
+            className="btn btn-ghost btn-circle"
+          >
+            {user ? (
+              <Avatar name={user.displayName} photo={photo} size={26} />
+            ) : (
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <circle cx="12" cy="8" r="4" />
+                <path d="M12 13.5c-4 0-7.2 2.4-7.5 5.6A1 1 0 005.5 20.5h13a1 1 0 001-1.4c-.3-3.2-3.5-5.6-7.5-5.6z" />
+              </svg>
+            )}
           </Link>
           <ThemeToggle dark={dark} onToggle={onToggleTheme} />
         </div>

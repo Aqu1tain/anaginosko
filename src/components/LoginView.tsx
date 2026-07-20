@@ -1,49 +1,24 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { useAuth } from "../hooks/useAuth";
-import type { Role } from "../lib/api";
-
-const ROLE_LABEL: Record<Role, string> = { admin: "Administrateur", philologist: "Philologue", reader: "Lecteur" };
-const ROLE_BADGE: Record<Role, string> = { admin: "badge-primary", philologist: "badge-accent", reader: "badge-ghost" };
-
-function RoleBadge({ role }: { role: Role }) {
-  return <span className={`badge badge-sm ${ROLE_BADGE[role]} badge-soft`}>{ROLE_LABEL[role]}</span>;
-}
 
 export default function LoginView() {
-  const { user, login, logout } = useAuth();
+  const { user, login } = useAuth();
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
-  if (user) {
-    return (
-      <div className="mx-auto max-w-sm pt-12">
-        <div className="rounded-3xl border border-base-300 bg-base-100 p-6 text-center shadow-sm">
-          <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-primary/10 font-greek text-2xl text-primary">
-            {user.displayName.slice(0, 2)}
-          </div>
-          <h1 className="mt-3 font-greek text-2xl font-bold">{user.displayName}</h1>
-          <div className="mt-1 flex justify-center">
-            <RoleBadge role={user.role} />
-          </div>
-          <div className="mt-6 grid gap-2">
-            <a href="/admin" className="btn btn-primary">
-              Tableau de bord
-            </a>
-            <a href="/" className="btn btn-outline border-base-300">
-              Aller à la lecture
-            </a>
-            <button onClick={() => logout()} className="btn btn-ghost btn-sm text-base-content/70">
-              Se déconnecter
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  // Déjà connecté : la page de connexion n'a plus de raison d'être, direction le
+  // tableau de bord (l'espace du compte, avec la déconnexion).
+  useEffect(() => {
+    if (user) router.replace("/admin");
+  }, [user, router]);
+
+  if (user) return null;
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
