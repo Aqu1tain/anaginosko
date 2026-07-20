@@ -17,7 +17,7 @@ import {
   type Annotation,
 } from "../lib/api";
 import GreekText, { type TranslitMode, type AnnoScope, type AnnoSelection } from "./GreekText";
-import CopyVerseLink from "./CopyVerseLink";
+import ShareVerse from "./ShareVerse";
 import ReportButton from "./ReportButton";
 import ReportEditor, { type ReportTarget } from "./ReportEditor";
 import AnnotationEditor, { type AnnotationTarget } from "./AnnotationEditor";
@@ -459,7 +459,7 @@ export default function Reader({ text }: { text: Text }) {
   const copyLink = (v: number) =>
     manuscript ? null : (
       <div className="absolute right-full top-3 z-10 mr-1 hidden flex-col items-center wide:flex">
-        <CopyVerseLink v={v} />
+        {parsedRef && <ShareVerse corpus={parsedRef.corpus} book={parsedRef.book} chapter={parsedRef.chapter} v={v} />}
         <ReportButton target={verseReportTarget(v)} />
       </div>
     );
@@ -468,7 +468,7 @@ export default function Reader({ text }: { text: Text }) {
   const copyLinkInline = (v: number) =>
     manuscript ? null : (
       <span className="ml-1.5 inline-flex align-middle wide:hidden">
-        <CopyVerseLink v={v} />
+        {parsedRef && <ShareVerse corpus={parsedRef.corpus} book={parsedRef.book} chapter={parsedRef.chapter} v={v} />}
         <ReportButton target={verseReportTarget(v)} />
       </span>
     );
