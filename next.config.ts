@@ -35,6 +35,16 @@ const nextConfig: NextConfig = {
     const api = process.env.API_PROXY ?? "http://localhost:3333";
     return [{ source: "/api/:path*", destination: `${api}/api/:path*` }];
   },
+
+  // Le widget d'intégration doit pouvoir être encadré par n'importe quel site.
+  async headers() {
+    return [
+      {
+        source: "/embed/:path*",
+        headers: [{ key: "Content-Security-Policy", value: "frame-ancestors *" }],
+      },
+    ];
+  },
 };
 
 export default nextConfig;
