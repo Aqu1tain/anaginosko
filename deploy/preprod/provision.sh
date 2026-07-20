@@ -29,6 +29,11 @@ sudo chmod -R a+rX "$DATA_DIR"
 sudo mkdir -p "$WEB_ROOT/arbitration"
 sudo chown -R anag-web:anag-web "$WEB_ROOT/arbitration"
 sudo chmod 755 "$WEB_ROOT/arbitration"
+# Articles (KAN-47) : même logique, dossier PERSISTANT inscriptible par le service.
+# Le chown -R "$CI_USER" ci-dessus a repris tout WEB_ROOT ; on rétablit anag-web.
+sudo mkdir -p "$WEB_ROOT/articles/articles" "$WEB_ROOT/articles/uploads"
+sudo chown -R anag-web:anag-web "$WEB_ROOT/articles"
+sudo chmod 755 "$WEB_ROOT/articles"
 
 echo "==> 2) unité systemd anaginosko-web-next"
 sudo install -m644 "$CFG_DIR/anaginosko-web-next.service" /etc/systemd/system/anaginosko-web-next.service

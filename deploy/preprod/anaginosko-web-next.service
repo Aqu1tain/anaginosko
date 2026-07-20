@@ -17,6 +17,8 @@ Environment=LXX_DATA_DIR=/var/www/anaginosko-next/lxx
 # Arbitrage : overrides Biblion persistants (hors release --delete) + API pour /me.
 Environment=ARB_DIR=/opt/anaginosko-web-next/arbitration
 Environment=ARB_API_URL=http://127.0.0.1:3901/api
+# Articles (KAN-47) : stockage éditorial persistant, hors release --delete.
+Environment=ARTICLES_DIR=/opt/anaginosko-web-next/articles
 ExecStart=/usr/bin/node server.js
 Restart=on-failure
 RestartSec=2

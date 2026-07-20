@@ -42,6 +42,57 @@ const CATEGORY_ORDER: ReportCategory[] = [
   "demande_note",
 ];
 
+const ROLE_LABEL: Record<string, string> = {
+  admin: "Administrateur",
+  philologist: "Philologue",
+  reader: "Lecteur",
+};
+
+function NavCard({ href, title, desc, icon }: { href: string; title: string; desc: string; icon: React.ReactNode }) {
+  return (
+    <a
+      href={href}
+      className="group flex items-start gap-3 rounded-xl border border-base-300 bg-base-100 p-4 shadow-sm transition-all hover:border-primary/40 hover:shadow-md"
+    >
+      <span className="rounded-lg bg-primary/10 p-2 text-primary">{icon}</span>
+      <div className="min-w-0">
+        <p className="font-semibold group-hover:text-primary">{title}</p>
+        <p className="text-xs text-base-content/60">{desc}</p>
+      </div>
+    </a>
+  );
+}
+
+function Stat({ label, value, accent }: { label: string; value: number; accent?: boolean }) {
+  return (
+    <div className="rounded-xl border border-base-300 bg-base-100 px-4 py-3 shadow-sm">
+      <p className={`text-2xl font-bold ${accent ? "text-warning" : ""}`}>{value}</p>
+      <p className="text-xs text-base-content/60">{label}</p>
+    </div>
+  );
+}
+
+const ICON = {
+  profile: (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <circle cx="12" cy="8" r="4" />
+      <path d="M4 21c0-4 4-6 8-6s8 2 8 6" />
+    </svg>
+  ),
+  articles: (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M6 4h9l3 3v13H6z" />
+      <path d="M9 9h6M9 13h6M9 17h4" />
+    </svg>
+  ),
+  arbitrage: (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M7 8h10M7 12h10M7 16h6" />
+      <circle cx="18.5" cy="16.5" r="2.5" />
+    </svg>
+  ),
+};
+
 function locationLabel(ref: string): string {
   if (ref.startsWith("lemma:")) return ref.slice(6);
   if (ref.startsWith("def:")) return ref.slice(4);
@@ -172,57 +223,59 @@ export default function AdminView() {
   }
   if (error) return <p className="py-20 text-center text-base-content/70">Chargement impossible.</p>;
 
-  return (
-    <div className="pb-10 pt-6">
-      <h1 className="text-2xl font-bold">Tableau de bord</h1>
+  const pendingCount = reports.filter((r) => r.status === "pending").length;
+  const sections: { key: "annotations" | "definitions" | "analytics" | "reports"; label: string; badge?: number }[] = [
+    { key: "annotations", label: annosTabLabel },
+    { key: "definitions", label: "Définitions" },
+    { key: "analytics", label: "Fréquentation" },
+    ...(canEdit ? [{ key: "reports" as const, label: "Signalements", badge: pendingCount }] : []),
+  ];
 
-      <div className="mt-3 flex flex-wrap items-center gap-2">
-        <div role="tablist" className="tabs tabs-boxed w-fit">
-          <button
-            role="tab"
-            className={`tab ${tab === "annotations" ? "tab-active" : ""}`}
-            onClick={() => setTab("annotations")}
-          >
-            {annosTabLabel}
-          </button>
-          <button
-            role="tab"
-            className={`tab ${tab === "definitions" ? "tab-active" : ""}`}
-            onClick={() => setTab("definitions")}
-          >
-            Définitions
-          </button>
-          <button
-            role="tab"
-            className={`tab ${tab === "analytics" ? "tab-active" : ""}`}
-            onClick={() => setTab("analytics")}
-          >
-            Fréquentation
-          </button>
-          {canEdit && (
-            <button
-              role="tab"
-              className={`tab ${tab === "reports" ? "tab-active" : ""}`}
-              onClick={() => setTab("reports")}
-            >
-              Signalements
-              {reports.some((r) => r.status === "pending") && (
-                <span className="badge badge-warning badge-xs ml-1.5">
-                  {reports.filter((r) => r.status === "pending").length}
-                </span>
-              )}
-            </button>
+  return (
+    <div className="mx-auto max-w-5xl pb-12 pt-8">
+      <div>
+        <h1 className="text-3xl font-bold tracking-tight">Tableau de bord</h1>
+        <p className="mt-1 flex items-center gap-2 text-sm text-base-content/60">
+          {user?.displayName}
+          {user?.role && (
+            <span className="rounded-full bg-base-200 px-2 py-0.5 text-xs font-medium text-base-content/70">
+              {ROLE_LABEL[user.role] ?? user.role}
+            </span>
           )}
+        </p>
+      </div>
+
+      <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <NavCard href="/mon-profil" title="Mon profil" desc="Photo, bio, liens publics" icon={ICON.profile} />
+        {canEdit && <NavCard href="/admin/articles" title="Articles" desc="Rédiger, relire, publier" icon={ICON.articles} />}
+        {canEdit && <NavCard href="/admin/arbitrage" title="Arbitrage LXX" desc="Liens grec et Giguet" icon={ICON.arbitrage} />}
+      </div>
+
+      {stats && (
+        <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <Stat label={seesAll ? "Annotations" : "Mes annotations"} value={plainAnnos.length} />
+          <Stat label="Définitions" value={defs.length} />
+          {canEdit && <Stat label="Signalements en attente" value={pendingCount} accent={pendingCount > 0} />}
+          <Stat label="Vues (total)" value={stats.views} />
         </div>
-        {canEdit && (
-          <a href="/admin/arbitrage" className="btn btn-sm btn-outline border-base-300">
-            Arbitrage LXX
-          </a>
-        )}
+      )}
+
+      <div className="mt-8 flex flex-wrap gap-1 border-b border-base-300">
+        {sections.map((s) => (
+          <button
+            key={s.key}
+            onClick={() => setTab(s.key)}
+            className={`relative px-4 py-2.5 text-sm font-medium transition-colors ${tab === s.key ? "text-primary" : "text-base-content/60 hover:text-base-content"}`}
+          >
+            {s.label}
+            {s.badge ? <span className="badge badge-warning badge-xs ml-1.5">{s.badge}</span> : null}
+            {tab === s.key && <span className="absolute inset-x-3 -bottom-px h-0.5 rounded-full bg-primary" />}
+          </button>
+        ))}
       </div>
 
       {tab === "analytics" && (
-        <section className="mt-5">
+        <section className="mt-6">
           {stats ? (
             <AdminAnalytics stats={stats} refLabel={locationLabel} />
           ) : (
@@ -232,7 +285,7 @@ export default function AdminView() {
       )}
 
       {tab === "reports" && canEdit && (
-        <section className="mt-5">
+        <section className="mt-6">
           <div className="flex flex-col gap-2">
             <input
               type="search"
@@ -282,9 +335,9 @@ export default function AdminView() {
             </span>
           </div>
 
-          <div className="mt-3 grid grid-cols-1 gap-2">
+          <div className="mt-4 grid grid-cols-1 gap-2.5">
             {filteredReports.map((r) => (
-              <div key={r.id} className="rounded-2xl border border-base-300 bg-base-100 p-3.5">
+              <div key={r.id} className="rounded-2xl border border-base-300 bg-base-100 p-4">
                 <div className="flex flex-wrap items-center gap-2 text-xs">
                   <span className="badge badge-sm badge-primary badge-soft">
                     {CATEGORY_LABEL[r.category]}
@@ -333,7 +386,7 @@ export default function AdminView() {
       )}
 
       {onList && (
-        <section className="mt-5">
+        <section className="mt-6">
           <div className="flex flex-wrap items-center gap-2">
             <input
               type="search"
@@ -348,9 +401,9 @@ export default function AdminView() {
               {filtered.length}{query ? ` / ${baseList.length}` : ""} {noun}{filtered.length > 1 ? "s" : ""}
             </span>
           </div>
-          <div className="mt-3 grid grid-cols-1 gap-2">
+          <div className="mt-4 grid grid-cols-1 gap-2.5">
             {filtered.map((a) => (
-              <div key={a.id} className="rounded-2xl border border-base-300 bg-base-100 p-3.5">
+              <div key={a.id} className="rounded-2xl border border-base-300 bg-base-100 p-4">
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0 break-words">
                   <a

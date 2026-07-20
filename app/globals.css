@@ -405,3 +405,21 @@ body {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Éditeur d'articles (BlockNote) : intégré à la page comme Notion. Fond transparent,
+   texte au niveau 0 (aligné sur le titre) ; la gouttière des poignées (+ / drag)
+   déborde à gauche au survol au lieu de décaler le texte. Pas de liseré de focus. */
+.article-editor .bn-container {
+  --bn-colors-editor-background: transparent;
+}
+.article-editor .bn-editor {
+  background: transparent;
+  padding-inline: 0;
+}
+.article-editor .bn-editor:focus,
+.article-editor .bn-editor:focus-visible,
+.article-editor .ProseMirror:focus,
+.article-editor .ProseMirror-focused {
+  outline: none !important;
+  box-shadow: none;
+}

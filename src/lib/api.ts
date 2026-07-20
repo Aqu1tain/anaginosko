@@ -4,7 +4,8 @@ const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "/api";
 const TOKEN_KEY = "anaginosko:token";
 
 export type Role = "admin" | "philologist" | "reader";
-export type AuthUser = { id: number; displayName: string; role: Role };
+// `email` : renvoyé par /me pour le compte lui-même (versions récentes de l'API).
+export type AuthUser = { id: number; displayName: string; role: Role; email?: string };
 
 export type Annotation = {
   id: number;
@@ -82,6 +83,12 @@ export async function logout(): Promise<void> {
 }
 
 export const fetchMe = () => apiFetch<{ user: AuthUser }>("/me").then((d) => d.user);
+
+// Mise à jour du compte (e-mail de connexion, nom de compte). Nécessite une API
+// récente : sur une API antérieure, la route n'existe pas (404) et l'appelant doit
+// dégrader proprement.
+export const updateMe = (patch: { email?: string; displayName?: string }) =>
+  apiFetch<{ user: AuthUser }>("/me", { method: "PUT", body: JSON.stringify(patch) }).then((d) => d.user);
 
 export const fetchAnnotations = (ref: string) =>
   apiFetch<Annotation[]>(`/annotations?ref=${encodeURIComponent(ref)}`);
