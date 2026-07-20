@@ -11,7 +11,7 @@ import {
   saveArticle,
   transitionArticle,
   addComment,
-  resolveComment,
+  resolveThread,
   deleteArticle,
   uploadImage,
 } from "@/src/lib/articlesApi";
@@ -19,7 +19,7 @@ import { compressImage } from "./compressImage";
 import type { Article, ArticleComment, ArticlePatch, ArticleStatus, ArticleEvent, TransitionAction } from "@/lib/articles";
 import { STATUS_LABEL, STATUS_DOT, CATEGORY_LABEL } from "./labels";
 import { ARTICLE_CATEGORIES, isAdminOnlyCategory } from "@/src/data/articleCategories";
-import ReviewPanel from "./ReviewPanel";
+import ReviewPanel, { type ReviewPassage } from "./ReviewPanel";
 import CommentThread from "./CommentThread";
 
 type ActionDef = { action: TransitionAction; label: string; style: string };
@@ -203,36 +203,26 @@ export default function ArticleWorkbench({ id }: { id: string }) {
   const handleAddComment = async (text: string, blockId: string | null) => {
     setArticle(await addComment(id, text, blockId));
   };
-  const handleResolve = async (commentId: string, resolved: boolean) => {
-    setArticle(await resolveComment(id, commentId, resolved));
+  const handleResolveThread = async (blockId: string | null, resolved: boolean) => {
+    setArticle(await resolveThread(id, blockId, resolved));
   };
 
-  // Fils ancrés façon Google Docs : ils s'ouvrent SUR la ligne (popover flottant à
-  // sa hauteur), une bulle « + » apparaît au survol en relecture, et les lignes déjà
-  // commentées portent une pastille de compte dans la marge.
+  // Les pastilles restent ancrées aux passages, mais le fil sélectionné s'affiche
+  // dans l'aside (drawer sur mobile) afin de ne jamais recouvrir l'article.
   const editorBoxRef = useRef<HTMLDivElement>(null);
-  const [markers, setMarkers] = useState<{ blockId: string; top: number; count: number; hot: boolean; firstId: string }[]>([]);
-  const [openThread, setOpenThread] = useState<{ blockId: string; top: number } | null>(null);
+  const [markers, setMarkers] = useState<{ blockId: string; top: number; count: number; hot: boolean }[]>([]);
+  const [passages, setPassages] = useState<ReviewPassage[]>([]);
+  const [selectedThread, setSelectedThread] = useState<{ blockId: string | null } | null>(null);
   const [hoverAdd, setHoverAdd] = useState<{ blockId: string; top: number } | null>(null);
   const comments = article?.comments;
 
   const topOf = (el: Element): number =>
     el.getBoundingClientRect().top - (editorBoxRef.current?.getBoundingClientRect().top ?? 0);
 
-  const captureBlock = (e: React.MouseEvent) => {
-    // En écriture, un clic pose le curseur dans l'éditeur, rien d'autre. Ouvrir un
-    // fil au clic d'une ligne n'existe qu'en relecture (lecture seule).
-    if (editableRef.current) return;
-    const el = (e.target as HTMLElement).closest("[data-id]");
-    const bid = el?.getAttribute("data-id");
-    if (bid && el) setOpenThread({ blockId: bid, top: topOf(el) });
-  };
-
   const trackHover = (e: React.MouseEvent) => {
-    if (editableRef.current || openThread) return;
+    if (editableRef.current || selectedThread) return;
     const target = e.target as HTMLElement;
-    // Survoler la bulle « + » ou une pastille ne doit pas la faire disparaître.
-    if (target.closest("[data-thread-trigger],[data-thread-popover]")) return;
+    if (target.closest("[data-thread-trigger]")) return;
     const el = target.closest("[data-id]");
     const bid = el?.getAttribute("data-id");
     if (!bid || !el) {
@@ -242,38 +232,45 @@ export default function ArticleWorkbench({ id }: { id: string }) {
     if (hoverAdd?.blockId !== bid) setHoverAdd({ blockId: bid, top: topOf(el) });
   };
 
-  const openThreadFor = (blockId: string) => {
-    const el = editorBoxRef.current?.querySelector(`[data-id="${blockId}"]`);
-    if (!el) return;
-    el.scrollIntoView({ behavior: "smooth", block: "center" });
-    setOpenThread({ blockId, top: topOf(el) });
+  const findBlock = (blockId: string): Element | null => {
+    const blocks = editorBoxRef.current?.querySelectorAll("[data-id]");
+    return [...(blocks ?? [])].find((el) => el.getAttribute("data-id") === blockId) ?? null;
   };
 
-  // Clic hors du fil ouvert : fermeture (les déclencheurs portent data-thread-trigger).
-  useEffect(() => {
-    if (!openThread) return;
-    const onDown = (e: MouseEvent) => {
-      const t = e.target as HTMLElement;
-      if (t.closest("[data-thread-popover]") || t.closest("[data-thread-trigger]")) return;
-      setOpenThread(null);
-    };
-    document.addEventListener("mousedown", onDown);
-    return () => document.removeEventListener("mousedown", onDown);
-  }, [openThread]);
+  const openThreadFor = (blockId: string | null) => {
+    if (blockId) findBlock(blockId)?.scrollIntoView({ behavior: "smooth", block: "center" });
+    setSelectedThread({ blockId });
+  };
 
   useEffect(() => {
     const compute = () => {
       const box = editorBoxRef.current;
-      if (!box || !comments?.length) {
+      if (!box) {
+        setMarkers([]);
+        setPassages([]);
+        return;
+      }
+      const blockElements = [...box.querySelectorAll("[data-id]")];
+      const seen = new Set<string>();
+      setPassages(
+        blockElements.flatMap((el) => {
+          const blockId = el.getAttribute("data-id");
+          const excerpt = el.textContent?.trim().replace(/\s+/g, " ");
+          if (!blockId || !excerpt || seen.has(blockId)) return [];
+          seen.add(blockId);
+          return [{ blockId, excerpt: excerpt.slice(0, 100) }];
+        }),
+      );
+      if (!comments?.length) {
         setMarkers([]);
         return;
       }
       const groups = new Map<string, ArticleComment[]>();
       for (const c of comments) if (c.blockId) groups.set(c.blockId, [...(groups.get(c.blockId) ?? []), c]);
       const boxTop = box.getBoundingClientRect().top;
-      const out: { blockId: string; top: number; count: number; hot: boolean; firstId: string }[] = [];
+      const out: { blockId: string; top: number; count: number; hot: boolean }[] = [];
       for (const [blockId, cs] of groups) {
-        const el = box.querySelector(`[data-id="${blockId}"]`);
+        const el = blockElements.find((candidate) => candidate.getAttribute("data-id") === blockId);
         if (!el) continue;
         const unres = cs.filter((c) => !c.resolved);
         out.push({
@@ -281,7 +278,6 @@ export default function ArticleWorkbench({ id }: { id: string }) {
           top: el.getBoundingClientRect().top - boxTop,
           count: cs.length,
           hot: unres.length > 0,
-          firstId: (unres[0] ?? cs[0]).id,
         });
       }
       setMarkers(out);
@@ -300,7 +296,7 @@ export default function ArticleWorkbench({ id }: { id: string }) {
   }, [comments]);
 
   const excerptFor = (blockId: string): string | null => {
-    const t = editorBoxRef.current?.querySelector(`[data-id="${blockId}"]`)?.textContent?.trim();
+    const t = findBlock(blockId)?.textContent?.trim();
     return t ? t.slice(0, 60) : null;
   };
 
@@ -445,7 +441,6 @@ export default function ArticleWorkbench({ id }: { id: string }) {
           <div
             ref={editorBoxRef}
             className="article-editor relative mt-2"
-            onClick={captureBlock}
             onMouseMove={trackHover}
             onMouseLeave={() => setHoverAdd(null)}
           >
@@ -467,8 +462,9 @@ export default function ArticleWorkbench({ id }: { id: string }) {
                 title="Ouvrir le fil de commentaires"
                 onClick={(e) => {
                   e.stopPropagation();
-                  setOpenThread({ blockId: m.blockId, top: m.top });
+                  openThreadFor(m.blockId);
                 }}
+                aria-label={`${m.count} commentaire${m.count > 1 ? "s" : ""} sur ce passage`}
                 className={`absolute hidden h-6 min-w-6 items-center justify-center rounded-full px-1.5 text-[11px] font-semibold shadow-sm transition-transform hover:scale-110 lg:flex ${
                   m.hot ? "bg-warning text-warning-content" : "bg-base-200 text-base-content/60"
                 }`}
@@ -491,9 +487,10 @@ export default function ArticleWorkbench({ id }: { id: string }) {
                   title="Commenter cette ligne"
                   onClick={(e) => {
                     e.stopPropagation();
-                    setOpenThread(hoverAdd);
+                    openThreadFor(hoverAdd.blockId);
                     setHoverAdd(null);
                   }}
+                  aria-label="Commenter ce passage"
                   className="flex h-6 w-6 items-center justify-center rounded-full border border-base-300 bg-base-100 text-sm text-base-content/50 shadow-sm transition-all hover:scale-110 hover:text-primary"
                 >
                   +
@@ -501,22 +498,6 @@ export default function ArticleWorkbench({ id }: { id: string }) {
               </div>
             )}
 
-            {openThread && (
-              <div
-                data-thread-popover
-                className="absolute z-30 left-0 right-0 lg:left-auto lg:right-[-332px] lg:w-80"
-                style={{ top: openThread.top }}
-              >
-                <CommentThread
-                  excerpt={excerptFor(openThread.blockId)}
-                  comments={article.comments.filter((c) => c.blockId === openThread.blockId)}
-                  canComment={canComment}
-                  onAdd={(text) => handleAddComment(text, openThread.blockId)}
-                  onResolve={handleResolve}
-                  onClose={() => setOpenThread(null)}
-                />
-              </div>
-            )}
           </div>
         </div>
 
@@ -548,16 +529,33 @@ export default function ArticleWorkbench({ id }: { id: string }) {
             </div>
           )}
 
-          <div className="rounded-xl border border-base-300 bg-base-100 p-4 shadow-sm">
-            <ReviewPanel
-              comments={article.comments}
-              canComment={canComment}
-              excerptFor={excerptFor}
-              onAddGeneral={(text) => handleAddComment(text, null)}
-              onResolve={handleResolve}
-              onOpenThread={openThreadFor}
-            />
-          </div>
+          {selectedThread ? (
+            <div
+              className="fixed inset-0 z-[70] flex items-end bg-black/45 p-3 lg:static lg:block lg:bg-transparent lg:p-0"
+              onClick={() => setSelectedThread(null)}
+            >
+              <div className="max-h-[88dvh] w-full overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+                <CommentThread
+                  excerpt={selectedThread.blockId ? excerptFor(selectedThread.blockId) : null}
+                  comments={article.comments.filter((comment) => comment.blockId === selectedThread.blockId)}
+                  canComment={canComment}
+                  onAdd={(text) => handleAddComment(text, selectedThread.blockId)}
+                  onResolveThread={(resolved) => handleResolveThread(selectedThread.blockId, resolved)}
+                  onClose={() => setSelectedThread(null)}
+                />
+              </div>
+            </div>
+          ) : (
+            <div className="rounded-xl border border-base-300 bg-base-100 p-4 shadow-sm">
+              <ReviewPanel
+                comments={article.comments}
+                canComment={canComment}
+                passages={passages}
+                excerptFor={excerptFor}
+                onOpenThread={openThreadFor}
+              />
+            </div>
+          )}
 
           {article.events.length > 0 && (
             <div className="rounded-xl border border-base-300 bg-base-100 p-4 shadow-sm">

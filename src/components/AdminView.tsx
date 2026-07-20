@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import { useAuth } from "../hooks/useAuth";
 import {
   fetchAdminStats,
@@ -20,6 +21,7 @@ import { refHref } from "../data/passageLink";
 import AnnotationEditor, { type AnnotationTarget } from "./AnnotationEditor";
 import { CATEGORY_LABEL } from "./ReportEditor";
 import AdminAnalytics from "./AdminAnalytics";
+import Avatar from "./profile/Avatar";
 
 const STATUS_LABEL: Record<ReportStatus, string> = {
   pending: "En attente",
@@ -48,13 +50,13 @@ const ROLE_LABEL: Record<string, string> = {
   reader: "Lecteur",
 };
 
-function NavCard({ href, title, desc, icon }: { href: string; title: string; desc: string; icon: React.ReactNode }) {
+function NavCard({ href, title, desc, icon, avatar }: { href: string; title: string; desc: string; icon?: React.ReactNode; avatar?: React.ReactNode }) {
   return (
     <a
       href={href}
       className="group flex items-start gap-3 rounded-xl border border-base-300 bg-base-100 p-4 shadow-sm transition-all hover:border-primary/40 hover:shadow-md"
     >
-      <span className="rounded-lg bg-primary/10 p-2 text-primary">{icon}</span>
+      {avatar ?? <span className="rounded-lg bg-primary/10 p-2 text-primary">{icon}</span>}
       <div className="min-w-0">
         <p className="font-semibold group-hover:text-primary">{title}</p>
         <p className="text-xs text-base-content/60">{desc}</p>
@@ -73,12 +75,6 @@ function Stat({ label, value, accent }: { label: string; value: number; accent?:
 }
 
 const ICON = {
-  profile: (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <circle cx="12" cy="8" r="4" />
-      <path d="M4 21c0-4 4-6 8-6s8 2 8 6" />
-    </svg>
-  ),
   articles: (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d="M6 4h9l3 3v13H6z" />
@@ -135,7 +131,8 @@ function targetFromAnnotation(a: Annotation): AnnotationTarget {
 }
 
 export default function AdminView() {
-  const { user, ready } = useAuth();
+  const { user, ready, photo, logout } = useAuth();
+  const router = useRouter();
   const isAdmin = user?.role === "admin";
   const isReader = user?.role === "reader";
   const canEdit = isAdmin || user?.role === "philologist"; // écrire/supprimer (pas reader)
@@ -233,20 +230,36 @@ export default function AdminView() {
 
   return (
     <div className="mx-auto max-w-5xl pb-12 pt-8">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">Tableau de bord</h1>
-        <p className="mt-1 flex items-center gap-2 text-sm text-base-content/60">
-          {user?.displayName}
-          {user?.role && (
-            <span className="rounded-full bg-base-200 px-2 py-0.5 text-xs font-medium text-base-content/70">
-              {ROLE_LABEL[user.role] ?? user.role}
-            </span>
-          )}
-        </p>
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">Tableau de bord</h1>
+          <p className="mt-1 flex items-center gap-2 text-sm text-base-content/60">
+            {user?.displayName}
+            {user?.role && (
+              <span className="rounded-full bg-base-200 px-2 py-0.5 text-xs font-medium text-base-content/70">
+                {ROLE_LABEL[user.role] ?? user.role}
+              </span>
+            )}
+          </p>
+        </div>
+        <button
+          onClick={async () => {
+            await logout();
+            router.push("/");
+          }}
+          className="btn btn-ghost btn-sm gap-1.5 text-base-content/70"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
+            <path d="M16 17l5-5-5-5" />
+            <path d="M21 12H9" />
+          </svg>
+          Se déconnecter
+        </button>
       </div>
 
       <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        <NavCard href="/mon-profil" title="Mon profil" desc="Photo, bio, liens publics" icon={ICON.profile} />
+        <NavCard href="/mon-profil" title="Mon profil" desc="Photo, bio, liens publics" avatar={<Avatar name={user?.displayName ?? ""} photo={photo} size={40} />} />
         {canEdit && <NavCard href="/admin/articles" title="Articles" desc="Rédiger, relire, publier" icon={ICON.articles} />}
         {canEdit && <NavCard href="/admin/arbitrage" title="Arbitrage LXX" desc="Liens grec et Giguet" icon={ICON.arbitrage} />}
       </div>

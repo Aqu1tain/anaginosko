@@ -353,6 +353,23 @@ export function setCommentResolved(
   return { ok: true, article: a };
 }
 
+export function setThreadResolved(
+  id: string,
+  auth: { id?: number; role?: string },
+  blockId: string | null,
+  resolved: boolean,
+): { ok: true; article: Article } | { ok: false; status: number; error: string } {
+  const a = getArticle(id);
+  if (!a) return { ok: false, status: 404, error: "Article introuvable." };
+  if (!isAdmin(auth) && !isAuthor(a, auth)) return { ok: false, status: 403, error: "Accès refusé." };
+  const thread = a.comments.filter((comment) => comment.blockId === blockId);
+  if (thread.length === 0) return { ok: false, status: 404, error: "Fil de commentaires introuvable." };
+  for (const comment of thread) comment.resolved = resolved;
+  a.updatedAt = now();
+  writeArticle(a);
+  return { ok: true, article: a };
+}
+
 // --- Uploads d'images ---
 
 const isUploadUrl = (u: string) => /^\/articles\/uploads\/[a-z0-9-]+\/[a-z0-9]+\.(png|jpe?g|webp)$/i.test(u);

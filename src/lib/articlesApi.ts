@@ -70,6 +70,12 @@ export const resolveComment = (id: string, commentId: string, resolved: boolean)
     body: JSON.stringify({ commentId, resolved }),
   }).then((d) => d.article);
 
+export const resolveThread = (id: string, blockId: string | null, resolved: boolean) =>
+  articleFetch<{ article: Article }>(`/articles/${id}/comments`, {
+    method: "PATCH",
+    body: JSON.stringify({ blockId, resolved }),
+  }).then((d) => d.article);
+
 export async function uploadImage(id: string, file: Blob): Promise<string> {
   const token = getToken();
   const form = new FormData();

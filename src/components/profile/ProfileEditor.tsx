@@ -30,7 +30,7 @@ function Field({ label, hint, children }: { label: string; hint?: string; childr
 }
 
 export default function ProfileEditor() {
-  const { user, ready } = useAuth();
+  const { user, ready, refreshPhoto } = useAuth();
   const [profile, setProfile] = useState<Profile | null>(null);
   const [email, setEmail] = useState("");
   const [emailSupported, setEmailSupported] = useState(true);
@@ -67,6 +67,7 @@ export default function ProfileEditor() {
     setError(null);
     try {
       setProfile(await uploadProfilePhoto(await compressImage(file)));
+      refreshPhoto();
     } catch (e) {
       setError((e as Error).message);
     } finally {
