@@ -19,11 +19,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     title: a.title,
     description: a.excerpt || undefined,
     alternates: { canonical: `/articles/${a.slug}` },
+    // og:image vient du fichier-convention opengraph-image.tsx (carte de marque
+    // générée : titre + auteur), plus fiable qu'une cover WebP non rendue par satori.
     openGraph: {
       type: "article",
       title: a.title,
       description: a.excerpt || undefined,
-      ...(a.cover ? { images: [`${SITE}${a.cover}`] } : {}),
     },
   };
 }
