@@ -5,6 +5,7 @@ import { getPublishedBySlug } from "@/lib/articles";
 import { publicAuthor } from "@/lib/profiles";
 import { CATEGORY_LABEL } from "@/src/components/articles/labels";
 import ArticleRenderer from "@/src/components/articles/ArticleRenderer";
+import ShareArticle from "@/src/components/articles/ShareArticle";
 import Avatar from "@/src/components/profile/Avatar";
 
 export const dynamic = "force-dynamic";
@@ -89,6 +90,9 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
             <span className="font-medium">{author.name}</span>
           )}
           {dateLabel && <p className="text-xs text-base-content/55">{dateLabel}</p>}
+        </div>
+        <div className="ml-auto shrink-0">
+          <ShareArticle title={a.title} />
         </div>
       </div>
 
