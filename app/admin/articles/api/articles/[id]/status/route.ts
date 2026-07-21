@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
-import { requireEditor } from "@/lib/auth";
+import { requirePermission } from "@/lib/auth";
 import { applyTransition, type TransitionAction } from "@/lib/articles";
 
 export const dynamic = "force-dynamic";
@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 const ACTIONS: TransitionAction[] = ["submit", "request_changes", "approve", "unpublish", "archive", "restore"];
 
 export async function POST(req: Request, { params }: { params: Promise<{ id: string }> }) {
-  const auth = await requireEditor(req.headers.get("authorization"));
+  const auth = await requirePermission(req.headers.get("authorization"), "articles");
   if (!auth.ok) return NextResponse.json({ error: "Réservé aux contributeurs." }, { status: 401 });
   const { id } = await params;
   const body = await req.json().catch(() => null);

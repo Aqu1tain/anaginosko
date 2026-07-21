@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../hooks/useAuth";
 import {
+  can,
   fetchAdminStats,
   fetchMyAnnotations,
   deleteAnnotation,
@@ -44,11 +45,6 @@ const CATEGORY_ORDER: ReportCategory[] = [
   "demande_note",
 ];
 
-const ROLE_LABEL: Record<string, string> = {
-  admin: "Administrateur",
-  philologist: "Philologue",
-  reader: "Lecteur",
-};
 
 function NavCard({ href, title, desc, icon, avatar }: { href: string; title: string; desc: string; icon?: React.ReactNode; avatar?: React.ReactNode }) {
   return (
@@ -140,11 +136,13 @@ function targetFromAnnotation(a: Annotation): AnnotationTarget {
 export default function AdminView() {
   const { user, ready, photo, logout } = useAuth();
   const router = useRouter();
-  const isAdmin = user?.role === "admin";
-  const isReader = user?.role === "reader";
-  const canEdit = isAdmin || user?.role === "philologist"; // écrire/supprimer (pas reader)
-  const seesAll = isAdmin || isReader; // voit toutes les annotations
-  const canViewDashboard = canEdit || isReader; // admin, philologue, reader
+  const canDashboard = can(user, "dashboard");
+  const seesAll = can(user, "moderate"); // voit toutes les annotations, pas seulement les siennes
+  const canAnnotate = can(user, "annotations");
+  const canArticles = can(user, "articles");
+  const canArbitrage = can(user, "arbitrage");
+  const canReports = can(user, "reports");
+  const canAccounts = can(user, "accounts");
 
   const [stats, setStats] = useState<AdminStats | null>(null);
   const [annos, setAnnos] = useState<Annotation[]>([]);
@@ -198,9 +196,9 @@ export default function AdminView() {
   const reload = () => {
     const jobs: Promise<unknown>[] = [fetchMyAnnotations().then(setAnnos)];
     // Stats non bloquantes : si l'API ne les autorise pas (rôle), on garde le reste.
-    if (canViewDashboard) jobs.push(fetchAdminStats().then(setStats).catch(() => setStats(null)));
+    if (canDashboard) jobs.push(fetchAdminStats().then(setStats).catch(() => setStats(null)));
     // Signalements réservés à admin + philologue.
-    if (canEdit) jobs.push(fetchAdminReports().then(setReports).catch(() => setReports([])));
+    if (canReports) jobs.push(fetchAdminReports().then(setReports).catch(() => setReports([])));
     Promise.all(jobs).catch(() => setError(true));
   };
 
@@ -210,12 +208,12 @@ export default function AdminView() {
   };
 
   useEffect(() => {
-    if (canViewDashboard) reload();
+    if (canDashboard) reload();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   if (!ready) return null;
-  if (!canViewDashboard) {
+  if (!canDashboard) {
     return (
       <div className="py-20 text-center text-base-content/70">
         <p>Accès réservé aux contributeurs.</p>
@@ -232,7 +230,7 @@ export default function AdminView() {
     { key: "annotations", label: annosTabLabel },
     { key: "definitions", label: "Définitions" },
     { key: "analytics", label: "Fréquentation" },
-    ...(canEdit ? [{ key: "reports" as const, label: "Signalements", badge: pendingCount }] : []),
+    ...(canReports ? [{ key: "reports" as const, label: "Signalements", badge: pendingCount }] : []),
   ];
 
   return (
@@ -242,9 +240,9 @@ export default function AdminView() {
           <h1 className="text-3xl font-bold tracking-tight">Tableau de bord</h1>
           <p className="mt-1 flex items-center gap-2 text-sm text-base-content/60">
             {user?.displayName}
-            {user?.role && (
+            {user?.title && (
               <span className="rounded-full bg-base-200 px-2 py-0.5 text-xs font-medium text-base-content/70">
-                {ROLE_LABEL[user.role] ?? user.role}
+                {user.title}
               </span>
             )}
           </p>
@@ -267,16 +265,16 @@ export default function AdminView() {
 
       <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         <NavCard href="/mon-profil" title="Mon profil" desc="Photo, bio, liens publics" avatar={<Avatar name={user?.displayName ?? ""} photo={photo} size={40} />} />
-        {canEdit && <NavCard href="/admin/articles" title="Articles" desc="Rédiger, relire, publier" icon={ICON.articles} />}
-        {canEdit && <NavCard href="/admin/arbitrage" title="Arbitrage LXX" desc="Liens grec et Giguet" icon={ICON.arbitrage} />}
-        {isAdmin && <NavCard href="/admin/comptes" title="Comptes" desc="Contributeurs, rôles, accès" icon={ICON.accounts} />}
+        {canArticles && <NavCard href="/admin/articles" title="Articles" desc="Rédiger, relire, publier" icon={ICON.articles} />}
+        {canArbitrage && <NavCard href="/admin/arbitrage" title="Arbitrage LXX" desc="Liens grec et Giguet" icon={ICON.arbitrage} />}
+        {canAccounts && <NavCard href="/admin/comptes" title="Comptes" desc="Contributeurs, titres, permissions" icon={ICON.accounts} />}
       </div>
 
       {stats && (
         <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
           <Stat label={seesAll ? "Annotations" : "Mes annotations"} value={plainAnnos.length} />
           <Stat label="Définitions" value={defs.length} />
-          {canEdit && <Stat label="Signalements en attente" value={pendingCount} accent={pendingCount > 0} />}
+          {canReports && <Stat label="Signalements en attente" value={pendingCount} accent={pendingCount > 0} />}
           <Stat label="Vues (total)" value={stats.views} />
         </div>
       )}
@@ -305,7 +303,7 @@ export default function AdminView() {
         </section>
       )}
 
-      {tab === "reports" && canEdit && (
+      {tab === "reports" && canReports && (
         <section className="mt-6">
           <div className="flex flex-col gap-2">
             <input
@@ -461,7 +459,7 @@ export default function AdminView() {
                     )}
                   </div>
                 </div>
-                {canEdit && (
+                {canAnnotate && (
                   <div className="flex shrink-0 flex-col items-end gap-1">
                     <button onClick={() => setEditing(targetFromAnnotation(a))} className="btn btn-ghost btn-xs">
                       Modifier

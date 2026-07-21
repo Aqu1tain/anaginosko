@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { requireEditor } from "@/lib/auth";
+import { requirePermission } from "@/lib/auth";
 import { addComment, setCommentResolved, setThreadResolved } from "@/lib/articles";
 
 export const dynamic = "force-dynamic";
@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 type Ctx = { params: Promise<{ id: string }> };
 
 export async function POST(req: Request, { params }: Ctx) {
-  const auth = await requireEditor(req.headers.get("authorization"));
+  const auth = await requirePermission(req.headers.get("authorization"), "articles");
   if (!auth.ok) return NextResponse.json({ error: "Réservé aux contributeurs." }, { status: 401 });
   const { id } = await params;
   const body = await req.json().catch(() => null);
@@ -17,7 +17,7 @@ export async function POST(req: Request, { params }: Ctx) {
 }
 
 export async function PATCH(req: Request, { params }: Ctx) {
-  const auth = await requireEditor(req.headers.get("authorization"));
+  const auth = await requirePermission(req.headers.get("authorization"), "articles");
   if (!auth.ok) return NextResponse.json({ error: "Réservé aux contributeurs." }, { status: 401 });
   const { id } = await params;
   const body = await req.json().catch(() => null);

@@ -1,11 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { fetchInvitation, acceptInvitation, type InvitableRole } from "../lib/api";
+import { fetchInvitation, acceptInvitation } from "../lib/api";
 
-const ROLE_LABEL: Record<InvitableRole, string> = { admin: "administrateur", philologist: "philologue" };
-
-type Invite = { email: string; displayName: string; role: InvitableRole };
+type Invite = { email: string; displayName: string; title: string };
 
 export default function InvitationView({ token }: { token: string }) {
   const [invite, setInvite] = useState<Invite | null>(null);
@@ -61,7 +59,7 @@ export default function InvitationView({ token }: { token: string }) {
       <div className="rounded-3xl border border-base-300 bg-base-100 p-6 shadow-sm">
         <h1 className="text-center text-2xl font-bold">Bienvenue, {invite.displayName}</h1>
         <p className="mt-2 text-center text-sm text-base-content/70">
-          Vous rejoignez Anaginosko comme {ROLE_LABEL[invite.role]}. Choisissez un mot de passe pour activer votre accès.
+          Vous rejoignez Anaginosko comme {invite.title}. Choisissez un mot de passe pour activer votre accès.
         </p>
         <form onSubmit={submit} className="mt-6 grid gap-3">
           <label className="block">

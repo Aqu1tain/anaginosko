@@ -9,7 +9,7 @@ import AnnotationEditor, { type AnnotationTarget } from "./AnnotationEditor";
 import { useAuth } from "../hooks/useAuth";
 import { useLemmaNotes } from "../hooks/useLemmaNotes";
 import { useLemmaDefinition } from "../hooks/useLemmaDefinition";
-import { type Annotation } from "../lib/api";
+import { can, type Annotation } from "../lib/api";
 import { glossFor } from "../data/glosses";
 import { pickBaillyEntry, baillyDefinition } from "../lib/bailly";
 import {
@@ -141,7 +141,7 @@ function Occurrences({ entry, occ, corpus }: { entry: LemmaEntry; occ: Occ[]; co
 // en repli. Éditable par les philologues/admin.
 function LemmaDefinitions({ lemma }: { lemma: string }) {
   const { user } = useAuth();
-  const canEdit = user?.role === "admin" || user?.role === "philologist";
+  const canEdit = can(user, "annotations");
   const { definition, reload } = useLemmaDefinition(lemma);
   const [editing, setEditing] = useState(false);
 
@@ -223,7 +223,7 @@ function LemmaDefinitions({ lemma }: { lemma: string }) {
 // index de mot). Affichée pour tous ; un contributeur peut l'ajouter/modifier.
 function BiblionNote({ lemma }: { lemma: string }) {
   const { user } = useAuth();
-  const canEdit = user?.role === "admin" || user?.role === "philologist";
+  const canEdit = can(user, "annotations");
   const annoRef = `lemma:${lemma}`;
   const { notes, reload } = useLemmaNotes(lemma);
   const [editing, setEditing] = useState<AnnotationTarget | null>(null);

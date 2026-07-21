@@ -437,7 +437,8 @@ function writeOverrides(all: Overrides) {
   fs.renameSync(tmp, OV_PATH); // écriture atomique
 }
 
-// Auth éditeur : déplacée dans ./auth (partagée avec les articles). Re-exportée ici
-// pour ne rien casser des handlers d'arbitrage qui l'importent depuis ce module.
-export { requireEditor } from "./auth";
+// Auth arbitrage : exige la permission « arbitrage ». Les handlers d'arbitrage
+// l'importent depuis ce module (inchangés).
+import { requirePermission } from "./auth";
+export const requireEditor = (authHeader: string | null) => requirePermission(authHeader, "arbitrage");
 export type { EditorAuth } from "./auth";

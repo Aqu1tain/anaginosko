@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { useAuth } from "../hooks/useAuth";
+import { can } from "../lib/api";
 import { BOOK, SinceLastVisit } from "./ArbitrageBiblion";
 import { ErrorMap, ChapterRealign, LogsSection } from "./ArbitrageRealign";
 
@@ -26,7 +27,7 @@ async function arb<T>(p: string, opts?: RequestInit): Promise<T> {
 
 export default function ArbitrageView() {
   const { user, ready } = useAuth();
-  const editor = user?.role === "admin" || user?.role === "philologist";
+  const editor = can(user, "arbitrage");
   const [tab, setTab] = useState<"corriger" | "browse" | "logs">("corriger");
   const [realign, setRealign] = useState<{ book: string; ch: number } | null>(null);
   const [states, setStates] = useState<Record<string, Record<string, State>>>({});

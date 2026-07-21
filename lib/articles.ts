@@ -128,9 +128,9 @@ const toSummary = (a: Article): ArticleSummary => {
 };
 
 // Liste pour le tableau de bord : admin voit tout, philologue voit les siens.
-export function listArticles(viewer: { id?: number; role?: string }): ArticleSummary[] {
+export function listArticles(viewer: { id?: number; isRoot?: boolean; permissions?: string[] }): ArticleSummary[] {
   const all = readAll();
-  const visible = viewer.role === "admin" ? all : all.filter((a) => a.author.userId === viewer.id);
+  const visible = canReview(viewer) ? all : all.filter((a) => a.author.userId === viewer.id);
   return visible.sort((a, b) => (a.updatedAt < b.updatedAt ? 1 : -1)).map(toSummary);
 }
 
@@ -155,18 +155,20 @@ function writeArticle(a: Article) {
   fs.renameSync(tmp, p);
 }
 
-const isAdmin = (auth: { role?: string }) => auth.role === "admin";
+// La permission « review » remplace l'ancien rôle admin pour relire/publier/modérer.
+const canReview = (auth: { isRoot?: boolean; permissions?: string[] }) =>
+  !!auth.isRoot || !!auth.permissions?.includes("review");
 const isAuthor = (a: Article, auth: { id?: number }) => a.author.userId === auth.id;
 
 export function createArticle(
-  auth: { id?: number; role?: string; name?: string },
+  auth: { id?: number; isRoot?: boolean; permissions?: string[]; name?: string },
   input: { title: string; category: ArticleCategory },
 ): { ok: true; article: Article } | { ok: false; status: number; error: string } {
   const title = (input.title || "").trim();
   if (!title) return { ok: false, status: 400, error: "Titre requis." };
   if (title.length > MAX_TITLE) return { ok: false, status: 400, error: "Titre trop long." };
   if (!isArticleCategory(input.category)) return { ok: false, status: 400, error: "Catégorie invalide." };
-  if (isAdminOnlyCategory(input.category) && !isAdmin(auth))
+  if (isAdminOnlyCategory(input.category) && !canReview(auth))
     return { ok: false, status: 403, error: "Catégorie « Vie du site » réservée aux admins." };
   if (auth.id == null) return { ok: false, status: 401, error: "Non authentifié." };
 
@@ -181,7 +183,7 @@ export function createArticle(
     excerpt: "",
     cover: null,
     status: "draft",
-    author: { userId: auth.id, name: auth.name || "", role: auth.role || "" },
+    author: { userId: auth.id, name: auth.name || "", role: "" },
     createdAt: ts,
     updatedAt: ts,
     publishedAt: null,
@@ -204,7 +206,7 @@ export type ArticlePatch = {
 
 export function saveArticle(
   id: string,
-  auth: { id?: number; role?: string },
+  auth: { id?: number; isRoot?: boolean; permissions?: string[] },
   patch: ArticlePatch,
 ): { ok: true; article: Article } | { ok: false; status: number; error: string } {
   const a = getArticle(id);
@@ -232,7 +234,7 @@ export function saveArticle(
   }
   if (patch.category !== undefined) {
     if (!isArticleCategory(patch.category)) return { ok: false, status: 400, error: "Catégorie invalide." };
-    if (isAdminOnlyCategory(patch.category) && !isAdmin(auth))
+    if (isAdminOnlyCategory(patch.category) && !canReview(auth))
       return { ok: false, status: 403, error: "Catégorie « Vie du site » réservée aux admins." };
     a.category = patch.category;
   }
@@ -250,11 +252,11 @@ export function saveArticle(
 
 export function deleteArticle(
   id: string,
-  auth: { id?: number; role?: string },
+  auth: { id?: number; isRoot?: boolean; permissions?: string[] },
 ): { ok: true } | { ok: false; status: number; error: string } {
   const a = getArticle(id);
   if (!a) return { ok: false, status: 404, error: "Article introuvable." };
-  const allowed = isAdmin(auth) || (isAuthor(a, auth) && a.status === "draft");
+  const allowed = canReview(auth) || (isAuthor(a, auth) && a.status === "draft");
   if (!allowed) return { ok: false, status: 403, error: "Suppression refusée." };
   fs.rmSync(articlePath(id), { force: true });
   fs.rmSync(path.join(UPLOADS_SUB, id), { recursive: true, force: true });
@@ -279,15 +281,15 @@ const TRANSITIONS: Record<TransitionAction, Rule[]> = {
 export function applyTransition(
   id: string,
   action: TransitionAction,
-  auth: { id?: number; role?: string; name?: string },
+  auth: { id?: number; isRoot?: boolean; permissions?: string[]; name?: string },
   note?: string,
 ): { ok: true; article: Article; published: boolean } | { ok: false; status: number; error: string } {
   const a = getArticle(id);
   if (!a) return { ok: false, status: 404, error: "Article introuvable." };
   const rule = TRANSITIONS[action]?.find((r) => r.from === a.status);
   if (!rule) return { ok: false, status: 409, error: "Transition impossible depuis cet état." };
-  if (rule.adminOnly && !isAdmin(auth)) return { ok: false, status: 403, error: "Action réservée aux admins." };
-  if (!rule.adminOnly && !isAdmin(auth) && !isAuthor(a, auth)) return { ok: false, status: 403, error: "Accès refusé." };
+  if (rule.adminOnly && !canReview(auth)) return { ok: false, status: 403, error: "Action réservée aux admins." };
+  if (!rule.adminOnly && !canReview(auth) && !isAuthor(a, auth)) return { ok: false, status: 403, error: "Accès refusé." };
 
   a.status = rule.to;
   if (action === "approve") {
@@ -313,19 +315,19 @@ function uniquePublishedSlug(slug: string, selfId: string): string {
 
 export function addComment(
   id: string,
-  auth: { id?: number; role?: string; name?: string },
+  auth: { id?: number; isRoot?: boolean; permissions?: string[]; name?: string },
   input: { text: string; blockId?: string | null },
 ): { ok: true; article: Article } | { ok: false; status: number; error: string } {
   const a = getArticle(id);
   if (!a) return { ok: false, status: 404, error: "Article introuvable." };
-  if (!isAdmin(auth) && !isAuthor(a, auth)) return { ok: false, status: 403, error: "Accès refusé." };
+  if (!canReview(auth) && !isAuthor(a, auth)) return { ok: false, status: 403, error: "Accès refusé." };
   const text = (input.text || "").trim();
   if (!text) return { ok: false, status: 400, error: "Commentaire vide." };
   if (text.length > MAX_COMMENT) return { ok: false, status: 400, error: "Commentaire trop long." };
   if (auth.id == null) return { ok: false, status: 401, error: "Non authentifié." };
   a.comments.push({
     id: `c-${genId()}`,
-    author: { userId: auth.id, name: auth.name || "", role: auth.role || "" },
+    author: { userId: auth.id, name: auth.name || "", role: "" },
     blockId: typeof input.blockId === "string" ? input.blockId : null,
     text,
     createdAt: now(),
@@ -338,13 +340,13 @@ export function addComment(
 
 export function setCommentResolved(
   id: string,
-  auth: { id?: number; role?: string },
+  auth: { id?: number; isRoot?: boolean; permissions?: string[] },
   commentId: string,
   resolved: boolean,
 ): { ok: true; article: Article } | { ok: false; status: number; error: string } {
   const a = getArticle(id);
   if (!a) return { ok: false, status: 404, error: "Article introuvable." };
-  if (!isAdmin(auth) && !isAuthor(a, auth)) return { ok: false, status: 403, error: "Accès refusé." };
+  if (!canReview(auth) && !isAuthor(a, auth)) return { ok: false, status: 403, error: "Accès refusé." };
   const c = a.comments.find((x) => x.id === commentId);
   if (!c) return { ok: false, status: 404, error: "Commentaire introuvable." };
   c.resolved = resolved;
@@ -355,13 +357,13 @@ export function setCommentResolved(
 
 export function setThreadResolved(
   id: string,
-  auth: { id?: number; role?: string },
+  auth: { id?: number; isRoot?: boolean; permissions?: string[] },
   blockId: string | null,
   resolved: boolean,
 ): { ok: true; article: Article } | { ok: false; status: number; error: string } {
   const a = getArticle(id);
   if (!a) return { ok: false, status: 404, error: "Article introuvable." };
-  if (!isAdmin(auth) && !isAuthor(a, auth)) return { ok: false, status: 403, error: "Accès refusé." };
+  if (!canReview(auth) && !isAuthor(a, auth)) return { ok: false, status: 403, error: "Accès refusé." };
   const thread = a.comments.filter((comment) => comment.blockId === blockId);
   if (thread.length === 0) return { ok: false, status: 404, error: "Fil de commentaires introuvable." };
   for (const comment of thread) comment.resolved = resolved;
@@ -407,12 +409,12 @@ export function saveImageUpload(
 
 export function saveUpload(
   id: string,
-  auth: { id?: number; role?: string },
+  auth: { id?: number; isRoot?: boolean; permissions?: string[] },
   buf: Buffer,
 ): { ok: true; url: string } | { ok: false; status: number; error: string } {
   const a = getArticle(id);
   if (!a) return { ok: false, status: 404, error: "Article introuvable." };
-  if (!isAdmin(auth) && !isAuthor(a, auth)) return { ok: false, status: 403, error: "Accès refusé." };
+  if (!canReview(auth) && !isAuthor(a, auth)) return { ok: false, status: 403, error: "Accès refusé." };
   return saveImageUpload(id, buf);
 }
 

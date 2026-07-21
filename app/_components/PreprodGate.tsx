@@ -9,7 +9,6 @@ import { useAuth } from "../../src/hooks/useAuth";
 // L'auth étant par token localStorage, le filtrage est côté client : un visiteur
 // anonyme voit l'écran de connexion ; seuls les contributeurs existants entrent.
 const PREPROD = process.env.NEXT_PUBLIC_PREPROD === "1";
-const ALLOWED = new Set(["admin", "philologist", "reader"]);
 
 function Wall() {
   return (
@@ -44,6 +43,6 @@ export default function PreprodGate({ children }: { children: React.ReactNode })
       </div>
     );
   }
-  if (user && ALLOWED.has(user.role)) return <>{children}</>;
+  if (user) return <>{children}</>;
   return <Wall />;
 }

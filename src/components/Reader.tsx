@@ -10,6 +10,7 @@ import { usePersistentState } from "../hooks/usePersistentState";
 import { setLastRead } from "../lib/lastRead";
 import { useAuth } from "../hooks/useAuth";
 import {
+  can,
   fetchAnnotations,
   deleteAnnotation,
   recordView,
@@ -200,7 +201,7 @@ export default function Reader({ text }: { text: Text }) {
   }, []);
 
   const { user } = useAuth();
-  const canAnnotate = user?.role === "philologist" || user?.role === "admin";
+  const canAnnotate = can(user, "annotations");
   const [annotateMode, setAnnotateMode] = useState(false);
   const [annotations, setAnnotations] = useState<Annotation[]>([]);
   // Annotations du texte lié (passage ↔ chapitre NT), remappées sur ce texte.
@@ -283,7 +284,7 @@ export default function Reader({ text }: { text: Text }) {
   }, [annotateMode]);
 
   const canManage = (a: Annotation) =>
-    !!user && (user.role === "admin" || (a.userId != null && a.userId === user.id));
+    can(user, "moderate") || (!!user && a.userId != null && a.userId === user.id);
 
   // Cartes de rendu : soulignement mot/phrase, soulignement caractère, pastilles.
   // Les annotations liées (passage ↔ NT) sont placées à leurs coords remappées,
