@@ -27,6 +27,8 @@ type Props = {
   editable: boolean;
   dark: boolean;
   onChange: (blocks: unknown[]) => void;
+  // Uploader injectable (défaut : endpoint article). Les intros de livre passent le leur.
+  upload?: (blob: Blob) => Promise<string>;
 };
 
 type PickerState =
@@ -36,21 +38,22 @@ type PickerState =
 
 // Éditeur BlockNote, chargé uniquement côté admin (dynamic ssr:false). Slash menu
 // enrichi (citation biblique, renvoi de chapitre) ; images compressées avant upload.
-export default function ArticleEditor({ articleId, initialContent, editable, dark, onChange }: Props) {
+export default function ArticleEditor({ articleId, initialContent, editable, dark, onChange, upload }: Props) {
   const [picker, setPicker] = useState<PickerState>(null);
+  const doUpload = upload ?? ((blob: Blob) => uploadImage(articleId, blob));
 
   const editor = useCreateBlockNote({
     schema,
     dictionary: fr,
     initialContent: initialContent.length ? (initialContent as unknown as PartialBlock[]) : undefined,
-    uploadFile: async (file: File) => uploadImage(articleId, await compressImage(file)),
+    uploadFile: async (file: File) => doUpload(await compressImage(file)),
   });
 
   // Insertion d'image via un input NATIF (le <label> ci-dessous) : un input.click()
   // programmatique serait bloqué hors « user activation » par les navigateurs.
   const onPickImage = async (file: File) => {
     try {
-      const url = await uploadImage(articleId, await compressImage(file));
+      const url = await doUpload(await compressImage(file));
       editor.insertBlocks([{ type: "image", props: { url } }], editor.getTextCursorPosition().block, "after");
     } catch (e) {
       console.error("Upload image échoué :", e);
