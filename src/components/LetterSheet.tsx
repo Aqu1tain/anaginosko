@@ -15,6 +15,7 @@ import { useLemmaNotes } from "../hooks/useLemmaNotes";
 import { useLemmaDefinition } from "../hooks/useLemmaDefinition";
 import ReportButton from "./ReportButton";
 import {
+  can,
   fetchPronunciations,
   createPronunciation,
   deletePronunciation,
@@ -225,7 +226,7 @@ export default function LetterSheet({
   }, [wide, info, stage, wordIndex]);
 
   const { user } = useAuth();
-  const canEdit = user?.role === "admin" || user?.role === "philologist";
+  const canEdit = can(user, "annotations");
   const { notes: lemmaNotes } = useLemmaNotes(stage === 2 && word ? word.lemme : null);
   const { definition: lemmaDef } = useLemmaDefinition(stage === 2 && word ? word.lemme : null);
 

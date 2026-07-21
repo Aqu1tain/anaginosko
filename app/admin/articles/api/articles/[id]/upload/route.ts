@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
-import { requireEditor } from "@/lib/auth";
+import { requirePermission } from "@/lib/auth";
 import { saveUpload } from "@/lib/articles";
 
 export const dynamic = "force-dynamic";
 
 export async function POST(req: Request, { params }: { params: Promise<{ id: string }> }) {
-  const auth = await requireEditor(req.headers.get("authorization"));
+  const auth = await requirePermission(req.headers.get("authorization"), "articles");
   if (!auth.ok) return NextResponse.json({ error: "Réservé aux contributeurs." }, { status: 401 });
   const { id } = await params;
   const form = await req.formData().catch(() => null);

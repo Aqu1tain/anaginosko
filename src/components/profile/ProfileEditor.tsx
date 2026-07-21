@@ -7,6 +7,7 @@ import { fetchMe, updateMe } from "@/src/lib/api";
 import { fetchMyProfile, saveMyProfile, uploadProfilePhoto } from "@/src/lib/profileApi";
 import { compressImage } from "@/src/components/articles/compressImage";
 import Avatar from "./Avatar";
+import PasswordChange from "./PasswordChange";
 import type { Profile, ProfileLink } from "@/lib/profiles";
 
 function Section({ title, desc, children }: { title: string; desc?: string; children: React.ReactNode }) {
@@ -176,6 +177,9 @@ export default function ProfileEditor() {
                 La modification de l&apos;e-mail sera disponible après la prochaine mise à jour du serveur.
               </p>
             )}
+          </Field>
+          <Field label="Mot de passe">
+            <PasswordChange />
           </Field>
         </Section>
 

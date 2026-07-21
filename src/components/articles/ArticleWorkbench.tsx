@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/src/hooks/useAuth";
-import { getToken } from "@/src/lib/api";
+import { can, getToken } from "@/src/lib/api";
 import {
   fetchArticle,
   saveArticle,
@@ -301,7 +301,7 @@ export default function ArticleWorkbench({ id }: { id: string }) {
   };
 
   if (!ready) return null;
-  if (!user || (user.role !== "admin" && user.role !== "philologist"))
+  if (!user || !can(user, "articles"))
     return (
       <div className="py-20 text-center text-base-content/70">
         <p>Édition réservée aux contributeurs.</p>
@@ -311,7 +311,7 @@ export default function ArticleWorkbench({ id }: { id: string }) {
   if (error) return <div className="alert alert-warning mt-6 text-sm">{error}</div>;
   if (!article) return <div className="py-20 text-center text-base-content/60">Chargement…</div>;
 
-  const isAdmin = user.role === "admin";
+  const isAdmin = can(user, "review");
   const isAuthor = article.author.userId === user.id;
   const canComment = isAdmin || isAuthor;
   const canDelete = isAdmin || (isAuthor && article.status === "draft");

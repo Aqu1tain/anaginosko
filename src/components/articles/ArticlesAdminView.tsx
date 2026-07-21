@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/src/hooks/useAuth";
+import { can } from "@/src/lib/api";
 import { fetchArticles, createArticle } from "@/src/lib/articlesApi";
 import type { ArticleSummary, ArticleCategory, ArticleStatus } from "@/lib/articles";
 import { STATUS_LABEL, STATUS_DOT, CATEGORY_LABEL } from "./labels";
@@ -21,8 +22,8 @@ const FILTERS: { key: "all" | ArticleStatus; label: string }[] = [
 export default function ArticlesAdminView() {
   const { user, ready } = useAuth();
   const router = useRouter();
-  const isEditor = user?.role === "admin" || user?.role === "philologist";
-  const isAdmin = user?.role === "admin";
+  const isEditor = can(user, "articles");
+  const isAdmin = can(user, "review");
 
   const [articles, setArticles] = useState<ArticleSummary[]>([]);
   const [filter, setFilter] = useState<"all" | ArticleStatus>("all");
