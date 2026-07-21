@@ -102,6 +102,15 @@ export function articleCard(opts: { category: string; title: string; excerpt: st
   );
 }
 
+export function bookCard(opts: { bookName: string; corpusLabel: string }) {
+  return respond(
+    <Frame badge={<Badge text={opts.corpusLabel} />}>
+      <div style={{ fontSize: 84, fontWeight: 600, letterSpacing: -1 }}>{opts.bookName}</div>
+      <div style={{ fontSize: 34, marginTop: 22, color: "#94a3b8" }}>en grec koinè · lettre par lettre</div>
+    </Frame>,
+  );
+}
+
 export function lemmaCard(opts: { lemma: string; translit: string | null; gloss: string | null; corpusLabel: string }) {
   return respond(
     <Frame badge={<Badge text={opts.corpusLabel} />}>
