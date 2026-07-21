@@ -18,6 +18,8 @@ const nextConfig: NextConfig = {
     // n'accepte pas les webfonts) : on force leur inclusion dans le standalone
     // pour chaque route qui génère une image.
     "/opengraph-image": ["./app/_og/*.ttf"],
+    "/nt/[book]/opengraph-image": ["./app/_og/*.ttf"],
+    "/lxx/[book]/opengraph-image": ["./app/_og/*.ttf"],
     "/nt/[book]/[chapter]/opengraph-image": ["./app/_og/*.ttf"],
     "/lxx/[book]/[chapter]/opengraph-image": ["./app/_og/*.ttf"],
     "/articles/[slug]/opengraph-image": ["./app/_og/*.ttf"],

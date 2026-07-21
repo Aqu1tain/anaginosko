@@ -77,6 +77,12 @@ const ICON = {
       <path d="M9 9h6M9 13h6M9 17h4" />
     </svg>
   ),
+  books: (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M4 4h7v16H4z" />
+      <path d="M13 6l6-1 1.5 15L14 20" />
+    </svg>
+  ),
   arbitrage: (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d="M7 8h10M7 12h10M7 16h6" />
@@ -140,6 +146,7 @@ export default function AdminView() {
   const seesAll = can(user, "moderate"); // voit toutes les annotations, pas seulement les siennes
   const canAnnotate = can(user, "annotations");
   const canArticles = can(user, "articles");
+  const canReview = can(user, "review");
   const canArbitrage = can(user, "arbitrage");
   const canReports = can(user, "reports");
   const canAccounts = can(user, "accounts");
@@ -266,6 +273,7 @@ export default function AdminView() {
       <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         <NavCard href="/mon-profil" title="Mon profil" desc="Photo, bio, liens publics" avatar={<Avatar name={user?.displayName ?? ""} photo={photo} size={40} />} />
         {canArticles && <NavCard href="/admin/articles" title="Articles" desc="Rédiger, relire, publier" icon={ICON.articles} />}
+        {canReview && <NavCard href="/admin/livres" title="Introductions de livres" desc="Présentation éditoriale par livre" icon={ICON.books} />}
         {canArbitrage && <NavCard href="/admin/arbitrage" title="Arbitrage LXX" desc="Liens grec et Giguet" icon={ICON.arbitrage} />}
         {canAccounts && <NavCard href="/admin/comptes" title="Comptes" desc="Contributeurs, titres, permissions" icon={ICON.accounts} />}
       </div>
