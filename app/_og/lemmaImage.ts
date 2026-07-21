@@ -1,6 +1,5 @@
 import { corpusById } from "@/src/data/corpus";
-import { lemmaEntryFs } from "@/lib/nt-server";
-import { glossFor } from "@/src/data/glosses";
+import { lemmaEntryFs, loadGlossFs } from "@/lib/nt-server";
 import { lemmaCard } from "./cards";
 
 // Carte OG d'une fiche-lemme : le lemme grec, sa translittération et le début de
@@ -8,11 +7,14 @@ import { lemmaCard } from "./cards";
 export async function lemmaOgImage(corpusId: string, lemmaParam: string) {
   const lemma = decodeURIComponent(lemmaParam);
   const corpus = corpusById(corpusId);
-  const entry = await lemmaEntryFs(lemma, corpus).catch(() => undefined);
+  const [entry, lexicon] = await Promise.all([
+    lemmaEntryFs(lemma, corpus).catch(() => undefined),
+    loadGlossFs(lemma, corpus),
+  ]);
   return lemmaCard({
     lemma,
     translit: entry?.translit ?? null,
-    gloss: glossFor(lemma)?.excerpt ?? null,
+    gloss: lexicon.gloss?.excerpt ?? null,
     corpusLabel: corpus.shortLabel,
   });
 }

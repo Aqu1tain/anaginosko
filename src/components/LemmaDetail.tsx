@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import Breadcrumb from "../../app/_components/Breadcrumb";
 import DistributionProfile from "./DistributionProfile";
@@ -10,8 +10,7 @@ import { useAuth } from "../hooks/useAuth";
 import { useLemmaNotes } from "../hooks/useLemmaNotes";
 import { useLemmaDefinition } from "../hooks/useLemmaDefinition";
 import { can, type Annotation } from "../lib/api";
-import { glossFor } from "../data/glosses";
-import { pickBaillyEntry, baillyDefinition } from "../lib/bailly";
+import type { GlossAssessment } from "../data/glosses";
 import {
   type Colloc,
   type Distribution,
@@ -21,90 +20,27 @@ import {
 } from "../data/nt";
 import { type CorpusConfig, NT, LXX, GREEK_BIBLE } from "../data/corpus";
 
-// Met en forme la notation Bailly : « || » sépare les grands sens, on met en
-// gras la vedette et les repères (A, I, 1…).
+// Met en forme la notation Bailly : « || » sépare les grands sens. Des repères
+// visuels évitent le pavé uniforme, sans réécrire le texte du dictionnaire.
 function formatDefinition(text: string): React.ReactNode {
   const segments = text.split(/\s*\|\|\s*/).map((s) => s.trim()).filter(Boolean);
   return segments.map((seg, i) => {
-    if (i === 0) {
-      const close = seg.indexOf(")");
-      if (close !== -1) {
-        return (
-          <p key={i} className="font-greek text-[0.95rem] leading-relaxed text-base-content/85">
-            <strong className="font-semibold">{seg.slice(0, close + 1)}</strong>
-            {seg.slice(close + 1)}
-          </p>
-        );
-      }
-    }
-    const m = seg.match(/^([A-D]|[IVX]{1,4}|\d+)(\b.*)$/s);
+    const close = i === 0 ? seg.indexOf(")") : -1;
     return (
-      <p key={i} className="font-greek text-[0.95rem] leading-relaxed text-base-content/85">
-        {m ? <><strong className="text-accent">{m[1]}</strong>{m[2]}</> : seg}
-      </p>
+      <div key={i} className="flex items-start gap-2.5">
+        {segments.length > 1 && (
+          <span className="mt-0.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-base-200 px-1 text-[0.65rem] font-semibold text-base-content/60">
+            {i + 1}
+          </span>
+        )}
+        <p className="min-w-0 text-[0.95rem] leading-relaxed text-base-content/85">
+          {close !== -1 ? (
+            <><strong className="font-greek font-semibold">{seg.slice(0, close + 1)}</strong>{seg.slice(close + 1)}</>
+          ) : seg}
+        </p>
+      </div>
     );
   });
-}
-
-// Définition Bailly : excerpt bundlé rendu côté serveur (indexable), puis
-// définition complète récupérée en direct côté client. `secondary` = une
-// définition Biblion la coiffe, on la présente en repli, plus discret.
-function Definition({ lemma, secondary = false }: { lemma: string; secondary?: boolean }) {
-  const bundled = glossFor(lemma);
-  const [text, setText] = useState<string | null>(bundled?.excerpt ?? null);
-  const [uri, setUri] = useState<string | null>(bundled?.uri ?? null);
-  const [state, setState] = useState<"loading" | "done" | "absent">("loading");
-
-  useEffect(() => {
-    let alive = true;
-    setState("loading");
-    (async () => {
-      try {
-        const look = await fetch(`https://api.bailly.app/lookup/${encodeURIComponent(lemma)}`).then((r) => r.json());
-        const entry = pickBaillyEntry(look?.data?.entries ?? [], lemma);
-        if (!entry) { if (alive) setState(text ? "done" : "absent"); return; }
-        const full = await fetch(`https://api.bailly.app/entry/${encodeURIComponent(entry.uri)}?fields=definition`).then((r) => r.json());
-        if (!alive) return;
-        // `||` et pas `??` : la définition de tête peut être une chaîne vide
-        // (entrée-conteneur), il faut alors retomber sur les sous-entrées / l'excerpt.
-        setText(baillyDefinition(full?.data?.entry) || entry.excerpt || text);
-        setUri(entry.uri);
-        setState("done");
-      } catch {
-        if (alive) setState(text ? "done" : "absent");
-      }
-    })();
-    return () => { alive = false; };
-  }, [lemma]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  // Rien à montrer et plus de recherche en cours : on masque la carte (évite le
-  // « Recherche… » perpétuel quand Bailly n'a pas de définition exploitable).
-  if (!text && state !== "loading") return null;
-  return (
-    <div className={`rounded-box bg-base-200 px-4 py-3 ${secondary ? "mt-2 opacity-80" : "mt-3"}`}>
-      <div className="text-[0.7rem] font-medium uppercase tracking-wide text-base-content/70">
-        {secondary ? "Aussi · Bailly" : "Définition · Bailly"}
-      </div>
-      {text ? (
-        <div className="mt-1.5 space-y-1.5">{formatDefinition(text)}</div>
-      ) : (
-        <p className="mt-1 text-sm text-base-content/70">Recherche…</p>
-      )}
-      {state === "loading" && text && (
-        <p className="mt-1 text-xs text-base-content/70">… définition complète en cours</p>
-      )}
-      {(uri || bundled) && (
-        <a
-          className="link mt-2 inline-block text-xs text-base-content/70"
-          href={`https://bailly.app/${encodeURIComponent(lemma)}`}
-          target="_blank"
-          rel="noreferrer"
-        >
-          Bailly 2020 (CC BY-NC-ND) ↗
-        </a>
-      )}
-    </div>
-  );
 }
 
 function Occurrences({ entry, occ, corpus }: { entry: LemmaEntry; occ: Occ[]; corpus: CorpusConfig }) {
@@ -139,11 +75,15 @@ function Occurrences({ entry, occ, corpus }: { entry: LemmaEntry; occ: Occ[]; co
 // Définition Biblion : système à part des annotations (ref « def:<lemma> »),
 // PRIORITAIRE sur Bailly. Quand elle existe, elle coiffe la fiche ; Bailly passe
 // en repli. Éditable par les philologues/admin.
-function LemmaDefinitions({ lemma }: { lemma: string }) {
+function LemmaDefinitions({ lemma, lexicon }: { lemma: string; lexicon: GlossAssessment }) {
   const { user } = useAuth();
-  const canEdit = can(user, "annotations");
   const { definition, reload } = useLemmaDefinition(lemma);
   const [editing, setEditing] = useState(false);
+  const hasLexicon = lexicon.status === "verified" && !!lexicon.gloss;
+  const canCreate = can(user, "annotations") && definition === null;
+  const canEdit = !!definition && (
+    can(user, "moderate") || (can(user, "annotations") && definition.userId === user?.id)
+  );
 
   const target: AnnotationTarget = {
     ref: `def:${lemma}`,
@@ -158,48 +98,104 @@ function LemmaDefinitions({ lemma }: { lemma: string }) {
 
   return (
     <>
-      {definition ? (
-        <>
-          <section className="mt-3 rounded-box border border-primary/40 bg-primary/5 px-4 py-3">
-            <div className="flex items-center justify-between gap-2">
-              <div className="text-[0.7rem] font-medium uppercase tracking-wide text-primary">
-                Définition · Biblion
+      <section className="mt-4 overflow-hidden rounded-2xl border border-base-300 bg-base-100 shadow-sm">
+        <div className="border-l-4 border-primary px-4 py-4 sm:px-5">
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <div className="text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-primary">
+                Sens du lemme
               </div>
+              <p className="mt-0.5 text-xs text-base-content/60">
+                {definition ? "Dans le grec biblique" : hasLexicon ? "Repère lexicographique général" : "État éditorial"}
+              </p>
+            </div>
+            <div className="flex shrink-0 items-center gap-1.5">
+              <span className={`badge badge-sm ${definition ? "badge-primary" : hasLexicon ? "badge-ghost" : "badge-warning badge-soft"}`}>
+                {definition ? "Biblion" : hasLexicon ? "Bailly" : "À documenter"}
+              </span>
               {canEdit && (
                 <button onClick={() => setEditing(true)} className="btn btn-ghost btn-xs">
                   Modifier
                 </button>
               )}
             </div>
-            <div className="mt-1.5 space-y-1.5 text-[0.95rem] leading-relaxed text-base-content/90">
+          </div>
+
+          {definition ? (
+            <>
+              <div className="mt-3 space-y-2 text-base leading-relaxed text-base-content/90">
               {definition.body.split(/\n+/).filter(Boolean).map((p, i) => (
                 <p key={i}>{p}</p>
               ))}
-            </div>
-            {(definition.author?.displayName || definition.source || definition.link) && (
-              <div className="mt-1.5 flex flex-wrap items-center gap-x-2 text-xs text-base-content/70">
-                {definition.author?.displayName && <span className="font-greek">{definition.author.displayName}</span>}
-                {definition.source && <span>· {definition.source}</span>}
+              </div>
+              {(definition.author?.displayName || definition.source || definition.link) && (
+                <div className="mt-3 flex flex-wrap items-center gap-x-2 text-xs text-base-content/60">
+                  {definition.author?.displayName && <span>{definition.author.displayName}</span>}
+                  {definition.source && <span>· {definition.source}</span>}
                 {definition.link && (
                   <a href={definition.link} target="_blank" rel="noreferrer" className="link text-primary">
                     source ↗
                   </a>
                 )}
-              </div>
-            )}
-          </section>
-          <Definition lemma={lemma} secondary />
-        </>
-      ) : (
-        <>
-          <Definition lemma={lemma} />
-          {canEdit && definition === null && (
-            <button onClick={() => setEditing(true)} className="btn btn-ghost btn-xs mt-2 text-primary">
-              + Définition Biblion
-            </button>
+                </div>
+              )}
+            </>
+          ) : hasLexicon ? (
+            <div className="mt-3 space-y-2">{formatDefinition(lexicon.gloss!.excerpt)}</div>
+          ) : definition === undefined ? (
+            <div className="mt-3 flex items-center gap-2 text-sm text-base-content/60" aria-live="polite">
+              <span className="loading loading-spinner loading-xs" aria-hidden="true" />
+              Recherche d’un sens révisé…
+            </div>
+          ) : (
+            <div className="mt-3 rounded-xl bg-base-200/70 px-3.5 py-3">
+              <p className="text-sm font-medium">Aucun sens fiable n’est encore publié.</p>
+              <p className="mt-1 text-sm leading-relaxed text-base-content/65">
+                Une notice approximative n’est pas affichée comme une définition. Les occurrences ci-dessous restent disponibles pour étudier le mot en contexte.
+              </p>
+              {canCreate && (
+                <button onClick={() => setEditing(true)} className="btn btn-primary btn-sm mt-3">
+                  Rédiger le sens Biblion
+                </button>
+              )}
+            </div>
           )}
-        </>
-      )}
+
+          {!definition && hasLexicon && (
+            <p className="mt-3 text-xs leading-relaxed text-base-content/60">
+              Source générale non spécialisée dans le grec biblique. Le sens peut varier selon le contexte.
+            </p>
+          )}
+        </div>
+
+        {definition && hasLexicon && (
+          <details className="group border-t border-base-300 bg-base-200/35">
+            <summary className="cursor-pointer list-none px-4 py-3 text-sm font-medium text-base-content/70 marker:content-none sm:px-5">
+              <span className="inline-flex items-center gap-2">
+                <span className="transition-transform group-open:rotate-90" aria-hidden="true">›</span>
+                Consulter aussi la notice Bailly
+              </span>
+            </summary>
+            <div className="space-y-2 border-t border-base-300 px-4 py-3 sm:px-5">
+              {formatDefinition(lexicon.gloss!.excerpt)}
+            </div>
+          </details>
+        )}
+
+        {hasLexicon && (
+          <div className="flex flex-wrap items-center justify-between gap-2 border-t border-base-300 px-4 py-2.5 text-xs text-base-content/60 sm:px-5">
+            <span>Bailly 2020 · CC BY-NC-ND</span>
+            <a
+              href={`https://bailly.app/${encodeURIComponent(lemma)}`}
+              target="_blank"
+              rel="noreferrer"
+              className="link hover:text-primary"
+            >
+              Ouvrir la source ↗
+            </a>
+          </div>
+        )}
+      </section>
 
       {editing && (
         <AnnotationEditor
@@ -207,7 +203,6 @@ function LemmaDefinitions({ lemma }: { lemma: string }) {
           title="Définition Biblion"
           bodyLabel="Définition"
           bodyPlaceholder="Sens du mot dans le grec biblique, quand Bailly est imprécis ou absent…"
-          requireSource={false}
           onClose={() => setEditing(false)}
           onSaved={() => {
             setEditing(false);
@@ -347,7 +342,8 @@ export default function LemmaDetail({
   colloc,
   corpus,
   cross,
-}: LemmaData & { cross?: LemmaData }) {
+  lexicon,
+}: LemmaData & { cross?: LemmaData; lexicon: GlossAssessment }) {
   const self: LemmaData = { entry, occ, dist, books, colloc, corpus };
   const [view, setView] = useState<"nt" | "lxx" | "both">(corpus.id === "lxx" ? "lxx" : "nt");
 
@@ -372,28 +368,35 @@ export default function LemmaDetail({
         <span className="text-xs text-base-content/70">érasmien&nbsp;: {entry.translit}</span>
         <span className="text-sm text-base-content/70">· {entry.nature}</span>
       </div>
-      <p className="mt-1 text-sm text-base-content/70">
-        {shown.entry.count} occurrence{shown.entry.count > 1 ? "s" : ""} {shown.corpus.locative}
-      </p>
 
-      {cross && (
-        <div className="join mt-3">
-          <Seg active={view === "nt"} onClick={() => setView("nt")}>
-            {NT.shortLabel}&nbsp;· {nt?.entry.count ?? 0}
-          </Seg>
-          <Seg active={view === "lxx"} onClick={() => setView("lxx")}>
-            {LXX.shortLabel}&nbsp;· {lxx?.entry.count ?? 0}
-          </Seg>
-          <Seg active={view === "both"} onClick={() => setView("both")}>
-            Les deux&nbsp;· {both?.entry.count ?? 0}
-          </Seg>
-        </div>
-      )}
-
-      {/* Définition d'abord (Biblion prioritaire, Bailly en repli), puis les
-          annotations lemmatiques, puis répartition/voisins/occurrences. */}
-      <LemmaDefinitions lemma={entry.lemma} />
+      <LemmaDefinitions lemma={entry.lemma} lexicon={lexicon} />
       <BiblionNote lemma={entry.lemma} />
+
+      <section className="mt-6 border-t border-base-300 pt-5" aria-labelledby="occurrence-scope">
+        <div className="flex flex-wrap items-end justify-between gap-3">
+          <div>
+            <h2 id="occurrence-scope" className="text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-base-content/60">
+              Explorer les occurrences
+            </h2>
+            <p className="mt-1 text-sm text-base-content/70">
+              {shown.entry.count} occurrence{shown.entry.count > 1 ? "s" : ""} {shown.corpus.locative}
+            </p>
+          </div>
+          {cross && (
+            <div className="join" role="group" aria-label="Filtrer les occurrences par corpus">
+              <Seg active={view === "nt"} onClick={() => setView("nt")}>
+                {NT.shortLabel}&nbsp;· {nt?.entry.count ?? 0}
+              </Seg>
+              <Seg active={view === "lxx"} onClick={() => setView("lxx")}>
+                {LXX.shortLabel}&nbsp;· {lxx?.entry.count ?? 0}
+              </Seg>
+              <Seg active={view === "both"} onClick={() => setView("both")}>
+                Les deux&nbsp;· {both?.entry.count ?? 0}
+              </Seg>
+            </div>
+          )}
+        </div>
+      </section>
 
       <DistributionProfile entry={shown.entry} dist={shown.dist} books={shown.books} occ={shown.occ} corpus={shown.corpus} />
       <Collocations items={shown.colloc} occ={shown.occ} corpus={shown.corpus} />

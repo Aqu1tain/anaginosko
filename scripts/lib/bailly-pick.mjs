@@ -2,7 +2,7 @@
 // recherche floue (ὁ → 95 entrées : la lettre Ο, le préfixe ὀ-, l'article ὁ, le
 // relatif ὅ…), toutes marquées isExact. Le seul discriminant fiable est le
 // mot-vedette : on prend l'entrée dont la vedette est EXACTEMENT le lemme
-// (esprits et accents compris), sinon on retombe sur l'heuristique précédente.
+// (esprits et accents compris). Sans correspondance exacte, on ne publie rien.
 
 // Normalise une vedette pour la comparer à un lemme : NFC, bêta médial bouclé
 // (ϐ, U+03D0) → β, et on retire les points de composition (ἀνα·βαίνω → ἀναβαίνω).
@@ -27,13 +27,25 @@ export function pickEntry(entries, lemma) {
   if (!entries?.length) return null;
   const target = normHead(lemma);
   const matches = (e) => headForms(e).includes(target);
-  return (
-    entries.find((e) => matches(e) && !e.isMorpheus) ||
-    entries.find((e) => matches(e)) ||
-    entries.find((e) => e.isExact && !e.isMorpheus) ||
-    entries.find((e) => !e.isMorpheus) ||
-    entries[0]
-  );
+  return entries.find((e) => matches(e) && !e.isMorpheus) || entries.find(matches) || null;
+}
+
+// Les homonymes sont parfois regroupés sous une entrée-conteneur sans extrait.
+// On retient alors l'enfant exact le plus substantiel : cela évite le premier
+// renvoi éditorial (« fém. de… », « posé par erreur… ») vu pour ἡμέρα et λέγω.
+export function pickBestExcerpt(entry, lemma) {
+  const candidates = [];
+  const visit = (node) => {
+    if (isHeadMatch(node, lemma) && node.excerpt?.trim()) candidates.push(node);
+    for (const child of node.children ?? []) visit(child);
+  };
+  if (entry) visit(entry);
+  return candidates.reduce((best, current) => {
+    if (!best) return current;
+    // En cas d'égalité (extraits API tronqués à la même taille), le dernier sens
+    // substantiel du conteneur est préféré aux renvois placés en tête.
+    return current.excerpt.trim().length >= best.excerpt.trim().length ? current : best;
+  }, null);
 }
 
 // La vedette stockée (déduite de l'excerpt) correspond-elle au lemme ? Sert à

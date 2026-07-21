@@ -4,6 +4,11 @@ import path from "node:path";
 import type { Text } from "../src/data/texts";
 import type { NtBook, LemmaEntry, Occ, Distribution, Colloc } from "../src/data/nt";
 import type { CorpusConfig } from "../src/data/corpus";
+import {
+  assessGloss,
+  type Gloss,
+  type GlossAssessment,
+} from "../src/data/glosses";
 
 // Dossier des données d'un corpus. Au build (SSG des chapitres) : public/<prefix>.
 // En prod, le standalone Next ne contient PAS ces données (servies par nginx) ;
@@ -47,6 +52,19 @@ export const loadDistributionFs = (oid: number, c?: CorpusConfig): Promise<Distr
 
 export const loadCollocationsFs = (oid: number, c?: CorpusConfig): Promise<Colloc[]> =>
   readJson<Colloc[]>(`colloc/${oid}.json`, c).catch(() => []);
+
+const glossesFsCache = new Map<string, Record<string, Gloss>>();
+
+/** Glose du bon corpus, validée par sa vedette avant exposition publique. */
+export async function loadGlossFs(lemma: string, c?: CorpusConfig): Promise<GlossAssessment> {
+  const key = c?.id ?? "nt";
+  let glosses = glossesFsCache.get(key);
+  if (!glosses) {
+    glosses = await readJson<Record<string, Gloss>>("glosses.json", c).catch(() => ({}));
+    glossesFsCache.set(key, glosses);
+  }
+  return assessGloss(lemma, glosses[lemma]);
+}
 
 type FrenchByChapter = Record<string, Record<string, string>>;
 

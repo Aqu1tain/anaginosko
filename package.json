@@ -16,6 +16,7 @@
     "lxx:concordance": "CORPUS_DIR=public/lxx node scripts/build-nt-distribution.mjs && CORPUS_DIR=public/lxx node scripts/build-nt-collocations.mjs",
     "lxx:rebuild": "node scripts/build-lxx.mjs && npm run lxx:concordance && CORPUS_DIR=public/lxx node scripts/fetch-nt-glosses.mjs",
     "legal:check": "node scripts/check-legal.mjs",
+    "test:definitions": "node --test tests/definitions.test.mjs",
     "start": "node .next/standalone/server.js",
     "lint": "next lint"
   },

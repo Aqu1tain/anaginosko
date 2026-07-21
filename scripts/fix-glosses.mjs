@@ -5,7 +5,7 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, resolve } from "node:path";
-import { pickEntry, isHeadMatch, headOfExcerpt, normHead } from "./lib/bailly-pick.mjs";
+import { pickBestExcerpt, pickEntry, headOfExcerpt, normHead } from "./lib/bailly-pick.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -19,6 +19,17 @@ async function lookup(lemma) {
   lookupCache.set(lemma, entries);
   await sleep(110);
   return entries;
+}
+
+async function resolveGloss(entry, lemma) {
+  let best = pickBestExcerpt(entry, lemma);
+  if (!best && entry?.uri) {
+    const res = await fetch(`https://api.bailly.app/entry/${encodeURIComponent(entry.uri)}`);
+    if (!res.ok) throw new Error(`entry HTTP ${res.status}`);
+    best = pickBestExcerpt((await res.json()).data?.entry, lemma);
+    await sleep(110);
+  }
+  return best ? { excerpt: best.excerpt.trim(), uri: best.uri ?? entry.uri, headword: best.word } : null;
 }
 
 async function repair(file, pretty) {
@@ -42,9 +53,10 @@ async function repair(file, pretty) {
     try {
       const entries = await lookup(lemma);
       const e = pickEntry(entries, lemma);
-      if (isHeadMatch(e, lemma) && e.excerpt && e.excerpt.trim() !== glosses[lemma].excerpt) {
-        if (sample.length < 30) sample.push(`${lemma} → ${e.excerpt.slice(0, 42)}`);
-        glosses[lemma] = { excerpt: e.excerpt.trim(), uri: e.uri };
+      const gloss = await resolveGloss(e, lemma);
+      if (gloss && gloss.excerpt !== glosses[lemma].excerpt) {
+        if (sample.length < 30) sample.push(`${lemma} → ${gloss.excerpt.slice(0, 42)}`);
+        glosses[lemma] = gloss;
         fixed++;
       } else {
         untouched++;
@@ -62,4 +74,5 @@ async function repair(file, pretty) {
 
 await repair("src/data/glosses.json", true);
 await repair("public/nt/glosses.json", false);
+await repair("public/lxx/glosses.json", false);
 console.log("\nTerminé.");

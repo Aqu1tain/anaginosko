@@ -22,6 +22,7 @@ import { refHref } from "../data/passageLink";
 import AnnotationEditor, { type AnnotationTarget } from "./AnnotationEditor";
 import { CATEGORY_LABEL } from "./ReportEditor";
 import AdminAnalytics from "./AdminAnalytics";
+import DefinitionCoverage from "./DefinitionCoverage";
 import Avatar from "./profile/Avatar";
 
 const STATUS_LABEL: Record<ReportStatus, string> = {
@@ -406,6 +407,12 @@ export default function AdminView() {
 
       {onList && (
         <section className="mt-6">
+          {tab === "definitions" && seesAll && <DefinitionCoverage definitions={defs} />}
+          {tab === "definitions" && !seesAll && (
+            <p className="mb-5 rounded-xl bg-base-200 px-3 py-2 text-sm text-base-content/65">
+              Cette liste contient vos définitions. La couverture globale est visible par les modérateurs.
+            </p>
+          )}
           <div className="flex flex-wrap items-center gap-2">
             <input
               type="search"
