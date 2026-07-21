@@ -87,6 +87,13 @@ const ICON = {
       <circle cx="18.5" cy="16.5" r="2.5" />
     </svg>
   ),
+  accounts: (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <circle cx="9" cy="8" r="3" />
+      <path d="M3 20c0-3.3 2.7-5 6-5s6 1.7 6 5" />
+      <path d="M16 4.5a3 3 0 010 5.8M21 20c0-2.6-1-4.2-2.6-5" />
+    </svg>
+  ),
 };
 
 function locationLabel(ref: string): string {
@@ -262,6 +269,7 @@ export default function AdminView() {
         <NavCard href="/mon-profil" title="Mon profil" desc="Photo, bio, liens publics" avatar={<Avatar name={user?.displayName ?? ""} photo={photo} size={40} />} />
         {canEdit && <NavCard href="/admin/articles" title="Articles" desc="Rédiger, relire, publier" icon={ICON.articles} />}
         {canEdit && <NavCard href="/admin/arbitrage" title="Arbitrage LXX" desc="Liens grec et Giguet" icon={ICON.arbitrage} />}
+        {isAdmin && <NavCard href="/admin/comptes" title="Comptes" desc="Contributeurs, rôles, accès" icon={ICON.accounts} />}
       </div>
 
       {stats && (

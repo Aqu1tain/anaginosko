@@ -90,6 +90,42 @@ export const fetchMe = () => apiFetch<{ user: AuthUser }>("/me").then((d) => d.u
 export const updateMe = (patch: { email?: string; displayName?: string }) =>
   apiFetch<{ user: AuthUser }>("/me", { method: "PUT", body: JSON.stringify(patch) }).then((d) => d.user);
 
+// Changement de mot de passe par le titulaire (vérifie le mot de passe actuel).
+export const changePassword = (currentPassword: string, newPassword: string) =>
+  apiFetch<void>("/me/password", { method: "PUT", body: JSON.stringify({ currentPassword, newPassword }) });
+
+// --- Gestion des comptes (admin) ---
+export type InvitableRole = "admin" | "philologist";
+export type Contributor = { id: number; email: string; displayName: string; role: Role; active: boolean; createdAt: string | null };
+export type Invitation = { id: number; email: string; displayName: string; role: InvitableRole; expiresAt: string | null; createdAt: string | null };
+
+export const fetchContributors = () =>
+  apiFetch<{ users: Contributor[]; invitations: Invitation[] }>("/admin/users");
+
+export const inviteContributor = (input: { email: string; displayName: string; role: InvitableRole }) =>
+  apiFetch<{ invitation: Invitation }>("/admin/invitations", { method: "POST", body: JSON.stringify(input) }).then((d) => d.invitation);
+
+export const updateContributor = (id: number, patch: { role?: Role; active?: boolean }) =>
+  apiFetch<{ user: Contributor }>(`/admin/users/${id}`, { method: "PATCH", body: JSON.stringify(patch) }).then((d) => d.user);
+
+export const cancelInvitation = (id: number) =>
+  apiFetch<void>(`/admin/invitations/${id}`, { method: "DELETE" });
+
+// --- Invitation publique (le contributeur définit son mot de passe) ---
+export const fetchInvitation = (token: string) =>
+  apiFetch<{ invitation: { email: string; displayName: string; role: InvitableRole } }>(
+    `/invitations/${encodeURIComponent(token)}`,
+  ).then((d) => d.invitation);
+
+export async function acceptInvitation(token: string, password: string): Promise<AuthUser> {
+  const data = await apiFetch<{ token: string; user: AuthUser }>(
+    `/invitations/${encodeURIComponent(token)}/accept`,
+    { method: "POST", body: JSON.stringify({ password }) },
+  );
+  setToken(data.token);
+  return data.user;
+}
+
 export const fetchAnnotations = (ref: string) =>
   apiFetch<Annotation[]>(`/annotations?ref=${encodeURIComponent(ref)}`);
 
