@@ -1,0 +1,39 @@
+name: Web CI
+
+on:
+  pull_request:
+    branches: [next, main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: web-ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Web CI
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 20
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Lint
+        run: npm run lint
+      - name: Typecheck
+        run: npx tsc --noEmit
+      - name: Test definition matching
+        run: npm run test:definitions
+      - name: Test LXX materializer grammar
+        run: node tests/lxx-materialize.test.mjs
+      - name: Build application without rewriting corpora
+        run: npx next build
+      - name: Reject uncommitted application drift
+        run: git diff --exit-code

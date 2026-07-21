@@ -6,11 +6,11 @@ import { useIsWide } from "../hooks/useIsWide";
 import { accentLabel, breathingLabel, type GraphemeInfo } from "../lib/greek";
 import type { SheetStage } from "./SheetContext";
 import type { WordContext } from "../lib/tokenize";
-import { glossFor } from "../data/glosses";
-import { ntGlossFor } from "../data/nt";
+import { corpusById, parseRef } from "../data/corpus";
 import { playTranslit, playUrl } from "../lib/audio";
 import { useHasAudio } from "../hooks/useHasAudio";
 import { useAuth } from "../hooks/useAuth";
+import { useCorpusGloss } from "../hooks/useCorpusGloss";
 import { useLemmaNotes } from "../hooks/useLemmaNotes";
 import { useLemmaDefinition } from "../hooks/useLemmaDefinition";
 import ReportButton from "./ReportButton";
@@ -24,8 +24,6 @@ import {
 } from "../lib/api";
 import { translitToIpa } from "../lib/translitIpa";
 import Translit from "./Translit";
-
-const anyGloss = (lemma: string | null) => (lemma ? glossFor(lemma) ?? ntGlossFor(lemma) : undefined);
 
 // Ligne de prononciation. Si le son est disponible, toute la ligne est cliquable
 // (grande cible tactile) avec l'icône haut-parleur ; sinon, simple texte (le
@@ -227,8 +225,14 @@ export default function LetterSheet({
 
   const { user } = useAuth();
   const canEdit = can(user, "annotations");
-  const { notes: lemmaNotes } = useLemmaNotes(stage === 2 && word ? word.lemme : null);
-  const { definition: lemmaDef } = useLemmaDefinition(stage === 2 && word ? word.lemme : null);
+  const activeLemma = stage === 2 && word ? word.lemme : null;
+  const refCorpus = textRef ? parseRef(textRef)?.corpus : null;
+  // Les passages guidés historiques n'encodent pas le corpus dans leur ref et
+  // appartiennent au NT. Les chapitres suivis portent nt-… ou lxx-….
+  const wordCorpus = corpusById(refCorpus ?? "nt");
+  const lexical = useCorpusGloss(activeLemma, wordCorpus);
+  const { notes: lemmaNotes } = useLemmaNotes(activeLemma);
+  const { definition: lemmaDef } = useLemmaDefinition(activeLemma);
 
   // Overrides de prononciation pour ce texte (chargés une fois par ref).
   const [overrides, setOverrides] = useState<PronunciationOverride[]>([]);
@@ -499,21 +503,36 @@ export default function LetterSheet({
                     <span className="text-base-content/70"> · {word.nature}</span>
                   ) : null}
                 </div>
-                {lemmaDef ? (
-                  <div className="mt-1.5 rounded-lg border border-primary/40 bg-primary/5 px-3 py-2">
-                    <div className="text-[0.65rem] font-medium uppercase tracking-wide text-primary">
-                      Définition · Biblion
+                <div className={`mt-2 rounded-xl border px-3 py-2.5 ${lemmaDef ? "border-primary/35 bg-primary/5" : "border-base-300 bg-base-200/55"}`}>
+                  <div className="flex items-center justify-between gap-2">
+                    <div className={`text-[0.65rem] font-semibold uppercase tracking-[0.1em] ${lemmaDef ? "text-primary" : "text-base-content/60"}`}>
+                      Sens
                     </div>
-                    <p className="mt-1 whitespace-pre-wrap text-sm leading-snug text-base-content/90">
+                    <span className={`badge badge-xs ${lemmaDef ? "badge-primary" : lexical.status === "verified" ? "badge-ghost" : "badge-warning badge-soft"}`}>
+                      {lemmaDef ? "Biblion" : lexical.status === "verified" ? "Bailly" : "À documenter"}
+                    </span>
+                  </div>
+                  {lemmaDef ? (
+                    <p className="mt-1.5 whitespace-pre-wrap text-sm leading-snug text-base-content/90">
                       {lemmaDef.body}
                     </p>
-                  </div>
-                ) : anyGloss(word.lemme) ? (
-                  <p className="mt-1 text-sm leading-snug text-base-content/70">
-                    {anyGloss(word.lemme)!.excerpt}
-                    <span className="text-base-content/70"> · Bailly</span>
-                  </p>
-                ) : null}
+                  ) : lexical.status === "verified" && lexical.gloss ? (
+                    <>
+                      <p className="mt-1.5 text-sm leading-snug text-base-content/80">
+                        {lexical.gloss.excerpt}
+                      </p>
+                      <p className="mt-1.5 text-[0.7rem] leading-snug text-base-content/55">
+                        Lexique général, à confirmer dans le contexte biblique.
+                      </p>
+                    </>
+                  ) : lexical.loading || lemmaDef === undefined ? (
+                    <p className="mt-1.5 text-sm text-base-content/60">Recherche du sens…</p>
+                  ) : (
+                    <p className="mt-1.5 text-sm leading-snug text-base-content/65">
+                      Aucun sens fiable publié pour ce lemme.
+                    </p>
+                  )}
+                </div>
                 {lemmaNotes && lemmaNotes.length > 0 && (
                   <div className="mt-2 rounded-lg border border-primary/30 bg-primary/5 px-3 py-2">
                     <div className="text-[0.65rem] font-medium uppercase tracking-wide text-primary">
@@ -533,10 +552,10 @@ export default function LetterSheet({
                 )}
                 <div className="mt-1.5 flex flex-wrap items-center justify-between gap-2">
                   <Link
-                    href={`/concordance/${encodeURIComponent(word.lemme)}`}
+                    href={`${wordCorpus.concordanceBase}/${encodeURIComponent(word.lemme)}`}
                     className="inline-block text-sm font-medium text-accent"
                   >
-                    définition complète & occurrences
+                    Voir la fiche lexicale
                   </Link>
                   <ReportButton
                     label="Signaler la définition ou demander une note"

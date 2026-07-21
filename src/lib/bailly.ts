@@ -25,13 +25,9 @@ export function pickBaillyEntry(entries: BaillyEntry[], lemma: string): BaillyEn
   if (!entries.length) return undefined;
   const target = normHead(lemma);
   const matches = (e: BaillyEntry) => headForms(e).includes(target);
-  return (
-    entries.find((e) => matches(e) && !e.isMorpheus) ||
-    entries.find((e) => matches(e)) ||
-    entries.find((e) => e.isExact && !e.isMorpheus) ||
-    entries.find((e) => !e.isMorpheus) ||
-    entries[0]
-  );
+  // Un résultat flou est pire qu'une définition absente : accents et esprits
+  // distinguent notamment ἔλεος (pitié) d'ἐλεός (table).
+  return entries.find((e) => matches(e) && !e.isMorpheus) || entries.find(matches);
 }
 
 type DefEntry = { definition?: string; children?: DefEntry[] };
@@ -42,9 +38,11 @@ type DefEntry = { definition?: string; children?: DefEntry[] };
 export function baillyDefinition(entry: DefEntry | null | undefined): string {
   if (!entry) return "";
   if (entry.definition?.trim()) return entry.definition;
-  for (const child of entry.children ?? []) {
-    const d = baillyDefinition(child);
-    if (d) return d;
-  }
-  return "";
+  // Une entrée-conteneur peut commencer par un simple renvoi (« fém. de… » ou
+  // « posé par erreur… ») avant la vraie notice. La notice la plus substantielle
+  // est un meilleur repli déterministe que « le premier enfant ».
+  return (entry.children ?? [])
+    .map(baillyDefinition)
+    .filter(Boolean)
+    .sort((a, b) => b.length - a.length)[0] ?? "";
 }

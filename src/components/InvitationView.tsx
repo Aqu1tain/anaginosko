@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { fetchInvitation, acceptInvitation } from "../lib/api";
 
 type Invite = { email: string; displayName: string; title: string };
@@ -32,7 +33,7 @@ export default function InvitationView({ token }: { token: string }) {
           <p className="mt-2 text-sm text-base-content/70">
             Ce lien est invalide ou a expiré. Demandez une nouvelle invitation à l’administration.
           </p>
-          <a href="/" className="btn btn-outline btn-sm mt-4 border-base-300">Aller à la lecture</a>
+          <Link href="/" className="btn btn-outline btn-sm mt-4 border-base-300">Aller à la lecture</Link>
         </div>
       </div>
     );

@@ -16,8 +16,9 @@
     "lxx:concordance": "CORPUS_DIR=public/lxx node scripts/build-nt-distribution.mjs && CORPUS_DIR=public/lxx node scripts/build-nt-collocations.mjs",
     "lxx:rebuild": "node scripts/build-lxx.mjs && npm run lxx:concordance && CORPUS_DIR=public/lxx node scripts/fetch-nt-glosses.mjs",
     "legal:check": "node scripts/check-legal.mjs",
+    "test:definitions": "node --test tests/definitions.test.mjs",
     "start": "node .next/standalone/server.js",
-    "lint": "next lint"
+    "lint": "eslint ."
   },
   "dependencies": {
     "@blocknote/ariakit": "0.51.4",
@@ -31,10 +32,13 @@
     "server-only": "^0.0.1"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.3.5",
     "@types/node": "20.17.6",
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.0",
     "daisyui": "^5.5.23",
+    "eslint": "^9.39.4",
+    "eslint-config-next": "^15.5.19",
     "tailwindcss": "^4.1.0",
     "typescript": "^5.7.0"
   }
