@@ -87,6 +87,12 @@ jobs:
           #     ARTICLES_DIR est fixé par un drop-in systemd. Idempotent.
           $SSH "$HOST" "sudo mkdir -p /opt/anaginosko-web/articles/articles /opt/anaginosko-web/articles/uploads /opt/anaginosko-web/articles/profiles && sudo chown -R anag-web:anag-web /opt/anaginosko-web/articles && sudo chmod 755 /opt/anaginosko-web/articles"
 
+          # 2c) Le service (anag-web) écrit le cache ISR dans .next (revalidatePath,
+          #     régénération SSG). Le rsync dépose la release en anag-deploy ; sans ce
+          #     chown, l'écriture du cache échoue en EACCES -> NoFallbackError -> 404
+          #     sur toute page revalidée (intro de livre, refresh ISR 300s).
+          $SSH "$HOST" "sudo chown -R anag-web:anag-web $REL/.next"
+
           # 3) Bascule atomique du symlink + redémarrage du service
           $SSH "$HOST" "ln -sfn $REL /opt/anaginosko-web/current && sudo systemctl restart anaginosko-web"
 
