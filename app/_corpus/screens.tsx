@@ -10,6 +10,7 @@ import Breadcrumb from "@/app/_components/Breadcrumb";
 import BreadcrumbJsonLd from "@/app/_components/BreadcrumbJsonLd";
 import ArticleRenderer from "@/src/components/articles/ArticleRenderer";
 import EditBookIntro from "@/src/components/books/EditBookIntro";
+import CollapsibleIntro from "@/src/components/books/CollapsibleIntro";
 import { getPublishedIntro } from "@/lib/bookIntros";
 
 // Écrans de lecture partagés entre corpus (NT, LXX). Les fichiers de route ne sont
@@ -168,11 +169,11 @@ export async function BookScreen({ corpus, params }: { corpus: CorpusConfig; par
         {b.chapters} chapitre{b.chapters > 1 ? "s" : ""}
       </p>
       {intro && (
-        <div className="mb-6 border-b border-base-200 pb-5">
+        <CollapsibleIntro corpus={corpus.id} book={book}>
           <ArticleRenderer content={intro.content} />
-        </div>
+        </CollapsibleIntro>
       )}
-      <div className="grid grid-cols-6 gap-1.5 sm:grid-cols-10 wide:grid-cols-12">
+      <div id="chapitres" className="grid scroll-mt-20 grid-cols-6 gap-1.5 sm:grid-cols-10 wide:grid-cols-12">
         {chapterNumbers(b).map((ch) => (
           <Link
             key={ch}
