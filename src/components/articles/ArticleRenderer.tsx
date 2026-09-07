@@ -188,12 +188,7 @@ function renderBlock(block: Block): ReactNode {
         </li>
       );
     default:
-      return (
-        <div key={key}>
-          {renderInline(block.content)}
-          {block.children && block.children.length > 0 && renderBlocks(block.children)}
-        </div>
-      );
+      return <div key={key}>{renderInline(block.content)}</div>;
   }
 }
 
@@ -224,6 +219,15 @@ function renderBlocks(blocks: Block[]): ReactNode {
     } else {
       flush();
       out.push(renderBlock(b));
+      // « Augmenter le retrait » dans l'éditeur imbrique les blocs suivants comme
+      // enfants : on les rend en retrait, quel que soit le type du parent.
+      if (b.children && b.children.length > 0) {
+        out.push(
+          <div key={`nested-${b.id}`} className="ml-6">
+            {renderBlocks(b.children)}
+          </div>,
+        );
+      }
     }
   }
   flush();
