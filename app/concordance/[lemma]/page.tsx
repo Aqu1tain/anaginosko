@@ -8,6 +8,7 @@ import {
   loadGlossFs,
   loadOccurrencesFs,
 } from "@/lib/nt-server";
+import { fetchBaillyNotice } from "@/lib/bailly-server";
 import LemmaDetail from "@/src/components/LemmaDetail";
 import { NT, LXX } from "@/src/data/corpus";
 
@@ -58,6 +59,7 @@ export default async function LemmaPage({ params }: { params: Promise<{ lemma: s
     lemmaEntryFs(l, LXX),
     loadGlossFs(l, NT),
   ]);
+  const notice = lexicon.gloss ? await fetchBaillyNotice(lexicon.gloss.uri) : null;
 
   // Vue croisee : si le lemme existe aussi dans la Septante, on charge ses donnees
   // pour la bascule NT / LXX / Les deux (la vie du mot sur toute la Bible grecque).
@@ -89,7 +91,7 @@ export default async function LemmaPage({ params }: { params: Promise<{ lemma: s
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(definedTerm) }} />
-      <LemmaDetail entry={entry} occ={occ} dist={dist} books={books} colloc={colloc} corpus={NT} cross={cross} lexicon={lexicon} />
+      <LemmaDetail entry={entry} occ={occ} dist={dist} books={books} colloc={colloc} corpus={NT} cross={cross} lexicon={lexicon} notice={notice} />
     </>
   );
 }
