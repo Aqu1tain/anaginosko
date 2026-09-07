@@ -11,7 +11,7 @@ import BreadcrumbJsonLd from "@/app/_components/BreadcrumbJsonLd";
 import ArticleRenderer from "@/src/components/articles/ArticleRenderer";
 import EditBookIntro from "@/src/components/books/EditBookIntro";
 import CollapsibleIntro from "@/src/components/books/CollapsibleIntro";
-import { getPublishedIntro } from "@/lib/bookIntros";
+import { getPublishedIntro, bookIntroIsLong } from "@/lib/bookIntros";
 
 // Écrans de lecture partagés entre corpus (NT, LXX). Les fichiers de route ne sont
 // que de fines enveloppes passant la config du corpus. Les valeurs NT reproduisent
@@ -169,7 +169,7 @@ export async function BookScreen({ corpus, params }: { corpus: CorpusConfig; par
         {b.chapters} chapitre{b.chapters > 1 ? "s" : ""}
       </p>
       {intro && (
-        <CollapsibleIntro corpus={corpus.id} book={book}>
+        <CollapsibleIntro corpus={corpus.id} book={book} long={bookIntroIsLong(intro.content)}>
           <ArticleRenderer content={intro.content} />
         </CollapsibleIntro>
       )}
