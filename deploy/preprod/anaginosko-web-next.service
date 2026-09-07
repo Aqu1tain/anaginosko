@@ -14,7 +14,7 @@ Environment=HOSTNAME=127.0.0.1
 # qui n'est pas encore en prod). L'audio reste partagé avec la prod via nginx.
 Environment=NT_DATA_DIR=/var/www/anaginosko-next/nt
 Environment=LXX_DATA_DIR=/var/www/anaginosko-next/lxx
-# Arbitrage : overrides Biblion persistants (hors release --delete) + API pour /me.
+# Arbitrage : overrides persistants (hors release --delete) + API préprod pour /me.
 Environment=ARB_DIR=/opt/anaginosko-web-next/arbitration
 Environment=ARB_API_URL=http://127.0.0.1:3901/api
 # Articles (KAN-47) : stockage éditorial persistant, hors release --delete.

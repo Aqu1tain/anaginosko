@@ -4,12 +4,13 @@ Préprod auto-déployée à chaque push sur `next` (workflow `.github/workflows/
 Même VPS que la prod, **strictement isolée** :
 
 - App Next sur `127.0.0.1:3101` (service `anaginosko-web-next`), build avec
-  `NEXT_PUBLIC_PREPROD=1` → mur de connexion in-app (comptes Biblion/Admin existants)
-  + `noindex`.
+  `NEXT_PUBLIC_PREPROD=1` → mur de connexion in-app + `noindex`.
 - API AdonisJS sur `127.0.0.1:3901` (conteneur `anaginosko-api-next`, image prod
-  réutilisée), **DB copiée de la prod** à chaque déploiement (volume `db-next`) :
-  la préprod voit les annotations de la prod, mais ses écritures restent locales
-  et **ne repartent jamais en prod**.
+  réutilisée), configuration dédiée dans `/opt/anaginosko-api-next/.env` et DB
+  persistante propre (volume `db-next`). Un déploiement ne lit ni ne recopie la
+  DB de production.
+- Articles et profils publics dans `/opt/anaginosko-web-next/articles`, stockage
+  persistant propre à la préproduction, jamais copié depuis la production.
 - Data statique NT/LXX propre à la préprod dans `/var/www/anaginosko-next`
   (issue de `next`, donc inclut la LXX pas encore en prod). Audio partagé avec la
   prod (lecture seule).
@@ -21,7 +22,13 @@ Même VPS que la prod, **strictement isolée** :
 1. **DNS** : `next.anaginosko.fr` A/AAAA → IP du VPS. *(fait)*
 2. **Secrets GitHub** : `VPS_HOST`, `VPS_USER`, `VPS_SSH_KEY` - déjà présents (mêmes
    que le déploiement prod).
-3. **Sudo de l'utilisateur de déploiement** : le provisioning installe un service,
+3. **Configuration API préprod** : créer `/opt/anaginosko-api-next/.env` avec des
+   valeurs propres à la préproduction. Le provisioning échoue explicitement si
+   ce fichier manque et ne se replie jamais sur le `.env` de production.
+   Pour une installation créée par l'ancien provisioning, remplacer le fichier
+   historiquement copié depuis la production et renouveler ses secrets avant de
+   considérer l'isolation comme complète. Ne pas recopier le fichier de prod.
+4. **Sudo de l'utilisateur de déploiement** : le provisioning installe un service,
    une config nginx, un certificat et un conteneur Docker. Sur le VPS, accorder le
    sudo sans mot de passe à l'utilisateur SSH de déploiement :
 
