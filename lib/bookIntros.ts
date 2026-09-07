@@ -80,6 +80,26 @@ export const getBookIntro = (corpus: string, book: string): BookIntro | null => 
 
 export const listBookIntros = (): BookIntro[] => readAll();
 
+// Indice serveur pour l'aperçu replié : une intro courte s'affiche entière sans
+// bouton, sans attendre la mesure côté client (évite le clignotement du fondu).
+export function bookIntroIsLong(content: unknown[]): boolean {
+  let chars = 0;
+  let blocks = 0;
+  const walk = (list: unknown[]) => {
+    for (const block of list) {
+      const b = block as { type?: string; content?: unknown; children?: unknown[] };
+      blocks += 1;
+      if (b.type === "image" || b.type === "table" || b.type === "embed" || b.type === "verseQuote") chars += 400;
+      if (Array.isArray(b.content)) {
+        for (const it of b.content) if (it && typeof it === "object" && "text" in it) chars += String((it as { text: unknown }).text ?? "").length;
+      }
+      if (Array.isArray(b.children)) walk(b.children);
+    }
+  };
+  walk(Array.isArray(content) ? content : []);
+  return chars > 450 || blocks > 5;
+}
+
 // Extrait SEO : concatène le texte des premiers blocs de prose (≤ ~300 caractères).
 export function bookIntroExcerpt(content: unknown[]): string {
   const flatten = (inline: unknown): string =>
