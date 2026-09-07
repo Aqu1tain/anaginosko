@@ -65,6 +65,10 @@ export function toBaillyNotice(entry: FullEntry | null | undefined, uri: string)
   return { word: entry.word, uri: entry.uri || uri, senses };
 }
 
-// Nom de fichier ASCII et réversible d'une notice figée (jumeau de
-// scripts/fetch-bailly-notices.mjs) : « agapaô-ô » → « agapa~C3~B4-~C3~B4.json ».
-export const baillyNoticeFile = (uri: string): string => `${encodeURIComponent(uri).replace(/%/g, "~")}.json`;
+// Nom de fichier d'une notice figée, jumeau de scripts/fetch-bailly-notices.mjs :
+// ASCII, réversible, sûr sur un disque insensible à la casse. « agapaô-ô » →
+// « agapa~c3~b4-~c3~b4.json », « Gaza » → « _gaza.json ».
+export const baillyNoticeFile = (uri: string): string =>
+  `${encodeURIComponent(uri)
+    .replace(/%([0-9A-F]{2})/g, (_, h: string) => `~${h.toLowerCase()}`)
+    .replace(/[A-Z]/g, (c) => `_${c.toLowerCase()}`)}.json`;

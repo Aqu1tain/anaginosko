@@ -14,7 +14,13 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const out = resolve(root, "public/bailly");
 mkdirSync(out, { recursive: true });
 
-export const noticeFile = (uri) => `${encodeURIComponent(uri).replace(/%/g, "~")}.json`;
+// Nom de fichier ASCII, réversible et sûr sur un disque insensible à la casse :
+// « % » devient « ~ » (hexa en minuscules), une majuscule devient « _ » + minuscule
+// (Gaza → _gaza, gaza → gaza).
+export const noticeFile = (uri) =>
+  `${encodeURIComponent(uri)
+    .replace(/%([0-9A-F]{2})/g, (_, h) => `~${h.toLowerCase()}`)
+    .replace(/[A-Z]/g, (c) => `_${c.toLowerCase()}`)}.json`;
 
 const uris = new Set();
 for (const corpus of ["nt", "lxx"]) {
