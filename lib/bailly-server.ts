@@ -1,12 +1,16 @@
 import "server-only";
+import { readFile } from "node:fs/promises";
 import { request } from "node:https";
-import { type BaillyNotice, toBaillyNotice } from "../src/lib/bailly";
+import path from "node:path";
+import { type BaillyNotice, baillyNoticeFile, toBaillyNotice } from "../src/lib/bailly";
 
-// Proxy serveur vers api.bailly.app : le visiteur ne contacte jamais le tiers.
-// Requête HTTPS Node en IPv4 avec un vrai délai (le fetch patché par Next peut
-// ignorer le signal d'abandon), cache mémoire des succès pour la vie du
-// processus (le Bailly 2020 ne bouge pas) ; les échecs ne sont jamais mémorisés.
+// Notices Bailly : d'abord les fichiers figés dans public/bailly (voir
+// scripts/fetch-bailly-notices.mjs ; api.bailly.app refuse les requêtes du VPS),
+// puis l'API en repli (dev, lemme récent). Requête HTTPS Node en IPv4 avec un
+// vrai délai (le fetch patché par Next peut ignorer le signal d'abandon), cache
+// mémoire des succès pour la vie du processus ; les échecs ne sont jamais mémorisés.
 const API_HOST = "api.bailly.app";
+const STATIC_DIR = path.join(process.cwd(), "public", "bailly");
 const MAX_ENTRIES = 5000;
 const cache = new Map<string, BaillyNotice>();
 
@@ -44,6 +48,13 @@ export async function loadBaillyNotice(uri: string, timeoutMs = 4000): Promise<B
   if (!uri) return { notice: null, error: "uri vide" };
   const cached = cache.get(uri);
   if (cached) return { notice: cached };
+  const frozen = await readFile(path.join(STATIC_DIR, baillyNoticeFile(uri)), "utf8")
+    .then((raw) => JSON.parse(raw) as BaillyNotice)
+    .catch(() => null);
+  if (frozen) {
+    cache.set(uri, frozen);
+    return { notice: frozen };
+  }
   try {
     const json = (await getJson(`/entry/${encodeURIComponent(uri)}?fields=word,uri,htmlDefinition`, timeoutMs)) as {
       data?: { entry?: Parameters<typeof toBaillyNotice>[0] };
