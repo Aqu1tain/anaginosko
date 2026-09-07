@@ -41,35 +41,20 @@ sudo sed -i "s#^ExecStart=.*#ExecStart=$NODE_BIN server.js#" /etc/systemd/system
 sudo systemctl daemon-reload
 sudo systemctl enable anaginosko-web-next >/dev/null 2>&1 || true
 
-echo "==> 3) API préprod (conteneur isolé, image prod réutilisée)"
-PROD_API_DIR="$($DOCKER inspect anaginosko-api -f '{{ index .Config.Labels "com.docker.compose.project.working_dir" }}' 2>/dev/null | tr -d '\r' || true)"
+echo "==> 3) API préprod (conteneur et données isolés, image prod réutilisée)"
 sudo mkdir -p "$API_DIR"
 sudo cp "$CFG_DIR/docker-compose.preprod.yml" "$API_DIR/docker-compose.yml"
-if [ -n "$PROD_API_DIR" ] && sudo test -f "$PROD_API_DIR/.env"; then
-  sudo cp "$PROD_API_DIR/.env" "$API_DIR/.env"
-else
-  echo "    AVERTISSEMENT : .env prod introuvable ; créez $API_DIR/.env à la main." >&2
+if ! sudo test -s "$API_DIR/.env"; then
+  echo "    ERREUR : configuration API préprod absente : $API_DIR/.env" >&2
+  echo "    Installez une configuration propre à la préproduction ; la production ne sera pas copiée." >&2
+  exit 1
 fi
 ( cd "$API_DIR" && $DOCKER compose up -d )
 
-echo "==> 4) rafraîchissement DB depuis la prod (unidirectionnel)"
-if $DOCKER cp anaginosko-api:/app/tmp/db.sqlite3 /tmp/anag-preprod-db.sqlite3 2>/dev/null; then
-  $DOCKER cp /tmp/anag-preprod-db.sqlite3 anaginosko-api-next:/app/tmp/db.sqlite3
-  for ext in -wal -shm; do
-    if $DOCKER cp "anaginosko-api:/app/tmp/db.sqlite3$ext" "/tmp/anag-preprod-db.sqlite3$ext" 2>/dev/null; then
-      $DOCKER cp "/tmp/anag-preprod-db.sqlite3$ext" "anaginosko-api-next:/app/tmp/db.sqlite3$ext" 2>/dev/null || true
-    fi
-  done
-  sudo rm -f /tmp/anag-preprod-db.sqlite3*  # docker (via sudo) a écrit en root
-  # docker cp pose la DB en root ; l'API tourne en `node` et SQLite doit écrire le
-  # fichier + le -wal/-shm dans /app/tmp. On rétablit la propriété en root (sinon
-  # le chown lancé en `node` échoue) -> sinon SQLITE_READONLY au login.
-  $DOCKER exec -u root anaginosko-api-next chown -R node:node /app/tmp 2>/dev/null || true
-  $DOCKER restart anaginosko-api-next >/dev/null
-  echo "    DB prod copiée vers la préprod."
-else
-  echo "    AVERTISSEMENT : copie DB prod échouée ; la préprod garde sa DB locale." >&2
-fi
+echo "==> 4) conservation de la DB préprod"
+# Le volume db-next est une source de données autonome. Un déploiement ne copie,
+# ne rafraîchit et ne réinitialise jamais la base depuis la production.
+echo "    DB préprod conservée ; aucune lecture de la DB de production."
 
 echo "==> 5) nginx + TLS (installé seulement si absent, pour préserver certbot)"
 if [ ! -f "/etc/nginx/sites-available/$DOMAIN" ]; then

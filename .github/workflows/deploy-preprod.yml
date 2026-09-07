@@ -66,8 +66,8 @@ jobs:
           $SSH "$HOST" "rm -rf ~/anag-preprod && mkdir -p ~/anag-preprod"
           rsync -az -e "$SSH" deploy/preprod/ "$HOST:anag-preprod/"
 
-          # 2) Provisionner (idempotent) : service systemd, API isolée + DB copiée
-          #    de la prod, nginx + TLS. Aucune ressource prod n'est touchée.
+          # 2) Provisionner (idempotent) : service systemd, API, configuration
+          #    et données isolées, nginx + TLS. Aucune donnée prod n'est lue.
           $SSHTT "$HOST" "CERTBOT_EMAIL='$CERTBOT_EMAIL' bash anag-preprod/provision.sh"
 
           # 3) Data statique propre à la préprod (NT inchangé, LXX nouvelle)

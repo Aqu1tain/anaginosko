@@ -1,8 +1,8 @@
 # Préproduction next.anaginosko.fr - HTTP seul ; certbot --nginx ajoute le 443 et
 # la redirection au premier provisioning. Données NT/LXX propres à la préprod
 # (/var/www/anaginosko-next, issues de la branche next) ; audio partagé avec la
-# prod (/var/www/anaginosko) ; app Next 3101 et API 3901 isolées (DB copiée de la
-# prod, rien ne repart en prod).
+# prod (/var/www/anaginosko) ; app Next 3101 et API 3901 isolées, avec une DB
+# préprod persistante qui n'est jamais rafraîchie depuis la production.
 server {
     listen 80;
     listen [::]:80;
@@ -18,7 +18,7 @@ server {
         root /var/www/html;
     }
 
-    # API préprod isolée (conteneur Docker séparé, DB copiée de la prod)
+    # API préprod isolée (conteneur, configuration et DB persistante séparés)
     location /api/ {
         proxy_pass http://127.0.0.1:3901;
         proxy_http_version 1.1;
