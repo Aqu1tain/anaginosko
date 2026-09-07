@@ -145,7 +145,11 @@ export default function ReportEditor({
                 className={`input input-bordered mt-1 w-full ${email && !emailValid(email) ? "input-error" : ""}`}
               />
               <span className="mt-1 block text-xs text-base-content/60">
-                Sert uniquement à vérifier et suivre ce signalement. Jamais partagé.
+                Sert uniquement à vérifier et suivre ce signalement. Transmis à notre prestataire
+                d’envoi d’e-mails ; détails dans la{" "}
+                <a className="link" href="/confidentialite" target="_blank" rel="noreferrer">
+                  politique de confidentialité
+                </a>.
               </span>
             </label>
 

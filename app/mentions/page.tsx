@@ -2,7 +2,7 @@ import MentionsView from "../../src/components/MentionsView";
 
 export const metadata = {
   title: "Mentions légales",
-  description: "Sources et licences d'Anaginosko (SBLGNT, MorphGNT, Crampon, Bailly, Azure Speech).",
+  description: "Éditeur, hébergeur, sources, droits et licences des contenus d’Anaginosko.",
   alternates: { canonical: "/mentions" },
 };
 

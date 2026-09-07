@@ -14,7 +14,7 @@ export default function LxxConcordancePage() {
   return (
     <>
       <Breadcrumb items={[{ label: "Accueil", href: "/", home: true }, { label: "Concordance de la Septante" }]} />
-      <ConcordanceView corpus={LXX} />
+      <ConcordanceView corpusId="lxx" />
       <LemmaIndex corpus={LXX} />
     </>
   );

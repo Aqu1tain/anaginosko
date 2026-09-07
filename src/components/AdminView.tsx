@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import { useAuth } from "../hooks/useAuth";
 import {
+  can,
   fetchAdminStats,
   fetchMyAnnotations,
   deleteAnnotation,
@@ -20,6 +22,8 @@ import { refHref } from "../data/passageLink";
 import AnnotationEditor, { type AnnotationTarget } from "./AnnotationEditor";
 import { CATEGORY_LABEL } from "./ReportEditor";
 import AdminAnalytics from "./AdminAnalytics";
+import DefinitionCoverage from "./DefinitionCoverage";
+import Avatar from "./profile/Avatar";
 
 const STATUS_LABEL: Record<ReportStatus, string> = {
   pending: "En attente",
@@ -41,6 +45,59 @@ const CATEGORY_ORDER: ReportCategory[] = [
   "definition",
   "demande_note",
 ];
+
+
+function NavCard({ href, title, desc, icon, avatar }: { href: string; title: string; desc: string; icon?: React.ReactNode; avatar?: React.ReactNode }) {
+  return (
+    <a
+      href={href}
+      className="group flex items-start gap-3 rounded-xl border border-base-300 bg-base-100 p-4 shadow-sm transition-all hover:border-primary/40 hover:shadow-md"
+    >
+      {avatar ?? <span className="rounded-lg bg-primary/10 p-2 text-primary">{icon}</span>}
+      <div className="min-w-0">
+        <p className="font-semibold group-hover:text-primary">{title}</p>
+        <p className="text-xs text-base-content/60">{desc}</p>
+      </div>
+    </a>
+  );
+}
+
+function Stat({ label, value, accent }: { label: string; value: number; accent?: boolean }) {
+  return (
+    <div className="rounded-xl border border-base-300 bg-base-100 px-4 py-3 shadow-sm">
+      <p className={`text-2xl font-bold ${accent ? "text-warning" : ""}`}>{value}</p>
+      <p className="text-xs text-base-content/60">{label}</p>
+    </div>
+  );
+}
+
+const ICON = {
+  articles: (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M6 4h9l3 3v13H6z" />
+      <path d="M9 9h6M9 13h6M9 17h4" />
+    </svg>
+  ),
+  books: (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M4 4h7v16H4z" />
+      <path d="M13 6l6-1 1.5 15L14 20" />
+    </svg>
+  ),
+  arbitrage: (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M7 8h10M7 12h10M7 16h6" />
+      <circle cx="18.5" cy="16.5" r="2.5" />
+    </svg>
+  ),
+  accounts: (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <circle cx="9" cy="8" r="3" />
+      <path d="M3 20c0-3.3 2.7-5 6-5s6 1.7 6 5" />
+      <path d="M16 4.5a3 3 0 010 5.8M21 20c0-2.6-1-4.2-2.6-5" />
+    </svg>
+  ),
+};
 
 function locationLabel(ref: string): string {
   if (ref.startsWith("lemma:")) return ref.slice(6);
@@ -84,12 +141,16 @@ function targetFromAnnotation(a: Annotation): AnnotationTarget {
 }
 
 export default function AdminView() {
-  const { user, ready } = useAuth();
-  const isAdmin = user?.role === "admin";
-  const isReader = user?.role === "reader";
-  const canEdit = isAdmin || user?.role === "philologist"; // écrire/supprimer (pas reader)
-  const seesAll = isAdmin || isReader; // voit toutes les annotations
-  const canViewDashboard = canEdit || isReader; // admin, philologue, reader
+  const { user, ready, photo, logout } = useAuth();
+  const router = useRouter();
+  const canDashboard = can(user, "dashboard");
+  const seesAll = can(user, "moderate"); // voit toutes les annotations, pas seulement les siennes
+  const canAnnotate = can(user, "annotations");
+  const canArticles = can(user, "articles");
+  const canReview = can(user, "review");
+  const canArbitrage = can(user, "arbitrage");
+  const canReports = can(user, "reports");
+  const canAccounts = can(user, "accounts");
 
   const [stats, setStats] = useState<AdminStats | null>(null);
   const [annos, setAnnos] = useState<Annotation[]>([]);
@@ -143,9 +204,9 @@ export default function AdminView() {
   const reload = () => {
     const jobs: Promise<unknown>[] = [fetchMyAnnotations().then(setAnnos)];
     // Stats non bloquantes : si l'API ne les autorise pas (rôle), on garde le reste.
-    if (canViewDashboard) jobs.push(fetchAdminStats().then(setStats).catch(() => setStats(null)));
+    if (canDashboard) jobs.push(fetchAdminStats().then(setStats).catch(() => setStats(null)));
     // Signalements réservés à admin + philologue.
-    if (canEdit) jobs.push(fetchAdminReports().then(setReports).catch(() => setReports([])));
+    if (canReports) jobs.push(fetchAdminReports().then(setReports).catch(() => setReports([])));
     Promise.all(jobs).catch(() => setError(true));
   };
 
@@ -155,12 +216,12 @@ export default function AdminView() {
   };
 
   useEffect(() => {
-    if (canViewDashboard) reload();
+    if (canDashboard) reload();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   if (!ready) return null;
-  if (!canViewDashboard) {
+  if (!canDashboard) {
     return (
       <div className="py-20 text-center text-base-content/70">
         <p>Accès réservé aux contributeurs.</p>
@@ -172,57 +233,77 @@ export default function AdminView() {
   }
   if (error) return <p className="py-20 text-center text-base-content/70">Chargement impossible.</p>;
 
-  return (
-    <div className="pb-10 pt-6">
-      <h1 className="text-2xl font-bold">Tableau de bord</h1>
+  const pendingCount = reports.filter((r) => r.status === "pending").length;
+  const sections: { key: "annotations" | "definitions" | "analytics" | "reports"; label: string; badge?: number }[] = [
+    { key: "annotations", label: annosTabLabel },
+    { key: "definitions", label: "Définitions" },
+    { key: "analytics", label: "Fréquentation" },
+    ...(canReports ? [{ key: "reports" as const, label: "Signalements", badge: pendingCount }] : []),
+  ];
 
-      <div className="mt-3 flex flex-wrap items-center gap-2">
-        <div role="tablist" className="tabs tabs-boxed w-fit">
-          <button
-            role="tab"
-            className={`tab ${tab === "annotations" ? "tab-active" : ""}`}
-            onClick={() => setTab("annotations")}
-          >
-            {annosTabLabel}
-          </button>
-          <button
-            role="tab"
-            className={`tab ${tab === "definitions" ? "tab-active" : ""}`}
-            onClick={() => setTab("definitions")}
-          >
-            Définitions
-          </button>
-          <button
-            role="tab"
-            className={`tab ${tab === "analytics" ? "tab-active" : ""}`}
-            onClick={() => setTab("analytics")}
-          >
-            Fréquentation
-          </button>
-          {canEdit && (
-            <button
-              role="tab"
-              className={`tab ${tab === "reports" ? "tab-active" : ""}`}
-              onClick={() => setTab("reports")}
-            >
-              Signalements
-              {reports.some((r) => r.status === "pending") && (
-                <span className="badge badge-warning badge-xs ml-1.5">
-                  {reports.filter((r) => r.status === "pending").length}
-                </span>
-              )}
-            </button>
-          )}
+  return (
+    <div className="mx-auto max-w-5xl pb-12 pt-8">
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">Tableau de bord</h1>
+          <p className="mt-1 flex items-center gap-2 text-sm text-base-content/60">
+            {user?.displayName}
+            {user?.title && (
+              <span className="rounded-full bg-base-200 px-2 py-0.5 text-xs font-medium text-base-content/70">
+                {user.title}
+              </span>
+            )}
+          </p>
         </div>
-        {canEdit && (
-          <a href="/admin/arbitrage" className="btn btn-sm btn-outline border-base-300">
-            Arbitrage LXX
-          </a>
-        )}
+        <button
+          onClick={async () => {
+            await logout();
+            router.push("/");
+          }}
+          className="btn btn-ghost btn-sm gap-1.5 text-base-content/70"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
+            <path d="M16 17l5-5-5-5" />
+            <path d="M21 12H9" />
+          </svg>
+          Se déconnecter
+        </button>
+      </div>
+
+      <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <NavCard href="/mon-profil" title="Mon profil" desc="Photo, bio, liens publics" avatar={<Avatar name={user?.displayName ?? ""} photo={photo} size={40} />} />
+        {canArticles && <NavCard href="/admin/articles" title="Articles" desc="Rédiger, relire, publier" icon={ICON.articles} />}
+        {canReview && <NavCard href="/admin/livres" title="Introductions de livres" desc="Présentation éditoriale par livre" icon={ICON.books} />}
+        {canArbitrage && <NavCard href="/admin/arbitrage" title="Arbitrage LXX" desc="Liens grec et Giguet" icon={ICON.arbitrage} />}
+        {canAccounts && <NavCard href="/admin/comptes" title="Comptes" desc="Contributeurs, titres, permissions" icon={ICON.accounts} />}
+      </div>
+
+      {stats && (
+        <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <Stat label={seesAll ? "Annotations" : "Mes annotations"} value={plainAnnos.length} />
+          <Stat label="Définitions" value={defs.length} />
+          {canReports && <Stat label="Signalements en attente" value={pendingCount} accent={pendingCount > 0} />}
+          <Stat label="Vues (total)" value={stats.views} />
+        </div>
+      )}
+
+      <div className="mt-8 flex flex-wrap gap-1 border-b border-base-300">
+        {sections.map((s) => (
+          <button
+            key={s.key}
+            onClick={() => setTab(s.key)}
+            className={`relative px-4 py-2.5 text-sm font-medium transition-colors ${tab === s.key ? "text-primary" : "text-base-content/60 hover:text-base-content"}`}
+          >
+            {s.label}
+            {s.badge ? <span className="badge badge-warning badge-xs ml-1.5">{s.badge}</span> : null}
+            {tab === s.key && <span className="absolute inset-x-3 -bottom-px h-0.5 rounded-full bg-primary" />}
+          </button>
+        ))}
       </div>
 
       {tab === "analytics" && (
-        <section className="mt-5">
+        <section className="mt-6">
           {stats ? (
             <AdminAnalytics stats={stats} refLabel={locationLabel} />
           ) : (
@@ -231,8 +312,8 @@ export default function AdminView() {
         </section>
       )}
 
-      {tab === "reports" && canEdit && (
-        <section className="mt-5">
+      {tab === "reports" && canReports && (
+        <section className="mt-6">
           <div className="flex flex-col gap-2">
             <input
               type="search"
@@ -282,9 +363,9 @@ export default function AdminView() {
             </span>
           </div>
 
-          <div className="mt-3 grid grid-cols-1 gap-2">
+          <div className="mt-4 grid grid-cols-1 gap-2.5">
             {filteredReports.map((r) => (
-              <div key={r.id} className="rounded-2xl border border-base-300 bg-base-100 p-3.5">
+              <div key={r.id} className="rounded-2xl border border-base-300 bg-base-100 p-4">
                 <div className="flex flex-wrap items-center gap-2 text-xs">
                   <span className="badge badge-sm badge-primary badge-soft">
                     {CATEGORY_LABEL[r.category]}
@@ -333,7 +414,13 @@ export default function AdminView() {
       )}
 
       {onList && (
-        <section className="mt-5">
+        <section className="mt-6">
+          {tab === "definitions" && seesAll && <DefinitionCoverage definitions={defs} />}
+          {tab === "definitions" && !seesAll && (
+            <p className="mb-5 rounded-xl bg-base-200 px-3 py-2 text-sm text-base-content/65">
+              Cette liste contient vos définitions. La couverture globale est visible par les modérateurs.
+            </p>
+          )}
           <div className="flex flex-wrap items-center gap-2">
             <input
               type="search"
@@ -348,9 +435,9 @@ export default function AdminView() {
               {filtered.length}{query ? ` / ${baseList.length}` : ""} {noun}{filtered.length > 1 ? "s" : ""}
             </span>
           </div>
-          <div className="mt-3 grid grid-cols-1 gap-2">
+          <div className="mt-4 grid grid-cols-1 gap-2.5">
             {filtered.map((a) => (
-              <div key={a.id} className="rounded-2xl border border-base-300 bg-base-100 p-3.5">
+              <div key={a.id} className="rounded-2xl border border-base-300 bg-base-100 p-4">
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0 break-words">
                   <a
@@ -387,7 +474,7 @@ export default function AdminView() {
                     )}
                   </div>
                 </div>
-                {canEdit && (
+                {canAnnotate && (
                   <div className="flex shrink-0 flex-col items-end gap-1">
                     <button onClick={() => setEditing(targetFromAnnotation(a))} className="btn btn-ghost btn-xs">
                       Modifier

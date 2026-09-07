@@ -15,9 +15,10 @@ export default function SiteFooter() {
           Soutenir
         </a>
         <Link href="/mentions" className="link-hover">Mentions légales</Link>
+        <Link href="/confidentialite" className="link-hover">Confidentialité</Link>
       </nav>
       <p className="mt-4 text-center text-xs">
-        Texte grec : SBLGNT (NT) et Rahlfs (LXX) · traduction : Crampon (NT) et Giguet (LXX) · définitions : Bailly.
+        Sources et licences détaillées dans les mentions légales.
       </p>
     </footer>
   );

@@ -1,55 +1,73 @@
-type Source = {
-  title: string;
-  body: React.ReactNode;
-};
+import Link from "next/link";
+
+type Source = { title: string; body: React.ReactNode };
 
 const sources: Source[] = [
   {
     title: "Texte grec",
     body: (
       <>
-        <strong>Nouveau Testament :</strong> SBLGNT, The Greek New Testament, éd. Michael W. Holmes
-        (Society of Biblical Literature & Logos Bible Software), selon la licence SBLGNT.
+        <strong>Nouveau Testament :</strong> SBL Greek New Testament, éd. Michael W. Holmes,
+        Society of Biblical Literature et Logos Bible Software, sous{" "}
+        <a className="link" href="https://sblgnt.com/license/" target="_blank" rel="noreferrer">
+          licence CC BY 4.0
+        </a>
+        . La mise en forme et l’indexation réalisées par Anaginosko constituent des modifications.
         <br />
         <strong>Septante :</strong> texte de Rahlfs (1935), via{" "}
         <a className="link" href="https://github.com/eliranwong/LXX-Rahlfs-1935" target="_blank" rel="noreferrer">
-          eliranwong/LXX-Rahlfs-1935
+          LXX-Rahlfs-1935, © 2017 Eliran Wong
         </a>
-        , licence CC BY-NC-SA 4.0 (données CCAT/TLG).
+        , sous{" "}
+        <a className="link" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr" target="_blank" rel="noreferrer">
+          CC BY-NC-SA 4.0
+        </a>
+        . Anaginosko convertit, normalise, corrige et indexe ces données pour un usage non commercial.
       </>
     ),
   },
   {
-    title: "Versets, lemmes et nature des mots",
+    title: "Lemmes et morphologie",
     body: (
       <>
-        <strong>NT :</strong> MorphGNT / SBLGNT (analyse morphologique), CC BY-SA 3.0 ·{" "}
+        <strong>NT :</strong>{" "}
         <a className="link" href="https://github.com/morphgnt/sblgnt" target="_blank" rel="noreferrer">
-          github.com/morphgnt/sblgnt
+          MorphGNT: SBLGNT Edition, version 6.12
         </a>
-        .
+        , James K. Tauber éd. (2017), DOI 10.5281/zenodo.376200. L’analyse morphologique et
+        la lemmatisation sont sous CC BY-SA 3.0 ; le texte grec conserve sa licence CC BY 4.0.
         <br />
-        <strong>LXX :</strong> morphologie CCAT, corrigée par James Tauber, via le dépôt
-        eliranwong/LXX-Rahlfs-1935 (CC BY-NC-SA 4.0).
+        <strong>LXX :</strong> morphologie et corrections provenant du même jeu LXX-Rahlfs-1935,
+        sous CC BY-NC-SA 4.0 ; transformations Anaginosko signalées ci-dessus.
       </>
     ),
   },
   {
-    title: "Traduction française",
+    title: "Traductions françaises",
     body: (
       <>
-        <strong>NT :</strong> Bible Crampon (« néo-Crampon libre »), domaine public, via{" "}
-        <a className="link" href="https://bible.helloao.org" target="_blank" rel="noreferrer">
-          Free Use Bible API
+        <strong>NT :</strong> Sainte Bible néo-Crampon Libre, modernisation © 2022 Fraternité de
+        Tibériade, sous{" "}
+        <a className="link" href="https://ebible.org/francl/copyright.htm" target="_blank" rel="noreferrer">
+          CC BY-SA 4.0
         </a>
-        .
+        , obtenue via Free Use Bible API. La conversion en données structurées et les éventuelles
+        corrections techniques sont des modifications d’Anaginosko et ne sont pas approuvées par le
+        concédant d’origine.
         <br />
-        <strong>LXX :</strong> Pierre Giguet, <em>La Sainte Bible d'après les Septante</em> (1872),
-        domaine public, transcription{" "}
+        <strong>LXX — Giguet :</strong> Pierre Giguet,{" "}
+        <em>La Sainte Bible d’après les Septante</em> (1872), œuvre du domaine public ; transcription{" "}
         <a className="link" href="https://fr.wikisource.org/wiki/Traduction_de_la_Septante_et_du_Nouveau_Testament" target="_blank" rel="noreferrer">
           Wikisource
         </a>{" "}
-        (CC BY-SA).
+        sous CC BY-SA 4.0. Anaginosko a retiré des notes, normalisé, extrait et réaligné la
+        transcription ; cette adaptation est distribuée sous CC BY-SA 4.0.
+        <br />
+        <strong>LXX — traductions Anaginosko :</strong> certains versets absents de Giguet sont
+        identifiés dans le lecteur comme « traduction Anaginosko ». © 2026 Corentin Renard et Noah
+        Jaubert — Anaginosko. Tous droits réservés. Toute reproduction, adaptation, publication ou
+        réutilisation nécessite une autorisation écrite préalable à{" "}
+        <a className="link" href="mailto:contact@corentinrenard.com">contact@corentinrenard.com</a>.
       </>
     ),
   },
@@ -57,31 +75,23 @@ const sources: Source[] = [
     title: "Définitions (gloses)",
     body: (
       <>
-        <strong>Bailly 2020</strong> (Dictionnaire grec-français, éd. Gérard Gréco et al.), via{" "}
-        <a className="link" href="https://bailly.app" target="_blank" rel="noreferrer">
-          api.bailly.app
+        <strong>Bailly 2020 Hugo Chávez</strong>, Gérard Gréco, André Charbonnet, Mark De Wilde,
+        Bernard Maréchal et al., données du 28 février 2023, via{" "}
+        <a className="link" href="https://bailly.app/%C3%A0-propos" target="_blank" rel="noreferrer">
+          Bailly.app
         </a>
-        , licence <strong>CC BY-NC-ND 4.0</strong>. Extraits reproduits sans modification, dans un
-        cadre strictement non commercial.
+        , sous CC BY-NC-ND 4.0. Les extraits et les notices sont reproduits sans modification dans un
+        cadre non commercial.
       </>
     ),
   },
   {
-    title: "Prononciation",
+    title: "Prononciation et audio",
     body: (
       <>
-        D'après le cours « Introduction au grec biblique » de <strong>Biblion</strong> (prononciation
-        érasmienne et restituée).
-      </>
-    ),
-  },
-  {
-    title: "Audio",
-    body: (
-      <>
-        Voix de synthèse <strong>Microsoft Azure Speech</strong> (neuronales), pilotées en alphabet
-        phonétique international ; fichiers pré-générés. érasmien : voix fr-FR ; restituée : voix
-        el-GR.
+        Modèles de prononciation inspirés notamment du cours « Introduction au grec biblique » de
+        Biblion. Fichiers audio produits avec les voix neuronales Microsoft Azure Speech ; leur
+        utilisation reste soumise aux conditions applicables au service Azure utilisé.
       </>
     ),
   },
@@ -89,8 +99,11 @@ const sources: Source[] = [
     title: "Polices",
     body: (
       <>
-        <strong>Gentium Plus</strong> (grec) et <strong>Inter</strong> (interface), sous SIL Open
-        Font License.
+        Gentium Plus, Inter et Syne sont distribuées sous SIL Open Font License 1.1. Les avis et le
+        texte de licence sont reproduits dans le dépôt, dans{" "}
+        <a className="link" href="https://github.com/Aqu1tain/anaginosko/blob/main/THIRD_PARTY_NOTICES.md" target="_blank" rel="noreferrer">
+          les avis de tiers
+        </a>.
       </>
     ),
   },
@@ -99,55 +112,56 @@ const sources: Source[] = [
 export default function MentionsView() {
   return (
     <div className="pt-6 pb-4">
-      <h1 className="text-2xl font-bold">Mentions légales</h1>
-      <p className="mt-2 max-w-prose text-[0.95rem] leading-relaxed text-base-content/70">
-        Anaginosko est un projet <strong>pédagogique</strong> et <strong>catholique</strong>, non
-        commercial et <strong>libre d'accès</strong>, pour lire la Bible dans sa langue
-        originale. Il s'appuie sur des ressources ouvertes, créditées ci-dessous.
+      <h1 className="text-2xl font-bold">Mentions légales et licences</h1>
+
+      <section className="mt-5 rounded-box border border-base-300 bg-base-100 px-4 py-3">
+        <h2 className="text-sm font-semibold">Édition et hébergement</h2>
+        <div className="mt-1 max-w-prose space-y-2 text-sm leading-relaxed text-base-content/75">
+          <p>
+            Anaginosko est un site personnel édité à titre non professionnel par{" "}
+            <strong>Corentin Renard</strong>, directeur de la publication. Contact :{" "}
+            <a className="link" href="mailto:contact@corentinrenard.com">contact@corentinrenard.com</a>.
+            L’hébergeur détient les coordonnées complètes de l’éditeur.
+          </p>
+          <p>
+            Hébergement : <strong>OVH SAS</strong>, 2 rue Kellermann, 59100 Roubaix, France,
+            téléphone : 1007 depuis la France.
+          </p>
+        </div>
+      </section>
+
+      <p className="mt-5 max-w-prose text-[0.95rem] leading-relaxed text-base-content/70">
+        Anaginosko est un projet pédagogique catholique, non commercial et libre d’accès. « Libre
+        d’accès » ne signifie pas que tous ses contenus sont libres de droits : chaque composant
+        conserve le régime indiqué ci-dessous.
       </p>
 
       <dl className="mt-5 grid gap-3">
-        {sources.map((s) => (
-          <div key={s.title} className="rounded-box border border-base-300 bg-base-100 px-4 py-3">
-            <dt className="text-sm font-semibold">{s.title}</dt>
-            <dd className="mt-1 text-sm leading-relaxed text-base-content/75">{s.body}</dd>
+        {sources.map((source) => (
+          <div key={source.title} className="rounded-box border border-base-300 bg-base-100 px-4 py-3">
+            <dt className="text-sm font-semibold">{source.title}</dt>
+            <dd className="mt-1 text-sm leading-relaxed text-base-content/75">{source.body}</dd>
           </div>
         ))}
       </dl>
 
       <section className="mt-5 rounded-box border border-base-300 bg-base-100 px-4 py-3">
-        <h2 className="text-sm font-semibold">Signalements et données personnelles</h2>
+        <h2 className="text-sm font-semibold">Code, interface et contributions originales</h2>
         <p className="mt-1 max-w-prose text-sm leading-relaxed text-base-content/75">
-          Lorsque vous signalez une erreur ou demandez une note, votre adresse e-mail est collectée
-          dans le seul but de <strong>vérifier votre demande</strong> (double confirmation) et d’en
-          assurer le suivi. Elle n’est <strong>jamais partagée</strong> ni utilisée à des fins
-          commerciales. Les signalements non confirmés sont supprimés sous 48&nbsp;heures ; les
-          demandes traitées sont anonymisées passé un délai. Aucune adresse IP en clair n’est
-          conservée.
+          © 2026 Corentin Renard, tous droits réservés pour le code et l’interface, sous réserve des
+          composants tiers. Les traductions Anaginosko suivent le régime spécifique décrit
+          ci-dessus. Voir le{" "}
+          <a className="link" href="https://github.com/Aqu1tain/anaginosko/blob/main/LICENSE" target="_blank" rel="noreferrer">LICENSE</a>{" "}
+          et le{" "}
+          <a className="link" href="https://github.com/Aqu1tain/anaginosko/blob/main/DATA-LICENSES.md" target="_blank" rel="noreferrer">registre des données</a>.
         </p>
       </section>
 
       <p className="mt-5 max-w-prose text-xs leading-relaxed text-base-content/70">
-        © 2026{" "}
-        <a className="link" href="https://corentinrenard.com" target="_blank" rel="noreferrer">
-          <strong>Corentin RENARD</strong>
-        </a>
-        , tous droits réservés (code et interface). Les
-        annotations et notes philologiques sont la propriété intellectuelle de{" "}
-        <strong>Biblion (Noah Jaubert)</strong>. Les marques et œuvres tierces citées restent la
-        propriété de leurs auteurs respectifs.
-      </p>
-      <p className="mt-2 max-w-prose text-xs leading-relaxed text-base-content/70">
-        Pour toute question ou demande de retrait, ouvrez une issue sur{" "}
-        <a
-          className="link"
-          href="https://github.com/Aqu1tain/anaginosko"
-          target="_blank"
-          rel="noreferrer"
-        >
-          le dépôt du projet
-        </a>
-        .
+        La collecte de données et la mesure d’audience sont détaillées dans la{" "}
+        <Link className="link" href="/confidentialite">politique de confidentialité</Link>. Pour une
+        demande de droit, de licence ou de retrait :{" "}
+        <a className="link" href="mailto:contact@corentinrenard.com">contact@corentinrenard.com</a>.
       </p>
     </div>
   );

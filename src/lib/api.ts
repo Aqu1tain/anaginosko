@@ -1,10 +1,25 @@
 // Client de l'API Anaginosko (backend AdonisJS). Base configurable :
 // VITE_API_BASE (ex. /api en prod via nginx ; http://localhost:3333/api en dev).
+import type { Permission } from "../data/permissions";
+
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "/api";
 const TOKEN_KEY = "anaginosko:token";
 
-export type Role = "admin" | "philologist" | "reader";
-export type AuthUser = { id: number; displayName: string; role: Role };
+export type { Permission };
+// Identité + permissions granulaires. `email` : renvoyé par /me pour le titulaire.
+// `isRoot` : compte racine (toutes les permissions, verrouillé).
+export type AuthUser = {
+  id: number;
+  displayName: string;
+  title: string;
+  permissions: Permission[];
+  isRoot: boolean;
+  email?: string;
+};
+
+// Un compte a-t-il une permission ? Les comptes racine les ont toutes.
+export const can = (user: AuthUser | null | undefined, permission: Permission): boolean =>
+  !!user && (user.isRoot || user.permissions.includes(permission));
 
 export type Annotation = {
   id: number;
@@ -17,7 +32,7 @@ export type Annotation = {
   source: string;
   link: string | null;
   userId: number | null;
-  author: { displayName: string; role: Role } | null;
+  author: { displayName: string; title: string } | null;
   createdAt: string | null;
   updatedAt: string | null;
 };
@@ -82,6 +97,64 @@ export async function logout(): Promise<void> {
 }
 
 export const fetchMe = () => apiFetch<{ user: AuthUser }>("/me").then((d) => d.user);
+
+// Mise à jour du compte (e-mail de connexion, nom de compte). Nécessite une API
+// récente : sur une API antérieure, la route n'existe pas (404) et l'appelant doit
+// dégrader proprement.
+export const updateMe = (patch: { email?: string; displayName?: string }) =>
+  apiFetch<{ user: AuthUser }>("/me", { method: "PUT", body: JSON.stringify(patch) }).then((d) => d.user);
+
+// Changement de mot de passe par le titulaire (vérifie le mot de passe actuel).
+export const changePassword = (currentPassword: string, newPassword: string) =>
+  apiFetch<void>("/me/password", { method: "PUT", body: JSON.stringify({ currentPassword, newPassword }) });
+
+// --- Gestion des comptes (admin) ---
+export type Contributor = {
+  id: number;
+  email: string;
+  displayName: string;
+  title: string;
+  permissions: Permission[];
+  isRoot: boolean;
+  active: boolean;
+  createdAt: string | null;
+};
+export type Invitation = {
+  id: number;
+  email: string;
+  displayName: string;
+  title: string;
+  permissions: Permission[];
+  expiresAt: string | null;
+  createdAt: string | null;
+};
+
+export const fetchContributors = () =>
+  apiFetch<{ users: Contributor[]; invitations: Invitation[] }>("/admin/users");
+
+export const inviteContributor = (input: { email: string; displayName: string; title: string; permissions: Permission[] }) =>
+  apiFetch<{ invitation: Invitation }>("/admin/invitations", { method: "POST", body: JSON.stringify(input) }).then((d) => d.invitation);
+
+export const updateContributor = (id: number, patch: { title?: string; permissions?: Permission[]; active?: boolean }) =>
+  apiFetch<{ user: Contributor }>(`/admin/users/${id}`, { method: "PATCH", body: JSON.stringify(patch) }).then((d) => d.user);
+
+export const cancelInvitation = (id: number) =>
+  apiFetch<void>(`/admin/invitations/${id}`, { method: "DELETE" });
+
+// --- Invitation publique (le contributeur définit son mot de passe) ---
+export const fetchInvitation = (token: string) =>
+  apiFetch<{ invitation: { email: string; displayName: string; title: string } }>(
+    `/invitations/${encodeURIComponent(token)}`,
+  ).then((d) => d.invitation);
+
+export async function acceptInvitation(token: string, password: string): Promise<AuthUser> {
+  const data = await apiFetch<{ token: string; user: AuthUser }>(
+    `/invitations/${encodeURIComponent(token)}/accept`,
+    { method: "POST", body: JSON.stringify({ password }) },
+  );
+  setToken(data.token);
+  return data.user;
+}
 
 export const fetchAnnotations = (ref: string) =>
   apiFetch<Annotation[]>(`/annotations?ref=${encodeURIComponent(ref)}`);
@@ -153,6 +226,18 @@ export type AdminStats = {
 };
 export const fetchAdminStats = (days?: number) =>
   apiFetch<AdminStats>(`/admin/stats${days ? `?days=${days}` : ""}`);
+
+export type NamedCount = { label: string; visits: number };
+export type MatomoAnalytics = {
+  configured: boolean;
+  visitsByDay: { day: string; visits: number }[];
+  referrerTypes: NamedCount[];
+  topReferrers: NamedCount[];
+  devices: NamedCount[];
+  countries: NamedCount[];
+};
+export const fetchMatomoAnalytics = (days?: number) =>
+  apiFetch<MatomoAnalytics>(`/admin/analytics${days ? `?days=${days}` : ""}`);
 
 export type AdminAnnotation = {
   id: number;

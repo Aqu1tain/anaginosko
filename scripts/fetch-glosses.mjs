@@ -6,7 +6,7 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, resolve } from "node:path";
-import { pickEntry } from "./lib/bailly-pick.mjs";
+import { pickBestExcerpt, pickEntry } from "./lib/bailly-pick.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -20,6 +20,15 @@ const glosses = {};
 let ok = 0;
 let missing = 0;
 
+async function resolveGloss(entry, lemma) {
+  let best = pickBestExcerpt(entry, lemma);
+  if (!best && entry?.uri) {
+    const res = await fetch(`https://api.bailly.app/entry/${encodeURIComponent(entry.uri)}`);
+    if (res.ok) best = pickBestExcerpt((await res.json()).data?.entry, lemma);
+  }
+  return best ? { excerpt: best.excerpt.trim(), uri: best.uri ?? entry.uri, headword: best.word } : null;
+}
+
 for (let i = 0; i < lemmas.length; i++) {
   const lemma = lemmas[i];
   try {
@@ -28,8 +37,9 @@ for (let i = 0; i < lemmas.length; i++) {
     const json = await res.json();
     const entries = json.data?.entries ?? [];
     const e = entries.length ? pickEntry(entries, lemma) : null;
-    if (e?.excerpt) {
-      glosses[lemma] = { excerpt: e.excerpt.trim(), uri: e.uri };
+    const gloss = await resolveGloss(e, lemma);
+    if (gloss) {
+      glosses[lemma] = gloss;
       ok++;
     } else {
       missing++;

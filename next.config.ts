@@ -14,6 +14,18 @@ const nextConfig: NextConfig = {
       "./data/lxx-queue.json",
       "./data/lxx-chapter-state.json",
     ],
+    // Les cartes OpenGraph lisent les polices .ttf via fs au runtime (satori
+    // n'accepte pas les webfonts) : on force leur inclusion dans le standalone
+    // pour chaque route qui génère une image.
+    "/opengraph-image": ["./app/_og/*.ttf"],
+    "/nt/[book]/opengraph-image": ["./app/_og/*.ttf"],
+    "/lxx/[book]/opengraph-image": ["./app/_og/*.ttf"],
+    "/nt/[book]/[chapter]/opengraph-image": ["./app/_og/*.ttf"],
+    "/lxx/[book]/[chapter]/opengraph-image": ["./app/_og/*.ttf"],
+    "/articles/[slug]/opengraph-image": ["./app/_og/*.ttf"],
+    "/text/[id]/opengraph-image": ["./app/_og/*.ttf"],
+    "/concordance/[lemma]/opengraph-image": ["./app/_og/*.ttf"],
+    "/lxx/concordance/[lemma]/opengraph-image": ["./app/_og/*.ttf"],
   },
 
   // Review locale uniquement : proxifie /api vers le backend AdonisJS local
@@ -24,6 +36,16 @@ const nextConfig: NextConfig = {
     if (process.env.NODE_ENV !== "development") return [];
     const api = process.env.API_PROXY ?? "http://localhost:3333";
     return [{ source: "/api/:path*", destination: `${api}/api/:path*` }];
+  },
+
+  // Le widget d'intégration doit pouvoir être encadré par n'importe quel site.
+  async headers() {
+    return [
+      {
+        source: "/embed/:path*",
+        headers: [{ key: "Content-Security-Policy", value: "frame-ancestors *" }],
+      },
+    ];
   },
 };
 

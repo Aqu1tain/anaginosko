@@ -15,16 +15,26 @@ import {
   Tooltip,
   ReferenceLine,
 } from "recharts";
-import { fetchAdminStats, type AdminStats } from "../lib/api";
+import {
+  fetchAdminStats,
+  fetchMatomoAnalytics,
+  type AdminStats,
+  type MatomoAnalytics,
+} from "../lib/api";
 
 type Series = { day: string; views: number }[];
 const defaultLoadSeries = (days: number): Promise<Series> =>
   fetchAdminStats(days).then((s) => s.viewsByDay);
 
+// Date de bascule de la source de visites : page_views (maison) avant, Matomo
+// après. Sert au raccord du graphe et au marqueur explicatif.
+const MATOMO_SINCE = "2026-07-10";
+
 // Jalons affichés sur le graphe de visites (lignes verticales repères).
 const EVENTS = [
   { day: "2026-06-24", label: "Lancement" },
   { day: "2026-06-25", label: "1ᵉʳ TikTok (Biblion)" },
+  { day: MATOMO_SINCE, label: "Bascule vers Matomo (source de données)" },
 ];
 
 const isoToday = () => new Date().toISOString().slice(0, 10);
@@ -291,6 +301,38 @@ function TopTextsChart({ data }: { data: { label: string; views: number }[] }) {
   );
 }
 
+// Barres horizontales classées (provenance, appareils, pays…).
+function RankBars({
+  data,
+  color = C.accent,
+  labelWidth = 120,
+}: {
+  data: { label: string; visits: number }[];
+  color?: string;
+  labelWidth?: number;
+}) {
+  return (
+    <div className="text-base-content/55" style={{ height: Math.max(120, data.length * 34) }}>
+      <ResponsiveContainer width="100%" height="100%">
+        <BarChart data={data} layout="vertical" margin={{ top: 0, right: 12, left: 0, bottom: 0 }}>
+          <CartesianGrid stroke={C.grid} strokeDasharray="3 3" horizontal={false} />
+          <XAxis type="number" tick={AXIS} tickLine={false} axisLine={false} allowDecimals={false} />
+          <YAxis
+            type="category"
+            dataKey="label"
+            tick={AXIS}
+            tickLine={false}
+            axisLine={false}
+            width={labelWidth}
+          />
+          <Tooltip content={<ChartTooltip unit="visites" />} cursor={{ fill: "var(--color-base-200)" }} />
+          <Bar dataKey="visits" fill={color} radius={[0, 4, 4, 0]} maxBarSize={26} />
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}
+
 function StatCard({
   label,
   value,
@@ -328,15 +370,30 @@ export default function AdminAnalytics({
   stats,
   refLabel,
   loadSeries = defaultLoadSeries,
+  loadAnalytics = fetchMatomoAnalytics,
 }: {
   stats: AdminStats;
   refLabel: (ref: string) => string;
   loadSeries?: (days: number) => Promise<Series>;
+  loadAnalytics?: (days: number) => Promise<MatomoAnalytics>;
 }) {
   const [type, setType] = useState<ChartType>("area");
   const [days, setDays] = useState(14);
   const [series, setSeries] = useState<Series>(stats.viewsByDay);
+  const [analytics, setAnalytics] = useState<MatomoAnalytics | null>(null);
   const [loading, setLoading] = useState(false);
+
+  // Matomo n'est pas dans le `stats` initial : on le charge au montage puis à
+  // chaque changement de fenêtre. Échec ou non configuré → dégradation propre.
+  useEffect(() => {
+    let alive = true;
+    loadAnalytics(days)
+      .then((a) => alive && setAnalytics(a))
+      .catch(() => alive && setAnalytics(null));
+    return () => {
+      alive = false;
+    };
+  }, [days, loadAnalytics]);
 
   // Le `stats` initial vaut déjà 14 j : on ne recharge la série qu'aux changements.
   const first = useRef(true);
@@ -369,14 +426,27 @@ export default function AdminAnalytics({
     return Math.round(((last - prev) / prev) * 100);
   }, [stats.viewsByDay]);
 
-  // Série complète sur la fenêtre demandée (0 avant les premières visites) +
-  // jalons visibles dans cette fenêtre.
+  // Série complète sur la fenêtre demandée (0 avant les premières visites).
   const filled = useMemo(() => fillRange(series, days), [series, days]);
+
+  // Raccord des sources : page_views avant la bascule, visites Matomo après.
+  const matomoOn = analytics?.configured ?? false;
+  const stitched = useMemo(() => {
+    if (!matomoOn || !analytics) return filled;
+    const mv = new Map(analytics.visitsByDay.map((d) => [d.day, d.visits]));
+    return filled.map((d) =>
+      d.day >= MATOMO_SINCE ? { day: d.day, views: mv.get(d.day) ?? 0 } : d,
+    );
+  }, [filled, analytics, matomoOn]);
+
+  // Jalons visibles dans la fenêtre (le marqueur de bascule seulement si Matomo).
   const visibleEvents = useMemo(() => {
     const lo = filled[0]?.day ?? "";
     const hi = filled.at(-1)?.day ?? "";
-    return EVENTS.filter((e) => e.day >= lo && e.day <= hi);
-  }, [filled]);
+    return EVENTS.filter(
+      (e) => e.day >= lo && e.day <= hi && (e.day !== MATOMO_SINCE || matomoOn),
+    );
+  }, [filled, matomoOn]);
 
   const topTexts = useMemo(
     () => stats.topRefs.map((r) => ({ label: refLabel(r.ref), views: r.views })),
@@ -402,7 +472,11 @@ export default function AdminAnalytics({
 
       <ChartCard
         title="Visites"
-        subtitle={`${days} dernier${days > 1 ? "s" : ""} jour${days > 1 ? "s" : ""}`}
+        subtitle={
+          matomoOn
+            ? `${days} j · pages vues avant le ${dayLabel(MATOMO_SINCE)}, visites Matomo après`
+            : `${days} dernier${days > 1 ? "s" : ""} jour${days > 1 ? "s" : ""}`
+        }
         controls={
           <div className="flex flex-wrap items-center gap-2">
             <div className="join">
@@ -436,9 +510,34 @@ export default function AdminAnalytics({
           {loading && (
             <span className="loading loading-spinner loading-sm absolute right-1 top-0 z-10 text-primary" />
           )}
-          <ViewsChart data={filled} type={type} events={visibleEvents} />
+          <ViewsChart data={stitched} type={type} events={visibleEvents} />
         </div>
       </ChartCard>
+
+      {matomoOn && analytics && (
+        <div className="grid gap-4 lg:grid-cols-2">
+          {analytics.referrerTypes.length > 0 && (
+            <ChartCard title="Provenance" subtitle="d'où viennent les visites">
+              <RankBars data={analytics.referrerTypes} labelWidth={140} />
+            </ChartCard>
+          )}
+          {analytics.topReferrers.length > 0 && (
+            <ChartCard title="Sites référents" subtitle="principales sources externes">
+              <RankBars data={analytics.topReferrers} color={C.primary} labelWidth={140} />
+            </ChartCard>
+          )}
+          {analytics.devices.length > 0 && (
+            <ChartCard title="Appareils" subtitle="type d'appareil">
+              <RankBars data={analytics.devices} color={C.primary} labelWidth={90} />
+            </ChartCard>
+          )}
+          {analytics.countries.length > 0 && (
+            <ChartCard title="Pays" subtitle="top pays visiteurs">
+              <RankBars data={analytics.countries} labelWidth={110} />
+            </ChartCard>
+          )}
+        </div>
+      )}
 
       {topTexts.length > 0 && (
         <ChartCard title="Textes les plus lus" subtitle={`${topTexts.length} en tête`}>

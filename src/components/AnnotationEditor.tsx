@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { createPortal } from "react-dom";
 import { createAnnotation, updateAnnotation, type Annotation } from "../lib/api";
+import { trackEvent } from "../lib/analytics";
 
 export type AnnotationTarget = {
   ref: string;
@@ -36,7 +37,6 @@ export default function AnnotationEditor({
   title,
   bodyLabel = "Note",
   bodyPlaceholder = "Note philologique, neutre et factuelle…",
-  requireSource = true,
 }: {
   target: AnnotationTarget;
   onClose: () => void;
@@ -45,8 +45,6 @@ export default function AnnotationEditor({
   title?: string;
   bodyLabel?: string;
   bodyPlaceholder?: string;
-  /** La source est obligatoire pour une annotation ; optionnelle pour une définition. */
-  requireSource?: boolean;
 }) {
   const editing = !!target.existing;
   const [body, setBody] = useState(target.existing?.body ?? "");
@@ -57,7 +55,8 @@ export default function AnnotationEditor({
 
   const linkUrl = link.trim() ? normalizeUrl(link) : null;
   const linkValid = link.trim() === "" || linkUrl != null;
-  const valid = body.trim().length > 0 && (!requireSource || source.trim().length > 0) && linkValid;
+  // Le contrat API exige une source pour toute annotation, définitions incluses.
+  const valid = body.trim().length > 0 && source.trim().length > 0 && linkValid;
   const heading = title ?? (editing ? "Modifier l’annotation" : "Annoter");
 
   const save = async () => {
@@ -76,7 +75,10 @@ export default function AnnotationEditor({
     };
     try {
       if (editing) await updateAnnotation(target.existing!.id, input);
-      else await createAnnotation(input);
+      else {
+        await createAnnotation(input);
+        trackEvent("Annotation", "create", target.ref);
+      }
       onSaved();
     } catch (e) {
       setError(e instanceof Error ? e.message : "Erreur");
@@ -114,12 +116,7 @@ export default function AnnotationEditor({
 
         <label className="mt-3 block">
           <span className="text-sm font-medium">
-            Source{" "}
-            {requireSource ? (
-              <span className="text-error">*</span>
-            ) : (
-              <span className="font-normal text-base-content/70">(optionnel)</span>
-            )}
+            Source <span className="text-error">*</span>
           </span>
           <input
             value={source}
@@ -138,7 +135,7 @@ export default function AnnotationEditor({
             inputMode="url"
             value={link}
             onChange={(e) => setLink(e.target.value)}
-            placeholder="https://bailly.app/λόγος"
+            placeholder="https://bailly.app/logos"
             className={`input input-bordered mt-1 w-full ${link && !linkUrl ? "input-error" : ""}`}
           />
           {link && !linkUrl && (

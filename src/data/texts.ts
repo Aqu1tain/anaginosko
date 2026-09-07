@@ -17,9 +17,9 @@ export type Text = {
   niveau: number;
   reference: string;
   grec: string;
-  /** Bible Crampon (néo-Crampon, domaine public), par numéro de verset. */
+  /** Sainte Bible néo-Crampon Libre (CC BY-SA 4.0), par numéro de verset. */
   francais: Record<string, string> | null;
-  maison?: Record<string, string> | null; // v -> traducteur (crédit des traductions maison)
+  maison?: Record<string, string> | null; // v -> signature interne du traducteur Anaginosko
   /** Versification française incompatible avec le grec (additions, réordonnancement) :
    *  afficher la traduction en bloc plutôt que de l'apparier verset par verset. */
   frenchBlock?: boolean;

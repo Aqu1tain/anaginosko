@@ -4,6 +4,12 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      deploy_corpus:
+        description: "Synchroniser explicitement les corpus NT/LXX vers la production"
+        required: true
+        default: false
+        type: boolean
 
 concurrency:
   group: deploy
@@ -22,6 +28,11 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
+        env:
+          # Variables publiques Matomo, inlinées au build (non secrètes : elles
+          # finissent dans le bundle client). Sans elles, le tracking est inerte.
+          NEXT_PUBLIC_MATOMO_URL: https://analytics.anaginosko.fr/
+          NEXT_PUBLIC_MATOMO_SITE_ID: "1"
 
       # Assemble le bundle Next « standalone » : serveur Node minimal + assets
       # statiques + public SANS audio ni nt (servis depuis le disque par nginx).
@@ -51,20 +62,44 @@ jobs:
           TS=$(date +%Y%m%d%H%M%S)
           REL="/opt/anaginosko-web/releases/$TS"
 
-          # 1) Données NT + LXX : lues au runtime par le client, servies par nginx
-          #    depuis /var/www/anaginosko/{nt,lxx}. L'audio n'est JAMAIS touché.
-          rsync -az --delete -e "$SSH" public/nt/ "$HOST:/var/www/anaginosko/nt/"
-          rsync -az --delete -e "$SSH" public/lxx/ "$HOST:/var/www/anaginosko/lxx/"
+          # 1) Les corpus de production peuvent contenir du travail éditorial qui
+          #    n'est pas encore revenu dans Git. Un push sur main ne les touche donc
+          #    JAMAIS. Leur synchronisation destructive exige un lancement manuel et
+          #    l'option explicite deploy_corpus=true. L'audio n'est jamais touché.
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.deploy_corpus }}" = "true" ]; then
+            rsync -az --delete -e "$SSH" public/nt/ "$HOST:/var/www/anaginosko/nt/"
+            rsync -az --delete -e "$SSH" public/lxx/ "$HOST:/var/www/anaginosko/lxx/"
+          else
+            echo "Corpus NT/LXX de production préservés (aucune synchronisation)."
+          fi
 
           # 2) Nouvelle release (bundle standalone immuable)
           $SSH "$HOST" "mkdir -p $REL"
           rsync -az --delete -e "$SSH" deploy-out/ "$HOST:$REL/"
 
+          # L'arbitrage de production peut lui aussi être plus récent que Git.
+          # Recopier les deux fichiers mutables de la release active dans la nouvelle
+          # empêche une release applicative de revenir à leur version du dépôt.
+          $SSH "$HOST" "set -eu; CURRENT=/opt/anaginosko-web/current/data; NEW=$REL/data; mkdir -p \"\$NEW\"; for FILE in lxx-arbitration.json lxx-biblion-validated.json; do if [ -f \"\$CURRENT/\$FILE\" ]; then cp -p \"\$CURRENT/\$FILE\" \"\$NEW/\$FILE\"; echo \"Arbitrage préservé: \$FILE\"; fi; done"
+
+          # 2b) Stockage éditorial des articles/profils : dossier PERSISTANT hors des
+          #     releases (survit au --delete), inscriptible par le service (anag-web).
+          #     ARTICLES_DIR est fixé par un drop-in systemd. Idempotent.
+          $SSH "$HOST" "sudo mkdir -p /opt/anaginosko-web/articles/articles /opt/anaginosko-web/articles/uploads /opt/anaginosko-web/articles/profiles && sudo chown -R anag-web:anag-web /opt/anaginosko-web/articles && sudo chmod 755 /opt/anaginosko-web/articles"
+
+          # 2c) Le service (anag-web) écrit le cache ISR dans .next (revalidatePath,
+          #     régénération SSG). Le rsync dépose la release en anag-deploy ; sans ce
+          #     chown, l'écriture du cache échoue en EACCES -> NoFallbackError -> 404
+          #     sur toute page revalidée (intro de livre, refresh ISR 300s).
+          $SSH "$HOST" "sudo chown -R anag-web:anag-web $REL/.next"
+
           # 3) Bascule atomique du symlink + redémarrage du service
           $SSH "$HOST" "ln -sfn $REL /opt/anaginosko-web/current && sudo systemctl restart anaginosko-web"
 
-          # 4) Purge : ne garder que les 3 dernières releases
-          $SSH "$HOST" "ls -1dt /opt/anaginosko-web/releases/*/ | tail -n +4 | xargs -r rm -rf"
+          # 4) Smoke-test : le service répond bien en local sur le VPS. Quelques
+          #    tentatives, le temps que le standalone écoute après le redémarrage.
+          $SSH "$HOST" "for i in 1 2 3 4 5 6; do curl -fsS -o /dev/null http://127.0.0.1:3100/ && echo 'service OK' && exit 0; sleep 3; done; echo 'service KO'; exit 1"
 
-          # 5) Smoke-test : le service répond bien en local sur le VPS
-          $SSH "$HOST" "curl -fsS -o /dev/null http://127.0.0.1:3100/ && echo 'service OK'"
+          # 5) Purge : ne garder que les 3 dernières releases. Leur .next appartient
+          #    au service (chown ci-dessus) : la suppression passe par sudo.
+          $SSH "$HOST" "ls -1dt /opt/anaginosko-web/releases/*/ | tail -n +4 | xargs -r sudo rm -rf"

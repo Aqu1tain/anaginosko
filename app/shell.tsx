@@ -1,12 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import TopBar from "./_components/TopBar";
 import TabBar from "./_components/TabBar";
 import SideNav from "./_components/SideNav";
 import SiteFooter from "./_components/SiteFooter";
 
 export default function Shell({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
   // dark = null tant qu'on n'a pas lu le thème réellement appliqué par le script
   // anti-flash (évite tout mismatch d'hydratation et tout flash de thème).
   const [dark, setDark] = useState<boolean | null>(null);
@@ -24,6 +26,10 @@ export default function Shell({ children }: { children: React.ReactNode }) {
       /* ignore */
     }
   }, [dark]);
+
+  // Les pages d'intégration (/embed) sont des fragments autonomes destinés à un
+  // <iframe> tiers : pas de barre, de navigation ni de pied de page.
+  if (pathname?.startsWith("/embed")) return <>{children}</>;
 
   return (
     <div className="min-h-dvh bg-base-100 text-base-content">

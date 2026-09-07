@@ -5,11 +5,12 @@ import {
   loadBooksFs,
   loadCollocationsFs,
   loadDistributionFs,
+  loadGlossFs,
   loadOccurrencesFs,
 } from "@/lib/nt-server";
+import { fetchBaillyNotice } from "@/lib/bailly-server";
 import LemmaDetail from "@/src/components/LemmaDetail";
 import { NT, LXX } from "@/src/data/corpus";
-import { glossFor } from "@/src/data/glosses";
 
 // Rendu serveur à la demande. Les données NT sont lues depuis NT_DATA_DIR (en
 // prod : le dossier servi par nginx, /var/www/anaginosko/nt), car elles ne sont
@@ -50,13 +51,15 @@ export default async function LemmaPage({ params }: { params: Promise<{ lemma: s
     );
   }
 
-  const [occ, dist, books, colloc, lxxEntry] = await Promise.all([
+  const [occ, dist, books, colloc, lxxEntry, lexicon] = await Promise.all([
     loadOccurrencesFs(entry.oid),
     loadDistributionFs(entry.oid),
     loadBooksFs(),
     loadCollocationsFs(entry.oid),
     lemmaEntryFs(l, LXX),
+    loadGlossFs(l, NT),
   ]);
+  const notice = lexicon.gloss ? await fetchBaillyNotice(lexicon.gloss.uri) : null;
 
   // Vue croisee : si le lemme existe aussi dans la Septante, on charge ses donnees
   // pour la bascule NT / LXX / Les deux (la vie du mot sur toute la Bible grecque).
@@ -71,14 +74,13 @@ export default async function LemmaPage({ params }: { params: Promise<{ lemma: s
 
   // DefinedTerm : le lemme grec + sa définition Bailly (rendue serveur) comme
   // terme lexical d'un rich result potentiel. inLanguage grc.
-  const gloss = glossFor(l);
   const definedTerm = {
     "@context": "https://schema.org",
     "@type": "DefinedTerm",
     name: l,
     inLanguage: "grc",
     url: `https://anaginosko.fr/concordance/${lemma}`,
-    ...(gloss?.excerpt ? { description: gloss.excerpt } : {}),
+    ...(lexicon.gloss?.excerpt ? { description: lexicon.gloss.excerpt } : {}),
     inDefinedTermSet: {
       "@type": "DefinedTermSet",
       name: "Concordance du Nouveau Testament",
@@ -89,7 +91,7 @@ export default async function LemmaPage({ params }: { params: Promise<{ lemma: s
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(definedTerm) }} />
-      <LemmaDetail entry={entry} occ={occ} dist={dist} books={books} colloc={colloc} corpus={NT} cross={cross} />
+      <LemmaDetail entry={entry} occ={occ} dist={dist} books={books} colloc={colloc} corpus={NT} cross={cross} lexicon={lexicon} notice={notice} />
     </>
   );
 }

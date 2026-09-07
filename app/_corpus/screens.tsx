@@ -8,6 +8,10 @@ import Reader from "@/src/components/Reader";
 import RefJump from "@/src/components/RefJump";
 import Breadcrumb from "@/app/_components/Breadcrumb";
 import BreadcrumbJsonLd from "@/app/_components/BreadcrumbJsonLd";
+import ArticleRenderer from "@/src/components/articles/ArticleRenderer";
+import EditBookIntro from "@/src/components/books/EditBookIntro";
+import CollapsibleIntro from "@/src/components/books/CollapsibleIntro";
+import { getPublishedIntro, bookIntroIsLong } from "@/lib/bookIntros";
 
 // Écrans de lecture partagés entre corpus (NT, LXX). Les fichiers de route ne sont
 // que de fines enveloppes passant la config du corpus. Les valeurs NT reproduisent
@@ -50,7 +54,12 @@ export async function bookMetadata(corpus: CorpusConfig, params: Promise<{ book:
   const books = await loadBooksFs(corpus);
   const b = bookById(books, book);
   const chapters = b ? chapterNumbers(b).length : 0;
-  const description = `${name} en grec koinè (${corpus.sourceLabel}) : ${chapters} chapitres, texte original lettre par lettre, translittération érasmienne et restituée, traduction française.`;
+  // Description = extrait de l'intro éditoriale si publiée (prose unique, meilleur SEO),
+  // sinon le gabarit générique.
+  const intro = getPublishedIntro(corpus.id, book);
+  const description = intro?.excerpt?.trim()
+    ? intro.excerpt
+    : `${name} en grec koinè (${corpus.sourceLabel}) : ${chapters} chapitres, texte original lettre par lettre, translittération érasmienne et restituée, traduction française.`;
   return {
     title: name,
     description,
@@ -123,9 +132,21 @@ export async function BookScreen({ corpus, params }: { corpus: CorpusConfig; par
   const books = await loadBooksFs(corpus);
   const b = bookById(books, book);
   if (!b) notFound();
+  const intro = getPublishedIntro(corpus.id, book);
+  const bookJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Book",
+    name: `${b.name} en grec`,
+    inLanguage: "grc",
+    url: `${SITE}${corpus.routePrefix}/${book}`,
+    isPartOf: { "@type": "Book", name: corpus.label, url: `${SITE}${corpus.routePrefix}` },
+    publisher: { "@type": "Organization", name: "Anaginosko", url: SITE },
+    ...(intro?.excerpt?.trim() ? { description: intro.excerpt } : {}),
+  };
 
   return (
     <div className="pb-4">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(bookJsonLd) }} />
       <BreadcrumbJsonLd
         items={[
           { name: "Accueil", path: "/" },
@@ -140,11 +161,19 @@ export async function BookScreen({ corpus, params }: { corpus: CorpusConfig; par
           { label: b.name },
         ]}
       />
-      <h1 className="text-2xl font-bold">{b.name}</h1>
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <h1 className="text-2xl font-bold">{b.name}</h1>
+        <EditBookIntro corpus={corpus.id} book={book} />
+      </div>
       <p className="mt-1 mb-3 text-sm text-base-content/70">
         {b.chapters} chapitre{b.chapters > 1 ? "s" : ""}
       </p>
-      <div className="grid grid-cols-6 gap-1.5 sm:grid-cols-10 wide:grid-cols-12">
+      {intro && (
+        <CollapsibleIntro corpus={corpus.id} book={book} long={bookIntroIsLong(intro.content)}>
+          <ArticleRenderer content={intro.content} />
+        </CollapsibleIntro>
+      )}
+      <div id="chapitres" className="grid scroll-mt-20 grid-cols-6 gap-1.5 sm:grid-cols-10 wide:grid-cols-12">
         {chapterNumbers(b).map((ch) => (
           <Link
             key={ch}

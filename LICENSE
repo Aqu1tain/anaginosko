@@ -1,34 +1,38 @@
 Tous droits réservés / All Rights Reserved
 
-Copyright (c) 2026 Corentin Renard
+Copyright © 2026 Corentin Renard
 
-Ce logiciel et son code source (le « Logiciel »), ainsi que le contenu du site
-Anaginosko (anaginosko.fr), sont la propriété exclusive de leur auteur.
+Le code source, l’interface et les éléments originaux d’Anaginosko sont rendus
+visibles à des fins de consultation. Sauf autorisation écrite préalable, aucun
+droit n’est accordé pour les copier, modifier, publier, distribuer, vendre,
+sous-licencier ou créer des œuvres dérivées.
 
-Aucune autorisation n'est accordée pour utiliser, copier, modifier, fusionner,
-publier, distribuer, sous-licencier ou vendre tout ou partie du Logiciel, ni
-pour en créer des œuvres dérivées, sans l'accord écrit préalable et explicite
-de l'auteur.
+Les traductions françaises originales expressément identifiées comme
+« traductions Anaginosko » sont © 2026 Corentin Renard et Noah Jaubert —
+Anaginosko. Tous droits réservés. Leur reproduction, adaptation, publication ou
+réutilisation, intégrale ou partielle, nécessite une autorisation écrite
+préalable obtenue auprès de contact@corentinrenard.com.
 
-Le Logiciel est rendu visible publiquement à titre de consultation uniquement.
-Cette visibilité ne confère aucune licence ni aucun droit d'usage.
+Cette licence propriétaire ne s’applique pas aux œuvres, données, polices,
+bibliothèques ni autres ressources tierces. Celles-ci conservent leurs propres
+licences et avis, détaillés dans DATA-LICENSES.md et THIRD_PARTY_NOTICES.md.
+En particulier, elle ne remplace pas les licences Creative Commons applicables
+au SBLGNT, à MorphGNT, au jeu LXX-Rahlfs-1935, à la néo-Crampon Libre, à la
+transcription Wikisource de Giguet ou au Bailly 2020.
 
-Les annotations et notes philologiques publiées sur Anaginosko sont la propriété
-intellectuelle de Biblion (Noah Jaubert) ; elles ne peuvent être reproduites ou
-réutilisées sans son accord écrit préalable.
-
-Certaines données et ressources tierces intégrées ou consommées par le Logiciel
-restent soumises à leurs propres licences (notamment : texte SBLGNT / MorphGNT,
-dictionnaire Bailly via api.bailly.app en CC BY-NC-ND, traduction néo-Crampon du
-domaine public). Ces conditions tierces priment pour les éléments concernés.
-
-LE LOGICIEL EST FOURNI « EN L'ÉTAT », SANS GARANTIE D'AUCUNE SORTE.
+LE LOGICIEL ET LES ÉLÉMENTS ORIGINAUX SONT FOURNIS « EN L’ÉTAT », SANS GARANTIE
+D’AUCUNE SORTE.
 
 ---
 
-All rights reserved. This software, its source code, and the contents of the
-Anaginosko website (anaginosko.fr) are the exclusive property of their author.
-No permission is granted to use, copy, modify, distribute, sublicense, or create
-derivative works without the prior explicit written consent of the author.
-Public visibility of this repository is for viewing purposes only and grants no
-license. Third-party data and resources retain their own licenses.
+All rights reserved. Copyright © 2026 Corentin Renard.
+
+The source code, interface, and original Anaginosko materials are publicly
+visible for inspection only. No right to copy, modify, publish, distribute,
+sell, sublicense, or create derivative works is granted without prior written
+permission. Original translations identified as “Anaginosko translations” are
+© 2026 Corentin Renard and Noah Jaubert — Anaginosko, all rights reserved.
+Permission requests: contact@corentinrenard.com.
+
+Third-party works and data retain their own licenses. See DATA-LICENSES.md and
+THIRD_PARTY_NOTICES.md.
