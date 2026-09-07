@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { loadLemmaIndex, searchLemmaIndex, type LemmaEntry } from "../data/nt";
-import type { CorpusConfig } from "../data/corpus";
+import { NT, LXX, type CorpusConfig } from "../data/corpus";
+import { concordanceCorpus, isBible, lemmaConcordanceBase, mergeLemmaIndexes, type BibleLemma } from "../data/bibleIndex";
 
 function Loading() {
   return (
@@ -18,7 +19,10 @@ function useLemmaIndex(corpus: CorpusConfig) {
   const [error, setError] = useState(false);
   useEffect(() => {
     let alive = true;
-    loadLemmaIndex(corpus)
+    const load = isBible(corpus)
+      ? Promise.all([loadLemmaIndex(NT), loadLemmaIndex(LXX)]).then(([nt, lxx]) => mergeLemmaIndexes(nt, lxx))
+      : loadLemmaIndex(corpus);
+    load
       .then((i) => alive && setIndex(i))
       .catch(() => alive && setError(true));
     return () => {
@@ -29,9 +33,11 @@ function useLemmaIndex(corpus: CorpusConfig) {
 }
 
 function LemmaRow({ entry, corpus }: { entry: LemmaEntry; corpus: CorpusConfig }) {
+  const bible = isBible(corpus) ? (entry as BibleLemma) : null;
+  const base = bible ? lemmaConcordanceBase(bible) : corpus.concordanceBase;
   return (
     <Link
-      href={`${corpus.concordanceBase}/${encodeURIComponent(entry.lemma)}`}
+      href={`${base}/${encodeURIComponent(entry.lemma)}`}
       className="flex items-center gap-3 rounded-box border border-base-300 bg-base-100 px-3.5 py-2.5 transition-colors hover:border-primary/40"
     >
       <span className="min-w-0 flex-1">
@@ -40,7 +46,14 @@ function LemmaRow({ entry, corpus }: { entry: LemmaEntry; corpus: CorpusConfig }
         <span className="ml-1.5 text-xs text-base-content/70">· {entry.translit}</span>
       </span>
       <span className="shrink-0 text-xs text-base-content/70">{entry.nature}</span>
-      <span className="badge badge-sm badge-ghost shrink-0">{entry.count}</span>
+      {bible ? (
+        <span className="flex shrink-0 gap-1">
+          {bible.nt > 0 && <span className="badge badge-sm badge-ghost">NT {bible.nt}</span>}
+          {bible.lxx > 0 && <span className="badge badge-sm badge-ghost">LXX {bible.lxx}</span>}
+        </span>
+      ) : (
+        <span className="badge badge-sm badge-ghost shrink-0">{entry.count}</span>
+      )}
     </Link>
   );
 }
@@ -66,7 +79,8 @@ function List({ index, corpus }: { index: LemmaEntry[]; corpus: CorpusConfig }) 
     <div className="pb-4">
       <div className="max-w-2xl">
         <p className="max-w-prose pt-6 text-[0.95rem] leading-relaxed text-base-content/75">
-          Concordance des {index.length} lemmes {corpus.genitive}. Cherchez en grec
+          Concordance des {index.length.toLocaleString("fr-FR")} lemmes {corpus.genitive}
+          {isBible(corpus) && ", Nouveau Testament et Septante réunis"}. Cherchez en grec
           (<span className="font-greek">λόγος</span>) ou en translittération latine, restituée
           comme érasmienne (ex.&nbsp;<span className="font-greek">ἀρχή</span> : <em>arkhi</em> ou{" "}
           <em>arkê</em>).
@@ -124,7 +138,8 @@ function List({ index, corpus }: { index: LemmaEntry[]; corpus: CorpusConfig }) 
 
 // Liste / recherche de la concordance. La fiche d'un lemme est rendue côté
 // serveur (cf. app/concordance/[lemma]/page.tsx + LemmaDetail) pour être indexable.
-export default function ConcordanceView({ corpus }: { corpus: CorpusConfig }) {
+export default function ConcordanceView({ corpusId }: { corpusId: string }) {
+  const corpus = concordanceCorpus(corpusId);
   const { index, error } = useLemmaIndex(corpus);
   if (error) return <p className="py-20 text-center text-base-content/70">Chargement impossible.</p>;
   if (!index) return <Loading />;
