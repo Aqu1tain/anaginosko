@@ -38,20 +38,27 @@ function getJson(path: string, timeoutMs: number): Promise<unknown> {
   });
 }
 
-export async function fetchBaillyNotice(uri: string, timeoutMs = 4000): Promise<BaillyNotice | null> {
-  if (!uri) return null;
+export type BaillyLookup = { notice: BaillyNotice | null; error?: string };
+
+export async function loadBaillyNotice(uri: string, timeoutMs = 4000): Promise<BaillyLookup> {
+  if (!uri) return { notice: null, error: "uri vide" };
   const cached = cache.get(uri);
-  if (cached) return cached;
+  if (cached) return { notice: cached };
   try {
     const json = (await getJson(`/entry/${encodeURIComponent(uri)}?fields=word,uri,htmlDefinition`, timeoutMs)) as {
       data?: { entry?: Parameters<typeof toBaillyNotice>[0] };
     };
     const notice = toBaillyNotice(json.data?.entry, uri);
-    if (!notice) return null;
+    if (!notice) return { notice: null, error: "entrée absente" };
     if (cache.size >= MAX_ENTRIES) cache.delete(cache.keys().next().value!);
     cache.set(uri, notice);
-    return notice;
-  } catch {
-    return null;
+    return { notice };
+  } catch (e) {
+    const error = e instanceof Error ? `${e.name}: ${e.message}` : String(e);
+    console.error(`[bailly] ${uri}: ${error}`);
+    return { notice: null, error };
   }
 }
+
+export const fetchBaillyNotice = (uri: string, timeoutMs = 4000): Promise<BaillyNotice | null> =>
+  loadBaillyNotice(uri, timeoutMs).then((r) => r.notice);
