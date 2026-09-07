@@ -80,8 +80,8 @@ const sources: Source[] = [
         <a className="link" href="https://bailly.app/%C3%A0-propos" target="_blank" rel="noreferrer">
           Bailly.app
         </a>
-        , sous CC BY-NC-ND 4.0. Les extraits sont reproduits sans modification dans un cadre non
-        commercial.
+        , sous CC BY-NC-ND 4.0. Les extraits et les notices sont reproduits sans modification dans un
+        cadre non commercial.
       </>
     ),
   },

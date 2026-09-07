@@ -46,3 +46,21 @@ export function baillyDefinition(entry: DefEntry | null | undefined): string {
     .filter(Boolean)
     .sort((a, b) => b.length - a.length)[0] ?? "";
 }
+
+// Notice complète d'une entrée (champ htmlDefinition de /entry). Les homonymes
+// (λέγω ×3, ἡμέρα ×2) arrivent comme `children` d'une entrée-conteneur vide :
+// on les aplatit en « sens » successifs.
+export type BaillySense = { word: string; html: string };
+export type BaillyNotice = { word: string; uri: string; senses: BaillySense[] };
+
+type FullEntry = { word?: string; uri?: string; htmlDefinition?: string; children?: FullEntry[] };
+
+export function toBaillyNotice(entry: FullEntry | null | undefined, uri: string): BaillyNotice | null {
+  if (!entry?.word) return null;
+  const parts = entry.children?.length ? entry.children : [entry];
+  const senses = parts
+    .filter((e) => e.htmlDefinition?.trim())
+    .map((e) => ({ word: e.word ?? entry.word ?? "", html: e.htmlDefinition! }));
+  if (!senses.length) return null;
+  return { word: entry.word, uri: entry.uri || uri, senses };
+}

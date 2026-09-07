@@ -11,6 +11,8 @@ import { useLemmaNotes } from "../hooks/useLemmaNotes";
 import { useLemmaDefinition } from "../hooks/useLemmaDefinition";
 import { can, type Annotation } from "../lib/api";
 import type { GlossAssessment } from "../data/glosses";
+import type { BaillyNotice } from "../lib/bailly";
+import { LexiconSense } from "./BaillyNotice";
 import {
   type Colloc,
   type Distribution,
@@ -19,29 +21,6 @@ import {
   type Occ,
 } from "../data/nt";
 import { type CorpusConfig, NT, LXX, GREEK_BIBLE } from "../data/corpus";
-
-// Met en forme la notation Bailly : « || » sépare les grands sens. Des repères
-// visuels évitent le pavé uniforme, sans réécrire le texte du dictionnaire.
-function formatDefinition(text: string): React.ReactNode {
-  const segments = text.split(/\s*\|\|\s*/).map((s) => s.trim()).filter(Boolean);
-  return segments.map((seg, i) => {
-    const close = i === 0 ? seg.indexOf(")") : -1;
-    return (
-      <div key={i} className="flex items-start gap-2.5">
-        {segments.length > 1 && (
-          <span className="mt-0.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-base-200 px-1 text-[0.65rem] font-semibold text-base-content/60">
-            {i + 1}
-          </span>
-        )}
-        <p className="min-w-0 text-[0.95rem] leading-relaxed text-base-content/85">
-          {close !== -1 ? (
-            <><strong className="font-greek font-semibold">{seg.slice(0, close + 1)}</strong>{seg.slice(close + 1)}</>
-          ) : seg}
-        </p>
-      </div>
-    );
-  });
-}
 
 function Occurrences({ entry, occ, corpus }: { entry: LemmaEntry; occ: Occ[]; corpus: CorpusConfig }) {
   return (
@@ -75,7 +54,7 @@ function Occurrences({ entry, occ, corpus }: { entry: LemmaEntry; occ: Occ[]; co
 // Définition Biblion : système à part des annotations (ref « def:<lemma> »),
 // PRIORITAIRE sur Bailly. Quand elle existe, elle coiffe la fiche ; Bailly passe
 // en repli. Éditable par les philologues/admin.
-function LemmaDefinitions({ lemma, lexicon }: { lemma: string; lexicon: GlossAssessment }) {
+function LemmaDefinitions({ lemma, lexicon, notice }: { lemma: string; lexicon: GlossAssessment; notice?: BaillyNotice | null }) {
   const { user } = useAuth();
   const { definition, reload } = useLemmaDefinition(lemma);
   const [editing, setEditing] = useState(false);
@@ -141,7 +120,9 @@ function LemmaDefinitions({ lemma, lexicon }: { lemma: string; lexicon: GlossAss
               )}
             </>
           ) : hasLexicon ? (
-            <div className="mt-3 space-y-2">{formatDefinition(lexicon.gloss!.excerpt)}</div>
+            <div className="mt-3">
+              <LexiconSense gloss={lexicon.gloss!} notice={notice} collapsible />
+            </div>
           ) : definition === undefined ? (
             <div className="mt-3 flex items-center gap-2 text-sm text-base-content/60" aria-live="polite">
               <span className="loading loading-spinner loading-xs" aria-hidden="true" />
@@ -176,8 +157,8 @@ function LemmaDefinitions({ lemma, lexicon }: { lemma: string; lexicon: GlossAss
                 Consulter aussi la notice Bailly
               </span>
             </summary>
-            <div className="space-y-2 border-t border-base-300 px-4 py-3 sm:px-5">
-              {formatDefinition(lexicon.gloss!.excerpt)}
+            <div className="border-t border-base-300 px-4 py-3 sm:px-5">
+              <LexiconSense gloss={lexicon.gloss!} notice={notice} collapsible />
             </div>
           </details>
         )}
@@ -186,7 +167,7 @@ function LemmaDefinitions({ lemma, lexicon }: { lemma: string; lexicon: GlossAss
           <div className="flex flex-wrap items-center justify-between gap-2 border-t border-base-300 px-4 py-2.5 text-xs text-base-content/60 sm:px-5">
             <span>Bailly 2020 · CC BY-NC-ND</span>
             <a
-              href={`https://bailly.app/${encodeURIComponent(lemma)}`}
+              href={`https://bailly.app/${encodeURIComponent(lexicon.gloss!.uri)}`}
               target="_blank"
               rel="noreferrer"
               className="link hover:text-primary"
@@ -343,7 +324,8 @@ export default function LemmaDetail({
   corpus,
   cross,
   lexicon,
-}: LemmaData & { cross?: LemmaData; lexicon: GlossAssessment }) {
+  notice,
+}: LemmaData & { cross?: LemmaData; lexicon: GlossAssessment; notice?: BaillyNotice | null }) {
   const self: LemmaData = { entry, occ, dist, books, colloc, corpus };
   const [view, setView] = useState<"nt" | "lxx" | "both">(corpus.id === "lxx" ? "lxx" : "nt");
 
@@ -369,7 +351,7 @@ export default function LemmaDetail({
         <span className="text-sm text-base-content/70">· {entry.nature}</span>
       </div>
 
-      <LemmaDefinitions lemma={entry.lemma} lexicon={lexicon} />
+      <LemmaDefinitions lemma={entry.lemma} lexicon={lexicon} notice={notice} />
       <BiblionNote lemma={entry.lemma} />
 
       <section className="mt-6 border-t border-base-300 pt-5" aria-labelledby="occurrence-scope">

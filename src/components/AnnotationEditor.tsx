@@ -135,7 +135,7 @@ export default function AnnotationEditor({
             inputMode="url"
             value={link}
             onChange={(e) => setLink(e.target.value)}
-            placeholder="https://bailly.app/λόγος"
+            placeholder="https://bailly.app/logos"
             className={`input input-bordered mt-1 w-full ${link && !linkUrl ? "input-error" : ""}`}
           />
           {link && !linkUrl && (

@@ -14,6 +14,7 @@ import { useCorpusGloss } from "../hooks/useCorpusGloss";
 import { useLemmaNotes } from "../hooks/useLemmaNotes";
 import { useLemmaDefinition } from "../hooks/useLemmaDefinition";
 import ReportButton from "./ReportButton";
+import { LexiconSense } from "./BaillyNotice";
 import {
   can,
   fetchPronunciations,
@@ -517,14 +518,12 @@ export default function LetterSheet({
                       {lemmaDef.body}
                     </p>
                   ) : lexical.status === "verified" && lexical.gloss ? (
-                    <>
-                      <p className="mt-1.5 text-sm leading-snug text-base-content/80">
-                        {lexical.gloss.excerpt}
-                      </p>
+                    <div className="mt-1.5">
+                      <LexiconSense gloss={lexical.gloss} compact />
                       <p className="mt-1.5 text-[0.7rem] leading-snug text-base-content/55">
                         Lexique général, à confirmer dans le contexte biblique.
                       </p>
-                    </>
+                    </div>
                   ) : lexical.loading || lemmaDef === undefined ? (
                     <p className="mt-1.5 text-sm text-base-content/60">Recherche du sens…</p>
                   ) : (
