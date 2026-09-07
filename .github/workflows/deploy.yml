@@ -96,8 +96,10 @@ jobs:
           # 3) Bascule atomique du symlink + redémarrage du service
           $SSH "$HOST" "ln -sfn $REL /opt/anaginosko-web/current && sudo systemctl restart anaginosko-web"
 
-          # 4) Purge : ne garder que les 3 dernières releases
-          $SSH "$HOST" "ls -1dt /opt/anaginosko-web/releases/*/ | tail -n +4 | xargs -r rm -rf"
+          # 4) Smoke-test : le service répond bien en local sur le VPS. Quelques
+          #    tentatives, le temps que le standalone écoute après le redémarrage.
+          $SSH "$HOST" "for i in 1 2 3 4 5 6; do curl -fsS -o /dev/null http://127.0.0.1:3100/ && echo 'service OK' && exit 0; sleep 3; done; echo 'service KO'; exit 1"
 
-          # 5) Smoke-test : le service répond bien en local sur le VPS
-          $SSH "$HOST" "curl -fsS -o /dev/null http://127.0.0.1:3100/ && echo 'service OK'"
+          # 5) Purge : ne garder que les 3 dernières releases. Leur .next appartient
+          #    au service (chown ci-dessus) : la suppression passe par sudo.
+          $SSH "$HOST" "ls -1dt /opt/anaginosko-web/releases/*/ | tail -n +4 | xargs -r sudo rm -rf"
