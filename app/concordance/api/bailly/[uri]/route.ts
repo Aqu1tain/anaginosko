@@ -5,7 +5,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ uri: st
   const { uri } = await params;
   const notice = await fetchBaillyNotice(decodeURIComponent(uri));
   if (!notice) {
-    return NextResponse.json({ notice: null }, { status: 404, headers: { "Cache-Control": "public, max-age=3600" } });
+    return NextResponse.json({ notice: null }, { status: 404, headers: { "Cache-Control": "no-store" } });
   }
   return NextResponse.json(
     { notice },
