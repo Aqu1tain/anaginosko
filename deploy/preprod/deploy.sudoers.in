@@ -1,0 +1,11 @@
+# Modèle à faire installer par un administrateur, jamais par le CI.
+# Remplacer DEPLOY_USER par le compte SSH et son groupe primaire (même nom).
+# sudo >= 1.9.10 requis pour les expressions régulières d’arguments.
+# Aucun shell, Docker, provisioning ou interpréteur exécuté en root.
+# Le compte anag-web est celui du service existant : ce modèle ne l’isole pas de la prod.
+Cmnd_Alias ANAG_NEXT_DATA = /usr/bin/chown -hR -P -- DEPLOY_USER\:DEPLOY_USER /var/www/anaginosko-next/nt /var/www/anaginosko-next/lxx, /usr/bin/chown -hR -P -- anag-web\:anag-web /var/www/anaginosko-next/lxx
+Cmnd_Alias ANAG_NEXT_RESTART = /usr/bin/systemctl restart anaginosko-web-next
+Cmnd_Alias ANAG_NEXT_BACKUP = /usr/bin/cp ^-- /opt/anaginosko-web-next/arbitration/lxx-arbitration[.]json /opt/anaginosko-web-next/arbitration/lxx-arbitration[.]json[.]bak[.][0-9]{14}$, /usr/bin/cp ^-- /opt/anaginosko-web-next/arbitration/lxx-biblion-validated[.]json /opt/anaginosko-web-next/arbitration/lxx-biblion-validated[.]json[.]bak[.][0-9]{14}$
+Cmnd_Alias ANAG_NEXT_MERGE = /usr/bin/node ^-- /opt/anaginosko-web-next/releases/[0-9]{14}/scripts/merge-arb-git-server[.]mjs --git /opt/anaginosko-web-next/releases/[0-9]{14}/data/lxx-arbitration[.]json --server /opt/anaginosko-web-next/arbitration/lxx-arbitration[.]json --out /opt/anaginosko-web-next/arbitration/lxx-arbitration[.]json --capture /opt/anaginosko-web-next/arbitration/biblion-fresh[.]json --prev /opt/anaginosko-web-next/arbitration/last-git-arbitration[.]json$
+DEPLOY_USER ALL=(root) NOPASSWD: ANAG_NEXT_DATA, ANAG_NEXT_RESTART
+DEPLOY_USER ALL=(anag-web) NOPASSWD: ANAG_NEXT_BACKUP, ANAG_NEXT_MERGE
