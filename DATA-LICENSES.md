@@ -63,8 +63,8 @@ signifie pas « domaine public ».
 
 - Les seuls textes concernés sont ceux expressément identifiés dans les données
   et le lecteur comme « traduction Anaginosko ».
-- **Auteurs** : Corentin Renard et Noah Jaubert.
-- **Droits** : © 2026 Corentin Renard et Noah Jaubert — Anaginosko. Tous droits
+- **Auteurs** : Corentin Renard et Biblion.
+- **Droits** : © 2026 Corentin Renard et Biblion — Anaginosko. Tous droits
   réservés.
 - Toute reproduction, adaptation, publication ou réutilisation, intégrale ou
   partielle, nécessite une autorisation écrite préalable :
