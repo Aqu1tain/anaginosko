@@ -4,6 +4,11 @@ on:
   push:
     branches: [next]
   workflow_dispatch:
+    inputs:
+      provision:
+        description: "Provisionner l’infrastructure (opération administrateur)"
+        type: boolean
+        default: false
 
 concurrency:
   group: deploy-preprod
@@ -14,6 +19,7 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
@@ -50,25 +56,26 @@ jobs:
       - name: Deploy preprod to VPS
         env:
           CERTBOT_EMAIL: corentinfox08@gmail.com
+          RUN_PROVISION: ${{ github.event_name == 'workflow_dispatch' && inputs.provision }}
         run: |
           set -euo pipefail
           mkdir -p ~/.ssh
           printf '%s\n' "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -H "${{ secrets.VPS_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
-          SSH="ssh -i ~/.ssh/id_ed25519"
-          SSHTT="ssh -tt -i ~/.ssh/id_ed25519"  # tty pour sudo (Defaults use_pty)
+          SSH="ssh -o BatchMode=yes -o ConnectTimeout=20 -i ~/.ssh/id_ed25519"
           HOST="${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}"
           TS=$(date +%Y%m%d%H%M%S)
           REL="/opt/anaginosko-web-next/releases/$TS"
 
-          # 1) Pousser les fichiers de provisioning préprod
+          # Le déploiement courant ne provisionne jamais l’infrastructure.
           $SSH "$HOST" "rm -rf ~/anag-preprod && mkdir -p ~/anag-preprod"
           rsync -az -e "$SSH" deploy/preprod/ "$HOST:anag-preprod/"
-
-          # 2) Provisionner (idempotent) : service systemd, API, configuration
-          #    et données isolées, nginx + TLS. Aucune donnée prod n'est lue.
-          $SSHTT "$HOST" "CERTBOT_EMAIL='$CERTBOT_EMAIL' bash anag-preprod/provision.sh"
+          if [ "$RUN_PROVISION" = "true" ]; then
+            $SSH "$HOST" "CERTBOT_EMAIL='$CERTBOT_EMAIL' bash anag-preprod/provision.sh"
+          fi
+          # Reprendre les droits nécessaires au rsync, indépendamment du provisioning.
+          $SSH "$HOST" "bash anag-preprod/deploy-actions.sh prepare-data $TS"
 
           # 3) Data statique propre à la préprod (NT inchangé, LXX nouvelle)
           rsync -az --delete -e "$SSH" public/nt/  "$HOST:/var/www/anaginosko-next/nt/"
@@ -82,13 +89,8 @@ jobs:
           #     Biblion). Backup horodaté, puis fusion à 3 règles : git-active installée,
           #     archivée retirée, fraîche Biblion conservée+capturée, CONFLIT bloquant. Un
           #     conflit ou une erreur fait échouer le déploiement (set -e), rien de silencieux.
-          #     L'ARB_DIR appartient au service (anag-web). L'utilisateur de déploiement
-          #     a sudo passwordless en RUNAS-ROOT (cf. systemctl ci-dessous) mais PAS en
-          #     runas-anag-web. On écrit donc en root via $SSHTT + sudo (pattern prouvé du
-          #     systemctl : sudo runas-root sous -tt ne deadlocke pas ; c'est runas-USER
-          #     qui deadlockait), puis on RESTAURE l'ownership anag-web par chown, pour que
-          #     l'outil d'admin de Biblion (anag-web) garde le droit d'écrire son arbitrage.
-          $SSHTT "$HOST" "sudo cp $ARB/lxx-arbitration.json $ARB/lxx-arbitration.json.bak.$TS && sudo node $REL/scripts/merge-arb-git-server.mjs --git $REL/data/lxx-arbitration.json --server $ARB/lxx-arbitration.json --out $ARB/lxx-arbitration.json --capture $ARB/biblion-fresh.json --prev $ARB/last-git-arbitration.json && sudo chown anag-web:anag-web $ARB/lxx-arbitration.json $ARB/last-git-arbitration.json $ARB/biblion-fresh.json"
+          # La fusion et les sauvegardes tournent comme anag-web, jamais comme root.
+          $SSH "$HOST" "bash anag-preprod/deploy-actions.sh merge-arbitration $TS"
           # Remonte les ajouts frais de Biblion vers le runner (artefact) : ils ne restent
           # PAS un exemplaire unique sur le VPS. À versionner dans git ensuite.
           rsync -az -e "$SSH" "$HOST:$ARB/biblion-fresh.json" ./biblion-fresh.json 2>/dev/null || printf '[]' > ./biblion-fresh.json
@@ -98,19 +100,15 @@ jobs:
           # Validations manuelles (« c'est bon ») : exemplaire unique sur le VPS, hors
           # fusion. On en fait un backup horodaté et on le remonte en artefact, comme
           # l'arbitrage, pour qu'un crash du VPS ne les perde pas.
-          $SSHTT "$HOST" "[ -f $ARB/lxx-biblion-validated.json ] && sudo cp $ARB/lxx-biblion-validated.json $ARB/lxx-biblion-validated.json.bak.$TS || true"
+          $SSH "$HOST" "bash anag-preprod/deploy-actions.sh backup-validation $TS"
           rsync -az -e "$SSH" "$HOST:$ARB/lxx-biblion-validated.json" ./lxx-biblion-validated.json 2>/dev/null || printf '[]' > ./lxx-biblion-validated.json
           # 4b) Matérialisation COMPLÈTE (matérialiseur unique zéro-perte) depuis l'arbitrage FUSIONNÉ.
           $SSH "$HOST" "cd $REL && ARB_DIR=$ARB LXX_DATA_DIR=/var/www/anaginosko-next/lxx node scripts/materialize-links.mjs --apply"
           # 4c) GATE SENTINELLE : un verset servi par lot de corrections récentes doit contenir
           #     sa sous-chaîne attendue (aurait attrapé la désync du 2026-07-08). Échec = pas de bascule.
           $SSH "$HOST" "cd $REL && LXX_DATA_DIR=/var/www/anaginosko-next/lxx node scripts/check-sentinelles.mjs"
-          # 4d) L'arbre lxx servi passe au service (anag-web) pour qu'applyToReader
-          #     réécrive fr.json EN DIRECT quand Biblion arbitre (sinon EACCES : arbre
-          #     possédé par le CI, cf. provision.sh). provision.sh le rechown au CI au
-          #     prochain déploiement, avant le rsync. Même pattern que l'ARB_DIR (l.89).
-          $SSHTT "$HOST" "sudo chown -R anag-web:anag-web /var/www/anaginosko-next/lxx"
-          $SSHTT "$HOST" "ln -sfn $REL /opt/anaginosko-web-next/current && sudo systemctl restart anaginosko-web-next"
+          # 4d) Rendre la LXX au service, puis basculer et redémarrer la préprod.
+          $SSH "$HOST" "bash anag-preprod/deploy-actions.sh activate $TS"
           $SSH "$HOST" "ls -1dt /opt/anaginosko-web-next/releases/*/ | tail -n +4 | xargs -r rm -rf"
 
           # 5) Smoke-test local sur le VPS
