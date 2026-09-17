@@ -7,6 +7,7 @@ import { corpusByDataPrefix } from "../../src/data/corpus";
 import { textById } from "../../src/data/texts";
 import { useAuth } from "../../src/hooks/useAuth";
 import Avatar from "../../src/components/profile/Avatar";
+import PreprodBadge, { IS_PREPROD } from "./PreprodBadge";
 
 function ThemeToggle({ dark, onToggle }: { dark: boolean; onToggle: () => void }) {
   return (
@@ -105,10 +106,11 @@ export default function TopBar({ dark, onToggleTheme }: { dark: boolean; onToggl
               place revient au chevron retour + titre. */}
           <Link
             href="/"
-            aria-label="Accueil"
-            className={`btn btn-ghost px-2 text-xl font-bold tracking-tight font-[family-name:var(--font-syne)] ${isLibrary ? "" : "hidden wide:inline-flex"}`}
+            aria-label={IS_PREPROD ? "Accueil — environnement NEXT" : "Accueil"}
+            className={`btn btn-ghost gap-1.5 px-2 text-xl font-bold tracking-tight font-[family-name:var(--font-syne)] ${isLibrary ? "" : "hidden wide:inline-flex"}`}
           >
             Anaginosko
+            <PreprodBadge />
           </Link>
           {!isLibrary && (
             <>
