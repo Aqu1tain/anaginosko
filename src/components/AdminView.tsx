@@ -146,7 +146,7 @@ export default function AdminView() {
   const canDashboard = can(user, "dashboard");
   const seesAll = can(user, "moderate"); // voit toutes les annotations, pas seulement les siennes
   const canAnnotate = can(user, "annotations");
-  const canArticles = can(user, "articles");
+  const canArticles = can(user, "articles") || can(user, "review") || can(user, "publish");
   const canReview = can(user, "review");
   const canArbitrage = can(user, "arbitrage");
   const canReports = can(user, "reports");
@@ -221,6 +221,17 @@ export default function AdminView() {
   }, [user]);
 
   if (!ready) return null;
+  if (user && !canDashboard) return <div className="mx-auto max-w-4xl space-y-5 py-8">
+    <h1 className="text-3xl font-bold">Mon espace</h1>
+    <p className="text-base-content/65">{user.displayName} · {user.title}</p>
+    <div className="grid gap-3 sm:grid-cols-2">
+      <NavCard href="/mon-profil" title="Mon profil" desc="Identité et compte" avatar={<Avatar name={user.displayName} photo={photo} size={40} />} />
+      {canArticles && <NavCard href="/admin/articles" title="Articles" desc="Mes articles et demandes de relecture" icon={ICON.articles} />}
+      {canAccounts && <NavCard href="/admin/comptes" title="Comptes et accès" desc="Rôles, permissions et invitations" icon={ICON.accounts} />}
+      {canArbitrage && <NavCard href="/admin/arbitrage" title="Arbitrage LXX" desc="Liens grec et Giguet" icon={ICON.arbitrage} />}
+    </div>
+    <button className="btn btn-ghost btn-sm" onClick={async () => { await logout(); router.push("/"); }}>Se déconnecter</button>
+  </div>;
   if (!canDashboard) {
     return (
       <div className="py-20 text-center text-base-content/70">

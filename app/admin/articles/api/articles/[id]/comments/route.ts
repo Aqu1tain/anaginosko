@@ -1,36 +1,24 @@
 import { NextResponse } from "next/server";
-import { requirePermission } from "@/lib/auth";
-import { addComment, setCommentResolved, setThreadResolved } from "@/lib/articles";
-
-export const dynamic = "force-dynamic";
-
+import { requireEditorial } from "@/lib/auth";
+import { addComment, editComment, setThreadResolved } from "@/lib/articles";
 type Ctx = { params: Promise<{ id: string }> };
-
 export async function POST(req: Request, { params }: Ctx) {
-  const auth = await requirePermission(req.headers.get("authorization"), "articles");
-  if (!auth.ok) return NextResponse.json({ error: "Réservé aux contributeurs." }, { status: 401 });
-  const { id } = await params;
+  const auth = await requireEditorial(req.headers.get("authorization"));
+  if (!auth.ok) return NextResponse.json({ error: "Accès refusé." }, { status: 403 });
   const body = await req.json().catch(() => null);
-  const result = addComment(id, auth, { text: body?.text, blockId: body?.blockId });
-  if (!result.ok) return NextResponse.json({ error: result.error }, { status: result.status });
-  return NextResponse.json({ article: result.article }, { status: 201 });
+  if (!body) return NextResponse.json({ error: "Commentaire requis." }, { status: 400 });
+  const result = addComment((await params).id, auth, body);
+  return result.ok ? NextResponse.json({ article: result.article }, { status: 201 }) : NextResponse.json({ error: result.error }, { status: result.status });
 }
-
 export async function PATCH(req: Request, { params }: Ctx) {
-  const auth = await requirePermission(req.headers.get("authorization"), "articles");
-  if (!auth.ok) return NextResponse.json({ error: "Réservé aux contributeurs." }, { status: 401 });
-  const { id } = await params;
+  const auth = await requireEditorial(req.headers.get("authorization"));
+  if (!auth.ok) return NextResponse.json({ error: "Accès refusé." }, { status: 403 });
   const body = await req.json().catch(() => null);
-  if (typeof body?.resolved === "boolean" && Object.prototype.hasOwnProperty.call(body, "blockId")) {
-    if (body.blockId !== null && typeof body.blockId !== "string")
-      return NextResponse.json({ error: "blockId invalide." }, { status: 400 });
-    const result = setThreadResolved(id, auth, body.blockId, body.resolved);
-    if (!result.ok) return NextResponse.json({ error: result.error }, { status: result.status });
-    return NextResponse.json({ article: result.article });
-  }
-  if (typeof body?.commentId !== "string" || typeof body?.resolved !== "boolean")
-    return NextResponse.json({ error: "commentId et resolved requis." }, { status: 400 });
-  const result = setCommentResolved(id, auth, body.commentId, body.resolved);
-  if (!result.ok) return NextResponse.json({ error: result.error }, { status: result.status });
-  return NextResponse.json({ article: result.article });
+  const { id } = await params;
+  const result = typeof body?.threadId === "string" && typeof body?.resolved === "boolean"
+    ? setThreadResolved(id, auth, body.threadId, body.resolved)
+    : typeof body?.commentId === "string" && (typeof body?.text === "string" || body?.text === null)
+      ? editComment(id, auth, body.commentId, body.text)
+      : { ok: false as const, status: 400, error: "Modification invalide." };
+  return result.ok ? NextResponse.json({ article: result.article }) : NextResponse.json({ error: result.error }, { status: result.status });
 }

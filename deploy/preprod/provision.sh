@@ -41,7 +41,7 @@ sudo sed -i "s#^ExecStart=.*#ExecStart=$NODE_BIN server.js#" /etc/systemd/system
 sudo systemctl daemon-reload
 sudo systemctl enable anaginosko-web-next >/dev/null 2>&1 || true
 
-echo "==> 3) API préprod (conteneur et données isolés, image prod réutilisée)"
+echo "==> 3) API préprod (conteneur et données isolés, image dédiée si configurée)"
 sudo mkdir -p "$API_DIR"
 sudo cp "$CFG_DIR/docker-compose.preprod.yml" "$API_DIR/docker-compose.yml"
 if ! sudo test -s "$API_DIR/.env"; then

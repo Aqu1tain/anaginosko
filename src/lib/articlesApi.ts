@@ -52,28 +52,30 @@ export const saveArticle = (id: string, patch: ArticlePatch) =>
 export const deleteArticle = (id: string) =>
   articleFetch<{ ok: boolean }>(`/articles/${id}`, { method: "DELETE" });
 
-export const transitionArticle = (id: string, action: TransitionAction, note?: string) =>
+export const transitionArticle = (id: string, action: TransitionAction | "retry_notification", rev: number, note?: string, reviewerId?: number | null) =>
   articleFetch<{ article: Article }>(`/articles/${id}/status`, {
     method: "POST",
-    body: JSON.stringify({ action, note }),
+    body: JSON.stringify({ action, rev, note, reviewerId }),
   }).then((d) => d.article);
 
-export const addComment = (id: string, text: string, blockId?: string | null) =>
+export const fetchReviewers = () => articleFetch<{ reviewers: { id: number; displayName: string; title: string }[] }>("/reviewers").then(d => d.reviewers);
+
+export const addComment = (id: string, text: string, blockId?: string | null, threadId?: string, quote?: string | null, revision?: number) =>
   articleFetch<{ article: Article }>(`/articles/${id}/comments`, {
     method: "POST",
-    body: JSON.stringify({ text, blockId: blockId ?? null }),
+    body: JSON.stringify({ text, blockId: blockId ?? null, threadId, quote, revision }),
   }).then((d) => d.article);
 
-export const resolveComment = (id: string, commentId: string, resolved: boolean) =>
+export const editComment = (id: string, commentId: string, text: string | null) =>
   articleFetch<{ article: Article }>(`/articles/${id}/comments`, {
     method: "PATCH",
-    body: JSON.stringify({ commentId, resolved }),
+    body: JSON.stringify({ commentId, text }),
   }).then((d) => d.article);
 
-export const resolveThread = (id: string, blockId: string | null, resolved: boolean) =>
+export const resolveThread = (id: string, threadId: string, resolved: boolean) =>
   articleFetch<{ article: Article }>(`/articles/${id}/comments`, {
     method: "PATCH",
-    body: JSON.stringify({ blockId, resolved }),
+    body: JSON.stringify({ threadId, resolved }),
   }).then((d) => d.article);
 
 export async function uploadImage(id: string, file: Blob): Promise<string> {

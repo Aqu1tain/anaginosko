@@ -15,7 +15,10 @@ export default function LoginView() {
   // Déjà connecté : la page de connexion n'a plus de raison d'être, direction le
   // tableau de bord (l'espace du compte, avec la déconnexion).
   useEffect(() => {
-    if (user) router.replace("/admin");
+    if (user) {
+      const target = new URLSearchParams(window.location.search).get("next");
+      router.replace(target && /^\/admin\/articles(?:\/[a-z0-9-]+)?$/.test(target) ? target : "/admin");
+    }
   }, [user, router]);
 
   if (user) return null;
@@ -43,8 +46,8 @@ export default function LoginView() {
         </div>
         <h1 className="mt-3 text-center text-2xl font-bold">Espace contributeurs</h1>
         <p className="mt-1 text-center text-sm text-base-content/70">
-          Réservé à l’administration et aux philologues, pour rédiger et gérer les
-          annotations savantes. La lecture reste libre, sans compte.
+          Connectez-vous pour rédiger, relire et retrouver les espaces auxquels
+          votre équipe vous a donné accès.
         </p>
 
         <form onSubmit={submit} className="mt-6 grid gap-3">

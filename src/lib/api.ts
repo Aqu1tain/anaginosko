@@ -110,6 +110,8 @@ export const changePassword = (currentPassword: string, newPassword: string) =>
 
 // --- Gestion des comptes (admin) ---
 export type Contributor = {
+  roleIds: number[];
+  effectivePermissions: Permission[];
   id: number;
   email: string;
   displayName: string;
@@ -120,6 +122,7 @@ export type Contributor = {
   createdAt: string | null;
 };
 export type Invitation = {
+  roleIds: number[];
   id: number;
   email: string;
   displayName: string;
@@ -132,14 +135,19 @@ export type Invitation = {
 export const fetchContributors = () =>
   apiFetch<{ users: Contributor[]; invitations: Invitation[] }>("/admin/users");
 
-export const inviteContributor = (input: { email: string; displayName: string; title: string; permissions: Permission[] }) =>
+export const inviteContributor = (input: { email: string; displayName: string; title: string; permissions: Permission[]; roleIds?: number[] }) =>
   apiFetch<{ invitation: Invitation }>("/admin/invitations", { method: "POST", body: JSON.stringify(input) }).then((d) => d.invitation);
 
-export const updateContributor = (id: number, patch: { title?: string; permissions?: Permission[]; active?: boolean }) =>
+export const updateContributor = (id: number, patch: { title?: string; permissions?: Permission[]; active?: boolean; roleIds?: number[] }) =>
   apiFetch<{ user: Contributor }>(`/admin/users/${id}`, { method: "PATCH", body: JSON.stringify(patch) }).then((d) => d.user);
 
 export const cancelInvitation = (id: number) =>
   apiFetch<void>(`/admin/invitations/${id}`, { method: "DELETE" });
+
+export type EditorialRole = { id: number; name: string; permissions: Permission[] };
+export const fetchRoles = () => apiFetch<{ roles: EditorialRole[] }>("/admin/roles").then(d => d.roles);
+export const saveRole = (role: { id?: number; name: string; permissions: Permission[] }) =>
+  apiFetch<{ role: EditorialRole }>(`/admin/roles${role.id ? `/${role.id}` : ""}`, { method: role.id ? "PUT" : "POST", body: JSON.stringify(role) }).then(d => d.role);
 
 // --- Invitation publique (le contributeur définit son mot de passe) ---
 export const fetchInvitation = (token: string) =>

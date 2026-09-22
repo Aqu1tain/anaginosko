@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { requirePermission } from "@/lib/auth";
+import { requirePermission, requireEditorial } from "@/lib/auth";
 import { getArticle, saveArticle, deleteArticle } from "@/lib/articles";
 
 export const dynamic = "force-dynamic";
@@ -7,12 +7,12 @@ export const dynamic = "force-dynamic";
 type Ctx = { params: Promise<{ id: string }> };
 
 export async function GET(req: Request, { params }: Ctx) {
-  const auth = await requirePermission(req.headers.get("authorization"), "articles");
+  const auth = await requireEditorial(req.headers.get("authorization"));
   if (!auth.ok) return NextResponse.json({ error: "Réservé aux contributeurs." }, { status: 401 });
   const { id } = await params;
   const a = getArticle(id);
   if (!a) return NextResponse.json({ error: "Article introuvable." }, { status: 404 });
-  const canReview = auth.isRoot || auth.permissions?.includes("review");
+  const canReview = auth.isRoot || auth.permissions?.some(p => p === "review" || p === "publish");
   if (!canReview && a.author.userId !== auth.id)
     return NextResponse.json({ error: "Accès refusé." }, { status: 403 });
   return NextResponse.json({ article: a });

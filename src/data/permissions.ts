@@ -8,6 +8,7 @@ export const PERMISSIONS = [
   "arbitrage",
   "articles",
   "review",
+  "publish",
   "reports",
   "accounts",
 ] as const;
@@ -21,6 +22,7 @@ export const PERMISSION_LABEL: Record<Permission, string> = {
   arbitrage: "Arbitrage LXX",
   articles: "Articles — rédaction",
   review: "Articles — relecture",
+  publish: "Articles — publication",
   reports: "Signalements",
   accounts: "Comptes",
 };
@@ -31,7 +33,8 @@ export const PERMISSION_HINT: Record<Permission, string> = {
   moderate: "Éditer les annotations d'autrui, tout voir",
   arbitrage: "Arbitrage LXX (liens grec / Giguet)",
   articles: "Rédiger et éditer ses articles",
-  review: "Relire, approuver et publier les articles",
+  review: "Relire et approuver les articles d'un autre auteur",
+  publish: "Publier une version approuvée, dépublier et archiver",
   reports: "Traiter les signalements des lecteurs",
   accounts: "Gérer les comptes, titres et permissions",
 };

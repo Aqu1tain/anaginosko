@@ -6,6 +6,7 @@ export const STATUS_LABEL: Record<ArticleStatus, string> = {
   in_review: "En revue",
   changes_requested: "Modifications demandées",
   published: "Publié",
+  approved: "Approuvé · à publier",
   archived: "Archivé",
 };
 
@@ -14,6 +15,7 @@ export const STATUS_BADGE: Record<ArticleStatus, string> = {
   in_review: "badge-warning",
   changes_requested: "badge-error",
   published: "badge-success",
+  approved: "badge-info",
   archived: "badge-neutral",
 };
 
@@ -22,6 +24,7 @@ export const STATUS_DOT: Record<ArticleStatus, string> = {
   in_review: "bg-warning",
   changes_requested: "bg-error",
   published: "bg-success",
+  approved: "bg-info",
   archived: "bg-base-content/20",
 };
 
