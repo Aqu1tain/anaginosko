@@ -148,7 +148,7 @@ export default function ProfileEditor() {
                 value={profile.displayName}
                 onChange={(e) => set({ displayName: e.target.value })}
                 className="input input-bordered w-full"
-                placeholder="ex. Noah, Βιβλίον…"
+                placeholder="ex. Biblion, Βιβλίον…"
               />
             </Field>
             <Field label="Nom complet" hint="Facultatif, affiché sous le nom d'affichage.">
@@ -156,7 +156,7 @@ export default function ProfileEditor() {
                 value={profile.fullName}
                 onChange={(e) => set({ fullName: e.target.value })}
                 className="input input-bordered w-full"
-                placeholder="ex. Noah Jaubert"
+                placeholder="ex. Henri Martin"
               />
             </Field>
           </div>

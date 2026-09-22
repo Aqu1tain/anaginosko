@@ -29,6 +29,8 @@ jobs:
         run: npm run lint
       - name: Typecheck
         run: npx tsc --noEmit
+      - name: Test deployment permissions
+        run: node --test tests/preprod-deploy.test.mjs tests/prod-deploy.test.mjs
       - name: Test definition matching
         run: npm run test:definitions
       - name: Test editorial workflow and independent review

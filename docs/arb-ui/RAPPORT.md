@@ -25,7 +25,7 @@ enregistrement du chapitre en un bloc. *(02 et 03)*
 Chaque traduction maison est créditée : au **verset** dans l'outil, et **en bas du
 chapitre dans le lecteur** (au chapitre si un seul traducteur, sinon la liste). Le
 philologue signe toujours « Biblion » (jamais son vrai nom) ; un admin signe de son
-nom réel (Corentin Renard, Noah Jaubert). Porté par `fr.json._maison`, émis par le
+nom ou pseudonyme (Corentin Renard, Biblion). Porté par `fr.json._maison`, émis par le
 matérialiseur unique, maintenu au runtime.
 
 ## Suscriptions · Archivées
@@ -36,7 +36,7 @@ donnée a été réparée, pas une correction de ta part ».
 
 ## Droits
 
-Le compte admin (Corentin, Noah) a exactement les mêmes droits que Biblion :
+Le compte admin (Corentin, Biblion) a exactement les mêmes droits que Biblion :
 `role === "admin"` OU `philologist`, sur toutes les routes.
 
 ## Gates

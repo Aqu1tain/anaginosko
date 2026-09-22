@@ -41,6 +41,7 @@
     "daisyui": "^5.5.23",
     "eslint": "^9.39.4",
     "eslint-config-next": "^15.5.19",
+    "js-yaml": "4.3.0",
     "tailwindcss": "^4.1.0",
     "typescript": "^5.7.0"
   }

@@ -64,8 +64,8 @@ const sources: Source[] = [
         transcription ; cette adaptation est distribuée sous CC BY-SA 4.0.
         <br />
         <strong>LXX — traductions Anaginosko :</strong> certains versets absents de Giguet sont
-        identifiés dans le lecteur comme « traduction Anaginosko ». © 2026 Corentin Renard et Noah
-        Jaubert — Anaginosko. Tous droits réservés. Toute reproduction, adaptation, publication ou
+        identifiés dans le lecteur comme « traduction Anaginosko ». © 2026 Corentin Renard et
+        Biblion — Anaginosko. Tous droits réservés. Toute reproduction, adaptation, publication ou
         réutilisation nécessite une autorisation écrite préalable à{" "}
         <a className="link" href="mailto:contact@corentinrenard.com">contact@corentinrenard.com</a>.
       </>

@@ -6,7 +6,19 @@ services:
     image: ${PREPROD_API_IMAGE:-anaginosko-api}
     container_name: anaginosko-api-next
     restart: unless-stopped
+    # Limites relevées sur le VPS le 17/09/2026 ; conservées au reprovisioning.
+    mem_limit: 512m
+    memswap_limit: 1024m
+    cpus: 1
+    pids_limit: 512
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "3"
     env_file: .env
+    environment:
+      APP_URL: https://next.anaginosko.fr
     ports:
       - "127.0.0.1:3901:3333"
     volumes:
