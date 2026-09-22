@@ -82,24 +82,34 @@ jobs:
           # empêche une release applicative de revenir à leur version du dépôt.
           $SSH "$HOST" "set -eu; CURRENT=/opt/anaginosko-web/current/data; NEW=$REL/data; mkdir -p \"\$NEW\"; for FILE in lxx-arbitration.json lxx-biblion-validated.json; do if [ -f \"\$CURRENT/\$FILE\" ]; then cp -p \"\$CURRENT/\$FILE\" \"\$NEW/\$FILE\"; echo \"Arbitrage préservé: \$FILE\"; fi; done"
 
-          # 2b) Stockage éditorial des articles/profils : dossier PERSISTANT hors des
-          #     releases (survit au --delete), inscriptible par le service (anag-web).
-          #     ARTICLES_DIR est fixé par un drop-in systemd. Idempotent.
-          $SSH "$HOST" "sudo mkdir -p /opt/anaginosko-web/articles/articles /opt/anaginosko-web/articles/uploads /opt/anaginosko-web/articles/profiles && sudo chown -R anag-web:anag-web /opt/anaginosko-web/articles && sudo chmod 755 /opt/anaginosko-web/articles"
+          # 2b) Les dossiers éditoriaux sont provisionnés par l’administrateur.
+          #     Vérification sans privilège : aucun mkdir/chown/chmod ici.
+          $SSH "$HOST" 'bash -se' <<'CHECK_ARTICLES'
+          for DIR in /opt/anaginosko-web/articles /opt/anaginosko-web/articles/{articles,uploads,profiles}; do
+            if [ ! -d "$DIR" ] || [ -L "$DIR" ]; then
+              echo "Dossier éditorial absent ou lien symbolique : $DIR" >&2
+              exit 1
+            fi
+            if [ "$(stat -c '%U:%G' -- "$DIR")" != "anag-web:anag-web" ]; then
+              echo "Propriétaire éditorial incorrect : $DIR (attendu anag-web:anag-web)" >&2
+              exit 1
+            fi
+          done
+          CHECK_ARTICLES
 
           # 2c) Le service (anag-web) écrit le cache ISR dans .next (revalidatePath,
           #     régénération SSG). Le rsync dépose la release en anag-deploy ; sans ce
           #     chown, l'écriture du cache échoue en EACCES -> NoFallbackError -> 404
           #     sur toute page revalidée (intro de livre, refresh ISR 300s).
-          $SSH "$HOST" "sudo chown -R anag-web:anag-web $REL/.next"
+          $SSH "$HOST" "sudo -n chown -hR -P -- anag-web:anag-web $REL/.next"
 
           # 3) Bascule atomique du symlink + redémarrage du service
-          $SSH "$HOST" "ln -sfn $REL /opt/anaginosko-web/current && sudo systemctl restart anaginosko-web"
+          $SSH "$HOST" "ln -sfn $REL /opt/anaginosko-web/current && sudo -n systemctl restart anaginosko-web"
 
           # 4) Smoke-test : le service répond bien en local sur le VPS. Quelques
           #    tentatives, le temps que le standalone écoute après le redémarrage.
           $SSH "$HOST" "for i in 1 2 3 4 5 6; do curl -fsS -o /dev/null http://127.0.0.1:3100/ && echo 'service OK' && exit 0; sleep 3; done; echo 'service KO'; exit 1"
 
-          # 5) Purge : ne garder que les 3 dernières releases. Leur .next appartient
-          #    au service (chown ci-dessus) : la suppression passe par sudo.
-          $SSH "$HOST" "ls -1dt /opt/anaginosko-web/releases/*/ | tail -n +4 | xargs -r sudo rm -rf"
+          # 5) Helper administrateur : garde 3 releases, protège current et
+          #    ne suit aucun lien. Aucun argument ni suppression générique sudo.
+          $SSH "$HOST" "sudo -n /usr/local/sbin/anag-web-purge-releases"
