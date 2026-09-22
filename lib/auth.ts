@@ -23,7 +23,7 @@ async function fetchUser(authHeader: string | null): Promise<ResolvedUser | null
   // Base ABSOLUE côté serveur (le /api relatif du client ne résout pas ici).
   const base = process.env.ARB_API_URL || "http://127.0.0.1:3333/api";
   try {
-    const r = await fetch(`${base}/me`, { headers: { Authorization: `Bearer ${token}` } });
+    const r = await fetch(`${base}/me`, { headers: { Authorization: `Bearer ${token}` }, cache: "no-store", signal: AbortSignal.timeout(10000) });
     if (!r.ok) return null;
     const { user } = await r.json();
     if (!user) return null;
@@ -34,6 +34,10 @@ async function fetchUser(authHeader: string | null): Promise<ResolvedUser | null
 }
 
 const has = (u: ResolvedUser, p: Permission) => u.isRoot || u.permissions.includes(p);
+export async function requireEditorial(authHeader: string | null): Promise<EditorAuth> {
+  const auth = await requireUser(authHeader);
+  return { ...auth, ok: auth.ok && (!!auth.isRoot || !!auth.permissions?.some(p => ["articles", "review", "publish"].includes(p))) };
+}
 const creditOf = (u: ResolvedUser) => (u.isRoot ? u.name || "Βιβλίον" : "Βιβλίον");
 
 // Exige une permission précise (les comptes racine les ont toutes).

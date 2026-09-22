@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
-import { requirePermission } from "@/lib/auth";
+import { requirePermission, requireEditorial } from "@/lib/auth";
 import { listArticles, createArticle, type ArticleCategory } from "@/lib/articles";
 import { ensureProfile } from "@/lib/profiles";
 
 export const dynamic = "force-dynamic";
 
 export async function GET(req: Request) {
-  const auth = await requirePermission(req.headers.get("authorization"), "articles");
+  const auth = await requireEditorial(req.headers.get("authorization"));
   if (!auth.ok) return NextResponse.json({ error: "Réservé aux contributeurs." }, { status: 401 });
   return NextResponse.json({ articles: listArticles(auth) });
 }

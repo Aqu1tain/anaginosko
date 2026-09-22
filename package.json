@@ -17,8 +17,10 @@
     "lxx:rebuild": "node scripts/build-lxx.mjs && npm run lxx:concordance && CORPUS_DIR=public/lxx node scripts/fetch-nt-glosses.mjs",
     "legal:check": "node scripts/check-legal.mjs",
     "test:definitions": "node --test tests/definitions.test.mjs",
+    "test:editorial": "node --test tests/editorial.test.mjs",
     "start": "node .next/standalone/server.js",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "test:editorial:e2e": "node tests/e2e/run.mjs"
   },
   "dependencies": {
     "@blocknote/ariakit": "0.51.4",

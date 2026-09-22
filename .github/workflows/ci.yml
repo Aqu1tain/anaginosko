@@ -33,6 +33,8 @@ jobs:
         run: node --test tests/preprod-deploy.test.mjs tests/prod-deploy.test.mjs
       - name: Test definition matching
         run: npm run test:definitions
+      - name: Test editorial workflow and independent review
+        run: npm run test:editorial
       - name: Test LXX materializer grammar
         run: node tests/lxx-materialize.test.mjs
       - name: Build application without rewriting corpora

@@ -1,9 +1,9 @@
-# API préprod : réutilise encore l'image `anaginosko-api` déjà construite par la
-# prod, mais sa configuration, son conteneur, son port et son volume sont séparés.
+# API préprod : image candidate configurable dans le .env dédié ; à défaut,
+# réutilise l'image prod. Ne jamais reconstruire le tag prod pour tester NEXT.
 # La DB db-next est persistante et ne doit jamais être copiée depuis la production.
 services:
   api:
-    image: anaginosko-api
+    image: ${PREPROD_API_IMAGE:-anaginosko-api}
     container_name: anaginosko-api-next
     restart: unless-stopped
     # Limites relevées sur le VPS le 17/09/2026 ; conservées au reprovisioning.
@@ -17,6 +17,8 @@ services:
         max-size: "20m"
         max-file: "3"
     env_file: .env
+    environment:
+      APP_URL: https://next.anaginosko.fr
     ports:
       - "127.0.0.1:3901:3333"
     volumes:

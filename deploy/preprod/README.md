@@ -5,8 +5,8 @@ Même VPS que la prod, **strictement isolée** :
 
 - App Next sur `127.0.0.1:3101` (service `anaginosko-web-next`), build avec
   `NEXT_PUBLIC_PREPROD=1` → mur de connexion in-app + `noindex`.
-- API AdonisJS sur `127.0.0.1:3901` (conteneur `anaginosko-api-next`, image prod
-  réutilisée), configuration dédiée dans `/opt/anaginosko-api-next/.env` et DB
+- API AdonisJS sur `127.0.0.1:3901` (conteneur `anaginosko-api-next`, image dédiée
+  via `PREPROD_API_IMAGE`, sinon image prod), configuration dans `/opt/anaginosko-api-next/.env` et DB
   persistante propre (volume `db-next`). Un déploiement ne lit ni ne recopie la
   DB de production.
 - Articles et profils publics dans `/opt/anaginosko-web-next/articles`, stockage

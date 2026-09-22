@@ -12,45 +12,26 @@ import {
   transitionArticle,
   addComment,
   resolveThread,
+  editComment,
   deleteArticle,
   uploadImage,
 } from "@/src/lib/articlesApi";
 import { compressImage } from "./compressImage";
-import type { Article, ArticleComment, ArticlePatch, ArticleStatus, ArticleEvent, TransitionAction } from "@/lib/articles";
+import type {
+  Article,
+  ArticleComment,
+  ArticlePatch,
+  ArticleEvent,
+  TransitionAction,
+} from "@/lib/articles";
 import { STATUS_LABEL, STATUS_DOT, CATEGORY_LABEL } from "./labels";
-import { ARTICLE_CATEGORIES, isAdminOnlyCategory } from "@/src/data/articleCategories";
+import {
+  ARTICLE_CATEGORIES,
+  isAdminOnlyCategory,
+} from "@/src/data/articleCategories";
 import ReviewPanel, { type ReviewPassage } from "./ReviewPanel";
 import CommentThread from "./CommentThread";
-
-type ActionDef = { action: TransitionAction; label: string; style: string };
-
-function availableActions(status: ArticleStatus, isAdmin: boolean, isAuthor: boolean): ActionDef[] {
-  const author = isAdmin || isAuthor;
-  switch (status) {
-    case "draft":
-      return author ? [{ action: "submit", label: "Soumettre à la relecture", style: "btn-primary" }] : [];
-    case "changes_requested":
-      return author ? [{ action: "submit", label: "Renvoyer en relecture", style: "btn-primary" }] : [];
-    case "in_review":
-      return isAdmin
-        ? [
-            { action: "approve", label: "Approuver et publier", style: "btn-primary" },
-            { action: "request_changes", label: "Demander des modifications", style: "btn-outline" },
-          ]
-        : [];
-    case "published":
-      return isAdmin
-        ? [
-            { action: "unpublish", label: "Dépublier", style: "btn-outline" },
-            { action: "archive", label: "Archiver", style: "btn-outline" },
-          ]
-        : [];
-    case "archived":
-      return isAdmin ? [{ action: "restore", label: "Restaurer en brouillon", style: "btn-outline" }] : [];
-    default:
-      return [];
-  }
-}
+import EditorialWorkflow from "./EditorialWorkflow";
 
 const ArticleEditor = dynamic(() => import("./ArticleEditor"), { ssr: false });
 
@@ -58,7 +39,10 @@ const EVENT_LABEL: Record<ArticleEvent["type"], string> = {
   created: "Création",
   submitted: "Soumis à la relecture",
   changes_requested: "Modifications demandées",
-  approved: "Approuvé et publié",
+  approved: "Version approuvée",
+  published: "Version publiée",
+  revised: "Révision ouverte",
+  approval_invalidated: "Nouvelle relecture nécessaire",
   unpublished: "Dépublié",
   archived: "Archivé",
   restored: "Restauré en brouillon",
@@ -69,10 +53,18 @@ type SaveState = "idle" | "saving" | "saved" | "error" | "conflict";
 function useIsDark(): boolean {
   const [dark, setDark] = useState(false);
   useEffect(() => {
-    const read = () => setDark((document.documentElement.getAttribute("data-theme") || "").includes("dark"));
+    const read = () =>
+      setDark(
+        (document.documentElement.getAttribute("data-theme") || "").includes(
+          "dark",
+        ),
+      );
     read();
     const obs = new MutationObserver(read);
-    obs.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+    obs.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-theme"],
+    });
     return () => obs.disconnect();
   }, []);
   return dark;
@@ -85,8 +77,22 @@ export default function ArticleWorkbench({ id }: { id: string }) {
   const [article, setArticle] = useState<Article | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [saveState, setSaveState] = useState<SaveState>("idle");
+  const titleRef = useRef<HTMLTextAreaElement>(null);
+  useEffect(() => {
+    const title = titleRef.current;
+    if (!title) return;
+    const resize = () => {
+      title.style.height = "auto";
+      title.style.height = `${title.scrollHeight}px`;
+    };
+    resize();
+    window.addEventListener("resize", resize);
+    return () => window.removeEventListener("resize", resize);
+  }, [article?.title, ready, user?.id]);
 
   const revRef = useRef(0);
+  const contentRevisionRef = useRef(0);
+  const inFlight = useRef<Promise<void> | null>(null);
   const pending = useRef<Partial<ArticlePatch>>({});
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   // Éditabilité relue au moment du flush : BlockNote peut émettre un onChange tardif
@@ -94,21 +100,49 @@ export default function ArticleWorkbench({ id }: { id: string }) {
   // partirait après le changement de statut et le serveur la rejetterait (faux conflit).
   const editableRef = useRef(false);
 
+  // Les réponses réseau peuvent arriver dans un ordre différent des écritures.
+  // Un commentaire tardif ne doit pas rétablir un ancien contenu ou statut.
+  const acceptServerArticle = useCallback((updated: Article) => {
+    if (updated.rev < revRef.current) return;
+    revRef.current = updated.rev;
+    contentRevisionRef.current = updated.contentRevision;
+    setArticle((current) => {
+      const latest =
+        current &&
+        (current.rev > updated.rev ||
+          (current.rev === updated.rev &&
+            current.updatedAt > updated.updatedAt))
+          ? current
+          : updated;
+      return {
+        ...latest,
+        ...pending.current,
+        content: pending.current.content ?? latest.content,
+      };
+    });
+  }, []);
+
   useEffect(() => {
+    if (!ready || !user) return;
+    let cancelled = false;
+    setError(null);
     fetchArticle(id)
       .then((a) => {
+        if (cancelled) return;
         revRef.current = a.rev;
+        contentRevisionRef.current = a.contentRevision;
         setArticle(a);
       })
-      .catch((e) => setError(e.message));
-  }, [id]);
+      .catch((e) => { if (!cancelled) setError(e.message); });
+    return () => { cancelled = true; };
+  }, [id, ready, user]);
 
   // Ne pas perdre les dernières frappes : l'autosave est débouncée (1,5 s), donc on
   // pousse ce qui reste en attente à la fermeture de l'onglet (keepalive, best-effort)
   // et au démontage du composant (navigation interne : le fetch survit à l'unmount).
   useEffect(() => {
     const flushPending = () => {
-      if (!editableRef.current) return;
+      if (!editableRef.current || inFlight.current) return;
       const patch = pending.current;
       if (Object.keys(patch).length === 0) return;
       pending.current = {};
@@ -117,37 +151,72 @@ export default function ArticleWorkbench({ id }: { id: string }) {
       fetch(`/admin/articles/api/articles/${id}`, {
         method: "PUT",
         keepalive: true,
-        headers: { "Content-Type": "application/json", ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
         body: JSON.stringify({ rev: revRef.current, ...patch }),
       }).catch(() => {});
     };
     window.addEventListener("pagehide", flushPending);
+    const warnUnsaved = (event: BeforeUnloadEvent) => {
+      if (inFlight.current || Object.keys(pending.current).length) {
+        event.preventDefault();
+        event.returnValue = "";
+      }
+    };
+    window.addEventListener("beforeunload", warnUnsaved);
     return () => {
       window.removeEventListener("pagehide", flushPending);
+      window.removeEventListener("beforeunload", warnUnsaved);
       flushPending();
     };
   }, [id]);
 
   const editable =
     !!article &&
-    (article.status === "draft" || article.status === "changes_requested") &&
+    ["draft", "changes_requested", "in_review", "approved"].includes(
+      article.status,
+    ) &&
     article.author.userId === user?.id &&
+    can(user, "articles") &&
     saveState !== "conflict";
   editableRef.current = editable;
 
   const flush = useCallback(async () => {
-    const patch = pending.current;
-    pending.current = {};
-    if (!editableRef.current || Object.keys(patch).length === 0) return;
+    if (inFlight.current) return inFlight.current;
+    const task = async () => {
+      while (editableRef.current && Object.keys(pending.current).length > 0) {
+        const patch = pending.current;
+        pending.current = {};
+        try {
+          const updated = await saveArticle(id, {
+            rev: revRef.current,
+            ...patch,
+          });
+          acceptServerArticle(updated);
+          setSaveState("saved");
+        } catch (e) {
+          pending.current = { ...patch, ...pending.current };
+          setSaveState(
+            (e as { status?: number }).status === 409 ? "conflict" : "error",
+          );
+          throw e;
+        }
+      }
+      if (Object.keys(pending.current).length)
+        throw new Error(
+          "Enregistrez ou rechargez vos modifications avant de continuer.",
+        );
+    };
+    const promise = task();
+    inFlight.current = promise;
     try {
-      const updated = await saveArticle(id, { rev: revRef.current, ...patch });
-      revRef.current = updated.rev;
-      setArticle((a) => (a ? { ...a, slug: updated.slug, updatedAt: updated.updatedAt } : updated));
-      setSaveState("saved");
-    } catch (e) {
-      setSaveState((e as { status?: number }).status === 409 ? "conflict" : "error");
+      await promise;
+    } finally {
+      if (inFlight.current === promise) inFlight.current = null;
     }
-  }, [id]);
+  }, [id, acceptServerArticle]);
 
   const queueSave = useCallback(
     (patch: Partial<ArticlePatch>) => {
@@ -155,29 +224,33 @@ export default function ArticleWorkbench({ id }: { id: string }) {
       pending.current = { ...pending.current, ...patch };
       setSaveState("saving");
       if (timer.current) clearTimeout(timer.current);
-      timer.current = setTimeout(flush, 1500);
+      timer.current = setTimeout(() => {
+        void flush().catch(() => {});
+      }, 1500);
     },
     [flush],
   );
 
   const [actionError, setActionError] = useState<string | null>(null);
-  const [noteOpen, setNoteOpen] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
 
-  const runTransition = async (action: TransitionAction, note?: string) => {
-    if (timer.current) {
-      clearTimeout(timer.current);
-      await flush();
-    }
-    try {
-      const updated = await transitionArticle(id, action, note);
-      revRef.current = updated.rev;
-      setArticle(updated);
-      setActionError(null);
-      setSaveState("idle");
-    } catch (e) {
-      setActionError((e as Error).message);
-    }
+  const runTransition = async (
+    action: TransitionAction | "retry_notification",
+    note?: string,
+    reviewerId?: number | null,
+  ) => {
+    if (timer.current) clearTimeout(timer.current);
+    await flush();
+    const updated = await transitionArticle(
+      id,
+      action,
+      revRef.current,
+      note,
+      reviewerId,
+    );
+    acceptServerArticle(updated);
+    setActionError(null);
+    setSaveState("idle");
   };
 
   const onCover = async (file: File) => {
@@ -201,23 +274,74 @@ export default function ArticleWorkbench({ id }: { id: string }) {
   };
 
   const handleAddComment = async (text: string, blockId: string | null) => {
-    setArticle(await addComment(id, text, blockId));
+    await flush();
+    const updated = await addComment(
+      id,
+      text,
+      blockId,
+      selectedThread?.threadId,
+      selectedThread?.quote,
+      contentRevisionRef.current,
+    );
+    acceptServerArticle(updated);
+    const last = updated.comments.at(-1);
+    if (last)
+      setSelectedThread({
+        blockId: last.blockId,
+        threadId: last.threadId,
+        quote: last.quote,
+      });
   };
-  const handleResolveThread = async (blockId: string | null, resolved: boolean) => {
-    setArticle(await resolveThread(id, blockId, resolved));
+  const handleResolveThread = async (threadId: string, resolved: boolean) => {
+    await flush();
+    const updated = await resolveThread(id, threadId, resolved);
+    acceptServerArticle(updated);
   };
 
   // Les pastilles restent ancrées aux passages, mais le fil sélectionné s'affiche
   // dans l'aside (drawer sur mobile) afin de ne jamais recouvrir l'article.
   const editorBoxRef = useRef<HTMLDivElement>(null);
-  const [markers, setMarkers] = useState<{ blockId: string; top: number; count: number; hot: boolean }[]>([]);
+  const [markers, setMarkers] = useState<
+    { blockId: string; top: number; count: number; hot: boolean }[]
+  >([]);
   const [passages, setPassages] = useState<ReviewPassage[]>([]);
-  const [selectedThread, setSelectedThread] = useState<{ blockId: string | null } | null>(null);
-  const [hoverAdd, setHoverAdd] = useState<{ blockId: string; top: number } | null>(null);
+  const [selectedThread, setSelectedThread] = useState<{
+    blockId: string | null;
+    threadId?: string;
+    quote?: string | null;
+  } | null>(null);
+  const [selectionAnchor, setSelectionAnchor] = useState<{
+    blockId: string;
+    quote: string;
+  } | null>(null);
+  const [asideView, setAsideView] = useState("publication");
+  const [hoverAdd, setHoverAdd] = useState<{
+    blockId: string;
+    top: number;
+  } | null>(null);
   const comments = article?.comments;
 
+  useEffect(() => {
+    const captureSelection = () => {
+      const selection = window.getSelection();
+      if (!selection || selection.isCollapsed || !selection.rangeCount) return;
+      const start = selection.anchorNode?.parentElement?.closest("[data-id]");
+      const end = selection.focusNode?.parentElement?.closest("[data-id]");
+      if (start && start === end && editorBoxRef.current?.contains(start)) {
+        setSelectionAnchor({
+          blockId: start.getAttribute("data-id")!,
+          quote: selection.toString(),
+        });
+      } else setSelectionAnchor(null);
+    };
+    document.addEventListener("selectionchange", captureSelection);
+    return () =>
+      document.removeEventListener("selectionchange", captureSelection);
+  }, []);
+
   const topOf = (el: Element): number =>
-    el.getBoundingClientRect().top - (editorBoxRef.current?.getBoundingClientRect().top ?? 0);
+    el.getBoundingClientRect().top -
+    (editorBoxRef.current?.getBoundingClientRect().top ?? 0);
 
   const trackHover = (e: React.MouseEvent) => {
     if (editableRef.current || selectedThread) return;
@@ -229,17 +353,28 @@ export default function ArticleWorkbench({ id }: { id: string }) {
       setHoverAdd(null);
       return;
     }
-    if (hoverAdd?.blockId !== bid) setHoverAdd({ blockId: bid, top: topOf(el) });
+    if (hoverAdd?.blockId !== bid)
+      setHoverAdd({ blockId: bid, top: topOf(el) });
   };
 
   const findBlock = (blockId: string): Element | null => {
     const blocks = editorBoxRef.current?.querySelectorAll("[data-id]");
-    return [...(blocks ?? [])].find((el) => el.getAttribute("data-id") === blockId) ?? null;
+    return (
+      [...(blocks ?? [])].find(
+        (el) => el.getAttribute("data-id") === blockId,
+      ) ?? null
+    );
   };
 
-  const openThreadFor = (blockId: string | null) => {
-    if (blockId) findBlock(blockId)?.scrollIntoView({ behavior: "smooth", block: "center" });
-    setSelectedThread({ blockId });
+  const openThreadFor = (blockId: string | null, threadId?: string) => {
+    setAsideView("discussions");
+    if (blockId)
+      findBlock(blockId)?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    const existing = article?.comments.find((c) => c.threadId === threadId);
+    setSelectedThread({ blockId, threadId, quote: existing?.quote ?? null });
   };
 
   useEffect(() => {
@@ -266,11 +401,20 @@ export default function ArticleWorkbench({ id }: { id: string }) {
         return;
       }
       const groups = new Map<string, ArticleComment[]>();
-      for (const c of comments) if (c.blockId) groups.set(c.blockId, [...(groups.get(c.blockId) ?? []), c]);
+      for (const c of comments)
+        if (c.blockId)
+          groups.set(c.blockId, [...(groups.get(c.blockId) ?? []), c]);
       const boxTop = box.getBoundingClientRect().top;
-      const out: { blockId: string; top: number; count: number; hot: boolean }[] = [];
+      const out: {
+        blockId: string;
+        top: number;
+        count: number;
+        hot: boolean;
+      }[] = [];
       for (const [blockId, cs] of groups) {
-        const el = blockElements.find((candidate) => candidate.getAttribute("data-id") === blockId);
+        const el = blockElements.find(
+          (candidate) => candidate.getAttribute("data-id") === blockId,
+        );
         if (!el) continue;
         const unres = cs.filter((c) => !c.resolved);
         out.push({
@@ -301,27 +445,51 @@ export default function ArticleWorkbench({ id }: { id: string }) {
   };
 
   if (!ready) return null;
-  if (!user || !can(user, "articles"))
+  if (
+    !user ||
+    !["articles", "review", "publish"].some((p) =>
+      can(user, p as "articles" | "review" | "publish"),
+    )
+  )
     return (
       <div className="py-20 text-center text-base-content/70">
         <p>Édition réservée aux contributeurs.</p>
-        <a href="/login" className="link link-primary mt-3 inline-block">Se connecter</a>
+        <a href={`/login?next=${encodeURIComponent(`/admin/articles/${id}`)}`} className="link link-primary mt-3 inline-block">
+          Se connecter
+        </a>
       </div>
     );
-  if (error) return <div className="alert alert-warning mt-6 text-sm">{error}</div>;
-  if (!article) return <div className="py-20 text-center text-base-content/60">Chargement…</div>;
+  if (error)
+    return <div className="alert alert-warning mt-6 text-sm">{error}</div>;
+  if (!article)
+    return (
+      <div className="py-20 text-center text-base-content/60">Chargement…</div>
+    );
 
   const isAdmin = can(user, "review");
   const isAuthor = article.author.userId === user.id;
-  const canComment = isAdmin || isAuthor;
-  const canDelete = isAdmin || (isAuthor && article.status === "draft");
-  const actions = availableActions(article.status, isAdmin, isAuthor);
+  const canComment = isAdmin || can(user, "publish") || isAuthor;
+  const canDelete =
+    isAuthor && article.status === "draft" && !article.publishedAt;
 
   return (
     <div className="mx-auto max-w-5xl pb-16 pt-4">
       <div className="mb-5 flex items-center justify-between gap-3 border-b border-base-300 pb-3">
-        <Link href="/admin/articles" className="flex items-center gap-1.5 text-sm text-base-content/60 hover:text-base-content">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <Link
+          href="/admin/articles"
+          className="flex items-center gap-1.5 text-sm text-base-content/60 hover:text-base-content"
+        >
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
             <path d="M15 18l-6-6 6-6" />
           </svg>
           Articles
@@ -329,7 +497,9 @@ export default function ArticleWorkbench({ id }: { id: string }) {
         <div className="flex items-center gap-3">
           <SaveIndicator state={saveState} />
           <span className="inline-flex items-center gap-1.5 rounded-full bg-base-200 px-3 py-1 text-xs font-medium">
-            <span className={`h-2 w-2 rounded-full ${STATUS_DOT[article.status]}`} />
+            <span
+              className={`h-2 w-2 rounded-full ${STATUS_DOT[article.status]}`}
+            />
             {STATUS_LABEL[article.status]}
           </span>
         </div>
@@ -348,7 +518,9 @@ export default function ArticleWorkbench({ id }: { id: string }) {
                   queueSave({ category });
                 }}
               >
-                {ARTICLE_CATEGORIES.filter((c) => isAdmin || !isAdminOnlyCategory(c.id)).map((c) => (
+                {ARTICLE_CATEGORIES.filter(
+                  (c) => isAdmin || !isAdminOnlyCategory(c.id),
+                ).map((c) => (
                   <option key={c.id} value={c.id}>
                     {c.label}
                   </option>
@@ -360,12 +532,23 @@ export default function ArticleWorkbench({ id }: { id: string }) {
               </span>
             )}
             <span>
-              Signé du nom d&apos;affichage de votre <Link href="/mon-profil" className="link">profil</Link>
+              {article.author.userId === user.id ? (
+                <>
+                  Signé du nom d&apos;affichage de votre{" "}
+                  <Link href="/mon-profil" className="link">
+                    profil
+                  </Link>
+                </>
+              ) : (
+                <>Auteur : {article.author.name}</>
+              )}
             </span>
           </div>
 
-          <input
-            type="text"
+          <textarea
+            ref={titleRef}
+            rows={1}
+            aria-label="Titre de l’article"
             value={article.title}
             disabled={!editable}
             onChange={(e) => {
@@ -374,9 +557,10 @@ export default function ArticleWorkbench({ id }: { id: string }) {
               queueSave({ title });
             }}
             placeholder="Titre de l'article"
-            className="w-full bg-transparent text-2xl font-bold leading-tight focus:outline-none disabled:text-base-content sm:text-3xl lg:text-4xl"
+            className="w-full resize-none overflow-hidden bg-transparent text-2xl font-bold leading-tight focus:outline-none disabled:text-base-content sm:text-3xl lg:text-4xl"
           />
           <textarea
+            aria-label="Résumé de l’article"
             value={article.excerpt}
             disabled={!editable}
             onChange={(e) => {
@@ -394,7 +578,11 @@ export default function ArticleWorkbench({ id }: { id: string }) {
               {article.cover ? (
                 <div className="relative overflow-hidden rounded-xl border border-base-300">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={article.cover} alt="Couverture" className="max-h-64 w-full object-cover" />
+                  <img
+                    src={article.cover}
+                    alt="Couverture"
+                    className="max-h-64 w-full object-cover"
+                  />
                   {editable && (
                     <button
                       type="button"
@@ -410,7 +598,17 @@ export default function ArticleWorkbench({ id }: { id: string }) {
                 </div>
               ) : (
                 <label className="inline-flex cursor-pointer items-center gap-1.5 text-xs text-base-content/50 transition-colors hover:text-base-content">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
                     <rect x="3" y="3" width="18" height="18" rx="2" />
                     <circle cx="9" cy="9" r="2" />
                     <path d="M21 15l-5-5L5 21" />
@@ -432,12 +630,26 @@ export default function ArticleWorkbench({ id }: { id: string }) {
 
           {saveState === "conflict" && (
             <div className="alert alert-error my-3 text-sm">
-              Version périmée (édité ailleurs). Rechargez la page pour continuer.
+              Version périmée (édité ailleurs). Rechargez la page pour
+              continuer.
             </div>
           )}
 
+          {canComment && selectionAnchor && (
+            <button
+              className="btn btn-sm btn-outline my-2"
+              onMouseDown={(e) => e.preventDefault()}
+              onClick={() => {
+                setSelectedThread(selectionAnchor);
+                setAsideView("discussions");
+                setSelectionAnchor(null);
+                window.getSelection()?.removeAllRanges();
+              }}
+            >
+              Commenter la sélection
+            </button>
+          )}
           {/* Zone d'écriture intégrée à la page (pas de cadre), comme Notion. */}
-          {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events */}
           <div
             ref={editorBoxRef}
             className="article-editor relative mt-2"
@@ -462,11 +674,20 @@ export default function ArticleWorkbench({ id }: { id: string }) {
                 title="Ouvrir le fil de commentaires"
                 onClick={(e) => {
                   e.stopPropagation();
-                  openThreadFor(m.blockId);
+                  openThreadFor(
+                    m.blockId,
+                    article.comments.find(
+                      (c) => c.blockId === m.blockId && !c.resolved,
+                    )?.threadId ??
+                      article.comments.find((c) => c.blockId === m.blockId)
+                        ?.threadId,
+                  );
                 }}
                 aria-label={`${m.count} commentaire${m.count > 1 ? "s" : ""} sur ce passage`}
                 className={`absolute hidden h-6 min-w-6 items-center justify-center rounded-full px-1.5 text-[11px] font-semibold shadow-sm transition-transform hover:scale-110 lg:flex ${
-                  m.hot ? "bg-warning text-warning-content" : "bg-base-200 text-base-content/60"
+                  m.hot
+                    ? "bg-warning text-warning-content"
+                    : "bg-base-200 text-base-content/60"
                 }`}
                 style={{ top: m.top, right: -34 }}
               >
@@ -474,100 +695,166 @@ export default function ArticleWorkbench({ id }: { id: string }) {
               </button>
             ))}
 
-            {hoverAdd && !markers.some((m) => m.blockId === hoverAdd.blockId) && (
-              // Conteneur qui CHEVAUCHE le bord de l'éditeur : aucun espace mort entre
-              // le texte et la bulle, sinon elle se démonte avant d'être atteinte.
-              <div
-                data-thread-trigger
-                className="absolute z-20 hidden items-center justify-end lg:flex"
-                style={{ top: hoverAdd.top - 3, right: -46, width: 64, height: 30 }}
-              >
-                <button
-                  type="button"
-                  title="Commenter cette ligne"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    openThreadFor(hoverAdd.blockId);
-                    setHoverAdd(null);
+            {hoverAdd &&
+              !markers.some((m) => m.blockId === hoverAdd.blockId) && (
+                // Conteneur qui CHEVAUCHE le bord de l'éditeur : aucun espace mort entre
+                // le texte et la bulle, sinon elle se démonte avant d'être atteinte.
+                <div
+                  data-thread-trigger
+                  className="absolute z-20 hidden items-center justify-end lg:flex"
+                  style={{
+                    top: hoverAdd.top - 3,
+                    right: -46,
+                    width: 64,
+                    height: 30,
                   }}
-                  aria-label="Commenter ce passage"
-                  className="flex h-6 w-6 items-center justify-center rounded-full border border-base-300 bg-base-100 text-sm text-base-content/50 shadow-sm transition-all hover:scale-110 hover:text-primary"
                 >
-                  +
-                </button>
-              </div>
-            )}
-
+                  <button
+                    type="button"
+                    title="Commenter cette ligne"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      openThreadFor(hoverAdd.blockId);
+                      setHoverAdd(null);
+                    }}
+                    aria-label="Commenter ce passage"
+                    className="flex h-6 w-6 items-center justify-center rounded-full border border-base-300 bg-base-100 text-sm text-base-content/50 shadow-sm transition-all hover:scale-110 hover:text-primary"
+                  >
+                    +
+                  </button>
+                </div>
+              )}
           </div>
         </div>
 
-        <aside className="space-y-4 lg:sticky lg:top-4 lg:self-start">
-          {(actions.length > 0 || article.status === "published" || canDelete) && (
-            <div className="rounded-xl border border-base-300 bg-base-100 p-4 shadow-sm">
-              <div className="flex flex-col gap-2">
-                {actions.map((a) => (
-                  <button
-                    key={a.action}
-                    className={`btn btn-sm ${a.style}`}
-                    onClick={() => (a.action === "request_changes" ? setNoteOpen(true) : runTransition(a.action))}
-                  >
-                    {a.label}
-                  </button>
-                ))}
-                {article.status === "published" && (
-                  <a href={`/articles/${article.slug}`} target="_blank" rel="noreferrer" className="btn btn-ghost btn-sm">
-                    Voir l&apos;article publié
-                  </a>
-                )}
-                {canDelete && (
-                  <button className="btn btn-ghost btn-sm text-error" onClick={() => setConfirmDelete(true)}>
-                    Supprimer l&apos;article
-                  </button>
-                )}
-              </div>
-              {actionError && <p className="mt-2 text-sm text-error">{actionError}</p>}
-            </div>
+        <aside className="space-y-4 lg:sticky lg:top-20 lg:self-start">
+          <nav
+            className="flex flex-wrap gap-1 rounded-xl border border-base-300 bg-base-100 p-1"
+            aria-label="Outils de l’article"
+          >
+            {[
+              ["publication", "Publication"],
+              [
+                "discussions",
+                `Discussions (${new Set(article.comments.filter((c) => !c.resolved).map((c) => c.threadId)).size})`,
+              ],
+              ["historique", "Historique"],
+            ].map(([key, label]) => (
+              <button
+                key={key}
+                className={`btn btn-xs flex-1 ${asideView === key ? "btn-primary" : "btn-ghost"}`}
+                aria-pressed={asideView === key}
+                onClick={() => {
+                  setAsideView(key);
+                  if (key !== "discussions") setSelectedThread(null);
+                }}
+              >
+                {label}
+              </button>
+            ))}
+          </nav>
+          {asideView === "publication" && (
+            <EditorialWorkflow
+              article={article}
+              user={user}
+              onAction={runTransition}
+            />
+          )}
+          {asideView === "publication" && canDelete && (
+            <button
+              className="btn btn-ghost btn-sm text-error"
+              onClick={() => setConfirmDelete(true)}
+            >
+              Supprimer ce brouillon inédit
+            </button>
+          )}
+          {actionError && (
+            <p role="alert" className="text-sm text-error">
+              {actionError}
+            </p>
           )}
 
-          {selectedThread ? (
-            <div
-              className="fixed inset-0 z-[70] flex items-end bg-black/45 p-3 lg:static lg:block lg:bg-transparent lg:p-0"
-              onClick={() => setSelectedThread(null)}
-            >
-              <div className="max-h-[88dvh] w-full overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-                <CommentThread
-                  excerpt={selectedThread.blockId ? excerptFor(selectedThread.blockId) : null}
-                  comments={article.comments.filter((comment) => comment.blockId === selectedThread.blockId)}
+          {asideView === "discussions" &&
+            (selectedThread ? (
+              <div
+                className="fixed inset-0 z-[70] flex items-end bg-black/45 p-3 lg:static lg:block lg:bg-transparent lg:p-0"
+                onClick={() => setSelectedThread(null)}
+              >
+                <div
+                  className="max-h-[88dvh] w-full overflow-y-auto"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <CommentThread
+                    key={
+                      selectedThread.threadId ?? `new-${selectedThread.blockId}`
+                    }
+                    excerpt={
+                      selectedThread.quote ??
+                      (selectedThread.blockId
+                        ? excerptFor(selectedThread.blockId)
+                        : null)
+                    }
+                    orphaned={
+                      !!selectedThread.blockId &&
+                      !excerptFor(selectedThread.blockId)
+                    }
+                    userId={user.id}
+                    onEdit={async (commentId, text) => {
+                      await flush();
+                      const updated = await editComment(id, commentId, text);
+                      acceptServerArticle(updated);
+                    }}
+                    comments={article.comments.filter(
+                      (comment) =>
+                        !!selectedThread.threadId &&
+                        comment.threadId === selectedThread.threadId,
+                    )}
+                    canComment={canComment}
+                    onAdd={(text) =>
+                      handleAddComment(text, selectedThread.blockId)
+                    }
+                    onResolveThread={(resolved) =>
+                      selectedThread.threadId
+                        ? handleResolveThread(selectedThread.threadId, resolved)
+                        : Promise.resolve()
+                    }
+                    onClose={() => setSelectedThread(null)}
+                  />
+                </div>
+              </div>
+            ) : (
+              <div className="rounded-xl border border-base-300 bg-base-100 p-4 shadow-sm">
+                <ReviewPanel
+                  comments={article.comments}
                   canComment={canComment}
-                  onAdd={(text) => handleAddComment(text, selectedThread.blockId)}
-                  onResolveThread={(resolved) => handleResolveThread(selectedThread.blockId, resolved)}
-                  onClose={() => setSelectedThread(null)}
+                  passages={passages}
+                  excerptFor={excerptFor}
+                  onOpenThread={openThreadFor}
                 />
               </div>
-            </div>
-          ) : (
-            <div className="rounded-xl border border-base-300 bg-base-100 p-4 shadow-sm">
-              <ReviewPanel
-                comments={article.comments}
-                canComment={canComment}
-                passages={passages}
-                excerptFor={excerptFor}
-                onOpenThread={openThreadFor}
-              />
-            </div>
-          )}
+            ))}
 
-          {article.events.length > 0 && (
+          {asideView === "historique" && article.events.length > 0 && (
             <div className="rounded-xl border border-base-300 bg-base-100 p-4 shadow-sm">
-              <h2 className="text-sm font-semibold uppercase tracking-wide text-base-content/60">Historique</h2>
+              <h2 className="text-sm font-semibold uppercase tracking-wide text-base-content/60">
+                Historique
+              </h2>
               <ul className="mt-2 space-y-2 text-xs">
                 {[...article.events].reverse().map((e, i) => (
                   <li key={i}>
-                    <span className="font-medium">{EVENT_LABEL[e.type] ?? e.type}</span>
-                    <span className="text-base-content/50">
-                      {" "}· {e.by || "?"} · {new Date(e.at).toLocaleDateString("fr-FR")}
+                    <span className="font-medium">
+                      {EVENT_LABEL[e.type] ?? e.type}
                     </span>
-                    {e.note && <p className="mt-0.5 whitespace-pre-wrap rounded bg-base-200/60 px-2 py-1 text-base-content/80">{e.note}</p>}
+                    <span className="text-base-content/50">
+                      {" "}
+                      · {e.by || "?"} ·{" "}
+                      {new Date(e.at).toLocaleDateString("fr-FR")}
+                    </span>
+                    {e.note && (
+                      <p className="mt-0.5 whitespace-pre-wrap rounded bg-base-200/60 px-2 py-1 text-base-content/80">
+                        {e.note}
+                      </p>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -576,56 +863,33 @@ export default function ArticleWorkbench({ id }: { id: string }) {
         </aside>
       </div>
 
-      {noteOpen && (
-        <NoteDialog
-          onClose={() => setNoteOpen(false)}
-          onSend={(note) => {
-            setNoteOpen(false);
-            runTransition("request_changes", note);
-          }}
-        />
-      )}
-
       {confirmDelete && (
-        <div className="fixed inset-0 z-[80] flex items-center justify-center bg-black/40 p-4" onClick={() => setConfirmDelete(false)}>
-          <div className="w-full max-w-xs rounded-box bg-base-100 p-5 shadow-xl" onClick={(e) => e.stopPropagation()}>
+        <div
+          className="fixed inset-0 z-[80] flex items-center justify-center bg-black/40 p-4"
+          onClick={() => setConfirmDelete(false)}
+        >
+          <div
+            className="w-full max-w-xs rounded-box bg-base-100 p-5 shadow-xl"
+            onClick={(e) => e.stopPropagation()}
+          >
             <p className="text-sm font-medium">Supprimer cet article ?</p>
-            <p className="mt-1 text-xs text-base-content/60">« {article.title} » et ses images seront supprimés définitivement.</p>
+            <p className="mt-1 text-xs text-base-content/60">
+              « {article.title} » et ses images seront supprimés définitivement.
+            </p>
             <div className="mt-4 flex justify-end gap-2">
-              <button className="btn btn-ghost btn-sm" onClick={() => setConfirmDelete(false)}>Annuler</button>
-              <button className="btn btn-error btn-sm" onClick={doDelete}>Supprimer</button>
+              <button
+                className="btn btn-ghost btn-sm"
+                onClick={() => setConfirmDelete(false)}
+              >
+                Annuler
+              </button>
+              <button className="btn btn-error btn-sm" onClick={doDelete}>
+                Supprimer
+              </button>
             </div>
           </div>
         </div>
       )}
-    </div>
-  );
-}
-
-function NoteDialog({ onClose, onSend }: { onClose: () => void; onSend: (note?: string) => void }) {
-  const [note, setNote] = useState("");
-  return (
-    <div className="fixed inset-0 z-[80] flex items-center justify-center bg-black/40 p-4" onClick={onClose}>
-      <div className="w-full max-w-md rounded-box bg-base-100 p-5 shadow-xl" onClick={(e) => e.stopPropagation()}>
-        <h2 className="text-lg font-bold">Demander des modifications</h2>
-        <p className="mt-1 text-sm text-base-content/60">
-          Expliquez à l&apos;auteur ce qui doit changer. La note apparaîtra dans l&apos;historique de l&apos;article.
-        </p>
-        <textarea
-          autoFocus
-          value={note}
-          onChange={(e) => setNote(e.target.value)}
-          rows={4}
-          placeholder="Ce qui doit être revu…"
-          className="textarea textarea-bordered mt-3 w-full text-sm"
-        />
-        <div className="mt-4 flex justify-end gap-2">
-          <button className="btn btn-ghost btn-sm" onClick={onClose}>Annuler</button>
-          <button className="btn btn-primary btn-sm" onClick={() => onSend(note.trim() || undefined)}>
-            Renvoyer à l&apos;auteur
-          </button>
-        </div>
-      </div>
     </div>
   );
 }
@@ -639,6 +903,9 @@ function SaveIndicator({ state }: { state: SaveState }) {
     conflict: "Conflit de version",
   };
   if (!map[state]) return null;
-  const tone = state === "error" || state === "conflict" ? "text-error" : "text-base-content/50";
+  const tone =
+    state === "error" || state === "conflict"
+      ? "text-error"
+      : "text-base-content/50";
   return <span className={tone}>{map[state]}</span>;
 }

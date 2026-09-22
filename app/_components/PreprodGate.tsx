@@ -12,6 +12,7 @@ import PreprodBadge from "./PreprodBadge";
 const PREPROD = process.env.NEXT_PUBLIC_PREPROD === "1";
 
 function Wall() {
+  const pathname = usePathname();
   return (
     <div className="grid min-h-screen place-items-center p-6">
       <div className="card w-full max-w-sm border border-base-300 bg-base-100 shadow-sm">
@@ -24,7 +25,7 @@ function Wall() {
           <p className="text-sm text-base-content/70">
             Environnement de test réservé aux comptes autorisés. Connectez-vous pour continuer.
           </p>
-          <Link href="/login" className="btn btn-primary btn-sm">
+          <Link href={`/login?next=${encodeURIComponent(pathname)}`} className="btn btn-primary btn-sm">
             Se connecter
           </Link>
         </div>
@@ -39,7 +40,7 @@ export default function PreprodGate({ children }: { children: React.ReactNode })
   if (!PREPROD) return <>{children}</>;
   // /login et /verify (confirmation d'un signalement par un visiteur anonyme)
   // restent accessibles sans compte, même derrière le mur de préproduction.
-  if (pathname === "/login" || pathname.startsWith("/verify")) return <>{children}</>;
+  if (pathname === "/login" || pathname.startsWith("/verify") || pathname.startsWith("/invitation/")) return <>{children}</>;
   if (!ready) {
     return (
       <div className="grid min-h-screen place-items-center">
