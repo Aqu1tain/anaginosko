@@ -3,8 +3,9 @@
 import { useCallback, useEffect, useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { can } from "../lib/api";
-import { BOOK, SinceLastVisit } from "./ArbitrageBiblion";
+import { arb, arbErrors, BOOK, SinceLastVisit } from "./ArbitrageBiblion";
 import { ErrorMap, ChapterRealign, LogsSection } from "./ArbitrageRealign";
+import { ToTranslateList } from "./ArbitrageToTranslate";
 
 // Outil d'arbitrage des liens grec↔Giguet (réservé philologue/admin). UN SEUL éditeur :
 // le réalignement deux-colonnes (ChapterRealign), atteignable PARTOUT — depuis la carte
@@ -15,29 +16,21 @@ import { ErrorMap, ChapterRealign, LogsSection } from "./ArbitrageRealign";
 
 type State = { scaled: boolean; state: "auto-resolved" | "not-converged" | "pending-scale"; pending: number };
 
-const API = "/admin/arbitrage/api";
-const token = () => (typeof window !== "undefined" ? localStorage.getItem("anaginosko:token") : null);
-async function arb<T>(p: string, opts?: RequestInit): Promise<T> {
-  const r = await fetch(`${API}${p}`, {
-    ...opts,
-    headers: { Authorization: `Bearer ${token()}`, "Content-Type": "application/json", ...(opts?.headers || {}) },
-  });
-  return r.json();
-}
-
 export default function ArbitrageView() {
   const { user, ready } = useAuth();
   const editor = can(user, "arbitrage");
-  const [tab, setTab] = useState<"corriger" | "browse" | "logs">("corriger");
-  const [realign, setRealign] = useState<{ book: string; ch: number } | null>(null);
+  const [tab, setTab] = useState<"corriger" | "traduire" | "browse" | "logs">("corriger");
+  const [realign, setRealign] = useState<{ book: string; ch: number; focus?: string } | null>(null);
   const [states, setStates] = useState<Record<string, Record<string, State>>>({});
   const [err, setErr] = useState<string | null>(null);
-  const open = (book: string, ch: number) => setRealign({ book, ch });
+  const open = (book: string, ch: number, focus?: string) => setRealign({ book, ch, focus });
 
   const reload = useCallback(async () => {
-    const d = await arb<{ states: Record<string, Record<string, State>>; error?: string }>("/queue");
-    if (d.error) return setErr(d.error);
-    setStates(d.states);
+    try {
+      setStates((await arb<{ states: Record<string, Record<string, State>> }>("/queue")).states);
+    } catch (e) {
+      setErr(arbErrors(e).join(" "));
+    }
   }, []);
   useEffect(() => { if (editor) reload(); }, [editor, reload]);
 
@@ -50,6 +43,15 @@ export default function ArbitrageView() {
     const ch = Number(sp.get("ch"));
     if (book && Number.isInteger(ch)) setRealign({ book, ch });
   }, [editor]);
+
+  // L'URL suit le chapitre ouvert : un rechargement ou un lien partagé y revient.
+  useEffect(() => {
+    if (!editor) return;
+    const url = new URL(window.location.href);
+    if (realign) { url.searchParams.set("book", realign.book); url.searchParams.set("ch", String(realign.ch)); }
+    else { url.searchParams.delete("book"); url.searchParams.delete("ch"); }
+    window.history.replaceState(null, "", url);
+  }, [editor, realign]);
 
   if (!ready) return null;
   if (!editor)
@@ -68,15 +70,26 @@ export default function ArbitrageView() {
 
       <div role="tablist" className="tabs tabs-boxed mt-4 w-fit">
         <button className={`tab ${tab === "corriger" ? "tab-active" : ""}`} onClick={() => setTab("corriger")}>Corriger</button>
+        <button className={`tab ${tab === "traduire" ? "tab-active" : ""}`} onClick={() => setTab("traduire")}>À traduire</button>
         <button className={`tab ${tab === "browse" ? "tab-active" : ""}`} onClick={() => setTab("browse")}>Parcourir tout</button>
         <button className={`tab ${tab === "logs" ? "tab-active" : ""}`} onClick={() => setTab("logs")}>Logs</button>
       </div>
 
       {tab === "corriger" && <ErrorMap onOpen={open} />}
+      {tab === "traduire" && <ToTranslateList onOpen={open} />}
       {tab === "browse" && <BrowseList states={states} onOpen={open} />}
       {tab === "logs" && <LogsSection onOpen={open} />}
 
-      {realign && <ChapterRealign book={realign.book} ch={realign.ch} onClose={() => { setRealign(null); reload(); }} />}
+      {realign && (() => {
+        const chs = Object.keys(states[realign.book] || {}).map(Number).filter((c) => states[realign.book][c].scaled).sort((a, b) => a - b);
+        const at = chs.indexOf(realign.ch);
+        return (
+          <ChapterRealign key={`${realign.book}:${realign.ch}`} book={realign.book} ch={realign.ch} focusRef={realign.focus}
+            prevCh={at > 0 ? chs[at - 1] : null} nextCh={at >= 0 && at < chs.length - 1 ? chs[at + 1] : null}
+            onNavigate={(ch) => open(realign.book, ch)}
+            onClose={() => { setRealign(null); reload(); }} />
+        );
+      })()}
     </div>
   );
 }

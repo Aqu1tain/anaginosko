@@ -127,6 +127,9 @@ export function saveProfile(
   patch: ProfilePatch,
 ): { ok: true; profile: Profile } | { ok: false; status: number; error: string } {
   if (auth.id == null) return { ok: false, status: 401, error: "Non authentifié." };
+  for (const key of ["displayName", "fullName", "slug", "bio"] as const)
+    if (patch[key] !== undefined && typeof patch[key] !== "string")
+      return { ok: false, status: 400, error: "Champ de profil invalide." };
   const current = getMyProfile(auth);
   const next: Profile = { ...current, updatedAt: now() };
 

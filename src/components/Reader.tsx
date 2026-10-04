@@ -48,7 +48,6 @@ const TOUR_STEPS: TourStep[] = [
 // sont reconnus sans imposer une migration du corpus vivant dans cette branche.
 const ANAGINOSKO_TRANSLATORS = new Set([
   "corentin-renard",
-  "noah-jaubert",
   "Admin",
   "Βιβλίον",
 ]);

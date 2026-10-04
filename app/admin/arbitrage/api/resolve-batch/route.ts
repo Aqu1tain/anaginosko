@@ -52,8 +52,8 @@ export async function POST(req: Request) {
   for (const p of parsed) { if (applyToReader(book, p.ref)) refreshed++; chapters.add(p.ref.split(":")[0]); }
   for (const ch of chapters) revalidatePath(`/lxx/${book}/${ch}`);
   // L'arbitrage est sauvegardé (durable). Si le lecteur n'a pas pu être rafraîchi en
-  // direct (fr.json non inscriptible par le service), on le signale sans échouer :
-  // le prochain déploiement le sert.
+  // direct (fr.json non inscriptible par le service), on le signale sans échouer : la
+  // prod ne rematérialise pas le corpus au déploiement, il faut prévenir l'admin.
   const stale = parsed.length - refreshed;
-  return NextResponse.json({ ok: true, applied: parsed.length, ...(stale ? { warning: `Enregistré. ${stale} verset(s) apparaîtront dans le lecteur au prochain déploiement.` } : {}) });
+  return NextResponse.json({ ok: true, applied: parsed.length, ...(stale ? { warning: `Enregistré, mais ${stale} verset(s) n'ont pas pu être mis à jour dans le lecteur. Préviens l'administrateur.` } : {}) });
 }

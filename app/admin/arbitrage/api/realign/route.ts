@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { requireEditor, states, effectiveSources, servedText, greekVerses, overrides, giguet, biblionQueue, validatedSet, coverageGaps, type Source } from "@/lib/arbitration";
+import { requireEditor, states, effectiveSources, servedText, greekVerses, overrides, giguet, links, materialize, biblionQueue, validatedSet, coverageGaps, type Source } from "@/lib/arbitration";
 
 export const dynamic = "force-dynamic";
 
@@ -26,16 +26,20 @@ export async function GET(req: Request) {
   const ov = overrides()[book] || {};
   const flagged = new Set(biblionQueue().filter((c) => c.book === book).map((c) => c.grec).filter(Boolean));
   const validated = validatedSet();
+  const autoLinks = links()[book] || {};
 
   const grec = gv.map(({ v, greek }) => {
     const ref = `${ch}:${v}`;
     const sources = (effectiveSources(book, ref) || []) as Source[];
     const single = sources.length === 1 && sources[0].length === 2 ? { ch: sources[0][0], v: sources[0][1] } : null;
+    const auto = (autoLinks[ref] ?? null) as Source[] | null;
     return {
       v, greek, ref,
       source: sources, // brut (peut être extrait/multi)
       giguet: single, // le verset Giguet entier assigné, si mapping simple (base du glissement)
       french: servedText(book, ref),
+      auto, // lien automatique d'origine, hors arbitrage : base de « revenir à Giguet »
+      autoText: auto?.length ? materialize(book, auto) : null,
       maison: ov[ref]?.maison || null,
       by: ov[ref]?.by || null,
       overridden: !!ov[ref],

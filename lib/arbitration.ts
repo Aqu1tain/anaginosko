@@ -70,6 +70,10 @@ export type CoverageGaps = {
   aTraduireProuve?: Record<string, { ref: string; grec: string; cause?: string }[]>;
 };
 export const coverageGaps = (): CoverageGaps => readJson("lxx-coverage-gaps.json", {});
+export type ProvenToTranslate = { book: string; grec: string; grec_texte?: string; preuve?: string };
+export type ToTranslateCandidate = { book: string; ref: string; greekWords: number; frenchWords: number; ratio: number };
+export const provenToTranslate = (): ProvenToTranslate[] => readJson("lxx-a-traduire.json", []);
+export const toTranslateCandidates = (): ToTranslateCandidate[] => readJson("lxx-a-traduire-candidats.json", { candidates: [] }).candidates;
 export const biblionQueue = (): BiblionCase[] => readJson("lxx-biblion-queue.json", []);
 export const psalmsKan67 = (): { suscriptions: Psalm[] } => readJson("lxx-psaumes-kan67.json", { suscriptions: [] });
 const VALID_PATH = path.join(ARB_DIR, "lxx-biblion-validated.json");

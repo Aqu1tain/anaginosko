@@ -1,11 +1,10 @@
 import { BookScreen, bookMetadata } from "@/app/_corpus/screens";
 import { NT } from "@/src/data/corpus";
 
-// RENDU À LA DEMANDE (et non SSG). L'intro éditoriale d'un livre change hors build
-// (édition/publication admin au runtime). Un pré-rendu SSG la figerait, et
-// revalidatePath sur une route `dynamicParams=false` lève NoFallbackError -> 404.
-// On rend donc chaque requête en lisant l'intro vivante, comme /nt/[book]/[chapter].
-export const dynamic = "force-dynamic";
+// ISR à la demande : l'intro éditoriale change au runtime et sa publication invalide
+// la page par revalidatePath. Rien n'est pré-rendu, l'intro n'est jamais figée au build.
+export const revalidate = 3600;
+export const generateStaticParams = async () => [];
 export const generateMetadata = ({ params }: { params: Promise<{ book: string }> }) => bookMetadata(NT, params);
 
 export default function NtBookPage({ params }: { params: Promise<{ book: string }> }) {
