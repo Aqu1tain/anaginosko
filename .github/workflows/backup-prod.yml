@@ -1,0 +1,62 @@
+name: Sauvegarde des traductions de prod
+
+# Chaque nuit, le travail de traduction fait en prod (arbitrage LXX, validations,
+# traductions maison du NT) revient dans data/ sur next. Rien ne part en prod :
+# la sauvegarde suit le flux normal (préprod puis « Mettre en prod »).
+on:
+  schedule:
+    - cron: "17 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: backup-prod
+  cancel-in-progress: false
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: next
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 20
+
+      - name: Récupérer les traductions de prod
+        run: |
+          set -euo pipefail
+          mkdir -p ~/.ssh prod
+          printf '%s\n' "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H "${{ secrets.VPS_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
+          for f in lxx-arbitration.json lxx-biblion-validated.json; do
+            scp -i ~/.ssh/id_ed25519 -o BatchMode=yes "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/opt/anaginosko-web/arbitration/$f" prod/
+          done
+          curl -fsS "https://anaginosko.fr/api/translations?corpus=nt" -o prod/nt-maison.json || rm -f prod/nt-maison.json
+
+      - name: Intégrer dans data/
+        run: node scripts/capture-prod-arbitration.mjs prod
+
+      # Un push fait avec le jeton du workflow ne déclenche rien : on relance la CI et la
+      # préprod pour que « Mettre en prod » trouve ce commit vert.
+      - name: Committer sur next
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- data; then echo "Rien de nouveau en prod."; exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data
+          git commit -m "chore(data): sauvegarde des traductions de prod"
+          git pull --rebase origin next
+          git push origin HEAD:next
+          gh workflow run ci.yml --ref next
+          gh workflow run deploy-preprod.yml --ref next
