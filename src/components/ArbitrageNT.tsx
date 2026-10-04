@@ -9,8 +9,10 @@ import { MaisonInline } from "./ArbitrageRealign";
 type NtBook = { book: string; label: string; chapters: { ch: number; maison: number }[] };
 type Verse = { v: number; ref: string; greek: string; crampon: string | null; maison: string | null; by: string | null };
 type Chapter = { book: string; label: string; ch: number; chapters: number; verses: Verse[] };
+type Revision = { text: string | null; by: string; at: string };
 
 const who = (by: string | null) => (by === "Βιβλίον" ? "Biblion" : by);
+const when = (iso: string) => new Date(iso).toLocaleString("fr-FR", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" });
 
 export function NtBrowse({ onOpen }: { onOpen: (book: string, ch: number) => void }) {
   const [books, setBooks] = useState<NtBook[] | null>(null);
@@ -47,6 +49,16 @@ export function NtChapterEditor({ book, ch, onNavigate, onClose }: { book: strin
   const [draft, setDraft] = useState<Record<string, string | null>>({});
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string[] | null>(null);
+  const [history, setHistory] = useState<Record<string, Revision[]>>({});
+  const toggleHistory = async (ref: string) => {
+    if (history[ref]) return setHistory((h) => { const n = { ...h }; delete n[ref]; return n; });
+    try {
+      const { revisions } = await arb<{ revisions: Revision[] }>(`/nt/history?book=${book}&ref=${ref}`);
+      setHistory((h) => ({ ...h, [ref]: revisions }));
+    } catch (e) {
+      setErr(arbErrors(e));
+    }
+  };
 
   const load = useCallback(async () => {
     try {
@@ -131,7 +143,19 @@ export function NtChapterEditor({ book, ch, onNavigate, onClose }: { book: strin
                     <MaisonInline current={current ?? v.crampon ?? ""} original={v.crampon} originalLabel="Crampon" onSet={(t) => set(v, t)} />
                     {current && <button className="btn btn-ghost btn-xs" onClick={() => set(v, null)}>revenir au Crampon</button>}
                     {changed && <button className="btn btn-ghost btn-xs" onClick={() => set(v, v.maison)}>annuler</button>}
+                    {v.maison && <button className="btn btn-ghost btn-xs" onClick={() => toggleHistory(v.ref)}>{history[v.ref] ? "masquer l’historique" : "historique"}</button>}
                   </div>
+                  {history[v.ref] && (
+                    <ol className="mt-1.5 grid gap-1 border-l-2 border-base-300 pl-2 text-xs">
+                      {history[v.ref].map((r, k) => (
+                        <li key={k} className="flex flex-wrap items-baseline gap-x-2">
+                          <span className="text-base-content/45">{when(r.at)} · {who(r.by)}</span>
+                          <span className={`min-w-0 flex-1 ${r.text ? "" : "italic text-base-content/50"}`}>{r.text ?? "retour au Crampon"}</span>
+                          {k > 0 && <button className="btn btn-ghost btn-xs" onClick={() => set(v, r.text)}>reprendre</button>}
+                        </li>
+                      ))}
+                    </ol>
+                  )}
                 </div>
               </div>
             );
