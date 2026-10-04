@@ -58,6 +58,8 @@ test('privileged commands match the installed production contract', () => {
 });
 test('production corpus transfers remain restricted to explicit manual dispatch', () => {
   assert.equal(workflow.on.workflow_dispatch.inputs.deploy_corpus.default, false);
+  assert.equal(workflow.on.workflow_dispatch.inputs.deploy_nt.default, false);
+  assert.match(deploy, /elif \[ "\$\{\{ github.event_name \}\}" = "workflow_dispatch" \] && \[ "\$\{\{ inputs.deploy_nt \}\}" = "true" \]; then\s+rsync -az --delete -e "\$SSH" public\/nt\/ "\$HOST:\/var\/www\/anaginosko\/nt\/"\s+else/);
   assert.match(deploy, /if \[ "\$\{\{ github.event_name \}\}" = "workflow_dispatch" \] && \[ "\$\{\{ inputs.deploy_corpus \}\}" = "true" \]; then\s+rsync/);
   assert.match(deploy, /for FILE in lxx-arbitration\.json lxx-biblion-validated\.json/);
 });

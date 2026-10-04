@@ -10,6 +10,11 @@ on:
         required: true
         default: false
         type: boolean
+      deploy_nt:
+        description: "Synchroniser le seul corpus NT (la LXX vivante n'est pas touchée)"
+        required: true
+        default: false
+        type: boolean
 
 concurrency:
   group: deploy
@@ -69,6 +74,8 @@ jobs:
           if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.deploy_corpus }}" = "true" ]; then
             rsync -az --delete -e "$SSH" public/nt/ "$HOST:/var/www/anaginosko/nt/"
             rsync -az --delete -e "$SSH" public/lxx/ "$HOST:/var/www/anaginosko/lxx/"
+          elif [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.deploy_nt }}" = "true" ]; then
+            rsync -az --delete -e "$SSH" public/nt/ "$HOST:/var/www/anaginosko/nt/"
           else
             echo "Corpus NT/LXX de production préservés (aucune synchronisation)."
           fi
