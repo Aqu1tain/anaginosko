@@ -4,6 +4,7 @@ import path from "node:path";
 import type { Text } from "../src/data/texts";
 import type { NtBook, LemmaEntry, Occ, Distribution, Colloc } from "../src/data/nt";
 import type { CorpusConfig } from "../src/data/corpus";
+import { ntMaison } from "./ntMaison";
 import {
   assessGloss,
   type Gloss,
@@ -85,6 +86,9 @@ function blockedChapter(french: FrenchByChapter | null, chapter: number): boolea
   return (align.blocks ?? []).includes(chapter);
 }
 
+export const loadFrenchFs = (book: string, c?: CorpusConfig): Promise<FrenchByChapter | null> =>
+  readJson<FrenchByChapter>(`${book}/fr.json`, c).catch(() => null);
+
 export async function loadChapterFs(book: string, chapter: number, c?: CorpusConfig): Promise<Text> {
   const [data, french] = await Promise.all([
     readJson<{ reference: string; mots: Text["mots"] }>(`${book}/${chapter}.json`, c),
@@ -94,13 +98,23 @@ export async function loadChapterFs(book: string, chapter: number, c?: CorpusCon
   const maisonAll = (french as { _maison?: Record<string, string> } | null)?._maison || {};
   const maison: Record<string, string> = {};
   for (const k of Object.keys(maisonAll)) { const [mc, mv] = k.split(":"); if (mc === String(chapter)) maison[mv] = maisonAll[k]; }
+  const francais = { ...(french?.[chapter] ?? {}) };
+  // NT : les traductions maison (ARB_DIR) remplacent le néo-Crampon verset par verset.
+  if ((c?.id ?? "nt") === "nt") {
+    for (const [ref, entry] of Object.entries(ntMaison()[book] ?? {})) {
+      const [mc, mv] = ref.split(":");
+      if (mc !== String(chapter)) continue;
+      francais[mv] = entry.maison;
+      maison[mv] = entry.by;
+    }
+  }
   return {
     id: `${c?.refPrefix ?? "nt"}-${book}-${chapter}`,
     collection: c?.textCollection ?? "nt",
     niveau: 0,
     reference: data.reference,
     grec: "",
-    francais: french?.[chapter] ?? null,
+    francais: Object.keys(francais).length ? francais : null,
     maison: Object.keys(maison).length ? maison : null,
     frenchBlock: blockedChapter(french, chapter),
     translitErasmien: null,

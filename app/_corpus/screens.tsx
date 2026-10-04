@@ -35,11 +35,6 @@ export async function bookStaticParams(corpus: CorpusConfig) {
   return books.map((b) => ({ book: b.id }));
 }
 
-export async function chapterStaticParams(corpus: CorpusConfig) {
-  const books = await loadBooksFs(corpus);
-  return books.flatMap((b) => chapterNumbers(b).map((ch) => ({ book: b.id, chapter: String(ch) })));
-}
-
 export async function tocMetadata(corpus: CorpusConfig): Promise<Metadata> {
   const books = await loadBooksFs(corpus);
   return {

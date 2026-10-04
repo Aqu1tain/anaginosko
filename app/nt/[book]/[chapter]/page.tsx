@@ -1,8 +1,10 @@
-import { ChapterScreen, chapterStaticParams, chapterMetadata } from "@/app/_corpus/screens";
+import { ChapterScreen, chapterMetadata } from "@/app/_corpus/screens";
 import { NT } from "@/src/data/corpus";
 
-export const dynamicParams = false;
-export const generateStaticParams = () => chapterStaticParams(NT);
+// ISR à la demande, comme la LXX : les traductions maison (ARB_DIR) changent hors
+// build et invalident la page par revalidatePath ; rien n'est figé à l'état git.
+export const revalidate = 3600;
+export const generateStaticParams = async () => [];
 export const generateMetadata = ({ params }: { params: Promise<{ book: string; chapter: string }> }) =>
   chapterMetadata(NT, params);
 
