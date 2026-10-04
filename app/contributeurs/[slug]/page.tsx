@@ -5,6 +5,7 @@ import { getProfileBySlug } from "@/lib/profiles";
 import { listPublished } from "@/lib/articles";
 import { CATEGORY_LABEL } from "@/src/components/articles/labels";
 import Avatar from "@/src/components/profile/Avatar";
+import JsonLd from "@/app/_components/JsonLd";
 
 export const dynamic = "force-dynamic";
 
@@ -44,7 +45,7 @@ export default async function ContributorPage({ params }: { params: Promise<{ sl
 
   return (
     <div className="mx-auto max-w-2xl pb-16 pt-8">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <JsonLd data={jsonLd} />
 
       <header className="flex flex-col items-center text-center">
         <Avatar name={p.displayName} photo={p.photo} size={112} />

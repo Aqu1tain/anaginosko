@@ -39,6 +39,14 @@ export async function loadLemmasFs(c?: CorpusConfig): Promise<LemmaEntry[]> {
   return index;
 }
 
+export function decodeParam(value: string): string | null {
+  try {
+    return decodeURIComponent(value);
+  } catch {
+    return null;
+  }
+}
+
 export async function lemmaEntryFs(lemma: string, c?: CorpusConfig): Promise<LemmaEntry | undefined> {
   const index = await loadLemmasFs(c);
   return index.find((e) => e.lemma === lemma);

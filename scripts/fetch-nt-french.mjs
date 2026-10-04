@@ -5,6 +5,7 @@
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, resolve } from "node:path";
+import { applyVersification } from "./lib/nt-versification.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const ntDir = resolve(root, "public/nt");
@@ -50,7 +51,7 @@ for (const b of books) {
     await sleep(40);
   }
   if (!existsSync(resolve(ntDir, b.id))) continue;
-  writeFileSync(resolve(ntDir, b.id, "fr.json"), JSON.stringify(out));
+  writeFileSync(resolve(ntDir, b.id, "fr.json"), JSON.stringify(applyVersification(b.id, out)));
   process.stdout.write(`${b.id} `);
 }
 

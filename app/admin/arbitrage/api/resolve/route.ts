@@ -9,14 +9,14 @@ export const dynamic = "force-dynamic";
 // frais au prochain accès. C'est ce qui rendait les corrections de Biblion
 // invisibles côté lecteur alors qu'elles étaient bien enregistrées.
 // Rafraîchit le lecteur ; renvoie false si le fr.json servi n'a pas pu être réécrit
-// (best-effort : l'arbitrage reste sauvegardé, servi au prochain déploiement).
+// (best-effort : l'arbitrage reste sauvegardé, le lecteur doit être rematérialisé).
 function syncReader(book: string, ref: string): boolean {
   const ok = applyToReader(book, ref); // matérialise fr.json
   const ch = ref.split(":")[0];
   revalidatePath(`/lxx/${book}/${ch}`); // régénère la page du chapitre
   return ok;
 }
-const staleWarning = (ok: boolean) => (ok ? {} : { warning: "Enregistré. Le verset apparaîtra dans le lecteur au prochain déploiement." });
+const staleWarning = (ok: boolean) => (ok ? {} : { warning: "Enregistré, mais le verset n'a pas pu être mis à jour dans le lecteur. Préviens l'administrateur." });
 
 // Enregistre (ou révoque) une décision d'arbitrage. Intégrité sur CHAQUE écriture :
 // existence des versets Giguet, ref grec valide (round-trip), zéro-perte (aucun

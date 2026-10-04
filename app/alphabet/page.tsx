@@ -2,6 +2,7 @@ import AlphabetView from "@/src/components/AlphabetView";
 import Breadcrumb from "@/app/_components/Breadcrumb";
 import BreadcrumbJsonLd from "@/app/_components/BreadcrumbJsonLd";
 import { letters } from "@/src/data/alphabet";
+import JsonLd from "@/app/_components/JsonLd";
 
 export const metadata = {
   title: "L’alphabet grec",
@@ -30,7 +31,7 @@ const termSet = {
 export default function AlphabetPage() {
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(termSet) }} />
+      <JsonLd data={termSet} />
       <BreadcrumbJsonLd items={[{ name: "Accueil", path: "/" }, { name: "L’alphabet grec", path: "/alphabet" }]} />
       <div className="mx-auto max-w-2xl">
         <Breadcrumb items={[{ label: "Accueil", href: "/", home: true }, { label: "L’alphabet grec" }]} />
