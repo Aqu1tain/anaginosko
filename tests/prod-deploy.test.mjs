@@ -67,3 +67,15 @@ test('complete deployment shell remains syntactically valid', () => {
   const r = spawnSync('bash', ['-n'], { input: deploy.replace(/\$\{\{[\s\S]*?\}\}/g, 'test-value'), encoding: 'utf8' });
   assert.equal(r.status, 0, r.stderr);
 });
+test('promotion to production only fast-forwards main to a green next', () => {
+  const promote = YAML.load(readFileSync(new URL('../.github/workflows/promote.yml', import.meta.url), 'utf8'));
+  assert.deepEqual(Object.keys(promote.on), ['workflow_dispatch']);
+  const steps = promote.jobs.promote.steps;
+  const run = steps.map(step => step.run || '').join('\n');
+  assert.doesNotMatch(run, /--force|\+refs|push -f/);
+  assert.match(run, /git merge-base --is-ancestor origin\/main "\$SHA"/);
+  assert.match(run, /green ci\.yml/);
+  assert.match(run, /green deploy-preprod\.yml/);
+  assert.match(run, /git push origin "\$\{\{ steps\.check\.outputs\.sha \}\}:refs\/heads\/main"/);
+  assert.match(run, /gh workflow run deploy\.yml --ref main -f deploy_corpus=false -f deploy_nt=false/);
+});

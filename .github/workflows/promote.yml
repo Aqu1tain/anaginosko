@@ -1,0 +1,54 @@
+name: Mettre en prod
+
+# Un seul geste pour la production : main avance jusqu'à next (avance rapide, jamais
+# de fusion ni de force), puis le déploiement prod est lancé. Refusé tant que la CI
+# et la préprod ne sont pas vertes sur le commit exact de next.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: promote
+  cancel-in-progress: false
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: next
+          fetch-depth: 0
+
+      - name: Vérifier que next est prêt
+        id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          SHA=$(git rev-parse origin/next)
+          echo "sha=$SHA" >> "$GITHUB_OUTPUT"
+          if [ "$(git rev-parse origin/main)" = "$SHA" ]; then
+            echo "main est déjà à jour, rien à mettre en prod."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git merge-base --is-ancestor origin/main "$SHA" || { echo "::error::main contient des commits absents de next. Fusionner main dans next d'abord."; exit 1; }
+          green() { gh run list --workflow "$1" --commit "$SHA" --json conclusion --jq '[.[] | select(.conclusion == "success")] | length'; }
+          [ "$(green ci.yml)" -gt 0 ] || { echo "::error::La CI n'est pas verte sur next ($SHA)."; exit 1; }
+          [ "$(green deploy-preprod.yml)" -gt 0 ] || { echo "::error::La préprod n'a pas été déployée avec succès sur $SHA."; exit 1; }
+
+      - name: Avancer main jusqu'à next
+        if: steps.check.outputs.skip != 'true'
+        run: git push origin "${{ steps.check.outputs.sha }}:refs/heads/main"
+
+      # Un push fait avec le jeton du workflow ne déclenche pas deploy.yml : on le lance.
+      - name: Déployer la prod
+        if: steps.check.outputs.skip != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run deploy.yml --ref main -f deploy_corpus=false -f deploy_nt=false
