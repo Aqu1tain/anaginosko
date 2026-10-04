@@ -32,7 +32,7 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm ci
-      - run: npm run build
+      - run: for attempt in 1 2 3; do npm run build && break; [ "$attempt" = 3 ] && exit 1; echo "Nouvel essai (Google Fonts répond parfois vide)"; sleep 20; done
         env:
           # Variables publiques Matomo, inlinées au build (non secrètes : elles
           # finissent dans le bundle client). Sans elles, le tracking est inerte.

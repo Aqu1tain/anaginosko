@@ -32,7 +32,7 @@ jobs:
         env:
           NEXT_PUBLIC_PREPROD: "1"
           NEXT_PUBLIC_API_BASE: /api
-        run: npm run build
+        run: for attempt in 1 2 3; do npm run build && break; [ "$attempt" = 3 ] && exit 1; echo "Nouvel essai (Google Fonts répond parfois vide)"; sleep 20; done
 
       - name: Assemble standalone bundle
         run: |

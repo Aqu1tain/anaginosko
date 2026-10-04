@@ -46,6 +46,6 @@ jobs:
       - name: Test prod translation capture
         run: node tests/capture-prod-arbitration.test.mjs
       - name: Build application without rewriting corpora
-        run: npx next build
+        run: for attempt in 1 2 3; do npx next build && break; [ "$attempt" = 3 ] && exit 1; echo "Nouvel essai (Google Fonts répond parfois vide)"; sleep 20; done
       - name: Reject uncommitted application drift
         run: git diff --exit-code
