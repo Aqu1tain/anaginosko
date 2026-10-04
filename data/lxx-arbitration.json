@@ -96,16 +96,10 @@
   },
   "gen": {
     "6:1": {
-      "sources": [
-        [
-          6,
-          1,
-          15,
-          36
-        ]
-      ],
-      "by": "Βιβλίον",
-      "at": "2026-07-03T09:41:50.677Z"
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T12:15:13.468Z",
+      "maison": "Lorsque les hommes commencèrent à devenir nombreux sur la terre et que des filles leur furent nées,"
     },
     "5:32": {
       "sources": [
@@ -127,9 +121,9 @@
     },
     "1:7": {
       "sources": [],
-      "by": "Admin",
-      "at": "2026-07-09T21:38:19.554Z",
-      "maison": "Et Dieu fit le firmament, et Dieu sépara entre l'eau qui était au-dessous du firmament et l'eau qui était au-dessus du firmament."
+      "by": "Corentin Renard",
+      "at": "2026-07-20T15:02:18.671Z",
+      "maison": "Et Dieu fit le firmament ; il sépara l’eau qui était au-dessous du firmament de l’eau qui était au-dessus du firmament."
     },
     "1:9": {
       "sources": [],
@@ -139,21 +133,21 @@
     },
     "1:11": {
       "sources": [],
-      "by": "Admin",
-      "at": "2026-07-09T21:38:19.568Z",
-      "maison": "Et Dieu dit : Que la terre fasse pousser une végétation d'herbe semant semence selon l'espèce et selon la ressemblance, et un arbre fruitier faisant du fruit dont la semence est en lui, selon l'espèce, sur la terre. Et il en fut ainsi."
+      "by": "Corentin Renard",
+      "at": "2026-07-20T15:02:18.700Z",
+      "maison": "Et Dieu dit : Que la terre fasse pousser des plantes herbacées portant semence selon leur espèce et leur ressemblance, et des arbres fruitiers produisant du fruit dont la semence est en eux, selon leur espèce, sur la terre. Et il en fut ainsi."
     },
     "1:12": {
       "sources": [],
-      "by": "Admin",
-      "at": "2026-07-09T21:38:19.574Z",
-      "maison": "Et la terre produisit une végétation d'herbe semant semence selon l'espèce et selon la ressemblance, et un arbre fruitier faisant du fruit dont la semence est en lui, selon l'espèce, sur la terre. Et Dieu vit que cela était bon."
+      "by": "Corentin Renard",
+      "at": "2026-07-20T15:02:18.720Z",
+      "maison": "Et la terre produisit des plantes herbacées portant semence selon leur espèce et leur ressemblance, et des arbres fruitiers produisant du fruit dont la semence est en eux, selon leur espèce, sur la terre. Et Dieu vit que cela était bon."
     },
     "1:14": {
       "sources": [],
-      "by": "Admin",
-      "at": "2026-07-09T21:38:19.581Z",
-      "maison": "Et Dieu dit : Que des luminaires soient dans le firmament du ciel, pour éclairer la terre, pour séparer entre le jour et la nuit ; et qu'ils soient pour signes, et pour saisons, et pour jours, et pour années ;"
+      "by": "Corentin Renard",
+      "at": "2026-07-20T15:02:18.729Z",
+      "maison": "Et Dieu dit : Que des luminaires soient dans le firmament du ciel pour éclairer la terre et séparer le jour de la nuit ; qu’ils servent de signes pour les saisons, les jours et les années ;"
     },
     "1:16": {
       "sources": [],
@@ -163,15 +157,15 @@
     },
     "1:20": {
       "sources": [],
-      "by": "Admin",
-      "at": "2026-07-09T21:38:19.593Z",
-      "maison": "Et Dieu dit : Que les eaux produisent des reptiles d'âmes vivantes, et des oiseaux volant sur la terre le long du firmament du ciel. Et il en fut ainsi."
+      "by": "Corentin Renard",
+      "at": "2026-07-20T15:02:18.751Z",
+      "maison": "Et Dieu dit : Que les eaux produisent des êtres vivants qui se meuvent, et des oiseaux qui volent au-dessus de la terre, le long du firmament du ciel. Et il en fut ainsi."
     },
     "1:21": {
       "sources": [],
-      "by": "Admin",
-      "at": "2026-07-09T21:38:19.599Z",
-      "maison": "Et Dieu fit les grands cétacés, et toute âme d'animaux rampants que les eaux produisirent selon leurs espèces, et tout oiseau ailé selon l'espèce. Et Dieu vit que cela était bon."
+      "by": "Corentin Renard",
+      "at": "2026-07-20T15:02:18.757Z",
+      "maison": "Et Dieu fit les grands monstres marins, tous les êtres vivants qui se meuvent et que les eaux avaient produits selon leurs espèces, et tout oiseau ailé selon son espèce. Et Dieu vit qu’ils étaient bons."
     },
     "1:25": {
       "sources": [],
@@ -193,9 +187,513 @@
     },
     "1:31": {
       "sources": [],
-      "by": "Admin",
-      "at": "2026-07-09T21:38:19.623Z",
-      "maison": "Et Dieu vit toutes les choses qu'il avait faites, et voici : très bonnes. Et il y eut un soir, et il y eut un matin : jour sixième."
+      "by": "Corentin Renard",
+      "at": "2026-07-20T15:02:18.777Z",
+      "maison": "Et Dieu vit toutes les choses qu’il avait faites : voici, elles étaient très bonnes. Et il y eut un soir et il y eut un matin, un sixième jour."
+    },
+    "2:2": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T13:36:03.816Z",
+      "maison": "Dieu acheva, le sixième jour, ses œuvres, les œuvres qu’il avait faites ; et il se reposa, le septième jour, de toutes ses œuvres qu’il avait faites."
+    },
+    "2:3": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T13:46:28.555Z",
+      "maison": "Et Dieu bénit le septième jour et le sanctifia, parce que ce jour-là il s’était reposé de toutes ses œuvres qu’il avait commencé à faire."
+    },
+    "2:4": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T13:36:03.830Z",
+      "maison": "Voici le livre de la genèse du ciel et de la terre, lorsqu’ils vinrent à l’existence, le jour où Dieu fit le ciel et la terre,"
+    },
+    "2:5": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T13:36:03.836Z",
+      "maison": "et toute verdure des champs avant qu’elle apparût sur la terre, et toute herbe des champs avant qu’elle germât ; car Dieu n’avait pas fait pleuvoir sur la terre, et il n’y avait pas d’homme pour la travailler."
+    },
+    "2:6": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T13:36:03.842Z",
+      "maison": "Mais une source montait de la terre et arrosait toute la face de la terre."
+    },
+    "2:7": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T13:36:03.848Z",
+      "maison": "Et Dieu forma l’homme avec de la poussière prise de la terre ; il souffla sur son visage un souffle de vie, et l’homme devint une âme vivante."
+    },
+    "2:8": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T13:36:03.853Z",
+      "maison": "Et le Seigneur Dieu planta un paradis en Edem, à l’orient, et il y plaça l’homme qu’il avait formé."
+    },
+    "2:9": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T13:36:03.859Z",
+      "maison": "Et Dieu fit pousser de la terre tout arbre agréable à voir et bon à manger, ainsi que l’arbre de vie au milieu du paradis et l’arbre de la connaissance du bien et du mal."
+    },
+    "2:10": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T13:36:03.865Z",
+      "maison": "Un fleuve sort d’Edem pour arroser le paradis ; de là, il se divise en quatre bras."
+    },
+    "2:11": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T13:36:03.870Z",
+      "maison": "Le nom du premier est Phison ; c’est celui qui entoure toute la terre d’Euilat, où se trouve l’or."
+    },
+    "2:12": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T13:36:03.876Z",
+      "maison": "L’or de cette terre est excellent ; on y trouve aussi l’escarboucle et la pierre verte."
+    },
+    "2:13": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T13:36:03.882Z",
+      "maison": "Le nom du second fleuve est Géon ; c’est celui qui entoure toute la terre d’Éthiopie."
+    },
+    "2:15": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T13:46:38.776Z",
+      "maison": "Le Seigneur Dieu prit l’homme qu’il avait formé et le plaça dans le paradis, pour le cultiver et le garder."
+    },
+    "2:16": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T13:46:45.788Z",
+      "maison": "Le Seigneur Dieu donna cet ordre à Adam : Tu peux manger de tous les arbres du paradis."
+    },
+    "2:17": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T13:36:03.899Z",
+      "maison": "Mais vous ne mangerez pas de l’arbre de la connaissance du bien et du mal, car le jour où vous en mangerez, vous mourrez de mort."
+    },
+    "2:18": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T13:36:03.904Z",
+      "maison": "Le Seigneur Dieu dit : Il n’est pas bon que l’homme soit seul ; faisons-lui une aide qui lui corresponde."
+    },
+    "2:19": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T13:47:13.277Z",
+      "maison": "Et Dieu forma encore de la terre toutes les bêtes des champs et tous les oiseaux du ciel, puis il les amena à Adam pour voir comment il les nommerait ; chaque âme vivante porta le nom qu’Adam lui donna."
+    },
+    "2:23": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T13:36:03.916Z",
+      "maison": "Et Adam dit : Cette fois, voici l’os de mes os et la chair de ma chair. Celle-ci sera appelée femme, parce qu’elle a été tirée de son époux."
+    },
+    "2:24": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T13:38:06.416Z",
+      "maison": "À cause de cela, l’homme quittera son père et sa mère, il s’attachera à sa femme, et les deux deviendront une seule chair."
+    },
+    "2:25": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T13:40:07.313Z",
+      "maison": "Et tous deux étaient nus, Adam et sa femme, et ils n’en avaient pas honte."
+    },
+    "3:1": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T13:56:31.203Z",
+      "maison": "Or le serpent était le plus sensé de toutes les bêtes de la terre que le Seigneur Dieu avait faites. Il dit à la femme : Pourquoi Dieu a-t-il dit : Vous ne mangerez d’aucun arbre du paradis ?"
+    },
+    "3:5": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T13:56:31.213Z",
+      "maison": "Car Dieu savait que, le jour où vous en mangeriez, vos yeux s’ouvriraient et vous seriez comme des dieux, connaissant le bien et le mal."
+    },
+    "3:6": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T13:56:31.220Z",
+      "maison": "La femme vit que l’arbre était bon à manger, agréable à regarder et beau à contempler. Elle prit de son fruit et en mangea ; elle en donna aussi à son mari qui était avec elle, et ils mangèrent."
+    },
+    "3:7": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T13:56:31.227Z",
+      "maison": "Et les yeux de tous deux s’ouvrirent ; ils comprirent qu’ils étaient nus, cousirent des feuilles de figuier et s’en firent des pagnes."
+    },
+    "3:8": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T13:56:31.233Z",
+      "maison": "Ils entendirent la voix du Seigneur Dieu qui se promenait dans le paradis, le soir ; Adam et sa femme se cachèrent de la face du Seigneur Dieu au milieu des arbres du paradis."
+    },
+    "3:10": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T13:56:31.239Z",
+      "maison": "Il répondit : J’ai entendu ta voix tandis que tu te promenais dans le paradis ; j’ai eu peur parce que je suis nu, et je me suis caché."
+    },
+    "3:11": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T13:56:31.247Z",
+      "maison": "Il lui dit : Qui t’a appris que tu es nu ? Aurais-tu mangé du seul arbre dont je t’avais ordonné de ne pas manger ?"
+    },
+    "3:12": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T13:56:31.257Z",
+      "maison": "Adam répondit : La femme que tu m’as donnée pour être avec moi, c’est elle qui m’a donné de l’arbre, et j’ai mangé."
+    },
+    "3:15": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T13:56:31.267Z",
+      "maison": "Et je mettrai une inimitié entre toi et la femme, entre ta semence et sa semence ; il guettera ta tête, et toi, tu guetteras son talon."
+    },
+    "3:16": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T13:56:31.277Z",
+      "maison": "Puis il dit à la femme : Je multiplierai grandement tes douleurs et tes gémissements ; c’est dans les douleurs que tu enfanteras tes enfants. Ton recours sera vers ton mari, et il dominera sur toi."
+    },
+    "3:17": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T13:56:31.288Z",
+      "maison": "Puis il dit à Adam : Parce que tu as écouté la voix de ta femme et mangé de l’arbre, du seul dont je t’avais ordonné de ne pas manger, maudite est la terre dans tes travaux ; dans les douleurs, tu t’en nourriras tous les jours de ta vie."
+    },
+    "3:18": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T13:56:31.299Z",
+      "maison": "Elle fera pousser pour toi des épines et des chardons, et tu mangeras l’herbe des champs."
+    },
+    "3:19": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T13:56:31.310Z",
+      "maison": "À la sueur de ton visage, tu mangeras ton pain jusqu’à ce que tu retournes à la terre dont tu as été tiré, car tu es terre et tu t’en iras vers la terre."
+    },
+    "3:20": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T13:56:31.321Z",
+      "maison": "Adam donna à sa femme le nom de Vie, parce qu’elle est la mère de tous les vivants."
+    },
+    "3:22": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T13:56:31.334Z",
+      "maison": "Et Dieu dit : Voici, Adam est devenu comme l’un de nous, pour connaître le bien et le mal ; et maintenant, qu’il n’étende pas la main, ne prenne pas de l’arbre de vie, n’en mange pas et ne vive pas pour l’éternité."
+    },
+    "3:23": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T13:56:31.344Z",
+      "maison": "Et le Seigneur Dieu l’envoya hors du paradis de délices, pour travailler la terre dont il avait été tiré."
+    },
+    "3:24": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T13:56:31.351Z",
+      "maison": "Il chassa Adam et l’établit en face du paradis de délices ; puis il plaça les chérubins et le glaive flamboyant qui tournoie, pour garder le chemin de l’arbre de vie."
+    },
+    "4:3": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T14:29:29.965Z",
+      "maison": "Au bout de quelques jours, Caïn apporta au Seigneur un sacrifice des fruits de la terre."
+    },
+    "4:5": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T14:29:29.974Z",
+      "maison": "Mais il ne prêta attention ni à Caïn ni à ses sacrifices. Caïn en fut profondément affligé et eut le visage abattu."
+    },
+    "4:6": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T14:29:29.982Z",
+      "maison": "Le Seigneur Dieu dit à Caïn : Pourquoi es-tu profondément affligé, et pourquoi ton visage est-il abattu ?"
+    },
+    "4:7": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T14:29:29.989Z",
+      "maison": "Si tu présentes correctement ton sacrifice, mais ne le partages pas correctement, n’as-tu pas péché ? Apaise-toi : son recours sera vers toi, et tu domineras sur lui."
+    },
+    "4:9": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T14:29:29.996Z",
+      "maison": "Dieu dit à Caïn : Où est Abel, ton frère ? Il répondit : Je ne sais pas. Est-ce moi, le gardien de mon frère ?"
+    },
+    "4:10": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T14:29:30.002Z",
+      "maison": "Et Dieu dit : Qu’as-tu fait ? La voix du sang de ton frère crie vers moi depuis la terre."
+    },
+    "4:11": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T14:29:30.008Z",
+      "maison": "Et maintenant, tu es maudit par la terre, qui a ouvert sa bouche pour recevoir de ta main le sang de ton frère."
+    },
+    "4:14": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T14:29:30.014Z",
+      "maison": "Si tu me chasses aujourd’hui de la face de la terre, je serai caché loin de ta face ; je serai gémissant et tremblant sur la terre, et quiconque me trouvera me tuera."
+    },
+    "4:15": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T14:29:30.021Z",
+      "maison": "Le Seigneur Dieu lui dit : Il n’en sera pas ainsi ; quiconque tuera Caïn encourra une vengeance septuple. Puis le Seigneur Dieu donna un signe à Caïn, afin que quiconque le trouverait ne le mette pas à mort."
+    },
+    "4:16": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T14:29:30.028Z",
+      "maison": "Or Caïn s’éloigna de la face de Dieu et habita dans la terre de Naid, en face d’Edem."
+    },
+    "4:18": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T14:29:30.036Z",
+      "maison": "À Enoch naquit Gaïdad ; Gaïdad engendra Maiel, Maiel engendra Mathousala, et Mathousala engendra Lamech."
+    },
+    "4:20": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T14:29:30.043Z",
+      "maison": "Ada enfanta Iobel ; il fut le père des éleveurs de bétail qui habitent sous des tentes."
+    },
+    "4:21": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T14:29:30.050Z",
+      "maison": "Son frère s’appelait Ioubal ; c’est lui qui fit connaître le psaltérion et la cithare."
+    },
+    "4:22": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T14:29:30.058Z",
+      "maison": "Sella, de son côté, enfanta Thobel ; il était forgeron et travaillait au marteau le bronze et le fer. La sœur de Thobel était Noéma."
+    },
+    "4:23": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T14:29:30.065Z",
+      "maison": "Lamech dit à ses femmes : Ada et Sella, écoutez ma voix ; femmes de Lamech, prêtez l’oreille à mes paroles. Car j’ai tué un homme pour une blessure qui m’a été faite, et un jeune homme pour une meurtrissure qui m’a été infligée."
+    },
+    "4:24": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T14:29:30.072Z",
+      "maison": "Car Caïn est vengé sept fois, mais Lamech, soixante-dix fois sept."
+    },
+    "4:25": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T14:29:30.079Z",
+      "maison": "Or Adam connut Ève, sa femme ; après avoir conçu, elle enfanta un fils et lui donna le nom de Seth, disant : Dieu a suscité pour moi une autre semence à la place d’Abel, que Caïn a tué."
+    },
+    "4:26": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T14:29:30.086Z",
+      "maison": "Seth eut un fils et lui donna le nom d’Enos. Celui-ci espéra invoquer le nom du Seigneur Dieu."
+    },
+    "1:2": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T14:54:09.043Z",
+      "maison": "Or la terre était invisible et inorganisée ; les ténèbres étaient au-dessus de l’abîme, et l’Esprit de Dieu était porté au-dessus de l’eau."
+    },
+    "1:10": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T15:02:18.686Z",
+      "maison": "Dieu appela l’aride terre, et il appela mers les masses d’eau. Et Dieu vit que cela était bon."
+    },
+    "1:17": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T15:02:18.736Z",
+      "maison": "Et Dieu les plaça dans le firmament du ciel pour éclairer la terre,"
+    },
+    "1:18": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T15:02:18.743Z",
+      "maison": "pour gouverner le jour et la nuit et séparer la lumière des ténèbres. Et Dieu vit que cela était bon."
+    },
+    "1:29": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T15:02:18.764Z",
+      "maison": "Et Dieu dit : Voici, je vous ai donné toute plante portant une semence apte à être semée, partout sur la terre, ainsi que tout arbre qui porte en lui un fruit contenant une semence apte à être semée ; cela sera pour vous nourriture."
+    },
+    "1:30": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-20T15:02:18.770Z",
+      "maison": "Et à toutes les bêtes de la terre, à tous les oiseaux du ciel et à tout reptile qui rampe sur la terre et possède en lui une âme de vie, j’ai donné toute herbe verte pour nourriture. Et il en fut ainsi."
+    },
+    "5:1": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T09:20:24.449Z",
+      "maison": "Voici le livre de la genèse des hommes. Le jour où Dieu fit Adam, il le fit selon l’image de Dieu."
+    },
+    "5:2": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T09:20:24.461Z",
+      "maison": "Il les fit mâle et femelle, les bénit et leur donna le nom d’Adam, le jour où il les fit."
+    },
+    "5:3": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T09:20:24.471Z",
+      "maison": "Or Adam vécut deux cent trente ans ; il engendra un fils selon sa forme et selon son image, et lui donna le nom de Seth."
+    },
+    "5:10": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T09:20:24.480Z",
+      "maison": "Après avoir engendré Caïnan, Enos vécut sept cent quinze ans, et il engendra des fils et des filles."
+    },
+    "5:15": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T09:20:24.490Z",
+      "maison": "Malalehel vécut cent soixante-cinq ans, et il engendra Jared."
+    },
+    "5:22": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T09:20:24.499Z",
+      "maison": "Or Énoch, après avoir engendré Mathusalem, fut agréable à Dieu pendant deux cents ans, et il engendra des fils et des filles."
+    },
+    "5:24": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T09:20:24.508Z",
+      "maison": "Énoch fut agréable à Dieu, et on ne le trouvait plus, parce que Dieu l’avait transporté."
+    },
+    "5:29": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T09:20:24.518Z",
+      "maison": "Il lui donna le nom de Noé, disant : Celui-ci nous donnera du repos après nos travaux et les peines de nos mains, à cause de la terre que le Seigneur Dieu a maudite."
+    },
+    "5:9": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T09:31:23.902Z",
+      "maison": "Enos vécut cent quatre-vingt-dix ans, et il engendra Caïnan."
+    },
+    "5:23": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T09:31:23.915Z",
+      "maison": "Et tous les jours d’Énoch formèrent trois cent soixante-cinq ans."
+    },
+    "6:4": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T12:15:26.191Z",
+      "maison": "Or les géants étaient sur la terre en ces jours-là, et encore après. Lorsque les fils de Dieu s’unissaient aux filles des hommes et qu’elles leur donnaient des enfants, ceux-ci étaient les géants d’autrefois, les hommes renommés."
+    },
+    "6:6": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T12:15:37.357Z",
+      "maison": "il considéra qu’il avait fait l’homme sur la terre, et il y réfléchit."
+    },
+    "6:7": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T12:15:52.898Z",
+      "maison": "Et Dieu dit : J’effacerai de la face de la terre l’homme que j’ai fait, depuis l’homme jusqu’aux bestiaux, depuis les reptiles jusqu’aux oiseaux du ciel, car je me suis irrité de les avoir faits."
+    },
+    "6:9": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T12:25:17.240Z",
+      "maison": "Voici les générations de Noé. Noé était un homme juste, parfait parmi ceux de sa génération ; il fut agréable à Dieu."
+    },
+    "6:12": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T12:16:11.766Z",
+      "maison": "Le Seigneur Dieu vit la terre : elle était corrompue, parce que toute chair avait corrompu sa voie sur la terre."
+    },
+    "6:13": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T12:25:48.638Z",
+      "maison": "Et Dieu dit à Noé : Le temps de toute l’humanité est arrivé devant moi, car la terre est remplie d’injustice à cause d’eux ; voici que je vais les détruire, eux et la terre."
+    },
+    "6:14": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T12:16:35.131Z",
+      "maison": "Fais-toi donc une arche avec des pièces de bois équarries ; tu la diviseras en compartiments et tu l’enduiras de bitume à l’intérieur et à l’extérieur."
+    },
+    "6:19": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T12:16:52.075Z",
+      "maison": "De tous les bestiaux, de tous les reptiles, de toutes les bêtes sauvages et de toute chair, tu en feras entrer dans l’arche deux de chaque sorte, afin de les nourrir avec toi ; ils seront mâle et femelle."
+    },
+    "6:20": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T12:17:35.493Z",
+      "maison": "De tous les oiseaux ailés selon leur espèce, de tous les bestiaux selon leur espèce et de tous les reptiles qui rampent sur la terre selon leur espèce, deux de chaque sorte, mâle et femelle, viendront vers toi afin d’être nourris avec toi."
+    },
+    "6:21": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T12:17:45.748Z",
+      "maison": "Quant à toi, tu prendras de tous les aliments que vous mangerez et tu les rassembleras auprès de toi ; ils serviront de nourriture pour toi et pour eux."
+    },
+    "6:2": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T12:24:53.479Z",
+      "maison": "les fils de Dieu virent que les filles des hommes étaient belles et prirent pour femmes toutes celles qu’ils choisirent."
+    },
+    "6:5": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T12:25:03.610Z",
+      "maison": "Or le Seigneur Dieu vit que les méchancetés des hommes s’étaient multipliées sur la terre et que chacun, dans son cœur, s’appliquait chaque jour à penser au mal ;"
+    },
+    "6:17": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T12:38:51.285Z",
+      "maison": "Quant à moi, voici que je fais venir sur la terre un déluge d’eau afin de détruire sous le ciel toute chair en laquelle se trouve un souffle de vie ; tout ce qui sera sur la terre périra."
     }
   },
   "exo": {
@@ -3619,6 +4117,228 @@
       ],
       "by": "Βιβλίον",
       "at": "2026-07-11T15:35:58.075Z"
+    },
+    "68:1": {
+      "sources": [],
+      "by": "Admin",
+      "at": "2026-07-17T15:37:17.502Z",
+      "maison": "Pour la fin, au sujet de ceux qui seront changés, psaume de David."
+    },
+    "68:2": {
+      "sources": [],
+      "by": "Admin",
+      "at": "2026-07-17T15:41:49.085Z",
+      "maison": "Sauve-moi, ô Dieu, car les eaux sont entrées jusqu'à mon âme."
+    },
+    "68:3": {
+      "sources": [],
+      "by": "Admin",
+      "at": "2026-07-17T15:41:49.093Z",
+      "maison": "Je suis enfoncé dans la vase de l'abîme, et il n'y a point d'appui ; je suis venu dans les profondeurs de la mer, et la tempête m'a englouti."
+    },
+    "68:4": {
+      "sources": [],
+      "by": "Admin",
+      "at": "2026-07-17T15:41:49.098Z",
+      "maison": "J'ai peiné à crier, mon gosier s'est enroué ; mes yeux ont défailli, à force d'espérer en mon Dieu."
+    },
+    "68:5": {
+      "sources": [],
+      "by": "Admin",
+      "at": "2026-07-17T15:41:49.104Z",
+      "maison": "Ils se sont multipliés plus que les cheveux de ma tête, ceux qui me haïssent sans cause ; ils se sont fortifiés, mes ennemis, ceux qui me persécutent injustement ; ce que je n'avais pas ravi, alors je le payais."
+    },
+    "68:6": {
+      "sources": [],
+      "by": "Admin",
+      "at": "2026-07-17T15:41:49.109Z",
+      "maison": "Ô Dieu, toi, tu connais ma folie, et mes fautes ne te sont pas cachées."
+    },
+    "68:7": {
+      "sources": [],
+      "by": "Admin",
+      "at": "2026-07-17T15:41:49.115Z",
+      "maison": "Qu'ils ne rougissent pas à cause de moi, ceux qui t'attendent avec patience, Seigneur, Seigneur des puissances ; qu'ils ne soient pas confondus à cause de moi, ceux qui te cherchent, Dieu d'Israël."
+    },
+    "68:8": {
+      "sources": [],
+      "by": "Admin",
+      "at": "2026-07-17T15:41:49.121Z",
+      "maison": "Car c'est pour toi que j'ai supporté l'opprobre, que la confusion a couvert ma face."
+    },
+    "68:9": {
+      "sources": [],
+      "by": "Admin",
+      "at": "2026-07-17T15:41:49.127Z",
+      "maison": "Je suis devenu un étranger pour mes frères, un inconnu pour les fils de ma mère."
+    },
+    "68:10": {
+      "sources": [],
+      "by": "Admin",
+      "at": "2026-07-17T15:41:49.132Z",
+      "maison": "Car le zèle de ta maison m'a dévoré, et les opprobres de ceux qui t'outragent sont tombés sur moi."
+    },
+    "68:11": {
+      "sources": [],
+      "by": "Admin",
+      "at": "2026-07-17T15:41:49.138Z",
+      "maison": "Et j'ai courbé mon âme par le jeûne, et cela m'est devenu un opprobre."
+    },
+    "68:12": {
+      "sources": [],
+      "by": "Admin",
+      "at": "2026-07-17T15:41:49.147Z",
+      "maison": "J'ai pris pour vêtement un cilice, et je suis devenu pour eux une parabole."
+    },
+    "68:13": {
+      "sources": [],
+      "by": "Admin",
+      "at": "2026-07-17T15:41:49.156Z",
+      "maison": "Ceux qui siègent aux portes bavardaient contre moi, et ceux qui boivent le vin me chantaient."
+    },
+    "68:14": {
+      "sources": [],
+      "by": "Admin",
+      "at": "2026-07-17T15:41:49.167Z",
+      "maison": "Et moi, ma prière va vers toi, Seigneur ; c'est le moment de la faveur, ô Dieu. Dans l'abondance de ta miséricorde, exauce-moi, dans la vérité de ton salut."
+    },
+    "68:15": {
+      "sources": [],
+      "by": "Admin",
+      "at": "2026-07-17T15:41:49.176Z",
+      "maison": "Sauve-moi de la boue, que je n'y reste pas enfoncé ; que je sois délivré de ceux qui me haïssent et des profondeurs des eaux."
+    },
+    "68:16": {
+      "sources": [],
+      "by": "Admin",
+      "at": "2026-07-17T15:41:49.187Z",
+      "maison": "Que le flot des eaux ne me submerge pas, que l'abîme ne m'engloutisse pas, que le puits ne referme pas sur moi sa bouche."
+    },
+    "68:17": {
+      "sources": [],
+      "by": "Admin",
+      "at": "2026-07-17T15:41:49.196Z",
+      "maison": "Exauce-moi, Seigneur, car ta miséricorde est bonne ; selon l'abondance de tes compassions, regarde vers moi."
+    },
+    "68:18": {
+      "sources": [],
+      "by": "Admin",
+      "at": "2026-07-17T15:41:49.206Z",
+      "maison": "Ne détourne pas ta face de ton serviteur ; parce que je suis dans la tribulation, exauce-moi vite."
+    },
+    "68:19": {
+      "sources": [],
+      "by": "Admin",
+      "at": "2026-07-17T15:41:49.217Z",
+      "maison": "Sois attentif à mon âme, et rachète-la ; à cause de mes ennemis, délivre-moi."
+    },
+    "68:20": {
+      "sources": [],
+      "by": "Admin",
+      "at": "2026-07-17T15:41:49.229Z",
+      "maison": "Car toi, tu connais mon opprobre, et ma honte, et ma confusion ; devant toi sont tous ceux qui m'affligent."
+    },
+    "68:21": {
+      "sources": [],
+      "by": "Admin",
+      "at": "2026-07-17T15:41:49.234Z",
+      "maison": "Mon âme a attendu l'opprobre et la misère ; j'ai attendu quelqu'un qui s'attriste avec moi, et il n'y en avait pas ; quelqu'un qui console, et je n'ai trouvé personne."
+    },
+    "68:22": {
+      "sources": [],
+      "by": "Admin",
+      "at": "2026-07-17T15:41:49.240Z",
+      "maison": "Et ils ont donné pour ma nourriture du fiel, et dans ma soif ils m'ont abreuvé de vinaigre."
+    },
+    "68:23": {
+      "sources": [],
+      "by": "Admin",
+      "at": "2026-07-17T15:41:49.245Z",
+      "maison": "Que leur table devienne devant eux un piège, et une rétribution, et un scandale."
+    },
+    "68:24": {
+      "sources": [],
+      "by": "Admin",
+      "at": "2026-07-17T15:41:49.251Z",
+      "maison": "Que leurs yeux soient enténébrés, pour ne pas voir ; et courbe leur dos pour toujours."
+    },
+    "68:25": {
+      "sources": [],
+      "by": "Admin",
+      "at": "2026-07-17T15:41:49.257Z",
+      "maison": "Répands sur eux ta colère, et que la fureur de ta colère les saisisse."
+    },
+    "68:26": {
+      "sources": [],
+      "by": "Admin",
+      "at": "2026-07-17T15:41:49.262Z",
+      "maison": "Que leur demeure devienne déserte, et que dans leurs tentes il n'y ait pas d'habitant."
+    },
+    "68:27": {
+      "sources": [],
+      "by": "Admin",
+      "at": "2026-07-17T15:41:49.267Z",
+      "maison": "Parce que celui que toi, tu as frappé, ils l'ont persécuté, et ils ont ajouté à la douleur de mes blessures."
+    },
+    "68:28": {
+      "sources": [],
+      "by": "Admin",
+      "at": "2026-07-17T15:41:49.273Z",
+      "maison": "Ajoute l'iniquité à leur iniquité, et qu'ils n'entrent pas dans ta justice."
+    },
+    "68:29": {
+      "sources": [],
+      "by": "Admin",
+      "at": "2026-07-17T15:41:49.278Z",
+      "maison": "Qu'ils soient effacés du livre des vivants, et qu'avec les justes ils ne soient pas inscrits."
+    },
+    "68:30": {
+      "sources": [],
+      "by": "Admin",
+      "at": "2026-07-17T15:41:49.283Z",
+      "maison": "Je suis mendiant et souffrant ; le salut de ta face, ô Dieu, m'a secouru."
+    },
+    "68:31": {
+      "sources": [],
+      "by": "Admin",
+      "at": "2026-07-17T15:41:49.289Z",
+      "maison": "Je louerai le nom de mon Dieu par un cantique, je le magnifierai par la louange."
+    },
+    "68:32": {
+      "sources": [],
+      "by": "Admin",
+      "at": "2026-07-17T15:41:49.294Z",
+      "maison": "Et cela plaira à Dieu plus qu'un jeune veau portant cornes et sabots."
+    },
+    "68:33": {
+      "sources": [],
+      "by": "Admin",
+      "at": "2026-07-17T15:41:49.300Z",
+      "maison": "Que les mendiants voient et se réjouissent ; cherchez Dieu, et votre âme vivra."
+    },
+    "68:34": {
+      "sources": [],
+      "by": "Admin",
+      "at": "2026-07-17T15:41:49.305Z",
+      "maison": "Car le Seigneur a exaucé les pauvres, et il n'a pas méprisé ses enchaînés."
+    },
+    "68:35": {
+      "sources": [],
+      "by": "Admin",
+      "at": "2026-07-17T15:41:49.311Z",
+      "maison": "Que les cieux et la terre le louent, la mer et tout ce qui rampe en elle."
+    },
+    "68:36": {
+      "sources": [],
+      "by": "Admin",
+      "at": "2026-07-17T15:41:49.317Z",
+      "maison": "Car Dieu sauvera Sion, et les villes de la Judée seront rebâties ; et ils habiteront là, et ils en hériteront."
+    },
+    "68:37": {
+      "sources": [],
+      "by": "Admin",
+      "at": "2026-07-17T15:41:49.322Z",
+      "maison": "Et la semence de ses serviteurs la possédera, et ceux qui aiment son nom y dresseront leur tente."
     }
   },
   "isa": {
@@ -7309,6 +8029,284 @@
       ],
       "by": "Βιβλίον",
       "at": "2026-07-16T14:33:27.194Z"
+    }
+  },
+  "dan": {
+    "3:1": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T13:20:57.444Z",
+      "maison": "La dix-huitième année de son règne, le roi Nabuchodonosor fit une statue d’or, haute de soixante coudées et large de six coudées, et l’érigea dans la plaine de Déira, dans la province de Babylone."
+    },
+    "3:2": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T13:20:57.458Z",
+      "maison": "Il envoya rassembler les magistrats, les généraux, les gouverneurs locaux, les dirigeants, les tyrans, les détenteurs de l’autorité et tous les chefs des provinces, afin qu’ils viennent à l’inauguration de la statue qu’avait érigée le roi Nabuchodonosor."
+    },
+    "3:3": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T13:20:57.473Z",
+      "maison": "Les gouverneurs locaux, les magistrats, les généraux, les dirigeants, les grands tyrans, les détenteurs de l’autorité et tous les chefs des provinces se rassemblèrent pour l’inauguration de la statue qu’avait érigée le roi Nabuchodonosor, et ils se tinrent devant elle."
+    },
+    "3:12": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T13:20:57.489Z",
+      "maison": "Il y a des Juifs que tu as établis sur les affaires de la province de Babylone, Sidrach, Misach et Abdénago. Ces hommes n’ont pas obéi à ton décret, ô roi : ils ne servent pas tes dieux et n’adorent pas la statue d’or que tu as érigée."
+    },
+    "3:17": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T13:20:57.501Z",
+      "maison": "Car il existe un Dieu que nous servons, capable de nous retirer de la fournaise ardente ; et de tes mains, ô roi, il nous délivrera."
+    },
+    "3:21": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T13:20:57.515Z",
+      "maison": "Alors ces hommes furent liés avec leurs pantalons, leurs tiares, leurs jambières et leurs vêtements, puis jetés au milieu de la fournaise ardente."
+    },
+    "3:26": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T13:20:57.529Z",
+      "maison": "Béni sois-tu, Seigneur, Dieu de nos pères, et sois loué ; que ton nom soit glorifié dans tous les siècles."
+    },
+    "3:27": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T13:20:57.550Z",
+      "maison": "Car tu es juste dans tout ce que tu nous as fait ; toutes tes œuvres sont véritables, tes voies sont droites, et tous tes jugements sont vérité."
+    },
+    "3:28": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T13:20:57.584Z",
+      "maison": "Tu as fait des jugements de vérité en tout ce que tu as fait venir sur nous et sur Jérusalem, la ville sainte de nos pères, car c’est en vérité et en justice que tu as fait venir tout cela à cause de nos péchés."
+    },
+    "3:29": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T13:20:57.606Z",
+      "maison": "Car nous avons péché et agi sans loi en nous éloignant de toi ; nous avons gravement péché en toutes choses et n’avons pas écouté tes commandements."
+    },
+    "3:30": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T13:20:57.619Z",
+      "maison": "Nous ne les avons pas gardés et n’avons pas fait ce que tu nous avais commandé, afin que tout aille bien pour nous."
+    },
+    "3:31": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T13:20:57.626Z",
+      "maison": "Tout ce que tu as fait venir sur nous, tout ce que tu nous as fait, tu l’as fait par un jugement véritable."
+    },
+    "3:32": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T13:20:57.635Z",
+      "maison": "Tu nous as livrés aux mains d’ennemis sans loi, d’odieux rebelles, et à un roi injuste, le plus mauvais de toute la terre."
+    },
+    "3:33": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T13:20:57.642Z",
+      "maison": "Et maintenant, nous ne pouvons plus ouvrir la bouche : la honte et l’opprobre sont tombés sur tes serviteurs et sur ceux qui te révèrent."
+    },
+    "3:34": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T13:20:57.649Z",
+      "maison": "À cause de ton nom, ne nous livre pas entièrement et ne romps pas ton alliance."
+    },
+    "3:35": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T13:20:57.655Z",
+      "maison": "Ne retire pas de nous ta miséricorde, à cause d’Abraham, aimé de toi, d’Isaac, ton serviteur, et d’Israël, ton saint."
+    },
+    "3:36": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T13:20:57.664Z",
+      "maison": "À qui tu as parlé, en disant que tu multiplierais leur semence comme les étoiles du ciel et comme le sable au bord de la mer."
+    },
+    "3:37": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T13:20:57.671Z",
+      "maison": "Car, Maître, nous sommes devenus moins nombreux que toutes les nations et nous sommes aujourd’hui humiliés sur toute la terre à cause de nos péchés."
+    },
+    "3:38": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T13:20:57.678Z",
+      "maison": "En ce temps, il n’y a ni prince, ni prophète, ni dirigeant, ni holocauste, ni sacrifice, ni offrande, ni encens, ni lieu où présenter des prémices devant toi et trouver miséricorde."
+    },
+    "3:39": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T13:20:57.685Z",
+      "maison": "Mais puissions-nous être accueillis avec une âme brisée et un esprit d’humiliation, comme par des holocaustes de béliers et de taureaux et par des myriades d’agneaux gras."
+    },
+    "3:40": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T13:20:57.692Z",
+      "maison": "Qu’ainsi notre sacrifice soit aujourd’hui devant toi, afin que nous te suivions jusqu’au bout, car ceux qui mettent leur confiance en toi ne seront pas couverts de honte."
+    },
+    "3:41": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T13:20:57.701Z",
+      "maison": "Et maintenant nous te suivons de tout notre cœur, nous te craignons et cherchons ta face ; ne nous couvre pas de honte."
+    },
+    "3:42": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T13:20:57.708Z",
+      "maison": "Mais agis envers nous selon ton indulgence et selon l’abondance de ta miséricorde."
+    },
+    "3:43": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T13:20:57.716Z",
+      "maison": "Retire-nous selon tes merveilles et donne gloire à ton nom, Seigneur."
+    },
+    "3:44": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T13:20:57.725Z",
+      "maison": "Qu’ils soient confondus, tous ceux qui font du mal à tes serviteurs ; qu’ils soient couverts de honte, privés de toute puissance et domination, et que leur force soit brisée."
+    },
+    "3:45": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T13:20:57.734Z",
+      "maison": "Qu’ils sachent que toi, tu es le Seigneur, le seul Dieu, glorieux sur tout le monde habité."
+    },
+    "3:48": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T13:20:57.745Z",
+      "maison": "Elle se répandit et brûla ceux des Chaldéens qu’elle trouva autour de la fournaise."
+    },
+    "3:52": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T13:20:57.756Z",
+      "maison": "Béni sois-tu, Seigneur, Dieu de nos pères, loué et infiniment exalté dans tous les siècles. Béni soit le saint nom de ta gloire, célébré et infiniment exalté dans tous les siècles."
+    },
+    "3:53": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T13:20:57.765Z",
+      "maison": "Béni sois-tu dans le temple de ta sainte gloire, au-dessus de toute louange et de toute gloire dans tous les siècles."
+    },
+    "3:54": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T13:20:57.773Z",
+      "maison": "Béni sois-tu sur le trône de ton royaume, infiniment loué et exalté dans tous les siècles."
+    },
+    "3:55": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T13:20:57.781Z",
+      "maison": "Béni sois-tu, toi qui regardes les abîmes et sièges sur les chérubins, infiniment loué et exalté dans tous les siècles."
+    },
+    "3:56": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T13:20:57.789Z",
+      "maison": "Béni sois-tu dans le firmament du ciel, chanté et glorifié dans tous les siècles."
+    },
+    "3:60": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T13:20:57.797Z",
+      "maison": "Toutes les eaux qui êtes au-dessus du ciel, bénissez le Seigneur ; chantez-le et exaltez-le infiniment dans tous les siècles."
+    },
+    "3:61": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T13:20:57.807Z",
+      "maison": "Toutes les puissances, bénissez le Seigneur ; chantez-le et exaltez-le infiniment dans tous les siècles."
+    },
+    "3:68": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T13:20:57.823Z",
+      "maison": "Rosées et chutes de neige, bénissez le Seigneur ; chantez-le et exaltez-le infiniment dans tous les siècles."
+    },
+    "3:69": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T13:20:57.838Z",
+      "maison": "Gel et froid, bénissez le Seigneur ; chantez-le et exaltez-le infiniment dans tous les siècles."
+    },
+    "3:79": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T13:20:57.852Z",
+      "maison": "Monstres marins et tout ce qui se meut dans les eaux, bénissez le Seigneur ; chantez-le et exaltez-le infiniment dans tous les siècles."
+    },
+    "3:84": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T13:20:57.865Z",
+      "maison": "Prêtres du Seigneur, bénissez le Seigneur ; chantez-le et exaltez-le infiniment dans tous les siècles."
+    },
+    "3:85": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T13:20:57.880Z",
+      "maison": "Serviteurs du Seigneur, bénissez le Seigneur ; chantez-le et exaltez-le infiniment dans tous les siècles."
+    },
+    "3:88": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T13:20:57.899Z",
+      "maison": "Ananias, Azarias et Misaël, bénissez le Seigneur ; chantez-le et exaltez-le infiniment dans tous les siècles, car il nous a retirés de l’Hadès, sauvés de la main de la mort, délivrés du milieu de la flamme ardente de la fournaise et délivrés du milieu du feu."
+    },
+    "3:89": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T13:20:57.910Z",
+      "maison": "Rendez hommage au Seigneur, car il est bon, car sa miséricorde est pour l’éternité."
+    },
+    "3:90": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T13:20:57.919Z",
+      "maison": "Vous tous qui révérez le Seigneur, bénissez le Dieu des dieux ; chantez-le et rendez-lui hommage, car sa miséricorde est pour l’éternité."
+    },
+    "3:92": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T13:20:57.928Z",
+      "maison": "Et le roi dit : Voici que je vois quatre hommes déliés, marchant au milieu du feu sans subir aucun dommage, et l’aspect du quatrième ressemble à un fils de Dieu."
+    },
+    "3:93": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T13:20:57.936Z",
+      "maison": "Alors Nabuchodonosor s’approcha de l’ouverture de la fournaise ardente et dit : Sidrach, Misach et Abdénago, serviteurs du Dieu Très-Haut, sortez et venez ici ! Et Sidrach, Misach et Abdénago sortirent du milieu du feu."
+    },
+    "3:96": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T13:20:57.944Z",
+      "maison": "Je publie ce décret : tout peuple, toute tribu ou toute langue qui proférera un blasphème contre le Dieu de Sidrach, Misach et Abdénago sera voué à la perdition, et ses maisons au pillage, car il n’est pas d’autre dieu capable de délivrer ainsi."
+    },
+    "3:97": {
+      "sources": [],
+      "by": "Corentin Renard",
+      "at": "2026-07-21T13:20:57.954Z",
+      "maison": "Alors le roi fit prospérer Sidrach, Misach et Abdénago dans la province de Babylone et les jugea dignes de diriger tous les Juifs de son royaume."
     }
   }
 }

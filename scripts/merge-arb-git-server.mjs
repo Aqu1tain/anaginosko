@@ -6,7 +6,10 @@
 //   2. entrée serveur absente de git-active :
 //        - présente dans git._archived                -> RETIRÉE (git l'a archivée exprès)
 //        - sinon (travail frais de Biblion)           -> CONSERVÉE + capturée (--capture)
-//   3. ref présente des deux côtés, sources DIFFÉRENTES -> CONFLIT BLOQUANT (refs nommées, exit 1)
+//   3. ref présente des deux côtés, sources DIFFÉRENTES, arbitrée avec --prev (dernier git déployé) :
+//        - serveur inchangé depuis ce git              -> git l'emporte (git a évolué)
+//        - git inchangé, serveur retravaillé           -> CONSERVÉE + capturée (travail frais)
+//        - les deux ont changé, ou pas de --prev       -> CONFLIT BLOQUANT (refs nommées, exit 1)
 // --block-fresh : traite aussi le travail frais non versionné comme bloquant (usage PROD :
 //   force à capturer dans git avant de déployer).
 //
@@ -43,8 +46,8 @@ for (const b of Object.keys(arch)) { if (b.startsWith("_") || b === "archivedAt"
 
 // Dernier git-actif déployé (snapshot serveur) : sert à distinguer « supprimé de git-actif
 // sans archiver » (suppression sèche, INTERDITE) de « jamais vu par git » (frais Biblion).
-const prevActive = new Set();
-if (PREV && fs.existsSync(PREV)) { const p = JSON.parse(fs.readFileSync(PREV, "utf8")); for (const b of Object.keys(p).filter(isBook)) for (const r of Object.keys(p[b])) prevActive.add(`${b}:::${r}`); }
+const prevActive = new Map(); // "book ref" -> entrée du dernier git déployé (base de la fusion à trois)
+if (PREV && fs.existsSync(PREV)) { const p = JSON.parse(fs.readFileSync(PREV, "utf8")); for (const b of Object.keys(p).filter(isBook)) for (const r of Object.keys(p[b])) prevActive.set(`${b}:::${r}`, p[b][r]); }
 
 // merged commence par git-active (source de vérité), en préservant les métas git.
 const merged = {};
@@ -56,7 +59,7 @@ for (const [, { book, ref, entry }] of gitActive) { (merged[book] = merged[book]
 // absolue : quand Biblion ou un admin décide, ça prime sur toute campagne machine.
 const isMachine = (e) => !e || !e.by;
 
-const conflicts = [], fresh = [], removed = [], installed = [], illegalDeletions = [], humanWins = [];
+const conflicts = [], fresh = [], removed = [], installed = [], illegalDeletions = [], humanWins = [], gitWins = [];
 for (const [, { book, ref }] of gitActive) if (!(server[book] && server[book][ref])) installed.push(`${book} ${ref}`);
 
 for (const b of Object.keys(server).filter(isBook)) {
@@ -68,7 +71,10 @@ for (const b of Object.keys(server).filter(isBook)) {
         // Décision HUMAINE côté serveur contre CAMPAGNE MACHINE côté git : l'humain gagne
         // automatiquement, on installe la version serveur (jamais bloquant, jamais perdu).
         if (isMachine(gitEntry)) { merged[b][r] = server[b][r]; humanWins.push(`${b} ${r}`); continue; }
-        // Humain contre humain (les deux signés) : vrai conflit, résolution manuelle.
+        // Humain contre humain : la base (dernier git déployé) dit quel côté a bougé.
+        const base = prevActive.has(key) ? srcOf(prevActive.get(key)) : null;
+        if (base === srcOf(server[b][r])) { gitWins.push(`${b} ${r}`); continue; }
+        if (base === srcOf(gitEntry)) { merged[b][r] = server[b][r]; fresh.push({ book: b, ref: r, entry: server[b][r] }); continue; }
         conflicts.push({ book: b, ref: r, git: gitEntry.sources, serveur: server[b][r].sources });
       }
       continue; // identique : déjà posé par git
@@ -83,8 +89,9 @@ for (const b of Object.keys(server).filter(isBook)) {
   }
 }
 
-console.log(`fusion arbitrage : installées ${installed.length} · retirées(archivées) ${removed.length} · fraîches Biblion ${fresh.length} · humain>machine ${humanWins.length} · conflits ${conflicts.length} · suppressions sèches ${illegalDeletions.length}`);
+console.log(`fusion arbitrage : installées ${installed.length} · mises à jour par git ${gitWins.length} · retirées(archivées) ${removed.length} · fraîches Biblion ${fresh.length} · humain>machine ${humanWins.length} · conflits ${conflicts.length} · suppressions sèches ${illegalDeletions.length}`);
 if (humanWins.length) console.log(`  humain prime sur campagne machine: ${humanWins.join(", ")}`);
+if (gitWins.length) console.log(`  git a évolué, serveur inchangé: ${gitWins.join(", ")}`);
 if (removed.length) console.log(`  retirées: ${removed.join(", ")}`);
 if (fresh.length) console.log(`  fraîches (conservées${CAPTURE ? ", capturées" : ""}): ${fresh.map((f) => f.book + " " + f.ref).join(", ")}`);
 

@@ -35,6 +35,8 @@ jobs:
         run: npm run test:definitions
       - name: Test LXX materializer grammar
         run: node tests/lxx-materialize.test.mjs
+      - name: Test arbitration merge
+        run: node tests/merge-arb-git-server.test.mjs
       - name: Build application without rewriting corpora
         run: npx next build
       - name: Reject uncommitted application drift
