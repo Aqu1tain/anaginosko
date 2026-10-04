@@ -12,8 +12,9 @@ const BASE = "https://anaginosko.fr";
 export const revalidate = 3600;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const lastModified = new Date();
-  const url = (p: string) => ({ url: `${BASE}${p}`, lastModified });
+  // Pas de date pour les pages de corpus : une date fictive, renouvelée à chaque
+  // régénération, ferait recrawler les 20 000 URL toutes les heures.
+  const url = (p: string) => ({ url: `${BASE}${p}` });
 
   const articleUrls: MetadataRoute.Sitemap = listPublished().map((a) => ({
     url: `${BASE}/articles/${a.slug}`,
