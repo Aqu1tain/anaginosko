@@ -25,6 +25,8 @@ type Overview = { books: { book: string; label: string; total: number; chapters:
 // révocation serait réinstallée depuis git à la fusion suivante).
 type Assign = { kind: "band"; index: number } | { kind: "pick"; ch: number; v: number; text: string } | { kind: "extract"; ch: number; v: number; from: number; to: number } | { kind: "orphan" } | { kind: "maison"; text: string } | { kind: "auto" } | { kind: "keep" };
 
+const closeMenus = () => (document.activeElement as HTMLElement | null)?.blur();
+
 // ───────────────────────── Carte des erreurs (accueil) ─────────────────────────
 export function ErrorMap({ onOpen }: { onOpen: (book: string, ch: number) => void }) {
   const [data, setData] = useState<Overview | null>(null);
@@ -143,6 +145,13 @@ export function ChapterRealign({ book, ch, focusRef, prevCh, nextCh, onNavigate,
     window.addEventListener("beforeunload", guard);
     return () => window.removeEventListener("beforeunload", guard);
   }, [unsaved]);
+  // Ctrl/Cmd+S enregistre, comme dans un éditeur de texte.
+  const saveRef = useRef<() => void>(() => {});
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if ((e.metaKey || e.ctrlKey) && e.key === "s") { e.preventDefault(); saveRef.current(); } };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
 
   if (!data)
     return (
@@ -252,38 +261,46 @@ export function ChapterRealign({ book, ch, focusRef, prevCh, nextCh, onNavigate,
       setBusy(false);
     }
   };
+  saveRef.current = () => { if (dirty && !busy) save(); };
 
   return (
     <div className="fixed inset-0 z-[80] flex justify-end">
       <div className="absolute inset-0 bg-black/40" onClick={tryClose} />
       <div className="relative h-full w-full max-w-4xl overflow-y-auto bg-base-100 p-5 shadow-2xl">
-        <div className="sticky -top-5 z-10 -mx-5 -mt-5 flex flex-wrap items-center gap-2 border-b border-base-200 bg-base-100 px-5 py-3">
-          <div className="join">
-            <button className="btn btn-sm btn-ghost join-item" disabled={!prevCh || busy} title="Chapitre précédent" onClick={() => prevCh && tryNavigate(prevCh)}>←</button>
-            <h2 className="join-item px-1 text-lg font-bold">{BOOK[book] ?? book} {ch}</h2>
-            <button className="btn btn-sm btn-ghost join-item" disabled={!nextCh || busy} title="Chapitre suivant" onClick={() => nextCh && tryNavigate(nextCh)}>→</button>
-          </div>
-          <span className="text-xs text-base-content/60">Grec fixe à gauche ; le français se recale à droite.</span>
-          <div className="ml-auto flex flex-wrap items-center gap-2">
-            {range.lo > chBounds.lo || range.hi < chBounds.hi ? null : (
-              <div className="join">
-                {hasCh(ch - 1) && <button className="btn btn-xs join-item" title="Le bon français vient du chapitre précédent" onClick={() => extend(-1)}>← inclure ch. {ch - 1}</button>}
-                {hasCh(ch + 1) && <button className="btn btn-xs join-item" title="Le bon français vient du chapitre suivant" onClick={() => extend(1)}>inclure ch. {ch + 1} →</button>}
-              </div>
-            )}
-            {(range.lo < chBounds.lo || range.hi > chBounds.hi) && <span className="badge badge-info badge-sm" title="La bande déborde sur un chapitre voisin">bande étendue</span>}
+        <div className="sticky -top-5 z-10 -mx-5 -mt-5 border-b border-base-200 bg-base-100 px-5 py-3">
+          <div className="flex flex-wrap items-center gap-2">
             <div className="join">
-              <button className="btn btn-sm join-item" title="Toute la traduction descend d'un cran (le premier verset reste sans traduction)" onClick={() => slide(0, -1)}>traduction ↓</button>
-              <button className="btn btn-sm join-item" title="Toute la traduction monte d'un cran" onClick={() => slide(0, 1)}>↑</button>
+              <button className="btn btn-sm btn-ghost join-item" disabled={!prevCh || busy} title="Chapitre précédent" onClick={() => prevCh && tryNavigate(prevCh)}>←</button>
+              <h2 className="join-item px-1 text-lg font-bold">{BOOK[book] ?? book} {ch}</h2>
+              <button className="btn btn-sm btn-ghost join-item" disabled={!nextCh || busy} title="Chapitre suivant" onClick={() => nextCh && tryNavigate(nextCh)}>→</button>
             </div>
             {(() => { const remaining = data.errorRefs.filter((r) => !valid.has(r)); return remaining.length > 0 ? (
-              <button className="btn btn-sm btn-success btn-outline" title="Marquer tout ce chapitre comme vérifié : il ne remontera plus comme erreur" disabled={busy}
+              <button className="btn btn-xs btn-success btn-outline" title="Marquer tout ce chapitre comme vérifié : il ne remontera plus comme erreur" disabled={busy}
                 onClick={() => setValidated(remaining, true)}>
                 ✓ tout ce chapitre est bon ({remaining.length})
               </button>
             ) : <span className="badge badge-success badge-sm">chapitre vérifié</span>; })()}
-            <button className="btn btn-sm btn-primary" disabled={busy || !dirty} onClick={save}>Enregistrer{dirty ? ` (${dirty})` : ""}</button>
-            <button className="btn btn-sm btn-ghost" onClick={tryClose}>Fermer</button>
+            <div className="ml-auto flex items-center gap-2">
+              <button className="btn btn-sm btn-primary" disabled={busy || !dirty} onClick={save} title="Ctrl+S">Enregistrer{dirty ? ` (${dirty})` : ""}</button>
+              <button className="btn btn-sm btn-ghost" onClick={tryClose}>Fermer</button>
+            </div>
+          </div>
+          <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-base-content/55">
+            <span>Le grec est fixe ; c’est le français qui se recale.</span>
+            <span className="ml-auto flex flex-wrap items-center gap-2">
+              {range.lo > chBounds.lo || range.hi < chBounds.hi ? null : (
+                <span className="join">
+                  {hasCh(ch - 1) && <button className="btn btn-xs join-item" title="Le bon français vient du chapitre précédent" onClick={() => extend(-1)}>← inclure ch. {ch - 1}</button>}
+                  {hasCh(ch + 1) && <button className="btn btn-xs join-item" title="Le bon français vient du chapitre suivant" onClick={() => extend(1)}>inclure ch. {ch + 1} →</button>}
+                </span>
+              )}
+              {(range.lo < chBounds.lo || range.hi > chBounds.hi) && <span className="badge badge-info badge-sm" title="La bande déborde sur un chapitre voisin">bande étendue</span>}
+              <span>Décaler toute la traduction</span>
+              <span className="join">
+                <button className="btn btn-xs join-item" title="Toute la traduction monte d'un cran" onClick={() => slide(0, 1)}>↑</button>
+                <button className="btn btn-xs join-item" title="Toute la traduction descend d'un cran (le premier verset reste sans traduction)" onClick={() => slide(0, -1)}>↓</button>
+              </span>
+            </span>
           </div>
         </div>
 
@@ -295,12 +312,12 @@ export function ChapterRealign({ book, ch, focusRef, prevCh, nextCh, onNavigate,
             const fr = frenchOf(i);
             const isDirty = changed(i);
             return (
-              <div key={g.ref} id={`arb-v-${g.ref}`} className={`grid grid-cols-2 gap-3 rounded-box border p-2.5 ${g.ref === focusRef ? "ring-2 ring-secondary/50 " : ""}${isDirty ? "border-primary bg-primary/5" : valid.has(g.ref) ? "border-success/40 bg-success/5" : g.flagged ? "border-warning/50" : "border-base-200"}`}>
+              <div key={g.ref} id={`arb-v-${g.ref}`} className={`grid gap-3 rounded-box border p-2.5 sm:grid-cols-2 ${g.ref === focusRef ? "ring-2 ring-secondary/50 " : ""}${isDirty ? "border-primary bg-primary/5" : valid.has(g.ref) ? "border-success/40 bg-success/5" : g.flagged ? "border-warning/50" : "border-base-200"}`}>
                 {/* Colonne GAUCHE : grec (fixe, autorité) */}
                 <div className="min-w-0">
                   <div className="flex items-center gap-1.5">
                     <span className="text-xs font-semibold text-base-content/50">v.{g.v}</span>
-                    {valid.has(g.ref) && <span className="badge badge-success badge-xs" title="Vérifié à la main, c'est bon">vérifié</span>}
+                    <button className={`btn btn-xs ${valid.has(g.ref) ? "btn-success" : "btn-ghost text-success"}`} title="Vérifié, ne plus signaler comme erreur" onClick={() => toggleValid(g.ref)}>{valid.has(g.ref) ? "✓ vérifié" : "c'est bon"}</button>
                     {g.flagged && !valid.has(g.ref) && <span className="badge badge-warning badge-xs" title="Signalé par les lecteurs, à vérifier">à vérifier</span>}
                     {g.overridden && <span className="badge badge-primary badge-xs">{g.by === "Βιβλίον" ? "Biblion" : g.by || "réglé"}</span>}
                   </div>
@@ -308,7 +325,7 @@ export function ChapterRealign({ book, ch, focusRef, prevCh, nextCh, onNavigate,
                 </div>
                 {/* Colonne DROITE : français. Flèches de BLOC toujours visibles (le bloc collé
                     monte/descend dans le vide voisin ; désactivées s'il n'y a pas de place). */}
-                <div className="min-w-0 border-l border-base-200 pl-3">
+                <div className="min-w-0 border-t border-base-200 pt-2 sm:border-l sm:border-t-0 sm:pl-3 sm:pt-0">
                   <div className="flex items-center gap-1.5">
                     <span className="text-[0.7rem] uppercase tracking-wide text-base-content/45">{fr.tag}{fr.tag === "maison" && g.by ? ` · ${g.by === "Βιβλίον" ? "Biblion" : g.by}` : ""}</span>
                     <span className="join ml-auto">
@@ -344,13 +361,17 @@ export function ChapterRealign({ book, ch, focusRef, prevCh, nextCh, onNavigate,
                     </>
                   )}
                   {extractMode?.i !== i && pickMode !== i && (
-                    <div className="mt-1 flex flex-wrap gap-1">
-                      <button className="btn btn-ghost btn-xs" title="Choisir n'importe quel verset Giguet du livre (cherry-pick)" onClick={() => setPickMode(i)}>choisir…</button>
-                      {assignedV(i) && <button className="btn btn-ghost btn-xs text-accent" title="Ne lier qu'une partie du verset Giguet (Giguet fusionne parfois deux versets)" onClick={() => setExtractMode({ i, start: null })}>extrait</button>}
-                      <MaisonInline current={assign[i].kind === "maison" ? (assign[i] as { text: string }).text : g.french || ""} giguet={g.autoText} onSet={(t) => setRow(i, { kind: "maison", text: t })} />
-                      <button className="btn btn-ghost btn-xs" onClick={() => setRow(i, { kind: "orphan" })}>orphelin</button>
+                    <div className="mt-1.5 flex flex-wrap items-center gap-1">
+                      <MaisonInline current={assign[i].kind === "maison" ? (assign[i] as { text: string }).text : g.french || ""} original={g.autoText} onSet={(t) => setRow(i, { kind: "maison", text: t })} />
                       {g.overridden && assign[i].kind !== "auto" && <button className="btn btn-ghost btn-xs" title="Abandonner ce réglage et reprendre le lien automatique vers Giguet" onClick={() => setRow(i, { kind: "auto" })}>revenir à Giguet</button>}
-                      <button className={`btn btn-xs ${valid.has(g.ref) ? "btn-success" : "btn-ghost text-success"}`} title="Vérifié, ne plus signaler comme erreur" onClick={() => toggleValid(g.ref)}>{valid.has(g.ref) ? "✓ vérifié" : "c'est bon"}</button>
+                      <div className="dropdown dropdown-end">
+                        <div tabIndex={0} role="button" className="btn btn-ghost btn-xs">autre lien ▾</div>
+                        <ul tabIndex={0} className="dropdown-content menu z-20 w-64 rounded-box border border-base-200 bg-base-100 p-1 text-xs shadow">
+                          <li><button onClick={() => { closeMenus(); setPickMode(i); }}>Choisir un verset Giguet…</button></li>
+                          {assignedV(i) && <li><button onClick={() => { closeMenus(); setExtractMode({ i, start: null }); }}>Ne garder qu&apos;un extrait du verset</button></li>}
+                          <li><button onClick={() => { closeMenus(); setRow(i, { kind: "orphan" }); }}>Sans traduction (orphelin)</button></li>
+                        </ul>
+                      </div>
                       {isDirty && <button className="btn btn-ghost btn-xs" onClick={() => setRow(i, { ...orig[i] })}>annuler</button>}
                     </div>
                   )}
@@ -470,8 +491,8 @@ function CherryPick({ book, current, defaultCh, onPick, onCancel }: { book: stri
 }
 
 // Traduction maison inline (texte libre servi tel quel). La zone suit la longueur du
-// texte ; Ctrl/Cmd+Entrée valide, Échap annule. Le Giguet d'origine reste sous les yeux.
-function MaisonInline({ current, giguet, onSet }: { current: string; giguet: string | null; onSet: (t: string) => void }) {
+// texte ; Ctrl/Cmd+Entrée valide, Échap annule. La traduction de base reste sous les yeux.
+export function MaisonInline({ current, original, originalLabel = "Giguet", onSet }: { current: string; original: string | null; originalLabel?: string; onSet: (t: string) => void }) {
   const [open, setOpen] = useState(false);
   const [text, setText] = useState(current);
   const area = useRef<HTMLTextAreaElement>(null);
@@ -491,7 +512,7 @@ function MaisonInline({ current, giguet, onSet }: { current: string; giguet: str
           if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) { e.preventDefault(); validate(); }
           if (e.key === "Escape") { e.preventDefault(); setOpen(false); }
         }} />
-      {giguet && <span className="text-xs leading-relaxed text-base-content/45">Giguet : {giguet}</span>}
+      {original && <span className="text-xs leading-relaxed text-base-content/45">{originalLabel} : {original}</span>}
       <span className="flex items-center gap-1">
         <button className="btn btn-primary btn-xs" disabled={!text.trim()} onClick={validate}>ok</button>
         <button className="btn btn-ghost btn-xs" onClick={() => setOpen(false)}>annuler</button>

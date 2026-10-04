@@ -825,14 +825,14 @@ export default function Reader({ text }: { text: Text }) {
         </div>
       )}
 
-      {/* Philologue/admin, LXX : accès direct à l'arbitrage des liens du chapitre lu. */}
-      {isLxx && canAnnotate && parsedRef && (
+      {/* Traducteur : accès direct à l'atelier de traduction du chapitre lu. */}
+      {can(user, "arbitrage") && parsedRef && (
         <p className="mt-4 text-xs">
           <a
-            href={`/admin/arbitrage?book=${parsedRef.book}&ch=${parsedRef.chapter}`}
+            href={`/admin/arbitrage?corpus=${parsedRef.corpus}&book=${parsedRef.book}&ch=${parsedRef.chapter}`}
             className="link text-base-content/60 underline-offset-2"
           >
-            Arbitrer les liens de ce chapitre
+            Traduire ce chapitre dans l’atelier
           </a>
         </p>
       )}

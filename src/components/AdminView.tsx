@@ -228,7 +228,7 @@ export default function AdminView() {
       <NavCard href="/mon-profil" title="Mon profil" desc="Identité et compte" avatar={<Avatar name={user.displayName} photo={photo} size={40} />} />
       {canArticles && <NavCard href="/admin/articles" title="Articles" desc="Mes articles et demandes de relecture" icon={ICON.articles} />}
       {canAccounts && <NavCard href="/admin/comptes" title="Comptes et accès" desc="Rôles, permissions et invitations" icon={ICON.accounts} />}
-      {canArbitrage && <NavCard href="/admin/arbitrage" title="Arbitrage LXX" desc="Liens grec et Giguet" icon={ICON.arbitrage} />}
+      {canArbitrage && <NavCard href="/admin/arbitrage" title="Atelier de traduction" desc="Septante et Nouveau Testament" icon={ICON.arbitrage} />}
     </div>
     <button className="btn btn-ghost btn-sm" onClick={async () => { await logout(); router.push("/"); }}>Se déconnecter</button>
   </div>;
@@ -286,7 +286,7 @@ export default function AdminView() {
         <NavCard href="/mon-profil" title="Mon profil" desc="Photo, bio, liens publics" avatar={<Avatar name={user?.displayName ?? ""} photo={photo} size={40} />} />
         {canArticles && <NavCard href="/admin/articles" title="Articles" desc="Rédiger, relire, publier" icon={ICON.articles} />}
         {canReview && <NavCard href="/admin/livres" title="Introductions de livres" desc="Présentation éditoriale par livre" icon={ICON.books} />}
-        {canArbitrage && <NavCard href="/admin/arbitrage" title="Arbitrage LXX" desc="Liens grec et Giguet" icon={ICON.arbitrage} />}
+        {canArbitrage && <NavCard href="/admin/arbitrage" title="Atelier de traduction" desc="Septante et Nouveau Testament" icon={ICON.arbitrage} />}
         {canAccounts && <NavCard href="/admin/comptes" title="Comptes" desc="Contributeurs, titres, permissions" icon={ICON.accounts} />}
       </div>
 
