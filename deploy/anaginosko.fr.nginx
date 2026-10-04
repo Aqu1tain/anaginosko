@@ -1,7 +1,6 @@
 server {
     server_name anaginosko.fr www.anaginosko.fr;
     root /var/www/anaginosko;
-    index index.html;
 
     gzip on;
     gzip_vary on;
@@ -12,32 +11,53 @@ server {
         root /var/www/html;
     }
 
-    # assets hashés + audio : immuables
-    location ~* ^/(assets|audio)/ {
+    # backend AdonisJS (conteneur Docker, écoute en local uniquement) — inchangé
+    location /api/ {
+        proxy_pass http://127.0.0.1:3900;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 30s;
+    }
+
+    # --- Servis DIRECTEMENT depuis le disque par nginx (gagnent sur le proxy /) ---
+
+    # manifeste audio : cache court (match exact, priorité maximale)
+    location = /audio/manifest.json {
+        expires 5m;
+        add_header Cache-Control "public, max-age=300";
+    }
+
+    # audio mp3 (~30k, ~392 Mo) : immuable, jamais proxifié vers Next
+    location ^~ /audio/ {
         expires 1y;
         add_header Cache-Control "public, immutable";
         access_log off;
     }
 
-    # données NT : revalidation rapide
-    location /nt/ {
+    # données NT : UNIQUEMENT les fichiers .json (lus au build pour le SSG,
+    # fetchés au runtime par le client) sont servis depuis le disque. Les routes
+    # de page (/nt, /nt/jn, /nt/jn/1) NE matchent pas et tombent sur Next.
+    location ~ ^/(nt|lxx)/.+\.json$ {
+        root /var/www/anaginosko;
         expires 5m;
         add_header Cache-Control "public, max-age=300";
+        try_files $uri =404;
     }
 
-    # données LXX (Septante) : revalidation rapide
-    location /lxx/ {
-        expires 5m;
-        add_header Cache-Control "public, max-age=300";
-    }
-
-    # le shell HTML doit rester frais
-    location = /index.html {
-        add_header Cache-Control "no-cache";
-    }
-
+    # --- Tout le reste : l'app Next (SSG/SSR) sur 127.0.0.1:3100 ---
     location / {
-        try_files $uri $uri/ /index.html;
+        limit_req zone=anag_crawlers burst=10 nodelay;
+        limit_req_status 429;
+        proxy_pass http://127.0.0.1:3100;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 60s;
     }
 
     listen 443 ssl; # managed by Certbot
