@@ -19,7 +19,7 @@ export async function GET(req: Request) {
   const greek: Record<number, string[]> = {};
   for (const m of text.mots ?? []) if (m.verse != null) (greek[m.verse] ??= []).push(m.grec);
   const crampon = french?.[ch] ?? {};
-  const house = ntMaison()[book] ?? {};
+  const house = (await ntMaison())[book] ?? {};
   const verses = Object.keys(greek).map(Number).sort((a, b) => a - b).map((v) => {
     const ref = `${ch}:${v}`;
     return { v, ref, greek: greek[v].join(" "), crampon: crampon[v] ?? null, maison: house[ref]?.maison ?? null, by: house[ref]?.by ?? null };

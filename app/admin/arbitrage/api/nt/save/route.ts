@@ -6,8 +6,8 @@ import { saveNtMaison } from "@/lib/ntMaison";
 
 export const dynamic = "force-dynamic";
 
-// Enregistre un lot de traductions maison d'un chapitre du NT. `maison: null` rend le
-// verset au néo-Crampon. Tout le lot est validé avant la moindre écriture.
+// Enregistre un lot de traductions maison d'un chapitre du NT dans l'API. `maison: null`
+// rend le verset au néo-Crampon. Les versets sont vérifiés contre le grec avant l'envoi.
 type Change = { ref?: unknown; maison?: unknown };
 
 export async function POST(req: Request) {
@@ -32,7 +32,8 @@ export async function POST(req: Request) {
     if (!verses.size || unknown.length) return NextResponse.json({ errors: [`Versets grecs inconnus : ${unknown.map((u) => u.ref).join(", ") || `${book} ${ch}`}`] }, { status: 422 });
   }
 
-  saveNtMaison(book, parsed, auth.credit || "Βιβλίον");
+  const saved = await saveNtMaison(req.headers.get("authorization") ?? "", book, parsed);
+  if (saved.status >= 300) return NextResponse.json(saved.body ?? { error: "Enregistrement refusé par l'API." }, { status: saved.status });
   for (const ch of chapters) revalidatePath(`/nt/${book}/${ch}`);
-  return NextResponse.json({ ok: true, applied: parsed.length });
+  return NextResponse.json({ ok: true, applied: saved.body?.applied ?? parsed.length });
 }

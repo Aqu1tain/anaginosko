@@ -99,9 +99,9 @@ export async function loadChapterFs(book: string, chapter: number, c?: CorpusCon
   const maison: Record<string, string> = {};
   for (const k of Object.keys(maisonAll)) { const [mc, mv] = k.split(":"); if (mc === String(chapter)) maison[mv] = maisonAll[k]; }
   const francais = { ...(french?.[chapter] ?? {}) };
-  // NT : les traductions maison (ARB_DIR) remplacent le néo-Crampon verset par verset.
+  // NT : les traductions maison (base de l'API) remplacent le néo-Crampon verset par verset.
   if ((c?.id ?? "nt") === "nt") {
-    for (const [ref, entry] of Object.entries(ntMaison()[book] ?? {})) {
+    for (const [ref, entry] of Object.entries((await ntMaison())[book] ?? {})) {
       const [mc, mv] = ref.split(":");
       if (mc !== String(chapter)) continue;
       francais[mv] = entry.maison;
