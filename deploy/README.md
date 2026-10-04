@@ -15,6 +15,8 @@ L'app Next.js (standalone) tourne sous systemd (`anaginosko-web`, utilisateur
 - `/var/www/anaginosko/audio` : mp3, jamais touchés par le déploiement.
 
 Avant tout `deploy_corpus`, versionner l'arbitrage de prod dans `data/lxx-arbitration.json`.
+`/var/www/anaginosko/lxx` appartient à `anag-web` (écritures de l'arbitrage) : `deploy_corpus`
+y échoue sans préparation par l'administrateur. Pour le seul NT, lancer `deploy_nt`.
 
 ## nginx
 
