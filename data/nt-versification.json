@@ -1,0 +1,36 @@
+{
+  "_note": "Corrections de versification du néo-Crampon (fra_ncl) vers la numérotation du grec SBLGNT. Valeurs explicites, donc application idempotente : scripts/apply-nt-versification.mjs, rejouée par fetch-nt-french.mjs. set = texte français du verset grec, drop = verset français sans équivalent grec.",
+  "mt": {
+    "17": {
+      "set": {
+        "14": "Jésus étant retourné vers le peuple, un homme s’approcha, et, tombant à genoux devant lui,",
+        "15": "il lui dit: « Seigneur, aie pitié de mon fils qui est lunatique et qui souffre cruellement; il tombe souvent dans le feu et souvent dans l’eau.",
+        "16": "Je l’ai présenté à tes disciples, et ils n’ont pas su le guérir. »",
+        "17": "Jésus répondit: « Ô race incrédule et perverse, jusques à quand serai-je avec vous? Jusques à quand vous supporterai-je? Amenez-le-moi ici. »",
+        "18": "Et Jésus commanda au démon avec menace, et le démon sortit de l’enfant, qui fut guéri à l’heure même.",
+        "19": "Alors les disciples vinrent trouver Jésus en particulier, et lui dirent: « Pourquoi n’avons-nous pas pu le chasser? »",
+        "20": "Jésus leur dit: « À cause de votre manque de foi. En vérité, je vous le dis, si vous avez de la foi comme un grain de sénevé, vous direz à cette montagne: Passe d’ici là, et elle y passera, et rien ne vous sera impossible.",
+        "21": "Mais ce genre de démon n’est chassé que par le jeûne et la prière. »",
+        "22": "Comme ils parcouraient la Galilée, Jésus leur dit: « Le Fils de l’homme doit être livré entre les mains des hommes,",
+        "23": "et ils le mettront à mort, et il ressuscitera le troisième jour. » Et ils en furent vivement attristés.",
+        "24": "Lorsqu’ils furent de retour à Capharnaüm, ceux qui recueillaient les didrachmes s’approchèrent de Pierre et lui dirent: « Votre Maître ne paie-t-il pas les didrachmes? » —",
+        "25": "« Oui, » dit Pierre. Et comme ils entraient dans la maison, Jésus le prévenant, lui dit: « Que t’en semble, Simon? De qui les rois de la terre perçoivent-ils des tributs ou le cens? De leurs fils, ou des étrangers? »",
+        "26": "Pierre répondit: « Des étrangers, — Les fils, lui dit Jésus, en sont donc exempts.",
+        "27": "Mais pour ne pas les scandaliser, va à la mer, jette l’hameçon, tire le premier poisson qui montera; puis, ouvrant sa bouche, tu y trouveras un statère. Prends-le et donne-le-leur pour moi et pour toi. »"
+      }
+    }
+  },
+  "mk": {
+    "4": {
+      "set": {
+        "40": "Et il leur dit: « Pourquoi êtes-vous effrayés? N’avez-vous pas encore la foi? »",
+        "41": "Et ils furent saisis d’une grande crainte, et ils se disaient l’un à l’autre: « Qui donc est celui-ci, que le vent et la mer lui obéissent? »"
+      }
+    },
+    "8": {
+      "drop": [
+        "39"
+      ]
+    }
+  }
+}
