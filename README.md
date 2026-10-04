@@ -30,6 +30,16 @@ npm run start    # lance la sortie standalone (node .next/standalone/server.js)
 Pour la review locale avec le backend, `next.config.ts` proxifie `/api` vers
 `http://localhost:3333` en développement.
 
+## Livraison
+
+1. Pousser sur `next` : la CI et le déploiement de la préprod (next.anaginosko.fr) partent seuls.
+2. Tester sur la préprod.
+3. Lancer « Mettre en prod » (onglet Actions, ou `gh workflow run promote.yml`) : `main` avance
+   jusqu'à `next` et la prod se déploie. Refusé si la CI ou la préprod n'est pas verte sur ce commit.
+
+Tout passe par `next`, correctifs urgents compris : pas de PR à ouvrir, pas de fusion vers `main`.
+Quand une évolution du web dépend de l'API, mettre l'API en prod d'abord.
+
 ## Fonctionnalités
 
 - **Nouveau Testament complet** : 27 livres, ~260 chapitres, plus 12 passages
