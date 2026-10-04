@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { notFound } from "next/navigation";
 import {
+  decodeParam,
   lemmaEntryFs,
   loadBooksFs,
   loadCollocationsFs,
@@ -24,9 +25,10 @@ export async function generateMetadata({
   params: Promise<{ lemma: string }>;
 }): Promise<Metadata> {
   const { lemma } = await params;
-  const l = decodeURIComponent(lemma);
-  const entry = await lemmaEntryFs(l);
-  const count = entry ? ` (${entry.count} occurrence${entry.count > 1 ? "s" : ""})` : "";
+  const l = decodeParam(lemma);
+  const entry = l ? await lemmaEntryFs(l) : undefined;
+  if (!l || !entry) return {};
+  const count = ` (${entry.count} occurrence${entry.count > 1 ? "s" : ""})`;
   return {
     title: `${l} · Concordance`,
     description: `Concordance de ${l} dans le Nouveau Testament${count} : répartition par livre, définition (Bailly) et occurrences.`,
@@ -36,20 +38,9 @@ export async function generateMetadata({
 
 export default async function LemmaPage({ params }: { params: Promise<{ lemma: string }> }) {
   const { lemma } = await params;
-  const l = decodeURIComponent(lemma);
-  const entry = await lemmaEntryFs(l);
-
-  if (!entry) {
-    return (
-      <div className="py-20 text-center text-base-content/70">
-        <p className="font-greek text-xl">{l}</p>
-        <p className="mt-2">Lemme introuvable.</p>
-        <Link href="/concordance" className="link link-primary mt-3 inline-block">
-          Toute la concordance
-        </Link>
-      </div>
-    );
-  }
+  const l = decodeParam(lemma);
+  const entry = l ? await lemmaEntryFs(l) : undefined;
+  if (!l || !entry) notFound();
 
   const [occ, dist, books, colloc, lxxEntry, lexicon] = await Promise.all([
     loadOccurrencesFs(entry.oid),
