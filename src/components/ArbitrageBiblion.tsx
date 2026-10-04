@@ -9,10 +9,25 @@ import { LXX_BOOK_NAMES } from "../data/lxx";
 
 const API = "/admin/arbitrage/api";
 const token = () => (typeof window !== "undefined" ? localStorage.getItem("anaginosko:token") : null);
+export class ArbError extends Error {
+  constructor(message: string, readonly errors: string[] = [message]) {
+    super(message);
+  }
+}
+
+// Toute réponse non 2xx lève une ArbError lisible : une session expirée ne doit jamais
+// passer pour un enregistrement réussi.
 export async function arb<T>(p: string, opts?: RequestInit): Promise<T> {
   const r = await fetch(`${API}${p}`, { ...opts, headers: { Authorization: `Bearer ${token()}`, "Content-Type": "application/json", ...(opts?.headers || {}) } });
-  return r.json();
+  const body = await r.json().catch(() => null);
+  if (r.ok) return body as T;
+  if (r.status === 401) throw new ArbError("Session expirée : reconnecte-toi dans un autre onglet puis réessaie. Ton travail à l'écran est conservé.");
+  const message = body?.error || `Erreur du serveur (${r.status}).`;
+  throw new ArbError(message, Array.isArray(body?.errors) ? body.errors : [message]);
 }
+
+export const arbErrors = (e: unknown): string[] =>
+  e instanceof ArbError ? e.errors : ["Serveur injoignable. Réessaie ; ton travail à l'écran est conservé."];
 
 // Table des noms de livres : la carte canonique complète de la Septante (tous les
 // livres, pas un sous-ensemble codé en dur), partagée avec le lecteur et la concordance.
