@@ -61,7 +61,7 @@ export function ErrorMap({ onOpen }: { onOpen: (book: string, ch: number) => voi
 }
 
 // ───────────────────────── Réalignement deux colonnes ─────────────────────────
-export function ChapterRealign({ book, ch, prevCh, nextCh, onNavigate, onClose }: { book: string; ch: number; prevCh?: number | null; nextCh?: number | null; onNavigate?: (ch: number) => void; onClose: () => void }) {
+export function ChapterRealign({ book, ch, focusRef, prevCh, nextCh, onNavigate, onClose }: { book: string; ch: number; focusRef?: string; prevCh?: number | null; nextCh?: number | null; onNavigate?: (ch: number) => void; onClose: () => void }) {
   const [data, setData] = useState<RealignData | null>(null);
   const [assign, setAssign] = useState<Assign[]>([]);
   const [orig, setOrig] = useState<Assign[]>([]);
@@ -131,6 +131,10 @@ export function ChapterRealign({ book, ch, prevCh, nextCh, onNavigate, onClose }
     setRange({ lo: idx[0] ?? 0, hi: idx[idx.length - 1] ?? d.band.length - 1 });
   }, [book, ch]);
   useEffect(() => { load(); }, [load]);
+
+  useEffect(() => {
+    if (data && focusRef) document.getElementById(`arb-v-${focusRef}`)?.scrollIntoView({ block: "center" });
+  }, [data, focusRef]);
 
   const unsaved = assign.some((a, i) => JSON.stringify(a) !== JSON.stringify(orig[i]));
   useEffect(() => {
@@ -291,7 +295,7 @@ export function ChapterRealign({ book, ch, prevCh, nextCh, onNavigate, onClose }
             const fr = frenchOf(i);
             const isDirty = changed(i);
             return (
-              <div key={g.ref} className={`grid grid-cols-2 gap-3 rounded-box border p-2.5 ${isDirty ? "border-primary bg-primary/5" : valid.has(g.ref) ? "border-success/40 bg-success/5" : g.flagged ? "border-warning/50" : "border-base-200"}`}>
+              <div key={g.ref} id={`arb-v-${g.ref}`} className={`grid grid-cols-2 gap-3 rounded-box border p-2.5 ${g.ref === focusRef ? "ring-2 ring-secondary/50 " : ""}${isDirty ? "border-primary bg-primary/5" : valid.has(g.ref) ? "border-success/40 bg-success/5" : g.flagged ? "border-warning/50" : "border-base-200"}`}>
                 {/* Colonne GAUCHE : grec (fixe, autorité) */}
                 <div className="min-w-0">
                   <div className="flex items-center gap-1.5">
