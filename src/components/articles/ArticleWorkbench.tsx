@@ -742,7 +742,7 @@ export default function ArticleWorkbench({ id }: { id: string }) {
             ].map(([key, label]) => (
               <button
                 key={key}
-                className={`btn btn-xs flex-1 ${asideView === key ? "btn-primary" : "btn-ghost"}`}
+                className={`btn btn-xs flex-1 whitespace-nowrap ${asideView === key ? "btn-primary" : "btn-ghost"}`}
                 aria-pressed={asideView === key}
                 onClick={() => {
                   setAsideView(key);
