@@ -1,16 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { collections, verseCount, minNiveau, textsByCollection, type Text } from "../src/data/texts";
-import { loadBooksFs, loadChapterFs } from "../lib/nt-server";
+import { textsByCollection, verseCount, type Text } from "../src/data/texts";
+import { loadBooksFs, loadChapterFs, loadLemmasFs } from "../lib/nt-server";
 import { NT, LXX } from "../src/data/corpus";
 import { listPublished } from "../lib/articles";
-import { publicAuthor } from "../lib/profiles";
 import { CATEGORY_LABEL } from "../src/components/articles/labels";
-import Avatar from "../src/components/profile/Avatar";
-import SupportBanner from "./_components/SupportBanner";
 import ResumeReading from "./_components/ResumeReading";
 import RefJump from "../src/components/RefJump";
-import HeroVerse from "../src/components/HeroVerse";
+import HeroVerse, { type HeroWord } from "../src/components/HeroVerse";
 
 export const metadata: Metadata = {
   description:
@@ -23,43 +20,69 @@ export const metadata: Metadata = {
 // publication). Sans cela, la page resterait figée à l'état du build.
 export const revalidate = 300;
 
-const SCRIBE_ALT = "Un scribe copiant l’Évangile sur un rouleau de papyrus";
+const TIPEEE = "https://fr.tipeee.com/anaginosko";
 
-// Intro partagée (héros desktop et mobile) : « érasmienne et restituée » mène à la
-// page dédiée, orpheline de l'accueil jusqu'ici.
-function IntroText({ className = "" }: { className?: string }) {
+const SHORTCUTS = [
+  { href: "/text/passages-1", label: "Prologue de Jean" },
+  { href: "/text/passages-2", label: "Béatitudes" },
+  { href: "/lxx/gen/1", label: "Genèse 1" },
+  { href: `/concordance/${encodeURIComponent("ἀγάπη")}`, label: "ἀγάπη", greek: true },
+];
+
+const chip = "inline-flex min-h-11 items-center rounded-full bg-base-300 px-4 text-[0.95rem] transition-colors hover:text-accent";
+const sectionTitle = "font-greek text-3xl font-bold leading-tight wide:text-4xl";
+
+// « Jean 1:1-18 (Prologue) » -> « Jean 1, 1-18 » et « Prologue ».
+function splitReference(reference: string) {
+  const m = reference.match(/^(.*?)\s*(?:\((.+)\))?$/);
+  const theme = m?.[2];
+  return {
+    ref: (m?.[1] ?? reference).replace(":", ", "),
+    theme: theme ? theme.charAt(0).toUpperCase() + theme.slice(1) : null,
+  };
+}
+
+const incipit = (grec: string, words = 5) =>
+  grec.split(/\s+/).slice(0, words).join(" ").replace(/[,.;·;·]+$/u, "");
+
+function Hero({ verse, french, word, start }: { verse: Text; french: string | null; word: HeroWord | null; start: string }) {
   return (
-    <p className={className}>
-      La Bible, lettre par lettre. Touchez n’importe quelle lettre d’un texte pour découvrir son nom et sa
-      prononciation,{" "}
-      <Link href="/prononciation" className="link decoration-primary/40 underline-offset-2">
-        érasmienne et restituée
-      </Link>
-      .
-    </p>
+    <section className="grid gap-10 pt-8 wide:grid-cols-[minmax(0,6fr)_minmax(0,5fr)] wide:items-center wide:gap-14 wide:pt-16">
+      <div>
+        <h1 className="font-greek text-4xl font-bold leading-[1.08] tracking-tight wide:text-6xl">
+          Lire la Bible en grec, lettre par lettre
+        </h1>
+        <p className="mt-5 max-w-[36ch] text-lg leading-relaxed text-base-content/75 wide:text-xl">
+          Le Nouveau Testament et la Septante, chaque mot expliqué, la traduction en regard.
+        </p>
+        <div className="mt-8 flex flex-wrap gap-3">
+          <Link href={start} className="btn btn-primary btn-lg rounded-full px-7">
+            Commencer à lire
+          </Link>
+          <Link href="/alphabet" className="btn btn-outline btn-primary btn-lg rounded-full px-7">
+            Apprendre l’alphabet
+          </Link>
+        </div>
+      </div>
+      <HeroVerse text={verse} french={french} word={word} />
+    </section>
   );
 }
 
-const TOOLS = [
-  { href: "/alphabet", title: "Alphabet", desc: "Les 24 lettres : nom, tracé et prononciation." },
-  { href: "/prononciation", title: "Prononciation", desc: "Érasmienne et restituée, comparées." },
-  { href: "/concordance", title: "Concordance", desc: "Chercher un mot grec : sens, répartition, occurrences." },
-];
-
-function Tools() {
+function Jump({ books }: { books: { id: string; name: string; chapters: number; routePrefix: string }[] }) {
   return (
-    <section className="pt-11 wide:pt-16">
-      <h2 className="text-lg font-bold">Outils</h2>
-      <p className="mb-3 text-sm text-base-content/70">Pour explorer la langue au-delà de la lecture.</p>
-      <div className="grid gap-3 sm:grid-cols-3">
-        {TOOLS.map((t) => (
-          <Link
-            key={t.href}
-            href={t.href}
-            className="rounded-box border border-base-300 bg-base-100 p-4 transition-colors hover:border-primary/40"
-          >
-            <span className="block font-semibold">{t.title}</span>
-            <span className="mt-1 block text-sm text-base-content/70">{t.desc}</span>
+    <section className="mt-14 rounded-box bg-base-200 px-5 py-7 wide:mt-28 wide:px-10 wide:py-10">
+      <label htmlFor="aller" className="block font-semibold">
+        Aller directement à un passage ou à un mot
+      </label>
+      <div className="mt-3">
+        <RefJump id="aller" books={books} routePrefix={NT.routePrefix} placeholder="Jean 3, 16 ou λόγος" submitLabel="Ouvrir" />
+      </div>
+      <div className="mt-4 flex flex-wrap gap-2">
+        <ResumeReading />
+        {SHORTCUTS.map((s) => (
+          <Link key={s.href} href={s.href} lang={s.greek ? "grc" : undefined} className={`${chip} ${s.greek ? "font-greek text-lg" : ""}`}>
+            {s.label}
           </Link>
         ))}
       </div>
@@ -67,259 +90,126 @@ function Tools() {
   );
 }
 
-function preview(grec: string, words = 12): string {
-  const parts = grec.split(/\s+/);
-  return parts.length > words ? parts.slice(0, words).join(" ") + " …" : grec;
-}
-
-// Accroche française d'un passage : 1er verset traduit (Crampon), tronqué. Sert de
-// mini-description pour les recommandations « guidées ». null si pas de traduction.
-function frenchIncipit(text: Text, max = 110): string | null {
-  const fr = text.francais;
-  if (!fr) return null;
-  const first = Object.values(fr).find((s) => s?.trim());
-  if (!first) return null;
-  const clean = first.trim();
-  return clean.length > max ? clean.slice(0, max).trimEnd() + "…" : clean;
-}
-
-// Accès à un corpus. Le NT (primaire, bouton plein) domine ; la Septante vient en
-// second (carte bordée). Les comptes sont dérivés de books.json.
-function CorpusCta({
-  href,
-  title,
-  subtitle,
-  primary,
-  className = "",
-}: {
-  href: string;
-  title: string;
-  subtitle: string;
-  primary?: boolean;
-  className?: string;
-}) {
-  const style = primary
-    ? "bg-primary text-primary-content shadow-sm hover:bg-primary/90"
-    : "border border-base-300 bg-base-200 hover:border-primary/40";
+function Passages({ passages }: { passages: Text[] }) {
   return (
-    <Link
-      href={href}
-      className={`flex items-center justify-between gap-3 rounded-box px-4 py-3.5 transition-colors ${style} ${className}`}
-    >
-      <span>
-        <span className="block font-semibold">{title}</span>
-        <span className={`block text-sm ${primary ? "text-primary-content/80" : "text-base-content/70"}`}>{subtitle}</span>
-      </span>
-      <span aria-hidden className="text-lg">→</span>
-    </Link>
-  );
-}
-
-const corpusSubtitle = (books: { chapters: number }[]) =>
-  `${books.length} livres · ${books.reduce((a, b) => a + b.chapters, 0)} chapitres`;
-
-function TextCard({
-  text,
-  highlight,
-  guided,
-}: {
-  text: Text;
-  highlight?: boolean;
-  // guided : recommandation mise en avant → affiche une accroche française.
-  guided?: boolean;
-}) {
-  const incipit = guided ? frenchIncipit(text) : null;
-  return (
-    <Link
-      href={`/text/${text.id}`}
-      className={`card min-w-0 border bg-base-100 transition-colors hover:border-primary/40 ${
-        highlight ? "border-primary/50 ring-1 ring-primary/20" : "border-base-300"
-      }`}
-    >
-      <div className="card-body min-w-0 gap-1 p-3.5">
-        <div className="flex items-start justify-between gap-3">
-          <h3 className="min-w-0 text-[0.98rem] font-semibold leading-snug [overflow-wrap:anywhere]">
-            {text.reference}
-          </h3>
-          <span className="badge badge-sm badge-ghost shrink-0 tabular-nums">
-            {verseCount(text)} versets
-          </span>
-        </div>
-        {incipit && (
-          <p className="mt-0.5 line-clamp-2 text-[0.85rem] leading-snug text-base-content/70">{incipit}</p>
-        )}
-        <p className="font-greek line-clamp-1 text-[0.95rem] text-base-content/55">
-          {preview(text.grec, 9)}
-        </p>
-      </div>
-    </Link>
-  );
-}
-
-// Le parcours débutant : trois recommandations guidées (les plus accessibles),
-// le reste replié derrière « Voir tous les passages ». La 1re est le point d'entrée.
-function Passages() {
-  const c = collections[0];
-  if (!c) return null;
-  const list = textsByCollection(c.id);
-  const featured = list.slice(0, 3);
-  const rest = list.slice(3);
-  const min = minNiveau(c.id);
-  return (
-    <section className="pt-11 wide:pt-16">
-      <h2 className="text-lg font-bold">{c.title}</h2>
-      <p className="mb-3 text-sm text-base-content/70">{c.subtitle}</p>
-      <div className="grid gap-3 wide:grid-cols-2">
-        {featured.map((t, idx) => (
-          <TextCard key={t.id} text={t} highlight={idx === 0 && t.niveau === min} guided />
-        ))}
-      </div>
-      {rest.length > 0 && (
-        <details className="group mt-3">
-          <summary className="btn btn-ghost btn-sm w-full justify-center border border-base-300 font-medium">
-            <span className="group-open:hidden">Voir tous les passages ({rest.length} de plus)</span>
-            <span className="hidden group-open:inline">Réduire</span>
-          </summary>
-          <div className="mt-3 grid gap-3 wide:grid-cols-2">
-            {rest.map((t) => (
-              <TextCard key={t.id} text={t} />
-            ))}
-          </div>
-        </details>
-      )}
+    <section className="mt-16 wide:mt-20">
+      <h2 className={sectionTitle}>Passages pour commencer</h2>
+      <ul className="-mx-4 mt-6 flex snap-x snap-mandatory scroll-px-4 gap-4 overflow-x-auto px-4 pb-3 wide:mx-0 wide:scroll-px-0 wide:px-0">
+        {passages.map((t) => {
+          const { ref, theme } = splitReference(t.reference);
+          return (
+            <li key={t.id} className="w-64 shrink-0 snap-start">
+              <Link
+                href={`/text/${t.id}`}
+                className="flex h-full flex-col gap-3 rounded-box border border-base-300 bg-base-100 p-6 transition-colors hover:border-accent/50"
+              >
+                <span lang="grc" className="font-greek text-xl leading-snug text-accent">
+                  {incipit(t.grec)}
+                </span>
+                <span className="mt-auto font-semibold">{ref}</span>
+                <span className="text-sm text-base-content/70">
+                  {theme ? `${theme}, ` : ""}
+                  {verseCount(t)} versets
+                </span>
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
     </section>
   );
 }
 
-// Derniers articles publiés : vitrine éditoriale de l'accueil. Absente tant que
-// rien n'est publié (pas de section vide).
+function Figures({ figures }: { figures: { href: string; value: number; label: string }[] }) {
+  return (
+    <section className="mt-14 grid gap-8 border-t border-base-300 pt-12 sm:grid-cols-3 wide:mt-16 wide:pt-16">
+      {figures.map((f) => (
+        <Link key={f.href} href={f.href} className="group flex flex-col gap-2">
+          <span className="font-greek text-5xl leading-none tabular-nums wide:text-6xl">{f.value.toLocaleString("fr-FR")}</span>
+          <span className="text-lg transition-colors group-hover:text-accent">{f.label}</span>
+        </Link>
+      ))}
+    </section>
+  );
+}
+
+// Derniers articles publiés. Absents tant que rien n'est publié (pas de section vide).
 function LatestArticles() {
-  const latest = listPublished().slice(0, 3);
+  const latest = listPublished().slice(0, 2);
   if (latest.length === 0) return null;
   return (
-    <section className="pt-11 wide:pt-16">
-      <div className="flex items-baseline justify-between gap-3">
-        <h2 className="text-lg font-bold">Derniers articles</h2>
-        <Link href="/articles" className="text-sm text-primary hover:underline">
+    <section className="mt-14 border-t border-base-300 pt-12 wide:mt-16 wide:pt-16">
+      <div className="flex flex-wrap items-baseline justify-between gap-3">
+        <h2 className={sectionTitle}>Derniers articles</h2>
+        <Link href="/articles" className="font-semibold text-primary hover:underline">
           Tous les articles
         </Link>
       </div>
-      <div className="mt-3 grid gap-3 wide:grid-cols-3">
-        {latest.map((a) => {
-          const author = publicAuthor(a.author.userId, a.author.name);
-          return (
-            <Link
-              key={a.id}
-              href={`/articles/${a.slug}`}
-              className="group flex flex-col overflow-hidden rounded-box border border-base-300 bg-base-100 transition-all hover:border-base-content/20 hover:shadow-md"
-            >
-              {a.cover && (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={a.cover} alt="" className="h-32 w-full object-cover" loading="lazy" />
-              )}
-              <div className="flex flex-1 flex-col p-4">
-                <p className="text-[0.68rem] font-semibold uppercase tracking-wide text-primary/80">
-                  {CATEGORY_LABEL[a.category]}
-                </p>
-                <h3 className="mt-1 font-semibold leading-snug group-hover:text-primary">{a.title}</h3>
-                {a.excerpt && <p className="mt-1 line-clamp-2 text-sm text-base-content/65">{a.excerpt}</p>}
-                <div className="mt-auto flex items-center gap-2 pt-3 text-xs text-base-content/55">
-                  <Avatar name={author.name} photo={author.photo} size={22} />
-                  <span className="min-w-0 truncate">{author.name}</span>
-                </div>
-              </div>
-            </Link>
-          );
-        })}
+      <div className="mt-8 grid gap-8 wide:grid-cols-2 wide:gap-12">
+        {latest.map((a) => (
+          <Link key={a.id} href={`/articles/${a.slug}`} className="group flex flex-col gap-1.5">
+            <span className="text-sm text-base-content/65">{CATEGORY_LABEL[a.category]}</span>
+            <span className="font-greek text-2xl font-bold leading-snug transition-colors group-hover:text-accent">{a.title}</span>
+            {a.excerpt && <span className="line-clamp-2 text-base-content/70">{a.excerpt}</span>}
+          </Link>
+        ))}
       </div>
+    </section>
+  );
+}
+
+function Support() {
+  return (
+    <section
+      data-nosnippet=""
+      className="mt-14 flex flex-col gap-5 rounded-box bg-base-200 px-5 py-7 wide:mt-16 wide:flex-row wide:items-center wide:justify-between wide:px-10 wide:py-9"
+    >
+      <p className="max-w-[52ch] text-lg leading-relaxed text-base-content/80">
+        Un projet libre et indépendant, gratuit et sans publicité. Votre soutien finance la suite.
+      </p>
+      <a href={TIPEEE} target="_blank" rel="noreferrer noopener" className="btn btn-accent btn-lg self-start rounded-full px-7 wide:self-auto">
+        Nous soutenir
+      </a>
     </section>
   );
 }
 
 export default async function Home() {
-  const [ntBooks, lxxBooks] = await Promise.all([loadBooksFs(NT), loadBooksFs(LXX)]);
-  const ntSub = corpusSubtitle(ntBooks);
-  const lxxSub = corpusSubtitle(lxxBooks);
+  const [ntBooks, lxxBooks, ntLemmas, lxxLemmas, jn1] = await Promise.all([
+    loadBooksFs(NT),
+    loadBooksFs(LXX),
+    loadLemmasFs(NT),
+    loadLemmasFs(LXX),
+    loadChapterFs("jn", 1, NT),
+  ]);
   // Recherche de référence globale : NT et LXX fusionnés, chaque livre pointe vers
   // son corpus (les noms et ids ne se chevauchent pas entre les deux).
   const allBooks = [
     ...ntBooks.map((b) => ({ id: b.id, name: b.name, chapters: b.chapters, routePrefix: NT.routePrefix })),
     ...lxxBooks.map((b) => ({ id: b.id, name: b.name, chapters: b.chapters, routePrefix: LXX.routePrefix })),
   ];
-  // Verset vitrine (Jean 1,1) : chargé côté serveur, réduit au 1er verset (charge
-  // légère), rendu interactif par HeroVerse via le SheetContext global.
-  const jn1 = await loadChapterFs("jn", 1, NT);
-  const heroVerse: Text = { ...jn1, francais: null, mots: (jn1.mots ?? []).filter((m) => m.verse === 1) };
+  // Verset vitrine (Jean 1,1) réduit au 1er verset : charge légère, rendu interactif
+  // par HeroVerse via le SheetContext global.
+  const verse: Text = { ...jn1, francais: null, mots: (jn1.mots ?? []).filter((m) => m.verse === 1) };
+  const logos = ntLemmas.find((e) => e.lemma === "λόγος");
+  const word = logos ? { lemma: logos.lemma, gloss: "parole", nature: logos.nature.toLowerCase(), count: logos.count } : null;
+  const passages = textsByCollection("passages");
+  const lemmaCount = new Set([...ntLemmas, ...lxxLemmas].map((e) => e.lemma)).size;
+
   return (
     <div>
-      {/* SEO : le héros (H1 + promesse) vient EN PREMIER dans le DOM/source. Le bandeau
-          de soutien est remonté VISUELLEMENT au-dessus via `order`, sans passer avant
-          le contenu principal pour Google (+ data-nosnippet côté banner). */}
-      <div className="flex flex-col">
-        {/* Héros éditorial : la promesse et les accès. À droite, un verset réel
-            (Jean 1,1) interactif. */}
-        <section className="order-2 mt-8 grid gap-8 wide:mt-10 wide:grid-cols-2 wide:items-center wide:gap-12">
-          <div>
-          <h1 className="font-greek text-4xl leading-[1.1] wide:text-5xl">Lire la Bible en grec</h1>
-          <IntroText className="mt-4 max-w-prose text-base leading-relaxed text-base-content/70" />
-          <div className="mt-6 flex max-w-lg flex-col gap-2.5">
-            <CorpusCta href="/nt" title="Nouveau Testament complet" subtitle={ntSub} primary />
-            <CorpusCta href="/lxx" title="Septante, l’Ancien Testament grec" subtitle={lxxSub} />
-          </div>
-          <p className="mt-3 max-w-lg text-xs leading-relaxed text-base-content/70">
-            La Septante est la traduction grecque de l’Ancien Testament, lue par les premiers chrétiens.
-            Projet libre et indépendant, gratuit et sans publicité.
-          </p>
-        </div>
-
-        <HeroVerse text={heroVerse} />
-        </section>
-
-        {/* Bandeau de soutien : remonté visuellement en tête (order-1) mais placé
-            APRÈS le héros dans le DOM (SEO). Fermable ; data-nosnippet le sort du snippet. */}
-        <div className="order-1 pt-2">
-          <SupportBanner />
-        </div>
-      </div>
-
-      {/* Pupitre : le poste de travail du lecteur récurrent, sous la promesse -
-          reprendre la lecture et aller directement à une référence (NT ou Septante). */}
-      <section className="mt-10 rounded-box bg-primary px-4 py-4 text-primary-content wide:mt-12 wide:px-5">
-        <p className="mb-2.5 text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-primary-content/55">
-          Votre pupitre
-        </p>
-        <div className="flex flex-col gap-2.5 wide:flex-row wide:items-center wide:gap-3">
-          <ResumeReading />
-          <div className="min-w-0 wide:flex-1">
-            <RefJump books={allBooks} routePrefix={NT.routePrefix} />
-          </div>
-        </div>
-      </section>
-
-      <Passages />
-
+      <Hero verse={verse} french={jn1.francais?.["1"] ?? null} word={word} start={`/text/${passages[0]?.id ?? "passages-1"}`} />
+      <Jump books={allBooks} />
+      <Passages passages={passages} />
+      <Figures
+        figures={[
+          { href: "/nt", value: ntBooks.length, label: "livres du Nouveau Testament" },
+          { href: "/lxx", value: lxxBooks.length, label: "livres de la Septante" },
+          { href: "/concordance", value: lemmaCount, label: "mots grecs dans la concordance" },
+        ]}
+      />
       <LatestArticles />
-
-      {/* Illustration du scribe, contextualisée par une légende : elle relie la
-          lecture au geste de transmission manuscrite plutôt que d'interrompre. */}
-      <figure className="mt-11 wide:mt-16">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/scribe.jpg"
-          alt={SCRIBE_ALT}
-          width={1376}
-          height={768}
-          className="mx-auto w-full max-w-xl rounded-box"
-          loading="lazy"
-        />
-        <figcaption className="mx-auto mt-2 max-w-xl text-center text-xs text-base-content/60">
-          Chaque texte que vous lisez ici nous est parvenu par des siècles de copie
-          patiente, lettre après lettre. C’est ce même geste que propose Anaginosko.
-        </figcaption>
-      </figure>
-
-      <Tools />
-      {/* Le footer est rendu par le Shell (sitewide). */}
+      <Support />
     </div>
   );
 }
