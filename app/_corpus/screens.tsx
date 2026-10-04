@@ -12,6 +12,7 @@ import ArticleRenderer from "@/src/components/articles/ArticleRenderer";
 import EditBookIntro from "@/src/components/books/EditBookIntro";
 import CollapsibleIntro from "@/src/components/books/CollapsibleIntro";
 import { getPublishedIntro, bookIntroIsLong } from "@/lib/bookIntros";
+import JsonLd from "@/app/_components/JsonLd";
 
 // Écrans de lecture partagés entre corpus (NT, LXX). Les fichiers de route ne sont
 // que de fines enveloppes passant la config du corpus. Les valeurs NT reproduisent
@@ -146,7 +147,7 @@ export async function BookScreen({ corpus, params }: { corpus: CorpusConfig; par
 
   return (
     <div className="pb-4">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(bookJsonLd) }} />
+      <JsonLd data={bookJsonLd} />
       <BreadcrumbJsonLd
         items={[
           { name: "Accueil", path: "/" },
@@ -280,7 +281,7 @@ export async function ChapterScreen({
 
   return (
     <div className="reading-page">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <JsonLd data={jsonLd} />
       <h1 className="sr-only">{label}</h1>
       <div className="reading-col">
         <Breadcrumb

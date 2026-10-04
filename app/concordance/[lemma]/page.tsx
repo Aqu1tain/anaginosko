@@ -11,6 +11,7 @@ import {
 } from "@/lib/nt-server";
 import { fetchBaillyNotice } from "@/lib/bailly-server";
 import LemmaDetail from "@/src/components/LemmaDetail";
+import JsonLd from "@/app/_components/JsonLd";
 import { NT, LXX } from "@/src/data/corpus";
 
 // Rendu serveur à la demande. Les données NT sont lues depuis NT_DATA_DIR (en
@@ -81,7 +82,7 @@ export default async function LemmaPage({ params }: { params: Promise<{ lemma: s
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(definedTerm) }} />
+      <JsonLd data={definedTerm} />
       <LemmaDetail entry={entry} occ={occ} dist={dist} books={books} colloc={colloc} corpus={NT} cross={cross} lexicon={lexicon} notice={notice} />
     </>
   );
