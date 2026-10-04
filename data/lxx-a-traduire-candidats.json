@@ -1,0 +1,798 @@
+{
+ "generated": "scripts/build-a-traduire.mjs",
+ "minGreekWords": 12,
+ "maxRatio": 0.6,
+ "candidates": [
+  {
+   "book": "1ch",
+   "ref": "6:45",
+   "greekWords": 33,
+   "frenchWords": 2,
+   "ratio": 0.06
+  },
+  {
+   "book": "tob",
+   "ref": "13:8",
+   "greekWords": 35,
+   "frenchWords": 7,
+   "ratio": 0.2
+  },
+  {
+   "book": "1sa",
+   "ref": "20:37",
+   "greekWords": 27,
+   "frenchWords": 6,
+   "ratio": 0.22
+  },
+  {
+   "book": "1sa",
+   "ref": "14:23",
+   "greekWords": 39,
+   "frenchWords": 9,
+   "ratio": 0.23
+  },
+  {
+   "book": "1ch",
+   "ref": "6:17",
+   "greekWords": 29,
+   "frenchWords": 7,
+   "ratio": 0.24
+  },
+  {
+   "book": "1ch",
+   "ref": "6:42",
+   "greekWords": 32,
+   "frenchWords": 8,
+   "ratio": 0.25
+  },
+  {
+   "book": "jos",
+   "ref": "15:59",
+   "greekWords": 42,
+   "frenchWords": 11,
+   "ratio": 0.26
+  },
+  {
+   "book": "num",
+   "ref": "30:5",
+   "greekWords": 41,
+   "frenchWords": 11,
+   "ratio": 0.27
+  },
+  {
+   "book": "1ch",
+   "ref": "6:34",
+   "greekWords": 36,
+   "frenchWords": 10,
+   "ratio": 0.28
+  },
+  {
+   "book": "psa",
+   "ref": "48:10",
+   "greekWords": 17,
+   "frenchWords": 5,
+   "ratio": 0.29
+  },
+  {
+   "book": "1sa",
+   "ref": "20:21",
+   "greekWords": 35,
+   "frenchWords": 11,
+   "ratio": 0.31
+  },
+  {
+   "book": "gen",
+   "ref": "47:5",
+   "greekWords": 56,
+   "frenchWords": 18,
+   "ratio": 0.32
+  },
+  {
+   "book": "jos",
+   "ref": "18:17",
+   "greekWords": 22,
+   "frenchWords": 7,
+   "ratio": 0.32
+  },
+  {
+   "book": "psa",
+   "ref": "64:1",
+   "greekWords": 18,
+   "frenchWords": 6,
+   "ratio": 0.33
+  },
+  {
+   "book": "psa",
+   "ref": "148:13",
+   "greekWords": 17,
+   "frenchWords": 6,
+   "ratio": 0.35
+  },
+  {
+   "book": "tob",
+   "ref": "13:15",
+   "greekWords": 26,
+   "frenchWords": 9,
+   "ratio": 0.35
+  },
+  {
+   "book": "deu",
+   "ref": "20:16",
+   "greekWords": 25,
+   "frenchWords": 9,
+   "ratio": 0.36
+  },
+  {
+   "book": "ezk",
+   "ref": "40:38",
+   "greekWords": 14,
+   "frenchWords": 5,
+   "ratio": 0.36
+  },
+  {
+   "book": "deu",
+   "ref": "6:4",
+   "greekWords": 30,
+   "frenchWords": 11,
+   "ratio": 0.37
+  },
+  {
+   "book": "1ki",
+   "ref": "22:4",
+   "greekWords": 36,
+   "frenchWords": 14,
+   "ratio": 0.39
+  },
+  {
+   "book": "1ch",
+   "ref": "6:52",
+   "greekWords": 23,
+   "frenchWords": 9,
+   "ratio": 0.39
+  },
+  {
+   "book": "1ma",
+   "ref": "1:21",
+   "greekWords": 23,
+   "frenchWords": 9,
+   "ratio": 0.39
+  },
+  {
+   "book": "1ch",
+   "ref": "6:46",
+   "greekWords": 20,
+   "frenchWords": 8,
+   "ratio": 0.4
+  },
+  {
+   "book": "pro",
+   "ref": "23:8",
+   "greekWords": 22,
+   "frenchWords": 9,
+   "ratio": 0.41
+  },
+  {
+   "book": "tob",
+   "ref": "7:10",
+   "greekWords": 29,
+   "frenchWords": 12,
+   "ratio": 0.41
+  },
+  {
+   "book": "deu",
+   "ref": "14:5",
+   "greekWords": 12,
+   "frenchWords": 5,
+   "ratio": 0.42
+  },
+  {
+   "book": "1sa",
+   "ref": "30:28",
+   "greekWords": 31,
+   "frenchWords": 13,
+   "ratio": 0.42
+  },
+  {
+   "book": "tob",
+   "ref": "7:6",
+   "greekWords": 31,
+   "frenchWords": 13,
+   "ratio": 0.42
+  },
+  {
+   "book": "1ch",
+   "ref": "6:53",
+   "greekWords": 14,
+   "frenchWords": 6,
+   "ratio": 0.43
+  },
+  {
+   "book": "gen",
+   "ref": "11:13",
+   "greekWords": 48,
+   "frenchWords": 21,
+   "ratio": 0.44
+  },
+  {
+   "book": "1ch",
+   "ref": "7:20",
+   "greekWords": 18,
+   "frenchWords": 8,
+   "ratio": 0.44
+  },
+  {
+   "book": "psa",
+   "ref": "88:37",
+   "greekWords": 16,
+   "frenchWords": 7,
+   "ratio": 0.44
+  },
+  {
+   "book": "isa",
+   "ref": "2:7",
+   "greekWords": 27,
+   "frenchWords": 12,
+   "ratio": 0.44
+  },
+  {
+   "book": "psa",
+   "ref": "59:7",
+   "greekWords": 13,
+   "frenchWords": 6,
+   "ratio": 0.46
+  },
+  {
+   "book": "gen",
+   "ref": "10:18",
+   "greekWords": 17,
+   "frenchWords": 8,
+   "ratio": 0.47
+  },
+  {
+   "book": "gen",
+   "ref": "10:24",
+   "greekWords": 15,
+   "frenchWords": 7,
+   "ratio": 0.47
+  },
+  {
+   "book": "1sa",
+   "ref": "6:4",
+   "greekWords": 30,
+   "frenchWords": 14,
+   "ratio": 0.47
+  },
+  {
+   "book": "1ch",
+   "ref": "6:59",
+   "greekWords": 17,
+   "frenchWords": 8,
+   "ratio": 0.47
+  },
+  {
+   "book": "psa",
+   "ref": "129:5",
+   "greekWords": 15,
+   "frenchWords": 7,
+   "ratio": 0.47
+  },
+  {
+   "book": "tob",
+   "ref": "10:10",
+   "greekWords": 19,
+   "frenchWords": 9,
+   "ratio": 0.47
+  },
+  {
+   "book": "1ma",
+   "ref": "1:63",
+   "greekWords": 15,
+   "frenchWords": 7,
+   "ratio": 0.47
+  },
+  {
+   "book": "1ma",
+   "ref": "10:77",
+   "greekWords": 32,
+   "frenchWords": 15,
+   "ratio": 0.47
+  },
+  {
+   "book": "1ki",
+   "ref": "21:3",
+   "greekWords": 27,
+   "frenchWords": 13,
+   "ratio": 0.48
+  },
+  {
+   "book": "2ki",
+   "ref": "11:5",
+   "greekWords": 25,
+   "frenchWords": 12,
+   "ratio": 0.48
+  },
+  {
+   "book": "wis",
+   "ref": "5:4",
+   "greekWords": 23,
+   "frenchWords": 11,
+   "ratio": 0.48
+  },
+  {
+   "book": "gen",
+   "ref": "8:13",
+   "greekWords": 44,
+   "frenchWords": 22,
+   "ratio": 0.5
+  },
+  {
+   "book": "gen",
+   "ref": "25:2",
+   "greekWords": 20,
+   "frenchWords": 10,
+   "ratio": 0.5
+  },
+  {
+   "book": "exo",
+   "ref": "25:32",
+   "greekWords": 26,
+   "frenchWords": 13,
+   "ratio": 0.5
+  },
+  {
+   "book": "jos",
+   "ref": "18:19",
+   "greekWords": 34,
+   "frenchWords": 17,
+   "ratio": 0.5
+  },
+  {
+   "book": "2sa",
+   "ref": "3:15",
+   "greekWords": 14,
+   "frenchWords": 7,
+   "ratio": 0.5
+  },
+  {
+   "book": "1ch",
+   "ref": "6:4",
+   "greekWords": 14,
+   "frenchWords": 7,
+   "ratio": 0.5
+  },
+  {
+   "book": "1ch",
+   "ref": "6:16",
+   "greekWords": 16,
+   "frenchWords": 8,
+   "ratio": 0.5
+  },
+  {
+   "book": "1ch",
+   "ref": "6:18",
+   "greekWords": 20,
+   "frenchWords": 10,
+   "ratio": 0.5
+  },
+  {
+   "book": "1ch",
+   "ref": "6:41",
+   "greekWords": 14,
+   "frenchWords": 7,
+   "ratio": 0.5
+  },
+  {
+   "book": "1ch",
+   "ref": "6:47",
+   "greekWords": 24,
+   "frenchWords": 12,
+   "ratio": 0.5
+  },
+  {
+   "book": "1ch",
+   "ref": "24:18",
+   "greekWords": 12,
+   "frenchWords": 6,
+   "ratio": 0.5
+  },
+  {
+   "book": "job",
+   "ref": "13:27",
+   "greekWords": 20,
+   "frenchWords": 10,
+   "ratio": 0.5
+  },
+  {
+   "book": "psa",
+   "ref": "58:11",
+   "greekWords": 16,
+   "frenchWords": 8,
+   "ratio": 0.5
+  },
+  {
+   "book": "psa",
+   "ref": "77:55",
+   "greekWords": 22,
+   "frenchWords": 11,
+   "ratio": 0.5
+  },
+  {
+   "book": "psa",
+   "ref": "134:17",
+   "greekWords": 34,
+   "frenchWords": 17,
+   "ratio": 0.5
+  },
+  {
+   "book": "psa",
+   "ref": "138:2",
+   "greekWords": 16,
+   "frenchWords": 8,
+   "ratio": 0.5
+  },
+  {
+   "book": "isa",
+   "ref": "9:20",
+   "greekWords": 26,
+   "frenchWords": 13,
+   "ratio": 0.5
+  },
+  {
+   "book": "jer",
+   "ref": "23:28",
+   "greekWords": 37,
+   "frenchWords": 19,
+   "ratio": 0.51
+  },
+  {
+   "book": "exo",
+   "ref": "30:28",
+   "greekWords": 25,
+   "frenchWords": 13,
+   "ratio": 0.52
+  },
+  {
+   "book": "1sa",
+   "ref": "4:15",
+   "greekWords": 27,
+   "frenchWords": 14,
+   "ratio": 0.52
+  },
+  {
+   "book": "isa",
+   "ref": "30:11",
+   "greekWords": 21,
+   "frenchWords": 11,
+   "ratio": 0.52
+  },
+  {
+   "book": "ezk",
+   "ref": "32:22",
+   "greekWords": 33,
+   "frenchWords": 17,
+   "ratio": 0.52
+  },
+  {
+   "book": "gen",
+   "ref": "10:12",
+   "greekWords": 15,
+   "frenchWords": 8,
+   "ratio": 0.53
+  },
+  {
+   "book": "gen",
+   "ref": "22:22",
+   "greekWords": 15,
+   "frenchWords": 8,
+   "ratio": 0.53
+  },
+  {
+   "book": "deu",
+   "ref": "24:11",
+   "greekWords": 17,
+   "frenchWords": 9,
+   "ratio": 0.53
+  },
+  {
+   "book": "jos",
+   "ref": "21:22",
+   "greekWords": 19,
+   "frenchWords": 10,
+   "ratio": 0.53
+  },
+  {
+   "book": "1ch",
+   "ref": "2:46",
+   "greekWords": 19,
+   "frenchWords": 10,
+   "ratio": 0.53
+  },
+  {
+   "book": "isa",
+   "ref": "21:15",
+   "greekWords": 34,
+   "frenchWords": 18,
+   "ratio": 0.53
+  },
+  {
+   "book": "exo",
+   "ref": "31:4",
+   "greekWords": 28,
+   "frenchWords": 15,
+   "ratio": 0.54
+  },
+  {
+   "book": "lev",
+   "ref": "21:22",
+   "greekWords": 13,
+   "frenchWords": 7,
+   "ratio": 0.54
+  },
+  {
+   "book": "num",
+   "ref": "26:60",
+   "greekWords": 13,
+   "frenchWords": 7,
+   "ratio": 0.54
+  },
+  {
+   "book": "jos",
+   "ref": "19:25",
+   "greekWords": 13,
+   "frenchWords": 7,
+   "ratio": 0.54
+  },
+  {
+   "book": "1sa",
+   "ref": "20:15",
+   "greekWords": 26,
+   "frenchWords": 14,
+   "ratio": 0.54
+  },
+  {
+   "book": "psa",
+   "ref": "24:1",
+   "greekWords": 13,
+   "frenchWords": 7,
+   "ratio": 0.54
+  },
+  {
+   "book": "psa",
+   "ref": "108:1",
+   "greekWords": 13,
+   "frenchWords": 7,
+   "ratio": 0.54
+  },
+  {
+   "book": "psa",
+   "ref": "135:26",
+   "greekWords": 24,
+   "frenchWords": 13,
+   "ratio": 0.54
+  },
+  {
+   "book": "1ki",
+   "ref": "7:4",
+   "greekWords": 29,
+   "frenchWords": 16,
+   "ratio": 0.55
+  },
+  {
+   "book": "job",
+   "ref": "12:6",
+   "greekWords": 20,
+   "frenchWords": 11,
+   "ratio": 0.55
+  },
+  {
+   "book": "jer",
+   "ref": "23:9",
+   "greekWords": 33,
+   "frenchWords": 18,
+   "ratio": 0.55
+  },
+  {
+   "book": "deu",
+   "ref": "2:13",
+   "greekWords": 16,
+   "frenchWords": 9,
+   "ratio": 0.56
+  },
+  {
+   "book": "2ki",
+   "ref": "23:24",
+   "greekWords": 48,
+   "frenchWords": 27,
+   "ratio": 0.56
+  },
+  {
+   "book": "psa",
+   "ref": "69:3",
+   "greekWords": 18,
+   "frenchWords": 10,
+   "ratio": 0.56
+  },
+  {
+   "book": "pro",
+   "ref": "16:2",
+   "greekWords": 16,
+   "frenchWords": 9,
+   "ratio": 0.56
+  },
+  {
+   "book": "isa",
+   "ref": "3:20",
+   "greekWords": 25,
+   "frenchWords": 14,
+   "ratio": 0.56
+  },
+  {
+   "book": "1ma",
+   "ref": "1:51",
+   "greekWords": 27,
+   "frenchWords": 15,
+   "ratio": 0.56
+  },
+  {
+   "book": "gen",
+   "ref": "31:53",
+   "greekWords": 21,
+   "frenchWords": 12,
+   "ratio": 0.57
+  },
+  {
+   "book": "jos",
+   "ref": "21:14",
+   "greekWords": 14,
+   "frenchWords": 8,
+   "ratio": 0.57
+  },
+  {
+   "book": "jos",
+   "ref": "21:15",
+   "greekWords": 14,
+   "frenchWords": 8,
+   "ratio": 0.57
+  },
+  {
+   "book": "1ch",
+   "ref": "6:58",
+   "greekWords": 14,
+   "frenchWords": 8,
+   "ratio": 0.57
+  },
+  {
+   "book": "gen",
+   "ref": "10:26",
+   "greekWords": 12,
+   "frenchWords": 7,
+   "ratio": 0.58
+  },
+  {
+   "book": "gen",
+   "ref": "25:3",
+   "greekWords": 24,
+   "frenchWords": 14,
+   "ratio": 0.58
+  },
+  {
+   "book": "gen",
+   "ref": "36:4",
+   "greekWords": 12,
+   "frenchWords": 7,
+   "ratio": 0.58
+  },
+  {
+   "book": "gen",
+   "ref": "41:49",
+   "greekWords": 19,
+   "frenchWords": 11,
+   "ratio": 0.58
+  },
+  {
+   "book": "lev",
+   "ref": "25:14",
+   "greekWords": 19,
+   "frenchWords": 11,
+   "ratio": 0.58
+  },
+  {
+   "book": "1ch",
+   "ref": "6:5",
+   "greekWords": 12,
+   "frenchWords": 7,
+   "ratio": 0.58
+  },
+  {
+   "book": "1ch",
+   "ref": "6:6",
+   "greekWords": 12,
+   "frenchWords": 7,
+   "ratio": 0.58
+  },
+  {
+   "book": "1ch",
+   "ref": "6:9",
+   "greekWords": 12,
+   "frenchWords": 7,
+   "ratio": 0.58
+  },
+  {
+   "book": "1ch",
+   "ref": "6:14",
+   "greekWords": 12,
+   "frenchWords": 7,
+   "ratio": 0.58
+  },
+  {
+   "book": "1ch",
+   "ref": "6:55",
+   "greekWords": 26,
+   "frenchWords": 15,
+   "ratio": 0.58
+  },
+  {
+   "book": "1ch",
+   "ref": "24:17",
+   "greekWords": 12,
+   "frenchWords": 7,
+   "ratio": 0.58
+  },
+  {
+   "book": "1ch",
+   "ref": "25:4",
+   "greekWords": 31,
+   "frenchWords": 18,
+   "ratio": 0.58
+  },
+  {
+   "book": "est",
+   "ref": "9:19",
+   "greekWords": 45,
+   "frenchWords": 26,
+   "ratio": 0.58
+  },
+  {
+   "book": "psa",
+   "ref": "108:16",
+   "greekWords": 19,
+   "frenchWords": 11,
+   "ratio": 0.58
+  },
+  {
+   "book": "ezk",
+   "ref": "20:10",
+   "greekWords": 12,
+   "frenchWords": 7,
+   "ratio": 0.58
+  },
+  {
+   "book": "tob",
+   "ref": "10:8",
+   "greekWords": 19,
+   "frenchWords": 11,
+   "ratio": 0.58
+  },
+  {
+   "book": "sir",
+   "ref": "29:23",
+   "greekWords": 12,
+   "frenchWords": 7,
+   "ratio": 0.58
+  },
+  {
+   "book": "gen",
+   "ref": "44:11",
+   "greekWords": 17,
+   "frenchWords": 10,
+   "ratio": 0.59
+  },
+  {
+   "book": "num",
+   "ref": "14:2",
+   "greekWords": 29,
+   "frenchWords": 17,
+   "ratio": 0.59
+  }
+ ]
+}

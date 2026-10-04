@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { arb, BOOK } from "./ArbitrageBiblion";
+import { arb, arbErrors, BOOK } from "./ArbitrageBiblion";
 
 // Refonte : carte des erreurs (où corriger) + réalignement DEUX COLONNES d'un chapitre.
 // Le grec est fixe (gauche) ; le français Giguet est une bande glissable (droite) qui
@@ -9,7 +9,7 @@ import { arb, BOOK } from "./ArbitrageBiblion";
 // le chapitre affiché est enregistré. Les divergences de lecteurs = simple drapeau.
 
 type Src = [number, number] | [number, number, number, number];
-type Grec = { v: number; greek: string; ref: string; source: Src[]; giguet: { ch: number; v: number } | null; french: string | null; maison: string | null; by: string | null; overridden: boolean; flagged: boolean; validated: boolean };
+type Grec = { v: number; greek: string; ref: string; source: Src[]; giguet: { ch: number; v: number } | null; french: string | null; auto: Src[] | null; autoText: string | null; maison: string | null; by: string | null; overridden: boolean; flagged: boolean; validated: boolean };
 type Band = { ch: number; v: number; text: string };
 type RealignData = { book: string; ch: number; grec: Grec[]; band: Band[]; chapterFirstIndex: number; errorRefs: string[] };
 type Overview = { books: { book: string; label: string; total: number; chapters: { ch: number; count: number }[] }[]; grandTotal: number };
@@ -21,13 +21,17 @@ type Overview = { books: { book: string; label: string; total: number; chapters:
 // from/to = indices de mots 0-based inclusifs.
 // "pick" : un verset Giguet ENTIER choisi n'importe où dans le livre (cherry-pick),
 // même hors de la bande courante. On garde son texte pour l'aperçu.
-type Assign = { kind: "band"; index: number } | { kind: "pick"; ch: number; v: number; text: string } | { kind: "extract"; ch: number; v: number; from: number; to: number } | { kind: "orphan" } | { kind: "maison"; text: string } | { kind: "keep" };
+// "auto" : retour au lien automatique Giguet, enregistré comme choix explicite (une
+// révocation serait réinstallée depuis git à la fusion suivante).
+type Assign = { kind: "band"; index: number } | { kind: "pick"; ch: number; v: number; text: string } | { kind: "extract"; ch: number; v: number; from: number; to: number } | { kind: "orphan" } | { kind: "maison"; text: string } | { kind: "auto" } | { kind: "keep" };
 
 // ───────────────────────── Carte des erreurs (accueil) ─────────────────────────
 export function ErrorMap({ onOpen }: { onOpen: (book: string, ch: number) => void }) {
   const [data, setData] = useState<Overview | null>(null);
+  const [err, setErr] = useState<string | null>(null);
   const [openBook, setOpenBook] = useState<string | null>(null);
-  useEffect(() => { arb<Overview>("/overview").then(setData).catch(() => {}); }, []);
+  useEffect(() => { arb<Overview>("/overview").then(setData).catch((e) => setErr(arbErrors(e).join(" "))); }, []);
+  if (err) return <div className="alert alert-error mt-6 text-sm">{err}</div>;
   if (!data) return <p className="mt-6 text-sm text-base-content/60">Chargement…</p>;
   if (!data.books.length) return <p className="mt-6 text-sm text-success">Tout est aligné. Rien à revoir.</p>;
   return (
@@ -57,7 +61,7 @@ export function ErrorMap({ onOpen }: { onOpen: (book: string, ch: number) => voi
 }
 
 // ───────────────────────── Réalignement deux colonnes ─────────────────────────
-export function ChapterRealign({ book, ch, onClose }: { book: string; ch: number; onClose: () => void }) {
+export function ChapterRealign({ book, ch, focusRef, prevCh, nextCh, onNavigate, onClose }: { book: string; ch: number; focusRef?: string; prevCh?: number | null; nextCh?: number | null; onNavigate?: (ch: number) => void; onClose: () => void }) {
   const [data, setData] = useState<RealignData | null>(null);
   const [assign, setAssign] = useState<Assign[]>([]);
   const [orig, setOrig] = useState<Assign[]>([]);
@@ -67,11 +71,19 @@ export function ChapterRealign({ book, ch, onClose }: { book: string; ch: number
   const [extractMode, setExtractMode] = useState<{ i: number; start: number | null } | null>(null); // sélection d'une plage de mots
   const [pickMode, setPickMode] = useState<number | null>(null); // cherry-pick : quel verset choisit un Giguet
   const [valid, setValid] = useState<Set<string>>(new Set()); // versets « vérifiés, c'est bon » (local, reflète l'API)
-  const toggleValid = async (ref: string) => {
-    const on = !valid.has(ref);
-    setValid((s) => { const n = new Set(s); if (on) n.add(ref); else n.delete(ref); return n; });
-    await arb("/validate", { method: "POST", body: JSON.stringify({ book, ref, on }) }).catch(() => {});
+  // Optimiste, mais annulé et signalé si le serveur refuse : un « vérifié » affiché
+  // doit toujours être un « vérifié » enregistré.
+  const setValidated = async (refs: string[], on: boolean) => {
+    const apply = (state: boolean) => setValid((s) => { const n = new Set(s); refs.forEach((r) => (state ? n.add(r) : n.delete(r))); return n; });
+    apply(on);
+    try {
+      await arb("/validate", { method: "POST", body: JSON.stringify({ book, refs, on }) });
+    } catch (e) {
+      apply(!on);
+      setErr(arbErrors(e));
+    }
   };
+  const toggleValid = (ref: string) => setValidated([ref], !valid.has(ref));
   // Plage de la bande où le glissement a le droit de puiser. Par DÉFAUT = le chapitre
   // courant seul (on s'arrête à sa frontière). On l'étend vers un voisin seulement si
   // le bon français y est (décalage inter-chapitres). Bornes en indices de bande.
@@ -97,8 +109,13 @@ export function ChapterRealign({ book, ch, onClose }: { book: string; ch: number
   }, [data]);
 
   const load = useCallback(async () => {
-    const d = await arb<RealignData & { error?: string }>(`/realign?book=${book}&ch=${ch}`);
-    if ((d as { error?: string }).error) { setErr([(d as { error?: string }).error!]); return; }
+    let d: RealignData;
+    try {
+      d = await arb<RealignData>(`/realign?book=${book}&ch=${ch}`);
+    } catch (e) {
+      setErr(arbErrors(e));
+      return;
+    }
     setData(d);
     const m = new Map<string, number>(); d.band.forEach((b, i) => m.set(`${b.ch}:${b.v}`, i));
     const a: Assign[] = d.grec.map((g) => {
@@ -114,6 +131,18 @@ export function ChapterRealign({ book, ch, onClose }: { book: string; ch: number
     setRange({ lo: idx[0] ?? 0, hi: idx[idx.length - 1] ?? d.band.length - 1 });
   }, [book, ch]);
   useEffect(() => { load(); }, [load]);
+
+  useEffect(() => {
+    if (data && focusRef) document.getElementById(`arb-v-${focusRef}`)?.scrollIntoView({ block: "center" });
+  }, [data, focusRef]);
+
+  const unsaved = assign.some((a, i) => JSON.stringify(a) !== JSON.stringify(orig[i]));
+  useEffect(() => {
+    if (!unsaved) return;
+    const guard = (e: BeforeUnloadEvent) => e.preventDefault();
+    window.addEventListener("beforeunload", guard);
+    return () => window.removeEventListener("beforeunload", guard);
+  }, [unsaved]);
 
   if (!data)
     return (
@@ -179,6 +208,7 @@ export function ChapterRealign({ book, ch, onClose }: { book: string; ch: number
     if (a.kind === "pick") return { text: a.text, tag: `Giguet ${a.ch}:${a.v}` };
     if (a.kind === "extract") { const words = wordsOf(a.ch, a.v); return { text: words.slice(a.from, a.to + 1).join(" "), tag: `Giguet ${a.ch}:${a.v} · mots ${a.from + 1}-${a.to + 1}` }; }
     if (a.kind === "maison") return { text: a.text, tag: "maison" };
+    if (a.kind === "auto") return data.grec[i].autoText ? { text: data.grec[i].autoText!, tag: "Giguet · lien automatique" } : ORPHAN;
     if (a.kind === "orphan") return ORPHAN;
     return { text: data.grec[i].french ?? "", tag: "extrait/multi (gardé)" };
   };
@@ -192,8 +222,11 @@ export function ChapterRealign({ book, ch, onClose }: { book: string; ch: number
     return false;
   };
   const dirty = assign.map((_, i) => changed(i)).filter(Boolean).length;
-  // Fermeture protégée : des heures de cherry-pick ne partent pas sur un clic hors panneau.
-  const tryClose = () => { if (dirty && !window.confirm(`${dirty} modification(s) non enregistrée(s) seront perdues. Fermer sans enregistrer ?`)) return; onClose(); };
+  // Fermeture protégée : des heures de cherry-pick ne partent pas sur un clic hors
+  // panneau, un changement de chapitre ou la fermeture de l'onglet.
+  const confirmLeave = () => !dirty || window.confirm(`${dirty} modification(s) non enregistrée(s) seront perdues. Continuer sans enregistrer ?`);
+  const tryClose = () => { if (confirmLeave()) onClose(); };
+  const tryNavigate = (target: number) => { if (confirmLeave()) onNavigate?.(target); };
 
   const save = async () => {
     setBusy(true); setErr(null); setNotice(null);
@@ -204,16 +237,17 @@ export function ChapterRealign({ book, ch, onClose }: { book: string; ch: number
       if (a.kind === "extract") return { ref: g.ref, sources: [[a.ch, a.v, a.from, a.to]] };
       if (a.kind === "orphan") return { ref: g.ref, sources: [] };
       if (a.kind === "maison") return { ref: g.ref, sources: [], maison: a.text };
+      if (a.kind === "auto") return { ref: g.ref, sources: g.auto ?? [] };
       return null;
     }).filter(Boolean);
-    // try/finally : une réponse 500/HTML (arb() rejette) ne doit pas figer le bouton en
+    // try/finally : une réponse en erreur (arb() lève) ne doit pas figer le bouton en
     // « busy » pour toujours. On rend la main et on affiche une erreur lisible.
     try {
-      const d = await arb<{ ok: boolean; errors?: string[]; warning?: string }>("/resolve-batch", { method: "POST", body: JSON.stringify({ book, changes }) });
-      if (d.ok) { setNotice(d.warning || null); await load(); }
-      else setErr(d.errors || ["Échec de l'enregistrement."]);
-    } catch {
-      setErr(["Enregistrement impossible (réseau ou serveur). Réessaie ; ton travail à l'écran est conservé."]);
+      const d = await arb<{ warning?: string }>("/resolve-batch", { method: "POST", body: JSON.stringify({ book, changes }) });
+      setNotice(d.warning || null);
+      await load();
+    } catch (e) {
+      setErr(arbErrors(e));
     } finally {
       setBusy(false);
     }
@@ -224,7 +258,11 @@ export function ChapterRealign({ book, ch, onClose }: { book: string; ch: number
       <div className="absolute inset-0 bg-black/40" onClick={tryClose} />
       <div className="relative h-full w-full max-w-4xl overflow-y-auto bg-base-100 p-5 shadow-2xl">
         <div className="sticky -top-5 z-10 -mx-5 -mt-5 flex flex-wrap items-center gap-2 border-b border-base-200 bg-base-100 px-5 py-3">
-          <h2 className="text-lg font-bold">{BOOK[book] ?? book} {ch}</h2>
+          <div className="join">
+            <button className="btn btn-sm btn-ghost join-item" disabled={!prevCh || busy} title="Chapitre précédent" onClick={() => prevCh && tryNavigate(prevCh)}>←</button>
+            <h2 className="join-item px-1 text-lg font-bold">{BOOK[book] ?? book} {ch}</h2>
+            <button className="btn btn-sm btn-ghost join-item" disabled={!nextCh || busy} title="Chapitre suivant" onClick={() => nextCh && tryNavigate(nextCh)}>→</button>
+          </div>
           <span className="text-xs text-base-content/60">Grec fixe à gauche ; le français se recale à droite.</span>
           <div className="ml-auto flex flex-wrap items-center gap-2">
             {range.lo > chBounds.lo || range.hi < chBounds.hi ? null : (
@@ -240,7 +278,7 @@ export function ChapterRealign({ book, ch, onClose }: { book: string; ch: number
             </div>
             {(() => { const remaining = data.errorRefs.filter((r) => !valid.has(r)); return remaining.length > 0 ? (
               <button className="btn btn-sm btn-success btn-outline" title="Marquer tout ce chapitre comme vérifié : il ne remontera plus comme erreur" disabled={busy}
-                onClick={async () => { setValid((s) => { const n = new Set(s); remaining.forEach((r) => n.add(r)); return n; }); await arb("/validate", { method: "POST", body: JSON.stringify({ book, refs: remaining, on: true }) }).catch(() => {}); }}>
+                onClick={() => setValidated(remaining, true)}>
                 ✓ tout ce chapitre est bon ({remaining.length})
               </button>
             ) : <span className="badge badge-success badge-sm">chapitre vérifié</span>; })()}
@@ -257,14 +295,14 @@ export function ChapterRealign({ book, ch, onClose }: { book: string; ch: number
             const fr = frenchOf(i);
             const isDirty = changed(i);
             return (
-              <div key={g.ref} className={`grid grid-cols-2 gap-3 rounded-box border p-2.5 ${isDirty ? "border-primary bg-primary/5" : valid.has(g.ref) ? "border-success/40 bg-success/5" : g.flagged ? "border-warning/50" : "border-base-200"}`}>
+              <div key={g.ref} id={`arb-v-${g.ref}`} className={`grid grid-cols-2 gap-3 rounded-box border p-2.5 ${g.ref === focusRef ? "ring-2 ring-secondary/50 " : ""}${isDirty ? "border-primary bg-primary/5" : valid.has(g.ref) ? "border-success/40 bg-success/5" : g.flagged ? "border-warning/50" : "border-base-200"}`}>
                 {/* Colonne GAUCHE : grec (fixe, autorité) */}
                 <div className="min-w-0">
                   <div className="flex items-center gap-1.5">
                     <span className="text-xs font-semibold text-base-content/50">v.{g.v}</span>
                     {valid.has(g.ref) && <span className="badge badge-success badge-xs" title="Vérifié à la main, c'est bon">vérifié</span>}
                     {g.flagged && !valid.has(g.ref) && <span className="badge badge-warning badge-xs" title="Signalé par les lecteurs, à vérifier">à vérifier</span>}
-                    {g.overridden && <span className="badge badge-primary badge-xs">{g.by === "Βιβλίον" ? "toi" : g.by || "réglé"}</span>}
+                    {g.overridden && <span className="badge badge-primary badge-xs">{g.by === "Βιβλίον" ? "Biblion" : g.by || "réglé"}</span>}
                   </div>
                   <p className="font-greek mt-0.5 leading-snug">{g.greek}</p>
                 </div>
@@ -300,14 +338,18 @@ export function ChapterRealign({ book, ch, onClose }: { book: string; ch: number
                   ) : pickMode === i ? (
                     <CherryPick book={book} current={assignedV(i)} defaultCh={ch} onPick={(pch, pv, ptext) => { setRow(i, { kind: "pick", ch: pch, v: pv, text: ptext }); setPickMode(null); }} onCancel={() => setPickMode(null)} />
                   ) : (
-                    <p className={`mt-0.5 text-sm leading-relaxed ${!fr.text ? "italic text-base-content/35" : ""}`}>{fr.text || "— sans traduction française"}</p>
+                    <>
+                      <p className={`mt-0.5 text-sm leading-relaxed ${!fr.text ? "italic text-base-content/35" : ""}`}>{fr.text || "— sans traduction française"}</p>
+                      {fr.tag === "maison" && g.autoText && <p className="mt-1 text-xs leading-relaxed text-base-content/45">Giguet : {g.autoText}</p>}
+                    </>
                   )}
                   {extractMode?.i !== i && pickMode !== i && (
                     <div className="mt-1 flex flex-wrap gap-1">
                       <button className="btn btn-ghost btn-xs" title="Choisir n'importe quel verset Giguet du livre (cherry-pick)" onClick={() => setPickMode(i)}>choisir…</button>
                       {assignedV(i) && <button className="btn btn-ghost btn-xs text-accent" title="Ne lier qu'une partie du verset Giguet (Giguet fusionne parfois deux versets)" onClick={() => setExtractMode({ i, start: null })}>extrait</button>}
-                      <MaisonInline current={assign[i].kind === "maison" ? (assign[i] as { text: string }).text : g.french || ""} onSet={(t) => setRow(i, { kind: "maison", text: t })} />
+                      <MaisonInline current={assign[i].kind === "maison" ? (assign[i] as { text: string }).text : g.french || ""} giguet={g.autoText} onSet={(t) => setRow(i, { kind: "maison", text: t })} />
                       <button className="btn btn-ghost btn-xs" onClick={() => setRow(i, { kind: "orphan" })}>orphelin</button>
+                      {g.overridden && assign[i].kind !== "auto" && <button className="btn btn-ghost btn-xs" title="Abandonner ce réglage et reprendre le lien automatique vers Giguet" onClick={() => setRow(i, { kind: "auto" })}>revenir à Giguet</button>}
                       <button className={`btn btn-xs ${valid.has(g.ref) ? "btn-success" : "btn-ghost text-success"}`} title="Vérifié, ne plus signaler comme erreur" onClick={() => toggleValid(g.ref)}>{valid.has(g.ref) ? "✓ vérifié" : "c'est bon"}</button>
                       {isDirty && <button className="btn btn-ghost btn-xs" onClick={() => setRow(i, { ...orig[i] })}>annuler</button>}
                     </div>
@@ -427,16 +469,34 @@ function CherryPick({ book, current, defaultCh, onPick, onCancel }: { book: stri
   );
 }
 
-// Traduction maison inline (texte libre servi tel quel).
-function MaisonInline({ current, onSet }: { current: string; onSet: (t: string) => void }) {
+// Traduction maison inline (texte libre servi tel quel). La zone suit la longueur du
+// texte ; Ctrl/Cmd+Entrée valide, Échap annule. Le Giguet d'origine reste sous les yeux.
+function MaisonInline({ current, giguet, onSet }: { current: string; giguet: string | null; onSet: (t: string) => void }) {
   const [open, setOpen] = useState(false);
   const [text, setText] = useState(current);
+  const area = useRef<HTMLTextAreaElement>(null);
+  useEffect(() => {
+    const el = area.current;
+    if (!el) return;
+    el.style.height = "auto";
+    el.style.height = `${el.scrollHeight}px`;
+  }, [text, open]);
+  const validate = () => { if (!text.trim()) return; onSet(text.trim()); setOpen(false); };
   if (!open) return <button className="btn btn-ghost btn-xs text-secondary" onClick={() => { setText(current); setOpen(true); }}>traduire moi-même</button>;
   return (
-    <span className="flex w-full items-start gap-1">
-      <textarea className="textarea textarea-bordered textarea-xs w-full" rows={2} value={text} onChange={(e) => setText(e.target.value)} autoFocus />
-      <button className="btn btn-primary btn-xs" disabled={!text.trim()} onClick={() => { onSet(text.trim()); setOpen(false); }}>ok</button>
-      <button className="btn btn-ghost btn-xs" onClick={() => setOpen(false)}>✕</button>
+    <span className="flex w-full flex-col gap-1">
+      <textarea ref={area} className="textarea textarea-bordered textarea-sm w-full resize-none text-sm leading-relaxed" rows={3} value={text} autoFocus
+        onChange={(e) => setText(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) { e.preventDefault(); validate(); }
+          if (e.key === "Escape") { e.preventDefault(); setOpen(false); }
+        }} />
+      {giguet && <span className="text-xs leading-relaxed text-base-content/45">Giguet : {giguet}</span>}
+      <span className="flex items-center gap-1">
+        <button className="btn btn-primary btn-xs" disabled={!text.trim()} onClick={validate}>ok</button>
+        <button className="btn btn-ghost btn-xs" onClick={() => setOpen(false)}>annuler</button>
+        <span className="ml-auto text-[0.7rem] text-base-content/40">Ctrl+Entrée pour valider · Échap pour annuler</span>
+      </span>
     </span>
   );
 }
