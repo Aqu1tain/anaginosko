@@ -49,7 +49,6 @@ const arbitration = JSON.parse(
 // migration relève d'une opération éditoriale séparée, avec sauvegarde du corpus vivant.
 const allowedTranslators = new Set([
   "corentin-renard",
-  "noah-jaubert",
   "Admin",
   "Βιβλίον",
 ]);

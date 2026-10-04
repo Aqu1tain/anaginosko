@@ -1,3 +1,5 @@
+import JsonLd from "./JsonLd";
+
 const SITE = "https://anaginosko.fr";
 
 // JSON-LD BreadcrumbList, à monter à côté du fil d'Ariane visuel (<Breadcrumb>)
@@ -15,5 +17,5 @@ export default function BreadcrumbJsonLd({ items }: { items: { name: string; pat
       ...(it.path ? { item: `${SITE}${it.path}` } : {}),
     })),
   };
-  return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(json) }} />;
+  return <JsonLd data={json} />;
 }
