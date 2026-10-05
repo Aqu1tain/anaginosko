@@ -35,15 +35,23 @@ const slim = (j) => ({
   })),
 });
 
+// Les archives de l'API commencent le 2 janvier 2016 : un jour absent avant le
+// premier jour trouvé est sauté.
+let published = false;
 for (let d = new Date(Date.UTC(Number(fromYear), 0, 1)); d < new Date(Date.UTC(Number(toYear) + 1, 0, 1)); d.setUTCDate(d.getUTCDate() + 1)) {
   const iso = `${d.getUTCFullYear()}-${pad(d.getUTCMonth() + 1)}-${pad(d.getUTCDate())}`;
   const out = path.join(dir, `${iso}.json`);
-  if (existsSync(out)) continue;
+  if (existsSync(out)) {
+    published = true;
+    continue;
+  }
   const day = await fetchDay(iso);
+  await sleep(250);
+  if (!day && !published) continue;
   if (!day) {
     console.log(`Pas encore publié à partir du ${iso}`);
     break;
   }
+  published = true;
   writeFileSync(out, JSON.stringify(slim(day)));
-  await sleep(250);
 }

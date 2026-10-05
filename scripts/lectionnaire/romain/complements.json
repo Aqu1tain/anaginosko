@@ -1,0 +1,47 @@
+{
+  "note": "Dimanches absents des archives de l'API AELF (depuis le 2 janvier 2016) mais nécessaires à la projection jusqu'en 2030 : références du Lectionnaire romain, au format de l'API, datées du dernier dimanche où elles ont été lues.",
+  "days": {
+    "2006-02-26": {
+      "informations": { "ligne1": "8ème dimanche du Temps Ordinaire", "couleur": "vert" },
+      "messes": [
+        {
+          "nom": "Messe du jour",
+          "lectures": [
+            { "type": "lecture_1", "ref": "Os 2, 16b.17b.21-22" },
+            { "type": "psaume", "ref": "Ps 102 (103), 1-2, 3-4, 8.10, 12-13" },
+            { "type": "lecture_2", "ref": "2 Co 3, 1b-6" },
+            { "type": "evangile", "ref": "Mc 2, 18-22" }
+          ]
+        }
+      ]
+    },
+    "2008-06-08": {
+      "informations": { "ligne1": "10ème dimanche du Temps Ordinaire", "couleur": "vert" },
+      "messes": [
+        {
+          "nom": "Messe du jour",
+          "lectures": [
+            { "type": "lecture_1", "ref": "Os 6, 3-6" },
+            { "type": "psaume", "ref": "Ps 49 (50), 1.8, 12-13, 14-15" },
+            { "type": "lecture_2", "ref": "Rm 4, 18-25" },
+            { "type": "evangile", "ref": "Mt 9, 9-13" }
+          ]
+        }
+      ]
+    },
+    "2012-02-19": {
+      "informations": { "ligne1": "7ème dimanche du Temps Ordinaire", "couleur": "vert" },
+      "messes": [
+        {
+          "nom": "Messe du jour",
+          "lectures": [
+            { "type": "lecture_1", "ref": "Is 43, 18-19.21-22.24b-25" },
+            { "type": "psaume", "ref": "Ps 40 (41), 2-3, 4-5, 13-14" },
+            { "type": "lecture_2", "ref": "2 Co 1, 18-22" },
+            { "type": "evangile", "ref": "Mc 2, 1-12" }
+          ]
+        }
+      ]
+    }
+  }
+}
