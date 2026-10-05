@@ -83,6 +83,22 @@ signifie pas « domaine public ».
   commercial. Les éléments d’interface, index et liens restent distincts des
   extraits du dictionnaire.
 
+## Lectionnaires (lectures du jour)
+
+Les fichiers `data/lectionnaire/` ne contiennent que des références bibliques,
+jamais le texte d'un tiers ; le grec et la traduction viennent des sources
+ci-dessus.
+
+- **Forme ordinaire** : références des lectures publiées par l'AELF
+  (<https://www.aelf.org>), calendrier liturgique de France.
+- **Forme extraordinaire (1962)** : Divinum Officium
+  (<https://github.com/DivinumOfficium/divinum-officium>), licence MIT ;
+  calendrier et préséance calculés avec Missale Meum
+  (<https://github.com/mmolenda/missalemeum>), licence MIT.
+- **Rite byzantin** : tables de péricopes et algorithme d'orthocal-python,
+  © 2022 Brian Glass (<https://github.com/brianglass/orthocal-python>), licence
+  MIT, recalculés avec la Pâque grégorienne.
+
 ## Contact
 
 Question, autorisation, correction d’attribution ou retrait :
