@@ -1,0 +1,19 @@
+{
+  "_note": "Passages dont la numérotation de la Vulgate (Divinum Officium) diffère de Rahlfs. Clé : livre et segments Vulgate ; valeur : segments du corpus. Alignés à la main en comparant le latin et le grec.",
+  "sir 15:1-6": ["sir 15:1-6"],
+  "sir 31:8-11": ["sir 31:8-11"],
+  "sir 44:1-15": ["sir 44:1-15"],
+  "sir 44:10-15": ["sir 44:10-15"],
+  "sir 24:5-5,24:7-7,24:9-11,24:30-31": ["sir 24:3-4", "sir 24:6-7", "sir 24:22-22"],
+  "sir 24:14-16": ["sir 24:9-12"],
+  "sir 24:23-31": ["sir 24:17-22"],
+  "sir 36:1-10": ["sir 36:1-7"],
+  "sir 39:6-14": ["sir 39:5-10"],
+  "sir 44:16-27,45:3-20": ["sir 44:16-23", "sir 45:3-16"],
+  "sir 45:1-6": ["sir 45:1-5"],
+  "sir 51:1-8,51:12-12": ["sir 51:1-8"],
+  "sir 51:13-17": ["sir 51:9-12"],
+  "est 13:8-11,13:15-17": ["est 4:17-17"],
+  "jdt 13:22-25,15:10-10": ["jdt 13:17-20", "jdt 15:9-9"],
+  "jdt 13:22-25": ["jdt 13:17-20"]
+}
