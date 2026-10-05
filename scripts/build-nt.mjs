@@ -9,6 +9,7 @@ import { fileURLToPath } from "node:url";
 import { dirname, resolve } from "node:path";
 import { grecToErasmien, grecToRestituee } from "./translit.mjs";
 import { decodeMorph } from "./morph.mjs";
+import { applyNtMorphOverrides } from "./apply-nt-morph-overrides.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const MORPH = process.env.MORPH_DIR || "/tmp/morphgnt";
@@ -110,6 +111,7 @@ for (const [id, name, file, usfm] of BOOKS) {
 }
 
 writeFileSync(resolve(outDir, "books.json"), JSON.stringify({ books: manifest }, null, 2));
+applyNtMorphOverrides(outDir);
 
 // Index des lemmes (trié grec) + occurrences par lemme (fichier dédié, à la demande).
 mkdirSync(resolve(outDir, "occ"), { recursive: true });

@@ -1,0 +1,12 @@
+{
+  "note": "Analyses morphologiques du NT corrigées à la main : MorphGNT ne donne qu'une analyse par mot, même quand la forme et le débat exégétique en admettent deux. Appliqué à chaque build par scripts/apply-nt-morph-overrides.mjs.",
+  "rules": [
+    {
+      "ref": "ro:5:12",
+      "form": "ᾧ",
+      "morph": "datif singulier, masculin ou neutre (débattu)",
+      "note": "ἐφ' ᾧ : masculin pour « en qui » (Vulgate in quo), neutre pour « parce que » ou « de sorte que ». MorphGNT tranche pour le neutre.",
+      "by": "Anaginosko"
+    }
+  ]
+}
