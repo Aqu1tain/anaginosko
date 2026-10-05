@@ -4,7 +4,9 @@ import { textsByCollection, verseCount, type Text } from "../src/data/texts";
 import { loadBooksFs, loadChapterFs, loadLemmasFs } from "../lib/nt-server";
 import { NT, LXX } from "../src/data/corpus";
 import { listPublished } from "../lib/articles";
+import { publicAuthor } from "../lib/profiles";
 import { CATEGORY_LABEL } from "../src/components/articles/labels";
+import Avatar from "../src/components/profile/Avatar";
 import ResumeReading from "./_components/ResumeReading";
 import RefJump from "../src/components/RefJump";
 import HeroVerse, { type HeroWord } from "../src/components/HeroVerse";
@@ -134,9 +136,10 @@ function Figures({ figures }: { figures: { href: string; value: number; label: s
   );
 }
 
-// Derniers articles publiés. Absents tant que rien n'est publié (pas de section vide).
+// Derniers articles publiés, en cartes. Absents tant que rien n'est publié (pas de
+// section vide).
 function LatestArticles() {
-  const latest = listPublished().slice(0, 2);
+  const latest = listPublished().slice(0, 3);
   if (latest.length === 0) return null;
   return (
     <section className="mt-14 border-t border-base-300 pt-12 wide:mt-16 wide:pt-16">
@@ -146,14 +149,33 @@ function LatestArticles() {
           Tous les articles
         </Link>
       </div>
-      <div className="mt-8 grid gap-8 wide:grid-cols-2 wide:gap-12">
-        {latest.map((a) => (
-          <Link key={a.id} href={`/articles/${a.slug}`} className="group flex flex-col gap-1.5">
-            <span className="text-sm text-base-content/65">{CATEGORY_LABEL[a.category]}</span>
-            <span className="font-greek text-2xl font-bold leading-snug transition-colors group-hover:text-accent">{a.title}</span>
-            {a.excerpt && <span className="line-clamp-2 text-base-content/70">{a.excerpt}</span>}
-          </Link>
-        ))}
+      <div className="mt-8 grid gap-4 wide:grid-cols-3">
+        {latest.map((a) => {
+          const author = publicAuthor(a.author.userId, a.author.name);
+          return (
+            <Link
+              key={a.id}
+              href={`/articles/${a.slug}`}
+              className="group flex flex-col overflow-hidden rounded-box border border-base-300 bg-base-100 transition-all hover:border-base-content/20 hover:shadow-md"
+            >
+              {a.cover && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={a.cover} alt="" className="h-40 w-full object-cover" loading="lazy" />
+              )}
+              <div className="flex flex-1 flex-col p-5">
+                <p className="text-[0.7rem] font-semibold uppercase tracking-wide text-primary/80">
+                  {CATEGORY_LABEL[a.category]}
+                </p>
+                <h3 className="mt-1.5 text-lg font-semibold leading-snug group-hover:text-primary">{a.title}</h3>
+                {a.excerpt && <p className="mt-1.5 line-clamp-3 text-sm text-base-content/70">{a.excerpt}</p>}
+                <div className="mt-auto flex items-center gap-2 pt-4 text-xs text-base-content/60">
+                  <Avatar name={author.name} photo={author.photo} size={22} />
+                  <span className="min-w-0 truncate">{author.name}</span>
+                </div>
+              </div>
+            </Link>
+          );
+        })}
       </div>
     </section>
   );
