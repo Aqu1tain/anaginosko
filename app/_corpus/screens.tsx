@@ -2,10 +2,12 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { loadBooksFs, loadChapterFs } from "@/lib/nt-server";
-import { bookById, type NtBook } from "@/src/data/nt";
+import { bookById, chapterNumbers, type NtBook } from "@/src/data/nt";
 import type { CorpusConfig } from "@/src/data/corpus";
 import Reader from "@/src/components/Reader";
 import RefJump from "@/src/components/RefJump";
+import ChapterSwitcher from "@/src/components/ChapterSwitcher";
+import { loadBibleNav } from "@/lib/bibleNav";
 import Breadcrumb from "@/app/_components/Breadcrumb";
 import BreadcrumbJsonLd from "@/app/_components/BreadcrumbJsonLd";
 import ArticleRenderer from "@/src/components/articles/ArticleRenderer";
@@ -19,11 +21,6 @@ import JsonLd from "@/app/_components/JsonLd";
 // les littéraux historiques (URL, libellés, JSON-LD) à l'identique.
 
 const SITE = "https://anaginosko.fr";
-
-// Chapitres réels d'un livre : contigus (NT) ou liste explicite (LXX : Proverbes
-// a des trous, le Siracide commence au prologue 0).
-const chapterNumbers = (b: NtBook): number[] =>
-  b.chapterList ?? Array.from({ length: b.chapters }, (_, i) => i + 1);
 
 const chapterLabel = (name: string, ch: number): string =>
   ch === 0 ? `${name}, prologue` : `${name} ${ch}`;
@@ -196,7 +193,7 @@ export async function ChapterScreen({
   const books = await loadBooksFs(corpus);
   const b = bookById(books, book);
   if (!b || !Number.isInteger(ch) || !chapterNumbers(b).includes(ch)) notFound();
-  const text = await loadChapterFs(book, ch, corpus);
+  const [text, bibleNav] = await Promise.all([loadChapterFs(book, ch, corpus), loadBibleNav()]);
 
   // Bloc de versets contigus (grec + français), rendu côté serveur pour les
   // moteurs et lecteurs d'écran ; le lecteur interactif éclate le grec par-dessus.
@@ -249,6 +246,12 @@ export async function ChapterScreen({
 
   const name = corpus.bookNames[book] ?? "Livre";
   const label = chapterLabel(name, ch);
+  const stepTo = (bk: string, n: number) => ({
+    href: `${corpus.routePrefix}/${bk}/${n}`,
+    label: chapterLabel(bookName(bk), n),
+  });
+  const prevStep = prev != null ? stepTo(book, prev) : prevBook ? stepTo(prevBook.id, lastCh(prevBook)) : null;
+  const nextStep = next != null ? stepTo(book, next) : nextBook ? stepTo(nextBook.id, firstCh(nextBook)) : null;
   const url = `${SITE}${corpus.routePrefix}/${book}/${ch}`;
   const jsonLd = {
     "@context": "https://schema.org",
@@ -278,14 +281,20 @@ export async function ChapterScreen({
     <div className="reading-page">
       <JsonLd data={jsonLd} />
       <h1 className="sr-only">{label}</h1>
-      <div className="reading-col">
+      <div className="reading-col flex flex-wrap items-center gap-x-4 gap-y-1">
         <Breadcrumb
           items={[
             { label: "Accueil", href: "/", home: true },
             { label: corpus.shortLabel, href: corpus.routePrefix },
             { label: name, href: `${corpus.routePrefix}/${book}` },
-            { label: ch === 0 ? "Prologue" : String(ch) },
           ]}
+        />
+        <ChapterSwitcher
+          corpora={bibleNav}
+          current={{ corpus: corpus.id, book, chapter: ch }}
+          label={ch === 0 ? `${name}, prologue` : `${name} ${ch}`}
+          prev={prevStep}
+          next={nextStep}
         />
       </div>
       <Reader text={text} />

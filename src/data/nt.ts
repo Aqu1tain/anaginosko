@@ -11,6 +11,11 @@ export type NtBook = {
   chapterList?: number[]; // LXX : chapitres réels (non contigus : Proverbes, prologue du Siracide)
 };
 
+// Chapitres réels d'un livre : contigus (NT) ou liste explicite (LXX : Proverbes
+// a des trous, le Siracide commence au prologue 0).
+export const chapterNumbers = (b: NtBook): number[] =>
+  b.chapterList ?? Array.from({ length: b.chapters }, (_, i) => i + 1);
+
 // Ordre canonique des 27 livres.
 export const BOOK_ORDER = [
   "mt", "mk", "lk", "jn", "ac", "ro", "1co", "2co", "ga", "eph", "php", "col",

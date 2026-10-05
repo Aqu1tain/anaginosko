@@ -10,6 +10,8 @@ import Avatar from "../src/components/profile/Avatar";
 import ResumeReading from "./_components/ResumeReading";
 import RefJump from "../src/components/RefJump";
 import HeroVerse, { type HeroWord } from "../src/components/HeroVerse";
+import BibleNavigator, { type NavCorpus } from "../src/components/BibleNavigator";
+import { loadBibleNav } from "../lib/bibleNav";
 
 export const metadata: Metadata = {
   description:
@@ -88,6 +90,18 @@ function Jump({ books }: { books: { id: string; name: string; chapters: number; 
             {s.label}
           </Link>
         ))}
+      </div>
+    </section>
+  );
+}
+
+function Browse({ corpora }: { corpora: NavCorpus[] }) {
+  return (
+    <section className="mt-16 wide:mt-20">
+      <h2 className={sectionTitle}>Parcourir la Bible</h2>
+      <p className="mt-2 text-base-content/70">Choisissez un livre, puis un chapitre.</p>
+      <div className="mt-6 rounded-box border border-base-300 bg-base-100 p-5 wide:p-7">
+        <BibleNavigator corpora={corpora} />
       </div>
     </section>
   );
@@ -198,12 +212,13 @@ function Support() {
 }
 
 export default async function Home() {
-  const [ntBooks, lxxBooks, ntLemmas, lxxLemmas, jn1] = await Promise.all([
+  const [ntBooks, lxxBooks, ntLemmas, lxxLemmas, jn1, bibleNav] = await Promise.all([
     loadBooksFs(NT),
     loadBooksFs(LXX),
     loadLemmasFs(NT),
     loadLemmasFs(LXX),
     loadChapterFs("jn", 1, NT),
+    loadBibleNav(),
   ]);
   // Recherche de référence globale : NT et LXX fusionnés, chaque livre pointe vers
   // son corpus (les noms et ids ne se chevauchent pas entre les deux).
@@ -223,6 +238,7 @@ export default async function Home() {
     <div>
       <Hero verse={verse} french={jn1.francais?.["1"] ?? null} word={word} start={`/text/${passages[0]?.id ?? "passages-1"}`} />
       <Jump books={allBooks} />
+      <Browse corpora={bibleNav} />
       <Passages passages={passages} />
       <Figures
         figures={[
