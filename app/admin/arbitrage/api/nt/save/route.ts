@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { requireEditor } from "@/lib/arbitration";
 import { loadChapterFs } from "@/lib/nt-server";
-import { saveNtMaison } from "@/lib/ntMaison";
+import { NT_MAISON_TAG, saveNtMaison } from "@/lib/ntMaison";
 
 export const dynamic = "force-dynamic";
 
@@ -34,6 +34,8 @@ export async function POST(req: Request) {
 
   const saved = await saveNtMaison(req.headers.get("authorization") ?? "", book, parsed);
   if (saved.status >= 300) return NextResponse.json(saved.body ?? { error: "Enregistrement refusé par l'API." }, { status: saved.status });
+  revalidateTag(NT_MAISON_TAG);
   for (const ch of chapters) revalidatePath(`/nt/${book}/${ch}`);
+  revalidatePath("/lectures", "layout");
   return NextResponse.json({ ok: true, applied: saved.body?.applied ?? parsed.length });
 }
