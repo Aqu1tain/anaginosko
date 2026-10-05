@@ -18,6 +18,7 @@ import {
   type Annotation,
 } from "../lib/api";
 import GreekText, { type TranslitMode, type AnnoScope, type AnnoSelection } from "./GreekText";
+import { ANAGINOSKO_TRANSLATORS, creditName } from "../data/translators";
 import ShareVerse from "./ShareVerse";
 import ReportButton from "./ReportButton";
 import ReportEditor, { type ReportTarget } from "./ReportEditor";
@@ -42,16 +43,6 @@ const TOUR_STEPS: TourStep[] = [
     body: "Cherchez un mot grec dans toute la Bible depuis la concordance.",
   },
 ];
-
-// Les données conservent une signature interne du traducteur. L'interface publie
-// la signature éditoriale commune choisie par les auteurs. Les identifiants nommés
-// sont reconnus sans imposer une migration du corpus vivant dans cette branche.
-const ANAGINOSKO_TRANSLATORS = new Set([
-  "corentin-renard",
-  "Admin",
-  "Βιβλίον",
-]);
-const creditName = (by: string) => ANAGINOSKO_TRANSLATORS.has(by) ? "Anaginosko" : by;
 
 // Petit « i » après CHAQUE verset : au survol, il révèle son traducteur (Giguet par
 // défaut, ou le traducteur maison). Les versets maison ont un « i » un peu plus marqué.
