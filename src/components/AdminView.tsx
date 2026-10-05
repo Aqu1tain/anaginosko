@@ -102,6 +102,7 @@ const ICON = {
 function locationLabel(ref: string): string {
   if (ref.startsWith("lemma:")) return ref.slice(6);
   if (ref.startsWith("def:")) return ref.slice(4);
+  if (ref.startsWith("lect:")) return `Lectures, ${ref.slice(5).replace(":", " du ")}`;
   const p = parseRef(ref);
   if (p) {
     const names = corpusById(p.corpus).bookNames;

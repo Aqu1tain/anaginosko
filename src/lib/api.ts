@@ -274,7 +274,8 @@ export type ReportCategory =
   | "texte"
   | "commentaire"
   | "definition"
-  | "demande_note";
+  | "demande_note"
+  | "lecture";
 export type ReportStatus = "pending" | "in_progress" | "resolved" | "rejected";
 
 export type ReportInput = {

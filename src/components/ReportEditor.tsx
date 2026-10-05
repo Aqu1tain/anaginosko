@@ -23,6 +23,7 @@ export const CATEGORY_LABEL: Record<ReportCategory, string> = {
   commentaire: "Commentaire à revoir",
   definition: "Définition à corriger",
   demande_note: "Demander l’ajout d’une note",
+  lecture: "Erreur sur les lectures du jour",
 };
 
 const emailValid = (e: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e.trim());
