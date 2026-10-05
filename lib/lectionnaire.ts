@@ -71,21 +71,29 @@ export const daysWithReadings = async (rite: Rite, isos: string[]) => {
   return new Set(isos.filter((_, i) => found[i]));
 };
 
-// Un passage résolu : le chapitre réduit aux versets lus (grec et traduction).
-export type ResolvedPassage = Passage & { text: Text | null; verses: number[]; frenchBlock: boolean };
+// Un passage résolu : le chapitre entier (les annotations y sont indexées par mot),
+// les versets lus et leur traduction.
+export type ResolvedPassage = Passage & {
+  text: Text | null;
+  verses: number[];
+  french: Record<string, string> | null;
+  maison: Record<string, string> | null;
+  frenchBlock: boolean;
+};
 
 async function resolvePassage(p: Passage): Promise<ResolvedPassage> {
-  if (p.absent) return { ...p, text: null, verses: [], frenchBlock: false };
+  if (p.absent) return { ...p, text: null, verses: [], french: null, maison: null, frenchBlock: false };
   const chapter = await loadChapterFs(p.book, p.chapter, p.corpus === "lxx" ? LXX : NT);
   const inRange = (v: number | null) => v != null && v >= p.from && v <= p.to;
-  const mots = (chapter.mots ?? []).filter((m) => inRange(m.verse));
-  const verses = [...new Set(mots.map((m) => m.verse as number))];
+  const verses = [...new Set((chapter.mots ?? []).filter((m) => inRange(m.verse)).map((m) => m.verse as number))];
   const pick = <T,>(rec: Record<string, T> | null | undefined) =>
     rec ? Object.fromEntries(Object.entries(rec).filter(([v]) => inRange(Number(v)))) : null;
   return {
     ...p,
-    text: { ...chapter, mots, francais: pick(chapter.francais), maison: pick(chapter.maison) },
+    text: { ...chapter, francais: null, maison: null },
     verses,
+    french: pick(chapter.francais),
+    maison: pick(chapter.maison),
     frenchBlock: Boolean(chapter.frenchBlock),
   };
 }

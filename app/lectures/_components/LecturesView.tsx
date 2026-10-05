@@ -1,5 +1,4 @@
 import Link from "next/link";
-import GreekText from "@/src/components/GreekText";
 import { creditName } from "@/src/data/translators";
 import {
   RITES,
@@ -19,6 +18,7 @@ import {
 } from "@/lib/lectionnaire";
 import Choice from "./Choice";
 import DateJump from "./DateJump";
+import PassageGreek from "./PassageGreek";
 
 const COLORS: Record<string, string> = {
   vert: "#3a7d44",
@@ -55,10 +55,10 @@ function groupReadings(readings: Reading[]) {
 function translators(r: ResolvedReading) {
   const names = new Set<string>();
   for (const p of r.resolved) {
-    if (!p.text?.francais || p.frenchBlock) continue;
+    if (!p.french || p.frenchBlock) continue;
     for (const v of p.verses) {
-      if (!(v in p.text.francais)) continue;
-      names.add(creditName(p.text.maison?.[v] ?? BASE_TRANSLATOR[p.corpus]));
+      if (!(v in p.french)) continue;
+      names.add(creditName(p.maison?.[v] ?? BASE_TRANSLATOR[p.corpus]));
     }
   }
   return [...names].join(", ");
@@ -74,24 +74,9 @@ function PassageText({ p }: { p: ResolvedPassage }) {
       </p>
     );
   }
-  const french = p.frenchBlock ? null : p.text.francais;
   return (
     <div>
-      {p.verses.map((v) => (
-        <div key={v} className="trans-row border-b border-base-300/70 py-3 last:border-0">
-          <div className="trans-grec">
-            <GreekText text={p.text!} size="md" scale={0.92} verseOnly={v} />
-          </div>
-          <div className="trans-fr leading-relaxed text-base-content/85">
-            {french?.[v] && (
-              <>
-                <span className="verse-num">{v}</span>
-                {french[v]}
-              </>
-            )}
-          </div>
-        </div>
-      ))}
+      <PassageGreek text={p.text} verses={p.verses} french={p.frenchBlock ? null : p.french} />
       {p.frenchBlock && (
         <p className="pt-2 text-sm text-base-content/70">
           La traduction de Giguet suit ici une autre numérotation :{" "}
