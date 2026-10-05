@@ -1,0 +1,238 @@
+{
+  "bareme": {
+    "indispensables": 8,
+    "citations_internes": 3,
+    "references_savantes": 2,
+    "typage_et_incertitude": 4,
+    "traductions_justifiees": 3,
+    "total": 20,
+    "erreur_grave": "toute erreur grave plafonne la note du cas à 8/20 ; une référence inventée plafonne à 5/20"
+  },
+  "cas": [
+    {
+      "id": "jn-1-1",
+      "ref": "nt:jn:1:1",
+      "action": "Analyser la syntaxe",
+      "question": "Jn 1,1 : analysez la syntaxe de καὶ θεὸς ἦν ὁ λόγος et proposez des traductions françaises justifiées.",
+      "indispensables": [
+        "ὁ λόγος est le sujet (il porte l'article) ; θεός est l'attribut, placé en tête et sans article.",
+        "L'absence d'article devant un attribut antéposé n'implique pas un sens indéfini (« un dieu ») : un tel attribut est souvent qualitatif ou défini selon le contexte.",
+        "L'antéposition met θεός en relief ; contraste avec πρὸς τὸν θεόν en 1,1b, avec article.",
+        "Écho de Ἐν ἀρχῇ avec Gn 1,1 dans la Septante.",
+        "Plusieurs traductions justifiées (« le Verbe était Dieu », formulations qualitatives), présentées comme des choix."
+      ],
+      "acceptables": [
+        "Lecture qualitative (Harner) ou définie, avec leurs arguments.",
+        "Discussion de la règle de Colwell et de ses limites.",
+        "λόγος rendu par « Verbe » ou « Parole »."
+      ],
+      "erreurs_graves": [
+        "Affirmer que la grammaire impose « un dieu ».",
+        "Présenter la règle de Colwell comme preuve que θεός est défini (réciproque fautive).",
+        "Faire de θεός le sujet.",
+        "Inventer une référence."
+      ],
+      "references_attendues": [
+        "nt:jn:1:1",
+        "lxx:gen:1:1"
+      ],
+      "references_savantes": [
+        "E. C. Colwell, « A Definite Rule for the Use of the Article in the Greek New Testament », Journal of Biblical Literature 52 (1933)",
+        "P. B. Harner, « Qualitative Anarthrous Predicate Nouns: Mark 15:39 and John 1:1 », Journal of Biblical Literature 92 (1973)",
+        "D. B. Wallace, Greek Grammar Beyond the Basics (1996)"
+      ]
+    },
+    {
+      "id": "lc-1-28",
+      "ref": "nt:lk:1:28",
+      "action": "Examiner ce terme",
+      "question": "Lc 1,28 : examinez κεχαριτωμένη : forme, sens, emplois du verbe et traductions possibles.",
+      "indispensables": [
+        "Participe parfait passif de χαριτόω, au vocatif, employé comme une désignation après Χαῖρε.",
+        "Verbe rare : dans le NT seulement Lc 1,28 et Ep 1,6 (aoriste actif) ; dans la Septante Si 18,17 (lemmatisé χαριτόομαι dans le corpus).",
+        "Le parfait exprime un état résultant ; le passif suggère Dieu comme agent (lecture fréquente, présentée comme interprétation).",
+        "Plusieurs traductions justifiées : « pleine de grâce » (héritée de la Vulgate, gratia plena), « comblée de grâce », « toi qui as reçu la faveur de Dieu ».",
+        "La donnée grammaticale ne prouve pas à elle seule une doctrine (Immaculée Conception) : la lecture mariale relève de la réception."
+      ],
+      "acceptables": [
+        "Sens factitif ou causatif des verbes en -όω.",
+        "Écho possible de So 3,14 dans la Septante (χαῖρε … θύγατερ Σιων), présenté comme hypothèse.",
+        "Rapprochement avec Lc 1,30 (εὗρες χάριν)."
+      ],
+      "erreurs_graves": [
+        "Analyse morphologique fausse (aoriste, actif, nominatif…).",
+        "Affirmer que la grammaire prouve, ou exclut, l'Immaculée Conception.",
+        "Inventer d'autres occurrences de χαριτόω.",
+        "Présenter la Vulgate comme une preuve lexicale."
+      ],
+      "references_attendues": [
+        "nt:lk:1:28",
+        "nt:eph:1:6",
+        "lxx:sir:18:17",
+        "nt:lk:1:30"
+      ],
+      "references_savantes": [
+        "S. Lyonnet, « Χαῖρε κεχαριτωμένη », Biblica 20 (1939)"
+      ]
+    },
+    {
+      "id": "ph-2-6",
+      "ref": "nt:php:2:6",
+      "action": "Comparer les traductions possibles",
+      "question": "Ph 2,6 : comment comprendre οὐχ ἁρπαγμὸν ἡγήσατο τὸ εἶναι ἴσα θεῷ ? Comparez les sens possibles de ἁρπαγμός et proposez des traductions.",
+      "indispensables": [
+        "ἁρπαγμός est un hapax du NT et n'apparaît pas dans la Septante (vérifié dans le corpus).",
+        "ἡγέομαι avec double accusatif : τὸ εἶναι ἴσα θεῷ est l'objet, ἁρπαγμόν l'attribut de l'objet.",
+        "Trois grandes lectures : chose déjà saisie à retenir (res rapta), chose à saisir ou usurper (res rapienda), sens idiomatique « chose à exploiter, dont tirer avantage » (Hoover).",
+        "Lien avec ἐν μορφῇ θεοῦ ὑπάρχων (2,6a) et le contraste ἀλλ' ἑαυτὸν ἐκένωσεν (2,7).",
+        "Traductions justifiées, en signalant l'enjeu christologique sans le trancher par le seul lexique."
+      ],
+      "acceptables": [
+        "Suffixe -μός (action ou résultat).",
+        "Lecture adamique (contraste avec Gn 3), présentée comme hypothèse.",
+        "ἴσα adverbial (neutre pluriel).",
+        "Le nom apparenté ἅρπαγμα (« butin, rapine »), fréquent dans la Septante (ex. Lv 5,23 ; Ps 61,11), comme élément de comparaison et non comme équivalent."
+      ],
+      "erreurs_graves": [
+        "Inventer des occurrences de ἁρπαγμός dans le NT ou la Septante.",
+        "Mauvaise analyse de la construction.",
+        "Présenter une lecture comme la seule possible."
+      ],
+      "references_attendues": [
+        "nt:php:2:6",
+        "nt:php:2:7"
+      ],
+      "references_savantes": [
+        "R. W. Hoover, « The Harpagmos Enigma: A Philological Solution », Harvard Theological Review 64 (1971)"
+      ]
+    },
+    {
+      "id": "mt-16-18",
+      "ref": "nt:mt:16:18",
+      "action": "Poser une question",
+      "question": "Mt 16,18 : quelle est la relation entre Πέτρος et πέτρα ? Présentez les principales lectures et ce que le grec permet ou non de conclure.",
+      "indispensables": [
+        "Jeu de mots Πέτρος / πέτρα ; Πέτρος est masculin parce que c'est le nom d'un homme.",
+        "La distinction classique pierre / roche ne suffit pas à dissocier les deux termes ici ; l'araméen sous-jacent probable n'a qu'un mot (Kêpha), attesté en grec sous la forme Κηφᾶς (Jn 1,42, épîtres de Paul).",
+        "ἐπὶ ταύτῃ τῇ πέτρᾳ : lectures concurrentes (Pierre lui-même, sa confession de foi, le Christ), avec leurs arguments.",
+        "Distinction nette entre grammaire, exégèse et réception (Pères partagés, usages confessionnels).",
+        "Le grec ne tranche pas seul la question ecclésiologique."
+      ],
+      "acceptables": [
+        "Is 51,1-2 (Abraham, le rocher) comme parallèle.",
+        "Mt 7,24 (bâtir sur le roc) ; Mt 16,19 (les clés).",
+        "Mention de la lecture catholique traditionnelle comme réception."
+      ],
+      "erreurs_graves": [
+        "Affirmer que le genre ou le sens classique impose deux réalités différentes.",
+        "Affirmer que le grec impose une lecture confessionnelle, dans un sens ou dans l'autre.",
+        "Citations patristiques précises inventées."
+      ],
+      "references_attendues": [
+        "nt:mt:16:18",
+        "nt:mt:16:16",
+        "nt:jn:1:42"
+      ],
+      "references_savantes": [
+        "O. Cullmann, Petrus. Jünger, Apostel, Märtyrer (1952)",
+        "C. C. Caragounis, Peter and the Rock (1990)"
+      ]
+    },
+    {
+      "id": "mc-6-3",
+      "ref": "nt:mk:6:3",
+      "action": "Examiner ce terme",
+      "question": "Mc 6,3 : que peut signifier ἀδελφός dans « frère de Jacques, de José, de Jude et de Simon » ? Appuyez-vous sur les usages du NT et de la Septante.",
+      "indispensables": [
+        "Sens premier : frère de sang ; champ plus large : parent proche, membre du même peuple, frère dans la foi.",
+        "Emplois de la Septante pour un parent qui n'est pas un frère : Lot et Abram (Gn 13,8 ; 14,14.16), Jacob et Laban (Gn 29,15), avec références vérifiées.",
+        "Le grec possède ἀνεψιός (cousin, Col 4,10) : argument à peser, qui ne tranche pas seul.",
+        "Trois positions historiques : frères utérins (Helvidius), fils d'un premier mariage de Joseph (Épiphane), cousins (Jérôme) ; la doctrine de la virginité perpétuelle relève de la réception, distincte de l'argument lexical.",
+        "Données du contexte : Mc 15,40 (Marie mère de Jacques le petit et de José), Jn 19,25."
+      ],
+      "acceptables": [
+        "Arrière-plan sémitique ('aḥ en hébreu).",
+        "Mention des sœurs (ἀδελφαί) dans le même verset.",
+        "Ga 1,19."
+      ],
+      "erreurs_graves": [
+        "Affirmer que le grec n'a pas de mot pour « cousin ».",
+        "Affirmer que ἀδελφός ne peut signifier que frère de sang, ou jamais.",
+        "Références de la Septante qui ne contiennent pas ἀδελφός."
+      ],
+      "references_attendues": [
+        "nt:mk:6:3",
+        "lxx:gen:13:8",
+        "lxx:gen:14:14",
+        "nt:col:4:10",
+        "nt:mk:15:40"
+      ],
+      "references_savantes": [
+        "J. P. Meier, « The Brothers and Sisters of Jesus in Ecumenical Perspective », Catholic Biblical Quarterly 54 (1992)",
+        "R. Bauckham, « The Brothers and Sisters of Jesus: An Epiphanian Response to John P. Meier », Catholic Biblical Quarterly 56 (1994)"
+      ]
+    },
+    {
+      "id": "rm-5-12",
+      "ref": "nt:ro:5:12",
+      "action": "Comparer les traductions possibles",
+      "question": "Rm 5,12 : quelles sont les interprétations possibles de ἐφ' ᾧ πάντες ἥμαρτον ? Proposez des traductions argumentées.",
+      "indispensables": [
+        "ἐφ' ᾧ : ἐπί avec le datif du relatif ; valeurs proposées : causale « parce que » (majoritaire chez les modernes), « en qui » (in quo de la Vulgate, Augustin), consécutive « de sorte que » (Fitzmyer), autres.",
+        "ἥμαρτον : aoriste indicatif ; débat sur sa portée (péché personnel ou participation au péché d'Adam).",
+        "La doctrine du péché originel (Trente, session V, cite Rm 5,12) relève de la réception et ne repose pas sur la seule lecture « en qui ».",
+        "Comparaison avec les autres emplois pauliniens de ἐφ' ᾧ : 2 Co 5,4 ; Ph 3,12 ; Ph 4,10."
+      ],
+      "acceptables": [
+        "Anacoluthe : ὥσπερ sans apodose.",
+        "Rm 5,18-19 pour la logique du passage."
+      ],
+      "erreurs_graves": [
+        "Présenter « en qui » comme la seule lecture possible, ou comme impossible.",
+        "Faire du dogme une preuve lexicale, ou de la lecture causale une réfutation du dogme.",
+        "Inventer d'autres occurrences."
+      ],
+      "references_attendues": [
+        "nt:ro:5:12",
+        "nt:2co:5:4",
+        "nt:php:3:12",
+        "nt:php:4:10"
+      ],
+      "references_savantes": [
+        "J. A. Fitzmyer, « The Consecutive Meaning of ἐφ' ᾧ in Romans 5.12 », New Testament Studies 39 (1993)"
+      ]
+    },
+    {
+      "id": "1tm-2-12",
+      "ref": "nt:1ti:2:12",
+      "action": "Examiner ce terme",
+      "question": "1 Tm 2,12 : que signifie αὐθεντεῖν ? Évaluez les sens proposés et leur fondement.",
+      "indispensables": [
+        "Hapax du NT, absent de la Septante (vérifié dans le corpus).",
+        "Infinitif présent de αὐθεντέω, coordonné à διδάσκειν par οὐδέ.",
+        "Sens débattus : « exercer l'autorité », « dominer, imposer son autorité », sens péjoratifs (« usurper l'autorité »).",
+        "Fondement : usage extrabiblique peu abondant (papyrus BGU 1208, Ier siècle av. J.-C., et textes postérieurs) ; prudence et incertitude explicites.",
+        "Ne pas projeter sans précaution de date les sens anciens du nom αὐθέντης (meurtrier) sur le verbe."
+      ],
+      "acceptables": [
+        "Construction avec οὐδέ (couples de termes de même valeur).",
+        "Contexte : 2,11 (ἐν ἡσυχίᾳ) et 2,13-14.",
+        "Les noms apparentés de la Septante : αὐθέντης (Sg 12,6, « meurtriers ») et αὐθεντία (3 M 2,29), avec prudence sur le passage du nom au verbe."
+      ],
+      "erreurs_graves": [
+        "Inventer des attestations ou des références de papyrus.",
+        "Affirmer un sens unique comme certain.",
+        "Projeter sans preuve le sens « tuer » sur le verbe."
+      ],
+      "references_attendues": [
+        "nt:1ti:2:12",
+        "nt:1ti:2:11"
+      ],
+      "references_savantes": [
+        "A. Wolters, « A Semantic Study of αὐθέντης and its Derivatives », Journal of Greco-Roman Christianity and Judaism 1 (2000)",
+        "H. S. Baldwin, dans A. J. Köstenberger et T. R. Schreiner (dir.), Women in the Church (1995)",
+        "P. B. Payne, Man and Woman, One in Christ (2009)"
+      ]
+    }
+  ]
+}
