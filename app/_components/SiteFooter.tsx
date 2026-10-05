@@ -8,6 +8,7 @@ export default function SiteFooter() {
       <nav aria-label="Liens du site" className="flex flex-wrap justify-center gap-x-5 gap-y-2">
         <Link href="/nt" className="link-hover">Nouveau Testament</Link>
         <Link href="/lxx" className="link-hover">Septante</Link>
+        <Link href="/lectures" className="link-hover">Lectures du jour</Link>
         <Link href="/alphabet" className="link-hover">Alphabet</Link>
         <Link href="/prononciation" className="link-hover">Prononciation</Link>
         <Link href="/concordance" className="link-hover">Concordance</Link>

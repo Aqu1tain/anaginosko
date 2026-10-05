@@ -14,6 +14,9 @@ const nextConfig: NextConfig = {
       "./data/lxx-queue.json",
       "./data/lxx-chapter-state.json",
     ],
+    // Les lectures du jour lisent les lectionnaires précalculés au runtime.
+    "/lectures": ["./data/lectionnaire/**/*.json"],
+    "/lectures/**": ["./data/lectionnaire/**/*.json"],
     // Les cartes OpenGraph lisent les polices .ttf via fs au runtime (satori
     // n'accepte pas les webfonts) : on force leur inclusion dans le standalone
     // pour chaque route qui génère une image.

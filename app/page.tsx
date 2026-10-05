@@ -23,6 +23,7 @@ export const revalidate = 300;
 const TIPEEE = "https://fr.tipeee.com/anaginosko";
 
 const SHORTCUTS = [
+  { href: "/lectures", label: "Lectures du jour" },
   { href: "/text/passages-1", label: "Prologue de Jean" },
   { href: "/text/passages-2", label: "Béatitudes" },
   { href: "/lxx/gen/1", label: "Genèse 1" },

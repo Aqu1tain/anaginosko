@@ -17,6 +17,12 @@ const ICONS = {
       <path d="M16 16l4 4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
     </svg>
   ),
+  lectures: (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="4" y="5" width="16" height="15" rx="2.5" />
+      <path d="M4 10h16M9 3v4M15 3v4" />
+    </svg>
+  ),
   articles: (
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d="M6 4h9l3 3v13H6z" />
@@ -42,6 +48,7 @@ export function useNavTabs(): NavTab[] {
     { href: "/", label: "Accueil", icon: ICONS.home, active: reading },
     { href: "/alphabet", label: "Alphabet", icon: ICONS.alphabet, active: pathname.startsWith("/alphabet") },
     { href: "/concordance", label: "Concordance", icon: ICONS.concordance, active: isConcordance },
+    { href: "/lectures", label: "Lectures", icon: ICONS.lectures, active: pathname.startsWith("/lectures") },
     { href: "/articles", label: "Articles", icon: ICONS.articles, active: pathname.startsWith("/articles") },
   ];
 }
