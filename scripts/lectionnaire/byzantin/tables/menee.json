@@ -1,0 +1,1131 @@
+{
+ "01-01": [
+  {
+   "nom": "Circoncision du Seigneur",
+   "rang": 6,
+   "apotre": "col 2.8-12",
+   "evangile": "lk 2.20-21, 40-52"
+  },
+  {
+   "nom": "Saint Basile le Grand",
+   "rang": 6,
+   "apotre": "heb 7.26-8.2",
+   "evangile": "lk 6.17-23"
+  }
+ ],
+ "01-02": [
+  {
+   "nom": "Avant-fête de la Théophanie",
+   "rang": 2,
+   "apotre": "heb 5.4-10",
+   "evangile": "jn 3.1-15"
+  }
+ ],
+ "01-04": [
+  {
+   "nom": "Avant-fête de la Théophanie",
+   "rang": 2,
+   "apotre": "1co 4.9-16",
+   "evangile": "jn 1.18-28"
+  }
+ ],
+ "01-06": [
+  {
+   "nom": "Théophanie du Seigneur",
+   "rang": 8,
+   "apotre": "tit 2.11-14, 3.4-7",
+   "evangile": "mt 3.13-17"
+  }
+ ],
+ "01-07": [
+  {
+   "nom": "Synaxe de saint Jean-Baptiste",
+   "rang": 3,
+   "apotre": "ac 19.1-8",
+   "evangile": "jn 1.29-34"
+  }
+ ],
+ "01-08": [
+  {
+   "nom": "Après-fête de la Théophanie",
+   "rang": 2,
+   "apotre": "ro 6.3-11",
+   "evangile": "jn 3.22-33"
+  }
+ ],
+ "01-09": [
+  {
+   "nom": "Après-fête de la Théophanie",
+   "rang": 2,
+   "apotre": "2ti 2.1-10",
+   "evangile": "mk 1.9-15"
+  }
+ ],
+ "01-10": [
+  {
+   "nom": "Après-fête de la Théophanie",
+   "rang": 2,
+   "apotre": "eph 4.7-13",
+   "evangile": "lk 3.19-22"
+  }
+ ],
+ "01-11": [
+  {
+   "nom": "Saint Théodose le Cénobiarque",
+   "rang": 4,
+   "apotre": "2co 4.6-15",
+   "evangile": "mt 11.27-30"
+  },
+  {
+   "nom": "Après-fête de la Théophanie",
+   "rang": 2,
+   "apotre": "heb 13.7-16",
+   "evangile": "lk 4.1-15"
+  }
+ ],
+ "01-12": [
+  {
+   "nom": "Après-fête de la Théophanie",
+   "rang": 2,
+   "apotre": "ac 18.22-28",
+   "evangile": "jn 10.39-42"
+  }
+ ],
+ "01-13": [
+  {
+   "nom": "Après-fête de la Théophanie",
+   "rang": 2,
+   "apotre": "ga 3.23-4.5",
+   "evangile": "lk 20.1-8"
+  }
+ ],
+ "01-15": [
+  {
+   "nom": "Saint Jean le Calybite",
+   "rang": 2,
+   "apotre": "ga 5.22-6.2",
+   "evangile": "lk 12.32-40"
+  }
+ ],
+ "01-16": [
+  {
+   "nom": "Vénération des chaînes de saint Pierre",
+   "rang": 2,
+   "apotre": "ac 12.1-11",
+   "evangile": "jn 21.14-25"
+  }
+ ],
+ "01-17": [
+  {
+   "nom": "Saint Antoine le Grand",
+   "rang": 5,
+   "apotre": "heb 13.17-21",
+   "evangile": "lk 6.17-23"
+  }
+ ],
+ "01-18": [
+  {
+   "nom": "Saints Athanase et Cyrille d'Alexandrie",
+   "rang": 3,
+   "apotre": "heb 13.7-16",
+   "evangile": "mt 5.14-19"
+  }
+ ],
+ "01-19": [
+  {
+   "nom": "Saint Macaire l'Égyptien",
+   "rang": 2,
+   "apotre": "ga 5.22-6.2"
+  }
+ ],
+ "01-20": [
+  {
+   "nom": "Saint Euthyme le Grand",
+   "rang": 4,
+   "apotre": "2co 4.6-15",
+   "evangile": "lk 6.17-23"
+  }
+ ],
+ "01-21": [
+  {
+   "nom": "Saint Maxime le Confesseur",
+   "rang": 2,
+   "apotre": "php 1.12-20",
+   "evangile": "lk 12.8-12"
+  }
+ ],
+ "01-22": [
+  {
+   "nom": "Saint Timothée, apôtre",
+   "rang": 3,
+   "apotre": "2ti 1.3-8",
+   "evangile": "mt 10.32-33, 37-38, 19.27-30"
+  }
+ ],
+ "01-23": [
+  {
+   "nom": "Saint Clément d'Ancyre",
+   "rang": 2,
+   "apotre": "php 3.20-4.3",
+   "evangile": "mk 2.23-3.5"
+  }
+ ],
+ "01-24": [
+  {
+   "nom": "Sainte Xénie de Rome",
+   "rang": 2,
+   "apotre": "ga 5.22-6.2"
+  }
+ ],
+ "01-25": [
+  {
+   "nom": "Saint Grégoire le Théologien",
+   "rang": 4,
+   "apotre": "heb 7.26-8.2",
+   "evangile": "jn 10.9-16"
+  }
+ ],
+ "01-27": [
+  {
+   "nom": "Translation des reliques de saint Jean Chrysostome",
+   "rang": 4,
+   "apotre": "heb 7.26-8.2",
+   "evangile": "jn 10.9-16"
+  }
+ ],
+ "01-28": [
+  {
+   "nom": "Saint Éphrem le Syrien",
+   "rang": 2,
+   "apotre": "ga 5.22-6.2",
+   "evangile": "lk 6.17-23"
+  }
+ ],
+ "01-29": [
+  {
+   "nom": "Translation des reliques de saint Ignace d'Antioche",
+   "rang": 2,
+   "apotre": "heb 10.32-38",
+   "evangile": "mk 9.33-41"
+  }
+ ],
+ "01-30": [
+  {
+   "nom": "Synaxe des trois saints hiérarques",
+   "rang": 5,
+   "apotre": "heb 13.7-16",
+   "evangile": "mt 5.14-19"
+  }
+ ],
+ "01-31": [
+  {
+   "nom": "Saints Cyr et Jean, anargyres",
+   "rang": 2,
+   "apotre": "1co 12.27-13.8",
+   "evangile": "mt 10.1, 5-8"
+  }
+ ],
+ "02-01": [
+  {
+   "nom": "Saint Tryphon",
+   "rang": 2,
+   "apotre": "ro 8.28-39",
+   "evangile": "lk 10.19-21"
+  }
+ ],
+ "02-02": [
+  {
+   "nom": "Rencontre du Seigneur au Temple",
+   "rang": 8,
+   "apotre": "heb 7.7-17",
+   "evangile": "lk 2.22-40"
+  }
+ ],
+ "02-03": [
+  {
+   "nom": "Saints Syméon le Juste et Anne la prophétesse",
+   "rang": 2,
+   "apotre": "heb 9.11-14",
+   "evangile": "lk 2.25-38"
+  }
+ ],
+ "02-08": [
+  {
+   "nom": "Saint Théodore le Stratilate",
+   "rang": 2,
+   "apotre": "eph 2.4-10",
+   "evangile": "mt 10.16-22"
+  }
+ ],
+ "02-09": [
+  {
+   "nom": "Clôture de la Rencontre du Seigneur",
+   "rang": 3,
+   "apotre": "heb 7.7-17",
+   "evangile": "lk 2.22-40"
+  }
+ ],
+ "02-10": [
+  {
+   "nom": "Saint Charalampe",
+   "rang": 2,
+   "apotre": "2ti 2.1-10",
+   "evangile": "jn 15.17-16.2"
+  }
+ ],
+ "02-11": [
+  {
+   "nom": "Saint Blaise",
+   "rang": 2,
+   "apotre": "heb 4.14-5.6",
+   "evangile": "mt 10.1, 5-8"
+  }
+ ],
+ "02-17": [
+  {
+   "nom": "Saint Théodore le Conscrit",
+   "rang": 2,
+   "apotre": "2ti 2.1-10",
+   "evangile": "lk 20.46-21.4"
+  }
+ ],
+ "02-24": [
+  {
+   "nom": "Première et deuxième inventions du chef de saint Jean-Baptiste",
+   "rang": 4,
+   "apotre": "2co 4.6-15",
+   "evangile": "mt 11.2-15"
+  }
+ ],
+ "03-09": [
+  {
+   "nom": "Saints quarante martyrs de Sébaste",
+   "rang": 4,
+   "apotre": "heb 12.1-10",
+   "evangile": "mt 20.1-16"
+  }
+ ],
+ "03-25": [
+  {
+   "nom": "Annonciation de la Mère de Dieu",
+   "rang": 7,
+   "apotre": "heb 2.11-18",
+   "evangile": "lk 1.24-38"
+  }
+ ],
+ "03-26": [
+  {
+   "nom": "Synaxe de l'archange Gabriel",
+   "rang": 3,
+   "apotre": "heb 2.11-18",
+   "evangile": "lk 1.24-38"
+  }
+ ],
+ "04-23": [
+  {
+   "nom": "Saint Georges, grand martyr",
+   "rang": 5,
+   "apotre": "ac 12.1-11",
+   "evangile": "jn 15.17-16.2"
+  }
+ ],
+ "04-25": [
+  {
+   "nom": "Saint Marc, apôtre et évangéliste",
+   "rang": 4,
+   "apotre": "1pe 5.6-14",
+   "evangile": "lk 10.16-21"
+  }
+ ],
+ "04-30": [
+  {
+   "nom": "Saint Jacques, fils de Zébédée, apôtre",
+   "rang": 4,
+   "apotre": "ac 12.1-11",
+   "evangile": "lk 9.1-6"
+  }
+ ],
+ "05-02": [
+  {
+   "nom": "Translation des reliques de saint Athanase le Grand",
+   "rang": 2,
+   "apotre": "heb 13.7-16",
+   "evangile": "mt 5.14-19"
+  }
+ ],
+ "05-07": [
+  {
+   "nom": "Apparition de la Croix dans le ciel de Jérusalem",
+   "rang": 2,
+   "apotre": "ac 26.1-5, 12-20"
+  }
+ ],
+ "05-08": [
+  {
+   "nom": "Saint Jean le Théologien, apôtre et évangéliste",
+   "rang": 5,
+   "apotre": "1jn 1.1-7",
+   "evangile": "jn 19.25-27, 21.24-25"
+  }
+ ],
+ "05-10": [
+  {
+   "nom": "Saint Simon le Zélote, apôtre",
+   "rang": 4,
+   "apotre": "1co 4.9-16",
+   "evangile": "mt 13.54-58"
+  }
+ ],
+ "05-11": [
+  {
+   "nom": "Saints Cyrille et Méthode, égaux aux apôtres",
+   "rang": 2,
+   "apotre": "heb 7.26-8.2",
+   "evangile": "mt 5.14-19"
+  }
+ ],
+ "05-21": [
+  {
+   "nom": "Saints Constantin et Hélène, égaux aux apôtres",
+   "rang": 4,
+   "apotre": "ac 26.1-5, 12-20",
+   "evangile": "jn 10.1-9"
+  }
+ ],
+ "05-25": [
+  {
+   "nom": "Troisième invention du chef de saint Jean-Baptiste",
+   "rang": 4,
+   "apotre": "2co 4.6-15",
+   "evangile": "mt 11.2-15"
+  }
+ ],
+ "06-04": [
+  {
+   "nom": "Saint Métrophane de Constantinople",
+   "rang": 2,
+   "apotre": "heb 7.26-8.2",
+   "evangile": "jn 10.1-9"
+  }
+ ],
+ "06-08": [
+  {
+   "nom": "Translation des reliques de saint Théodore le Stratilate",
+   "rang": 2,
+   "apotre": "eph 2.4-10",
+   "evangile": "mt 10.16-22"
+  }
+ ],
+ "06-11": [
+  {
+   "nom": "Saints Barthélemy et Barnabé, apôtres",
+   "rang": 4,
+   "apotre": "ac 11.19-26, 29-30",
+   "evangile": "lk 10.16-21"
+  }
+ ],
+ "06-19": [
+  {
+   "nom": "Saint Jude, apôtre",
+   "rang": 4,
+   "apotre": "jud 1-10",
+   "evangile": "jn 14.21-24"
+  }
+ ],
+ "06-24": [
+  {
+   "nom": "Nativité de saint Jean-Baptiste",
+   "rang": 6,
+   "apotre": "ro 13.11-14.4",
+   "evangile": "lk 1.1-15, 57-68, 76, 80"
+  }
+ ],
+ "06-29": [
+  {
+   "nom": "Saints Pierre et Paul, apôtres",
+   "rang": 6,
+   "apotre": "2co 11.21-12.9",
+   "evangile": "mt 16.13-19"
+  }
+ ],
+ "06-30": [
+  {
+   "nom": "Synaxe des douze apôtres",
+   "rang": 4,
+   "apotre": "1co 4.9-16",
+   "evangile": "mt 9.36-10.8"
+  }
+ ],
+ "07-01": [
+  {
+   "nom": "Saints Côme et Damien de Rome",
+   "rang": 2,
+   "apotre": "1co 12.27-13.8",
+   "evangile": "mt 10.1, 5-8"
+  }
+ ],
+ "07-02": [
+  {
+   "nom": "Déposition de la robe de la Mère de Dieu",
+   "rang": 3,
+   "apotre": "heb 9.1-7",
+   "evangile": "lk 1.39-49, 56"
+  }
+ ],
+ "07-05": [
+  {
+   "nom": "Saint Athanase l'Athonite",
+   "rang": 2,
+   "apotre": "ga 5.22-6.2",
+   "evangile": "mt 11.27-30"
+  }
+ ],
+ "07-07": [
+  {
+   "nom": "Sainte Kyriaki",
+   "rang": 2,
+   "apotre": "ga 3.23-4.5",
+   "evangile": "mk 5.24-34"
+  }
+ ],
+ "07-08": [
+  {
+   "nom": "Saint Procope",
+   "rang": 2,
+   "apotre": "1ti 4.9-15",
+   "evangile": "lk 6.17-19, 9.1-2, 10.16-21"
+  }
+ ],
+ "07-11": [
+  {
+   "nom": "Sainte Euphémie, miracle du concile de Chalcédoine",
+   "rang": 2,
+   "apotre": "2co 6.1-10",
+   "evangile": "lk 7.36-50"
+  }
+ ],
+ "07-13": [
+  {
+   "nom": "Synaxe de l'archange Gabriel",
+   "rang": 2,
+   "apotre": "heb 2.2-10",
+   "evangile": "lk 10.16-21"
+  }
+ ],
+ "07-14": [
+  {
+   "nom": "Saint Aquilas, apôtre",
+   "rang": 2,
+   "apotre": "ro 16.1-16"
+  }
+ ],
+ "07-15": [
+  {
+   "nom": "Saints Cyr et Julitte",
+   "rang": 2,
+   "apotre": "1co 13.11-14.5",
+   "evangile": "mt 17.24-18.4"
+  }
+ ],
+ "07-17": [
+  {
+   "nom": "Sainte Marina",
+   "rang": 3,
+   "apotre": "ga 3.23-4.5",
+   "evangile": "mk 5.24-34"
+  }
+ ],
+ "07-20": [
+  {
+   "nom": "Saint Élie, prophète",
+   "rang": 5,
+   "apotre": "jas 5.10-20",
+   "evangile": "lk 4.22-30"
+  }
+ ],
+ "07-22": [
+  {
+   "nom": "Sainte Marie-Madeleine, myrophore",
+   "rang": 3,
+   "apotre": "1co 9.2-12",
+   "evangile": "lk 8.1-3"
+  }
+ ],
+ "07-25": [
+  {
+   "nom": "Dormition de sainte Anne",
+   "rang": 3,
+   "apotre": "ga 4.22-31",
+   "evangile": "lk 8.16-21"
+  }
+ ],
+ "07-26": [
+  {
+   "nom": "Sainte Parascève",
+   "rang": 2,
+   "apotre": "ga 3.23-4.5",
+   "evangile": "mk 5.24-34"
+  }
+ ],
+ "07-27": [
+  {
+   "nom": "Saint Pantéléimon",
+   "rang": 3,
+   "apotre": "2ti 2.1-10",
+   "evangile": "jn 15.17-16.2"
+  }
+ ],
+ "07-28": [
+  {
+   "nom": "Saints Prochore, Nicanor, Timon et Parménas, diacres",
+   "rang": 2,
+   "apotre": "ac 6.1-7"
+  }
+ ],
+ "07-30": [
+  {
+   "nom": "Saints Silas et Silvain, apôtres",
+   "rang": 2,
+   "apotre": "ac 15.35-41"
+  }
+ ],
+ "08-01": [
+  {
+   "nom": "Procession de la précieuse Croix",
+   "rang": 3,
+   "apotre": "1co 1.18-24",
+   "evangile": "jn 19.6-11, 13-20, 25-28, 30-35"
+  },
+  {
+   "nom": "Saints martyrs Maccabées",
+   "rang": 3,
+   "apotre": "heb 11.33-12.2",
+   "evangile": "mt 10.16-22"
+  }
+ ],
+ "08-05": [
+  {
+   "nom": "Saint Eusigne",
+   "rang": 2,
+   "apotre": "1pe 1.1-25, 2.1-10"
+  }
+ ],
+ "08-06": [
+  {
+   "nom": "Transfiguration du Seigneur",
+   "rang": 8,
+   "apotre": "2pe 1.10-19",
+   "evangile": "mt 17.1-9"
+  }
+ ],
+ "08-07": [
+  {
+   "nom": "Après-fête de la Transfiguration",
+   "rang": 2,
+   "evangile": "mk 9.2-9"
+  }
+ ],
+ "08-15": [
+  {
+   "nom": "Dormition de la Mère de Dieu",
+   "rang": 7,
+   "apotre": "php 2.5-11",
+   "evangile": "lk 10.38-42, 11.27-28"
+  }
+ ],
+ "08-16": [
+  {
+   "nom": "Translation de l'icône du Christ non faite de main d'homme",
+   "rang": 3,
+   "apotre": "col 1.12-18",
+   "evangile": "lk 9.51-56, 10.22-24"
+  }
+ ],
+ "08-21": [
+  {
+   "nom": "Saint Thaddée, apôtre",
+   "rang": 2,
+   "evangile": "mk 3.13-21"
+  }
+ ],
+ "08-23": [
+  {
+   "nom": "Clôture de la Dormition",
+   "rang": 3,
+   "apotre": "php 2.5-11",
+   "evangile": "lk 10.38-42, 11.27-28"
+  }
+ ],
+ "08-25": [
+  {
+   "nom": "Translation des reliques de saint Barthélemy ; saint Tite",
+   "rang": 2,
+   "apotre": "tit 1.1-5, 2.15, 3.1-2, 12-15",
+   "evangile": "mt 5.14-19"
+  }
+ ],
+ "08-26": [
+  {
+   "nom": "Saints Adrien et Natalie",
+   "rang": 2,
+   "apotre": "heb 10.32-38"
+  }
+ ],
+ "08-29": [
+  {
+   "nom": "Décollation de saint Jean-Baptiste",
+   "rang": 6,
+   "apotre": "ac 13.25-32",
+   "evangile": "mk 6.14-30"
+  }
+ ],
+ "08-31": [
+  {
+   "nom": "Déposition de la ceinture de la Mère de Dieu",
+   "rang": 3,
+   "apotre": "heb 9.1-7",
+   "evangile": "lk 10.38-42, 11.27-28"
+  }
+ ],
+ "09-01": [
+  {
+   "nom": "Commencement de l'année liturgique (Indiction)",
+   "rang": 4,
+   "apotre": "1ti 2.1-7",
+   "evangile": "lk 4.16-22"
+  },
+  {
+   "nom": "Saint Syméon le Stylite",
+   "rang": 3,
+   "apotre": "col 3.12-16",
+   "evangile": "mt 11.27-30"
+  }
+ ],
+ "09-05": [
+  {
+   "nom": "Saint Zacharie, père du Précurseur",
+   "rang": 2,
+   "evangile": "mt 23.29-39"
+  }
+ ],
+ "09-08": [
+  {
+   "nom": "Nativité de la Mère de Dieu",
+   "rang": 7,
+   "apotre": "php 2.5-11",
+   "evangile": "lk 10.38-42, 11.27-28"
+  }
+ ],
+ "09-09": [
+  {
+   "nom": "Saints Joachim et Anne",
+   "rang": 3,
+   "apotre": "ga 4.22-27",
+   "evangile": "lk 8.16-21"
+  }
+ ],
+ "09-10": [
+  {
+   "nom": "Saintes Ménodore, Métrodore et Nymphodore",
+   "rang": 2,
+   "evangile": "jn 3.16-21"
+  }
+ ],
+ "09-11": [
+  {
+   "nom": "Sainte Théodora d'Alexandrie",
+   "rang": 2,
+   "evangile": "jn 12.19-36"
+  }
+ ],
+ "09-12": [
+  {
+   "nom": "Clôture de la Nativité de la Mère de Dieu",
+   "rang": 3,
+   "apotre": "php 2.5-11",
+   "evangile": "lk 10.38-42, 11.27-28"
+  }
+ ],
+ "09-13": [
+  {
+   "nom": "Dédicace de la basilique de la Résurrection à Jérusalem",
+   "rang": 3,
+   "apotre": "heb 3.1-4",
+   "evangile": "mt 16.13-18"
+  }
+ ],
+ "09-14": [
+  {
+   "nom": "Exaltation de la Croix",
+   "rang": 8,
+   "apotre": "1co 1.18-24",
+   "evangile": "jn 19.6-11, 13-20, 25-28, 30-35"
+  }
+ ],
+ "09-15": [
+  {
+   "nom": "Saint Nicétas",
+   "rang": 2,
+   "apotre": "col 1.24-2.1",
+   "evangile": "mt 10.16-22"
+  }
+ ],
+ "09-16": [
+  {
+   "nom": "Sainte Euphémie",
+   "rang": 2,
+   "apotre": "2co 6.1-10",
+   "evangile": "lk 7.36-50"
+  }
+ ],
+ "09-23": [
+  {
+   "nom": "Conception de saint Jean-Baptiste",
+   "rang": 3,
+   "apotre": "ga 4.22-31",
+   "evangile": "lk 1.5-25"
+  }
+ ],
+ "09-26": [
+  {
+   "nom": "Dormition de saint Jean le Théologien",
+   "rang": 5,
+   "apotre": "1jn 4.12-19",
+   "evangile": "jn 19.25-27, 21.24-25"
+  }
+ ],
+ "09-28": [
+  {
+   "nom": "Saint Chariton le Confesseur",
+   "rang": 2,
+   "apotre": "2co 4.6-15",
+   "evangile": "lk 6.17-23"
+  }
+ ],
+ "09-29": [
+  {
+   "nom": "Saint Cyriaque l'Anachorète",
+   "rang": 2,
+   "apotre": "ga 5.22-6.2"
+  }
+ ],
+ "09-30": [
+  {
+   "nom": "Saint Grégoire l'Illuminateur",
+   "rang": 3,
+   "apotre": "1co 16.13-24",
+   "evangile": "mt 24.42-47"
+  }
+ ],
+ "10-01": [
+  {
+   "nom": "Saint Ananie, apôtre",
+   "rang": 2,
+   "apotre": "ac 9.10-19"
+  }
+ ],
+ "10-02": [
+  {
+   "nom": "Saints Cyprien et Justine",
+   "rang": 2,
+   "apotre": "1ti 1.12-17"
+  }
+ ],
+ "10-03": [
+  {
+   "nom": "Saint Denys l'Aréopagite",
+   "rang": 2,
+   "apotre": "ac 17.16-34"
+  }
+ ],
+ "10-06": [
+  {
+   "nom": "Saint Thomas, apôtre",
+   "rang": 4,
+   "apotre": "1co 4.9-16",
+   "evangile": "jn 20.19-31"
+  }
+ ],
+ "10-09": [
+  {
+   "nom": "Saint Jacques, fils d'Alphée, apôtre",
+   "rang": 4,
+   "apotre": "1co 4.9-16",
+   "evangile": "mt 9.36-10.8"
+  }
+ ],
+ "10-16": [
+  {
+   "nom": "Saint Longin le Centurion",
+   "rang": 2,
+   "evangile": "mt 27.33-54"
+  }
+ ],
+ "10-17": [
+  {
+   "nom": "Saint Osée, prophète",
+   "rang": 2,
+   "apotre": "ro 9.18-33"
+  }
+ ],
+ "10-18": [
+  {
+   "nom": "Saint Luc, apôtre et évangéliste",
+   "rang": 4,
+   "apotre": "col 4.5-9, 14, 18",
+   "evangile": "lk 10.16-21"
+  }
+ ],
+ "10-19": [
+  {
+   "nom": "Saint Joël, prophète",
+   "rang": 2,
+   "apotre": "ac 2.14-21"
+  }
+ ],
+ "10-20": [
+  {
+   "nom": "Saint Artème",
+   "rang": 2,
+   "apotre": "2ti 2.1-10"
+  }
+ ],
+ "10-21": [
+  {
+   "nom": "Saint Hilarion le Grand",
+   "rang": 2,
+   "apotre": "2co 9.6-11"
+  }
+ ],
+ "10-23": [
+  {
+   "nom": "Saint Jacques, frère du Seigneur, apôtre",
+   "rang": 4,
+   "apotre": "ga 1.11-19",
+   "evangile": "mt 13.54-58"
+  }
+ ],
+ "10-26": [
+  {
+   "nom": "Saint Démétrios, grand martyr",
+   "rang": 5,
+   "apotre": "2ti 2.1-10",
+   "evangile": "jn 15.17-16.2"
+  }
+ ],
+ "10-31": [
+  {
+   "nom": "Saints Stachys, Amplias et leurs compagnons, apôtres",
+   "rang": 2,
+   "apotre": "ro 16.1-16"
+  }
+ ],
+ "11-01": [
+  {
+   "nom": "Saints Côme et Damien, anargyres",
+   "rang": 3,
+   "apotre": "1co 12.27-13.8",
+   "evangile": "mt 10.1, 5-8"
+  }
+ ],
+ "11-06": [
+  {
+   "nom": "Saint Paul le Confesseur",
+   "rang": 2,
+   "apotre": "heb 8.1-6",
+   "evangile": "lk 12.8-12"
+  }
+ ],
+ "11-08": [
+  {
+   "nom": "Synaxe des archanges Michel et Gabriel",
+   "rang": 5,
+   "apotre": "heb 2.2-10",
+   "evangile": "lk 10.16-21"
+  }
+ ],
+ "11-10": [
+  {
+   "nom": "Saints Éraste, Olympas, Hérodion et leurs compagnons, apôtres",
+   "rang": 2,
+   "apotre": "1co 4.9-16"
+  }
+ ],
+ "11-11": [
+  {
+   "nom": "Saints Ménas, Victor et Vincent",
+   "rang": 2,
+   "apotre": "2co 4.6-15"
+  }
+ ],
+ "11-12": [
+  {
+   "nom": "Saint Jean l'Aumônier",
+   "rang": 2,
+   "apotre": "2co 9.6-11",
+   "evangile": "mt 5.14-19"
+  }
+ ],
+ "11-13": [
+  {
+   "nom": "Saint Jean Chrysostome",
+   "rang": 5,
+   "apotre": "heb 7.26-8.2",
+   "evangile": "jn 10.9-16"
+  }
+ ],
+ "11-14": [
+  {
+   "nom": "Saint Philippe, apôtre",
+   "rang": 4,
+   "apotre": "1co 4.9-16",
+   "evangile": "jn 1.43-51"
+  }
+ ],
+ "11-16": [
+  {
+   "nom": "Saint Matthieu, apôtre et évangéliste",
+   "rang": 4,
+   "apotre": "ro 10.11-11.2",
+   "evangile": "mt 9.9-13"
+  }
+ ],
+ "11-17": [
+  {
+   "nom": "Saint Grégoire le Thaumaturge",
+   "rang": 2,
+   "apotre": "1co 12.7-11"
+  }
+ ],
+ "11-21": [
+  {
+   "nom": "Entrée de la Mère de Dieu au Temple",
+   "rang": 7,
+   "apotre": "heb 9.1-7",
+   "evangile": "lk 10.38-42, 11.27-28"
+  }
+ ],
+ "11-24": [
+  {
+   "nom": "Saints Clément de Rome et Pierre d'Alexandrie",
+   "rang": 2,
+   "apotre": "php 3.20-4.3"
+  }
+ ],
+ "11-25": [
+  {
+   "nom": "Clôture de l'Entrée de la Mère de Dieu au Temple",
+   "rang": 3,
+   "apotre": "heb 9.1-7",
+   "evangile": "lk 10.38-42, 11.27-28"
+  },
+  {
+   "nom": "Sainte Catherine d'Alexandrie",
+   "rang": 3,
+   "apotre": "ga 3.23-4.5",
+   "evangile": "mk 5.24-34"
+  }
+ ],
+ "11-30": [
+  {
+   "nom": "Saint André, apôtre",
+   "rang": 5,
+   "apotre": "1co 4.9-16",
+   "evangile": "jn 1.35-51"
+  }
+ ],
+ "12-04": [
+  {
+   "nom": "Sainte Barbe",
+   "rang": 2,
+   "apotre": "ga 3.23-4.5",
+   "evangile": "mk 5.24-34"
+  }
+ ],
+ "12-05": [
+  {
+   "nom": "Saint Sabbas le Sanctifié",
+   "rang": 4,
+   "apotre": "ga 5.22-6.2",
+   "evangile": "mt 11.27-30"
+  }
+ ],
+ "12-06": [
+  {
+   "nom": "Saint Nicolas de Myre",
+   "rang": 5,
+   "apotre": "heb 13.17-21",
+   "evangile": "lk 6.17-23"
+  }
+ ],
+ "12-09": [
+  {
+   "nom": "Conception de la Mère de Dieu par sainte Anne",
+   "rang": 3,
+   "apotre": "ga 4.22-31",
+   "evangile": "lk 8.16-21"
+  }
+ ],
+ "12-12": [
+  {
+   "nom": "Saint Spyridon de Trimythonte",
+   "rang": 2,
+   "apotre": "eph 5.8-19",
+   "evangile": "jn 10.9-16"
+  }
+ ],
+ "12-15": [
+  {
+   "nom": "Saint Éleuthère",
+   "rang": 2,
+   "apotre": "2ti 1.8-18",
+   "evangile": "mk 2.23-3.5"
+  }
+ ],
+ "12-17": [
+  {
+   "nom": "Saint Daniel, prophète, et les trois saints jeunes gens",
+   "rang": 2,
+   "apotre": "heb 11.33-12.2"
+  }
+ ],
+ "12-25": [
+  {
+   "nom": "Nativité du Christ",
+   "rang": 8,
+   "apotre": "ga 4.4-7",
+   "evangile": "mt 2.1-12"
+  }
+ ],
+ "12-26": [
+  {
+   "nom": "Synaxe de la Mère de Dieu",
+   "rang": 3,
+   "apotre": "heb 2.11-18",
+   "evangile": "mt 2.13-23"
+  }
+ ],
+ "12-27": [
+  {
+   "nom": "Saint Étienne, premier martyr",
+   "rang": 3,
+   "apotre": "ac 6.8-7.5, 47-60",
+   "evangile": "mt 21.33-42"
+  }
+ ],
+ "12-28": [
+  {
+   "nom": "Saints martyrs de Nicomédie",
+   "rang": 2,
+   "evangile": "lk 14.25-35"
+  }
+ ],
+ "12-29": [
+  {
+   "nom": "Saints Innocents",
+   "rang": 2,
+   "apotre": "heb 2.11-18",
+   "evangile": "mt 2.13-23"
+  }
+ ]
+}

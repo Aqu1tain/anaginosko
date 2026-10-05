@@ -1,0 +1,1813 @@
+{
+ "0": {
+  "apotre": "ac 1.1-8",
+  "evangile": "jn 1.1-17"
+ },
+ "1": {
+  "apotre": "ac 1.12-17, 21-26",
+  "evangile": "jn 1.18-28"
+ },
+ "2": {
+  "apotre": "ac 2.14-21",
+  "evangile": "lk 24.12-35"
+ },
+ "3": {
+  "apotre": "ac 2.22-36",
+  "evangile": "jn 1.35-51"
+ },
+ "4": {
+  "apotre": "ac 2.38-43",
+  "evangile": "jn 3.1-15"
+ },
+ "5": {
+  "apotre": "ac 3.1-8",
+  "evangile": "jn 2.12-22",
+  "autres": [
+   {
+    "role": "fete",
+    "nom": "Source vivifiante de la Mère de Dieu",
+    "ordre": 21,
+    "apotre": "php 2.5-11",
+    "evangile": "lk 10.38-42, 11.27-28"
+   }
+  ]
+ },
+ "6": {
+  "apotre": "ac 3.11-16",
+  "evangile": "jn 3.22-33"
+ },
+ "7": {
+  "apotre": "ac 5.12-20",
+  "evangile": "jn 20.19-31"
+ },
+ "8": {
+  "apotre": "ac 3.19-26",
+  "evangile": "jn 2.1-11"
+ },
+ "9": {
+  "apotre": "ac 4.1-10",
+  "evangile": "jn 3.16-21"
+ },
+ "10": {
+  "apotre": "ac 4.13-22",
+  "evangile": "jn 5.17-24"
+ },
+ "11": {
+  "apotre": "ac 4.23-31",
+  "evangile": "jn 5.24-30"
+ },
+ "12": {
+  "apotre": "ac 5.1-11",
+  "evangile": "jn 5.30-6.2"
+ },
+ "13": {
+  "apotre": "ac 5.21-33",
+  "evangile": "jn 6.14-27"
+ },
+ "14": {
+  "apotre": "ac 6.1-7",
+  "evangile": "mk 15.43-16.8"
+ },
+ "15": {
+  "apotre": "ac 6.8-7.5, 47-60",
+  "evangile": "jn 4.46-54"
+ },
+ "16": {
+  "apotre": "ac 8.5-17",
+  "evangile": "jn 6.27-33"
+ },
+ "17": {
+  "apotre": "ac 8.18-25",
+  "evangile": "jn 6.35-39"
+ },
+ "18": {
+  "apotre": "ac 8.26-39",
+  "evangile": "jn 6.40-44"
+ },
+ "19": {
+  "apotre": "ac 8.40-9.19",
+  "evangile": "jn 6.48-54"
+ },
+ "20": {
+  "apotre": "ac 9.20-31",
+  "evangile": "jn 15.17-16.2"
+ },
+ "21": {
+  "apotre": "ac 9.32-42",
+  "evangile": "jn 5.1-15"
+ },
+ "22": {
+  "apotre": "ac 10.1-16",
+  "evangile": "jn 6.56-69"
+ },
+ "23": {
+  "apotre": "ac 10.21-33",
+  "evangile": "jn 7.1-13"
+ },
+ "24": {
+  "apotre": "ac 14.6-18",
+  "evangile": "jn 7.14-30"
+ },
+ "25": {
+  "apotre": "ac 10.34-43",
+  "evangile": "jn 8.12-20"
+ },
+ "26": {
+  "apotre": "ac 10.44-11.10",
+  "evangile": "jn 8.21-30"
+ },
+ "27": {
+  "apotre": "ac 12.1-11",
+  "evangile": "jn 8.31-42"
+ },
+ "28": {
+  "apotre": "ac 11.19-26, 29-30",
+  "evangile": "jn 4.5-42"
+ },
+ "29": {
+  "apotre": "ac 12.12-17",
+  "evangile": "jn 8.42-51"
+ },
+ "30": {
+  "apotre": "ac 12.25-13.12",
+  "evangile": "jn 8.51-59"
+ },
+ "31": {
+  "apotre": "ac 13.13-24",
+  "evangile": "jn 6.5-14"
+ },
+ "32": {
+  "apotre": "ac 14.20-27",
+  "evangile": "jn 9.39-10.9"
+ },
+ "33": {
+  "apotre": "ac 15.5-34",
+  "evangile": "jn 10.17-28"
+ },
+ "34": {
+  "apotre": "ac 15.35-41",
+  "evangile": "jn 10.27-38"
+ },
+ "35": {
+  "apotre": "ac 16.16-34",
+  "evangile": "jn 9.1-38"
+ },
+ "36": {
+  "apotre": "ac 17.1-15",
+  "evangile": "jn 11.47-57"
+ },
+ "37": {
+  "apotre": "ac 17.19-28",
+  "evangile": "jn 12.19-36"
+ },
+ "38": {
+  "apotre": "ac 18.22-28",
+  "evangile": "jn 12.36-47"
+ },
+ "39": {
+  "apotre": "ac 1.1-12",
+  "evangile": "lk 24.36-53"
+ },
+ "40": {
+  "apotre": "ac 19.1-8",
+  "evangile": "jn 14.1-11"
+ },
+ "41": {
+  "apotre": "ac 20.7-12",
+  "evangile": "jn 14.10-21"
+ },
+ "42": {
+  "apotre": "ac 20.16-18, 28-36",
+  "evangile": "jn 17.1-13"
+ },
+ "43": {
+  "apotre": "ac 21.8-14",
+  "evangile": "jn 14.27-15.7"
+ },
+ "44": {
+  "apotre": "ac 21.26-32",
+  "evangile": "jn 16.2-13"
+ },
+ "45": {
+  "apotre": "ac 23.1-11",
+  "evangile": "jn 16.15-23"
+ },
+ "46": {
+  "apotre": "ac 25.13-19",
+  "evangile": "jn 16.23-33"
+ },
+ "47": {
+  "apotre": "ac 27.1-44",
+  "evangile": "jn 17.18-26"
+ },
+ "48": {
+  "autres": [
+   {
+    "role": "defunts",
+    "nom": "Pour les défunts",
+    "ordre": 2,
+    "apotre": "1th 4.13-17",
+    "evangile": "jn 5.24-30"
+   }
+  ],
+  "apotre": "ac 28.1-31",
+  "evangile": "jn 21.15-25"
+ },
+ "49": {
+  "apotre": "ac 2.1-11",
+  "evangile": "jn 7.37-52, 8.12"
+ },
+ "50": {
+  "apotre": "eph 5.8-19",
+  "evangile": "mt 18.10-20"
+ },
+ "51": {
+  "apotre": "ro 1.1-7, 13-17",
+  "evangile": "mt 4.25-5.13"
+ },
+ "52": {
+  "apotre": "ro 1.18-27",
+  "evangile": "mt 5.20-26"
+ },
+ "53": {
+  "apotre": "ro 1.28-2.9",
+  "evangile": "mt 5.27-32"
+ },
+ "54": {
+  "apotre": "ro 2.14-29",
+  "evangile": "mt 5.33-41"
+ },
+ "55": {
+  "apotre": "ro 1.7-12",
+  "evangile": "mt 5.42-48"
+ },
+ "56": {
+  "apotre": "heb 11.33-12.2",
+  "evangile": "mt 10.32-33, 37-38, 19.27-30"
+ },
+ "57": {
+  "apotre": "ro 2.28-3.18",
+  "evangile": "mt 6.31-34, 7.9-11"
+ },
+ "58": {
+  "apotre": "ro 4.4-12",
+  "evangile": "mt 7.15-21"
+ },
+ "59": {
+  "apotre": "ro 4.13-25",
+  "evangile": "mt 7.21-23"
+ },
+ "60": {
+  "apotre": "ro 5.10-16",
+  "evangile": "mt 8.23-27"
+ },
+ "61": {
+  "apotre": "ro 5.17-6.2",
+  "evangile": "mt 9.14-17"
+ },
+ "62": {
+  "apotre": "ro 3.19-26",
+  "evangile": "mt 7.1-8"
+ },
+ "63": {
+  "apotre": "ro 2.10-16",
+  "evangile": "mt 4.18-23"
+ },
+ "64": {
+  "apotre": "ro 7.1-13",
+  "evangile": "mt 9.36-10.8"
+ },
+ "65": {
+  "apotre": "ro 7.14-8.2",
+  "evangile": "mt 10.9-15"
+ },
+ "66": {
+  "apotre": "ro 8.2-13",
+  "evangile": "mt 10.16-22"
+ },
+ "67": {
+  "apotre": "ro 8.22-27",
+  "evangile": "mt 10.23-31"
+ },
+ "68": {
+  "apotre": "ro 9.6-19",
+  "evangile": "mt 10.32-36, 11.1"
+ },
+ "69": {
+  "apotre": "ro 3.28-4.3",
+  "evangile": "mt 7.24-8.4"
+ },
+ "70": {
+  "apotre": "ro 5.1-10",
+  "evangile": "mt 6.22-33"
+ },
+ "71": {
+  "apotre": "ro 9.18-33",
+  "evangile": "mt 11.2-15"
+ },
+ "72": {
+  "apotre": "ro 10.11-11.2",
+  "evangile": "mt 11.16-20"
+ },
+ "73": {
+  "apotre": "ro 11.2-12",
+  "evangile": "mt 11.20-26"
+ },
+ "74": {
+  "apotre": "ro 11.13-24",
+  "evangile": "mt 11.27-30"
+ },
+ "75": {
+  "apotre": "ro 11.25-36",
+  "evangile": "mt 12.1-8"
+ },
+ "76": {
+  "apotre": "ro 6.11-17",
+  "evangile": "mt 8.14-23"
+ },
+ "77": {
+  "apotre": "ro 6.18-23",
+  "evangile": "mt 8.5-13"
+ },
+ "78": {
+  "apotre": "ro 12.4-5, 15-21",
+  "evangile": "mt 12.9-13"
+ },
+ "79": {
+  "apotre": "ro 14.9-18",
+  "evangile": "mt 12.14-16, 22-30"
+ },
+ "80": {
+  "apotre": "ro 15.7-16",
+  "evangile": "mt 12.38-45"
+ },
+ "81": {
+  "apotre": "ro 15.17-29",
+  "evangile": "mt 12.46-13.3"
+ },
+ "82": {
+  "apotre": "ro 16.1-16",
+  "evangile": "mt 13.3-9"
+ },
+ "83": {
+  "apotre": "ro 8.14-21",
+  "evangile": "mt 9.9-13"
+ },
+ "84": {
+  "apotre": "ro 10.1-10",
+  "evangile": "mt 8.28-9.1"
+ },
+ "85": {
+  "apotre": "ro 16.17-24",
+  "evangile": "mt 13.10-23"
+ },
+ "86": {
+  "apotre": "1co 1.1-9",
+  "evangile": "mt 13.24-30"
+ },
+ "87": {
+  "apotre": "1co 2.9-3.8",
+  "evangile": "mt 13.31-36"
+ },
+ "88": {
+  "apotre": "1co 3.18-23",
+  "evangile": "mt 13.36-43"
+ },
+ "89": {
+  "apotre": "1co 4.5-8",
+  "evangile": "mt 13.44-54"
+ },
+ "90": {
+  "apotre": "ro 9.1-5",
+  "evangile": "mt 9.18-26"
+ },
+ "91": {
+  "apotre": "ro 12.6-14",
+  "evangile": "mt 9.1-8"
+ },
+ "92": {
+  "apotre": "1co 5.9-6.11",
+  "evangile": "mt 13.54-58"
+ },
+ "93": {
+  "apotre": "1co 6.20-7.12",
+  "evangile": "mt 14.1-13"
+ },
+ "94": {
+  "apotre": "1co 7.12-24",
+  "evangile": "mt 14.35-15.11"
+ },
+ "95": {
+  "apotre": "1co 7.24-35",
+  "evangile": "mt 15.12-21"
+ },
+ "96": {
+  "apotre": "1co 7.35-8.7",
+  "evangile": "mt 15.29-31"
+ },
+ "97": {
+  "apotre": "ro 12.1-3",
+  "evangile": "mt 10.37-11.1"
+ },
+ "98": {
+  "apotre": "ro 15.1-7",
+  "evangile": "mt 9.27-35"
+ },
+ "99": {
+  "apotre": "1co 9.13-18",
+  "evangile": "mt 16.1-6"
+ },
+ "100": {
+  "apotre": "1co 10.5-12",
+  "evangile": "mt 16.6-12"
+ },
+ "101": {
+  "apotre": "1co 10.12-22",
+  "evangile": "mt 16.20-24"
+ },
+ "102": {
+  "apotre": "1co 10.28-11.7",
+  "evangile": "mt 16.24-28"
+ },
+ "103": {
+  "apotre": "1co 11.8-22",
+  "evangile": "mt 17.10-18"
+ },
+ "104": {
+  "apotre": "ro 13.1-10",
+  "evangile": "mt 12.30-37"
+ },
+ "105": {
+  "apotre": "1co 1.10-18",
+  "evangile": "mt 14.14-22"
+ },
+ "106": {
+  "apotre": "1co 11.31-12.6",
+  "evangile": "mt 18.1-11"
+ },
+ "107": {
+  "apotre": "1co 12.12-26",
+  "evangile": "mt 18.18-22, 19.1-2, 13-15"
+ },
+ "108": {
+  "apotre": "1co 13.4-14.5",
+  "evangile": "mt 20.1-16"
+ },
+ "109": {
+  "apotre": "1co 14.6-19",
+  "evangile": "mt 20.17-28"
+ },
+ "110": {
+  "apotre": "1co 14.26-40",
+  "evangile": "mt 21.12-14, 17-20"
+ },
+ "111": {
+  "apotre": "ro 14.6-9",
+  "evangile": "mt 15.32-39"
+ },
+ "112": {
+  "apotre": "1co 3.9-17",
+  "evangile": "mt 14.22-34"
+ },
+ "113": {
+  "apotre": "1co 15.12-19",
+  "evangile": "mt 21.18-22"
+ },
+ "114": {
+  "apotre": "1co 15.29-38",
+  "evangile": "mt 21.23-27"
+ },
+ "115": {
+  "apotre": "1co 16.4-12",
+  "evangile": "mt 21.28-32"
+ },
+ "116": {
+  "apotre": "2co 1.1-7",
+  "evangile": "mt 21.43-46"
+ },
+ "117": {
+  "apotre": "2co 1.12-20",
+  "evangile": "mt 22.23-33"
+ },
+ "118": {
+  "apotre": "ro 15.30-33",
+  "evangile": "mt 17.24-18.4"
+ },
+ "119": {
+  "apotre": "1co 4.9-16",
+  "evangile": "mt 17.14-23"
+ },
+ "120": {
+  "apotre": "2co 2.3-15",
+  "evangile": "mt 23.13-22"
+ },
+ "121": {
+  "apotre": "2co 2.14-3.3",
+  "evangile": "mt 23.23-28"
+ },
+ "122": {
+  "apotre": "2co 3.4-11",
+  "evangile": "mt 23.29-39"
+ },
+ "123": {
+  "apotre": "2co 4.1-6",
+  "evangile": "mt 24.13-28"
+ },
+ "124": {
+  "apotre": "2co 4.13-18",
+  "evangile": "mt 24.27-33, 42-51"
+ },
+ "125": {
+  "apotre": "1co 1.3-9",
+  "evangile": "mt 19.3-12"
+ },
+ "126": {
+  "apotre": "1co 9.2-12",
+  "evangile": "mt 18.23-35"
+ },
+ "127": {
+  "apotre": "2co 5.10-15",
+  "evangile": "mk 1.9-15"
+ },
+ "128": {
+  "apotre": "2co 5.15-21",
+  "evangile": "mk 1.16-22"
+ },
+ "129": {
+  "apotre": "2co 6.11-16",
+  "evangile": "mk 1.23-28"
+ },
+ "130": {
+  "apotre": "2co 7.1-10",
+  "evangile": "mk 1.29-35"
+ },
+ "131": {
+  "apotre": "2co 7.10-16",
+  "evangile": "mk 2.18-22"
+ },
+ "132": {
+  "apotre": "1co 1.26-29",
+  "evangile": "mt 20.29-34"
+ },
+ "133": {
+  "apotre": "1co 15.1-11",
+  "evangile": "mt 19.16-26"
+ },
+ "134": {
+  "apotre": "2co 8.7-15",
+  "evangile": "mk 3.6-12"
+ },
+ "135": {
+  "apotre": "2co 8.16-9.5",
+  "evangile": "mk 3.13-19"
+ },
+ "136": {
+  "apotre": "2co 9.12-10.7",
+  "evangile": "mk 3.19-27"
+ },
+ "137": {
+  "apotre": "2co 10.7-18",
+  "evangile": "mk 3.28-35"
+ },
+ "138": {
+  "apotre": "2co 11.5-21",
+  "evangile": "mk 4.1-9"
+ },
+ "139": {
+  "apotre": "1co 2.6-9",
+  "evangile": "mt 22.15-22"
+ },
+ "140": {
+  "apotre": "1co 16.13-24",
+  "evangile": "mt 21.33-42"
+ },
+ "141": {
+  "apotre": "2co 12.10-19",
+  "evangile": "mk 4.10-23"
+ },
+ "142": {
+  "apotre": "2co 12.20-13.2",
+  "evangile": "mk 4.24-34"
+ },
+ "143": {
+  "apotre": "2co 13.3-14",
+  "evangile": "mk 4.35-41"
+ },
+ "144": {
+  "apotre": "ga 1.1-10, 20-2.5",
+  "evangile": "mk 5.1-20"
+ },
+ "145": {
+  "apotre": "ga 2.6-10",
+  "evangile": "mk 5.22-24, 35-6.1"
+ },
+ "146": {
+  "apotre": "1co 4.1-5",
+  "evangile": "mt 23.1-12"
+ },
+ "147": {
+  "apotre": "2co 1.21-2.4",
+  "evangile": "mt 22.1-14"
+ },
+ "148": {
+  "apotre": "ga 2.11-16",
+  "evangile": "mk 5.24-34"
+ },
+ "149": {
+  "apotre": "ga 2.21-3.7",
+  "evangile": "mk 6.1-7"
+ },
+ "150": {
+  "apotre": "ga 3.15-22",
+  "evangile": "mk 6.7-13"
+ },
+ "151": {
+  "apotre": "ga 3.23-4.5",
+  "evangile": "mk 6.30-45"
+ },
+ "152": {
+  "apotre": "ga 4.8-21",
+  "evangile": "mk 6.45-53"
+ },
+ "153": {
+  "apotre": "1co 4.17-5.5",
+  "evangile": "mt 24.1-13"
+ },
+ "154": {
+  "apotre": "2co 4.6-15",
+  "evangile": "mt 22.35-46"
+ },
+ "155": {
+  "apotre": "ga 4.28-5.10",
+  "evangile": "mk 6.54-7.8"
+ },
+ "156": {
+  "apotre": "ga 5.11-21",
+  "evangile": "mk 7.5-16"
+ },
+ "157": {
+  "apotre": "ga 6.2-10",
+  "evangile": "mk 7.14-24"
+ },
+ "158": {
+  "apotre": "eph 1.1-9",
+  "evangile": "mk 7.24-30"
+ },
+ "159": {
+  "apotre": "eph 1.7-17",
+  "evangile": "mk 8.1-10"
+ },
+ "160": {
+  "apotre": "1co 10.23-28",
+  "evangile": "mt 24.34-44"
+ },
+ "161": {
+  "apotre": "2co 6.1-10",
+  "evangile": "mt 25.14-30"
+ },
+ "162": {
+  "apotre": "eph 1.22-2.3",
+  "evangile": "mk 10.46-52"
+ },
+ "163": {
+  "apotre": "eph 2.19-3.7",
+  "evangile": "mk 11.11-23"
+ },
+ "164": {
+  "apotre": "eph 3.8-21",
+  "evangile": "mk 11.22-26"
+ },
+ "165": {
+  "apotre": "eph 4.14-19",
+  "evangile": "mk 11.27-33"
+ },
+ "166": {
+  "apotre": "eph 4.17-25",
+  "evangile": "mk 12.1-12"
+ },
+ "167": {
+  "apotre": "1co 14.20-25",
+  "evangile": "mt 25.1-13"
+ },
+ "168": {
+  "apotre": "2co 6.16-7.1",
+  "evangile": "mt 15.21-28"
+ },
+ "169": {
+  "apotre": "eph 4.25-32",
+  "evangile": "lk 3.19-22"
+ },
+ "170": {
+  "apotre": "eph 5.20-26",
+  "evangile": "lk 3.23-4.1"
+ },
+ "171": {
+  "apotre": "eph 5.25-33",
+  "evangile": "lk 4.1-15"
+ },
+ "172": {
+  "apotre": "eph 5.33-6.9",
+  "evangile": "lk 4.16-22"
+ },
+ "173": {
+  "apotre": "eph 6.18-24",
+  "evangile": "lk 4.22-30"
+ },
+ "174": {
+  "apotre": "1co 15.39-45",
+  "evangile": "lk 4.31-36"
+ },
+ "175": {
+  "apotre": "2co 9.6-11",
+  "evangile": "lk 5.1-11"
+ },
+ "176": {
+  "apotre": "php 1.1-7",
+  "evangile": "lk 4.37-44"
+ },
+ "177": {
+  "apotre": "php 1.8-14",
+  "evangile": "lk 5.12-16"
+ },
+ "178": {
+  "apotre": "php 1.12-20",
+  "evangile": "lk 5.33-39"
+ },
+ "179": {
+  "apotre": "php 1.20-27",
+  "evangile": "lk 6.12-19"
+ },
+ "180": {
+  "apotre": "php 1.27-2.4",
+  "evangile": "lk 6.17-23"
+ },
+ "181": {
+  "apotre": "1co 15.58-16.3",
+  "evangile": "lk 5.17-26"
+ },
+ "182": {
+  "apotre": "2co 11.31-12.9",
+  "evangile": "lk 6.31-36"
+ },
+ "183": {
+  "apotre": "php 2.12-16",
+  "evangile": "lk 6.24-30"
+ },
+ "184": {
+  "apotre": "php 2.16-23",
+  "evangile": "lk 6.37-45"
+ },
+ "185": {
+  "apotre": "php 2.24-30",
+  "evangile": "lk 6.46-7.1"
+ },
+ "186": {
+  "apotre": "php 3.1-8",
+  "evangile": "lk 7.17-30"
+ },
+ "187": {
+  "apotre": "php 3.8-19",
+  "evangile": "lk 7.31-35"
+ },
+ "188": {
+  "apotre": "2co 1.8-11",
+  "evangile": "lk 5.27-32"
+ },
+ "189": {
+  "apotre": "ga 1.11-19",
+  "evangile": "lk 7.11-16"
+ },
+ "190": {
+  "apotre": "php 4.10-23",
+  "evangile": "lk 7.36-50"
+ },
+ "191": {
+  "apotre": "col 1.1-2, 7-11",
+  "evangile": "lk 8.1-3"
+ },
+ "192": {
+  "apotre": "col 1.18-23",
+  "evangile": "lk 8.22-25"
+ },
+ "193": {
+  "apotre": "col 1.24-29",
+  "evangile": "lk 9.7-11"
+ },
+ "194": {
+  "apotre": "col 2.1-7",
+  "evangile": "lk 9.12-18"
+ },
+ "195": {
+  "apotre": "2co 3.12-18",
+  "evangile": "lk 6.1-10"
+ },
+ "196": {
+  "apotre": "ga 2.16-20",
+  "evangile": "lk 8.5-15"
+ },
+ "197": {
+  "apotre": "col 2.13-20",
+  "evangile": "lk 9.18-22"
+ },
+ "198": {
+  "apotre": "col 2.20-3.3",
+  "evangile": "lk 9.23-27"
+ },
+ "199": {
+  "apotre": "col 3.17-4.1",
+  "evangile": "lk 9.44-50"
+ },
+ "200": {
+  "apotre": "col 4.2-9",
+  "evangile": "lk 9.49-56"
+ },
+ "201": {
+  "apotre": "col 4.10-18",
+  "evangile": "lk 10.1-15"
+ },
+ "202": {
+  "apotre": "2co 5.1-10",
+  "evangile": "lk 7.1-10"
+ },
+ "203": {
+  "apotre": "ga 6.11-18",
+  "evangile": "lk 16.19-31"
+ },
+ "204": {
+  "apotre": "1th 1.1-5",
+  "evangile": "lk 10.22-24"
+ },
+ "205": {
+  "apotre": "1th 1.6-10",
+  "evangile": "lk 11.1-10"
+ },
+ "206": {
+  "apotre": "1th 2.1-8",
+  "evangile": "lk 11.9-13"
+ },
+ "207": {
+  "apotre": "1th 2.9-14",
+  "evangile": "lk 11.14-23"
+ },
+ "208": {
+  "apotre": "1th 2.14-19",
+  "evangile": "lk 11.23-26"
+ },
+ "209": {
+  "apotre": "2co 8.1-5",
+  "evangile": "lk 8.16-21"
+ },
+ "210": {
+  "apotre": "eph 2.4-10",
+  "evangile": "lk 8.26-39"
+ },
+ "211": {
+  "apotre": "1th 2.20-3.8",
+  "evangile": "lk 11.29-33"
+ },
+ "212": {
+  "apotre": "1th 3.9-13",
+  "evangile": "lk 11.34-41"
+ },
+ "213": {
+  "apotre": "1th 4.1-12",
+  "evangile": "lk 11.42-46"
+ },
+ "214": {
+  "apotre": "1th 5.1-8",
+  "evangile": "lk 11.47-12.1"
+ },
+ "215": {
+  "apotre": "1th 5.9-13, 24-28",
+  "evangile": "lk 12.2-12"
+ },
+ "216": {
+  "apotre": "2co 11.1-6",
+  "evangile": "lk 9.1-6"
+ },
+ "217": {
+  "apotre": "eph 2.14-22",
+  "evangile": "lk 8.41-56"
+ },
+ "218": {
+  "apotre": "2th 1.1-10",
+  "evangile": "lk 12.13-15, 22-31"
+ },
+ "219": {
+  "apotre": "2th 1.10-2.2",
+  "evangile": "lk 12.42-48"
+ },
+ "220": {
+  "apotre": "2th 2.1-12",
+  "evangile": "lk 12.48-59"
+ },
+ "221": {
+  "apotre": "2th 2.13-3.5",
+  "evangile": "lk 13.1-9"
+ },
+ "222": {
+  "apotre": "2th 3.6-18",
+  "evangile": "lk 13.31-35"
+ },
+ "223": {
+  "apotre": "ga 1.3-10",
+  "evangile": "lk 9.37-43"
+ },
+ "224": {
+  "apotre": "eph 4.1-6",
+  "evangile": "lk 10.25-37"
+ },
+ "225": {
+  "apotre": "1ti 1.1-7",
+  "evangile": "lk 14.12-15"
+ },
+ "226": {
+  "apotre": "1ti 1.8-14",
+  "evangile": "lk 14.25-35"
+ },
+ "227": {
+  "apotre": "1ti 1.18-20, 2.8-15",
+  "evangile": "lk 15.1-10"
+ },
+ "228": {
+  "apotre": "1ti 3.1-13",
+  "evangile": "lk 16.1-9"
+ },
+ "229": {
+  "apotre": "1ti 4.4-8, 16",
+  "evangile": "lk 16.15-18, 17.1-4"
+ },
+ "230": {
+  "apotre": "ga 3.8-12",
+  "evangile": "lk 9.57-62"
+ },
+ "231": {
+  "apotre": "eph 5.8-19",
+  "evangile": "lk 12.16-21"
+ },
+ "232": {
+  "apotre": "1ti 5.1-10",
+  "evangile": "lk 17.20-25"
+ },
+ "233": {
+  "apotre": "1ti 5.11-21",
+  "evangile": "lk 17.26-37; 18.8"
+ },
+ "234": {
+  "apotre": "1ti 5.22-6.11",
+  "evangile": "lk 18.15-17, 26-30"
+ },
+ "235": {
+  "apotre": "1ti 6.17-21",
+  "evangile": "lk 18.31-34"
+ },
+ "236": {
+  "apotre": "2ti 1.1-2, 8-18",
+  "evangile": "lk 19.12-28"
+ },
+ "237": {
+  "apotre": "ga 5.22-6.2",
+  "evangile": "lk 10.19-21"
+ },
+ "238": {
+  "apotre": "eph 6.10-17",
+  "evangile": "lk 13.10-17"
+ },
+ "239": {
+  "apotre": "2ti 2.20-26",
+  "evangile": "lk 19.37-44"
+ },
+ "240": {
+  "apotre": "2ti 3.16-4.4",
+  "evangile": "lk 19.45-48"
+ },
+ "241": {
+  "apotre": "2ti 4.9-22",
+  "evangile": "lk 20.1-8"
+ },
+ "242": {
+  "apotre": "tit 1.5-2.1",
+  "evangile": "lk 20.9-18"
+ },
+ "243": {
+  "apotre": "tit 1.15-2.10",
+  "evangile": "lk 20.19-26"
+ },
+ "244": {
+  "apotre": "eph 1.16-23",
+  "evangile": "lk 12.32-40"
+ },
+ "245": {
+  "apotre": "col 1.12-18",
+  "evangile": "lk 14.16-24"
+ },
+ "246": {
+  "apotre": "heb 3.5-11, 17-19",
+  "evangile": "lk 20.27-44"
+ },
+ "247": {
+  "apotre": "heb 4.1-13",
+  "evangile": "lk 21.12-19"
+ },
+ "248": {
+  "apotre": "heb 5.11-6.8",
+  "evangile": "lk 21.5-8, 10-11, 20-24"
+ },
+ "249": {
+  "apotre": "heb 7.1-6",
+  "evangile": "lk 21.28-33"
+ },
+ "250": {
+  "apotre": "heb 7.18-25",
+  "evangile": "lk 21.37-22.8"
+ },
+ "251": {
+  "apotre": "eph 2.11-13",
+  "evangile": "lk 13.18-29"
+ },
+ "252": {
+  "apotre": "col 3.4-11",
+  "evangile": "lk 17.12-19"
+ },
+ "253": {
+  "apotre": "heb 8.7-13",
+  "evangile": "mk 8.11-21"
+ },
+ "254": {
+  "apotre": "heb 9.8-10, 15-23",
+  "evangile": "mk 8.22-26"
+ },
+ "255": {
+  "apotre": "heb 10.1-18",
+  "evangile": "mk 8.30-34"
+ },
+ "256": {
+  "apotre": "heb 10.35-11.7",
+  "evangile": "mk 9.10-15"
+ },
+ "257": {
+  "apotre": "heb 11.8, 11-16",
+  "evangile": "mk 9.33-41"
+ },
+ "258": {
+  "apotre": "eph 5.1-8",
+  "evangile": "lk 14.1-11"
+ },
+ "259": {
+  "apotre": "col 3.12-16",
+  "evangile": "lk 18.18-27"
+ },
+ "260": {
+  "apotre": "heb 11.17-23, 27-31",
+  "evangile": "mk 9.42-10.1"
+ },
+ "261": {
+  "apotre": "heb 12.25-26, 13.22-25",
+  "evangile": "mk 10.2-12"
+ },
+ "262": {
+  "apotre": "jas 1.1-18",
+  "evangile": "mk 10.11-16"
+ },
+ "263": {
+  "apotre": "jas 1.19-27",
+  "evangile": "mk 10.17-27"
+ },
+ "264": {
+  "apotre": "jas 2.1-13",
+  "evangile": "mk 10.23-32"
+ },
+ "265": {
+  "apotre": "col 1.3-6",
+  "evangile": "lk 16.10-15"
+ },
+ "266": {
+  "apotre": "1ti 1.15-17",
+  "evangile": "lk 18.35-43"
+ },
+ "267": {
+  "apotre": "jas 2.14-26",
+  "evangile": "mk 10.46-52"
+ },
+ "268": {
+  "apotre": "jas 3.1-10",
+  "evangile": "mk 11.11-23"
+ },
+ "269": {
+  "apotre": "jas 3.11-4.6",
+  "evangile": "mk 11.22-26"
+ },
+ "270": {
+  "apotre": "jas 4.7-5.9",
+  "evangile": "mk 11.27-33"
+ },
+ "271": {
+  "apotre": "1pe 1.1-2, 10-12, 2.6-10",
+  "evangile": "mk 12.1-12"
+ },
+ "272": {
+  "apotre": "1th 5.14-23",
+  "evangile": "lk 17.3-10"
+ },
+ "273": {
+  "apotre": "1ti 4.9-15",
+  "evangile": "lk 19.1-10"
+ },
+ "274": {
+  "apotre": "1pe 2.21-3.9",
+  "evangile": "mk 12.13-17"
+ },
+ "275": {
+  "apotre": "1pe 3.10-22",
+  "evangile": "mk 12.18-27"
+ },
+ "276": {
+  "apotre": "1pe 4.1-11",
+  "evangile": "mk 12.28-37"
+ },
+ "277": {
+  "apotre": "1pe 4.12-5.5",
+  "evangile": "mk 12.38-44"
+ },
+ "278": {
+  "apotre": "2pe 1.1-10",
+  "evangile": "mk 13.1-8"
+ },
+ "279": {
+  "apotre": "2ti 2.11-19",
+  "evangile": "lk 18.2-8"
+ },
+ "-133": {
+  "apotre": "eph 2.14-22",
+  "evangile": "lk 8.41-56"
+ },
+ "-132": {
+  "apotre": "2th 1.1-10",
+  "evangile": "lk 12.13-15, 22-31"
+ },
+ "-131": {
+  "apotre": "2th 1.10-2.2",
+  "evangile": "lk 12.42-48"
+ },
+ "-130": {
+  "apotre": "2th 2.1-12",
+  "evangile": "lk 12.48-59"
+ },
+ "-129": {
+  "apotre": "2th 2.13-3.5",
+  "evangile": "lk 13.1-9"
+ },
+ "-128": {
+  "apotre": "2th 3.6-18",
+  "evangile": "lk 13.31-35"
+ },
+ "-127": {
+  "apotre": "ga 1.3-10",
+  "evangile": "lk 9.37-43"
+ },
+ "-126": {
+  "apotre": "eph 4.1-6",
+  "evangile": "lk 10.25-37"
+ },
+ "-125": {
+  "apotre": "1ti 1.1-7",
+  "evangile": "lk 14.12-15"
+ },
+ "-124": {
+  "apotre": "1ti 1.8-14",
+  "evangile": "lk 14.25-35"
+ },
+ "-123": {
+  "apotre": "1ti 1.18-20, 2.8-15",
+  "evangile": "lk 15.1-10"
+ },
+ "-122": {
+  "apotre": "1ti 3.1-13",
+  "evangile": "lk 16.1-9"
+ },
+ "-121": {
+  "apotre": "1ti 4.4-8, 16",
+  "evangile": "lk 16.15-18, 17.1-4"
+ },
+ "-120": {
+  "apotre": "ga 3.8-12",
+  "evangile": "lk 9.57-62"
+ },
+ "-119": {
+  "apotre": "eph 5.8-19",
+  "evangile": "lk 12.16-21"
+ },
+ "-118": {
+  "apotre": "1ti 5.1-10",
+  "evangile": "lk 17.20-25"
+ },
+ "-117": {
+  "apotre": "1ti 5.11-21",
+  "evangile": "lk 17.26-37; 18.8"
+ },
+ "-116": {
+  "apotre": "1ti 5.22-6.11",
+  "evangile": "lk 18.15-17, 26-30"
+ },
+ "-115": {
+  "apotre": "1ti 6.17-21",
+  "evangile": "lk 18.31-34"
+ },
+ "-114": {
+  "apotre": "2ti 1.1-2, 8-18",
+  "evangile": "lk 19.12-28"
+ },
+ "-113": {
+  "apotre": "ga 5.22-6.2",
+  "evangile": "lk 10.16-21"
+ },
+ "-112": {
+  "apotre": "eph 6.10-17",
+  "evangile": "lk 13.10-17"
+ },
+ "-111": {
+  "apotre": "2ti 2.20-26",
+  "evangile": "lk 19.37-44"
+ },
+ "-110": {
+  "apotre": "2ti 3.16-4.4",
+  "evangile": "lk 19.45-48"
+ },
+ "-109": {
+  "apotre": "2ti 4.9-22",
+  "evangile": "lk 20.1-8"
+ },
+ "-108": {
+  "apotre": "tit 1.5-2.1",
+  "evangile": "lk 20.9-18"
+ },
+ "-107": {
+  "apotre": "tit 1.15-2.10",
+  "evangile": "lk 20.19-26"
+ },
+ "-106": {
+  "apotre": "eph 1.16-23",
+  "evangile": "lk 12.32-40"
+ },
+ "-105": {
+  "apotre": "col 1.12-18",
+  "evangile": "lk 14.16-24"
+ },
+ "-104": {
+  "apotre": "heb 3.5-11, 17-19",
+  "evangile": "lk 20.27-44"
+ },
+ "-103": {
+  "apotre": "heb 4.1-13",
+  "evangile": "lk 21.12-19"
+ },
+ "-102": {
+  "apotre": "heb 5.11-6.8",
+  "evangile": "lk 21.5-8, 10-11, 20-24"
+ },
+ "-101": {
+  "apotre": "heb 7.1-6",
+  "evangile": "lk 21.28-33"
+ },
+ "-100": {
+  "apotre": "heb 7.18-25",
+  "evangile": "lk 21.37-22.8"
+ },
+ "-99": {
+  "apotre": "eph 2.11-13",
+  "evangile": "lk 13.18-29"
+ },
+ "-98": {
+  "apotre": "col 3.4-11",
+  "evangile": "lk 17.12-19"
+ },
+ "-97": {
+  "apotre": "heb 8.7-13",
+  "evangile": "mk 8.11-21"
+ },
+ "-96": {
+  "apotre": "heb 9.8-10, 15-23",
+  "evangile": "mk 8.22-26"
+ },
+ "-95": {
+  "apotre": "heb 10.1-18",
+  "evangile": "mk 8.30-34"
+ },
+ "-94": {
+  "apotre": "heb 10.35-11.7",
+  "evangile": "mk 9.10-15"
+ },
+ "-93": {
+  "apotre": "heb 11.8, 11-16",
+  "evangile": "mk 9.33-41"
+ },
+ "-92": {
+  "apotre": "eph 5.1-8",
+  "evangile": "lk 14.1-11"
+ },
+ "-91": {
+  "apotre": "col 3.12-16",
+  "evangile": "lk 18.18-27"
+ },
+ "-90": {
+  "apotre": "heb 11.17-23, 27-31",
+  "evangile": "mk 9.42-10.1"
+ },
+ "-89": {
+  "apotre": "heb 12.25-26, 13.22-25",
+  "evangile": "mk 10.2-12"
+ },
+ "-88": {
+  "apotre": "jas 1.1-18",
+  "evangile": "mk 10.11-16"
+ },
+ "-87": {
+  "apotre": "jas 1.19-27",
+  "evangile": "mk 10.17-27"
+ },
+ "-86": {
+  "apotre": "jas 2.1-13",
+  "evangile": "mk 10.23-32"
+ },
+ "-85": {
+  "apotre": "col 1.3-6",
+  "evangile": "lk 16.10-15"
+ },
+ "-84": {
+  "apotre": "1ti 1.15-17",
+  "evangile": "lk 18.35-43"
+ },
+ "-83": {
+  "apotre": "jas 2.14-26",
+  "evangile": "mk 10.46-52"
+ },
+ "-82": {
+  "apotre": "jas 3.1-10",
+  "evangile": "mk 11.11-23"
+ },
+ "-81": {
+  "apotre": "jas 3.11-4.6",
+  "evangile": "mk 11.22-26"
+ },
+ "-80": {
+  "apotre": "jas 4.7-5.9",
+  "evangile": "mk 11.27-33"
+ },
+ "-79": {
+  "apotre": "1pe 1.1-2, 10-12, 2.6-10",
+  "evangile": "mk 12.1-12"
+ },
+ "-78": {
+  "apotre": "1th 5.14-23",
+  "evangile": "lk 17.3-10"
+ },
+ "-77": {
+  "apotre": "1ti 4.9-15",
+  "evangile": "lk 19.1-10"
+ },
+ "-76": {
+  "apotre": "1pe 2.21-3.9",
+  "evangile": "mk 12.13-17"
+ },
+ "-75": {
+  "apotre": "1pe 3.10-22",
+  "evangile": "mk 12.18-27"
+ },
+ "-74": {
+  "apotre": "1pe 4.1-11",
+  "evangile": "mk 12.28-37"
+ },
+ "-73": {
+  "apotre": "1pe 4.12-5.5",
+  "evangile": "mk 12.38-44"
+ },
+ "-72": {
+  "apotre": "2pe 1.1-10",
+  "evangile": "mk 13.1-8"
+ },
+ "-71": {
+  "apotre": "2ti 2.11-19",
+  "evangile": "lk 18.2-8"
+ },
+ "-70": {
+  "apotre": "2ti 3.10-15",
+  "evangile": "lk 18.10-14"
+ },
+ "-69": {
+  "apotre": "2pe 1.20-2.9",
+  "evangile": "mk 13.9-13"
+ },
+ "-68": {
+  "apotre": "2pe 2.9-22",
+  "evangile": "mk 13.14-23"
+ },
+ "-67": {
+  "apotre": "2pe 3.1-18",
+  "evangile": "mk 13.24-31"
+ },
+ "-66": {
+  "apotre": "1jn 1.8-2.6",
+  "evangile": "mk 13.31-14.2"
+ },
+ "-65": {
+  "apotre": "1jn 2.7-17",
+  "evangile": "mk 14.3-9"
+ },
+ "-64": {
+  "apotre": "1ti 6.11-16",
+  "evangile": "lk 20.46-21.4"
+ },
+ "-63": {
+  "apotre": "1co 6.12-20",
+  "evangile": "lk 15.11-32"
+ },
+ "-62": {
+  "apotre": "1jn 2.18-3.10",
+  "evangile": "mk 11.1-11"
+ },
+ "-61": {
+  "apotre": "1jn 3.10-20",
+  "evangile": "mk 14.10-42"
+ },
+ "-60": {
+  "apotre": "1jn 3.21-4.6",
+  "evangile": "mk 14.43-15.1"
+ },
+ "-59": {
+  "apotre": "1jn 4.20-5.21",
+  "evangile": "mk 15.1-15"
+ },
+ "-58": {
+  "apotre": "2jn 1.1-13",
+  "evangile": "mk 15.20, 22, 25, 33-41"
+ },
+ "-57": {
+  "autres": [
+   {
+    "role": "defunts",
+    "nom": "Pour les défunts",
+    "ordre": 2,
+    "apotre": "1th 4.13-17",
+    "evangile": "jn 5.24-30"
+   }
+  ],
+  "apotre": "1co 10.23-28",
+  "evangile": "lk 21.8-9, 25-27, 33-36"
+ },
+ "-56": {
+  "apotre": "1co 8.8-9.2",
+  "evangile": "mt 25.31-46"
+ },
+ "-55": {
+  "apotre": "3jn 1.1-14",
+  "evangile": "lk 19.29-40, 22.7-39"
+ },
+ "-54": {
+  "apotre": "jud 1-10",
+  "evangile": "lk 22.39-42, 45-23.1"
+ },
+ "-52": {
+  "apotre": "jud 11-25",
+  "evangile": "lk 23.1-31, 33, 44-56"
+ },
+ "-50": {
+  "autres": [
+   {
+    "role": "defunts",
+    "nom": "Saints moines et ascètes",
+    "ordre": 2,
+    "apotre": "ga 5.22-6.2",
+    "evangile": "mt 11.27-30"
+   }
+  ],
+  "apotre": "ro 14.19-23, 16.25-27",
+  "evangile": "mt 6.1-13"
+ },
+ "-49": {
+  "apotre": "ro 13.11-14.4",
+  "evangile": "mt 6.14-21"
+ },
+ "-48": {
+  "lectures": [
+   "gen 1.1-13",
+   "pro 1.1-20"
+  ]
+ },
+ "-47": {
+  "lectures": [
+   "gen 1.14-23",
+   "pro 1.20-33"
+  ]
+ },
+ "-46": {
+  "lectures": [
+   "gen 1.24-2.3",
+   "pro 2.1-22"
+  ]
+ },
+ "-45": {
+  "lectures": [
+   "gen 2.4-19",
+   "pro 3.1-18"
+  ]
+ },
+ "-44": {
+  "lectures": [
+   "gen 2.20-3.20",
+   "pro 3.19-34"
+  ]
+ },
+ "-43": {
+  "apotre": "heb 1.1-12",
+  "evangile": "mk 2.23-3.5",
+  "autres": [
+   {
+    "role": "fete",
+    "nom": "Saint Théodore le Conscrit",
+    "ordre": 21,
+    "apotre": "2ti 2.1-10",
+    "evangile": "jn 15.17-16.2"
+   }
+  ]
+ },
+ "-42": {
+  "apotre": "heb 11.24-26, 32-12.2",
+  "evangile": "jn 1.43-51"
+ },
+ "-41": {
+  "lectures": [
+   "gen 3.21-4.7",
+   "pro 3.34-4.22"
+  ]
+ },
+ "-40": {
+  "lectures": [
+   "gen 4.8-15",
+   "pro 5.1-15"
+  ]
+ },
+ "-39": {
+  "lectures": [
+   "gen 4.16-26",
+   "pro 5.15-6.3"
+  ]
+ },
+ "-38": {
+  "lectures": [
+   "gen 5.1-24",
+   "pro 6.3-20"
+  ]
+ },
+ "-37": {
+  "lectures": [
+   "gen 5.32-6.8",
+   "pro 6.20-7.1"
+  ]
+ },
+ "-36": {
+  "autres": [
+   {
+    "role": "defunts",
+    "nom": "Pour les défunts",
+    "ordre": 2,
+    "apotre": "1th 4.13-17",
+    "evangile": "jn 5.24-30"
+   }
+  ],
+  "apotre": "heb 3.12-16",
+  "evangile": "mk 1.35-44"
+ },
+ "-35": {
+  "apotre": "heb 1.10-2.3",
+  "evangile": "mk 2.1-12"
+ },
+ "-34": {
+  "lectures": [
+   "gen 6.9-22",
+   "pro 8.1-21"
+  ]
+ },
+ "-33": {
+  "lectures": [
+   "gen 7.1-5",
+   "pro 8.32-9.11"
+  ]
+ },
+ "-32": {
+  "lectures": [
+   "gen 7.6-9",
+   "pro 9.12-18"
+  ]
+ },
+ "-31": {
+  "lectures": [
+   "gen 7.11-8.3",
+   "pro 10.1-22"
+  ]
+ },
+ "-30": {
+  "lectures": [
+   "gen 8.4-21",
+   "pro 10.31-11.12"
+  ]
+ },
+ "-29": {
+  "autres": [
+   {
+    "role": "defunts",
+    "nom": "Pour les défunts",
+    "ordre": 2,
+    "apotre": "1th 4.13-17",
+    "evangile": "jn 5.24-30"
+   }
+  ],
+  "apotre": "heb 10.32-38",
+  "evangile": "mk 2.14-17"
+ },
+ "-28": {
+  "apotre": "heb 4.14-5.6",
+  "evangile": "mk 8.34-9.1"
+ },
+ "-27": {
+  "lectures": [
+   "gen 8.21-9.7",
+   "pro 11.19-12.6"
+  ]
+ },
+ "-26": {
+  "lectures": [
+   "gen 9.8-17",
+   "pro 12.8-22"
+  ]
+ },
+ "-25": {
+  "lectures": [
+   "gen 9.18-10.1",
+   "pro 12.23-13.9"
+  ]
+ },
+ "-24": {
+  "lectures": [
+   "gen 10.32-11.9",
+   "pro 13.19-14.6"
+  ]
+ },
+ "-23": {
+  "lectures": [
+   "gen 12.1-7",
+   "pro 14.15-26"
+  ]
+ },
+ "-22": {
+  "autres": [
+   {
+    "role": "defunts",
+    "nom": "Pour les défunts",
+    "ordre": 2,
+    "apotre": "1co 15.47-57",
+    "evangile": "jn 5.24-30"
+   }
+  ],
+  "apotre": "heb 6.9-12",
+  "evangile": "mk 7.31-37"
+ },
+ "-21": {
+  "apotre": "heb 6.13-20",
+  "evangile": "mk 9.17-31",
+  "autres": [
+   {
+    "role": "fete",
+    "nom": "Saint Jean Climaque",
+    "ordre": 21,
+    "apotre": "eph 5.8-19",
+    "evangile": "mt 4.25-5.12"
+   }
+  ]
+ },
+ "-20": {
+  "lectures": [
+   "gen 13.12-18",
+   "pro 14.27-15.4"
+  ]
+ },
+ "-19": {
+  "lectures": [
+   "gen 15.1-15",
+   "pro 15.7-19"
+  ]
+ },
+ "-18": {
+  "lectures": [
+   "gen 17.1-9",
+   "pro 15.20-16.9"
+  ]
+ },
+ "-17": {
+  "lectures": [
+   "gen 18.20-33",
+   "pro 16.17-17.17"
+  ]
+ },
+ "-16": {
+  "lectures": [
+   "gen 22.1-18",
+   "pro 17.17-18.5"
+  ]
+ },
+ "-15": {
+  "apotre": "heb 9.24-28",
+  "evangile": "mk 8.27-31",
+  "autres": [
+   {
+    "role": "fete",
+    "nom": "Acathiste de la Mère de Dieu",
+    "ordre": 21,
+    "apotre": "heb 9.1-7",
+    "evangile": "lk 1.39-49, 56"
+   }
+  ]
+ },
+ "-14": {
+  "apotre": "heb 9.11-14",
+  "evangile": "mk 10.32-45",
+  "autres": [
+   {
+    "role": "fete",
+    "nom": "Sainte Marie l'Égyptienne",
+    "ordre": 21,
+    "apotre": "ga 3.23-29",
+    "evangile": "lk 7.36-50"
+   }
+  ]
+ },
+ "-13": {
+  "lectures": [
+   "gen 27.1-41",
+   "pro 19.16-25"
+  ]
+ },
+ "-12": {
+  "lectures": [
+   "gen 31.3-16",
+   "pro 21.3-21"
+  ]
+ },
+ "-11": {
+  "lectures": [
+   "gen 43.26-31, 45.1-16",
+   "pro 21.23-22.4"
+  ]
+ },
+ "-10": {
+  "lectures": [
+   "gen 46.1-7",
+   "pro 23.15-24.5"
+  ]
+ },
+ "-9": {
+  "lectures": [
+   "gen 49.33-50.26",
+   "pro 31.8-31"
+  ]
+ },
+ "-8": {
+  "apotre": "heb 12.28-13.8",
+  "evangile": "jn 11.1-45"
+ },
+ "-7": {
+  "apotre": "php 4.4-9",
+  "evangile": "jn 12.1-18",
+  "lectures": [
+   "gen 49.1-2, 8-12"
+  ]
+ },
+ "-6": {
+  "evangile": "mt 24.3-35",
+  "lectures": [
+   "exo 1.1-20",
+   "job 1.1-12"
+  ]
+ },
+ "-5": {
+  "evangile": "mt 24.36-26.2",
+  "lectures": [
+   "exo 2.5-10",
+   "job 1.13-22"
+  ]
+ },
+ "-4": {
+  "evangile": "mt 26.6-16",
+  "lectures": [
+   "exo 2.11-22",
+   "job 2.1-10"
+  ]
+ },
+ "-3": {
+  "apotre": "1co 11.23-32",
+  "evangile": "mt 26.1-20; jn 13.3-17; mt 26.21-39; lk 22.43-44; mt 26.40-27.2"
+ },
+ "-1": {
+  "apotre": "ro 6.3-11",
+  "evangile": "mt 28.1-20"
+ }
+}

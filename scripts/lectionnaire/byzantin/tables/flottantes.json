@@ -1,0 +1,259 @@
+{
+ "1001": {
+  "nom": "Dimanche des saints Pères des six premiers conciles œcuméniques",
+  "sets": [
+   {
+    "apotre": "tit 3.8-15",
+    "evangile": "mt 5.14-19"
+   }
+  ]
+ },
+ "1002": {
+  "nom": "Dimanche des saints Pères du VIIe concile œcuménique",
+  "sets": [
+   {
+    "apotre": "tit 3.8-15",
+    "evangile": "lk 8.5-15"
+   }
+  ]
+ },
+ "1005": {
+  "nom": "Samedi avant l'Exaltation de la Croix",
+  "sets": [
+   {
+    "apotre": "1co 2.6-9",
+    "evangile": "mt 10.37-11.1"
+   }
+  ]
+ },
+ "1006": {
+  "nom": "Samedi avant l'Exaltation de la Croix",
+  "sets": [
+   {
+    "apotre": "1co 2.6-9",
+    "evangile": "mt 10.37-11.1"
+   }
+  ]
+ },
+ "1007": {
+  "nom": "Dimanche avant l'Exaltation de la Croix",
+  "sets": [
+   {
+    "apotre": "ga 6.11-18",
+    "evangile": "jn 3.13-17"
+   }
+  ]
+ },
+ "1008": {
+  "nom": "Samedi après l'Exaltation de la Croix",
+  "sets": [
+   {
+    "apotre": "1co 1.26-29",
+    "evangile": "jn 8.21-30"
+   }
+  ]
+ },
+ "1009": {
+  "nom": "Dimanche après l'Exaltation de la Croix",
+  "sets": [
+   {
+    "apotre": "ga 2.16-20",
+    "evangile": "mk 8.34-9.1"
+   }
+  ]
+ },
+ "1010": {
+  "nom": "Dimanche des saints Ancêtres du Christ",
+  "sets": [
+   {
+    "apotre": "col 3.4-11",
+    "evangile": "lk 14.16-24"
+   }
+  ]
+ },
+ "1011": {
+  "nom": "Samedi avant la Nativité du Christ",
+  "sets": [
+   {
+    "apotre": "ga 3.8-12",
+    "evangile": "lk 13.19-29"
+   }
+  ]
+ },
+ "1012": {
+  "nom": "Dimanche avant la Nativité du Christ, des saints Pères",
+  "sets": [
+   {
+    "apotre": "heb 11.9-10, 32-40",
+    "evangile": "mt 1.1-25"
+   }
+  ]
+ },
+ "1013": {
+  "nom": "Grandes Heures royales de la Nativité",
+  "sets": []
+ },
+ "1014": {
+  "nom": "Veille de la Nativité du Christ",
+  "sets": [
+   {
+    "apotre": "heb 1.1-12",
+    "evangile": "lk 2.1-20"
+   }
+  ]
+ },
+ "1015": {
+  "nom": "Samedi avant la Nativité, veille de la Nativité",
+  "sets": [
+   {
+    "apotre": "ga 3.8-12",
+    "evangile": "lk 13.19-29"
+   }
+  ]
+ },
+ "1016": {
+  "nom": "Dimanche avant la Nativité, veille de la Nativité",
+  "sets": [
+   {
+    "evangile": "mt 1.1-25",
+    "apotre": "heb 11.9-10, 32-40"
+   }
+  ]
+ },
+ "1017": {
+  "nom": "Samedi après la Nativité et avant la Théophanie",
+  "sets": [
+   {
+    "nom": "Samedi après la Nativité du Christ",
+    "apotre": "1ti 6.11-16",
+    "evangile": "mt 12.15-21"
+   },
+   {
+    "nom": "Samedi avant la Théophanie",
+    "apotre": "1ti 3.13-4.5",
+    "evangile": "mt 3.1-6"
+   }
+  ]
+ },
+ "1018": {
+  "nom": "Samedi après la Nativité du Christ",
+  "sets": [
+   {
+    "apotre": "1ti 6.11-16",
+    "evangile": "mt 12.15-21"
+   }
+  ]
+ },
+ "1019": {
+  "nom": "Samedi après la Nativité du Christ",
+  "sets": [
+   {
+    "apotre": "1ti 6.11-16",
+    "evangile": "mt 12.15-21"
+   }
+  ]
+ },
+ "1020": {
+  "nom": "Lectures du dimanche après la Nativité",
+  "sets": [
+   {
+    "apotre": "ga 1.11-19",
+    "evangile": "mt 2.13-23"
+   }
+  ]
+ },
+ "1021": {
+  "nom": "Dimanche après la Nativité du Christ",
+  "sets": [
+   {
+    "apotre": "ga 1.11-19",
+    "evangile": "mt 2.13-23"
+   }
+  ]
+ },
+ "1022": {
+  "nom": "Samedi avant la Théophanie",
+  "sets": [
+   {
+    "apotre": "1ti 3.13-4.5",
+    "evangile": "mt 3.1-6"
+   }
+  ]
+ },
+ "1023": {
+  "nom": "Lectures du dimanche avant la Théophanie",
+  "sets": [
+   {
+    "apotre": "2ti 4.5-8",
+    "evangile": "mk 1.1-8"
+   }
+  ]
+ },
+ "1024": {
+  "nom": "Dimanche avant la Théophanie",
+  "sets": [
+   {
+    "apotre": "2ti 4.5-8",
+    "evangile": "mk 1.1-8"
+   }
+  ]
+ },
+ "1025": {
+  "nom": "Grandes Heures royales de la Théophanie",
+  "sets": []
+ },
+ "1026": {
+  "nom": "Veille de la Théophanie",
+  "sets": [
+   {
+    "apotre": "1co 9.19-27",
+    "evangile": "lk 3.1-18"
+   }
+  ]
+ },
+ "1027": {
+  "nom": "Samedi avant la Théophanie, veille de la Théophanie",
+  "sets": [
+   {
+    "apotre": "1ti 3.14-4.5",
+    "evangile": "mt 3.1-11"
+   }
+  ]
+ },
+ "1028": {
+  "nom": "Dimanche avant la Théophanie, veille de la Théophanie",
+  "sets": [
+   {
+    "apotre": "2ti 4.5-8",
+    "evangile": "mk 1.1-8"
+   }
+  ]
+ },
+ "1029": {
+  "nom": "Samedi après la Théophanie",
+  "sets": [
+   {
+    "apotre": "eph 6.10-17",
+    "evangile": "mt 4.1-11"
+   }
+  ]
+ },
+ "1030": {
+  "nom": "Dimanche après la Théophanie",
+  "sets": [
+   {
+    "apotre": "eph 4.7-13",
+    "evangile": "mt 4.12-17"
+   }
+  ]
+ },
+ "1038": {
+  "nom": "Clôture de la Théophanie",
+  "sets": [
+   {
+    "apotre": "ac 2.38-43",
+    "evangile": "lk 4.1-15"
+   }
+  ]
+ }
+}
