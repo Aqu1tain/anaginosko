@@ -1,6 +1,7 @@
 "use client";
 
 import GreekText from "@/src/components/GreekText";
+import ReportButton from "@/src/components/ReportButton";
 import { useAnnotationMaps } from "@/src/hooks/useAnnotationMaps";
 import type { Text } from "@/src/data/texts";
 
@@ -11,7 +12,7 @@ export default function PassageGreek({ text, verses, french }: { text: Text; ver
   return (
     <div>
       {verses.map((v) => (
-        <div key={v} className="trans-row border-b border-base-300/70 py-3 last:border-0">
+        <div key={v} className="trans-row group border-b border-base-300/70 py-3 last:border-0">
           <div className="trans-grec">
             <GreekText
               text={text}
@@ -30,6 +31,21 @@ export default function PassageGreek({ text, verses, french }: { text: Text; ver
                 {french[v]}
               </>
             )}
+            <span className="ml-1 inline-flex align-middle">
+              <ReportButton
+                label={`Signaler une erreur au verset ${v}`}
+                target={{
+                  ref: text.id,
+                  verse: v,
+                  wordIndex: null,
+                  endWordIndex: null,
+                  graphemeIndex: null,
+                  annotationId: null,
+                  scopeLabel: "verset",
+                  categories: ["traduction", "texte", "demande_note"],
+                }}
+              />
+            </span>
           </div>
         </div>
       ))}

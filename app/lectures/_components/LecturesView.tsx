@@ -18,6 +18,7 @@ import {
 } from "@/lib/lectionnaire";
 import Choice from "./Choice";
 import DateJump from "./DateJump";
+import ReportButton from "@/src/components/ReportButton";
 import PassageGreek from "./PassageGreek";
 
 const COLORS: Record<string, string> = {
@@ -272,7 +273,26 @@ export default async function LecturesView({ rite, iso }: { rite: Rite; iso: str
         masses[0] && <MassReadings mass={masses[0]} />
       )}
 
-      <footer className="mt-14 border-t border-base-300 pt-6 text-sm leading-relaxed text-base-content/65">
+      <footer className="mt-14 flex flex-col gap-4 border-t border-base-300 pt-6 text-sm leading-relaxed text-base-content/65">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <p className="text-base text-base-content/80">Une lecture qui ne correspond pas à ce jour, une erreur dans le texte ?</p>
+          <ReportButton
+            label="Signaler une erreur"
+            className="btn btn-outline btn-primary h-11 min-h-11 rounded-full px-5"
+            target={{
+              ref: `lect:${rite.slug}:${iso}`,
+              verse: null,
+              wordIndex: null,
+              endWordIndex: null,
+              graphemeIndex: null,
+              annotationId: null,
+              scopeLabel: "lectures",
+              categories: ["lecture", "traduction", "texte"],
+            }}
+          >
+            Signaler une erreur
+          </ReportButton>
+        </div>
         <p>
           {[rite.note, day?.source && `Références des lectures : ${day.source}.`].filter(Boolean).join(" ")} Texte grec
           du corpus Anaginosko (SBLGNT pour le Nouveau Testament, Septante de Rahlfs), traduction française en regard.
