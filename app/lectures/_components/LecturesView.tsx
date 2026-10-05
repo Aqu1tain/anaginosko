@@ -254,6 +254,11 @@ export default async function LecturesView({ rite, iso }: { rite: Rite; iso: str
         </p>
       )}
       {day?.note && <p className="mt-10 text-lg text-base-content/75">{day.note}</p>}
+      {day?.projected && (
+        <p className="mt-8 text-sm text-base-content/70">
+          Lectures calculées d’après le cycle liturgique : l’AELF n’a pas encore publié cette date.
+        </p>
+      )}
 
       {masses.length > 1 ? (
         <div className="mt-10">

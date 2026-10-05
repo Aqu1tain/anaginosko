@@ -11,7 +11,7 @@ import { loadChapterFs } from "./nt-server";
 export type Passage = { corpus: "nt" | "lxx"; book: string; chapter: number; from: number; to: number; absent?: boolean };
 export type Reading = { kind: string; label: string; ref: string; passages: Passage[]; alternative?: boolean };
 export type Mass = { name?: string; readings: Reading[] };
-export type Day = { title: string; detail?: string; color?: string; note?: string; masses: Mass[] };
+export type Day = { title: string; detail?: string; color?: string; note?: string; projected?: boolean; masses: Mass[] };
 
 export const RITES = [
   { slug: "ordinaire", dir: "romain", label: "Forme ordinaire", note: "" },
