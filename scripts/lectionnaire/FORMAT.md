@@ -38,6 +38,8 @@ et la traduction viennent du corpus du site.
 - `title` est en français. `detail`, `color`, `note` et `name` sont facultatifs ;
   `name` ne sert que lorsqu'il y a plusieurs messes ce jour-là.
 - `color` : `vert`, `violet`, `blanc`, `rouge`, `rose`, `noir` ou `or`.
+- `projected: true` (facultatif) : jour calculé par le script, au-delà des données
+  publiées par la source.
 - `kind` : `lecture`, `psaume`, `cantique`, `epitre`, `apotre` ou `evangile`.
 - `ref` est la référence affichée, en français, nom de livre en toutes lettres.
 - `alternative: true` (facultatif) : cette lecture est une autre option que la

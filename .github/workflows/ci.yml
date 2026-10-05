@@ -43,6 +43,8 @@ jobs:
         run: node tests/merge-arb-git-server.test.mjs
       - name: Test NT versification
         run: node tests/nt-versification.test.mjs
+      - name: Check lectionaries against the corpus
+        run: node scripts/lectionnaire/check.mjs
       - name: Test prod translation capture
         run: node tests/capture-prod-arbitration.test.mjs
       - name: Build application without rewriting corpora
