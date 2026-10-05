@@ -45,6 +45,8 @@ jobs:
         run: node tests/nt-versification.test.mjs
       - name: Check lectionaries against the corpus
         run: node scripts/lectionnaire/check.mjs
+      - name: Check NT and LXX lemma equivalences
+        run: node scripts/build-lemma-equivalences.mjs --check
       - name: Test prod translation capture
         run: node tests/capture-prod-arbitration.test.mjs
       - name: Build application without rewriting corpora

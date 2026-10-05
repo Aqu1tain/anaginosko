@@ -1,5 +1,6 @@
 import type { LemmaEntry } from "./nt";
 import { NT, LXX, GREEK_BIBLE, corpusById, type CorpusConfig } from "./corpus";
+import { ntLemmaFor } from "./lemmaEquivalences";
 
 // Index de la Bible grecque : union des lemmes NT et LXX, avec le compte par
 // corpus. Un lemme présent dans le NT garde sa fiche /concordance (qui croise déjà
@@ -18,7 +19,7 @@ export function mergeLemmaIndexes(nt: LemmaEntry[], lxx: LemmaEntry[]): BibleLem
   const byLemma = new Map<string, BibleLemma>();
   for (const e of nt) byLemma.set(e.lemma, { ...e, nt: e.count, lxx: 0 });
   for (const e of lxx) {
-    const known = byLemma.get(e.lemma);
+    const known = byLemma.get(ntLemmaFor(e.lemma));
     if (!known) {
       byLemma.set(e.lemma, { ...e, nt: 0, lxx: e.count });
       continue;

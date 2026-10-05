@@ -10,6 +10,7 @@ import {
   loadOccurrencesFs,
 } from "@/lib/nt-server";
 import { fetchBaillyNotice } from "@/lib/bailly-server";
+import { lxxLemmaFor } from "@/src/data/lemmaEquivalences";
 import LemmaDetail from "@/src/components/LemmaDetail";
 import JsonLd from "@/app/_components/JsonLd";
 import { NT, LXX } from "@/src/data/corpus";
@@ -48,7 +49,7 @@ export default async function LemmaPage({ params }: { params: Promise<{ lemma: s
     loadDistributionFs(entry.oid),
     loadBooksFs(),
     loadCollocationsFs(entry.oid),
-    lemmaEntryFs(l, LXX),
+    lemmaEntryFs(lxxLemmaFor(l), LXX),
     loadGlossFs(l, NT),
   ]);
   const notice = lexicon.gloss ? await fetchBaillyNotice(lexicon.gloss.uri) : null;
