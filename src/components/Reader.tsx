@@ -1,17 +1,15 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { textById, type Mot, type Text } from "../data/texts";
-import { loadChapter } from "../data/nt";
+import { type Text } from "../data/texts";
 import { corpusById, parseRef } from "../data/corpus";
-import { linkedRef, remapAnnotation, type PlacedAnnotation } from "../data/passageLink";
 import { usePersistentState } from "../hooks/usePersistentState";
+import { useAnnotationMaps } from "../hooks/useAnnotationMaps";
 import { setLastRead } from "../lib/lastRead";
 import { useAuth } from "../hooks/useAuth";
 import {
   can,
-  fetchAnnotations,
   deleteAnnotation,
   recordView,
   fetchPronunciations,
@@ -193,9 +191,6 @@ export default function Reader({ text }: { text: Text }) {
   const { user } = useAuth();
   const canAnnotate = can(user, "annotations");
   const [annotateMode, setAnnotateMode] = useState(false);
-  const [annotations, setAnnotations] = useState<Annotation[]>([]);
-  // Annotations du texte lié (passage ↔ chapitre NT), remappées sur ce texte.
-  const [foreign, setForeign] = useState<PlacedAnnotation[]>([]);
   const [sel, setSel] = useState<Sel | null>(null);
   const [editTarget, setEditTarget] = useState<AnnotationTarget | null>(null);
   const [reportTarget, setReportTarget] = useState<ReportTarget | null>(null);
@@ -217,42 +212,11 @@ export default function Reader({ text }: { text: Text }) {
   const mots = text.mots;
   const motGrec = (w: number) => mots?.[Math.floor(w / 2)]?.grec ?? "";
 
-  const loadAnnotations = useCallback(
-    () => fetchAnnotations(ref).then(setAnnotations).catch(() => setAnnotations([])),
-    [ref],
-  );
-
-  const loadForeign = useCallback(async () => {
-    setForeign([]);
-    const lref = linkedRef(ref);
-    if (!lref || !mots) return;
-    try {
-      const p = parseRef(lref);
-      const srcMots: Mot[] | null = p
-        ? (await loadChapter(p.book, p.chapter, corpusById(p.corpus))).mots
-        : (textById(lref)?.mots ?? null);
-      if (!srcMots) return;
-      const anns = await fetchAnnotations(lref);
-      setForeign(
-        anns
-          .map((a) => remapAnnotation(a, srcMots, mots))
-          .filter((p): p is PlacedAnnotation => p !== null),
-      );
-    } catch {
-      /* lien indisponible : on garde les annotations natives seules */
-    }
-  }, [ref, mots]);
-
-  const reload = useCallback(() => {
-    loadAnnotations();
-    loadForeign();
-  }, [loadAnnotations, loadForeign]);
+  const { maps, displayById, reload } = useAnnotationMaps(ref, mots, showAnnotations);
 
   useEffect(() => {
-    loadAnnotations();
-    loadForeign();
     recordView(ref);
-  }, [ref, loadAnnotations, loadForeign]);
+  }, [ref]);
 
   // « Dernier texte lu » : enregistré seulement si l'on reste sur le texte un
   // court instant. Ainsi, traverser des chapitres en spammant Retour pour
@@ -275,38 +239,6 @@ export default function Reader({ text }: { text: Text }) {
 
   const canManage = (a: Annotation) =>
     can(user, "moderate") || (!!user && a.userId != null && a.userId === user.id);
-
-  // Cartes de rendu : soulignement mot/phrase, soulignement caractère, pastilles.
-  // Les annotations liées (passage ↔ NT) sont placées à leurs coords remappées,
-  // mais gardent leur enregistrement d'origine pour l'édition/suppression.
-  const { maps, displayById } = useMemo(() => {
-    const displayById = new Map<number, { w: number; end: number | null }>();
-    if (!showAnnotations) return { maps: null, displayById };
-    const spanWords = new Map<number, Annotation[]>();
-    const charSpots = new Map<string, Annotation[]>();
-    const markers = new Map<number, Annotation[]>();
-    const push = <K,>(m: Map<K, Annotation[]>, k: K, a: Annotation) =>
-      m.set(k, [...(m.get(k) ?? []), a]);
-    const place = (a: Annotation, w: number, end: number | null, g: number | null) => {
-      displayById.set(a.id, { w, end });
-      if (g != null) {
-        push(charSpots, `${w}:${g}`, a);
-        push(markers, w, a);
-      } else if (end != null) {
-        for (let x = w; x <= end; x += 2) push(spanWords, x, a);
-        push(markers, end, a);
-      } else {
-        push(spanWords, w, a);
-        push(markers, w, a);
-      }
-    };
-    for (const a of annotations) {
-      if (a.wordIndex == null) continue;
-      place(a, a.wordIndex, a.endWordIndex, a.graphemeIndex);
-    }
-    for (const p of foreign) place(p.a, p.w, p.end, p.g);
-    return { maps: { spanWords, charSpots, markers }, displayById };
-  }, [annotations, foreign, showAnnotations]);
 
   const onSelectLetter = (w: number, g: number, cluster: string) => {
     setSel((prev) => {
