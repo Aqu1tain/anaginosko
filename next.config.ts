@@ -1,8 +1,20 @@
 import type { NextConfig } from "next";
+import { HTML_LIMITED_BOT_UA_RE } from "next/dist/shared/lib/router/utils/html-bots";
+
+// Robots des assistants IA : ils n'exécutent pas le JavaScript et lisent le <head>.
+// Next diffuse les métadonnées des pages dynamiques en fin de flux, sauf pour les
+// robots de cette liste, qui reçoivent un rendu bloquant (titre et description dans
+// le <head>).
+const AI_BOTS = [
+  "GPTBot", "OAI-SearchBot", "ChatGPT-User", "ClaudeBot", "Claude-SearchBot", "Claude-User", "Claude-Web",
+  "PerplexityBot", "Perplexity-User", "meta-externalagent", "meta-externalfetcher", "meta-webindexer",
+  "Amazonbot", "Amzn-SearchBot", "CCBot", "Bytespider", "MistralAI-User", "DuckAssistBot", "cohere-ai", "YouBot",
+];
 
 const nextConfig: NextConfig = {
   // Sortie autonome pour un déploiement Node minimal derrière nginx (VPS).
   output: "standalone",
+  htmlLimitedBots: new RegExp(`${HTML_LIMITED_BOT_UA_RE.source}|${AI_BOTS.join("|")}`, "i"),
   // L'audio (~30k mp3) et les données /nt restent servis par nginx, pas par Next.
 
   // Les routes d'arbitrage lisent des données statiques (Giguet immuable, liens,
@@ -31,14 +43,19 @@ const nextConfig: NextConfig = {
     "/lxx/concordance/[lemma]/opengraph-image": ["./app/_og/*.ttf"],
   },
 
-  // Review locale uniquement : proxifie /api vers le backend AdonisJS local
-  // (même origine = pas de CORS). En prod, nginx intercepte /api avant Next ;
-  // on n'expose donc pas ce rewrite côté serveur de prod. /audio et /nt sont
-  // servis depuis public/ en dev, depuis le disque par nginx en prod.
+  // Versions Markdown des chapitres et des fiches-lemme, pour les assistants IA.
+  // Review locale : /api est en plus proxifié vers le backend AdonisJS local (même
+  // origine = pas de CORS). En prod, nginx intercepte /api avant Next ; /audio et
+  // /nt sont servis depuis public/ en dev, depuis le disque par nginx en prod.
   async rewrites() {
-    if (process.env.NODE_ENV !== "development") return [];
+    const markdown = [
+      { source: "/concordance/:lemma.md", destination: "/markdown/lemme/nt/:lemma" },
+      { source: "/lxx/concordance/:lemma.md", destination: "/markdown/lemme/lxx/:lemma" },
+      { source: "/:corpus(nt|lxx)/:book/:chapter(\\d+).md", destination: "/markdown/chapitre/:corpus/:book/:chapter" },
+    ];
+    if (process.env.NODE_ENV !== "development") return markdown;
     const api = process.env.API_PROXY ?? "http://localhost:3333";
-    return [{ source: "/api/:path*", destination: `${api}/api/:path*` }];
+    return [...markdown, { source: "/api/:path*", destination: `${api}/api/:path*` }];
   },
 
   // Le widget d'intégration doit pouvoir être encadré par n'importe quel site.
