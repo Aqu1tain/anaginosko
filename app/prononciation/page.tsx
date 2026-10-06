@@ -124,7 +124,8 @@ export default function PrononciationPage() {
           détaille chaque lettre avec ses deux prononciations, les esprits et les
           accents. Et le meilleur exercice reste la lecture elle-même :{" "}
           <Link href="/nt/jn/1" className="link link-primary">ouvrez l’évangile selon Jean</Link>{" "}
-          et touchez n’importe quelle lettre pour entendre ses deux prononciations.
+          et touchez n’importe quel mot pour entendre ses deux prononciations, puis
+          une de ses lettres pour le détail.
         </p>
       </section>
     </article>

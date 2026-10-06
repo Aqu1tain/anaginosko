@@ -32,10 +32,10 @@ export default async function Image() {
           Anaginosko
         </div>
         <div style={{ fontSize: 46, fontWeight: 600, marginTop: 24, color: "#cbd5e1" }}>
-          Lire la Bible en grec, lettre par lettre
+          Lire et étudier la Bible en grec
         </div>
         <div style={{ fontSize: 30, marginTop: 56, color: "#7fa8d0" }}>
-          Prononciation érasmienne et restituée · concordance · alphabet
+          Chaque mot analysé · Bailly · concordance des deux Testaments
         </div>
       </div>
     ),

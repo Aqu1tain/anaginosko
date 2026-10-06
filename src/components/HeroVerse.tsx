@@ -7,8 +7,8 @@ import type { Text } from "../data/texts";
 export type HeroWord = { lemma: string; gloss: string; nature: string; count: number };
 
 // Vitrine du héros : le vrai verset Jean 1,1, réellement interactif. GreekText passe
-// par le SheetContext global (app/providers), donc toucher une lettre ouvre sa fiche
-// (nom + prononciation) comme dans le lecteur. La carte du mot déborde du cadre en
+// par le SheetContext global (app/providers), donc toucher un mot ouvre le panneau
+// d'étude comme dans le lecteur. La carte du mot déborde du cadre en
 // grand écran et mène à sa fiche de concordance.
 export default function HeroVerse({ text, french, word }: { text: Text; french: string | null; word: HeroWord | null }) {
   return (
@@ -20,7 +20,7 @@ export default function HeroVerse({ text, french, word }: { text: Text; french: 
       {french && <p className="mt-4 font-greek text-lg italic leading-relaxed text-base-content/75">{french}</p>}
       <div className="mt-6 flex flex-col gap-5 wide:flex-row wide:items-end wide:justify-between">
         <p className="text-sm leading-relaxed text-base-content/65 wide:max-w-[26ch]">
-          Touchez une lettre : son nom et sa{" "}
+          Touchez un mot : sens, analyse et{" "}
           <Link href="/prononciation" className="link decoration-primary/40 underline-offset-2">
             prononciation
           </Link>
