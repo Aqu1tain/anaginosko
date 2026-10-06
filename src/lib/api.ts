@@ -236,13 +236,29 @@ export const fetchAdminStats = (days?: number) =>
   apiFetch<AdminStats>(`/admin/stats${days ? `?days=${days}` : ""}`);
 
 export type NamedCount = { label: string; visits: number };
+// uniqueVisitors vaut null quand Matomo ne le calcule pas sur une plage de dates.
+export type MatomoSummary = {
+  visits: number;
+  uniqueVisitors: number | null;
+  pageviews: number;
+  uniquePageviews: number;
+  actionsPerVisit: number;
+  avgTimeOnSite: number;
+  bounceRate: number;
+};
+export type MatomoDay = { day: string; visits: number; uniqueVisitors?: number; pageviews?: number };
+// Champs optionnels : absents tant que l'API en prod n'a pas été promue.
 export type MatomoAnalytics = {
   configured: boolean;
-  visitsByDay: { day: string; visits: number }[];
+  visitsByDay: MatomoDay[];
   referrerTypes: NamedCount[];
   topReferrers: NamedCount[];
   devices: NamedCount[];
   countries: NamedCount[];
+  summary?: MatomoSummary;
+  previous?: MatomoSummary;
+  topPages?: { label: string; visits: number; pageviews: number }[];
+  aiReferrals?: { total: number; sources: NamedCount[] };
 };
 export const fetchMatomoAnalytics = (days?: number) =>
   apiFetch<MatomoAnalytics>(`/admin/analytics${days ? `?days=${days}` : ""}`);

@@ -296,7 +296,7 @@ export default function AdminView() {
           <Stat label={seesAll ? "Annotations" : "Mes annotations"} value={plainAnnos.length} />
           <Stat label="Définitions" value={defs.length} />
           {canReports && <Stat label="Signalements en attente" value={pendingCount} accent={pendingCount > 0} />}
-          <Stat label="Vues (total)" value={stats.views} />
+          <Stat label="Lectures de textes" value={stats.views} />
         </div>
       )}
 
