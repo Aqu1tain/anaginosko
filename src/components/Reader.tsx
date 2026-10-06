@@ -26,11 +26,11 @@ import Tour, { type TourStep } from "./Tour";
 const TOUR_STEPS: TourStep[] = [
   {
     title: "Bienvenue sur Anaginosko",
-    body: "Le grec de la Bible, lettre par lettre. Trois repères pour commencer.",
+    body: "La Bible dans le texte grec, chaque mot analysé. Trois repères pour commencer.",
   },
   {
     target: ".glyph",
-    body: "Touchez une lettre pour découvrir son nom et sa prononciation, érasmienne et restituée.",
+    body: "Touchez un mot : son lemme, son analyse, son sens et sa prononciation s’ouvrent à côté. Les flèches passent au mot suivant, et chaque lettre du mot se détaille d’un toucher.",
   },
   {
     target: 'button[aria-controls="reader-settings"]',
@@ -496,7 +496,7 @@ export default function Reader({ text }: { text: Text }) {
           aria-haspopup="dialog"
           aria-expanded={settingsOpen}
           aria-controls="reader-settings"
-          className="btn btn-sm fixed right-3 bottom-[calc(4.6rem+env(safe-area-inset-bottom))] z-30 gap-1.5 rounded-full border-base-300 bg-base-100/95 shadow-md backdrop-blur-md wide:top-20 wide:right-4 wide:bottom-auto"
+          className="btn btn-sm fixed right-3 bottom-[calc(4.6rem+env(safe-area-inset-bottom))] z-30 gap-1.5 rounded-full border-base-300 bg-base-100/95 shadow-md backdrop-blur-md wide:top-20 wide:right-[calc(1rem+var(--study-panel-w))] wide:transition-[right] wide:bottom-auto"
         >
           <SlidersIcon />
           <span className="font-medium">Affichage</span>
@@ -515,7 +515,7 @@ export default function Reader({ text }: { text: Text }) {
           onClick={() => setSettingsOpen(false)}
           aria-hidden="true"
         />
-        <div className="absolute inset-x-0 bottom-0 max-h-[82dvh] overflow-y-auto rounded-t-2xl border-t border-base-300 bg-base-100 p-4 pb-[calc(1.25rem+env(safe-area-inset-bottom))] shadow-2xl wide:inset-x-auto wide:top-20 wide:right-4 wide:bottom-auto wide:max-h-[calc(100dvh-7rem)] wide:w-80 wide:rounded-2xl wide:border wide:border-base-300 wide:p-3">
+        <div className="absolute inset-x-0 bottom-0 max-h-[82dvh] overflow-y-auto rounded-t-2xl border-t border-base-300 bg-base-100 p-4 pb-[calc(1.25rem+env(safe-area-inset-bottom))] shadow-2xl wide:inset-x-auto wide:top-20 wide:right-[calc(1rem+var(--study-panel-w))] wide:transition-[right] wide:bottom-auto wide:max-h-[calc(100dvh-7rem)] wide:w-80 wide:rounded-2xl wide:border wide:border-base-300 wide:p-3">
           <div className="mb-3 flex items-center justify-between">
             <h2 className="font-semibold">Affichage</h2>
             <button
@@ -767,7 +767,7 @@ export default function Reader({ text }: { text: Text }) {
       />
 
       {annotateMode && (
-        <div className="fixed inset-x-0 bottom-[calc(4.2rem+env(safe-area-inset-bottom))] z-40 px-3 wide:bottom-6 wide:left-auto wide:right-4 wide:px-0">
+        <div className="fixed inset-x-0 bottom-[calc(4.2rem+env(safe-area-inset-bottom))] z-40 px-3 wide:bottom-6 wide:left-auto wide:right-[calc(1rem+var(--study-panel-w))] wide:transition-[right] wide:px-0">
           <div className="mx-auto max-w-md rounded-2xl border border-base-300 bg-base-100/95 p-3 shadow-2xl backdrop-blur-md wide:w-80">
             {sel ? (
               <>

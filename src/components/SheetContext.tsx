@@ -9,6 +9,7 @@ export type SheetStage = 1 | 2;
 /** Ce que le contexte expose pour le surlignage dans le texte. */
 export type ActiveLetter = {
   key: string;
+  ref: string | null;
   w: number;
   g: number;
   stage: SheetStage;
@@ -20,11 +21,12 @@ export type LetterClick = {
   g: number;
   info: GraphemeInfo;
   word: WordContext | null;
+  verse?: number | null;
 };
 
 export type SheetApi = {
   active: ActiveLetter | null;
-  /** Lecture : 1er clic = lettre, 2e clic = mot, 3e clic = ferme. */
+  /** Lecture : un clic ouvre le mot, un clic sur le même mot le referme. */
   clickLetter: (arg: LetterClick) => void;
   /** Alphabet : ouvre directement la fiche d'une lettre. */
   openLetter: (info: GraphemeInfo) => void;

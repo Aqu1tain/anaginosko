@@ -34,7 +34,7 @@ export default function Shell({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-dvh bg-base-100 text-base-content">
       <TopBar dark={dark ?? false} onToggleTheme={() => setDark((d) => !d)} />
-      <div className="mx-auto flex w-full max-w-2xl px-4 wide:max-w-[84rem] wide:gap-8 wide:px-6">
+      <div className="study-shift mx-auto flex w-full max-w-2xl px-4 wide:max-w-[84rem] wide:gap-8 wide:px-6">
         <SideNav />
         <main className="min-w-0 flex-1 pb-[calc(5rem+env(safe-area-inset-bottom))] wide:pb-16">
           {children}

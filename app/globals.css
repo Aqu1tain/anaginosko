@@ -194,8 +194,8 @@ body {
   position: relative;
 }
 
-/* 1er tap (lettre) : pavé de fond sur la seule lettre. Au 2e tap (mot), ce pavé
-   disparaît au profit du surlignage du mot entier. */
+/* Lettre seule (mot sans analyse) : pavé de fond sur la lettre. Un mot analysé est
+   surligné en entier (.word-active). */
 .glyph.is-active.is-letter {
   background-color: color-mix(in oklab, var(--color-accent) 16%, transparent);
 }
@@ -281,6 +281,33 @@ body {
 
 .animate-sheet {
   animation: sheet-in 0.24s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Panneau d'étude (mot, lettre) : tiroir montant sur mobile, colonne entrant par la
+   droite en grand écran. Ouvert, il pose html[data-study-panel] : le contenu et les
+   contrôles fixés à droite se décalent de sa largeur pour ne rien recouvrir. */
+:root {
+  --study-panel-w: 0rem;
+}
+.animate-study {
+  animation: sheet-in 0.26s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.study-shift {
+  transition:
+    margin-right 0.26s cubic-bezier(0.22, 1, 0.36, 1),
+    width 0.26s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@media (min-width: 75rem) {
+  html[data-study-panel] {
+    --study-panel-w: 26rem;
+  }
+  html[data-study-panel] .study-shift {
+    width: calc(100% - var(--study-panel-w));
+    margin-right: var(--study-panel-w);
+  }
+  .animate-study {
+    animation: sheet-in-right 0.26s cubic-bezier(0.22, 1, 0.36, 1);
+  }
 }
 
 /* Sur desktop, la feuille flotte à droite : glissement latéral. */
@@ -389,7 +416,7 @@ body {
   filter: brightness(1.05);
 }
 
-/* Mot entier surligné au 2e clic. */
+/* Mot ouvert dans le panneau d'étude. */
 .word-active {
   background-color: color-mix(in oklab, var(--color-secondary) 28%, transparent);
   border-radius: 5px;

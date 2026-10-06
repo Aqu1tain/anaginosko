@@ -86,9 +86,11 @@ function GreekText({
     return null;
   }, [shown]);
 
-  const tabbableKey = active?.key ?? firstKey;
-  // 1er tap = lettre seule ; 2e tap (stage 2) = mot entier surligné.
-  const activeWord = active && active.stage === 2 ? active.w : -1;
+  // Sélection de CE texte (plusieurs textes peuvent partager une page) : le mot
+  // ouvert est surligné ; une lettre seule ne l'est que sans analyse du mot.
+  const mine = active && active.ref === text.id ? active : null;
+  const tabbableKey = mine ? `${mine.w}:${mine.g}` : firstKey;
+  const activeWord = mine?.stage === 2 ? mine.w : -1;
 
   // Surlignage temporaire d'un mot (arrivée depuis la concordance).
   useEffect(() => {
@@ -113,7 +115,7 @@ function GreekText({
       onSelectLetter(w, g, manuscript ? (info.letter?.upper ?? info.cluster) : info.cluster);
       return;
     }
-    clickLetter({ ref: text.id, w, g, info, word: token.word.context });
+    clickLetter({ ref: text.id, w, g, info, word: token.word.context, verse: token.word.verse });
   };
 
   const moveFocus = (current: HTMLElement, to: "prev" | "next" | "first" | "last") => {
@@ -208,19 +210,18 @@ function GreekText({
     graphemes.map((info, g) => {
       if (!isClickable(info)) return manuscript ? null : <span key={g}>{info.cluster}</span>;
       const key = `${w}:${g}`;
-      const isActive = active?.key === key;
-      const isLetter = isActive && active.stage === 1;
+      const isActive = mine?.stage === 1 && mine.w === w && mine.g === g;
       const charAnno = charSpots?.has(key);
       const charSel =
         selection?.scope === "char" && w === selection.from && g === selection.g;
       return (
         <span
           key={g}
-          className={`glyph${isActive ? " is-active" : ""}${isLetter ? " is-letter" : ""}${charAnno ? " glyph-annotated" : ""}${charSel ? " glyph-selected" : ""}`}
+          className={`glyph${isActive ? " is-active is-letter" : ""}${charAnno ? " glyph-annotated" : ""}${charSel ? " glyph-selected" : ""}`}
           role="button"
           tabIndex={key === tabbableKey ? 0 : -1}
           aria-label={`Lettre ${info.letter!.name}`}
-          aria-expanded={active?.key === key}
+          aria-expanded={mine?.w === w}
           data-w={w}
           data-g={g}
         >
@@ -249,7 +250,8 @@ function GreekText({
       dir="ltr"
       lang="grc"
       role="group"
-      aria-label="Texte grec, sélectionnez une lettre pour ses indices"
+      aria-label="Texte grec : sélectionnez un mot pour son analyse"
+      data-text-ref={text.id}
       onClick={onClick}
       onMouseDown={onMouseDown}
       onKeyDown={onKeyDown}

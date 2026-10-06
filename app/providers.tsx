@@ -13,7 +13,7 @@ import {
 } from "../src/components/SheetContext";
 import type { GraphemeInfo } from "../src/lib/greek";
 import type { WordContext } from "../src/lib/tokenize";
-import LetterSheet from "../src/components/LetterSheet";
+import StudySheet from "../src/components/StudySheet";
 import HashRedirect from "./_components/HashRedirect";
 import PreprodGate from "./_components/PreprodGate";
 
@@ -24,6 +24,7 @@ type SheetState = {
   g: number;
   info: GraphemeInfo;
   word: WordContext | null;
+  verse: number | null;
   stage: SheetStage;
 };
 
@@ -37,19 +38,19 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     setSheet(null);
   }, [pathname]);
 
-  // Garde le mot actif visible au-dessus de la feuille (mobile/tablette). On
+  // Garde le mot actif visible au-dessus du tiroir (mobile/tablette). On
   // mesure la hauteur de la feuille via offsetHeight (insensible à l'animation
   // d'entrée translateY, contrairement à getBoundingClientRect) pour ne pas
   // sous-estimer la zone couverte et finir avec le mot caché. Seulement au
   // changement de mot, pas au passage lettre -> mot.
   useEffect(() => {
     if (!sheet) return;
-    if (window.matchMedia("(min-width: 86rem)").matches) return;
+    if (window.matchMedia("(min-width: 75rem)").matches) return;
     const id = requestAnimationFrame(() => {
       const el =
         document.querySelector<HTMLElement>(".word-active") ??
         document.querySelector<HTMLElement>(".glyph.is-active");
-      const sheetEl = document.querySelector<HTMLElement>('[role="dialog"]');
+      const sheetEl = document.querySelector<HTMLElement>("[data-study-panel-box]");
       if (!el || !sheetEl) return;
       const g = el.getBoundingClientRect();
       const sheetTop = window.innerHeight - sheetEl.offsetHeight;
@@ -63,13 +64,11 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     return () => cancelAnimationFrame(id);
   }, [sheet?.key]);
 
-  const clickLetter = useCallback(({ ref, w, g, info, word }: LetterClick) => {
-    const key = `${w}:${g}`;
-    setSheet((prev) => {
-      if (!prev || prev.key !== key) return { key, ref, w, g, info, word, stage: 1 };
-      if (prev.stage === 1) return { ...prev, stage: 2 };
-      return null;
-    });
+  // Le mot d'abord (outil d'étude) ; ses lettres se détaillent dans le panneau. Sans
+  // analyse du mot, on retombe sur la fiche de la lettre.
+  const clickLetter = useCallback(({ ref, w, g, info, word, verse }: LetterClick) => {
+    const key = `${ref}:${w}`;
+    setSheet((prev) => (prev?.key === key ? null : { key, ref, w, g, info, word, verse: verse ?? null, stage: word ? 2 : 1 }));
   }, []);
 
   const closeSheet = useCallback(() => setSheet(null), []);
@@ -82,12 +81,13 @@ export default function Providers({ children }: { children: React.ReactNode }) {
       g: -1,
       info,
       word: null,
+      verse: null,
       stage: 1,
     });
   }, []);
 
   const active: ActiveLetter | null = sheet
-    ? { key: sheet.key, w: sheet.w, g: sheet.g, stage: sheet.stage }
+    ? { key: sheet.key, ref: sheet.ref, w: sheet.w, g: sheet.g, stage: sheet.stage }
     : null;
 
   const api = useMemo<SheetApi>(
@@ -101,12 +101,12 @@ export default function Providers({ children }: { children: React.ReactNode }) {
         <HashRedirect />
         <PreprodGate>{children}</PreprodGate>
         {sheet && (
-          <LetterSheet
+          <StudySheet
             info={sheet.info}
-            word={sheet.word}
-            stage={sheet.stage}
+            word={sheet.stage === 2 ? sheet.word : null}
             textRef={sheet.ref}
             wordIndex={sheet.w}
+            verse={sheet.verse}
             onClose={closeSheet}
           />
         )}
