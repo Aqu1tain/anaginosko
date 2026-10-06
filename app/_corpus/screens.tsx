@@ -15,6 +15,7 @@ import EditBookIntro from "@/src/components/books/EditBookIntro";
 import CollapsibleIntro from "@/src/components/books/CollapsibleIntro";
 import { getPublishedIntro, bookIntroIsLong } from "@/lib/bookIntros";
 import JsonLd from "@/app/_components/JsonLd";
+import ChapterVocabulary from "./ChapterVocabulary";
 import { SITE, clip, pageMetadata } from "@/lib/seo";
 import { chapterVerses } from "@/lib/chapterVerses";
 
@@ -328,6 +329,7 @@ export async function ChapterScreen({
           <span />
         )}
       </nav>
+      <ChapterVocabulary text={text} corpus={corpus} label={label} />
     </div>
   );
 }
