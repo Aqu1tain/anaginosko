@@ -178,8 +178,20 @@ body {
   transition: background-color 0.15s ease;
 }
 
+/* Le survol annonce ce que le clic ouvre : le mot entier, dans la teinte (plus
+   claire) du mot sélectionné. En mode annotation, on choisit une lettre : le survol
+   reste sur la lettre. */
+.word {
+  border-radius: 5px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  transition: background-color 0.15s ease;
+}
 @media (hover: hover) {
-  .glyph:hover {
+  [data-pick="word"] .word:not(.word-active, .word-selected):hover {
+    background-color: color-mix(in oklab, var(--color-secondary) 14%, transparent);
+  }
+  [data-pick="letter"] .glyph:hover {
     background-color: color-mix(in oklab, var(--color-accent) 12%, transparent);
   }
 }
@@ -200,9 +212,8 @@ body {
   background-color: color-mix(in oklab, var(--color-accent) 16%, transparent);
 }
 
-/* Zone de clic agrandie INVISIBLE pour la lettre active : facilite le 2e/3e
-   clic sans changer l'apparence du surlignage. Reste assez étroite pour ne pas
-   recouvrir entièrement la lettre voisine. */
+/* Zone de clic agrandie INVISIBLE pour la lettre active, sans changer l'apparence
+   du surlignage. Reste assez étroite pour ne pas recouvrir la lettre voisine. */
 .glyph.is-active::after {
   content: "";
   position: absolute;

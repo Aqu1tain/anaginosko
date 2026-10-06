@@ -252,6 +252,7 @@ function GreekText({
       role="group"
       aria-label="Texte grec : sélectionnez un mot pour son analyse"
       data-text-ref={text.id}
+      data-pick={annotateMode ? "letter" : "word"}
       onClick={onClick}
       onMouseDown={onMouseDown}
       onKeyDown={onKeyDown}
@@ -262,7 +263,7 @@ function GreekText({
         const glyphs = renderGlyphs(token.word.graphemes, w);
         const annoCls = spanWords?.has(w) ? " word-annotated" : "";
         const selCls = wordSelected(w) ? " word-selected" : "";
-        const wordCls = `whitespace-nowrap${w === activeWord ? " word-active" : ""}${w === flashW ? " word-flash" : ""}${annoCls}${selCls}`;
+        const wordCls = `word whitespace-nowrap${w === activeWord ? " word-active" : ""}${w === flashW ? " word-flash" : ""}${annoCls}${selCls}`;
 
         if (!interlinear) {
           return (
