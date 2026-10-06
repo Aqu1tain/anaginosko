@@ -23,10 +23,16 @@ y échoue sans préparation par l'administrateur. Pour le seul NT, lancer `deplo
 - `anaginosko.fr.nginx` : vhost réel, dans `/etc/nginx/sites-available/anaginosko.fr`.
 - `anaginosko-crawlers.conf` : limite par famille de robots, dans `/etc/nginx/conf.d/`.
 
-Appliquer une modification (compte administrateur) :
+Les robots d'indexation et d'entraînement ont chacun un seau (60 req/min, rafale de
+20, puis 429 avec `Retry-After: 60`). Ne sont jamais limités : visiteurs, Googlebot,
+Bingbot, aperçus de liens (`facebookexternalhit`…), requêtes déclenchées par un
+utilisateur (`ChatGPT-User`, `Claude-User`…), `robots.txt`, `sitemap.xml`, `llms.txt`.
+
+Appliquer une modification (compte administrateur, depuis ce dossier) :
 
 ```
 sudo cp anaginosko-crawlers.conf /etc/nginx/conf.d/
+sudo cp anaginosko.fr.nginx /etc/nginx/sites-available/anaginosko.fr
 sudo nginx -t && sudo systemctl reload nginx
 ```
 

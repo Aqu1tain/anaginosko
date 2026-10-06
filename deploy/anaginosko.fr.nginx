@@ -47,10 +47,26 @@ server {
         try_files $uri =404;
     }
 
+    # robots.txt et sitemap : jamais limités (un robots.txt en erreur fait suspendre
+    # l'exploration de Google pendant 12 h).
+    location ~ ^/(robots\.txt|sitemap\.xml|llms\.txt)$ {
+        proxy_pass http://127.0.0.1:3100;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    # Robot au-delà de son débit : 429 avec Retry-After, que les robots sérieux respectent.
+    location @anag_throttled {
+        add_header Retry-After 60 always;
+        return 429;
+    }
+
     # --- Tout le reste : l'app Next (SSG/SSR) sur 127.0.0.1:3100 ---
     location / {
-        limit_req zone=anag_crawlers burst=10 nodelay;
+        limit_req zone=anag_crawlers burst=20 nodelay;
         limit_req_status 429;
+        error_page 429 = @anag_throttled;
         proxy_pass http://127.0.0.1:3100;
         proxy_http_version 1.1;
         proxy_set_header Host $host;
