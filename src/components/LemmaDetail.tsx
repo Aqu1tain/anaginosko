@@ -12,7 +12,7 @@ import { useLemmaDefinition } from "../hooks/useLemmaDefinition";
 import { can, type Annotation } from "../lib/api";
 import type { GlossAssessment } from "../data/glosses";
 import type { BaillyNotice } from "../lib/bailly";
-import { LexiconSense } from "./BaillyNotice";
+import { LexiconSense, LexiconVia } from "./BaillyNotice";
 import {
   type Colloc,
   type Distribution,
@@ -121,6 +121,7 @@ function LemmaDefinitions({ lemma, lexicon, notice }: { lemma: string; lexicon: 
             </>
           ) : hasLexicon ? (
             <div className="mt-3">
+              <LexiconVia via={lexicon.via} />
               <LexiconSense gloss={lexicon.gloss!} notice={notice} collapsible />
             </div>
           ) : definition === undefined ? (
@@ -158,6 +159,7 @@ function LemmaDefinitions({ lemma, lexicon, notice }: { lemma: string; lexicon: 
               </span>
             </summary>
             <div className="border-t border-base-300 px-4 py-3 sm:px-5">
+              <LexiconVia via={lexicon.via} />
               <LexiconSense gloss={lexicon.gloss!} notice={notice} collapsible />
             </div>
           </details>

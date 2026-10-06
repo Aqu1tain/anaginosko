@@ -169,6 +169,16 @@ export function BaillyExcerpt({ excerpt, compact = false }: { excerpt: string; c
 
 // Sens lexical d'un lemme : la notice complète quand on l'a (rendue serveur ou
 // chargée à la demande), sinon l'extrait tronqué avec un bouton pour la charger.
+// Lemme rangé par le Bailly sous une autre forme (actif d'un verbe moyen…).
+export function LexiconVia({ via }: { via?: string }) {
+  if (!via) return null;
+  return (
+    <p className="mb-1.5 text-xs text-base-content/60">
+      Notice du Bailly à la forme <span className="font-greek text-sm text-base-content/80">{via}</span>.
+    </p>
+  );
+}
+
 export function LexiconSense({
   gloss,
   notice,

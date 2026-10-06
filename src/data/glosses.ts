@@ -8,7 +8,9 @@ export type Gloss = {
 };
 
 export type GlossStatus = "verified" | "unverified" | "absent";
-export type GlossAssessment = { status: GlossStatus; gloss: Gloss | null };
+// `via` : vedette du Bailly quand elle diffère du lemme (actif d'un verbe moyen,
+// graphie attique), pour le signaler au lecteur.
+export type GlossAssessment = { status: GlossStatus; gloss: Gloss | null; via?: string };
 
 const glosses = data as Record<string, Gloss>;
 
@@ -21,6 +23,19 @@ export const normalizeHeadword = (value: string): string =>
 export const excerptHeadword = (excerpt: string): string =>
   normalizeHeadword((excerpt ?? "").split(/[-,;:()\[\]\s]/)[0] ?? "");
 
+// Clé de comparaison : astérisque du Bailly et iota souscrit ignorés, accents et
+// esprits gardés.
+const compareKey = (value: string): string =>
+  normalizeHeadword(value).replace(/^\*/, "").normalize("NFD").replace(/\u0345/g, "").normalize("NFC");
+
+// Formes sous lesquelles le Bailly range un lemme : le lemme lui-même, l'actif d'un
+// verbe moyen (ἐκλέγομαι, rangé à ἐκλέγω) et la graphie attique des composés de
+// γίνομαι (ἐπιγίνομαι, rangé à ἐπιγίγνομαι).
+export const headwordCandidates = (lemma: string): string[] => {
+  const l = lemma.normalize("NFC");
+  return [...new Set([l, l.replace(/ομαι$/, "ω"), l.replace(/γίνομαι$/, "γίγνομαι")].map(compareKey))];
+};
+
 export function assessGloss(
   lemma: string | null | undefined,
   gloss: Gloss | null | undefined,
@@ -29,9 +44,9 @@ export function assessGloss(
   const headword = gloss.headword
     ? normalizeHeadword(gloss.headword)
     : excerptHeadword(gloss.excerpt);
-  return headword === normalizeHeadword(lemma)
-    ? { status: "verified", gloss }
-    : { status: "unverified", gloss: null };
+  const key = compareKey(headword);
+  if (!headwordCandidates(lemma).includes(key)) return { status: "unverified", gloss: null };
+  return key === compareKey(lemma) ? { status: "verified", gloss } : { status: "verified", gloss, via: headword.replace(/^\*/, "") };
 }
 
 /** Glose bundlée et vérifiée (passages d'accueil et métadonnées hors corpus). */

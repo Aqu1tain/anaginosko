@@ -14,7 +14,7 @@ import { useCorpusGloss } from "../hooks/useCorpusGloss";
 import { useLemmaNotes } from "../hooks/useLemmaNotes";
 import { useLemmaDefinition } from "../hooks/useLemmaDefinition";
 import ReportButton from "./ReportButton";
-import { LexiconSense } from "./BaillyNotice";
+import { LexiconSense, LexiconVia } from "./BaillyNotice";
 import {
   can,
   fetchPronunciations,
@@ -519,6 +519,7 @@ export default function LetterSheet({
                     </p>
                   ) : lexical.status === "verified" && lexical.gloss ? (
                     <div className="mt-1.5">
+                      <LexiconVia via={lexical.via} />
                       <LexiconSense gloss={lexical.gloss} compact />
                       <p className="mt-1.5 text-[0.7rem] leading-snug text-base-content/55">
                         Lexique général, à confirmer dans le contexte biblique.
