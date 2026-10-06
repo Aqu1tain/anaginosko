@@ -1,7 +1,7 @@
 {
-  "name": "Anaginosko · lire le grec koinè",
+  "name": "Anaginosko · la Bible en grec et en français",
   "short_name": "Anaginosko",
-  "description": "Lire le grec koinè de la Bible, lettre par lettre.",
+  "description": "Tout le Nouveau Testament et toute la Septante en grec, chaque mot analysé (lemme, morphologie, notice du Bailly), concordance et traduction française.",
   "lang": "fr",
   "dir": "ltr",
   "start_url": "/",
@@ -9,9 +9,29 @@
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#ffffff",
+  "categories": [
+    "education",
+    "books",
+    "reference"
+  ],
   "icons": [
-    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
-    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
   ]
 }
