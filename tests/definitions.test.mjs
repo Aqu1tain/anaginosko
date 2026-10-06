@@ -6,6 +6,7 @@ import {
   pickBestExcerpt,
   pickEntry,
 } from "../scripts/lib/bailly-pick.mjs";
+import { redirectTarget, verifiedFor } from "../scripts/lib/bailly-headwords.mjs";
 
 test("sélectionne uniquement la vedette exacte, accents et esprits compris", () => {
   const entries = [
@@ -46,4 +47,20 @@ test("ignore les enfants d'une autre vedette", () => {
     ],
   };
   assert.equal(pickBestExcerpt(entry, "ἔλεος")?.uri, "pity");
+});
+
+test("reconnaît les notices qui ne font que renvoyer à une autre vedette", () => {
+  assert.equal(redirectTarget("ᾅδης, v. Ἅιδης."), "Ἅιδης");
+  assert.equal(redirectTarget("γίνομαι, v. γίγνομαι, fin."), "γίγνομαι");
+  assert.equal(redirectTarget("ἄκρον, ου (τὸ) v. ἄκρος."), "ἄκρος");
+  assert.equal(redirectTarget("Ἄζωτος, ου (ἡ) Azot (auj. Ashdod) v. de Palestine, Hdt. 2, 157, etc."), null);
+  assert.equal(redirectTarget("ἀνώτερον, compar. d’ἄνω (v. ἄνω 2)."), null);
+  assert.equal(redirectTarget("ἀνα·γινώσκω, v. le préc."), null);
+});
+
+test("une glose issue d'un renvoi se valide par sa vedette d'origine", () => {
+  const target = { excerpt: "γίγνομαι (impf. ἐγιγνόμην) A propr. devenir", uri: "gignomai", headword: "γίγνομαι" };
+  assert.equal(verifiedFor("γίνομαι", { ...target, from: "γίνομαι" }), true);
+  assert.equal(verifiedFor("ἐκλέγομαι", { ...target, from: "γίνομαι" }), false);
+  assert.equal(verifiedFor("ᾅδης", { excerpt: "Ἅιδης, ου (ὁ) Hadès", uri: "Aidês", headword: "Ἅιδης" }), false);
 });

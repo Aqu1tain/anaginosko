@@ -5,6 +5,8 @@ export type Gloss = {
   uri: string;
   /** Vedette exacte renvoyée par le lexique (présente sur les futures générations). */
   headword?: string;
+  /** Vedette d'origine quand le Bailly y renvoie à `headword` (« ᾅδης, v. Ἅιδης »). */
+  from?: string;
 };
 
 export type GlossStatus = "verified" | "unverified" | "absent";
@@ -44,9 +46,12 @@ export function assessGloss(
   const headword = gloss.headword
     ? normalizeHeadword(gloss.headword)
     : excerptHeadword(gloss.excerpt);
-  const key = compareKey(headword);
-  if (!headwordCandidates(lemma).includes(key)) return { status: "unverified", gloss: null };
-  return key === compareKey(lemma) ? { status: "verified", gloss } : { status: "verified", gloss, via: headword.replace(/^\*/, "") };
+  // Un renvoi se valide par la vedette d'origine ; la notice affichée est la cible.
+  const entry = gloss.from ? normalizeHeadword(gloss.from) : headword;
+  if (!headwordCandidates(lemma).includes(compareKey(entry))) return { status: "unverified", gloss: null };
+  return compareKey(headword) === compareKey(lemma)
+    ? { status: "verified", gloss }
+    : { status: "verified", gloss, via: headword.replace(/^\*/, "") };
 }
 
 /** Glose bundlée et vérifiée (passages d'accueil et métadonnées hors corpus). */
