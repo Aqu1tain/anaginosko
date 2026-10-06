@@ -47,15 +47,21 @@ const nextConfig: NextConfig = {
   // Review locale : /api est en plus proxifié vers le backend AdonisJS local (même
   // origine = pas de CORS). En prod, nginx intercepte /api avant Next ; /audio et
   // /nt sont servis depuis public/ en dev, depuis le disque par nginx en prod.
+  // Un agent qui demande du Markdown (en-tête Accept) le reçoit aussi sur l'URL même
+  // de la page ; les navigateurs n'envoient jamais text/markdown.
   async rewrites() {
+    const wantsMarkdown = [{ type: "header" as const, key: "accept", value: ".*text/markdown.*" }];
     const markdown = [
       { source: "/concordance/:lemma.md", destination: "/markdown/lemme/nt/:lemma" },
       { source: "/lxx/concordance/:lemma.md", destination: "/markdown/lemme/lxx/:lemma" },
       { source: "/:corpus(nt|lxx)/:book/:chapter(\\d+).md", destination: "/markdown/chapitre/:corpus/:book/:chapter" },
+      { source: "/concordance/:lemma", has: wantsMarkdown, destination: "/markdown/lemme/nt/:lemma" },
+      { source: "/lxx/concordance/:lemma", has: wantsMarkdown, destination: "/markdown/lemme/lxx/:lemma" },
+      { source: "/:corpus(nt|lxx)/:book/:chapter(\\d+)", has: wantsMarkdown, destination: "/markdown/chapitre/:corpus/:book/:chapter" },
     ];
-    if (process.env.NODE_ENV !== "development") return markdown;
     const api = process.env.API_PROXY ?? "http://localhost:3333";
-    return [...markdown, { source: "/api/:path*", destination: `${api}/api/:path*` }];
+    const dev = process.env.NODE_ENV === "development" ? [{ source: "/api/:path*", destination: `${api}/api/:path*` }] : [];
+    return { beforeFiles: markdown, afterFiles: dev, fallback: [] };
   },
 
   // Le widget d'intégration doit pouvoir être encadré par n'importe quel site.
