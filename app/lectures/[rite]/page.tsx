@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!rite) return {};
   return {
     title: `Lectures du jour en grec, ${rite.label.toLowerCase()}`,
-    description: `Les lectures du jour en grec selon la ${rite.label.toLowerCase()}, avec la traduction française en regard.`,
+    description: `Les lectures du jour en grec, ${rite.label.toLowerCase()}, avec la traduction française en regard et l’analyse de chaque mot.`,
     alternates: { canonical: `/lectures/${rite.slug}` },
   };
 }

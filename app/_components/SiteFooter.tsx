@@ -12,6 +12,7 @@ export default function SiteFooter() {
         <Link href="/alphabet" className="link-hover">Alphabet</Link>
         <Link href="/prononciation" className="link-hover">Prononciation</Link>
         <Link href="/concordance" className="link-hover">Concordance</Link>
+        <Link href="/a-propos" className="link-hover">À propos</Link>
         <a href="https://fr.tipeee.com/anaginosko" target="_blank" rel="noreferrer noopener" className="link-hover">
           Soutenir
         </a>

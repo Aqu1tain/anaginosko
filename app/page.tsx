@@ -12,10 +12,11 @@ import RefJump from "../src/components/RefJump";
 import HeroVerse, { type HeroWord } from "../src/components/HeroVerse";
 import BibleNavigator, { type NavCorpus } from "../src/components/BibleNavigator";
 import { loadBibleNav } from "../lib/bibleNav";
+import { SITE_PITCH } from "../lib/seo";
+import { loadSiteFacts } from "../lib/siteFacts";
 
 export const metadata: Metadata = {
-  description:
-    "Anaginosko : lire la Bible en grec, lettre par lettre. Nouveau Testament et Septante en grec koinè, prononciation érasmienne et restituée, concordance et traduction française. Gratuit, sans publicité.",
+  description: `${SITE_PITCH} Sans publicité ni inscription.`,
   alternates: { canonical: "/" },
 };
 
@@ -55,17 +56,18 @@ function Hero({ verse, french, word, start }: { verse: Text; french: string | nu
     <section className="grid gap-10 pt-8 wide:grid-cols-[minmax(0,6fr)_minmax(0,5fr)] wide:items-center wide:gap-14 wide:pt-16">
       <div>
         <h1 className="font-greek text-4xl font-bold leading-[1.08] tracking-tight wide:text-6xl">
-          Lire la Bible en grec, lettre par lettre
+          Lire et étudier la Bible en grec
         </h1>
-        <p className="mt-5 max-w-[36ch] text-lg leading-relaxed text-base-content/75 wide:text-xl">
-          Le Nouveau Testament et la Septante, chaque mot expliqué, la traduction en regard.
+        <p className="mt-5 max-w-[40ch] text-lg leading-relaxed text-base-content/75 wide:text-xl">
+          Tout le Nouveau Testament et toute la Septante, chaque mot analysé avec sa notice du Bailly,
+          une concordance des deux Testaments, la traduction en regard.
         </p>
         <div className="mt-8 flex flex-wrap gap-3">
           <Link href={start} className="btn btn-primary btn-lg rounded-full px-7">
             Commencer à lire
           </Link>
-          <Link href="/alphabet" className="btn btn-outline btn-primary btn-lg rounded-full px-7">
-            Apprendre l’alphabet
+          <Link href="/concordance" className="btn btn-outline btn-primary btn-lg rounded-full px-7">
+            Explorer la concordance
           </Link>
         </div>
       </div>
@@ -139,7 +141,7 @@ function Passages({ passages }: { passages: Text[] }) {
 
 function Figures({ figures }: { figures: { href: string; value: number; label: string }[] }) {
   return (
-    <section className="mt-14 grid gap-8 border-t border-base-300 pt-12 sm:grid-cols-3 wide:mt-16 wide:pt-16">
+    <section className="mt-14 grid gap-8 border-t border-base-300 pt-12 sm:grid-cols-2 wide:mt-16 wide:grid-cols-4 wide:pt-16">
       {figures.map((f) => (
         <Link key={f.href} href={f.href} className="group flex flex-col gap-2">
           <span className="font-greek text-5xl leading-none tabular-nums wide:text-6xl">{f.value.toLocaleString("fr-FR")}</span>
@@ -212,13 +214,13 @@ function Support() {
 }
 
 export default async function Home() {
-  const [ntBooks, lxxBooks, ntLemmas, lxxLemmas, jn1, bibleNav] = await Promise.all([
+  const [ntBooks, lxxBooks, ntLemmas, jn1, bibleNav, facts] = await Promise.all([
     loadBooksFs(NT),
     loadBooksFs(LXX),
     loadLemmasFs(NT),
-    loadLemmasFs(LXX),
     loadChapterFs("jn", 1, NT),
     loadBibleNav(),
+    loadSiteFacts(),
   ]);
   // Recherche de référence globale : NT et LXX fusionnés, chaque livre pointe vers
   // son corpus (les noms et ids ne se chevauchent pas entre les deux).
@@ -232,7 +234,6 @@ export default async function Home() {
   const logos = ntLemmas.find((e) => e.lemma === "λόγος");
   const word = logos ? { lemma: logos.lemma, gloss: "parole", nature: logos.nature.toLowerCase(), count: logos.count } : null;
   const passages = textsByCollection("passages");
-  const lemmaCount = new Set([...ntLemmas, ...lxxLemmas].map((e) => e.lemma)).size;
 
   return (
     <div>
@@ -242,9 +243,10 @@ export default async function Home() {
       <Passages passages={passages} />
       <Figures
         figures={[
-          { href: "/nt", value: ntBooks.length, label: "livres du Nouveau Testament" },
-          { href: "/lxx", value: lxxBooks.length, label: "livres de la Septante" },
-          { href: "/concordance", value: lemmaCount, label: "mots grecs dans la concordance" },
+          { href: "/nt", value: facts.nt.books, label: "livres du Nouveau Testament" },
+          { href: "/lxx", value: facts.lxx.books, label: "livres de la Septante" },
+          { href: "/concordance", value: facts.lemmas, label: "mots grecs dans la concordance" },
+          { href: "/a-propos", value: facts.baillyNotices, label: "notices du Bailly" },
         ]}
       />
       <LatestArticles />

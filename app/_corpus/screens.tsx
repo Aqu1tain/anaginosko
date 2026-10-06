@@ -15,12 +15,12 @@ import EditBookIntro from "@/src/components/books/EditBookIntro";
 import CollapsibleIntro from "@/src/components/books/CollapsibleIntro";
 import { getPublishedIntro, bookIntroIsLong } from "@/lib/bookIntros";
 import JsonLd from "@/app/_components/JsonLd";
+import { SITE, clip, pageMetadata } from "@/lib/seo";
+import { chapterVerses } from "@/lib/chapterVerses";
 
 // Écrans de lecture partagés entre corpus (NT, LXX). Les fichiers de route ne sont
 // que de fines enveloppes passant la config du corpus. Les valeurs NT reproduisent
 // les littéraux historiques (URL, libellés, JSON-LD) à l'identique.
-
-const SITE = "https://anaginosko.fr";
 
 const chapterLabel = (name: string, ch: number): string =>
   ch === 0 ? `${name}, prologue` : `${name} ${ch}`;
@@ -34,11 +34,11 @@ export async function bookStaticParams(corpus: CorpusConfig) {
 
 export async function tocMetadata(corpus: CorpusConfig): Promise<Metadata> {
   const books = await loadBooksFs(corpus);
-  return {
-    title: corpus.label,
-    description: `Les ${books.length} livres ${corpus.genitive} en grec koinè (${corpus.sourceLabel}), chapitre par chapitre.`,
-    alternates: { canonical: corpus.routePrefix },
-  };
+  return pageMetadata({
+    title: `${corpus.label} en grec`,
+    description: `Les ${books.length} livres ${corpus.genitive} en grec (${corpus.sourceLabel}), avec la traduction française en regard et l'analyse de chaque mot : lemme, morphologie, notice du Bailly.`,
+    path: corpus.routePrefix,
+  });
 }
 
 export async function bookMetadata(corpus: CorpusConfig, params: Promise<{ book: string }>): Promise<Metadata> {
@@ -51,14 +51,9 @@ export async function bookMetadata(corpus: CorpusConfig, params: Promise<{ book:
   // sinon le gabarit générique.
   const intro = getPublishedIntro(corpus.id, book);
   const description = intro?.excerpt?.trim()
-    ? intro.excerpt
-    : `${name} en grec koinè (${corpus.sourceLabel}) : ${chapters} chapitres, texte original lettre par lettre, translittération érasmienne et restituée, traduction française.`;
-  return {
-    title: name,
-    description,
-    alternates: { canonical: `${corpus.routePrefix}/${book}` },
-    openGraph: { type: "website", locale: "fr_FR", siteName: "Anaginosko", title: `${name} en grec`, description },
-  };
+    ? clip(intro.excerpt, 220)
+    : `${name} en grec (${corpus.sourceLabel}) et en français : ${chapters} chapitre${chapters > 1 ? "s" : ""}, chaque mot analysé (lemme, morphologie, notice du Bailly), traduction française en regard.`;
+  return pageMetadata({ title: `${name} en grec`, description, path: `${corpus.routePrefix}/${book}` });
 }
 
 export async function chapterMetadata(
@@ -68,12 +63,20 @@ export async function chapterMetadata(
   const { book, chapter } = await params;
   const name = corpus.bookNames[book] ?? "Livre";
   const label = chapterLabel(name, Number(chapter));
-  return {
-    title: label,
-    description: `${name} chapitre ${chapter} en grec koinè (${corpus.sourceLabel}), translittération érasmienne et restituée, traduction française.`,
-    alternates: { canonical: `${corpus.routePrefix}/${book}/${chapter}` },
-    openGraph: { type: "article", locale: "fr_FR", siteName: "Anaginosko", title: label },
-  };
+  const path = `${corpus.routePrefix}/${book}/${chapter}`;
+  const text = await loadChapterFs(book, Number(chapter), corpus).catch(() => null);
+  const first = text ? chapterVerses(text, corpus).verses[0] : undefined;
+  // L'incipit grec et français rend chaque description unique et répond aux
+  // recherches de citation (« Ἐν ἀρχῇ ἦν ὁ λόγος »).
+  const incipit = first ? ` « ${clip(first.grec, 70)} »${first.fr ? ` : ${clip(first.fr, 70)}` : ""}` : "";
+  return pageMetadata({
+    title: `${label} en grec et en français`,
+    ogTitle: `${label} en grec`,
+    description: `${label} en grec (${corpus.sourceLabel}), traduction française et analyse de chaque mot.${incipit}`,
+    path,
+    type: "article",
+    markdown: `${path}.md`,
+  });
 }
 
 // --- Écrans ---
@@ -195,36 +198,9 @@ export async function ChapterScreen({
   if (!b || !Number.isInteger(ch) || !chapterNumbers(b).includes(ch)) notFound();
   const [text, bibleNav] = await Promise.all([loadChapterFs(book, ch, corpus), loadBibleNav()]);
 
-  // Bloc de versets contigus (grec + français), rendu côté serveur pour les
-  // moteurs et lecteurs d'écran ; le lecteur interactif éclate le grec par-dessus.
-  const verseGreek = new Map<number, string[]>();
-  for (const m of text.mots ?? []) {
-    if (m.verse == null) continue;
-    if (!verseGreek.has(m.verse)) verseGreek.set(m.verse, []);
-    verseGreek.get(m.verse)!.push(m.grec);
-  }
-  const greekVerseNums = [...verseGreek.keys()].sort((a, b) => a - b);
-  // Même garde que le lecteur : le manifeste `_align` fait foi (chapitres réordonnés
-  // ou à additions → bloc) ; sinon heuristique (LXX + ensembles non identiques).
-  const frKeys = text.francais ? new Set(Object.keys(text.francais).map(Number)) : null;
-  const blocked =
-    text.frenchBlock ??
-    (corpus.id === "lxx" &&
-      !(!!frKeys && greekVerseNums.length === frKeys.size && greekVerseNums.every((v) => frKeys.has(v))));
-  const versesAligned = !blocked;
-  const verses = greekVerseNums.map((v) => ({
-    v,
-    grec: verseGreek.get(v)!.join(" "),
-    fr: versesAligned ? (text.francais?.[String(v)] ?? null) : null,
-  }));
-  const frenchBlock =
-    !versesAligned && text.francais
-      ? Object.keys(text.francais)
-          .map(Number)
-          .sort((a, b) => a - b)
-          .map((v) => `${v} ${text.francais![String(v)]}`)
-          .join(" ")
-      : null;
+  // Texte continu (grec + français), rendu serveur en tête de page pour les moteurs,
+  // les assistants et les lecteurs d'écran ; le lecteur interactif suit.
+  const { verses, frenchBlock } = chapterVerses(text, corpus);
 
   const nums = chapterNumbers(b);
   const idx = nums.indexOf(ch);
@@ -267,11 +243,18 @@ export async function ChapterScreen({
       },
       {
         "@type": "CreativeWork",
-        name: label,
-        inLanguage: "grc",
+        name: `${label} en grec`,
+        inLanguage: ["grc", "fr"],
         url,
-        isPartOf: { "@type": "Book", name: corpus.label, inLanguage: "grc" },
+        isAccessibleForFree: true,
+        isPartOf: {
+          "@type": "Book",
+          name: name,
+          url: `${SITE}${corpus.routePrefix}/${book}`,
+          isPartOf: { "@type": "Book", name: corpus.label, url: `${SITE}${corpus.routePrefix}` },
+        },
         isBasedOn: corpus.sourceUrl,
+        encoding: { "@type": "MediaObject", encodingFormat: "text/markdown", contentUrl: `${url}.md` },
         publisher: { "@type": "Organization", name: "Anaginosko", url: SITE },
       },
     ],
@@ -281,6 +264,17 @@ export async function ChapterScreen({
     <div className="reading-page">
       <JsonLd data={jsonLd} />
       <h1 className="sr-only">{label}</h1>
+      <section className="sr-only" aria-label={`${label}, texte continu`}>
+        {verses.map((vs) => (
+          <p key={vs.v}>
+            <span lang="grc">
+              {vs.v} {vs.grec}
+            </span>
+            {vs.fr ? <span lang="fr"> : {vs.fr}</span> : null}
+          </p>
+        ))}
+        {frenchBlock ? <p lang="fr">{frenchBlock}</p> : null}
+      </section>
       <div className="reading-col flex flex-wrap items-center gap-x-4 gap-y-1">
         <Breadcrumb
           items={[
@@ -298,18 +292,6 @@ export async function ChapterScreen({
         />
       </div>
       <Reader text={text} />
-
-      <section className="sr-only" aria-label={`${label}, texte continu`}>
-        {verses.map((vs) => (
-          <p key={vs.v}>
-            <span lang="grc">
-              {vs.v} {vs.grec}
-            </span>
-            {vs.fr ? <span lang="fr"> : {vs.fr}</span> : null}
-          </p>
-        ))}
-        {frenchBlock ? <p lang="fr">{frenchBlock}</p> : null}
-      </section>
 
       <nav className="reading-col mt-8 flex items-center justify-between gap-3">
         {prev != null ? (

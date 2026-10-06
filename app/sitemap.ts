@@ -4,6 +4,7 @@ import { CORPORA } from "@/src/data/corpus";
 import { texts } from "@/src/data/texts";
 import { listPublished } from "@/lib/articles";
 import { listProfiles } from "@/lib/profiles";
+import { RITES } from "@/lib/lectionnaire";
 
 const BASE = "https://anaginosko.fr";
 
@@ -45,7 +46,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return [
     url("/"),
+    url("/a-propos"),
     url("/lectures"),
+    ...RITES.map((r) => url(`/lectures/${r.slug}`)),
     url("/alphabet"),
     url("/prononciation"),
     url("/mentions"),
