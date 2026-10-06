@@ -132,30 +132,6 @@ translittération par Anaginosko.</p></footer>
 </html>
 `;
 
-const llmsTxt = `# Anaginosko
-
-> Lire la Bible en grec (koinè), lettre par lettre. Application web
-> (Next.js, rendu statique) : prononciation érasmienne et restituée, alphabet
-> interactif, concordance, mode manuscrit, traduction française.
-
-Le texte grec est rendu côté serveur : chaque page est lisible sans JavaScript.
-
-## Parcourir
-
-- Nouveau Testament (index) : ${SITE}/nt
-- Septante / Ancien Testament grec (index) : ${SITE}/lxx
-- Un chapitre : ${SITE}/{corpus}/{livre}/{chapitre} (ex. ${SITE}/nt/jn/1, ${SITE}/lxx/gen/1)
-- Données structurées d'un chapitre (JSON) : ${SITE}/{corpus}/{livre}/{chapitre}.json
-  - mots avec grec, translittération érasmienne et restituée, verset, lemme, nature
-- Concordance d'un lemme : ${SITE}/concordance/{lemme} (NT) ou ${SITE}/lxx/concordance/{lemme} (LXX)
-- Alphabet grec : ${SITE}/alphabet
-- Corpus des passages choisis (HTML, sans JS) : ${SITE}/corpus.html
-
-## Passages choisis (texte intégral)
-
-${out.texts.map((t) => `### ${t.reference}\n\n${greekWithVerses(t)}`).join("\n\n")}
-`;
-
 writeFileSync(resolve(root, "public/corpus.html"), corpusHtml, "utf8");
-writeFileSync(resolve(root, "public/llms.txt"), llmsTxt, "utf8");
-console.log("Wrote public/corpus.html and public/llms.txt");
+// llms.txt est servi par app/llms.txt/route.ts, calculé sur les données en ligne.
+console.log("Wrote public/corpus.html");
