@@ -2,7 +2,7 @@ import "server-only";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import type { Text } from "../src/data/texts";
-import type { NtBook, LemmaEntry, Occ, Distribution, Colloc } from "../src/data/nt";
+import { bookById, chapterNumbers, type NtBook, type LemmaEntry, type Occ, type Distribution, type Colloc } from "../src/data/nt";
 import type { CorpusConfig } from "../src/data/corpus";
 import { ntMaison } from "./ntMaison";
 import {
@@ -55,6 +55,25 @@ export async function lemmaEntryFs(lemma: string, c?: CorpusConfig): Promise<Lem
 
 export const loadOccurrencesFs = (oid: number, c?: CorpusConfig): Promise<Occ[]> =>
   readJson<Occ[]>(`occ/${oid}.json`, c);
+
+const BOOK_OCC_CAP = 500;
+
+// Occurrences d'un lemme dans un seul livre, relues dans ses chapitres : les fichiers
+// occ/ s'arrêtent aux 500 premières du corpus entier, et laissent vides les livres
+// tardifs des mots fréquents. Même repère de mot que le build (mot n -> jeton 2n).
+export async function loadBookOccurrencesFs(lemma: string, bookId: string, c?: CorpusConfig): Promise<Occ[] | null> {
+  const book = bookById(await loadBooksFs(c), bookId);
+  if (!book) return null;
+  const out: Occ[] = [];
+  for (const ch of chapterNumbers(book)) {
+    const { mots } = await readJson<{ mots: { grec: string; lemme: string | null; verse: number | null }[] }>(`${bookId}/${ch}.json`, c);
+    mots.forEach((m, i) => {
+      if (m.lemme === lemma && out.length < BOOK_OCC_CAP) out.push({ b: bookId, c: ch, v: m.verse ?? 0, w: i * 2, f: m.grec });
+    });
+    if (out.length >= BOOK_OCC_CAP) break;
+  }
+  return out;
+}
 
 export const loadDistributionFs = (oid: number, c?: CorpusConfig): Promise<Distribution> =>
   readJson<Distribution>(`distribution/${oid}.json`, c).catch(() => ({}) as Distribution);

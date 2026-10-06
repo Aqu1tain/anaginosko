@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import Link from "next/link";
 import Breadcrumb from "../../app/_components/Breadcrumb";
 import DistributionProfile from "./DistributionProfile";
@@ -337,6 +337,22 @@ export default function LemmaDetail({
 
   const shown: LemmaData = (view === "both" ? both : view === "lxx" ? lxx : nt) ?? self;
 
+  // Occurrences complètes d'un livre, à la demande : les listes chargées s'arrêtent
+  // aux 500 premières du corpus. Livres NT et LXX disjoints : l'id dit le corpus.
+  const ntLemma = nt?.entry.lemma;
+  const lxxLemma = lxx?.entry.lemma;
+  const loadBook = useCallback(
+    (bookId: string): Promise<Occ[]> => {
+      const inLxx = LXX.bookOrder.includes(bookId);
+      const lemma = inLxx ? lxxLemma : ntLemma;
+      if (!lemma) return Promise.resolve([]);
+      return fetch(`/concordance/api/occ/${inLxx ? "lxx" : "nt"}/${bookId}/${encodeURIComponent(lemma)}`)
+        .then((r) => (r.ok ? (r.json() as Promise<Occ[]>) : []))
+        .catch(() => []);
+    },
+    [ntLemma, lxxLemma],
+  );
+
   return (
     <div className="pb-4">
       <Breadcrumb
@@ -382,7 +398,7 @@ export default function LemmaDetail({
         </div>
       </section>
 
-      <DistributionProfile entry={shown.entry} dist={shown.dist} books={shown.books} occ={shown.occ} corpus={shown.corpus} />
+      <DistributionProfile entry={shown.entry} dist={shown.dist} books={shown.books} occ={shown.occ} corpus={shown.corpus} loadBook={loadBook} />
       <Collocations items={shown.colloc} occ={shown.occ} corpus={shown.corpus} />
       <Occurrences entry={shown.entry} occ={shown.occ} corpus={shown.corpus} />
     </div>

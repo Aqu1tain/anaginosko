@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import {
   type Distribution,
@@ -30,8 +30,39 @@ function Seg({ active, onClick, children }: { active: boolean; onClick: () => vo
   );
 }
 
-function Verses({ occ, row, routePrefix }: { occ: Occ[]; row: Row; routePrefix: string }) {
-  const verses = occ.filter((o) => o.b === row.id);
+function Verses({
+  occ,
+  row,
+  routePrefix,
+  loadBook,
+}: {
+  occ: Occ[];
+  row: Row;
+  routePrefix: string;
+  loadBook?: (bookId: string) => Promise<Occ[]>;
+}) {
+  const preloaded = occ.filter((o) => o.b === row.id);
+  const partial = preloaded.length < row.count && !!loadBook;
+  const [fetched, setFetched] = useState<Occ[] | null>(null);
+
+  useEffect(() => {
+    if (!partial) return;
+    let alive = true;
+    loadBook!(row.id).then((list) => alive && setFetched(list));
+    return () => {
+      alive = false;
+    };
+  }, [partial, loadBook, row.id]);
+
+  const verses = fetched?.length ? fetched : preloaded;
+  if (partial && !fetched) {
+    return (
+      <p className="mt-1 mb-2 ml-2 flex items-center gap-2 border-l-2 border-base-300 pl-3.5 text-xs text-base-content/70" aria-live="polite">
+        <span className="loading loading-spinner loading-xs" aria-hidden="true" />
+        Chargement des {row.count} occurrences…
+      </p>
+    );
+  }
   return (
     <div className="mt-1 mb-2 ml-2 grid gap-1 border-l-2 border-base-300 pl-2">
       {verses.map((o, i) => (
@@ -61,12 +92,14 @@ export default function DistributionProfile({
   books,
   occ,
   corpus,
+  loadBook,
 }: {
   entry: LemmaEntry;
   dist: Distribution;
   books: NtBook[];
   occ: Occ[];
   corpus: CorpusConfig;
+  loadBook?: (bookId: string) => Promise<Occ[]>;
 }) {
   const [mode, setMode] = useState<"raw" | "density">("raw");
   const [grouped, setGrouped] = useState(false);
@@ -122,7 +155,7 @@ export default function DistributionProfile({
             />
           </div>
         </button>
-        {open && <Verses occ={occ} row={r} routePrefix={corpus.routePrefixOf?.(r.id) ?? corpus.routePrefix} />}
+        {open && <Verses occ={occ} row={r} routePrefix={corpus.routePrefixOf?.(r.id) ?? corpus.routePrefix} loadBook={loadBook} />}
       </div>
     );
   };
