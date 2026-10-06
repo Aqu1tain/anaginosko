@@ -61,6 +61,11 @@ export async function chapterMarkdown(corpus: CorpusConfig, book: string, chapte
   const label = chapterName(corpus, book, ch);
   const page = `${SITE}${corpus.routePrefix}/${book}/${ch}`;
   const house = new Set(Object.keys(text.maison ?? {}));
+  const houseNames = [...new Set(Object.values(text.maison ?? {}).map(creditName))].join(", ");
+  const allHouse = house.size > 0 && !frenchBlock && verses.every(({ v, fr }) => !fr || house.has(String(v)));
+  const frenchCredit = allHouse
+    ? `traduction ${houseNames}`
+    : `${SOURCES[corpus.id].french}${house.size ? `, sauf les versets marqués « traduction ${houseNames} »` : ""}`;
   const nums = chapterNumbers(b);
   const i = nums.indexOf(ch);
   const neighbour = (n: number | undefined) => (n == null ? null : `[${chapterName(corpus, book, n)}](${SITE}${corpus.routePrefix}/${book}/${n}.md)`);
@@ -70,7 +75,7 @@ export async function chapterMarkdown(corpus: CorpusConfig, book: string, chapte
     "",
     `> ${aiNote(page)}`,
     "",
-    `${corpus.label}, ${chapterName(corpus, book, ch)}. Texte grec : ${SOURCES[corpus.id].greek}. Traduction française : ${SOURCES[corpus.id].french}${house.size ? ", sauf les versets marqués « traduction Anaginosko »" : ""}.`,
+    `${corpus.label}, ${chapterName(corpus, book, ch)}. Texte grec : ${SOURCES[corpus.id].greek}. Traduction française : ${frenchCredit}.`,
     "",
     `- Lecture interactive, avec l'analyse de chaque mot (lemme, morphologie, notice du Bailly) : ${page}`,
     `- Données mot à mot (JSON) : ${page}.json`,

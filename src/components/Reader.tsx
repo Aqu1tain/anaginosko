@@ -67,7 +67,7 @@ function SlidersIcon() {
 
 // Traduction d'un chapitre dont la versification diffère du grec : on affiche le
 // texte français en continu, avec ses propres numéros, sans l'apparier au grec.
-function FrenchChapterBlock({ french, credit }: { french: Record<string, string>; credit: string }) {
+function FrenchChapterBlock({ french, credit }: { french: Record<string, string>; credit: React.ReactNode }) {
   const keys = Object.keys(french)
     .map(Number)
     .sort((a, b) => a - b);
@@ -89,7 +89,7 @@ function FrenchChapterBlock({ french, credit }: { french: Record<string, string>
           </span>
         ))}
       </p>
-      <p className="mt-3 text-xs text-base-content/70">{credit}</p>
+      {credit}
     </div>
   );
 }
@@ -349,11 +349,11 @@ export default function Reader({ text }: { text: Text }) {
   );
   // Le traducteur de base n’est crédité que s’il traduit AU MOINS un verset RÉELLEMENT
   // AFFICHÉ : on regarde les versets grecs (pas les lignes Giguet orphelines, présentes
-  // dans le fr.json mais masquées au lecteur). Tout maison => Giguet absent => non crédité.
-  // Le NT (pas de maison) garde toujours son traducteur de base.
+  // dans le fr.json mais masquées au lecteur). Chapitre entièrement retraduit (NT comme
+  // LXX) => traducteur de base non crédité.
   const hasBase = useMemo(
-    () => (isLxx ? greekVerses.some((v) => french != null && v in french && !text.maison?.[v]) : hasFrench),
-    [isLxx, greekVerses, french, text.maison, hasFrench],
+    () => greekVerses.some((v) => french != null && v in french && !text.maison?.[v]),
+    [greekVerses, french, text.maison],
   );
   const who = [...(hasBase ? [baseTranslator] : []), ...maisonNames].join(", ");
   const provenance = !hasBase
@@ -362,6 +362,21 @@ export default function Reader({ text }: { text: Text }) {
       ? " · transcription Wikisource adaptée, CC BY-SA 4.0"
       : " · © 2022 Fraternité de Tibériade, CC BY-SA 4.0";
   const translatedBy = `Traduit par : ${who}${provenance}.`;
+  // Pied de traduction : le crédit, et pour un traducteur l'accès direct à l'atelier
+  // du chapitre lu, aligné sur la colonne de lecture.
+  const creditRow = (
+    <div className="mt-3 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 text-xs text-base-content/70">
+      <p>{translatedBy}</p>
+      {can(user, "arbitrage") && parsedRef && (
+        <a
+          href={`/admin/arbitrage?corpus=${parsedRef.corpus}&book=${parsedRef.book}&ch=${parsedRef.chapter}`}
+          className="link shrink-0 text-base-content/60 underline-offset-2"
+        >
+          Traduire ce chapitre dans l’atelier
+        </a>
+      )}
+    </div>
+  );
 
   // Lien profond d’un verset : ancré à droite de la zone, révélé au survol (cf. classes
   // de CopyVerseLink), sur un fond opaque pour ne jamais chevaucher le texte. Masqué en
@@ -683,7 +698,7 @@ export default function Reader({ text }: { text: Text }) {
               {copyLinkInline(v)}
             </div>
           ))}
-          <FrenchChapterBlock french={french!} credit={translatedBy} />
+          <FrenchChapterBlock french={french!} credit={creditRow} />
         </div>
       ) : transMode === "verses" ? (
         <div className="mt-5 mx-auto max-w-2xl">
@@ -710,7 +725,7 @@ export default function Reader({ text }: { text: Text }) {
               )}
             </div>
           ))}
-          <p className="mt-3 text-xs text-base-content/70">{translatedBy}</p>
+          {creditRow}
         </div>
       ) : (
         // Côte à côte : grec | français, alignés par verset. Sous 640px, dégrade
@@ -744,20 +759,8 @@ export default function Reader({ text }: { text: Text }) {
               </div>
             </div>
           ))}
-          <p className="mt-3 text-xs text-base-content/70">{translatedBy}</p>
+          {creditRow}
         </div>
-      )}
-
-      {/* Traducteur : accès direct à l'atelier de traduction du chapitre lu. */}
-      {can(user, "arbitrage") && parsedRef && (
-        <p className="mt-4 text-xs">
-          <a
-            href={`/admin/arbitrage?corpus=${parsedRef.corpus}&book=${parsedRef.book}&ch=${parsedRef.chapter}`}
-            className="link text-base-content/60 underline-offset-2"
-          >
-            Traduire ce chapitre dans l’atelier
-          </a>
-        </p>
       )}
 
       <Tour
