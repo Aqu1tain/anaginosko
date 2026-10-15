@@ -79,6 +79,10 @@ export const getPublishedCourse = (slug: string): Course | null =>
 // Articles rangés dans un cours, publié ou non : ce sont des leçons.
 export const lessonIds = (): Set<string> => new Set(listCourses().flatMap((c) => c.sections.flatMap((s) => s.lessons)));
 
+// Cours (publié ou non) qui range cet article, pour l'administration.
+export const courseContaining = (articleId: string): Course | null =>
+  listCourses().find((c) => c.sections.some((s) => s.lessons.includes(articleId))) ?? null;
+
 export const courseOfLesson = (articleId: string): Course | null =>
   listCourses().find((c) => c.status === "published" && c.sections.some((s) => s.lessons.includes(articleId))) ?? null;
 

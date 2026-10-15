@@ -40,8 +40,9 @@ async function articleFetch<T>(path: string, options: RequestInit = {}): Promise
 export const fetchArticles = () =>
   articleFetch<{ articles: ArticleSummary[] }>("/articles").then((d) => d.articles);
 
-export const fetchArticle = (id: string) =>
-  articleFetch<{ article: Article }>(`/articles/${id}`).then((d) => d.article);
+// Article et, s'il s'agit d'une leçon, le cours qui la range.
+export const fetchArticleWithCourse = (id: string) =>
+  articleFetch<{ article: Article; course: { id: string; title: string } | null }>(`/articles/${id}`);
 
 export const createArticle = (input: { title: string; category: ArticleCategory }) =>
   articleFetch<{ article: Article }>("/articles", { method: "POST", body: JSON.stringify(input) }).then((d) => d.article);

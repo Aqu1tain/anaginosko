@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/src/hooks/useAuth";
 import { can, getToken } from "@/src/lib/api";
 import {
-  fetchArticle,
+  fetchArticleWithCourse,
   saveArticle,
   transitionArticle,
   addComment,
@@ -75,6 +75,7 @@ export default function ArticleWorkbench({ id }: { id: string }) {
   const router = useRouter();
   const dark = useIsDark();
   const [article, setArticle] = useState<Article | null>(null);
+  const [course, setCourse] = useState<{ id: string; title: string } | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [saveState, setSaveState] = useState<SaveState>("idle");
   const titleRef = useRef<HTMLTextAreaElement>(null);
@@ -126,9 +127,10 @@ export default function ArticleWorkbench({ id }: { id: string }) {
     if (!ready || !user) return;
     let cancelled = false;
     setError(null);
-    fetchArticle(id)
-      .then((a) => {
+    fetchArticleWithCourse(id)
+      .then(({ article: a, course }) => {
         if (cancelled) return;
+        setCourse(course);
         revRef.current = a.rev;
         contentRevisionRef.current = a.contentRevision;
         setArticle(a);
@@ -476,7 +478,7 @@ export default function ArticleWorkbench({ id }: { id: string }) {
     <div className="mx-auto max-w-5xl pb-16 pt-4">
       <div className="mb-5 flex items-center justify-between gap-3 border-b border-base-300 pb-3">
         <Link
-          href="/admin/articles"
+          href={course ? `/admin/cours/${course.id}` : "/admin/articles"}
           className="flex items-center gap-1.5 text-sm text-base-content/60 hover:text-base-content"
         >
           <svg
@@ -492,7 +494,7 @@ export default function ArticleWorkbench({ id }: { id: string }) {
           >
             <path d="M15 18l-6-6 6-6" />
           </svg>
-          Articles
+          {course ? `Leçon du cours « ${course.title} »` : "Articles"}
         </Link>
         <div className="flex items-center gap-3">
           <SaveIndicator state={saveState} />

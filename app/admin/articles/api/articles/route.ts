@@ -2,13 +2,16 @@ import { NextResponse } from "next/server";
 import { requirePermission, requireEditorial } from "@/lib/auth";
 import { listArticles, createArticle, type ArticleCategory } from "@/lib/articles";
 import { ensureProfile } from "@/lib/profiles";
+import { lessonIds } from "@/lib/courses";
 
 export const dynamic = "force-dynamic";
 
 export async function GET(req: Request) {
   const auth = await requireEditorial(req.headers.get("authorization"));
   if (!auth.ok) return NextResponse.json({ error: "Réservé aux contributeurs." }, { status: 401 });
-  return NextResponse.json({ articles: listArticles(auth) });
+  // Les leçons se gèrent depuis leur cours, pas dans la liste des articles.
+  const lessons = lessonIds();
+  return NextResponse.json({ articles: listArticles(auth).filter((a) => !lessons.has(a.id)) });
 }
 
 export async function POST(req: Request) {

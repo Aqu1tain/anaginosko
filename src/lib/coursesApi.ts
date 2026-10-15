@@ -26,6 +26,14 @@ export const saveCourse = (id: string, patch: CoursePatch) =>
   courseFetch<{ course: Course }>(`/${id}`, { method: "PUT", body: JSON.stringify(patch) }).then((d) => d.course);
 export const deleteCourse = (id: string) => courseFetch<void>(`/${id}`, { method: "DELETE" });
 
+// Action groupée sur les leçons du cours (relecture, approbation, publication).
+export type LessonsAction = "submit" | "approve" | "publish";
+export const lessonsAction = (id: string, action: LessonsAction) =>
+  courseFetch<{ done: number; refused: { title: string; error: string }[] }>(`/${id}/lessons`, {
+    method: "POST",
+    body: JSON.stringify({ action }),
+  });
+
 // Cours rédigés dans le dépôt (content/cours), à importer en brouillon.
 export type CourseBundle = { slug: string; title: string; lessons: number; imported: boolean };
 const importFetch = async <T,>(options: RequestInit = {}): Promise<T> => {

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { requirePermission, requireEditorial } from "@/lib/auth";
 import { getArticle, saveArticle, deleteArticle } from "@/lib/articles";
+import { courseContaining } from "@/lib/courses";
 
 export const dynamic = "force-dynamic";
 
@@ -15,7 +16,8 @@ export async function GET(req: Request, { params }: Ctx) {
   const canReview = auth.isRoot || auth.permissions?.some(p => p === "review" || p === "publish");
   if (!canReview && a.author.userId !== auth.id)
     return NextResponse.json({ error: "Accès refusé." }, { status: 403 });
-  return NextResponse.json({ article: a });
+  const course = courseContaining(id);
+  return NextResponse.json({ article: a, course: course ? { id: course.id, title: course.title } : null });
 }
 
 export async function PUT(req: Request, { params }: Ctx) {

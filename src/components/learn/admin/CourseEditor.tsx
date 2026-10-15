@@ -6,7 +6,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useAuth } from "@/src/hooks/useAuth";
 import { can } from "@/src/lib/api";
 import { createArticle } from "@/src/lib/articlesApi";
-import { deleteCourse, fetchCourses, saveCourse } from "@/src/lib/coursesApi";
+import { deleteCourse, fetchCourses, lessonsAction, saveCourse, type LessonsAction } from "@/src/lib/coursesApi";
 import { COURSE_LEVELS, type CourseLevel } from "@/src/data/courseLevels";
 import type { ArticleSummary } from "@/lib/articles";
 import type { Course, CourseSection } from "@/lib/courses";
@@ -39,9 +39,9 @@ export default function CourseEditor({ id }: { id: string }) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
+  const [notice, setNotice] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (!allowed) return;
+  const load = () =>
     fetchCourses()
       .then((d) => {
         setCourse(d.courses.find((c) => c.id === id) ?? null);
@@ -49,6 +49,9 @@ export default function CourseEditor({ id }: { id: string }) {
         setArticles(d.articles);
       })
       .catch((e) => setError(e.message));
+  useEffect(() => {
+    if (allowed) load();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allowed, id]);
 
   const byId = useMemo(() => new Map(articles.map((a) => [a.id, a])), [articles]);
@@ -104,6 +107,28 @@ export default function CourseEditor({ id }: { id: string }) {
     }
   };
 
+  const lessons = course.sections.flatMap((s) => s.lessons).map((l) => byId.get(l)).filter((a): a is ArticleSummary => !!a);
+  const count = (pred: (a: ArticleSummary) => boolean) => lessons.filter(pred).length;
+  const published = count((a) => a.hasPublishedVersion);
+  const steps: { action: LessonsAction; label: string; n: number }[] = [
+    { action: "submit", label: "Envoyer les brouillons en relecture", n: count((a) => a.status === "draft") },
+    { action: "approve", label: "Approuver les leçons en relecture", n: count((a) => a.status === "in_review") },
+    { action: "publish", label: "Publier les leçons approuvées", n: count((a) => a.status === "approved") },
+  ];
+
+  const runStep = async (action: LessonsAction) => {
+    setError(null);
+    setNotice(null);
+    try {
+      const r = await lessonsAction(course.id, action);
+      setNotice(`${r.done} leçon${r.done > 1 ? "s" : ""} traitée${r.done > 1 ? "s" : ""}.`);
+      if (r.refused.length) setError(`Refusé : ${r.refused[0].error}${r.refused.length > 1 ? ` (et ${r.refused.length - 1} autre(s))` : ""}`);
+      await load();
+    } catch (e) {
+      setError((e as Error).message);
+    }
+  };
+
   const remove = async () => {
     if (!window.confirm(`Supprimer le cours « ${course.title} » ? Les leçons restent des articles.`)) return;
     await deleteCourse(course.id);
@@ -137,8 +162,27 @@ export default function CourseEditor({ id }: { id: string }) {
             <Link href={`/apprendre/${course.slug}`} className="link link-primary text-sm">Voir le cours</Link>
           )}
         </div>
-        <p className="text-xs text-base-content/60">Seules les leçons publiées apparaissent aux lecteurs, dans l’ordre ci-dessous.</p>
       </div>
+
+      <section className={`mt-6 rounded-box border p-4 ${published === 0 ? "border-warning/50 bg-warning/10" : "border-base-300 bg-base-100"}`}>
+        <p className="text-sm font-medium">
+          {published} leçon{published > 1 ? "s" : ""} publiée{published > 1 ? "s" : ""} sur {lessons.length}
+        </p>
+        <p className="mt-0.5 text-xs text-base-content/65">
+          {published === 0
+            ? "Le cours reste invisible tant qu’aucune leçon n’est publiée, même s’il est marqué Publié."
+            : "Seules les leçons publiées apparaissent aux lecteurs, dans l’ordre ci-dessous."}
+        </p>
+        <div className="mt-3 flex flex-wrap gap-2">
+          {steps.map((s) => (
+            <button key={s.action} type="button" disabled={!s.n || dirty} onClick={() => runStep(s.action)} className="btn btn-outline btn-sm border-base-300">
+              {s.label} ({s.n})
+            </button>
+          ))}
+        </div>
+        {dirty && <p className="mt-2 text-xs text-base-content/60">Enregistrez le cours avant d’agir sur les leçons.</p>}
+        {notice && <p className="mt-2 text-sm text-success">{notice}</p>}
+      </section>
 
       <div className="mt-8 grid gap-5">
         {course.sections.map((section, i) => (
