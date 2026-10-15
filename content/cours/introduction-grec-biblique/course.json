@@ -1,0 +1,11 @@
+{
+  "title": "Introduction au grec biblique",
+  "summary": "De l'alphabet à la lecture suivie du Nouveau Testament : prononciation, déclinaisons, pronoms, adjectifs et premiers temps du verbe, avec des exercices tirés de la Bible.",
+  "level": "debutant",
+  "parts": [
+    { "title": "Lire le grec", "lessons": ["01-histoire.md", "02-outils.md", "03-alphabet.md", "04-prononciation.md", "05-esprits-accents.md"] },
+    { "title": "Les mots et leurs formes", "lessons": ["06-lemme.md", "07-cas.md", "08-article.md", "09-noms.md", "10-pronoms.md", "11-adjectifs.md", "12-prepositions.md"] },
+    { "title": "Le verbe", "lessons": ["13-systeme-verbal.md", "14-present.md", "15-contractes.md", "16-imparfait.md", "17-aoriste.md", "18-participe.md"] },
+    { "title": "Lire des textes", "lessons": ["19-lecture.md"] }
+  ]
+}

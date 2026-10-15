@@ -308,3 +308,19 @@ test("un article rangé dans un cours devient une leçon et sort de la liste des
   assert.equal(store.getPublishedArticle(a.id).id, a.id);
   assert.equal(courses.courseOfLesson(a.id).id, course.id);
 });
+
+test("un cours rédigé dans le dépôt s'importe en brouillon, une seule fois", () => {
+  const importer = load("../lib/courseImport.ts");
+  const bundle = importer.listBundles().find((b) => b.slug === "introduction-grec-biblique");
+  assert.ok(bundle && !bundle.imported);
+  const result = importer.importBundle("introduction-grec-biblique", { id: 9, name: "Biblion", permissions: ["articles", "courses"] });
+  assert.equal(result.ok, true, result.error);
+  const lessons = result.course.sections.flatMap((s) => s.lessons);
+  assert.equal(lessons.length, bundle.lessons);
+  const first = store.getArticle(lessons[0]);
+  assert.equal(first.status, "draft");
+  assert.equal(first.author.name, "Biblion");
+  assert.ok(first.content.length > 3);
+  assert.equal(result.course.status, "draft");
+  assert.equal(importer.importBundle("introduction-grec-biblique", { id: 9, name: "Biblion" }).status, 409);
+});

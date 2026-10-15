@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/src/hooks/useAuth";
 import { can } from "@/src/lib/api";
-import { createCourse, fetchCourses } from "@/src/lib/coursesApi";
+import { createCourse, fetchBundles, fetchCourses, importBundle, type CourseBundle } from "@/src/lib/coursesApi";
 import { COURSE_LEVELS } from "@/src/data/courseLevels";
 import type { Course } from "@/lib/courses";
 
@@ -16,10 +16,26 @@ export default function CoursesAdminView() {
   const [courses, setCourses] = useState<Course[] | null>(null);
   const [title, setTitle] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [bundles, setBundles] = useState<CourseBundle[]>([]);
+  const [importing, setImporting] = useState<string | null>(null);
 
   useEffect(() => {
-    if (allowed) fetchCourses().then((d) => setCourses(d.courses)).catch((e) => setError(e.message));
+    if (!allowed) return;
+    fetchCourses().then((d) => setCourses(d.courses)).catch((e) => setError(e.message));
+    fetchBundles().then(setBundles).catch(() => {});
   }, [allowed]);
+
+  const runImport = async (slug: string) => {
+    setImporting(slug);
+    setError(null);
+    try {
+      const c = await importBundle(slug);
+      router.push(`/admin/cours/${c.id}`);
+    } catch (err) {
+      setError((err as Error).message);
+      setImporting(null);
+    }
+  };
 
   if (!ready) return null;
   if (!allowed)
@@ -54,6 +70,26 @@ export default function CoursesAdminView() {
         <button type="submit" className="btn btn-primary">Créer</button>
       </form>
       {error && <p className="mt-3 rounded-lg bg-error/10 px-3 py-2 text-sm text-error">{error}</p>}
+
+      {bundles.some((b) => !b.imported) && (
+        <section className="mt-6 rounded-box border border-primary/30 bg-primary/5 p-4">
+          <h2 className="font-semibold">Cours prêts à importer</h2>
+          <p className="mt-1 text-sm text-base-content/70">Le cours et ses leçons sont créés en brouillon, à votre nom, puis passent par la relecture.</p>
+          <ul className="mt-3 grid gap-2">
+            {bundles.filter((b) => !b.imported).map((b) => (
+              <li key={b.slug} className="flex items-center justify-between gap-3 rounded-lg bg-base-100 px-3 py-2">
+                <span className="text-sm">
+                  <span className="font-medium">{b.title}</span>
+                  <span className="text-base-content/60"> · {b.lessons} leçons</span>
+                </span>
+                <button type="button" onClick={() => runImport(b.slug)} disabled={importing !== null} className="btn btn-primary btn-sm">
+                  {importing === b.slug ? "Import…" : "Importer"}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       <ul className="mt-6 divide-y divide-base-300 overflow-hidden rounded-box border border-base-300">
         {courses?.map((c) => {
