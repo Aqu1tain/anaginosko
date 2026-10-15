@@ -6,6 +6,7 @@ import {
   isArticleCategory,
   isAdminOnlyCategory,
 } from "../src/data/articleCategories";
+import { lessonIds } from "./courses";
 
 // Stockage éditorial des articles, côté Next (pas d'API AdonisJS : la préprod tourne
 // sur l'image API de prod). Un fichier JSON par article dans ARTICLES_DIR, écritures
@@ -241,9 +242,17 @@ export function listArticles(viewer: {
     .map(toSummary);
 }
 
+// Tous les articles, pour ranger des leçons dans les cours (permission « courses »).
+export const listAllSummaries = (): ArticleSummary[] =>
+  readAll()
+    .sort((a, b) => (a.updatedAt < b.updatedAt ? 1 : -1))
+    .map(toSummary);
+
+// Articles publics : les leçons rangées dans un cours vivent sous /apprendre.
 export function listPublished(): ArticleSummary[] {
+  const lessons = lessonIds();
   return readAll()
-    .filter((a) => a.publishedVersion)
+    .filter((a) => a.publishedVersion && !lessons.has(a.id))
     .map(publicVersion)
     .sort((a, b) => ((a.publishedAt ?? "") < (b.publishedAt ?? "") ? 1 : -1))
     .map(toSummary);
@@ -254,6 +263,12 @@ export function getPublishedBySlug(slug: string): Article | null {
     (a) => a.publishedVersion && a.publishedVersion.slug === slug,
   );
   return a ? publicVersion(a) : null;
+}
+
+// Version publiée d'un article par id (leçons d'un cours).
+export function getPublishedArticle(id: string): Article | null {
+  const a = getArticle(id);
+  return a?.publishedVersion ? publicVersion(a) : null;
 }
 
 function publicVersion(a: Article): Article {

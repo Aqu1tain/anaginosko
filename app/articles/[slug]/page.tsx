@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { getPublishedBySlug } from "@/lib/articles";
+import { lessonHrefOf } from "@/lib/learn";
 import { publicAuthor } from "@/lib/profiles";
 import { CATEGORY_LABEL } from "@/src/components/articles/labels";
 import ArticleRenderer from "@/src/components/articles/ArticleRenderer";
@@ -35,6 +36,9 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
   const { slug } = await params;
   const a = getPublishedBySlug(slug);
   if (!a) notFound();
+  // Article rangé depuis dans un cours : il vit désormais sous /apprendre.
+  const lesson = lessonHrefOf(a.id);
+  if (lesson) permanentRedirect(lesson);
 
   // Règle : la signature vient du profil de l'auteur (nom d'affichage + photo).
   const author = publicAuthor(a.author.userId, a.author.name);

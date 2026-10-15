@@ -5,6 +5,7 @@ import { texts } from "@/src/data/texts";
 import { listPublished } from "@/lib/articles";
 import { listProfiles } from "@/lib/profiles";
 import { RITES } from "@/lib/lectionnaire";
+import { lessonPath, publishedCourses } from "@/lib/learn";
 
 const BASE = "https://anaginosko.fr";
 
@@ -47,6 +48,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   return [
     url("/"),
     url("/a-propos"),
+    url("/apprendre"),
+    ...publishedCourses().flatMap((c) => [
+      url(`/apprendre/${c.slug}`),
+      ...c.parts.flatMap((p) => p.lessons.map((l) => url(lessonPath(c, l)))),
+    ]),
     url("/lectures"),
     ...RITES.map((r) => url(`/lectures/${r.slug}`)),
     url("/alphabet"),

@@ -32,7 +32,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
     const result = applyTransition(id, action, auth, body?.note, { rev: body?.rev, reviewer, activeReviewerIds: reviewers.map(r => r.id) });
     if (!result.ok) return NextResponse.json({ error: result.error }, { status: result.status });
     if (action === "submit" && result.article.reviewRequest?.reviewerId) await sendNotification(header, result.article);
-    revalidatePath("/articles"); revalidatePath(`/articles/${result.article.slug}`); revalidatePath("/");
+    revalidatePath("/articles"); revalidatePath(`/articles/${result.article.slug}`); revalidatePath("/"); revalidatePath("/apprendre", "layout");
     return NextResponse.json({ article: getArticle(id) });
   } catch (e) { return NextResponse.json({ error: (e as Error).message }, { status: 503 }); }
 }

@@ -31,10 +31,13 @@ const ICONS = {
   ),
 };
 
+// « Apprendre le grec » : les cours, et les outils libres (alphabet, prononciation).
+const LEARN = ["/apprendre", "/alphabet", "/prononciation"];
+
 export type NavTab = { href: string; label: string; icon: React.ReactNode; active: boolean };
 
 // Onglets de navigation, partagés par la barre du bas (mobile) et le rail
-// latéral (desktop). Des destinations stables (Accueil / Alphabet / Concordance) :
+// latéral (desktop). Des destinations stables (Accueil / Apprendre / Concordance) :
 // « Accueil » ramène toujours à la racine ; la reprise de lecture vit sur la
 // pastille « Reprendre » de l'accueil, pas ici (un onglet = une destination).
 export function useNavTabs(): NavTab[] {
@@ -46,7 +49,7 @@ export function useNavTabs(): NavTab[] {
 
   return [
     { href: "/", label: "Accueil", icon: ICONS.home, active: reading },
-    { href: "/alphabet", label: "Alphabet", icon: ICONS.alphabet, active: pathname.startsWith("/alphabet") },
+    { href: "/apprendre", label: "Apprendre", icon: ICONS.alphabet, active: LEARN.some((p) => pathname.startsWith(p)) },
     { href: "/concordance", label: "Concordance", icon: ICONS.concordance, active: isConcordance },
     { href: "/lectures", label: "Lectures", icon: ICONS.lectures, active: pathname.startsWith("/lectures") },
     { href: "/articles", label: "Articles", icon: ICONS.articles, active: pathname.startsWith("/articles") },
