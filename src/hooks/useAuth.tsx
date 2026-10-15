@@ -1,5 +1,5 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { fetchMe, getToken, login as apiLogin, logout as apiLogout, type AuthUser } from "../lib/api";
+import { fetchMe, getToken, logout as apiLogout, syncSessionCookie, type AuthUser } from "../lib/api";
 import { fetchMyProfile } from "../lib/profileApi";
 
 type AuthState = {
@@ -7,7 +7,8 @@ type AuthState = {
   ready: boolean;
   // Photo de profil du compte connecté (règle : le profil signe l'identité).
   photo: string | null;
-  login: (email: string, password: string) => Promise<void>;
+  // Ouvre la session après une connexion réussie (code e-mail ou Google).
+  signIn: (user: AuthUser) => void;
   logout: () => Promise<void>;
   // Rafraîchit la photo après édition du profil (mise à jour immédiate de l'en-tête).
   refreshPhoto: () => void;
@@ -17,7 +18,7 @@ const AuthContext = createContext<AuthState>({
   user: null,
   ready: false,
   photo: null,
-  login: async () => {},
+  signIn: () => {},
   logout: async () => {},
   refreshPhoto: () => {},
 });
@@ -28,7 +29,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [photo, setPhoto] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!getToken()) {
+    const token = getToken();
+    syncSessionCookie(token);
+    if (!token) {
       setReady(true);
       return;
     }
@@ -54,9 +57,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     refreshPhoto();
   }, [user, refreshPhoto]);
 
-  const login = useCallback(async (email: string, password: string) => {
-    setUser(await apiLogin(email, password));
-  }, []);
+  const signIn = useCallback((u: AuthUser) => setUser(u), []);
 
   const logout = useCallback(async () => {
     await apiLogout();
@@ -64,8 +65,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const value = useMemo(
-    () => ({ user, ready, photo, login, logout, refreshPhoto }),
-    [user, ready, photo, login, logout, refreshPhoto],
+    () => ({ user, ready, photo, signIn, logout, refreshPhoto }),
+    [user, ready, photo, signIn, logout, refreshPhoto],
   );
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

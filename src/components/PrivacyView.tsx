@@ -17,6 +17,26 @@ export default function PrivacyView() {
         </section>
 
         <section className="rounded-box border border-base-300 bg-base-100 px-4 py-3">
+          <h2 className="font-semibold text-base-content">Compte et cours</h2>
+          <p className="mt-1">
+            Créer un compte permet de suivre les cours et de garder sa progression. Nous traitons
+            votre adresse e-mail, votre nom affiché, la liste des leçons terminées et la date de
+            création du compte ; avec Google, nous recevons en plus un identifiant de compte Google,
+            sans accès à vos autres données. Aucun mot de passe n’est stocké : la connexion passe
+            par un code à usage unique, conservé sous forme chiffrée 10 minutes au plus, ou par
+            Google. La base légale est l’exécution du service que vous demandez.
+          </p>
+          <p className="mt-2">
+            Le code de connexion est envoyé par{" "}
+            <a className="link" href="https://resend.com/legal/dpa" target="_blank" rel="noreferrer">Resend</a>{" "}
+            (voir ci-dessous). La connexion avec Google est soumise aux règles de confidentialité de
+            Google. Votre session est gardée dans votre navigateur (stockage local et cookie
+            fonctionnel, 30 jours). Vous pouvez supprimer votre compte et votre progression à tout
+            moment depuis « Mon compte » ; les données sont alors effacées immédiatement.
+          </p>
+        </section>
+
+        <section className="rounded-box border border-base-300 bg-base-100 px-4 py-3">
           <h2 className="font-semibold text-base-content">Signalements</h2>
           <p className="mt-1">
             Quand vous signalez une erreur ou demandez une note, nous traitons votre adresse e-mail,
@@ -60,7 +80,7 @@ export default function PrivacyView() {
           <h2 className="font-semibold text-base-content">Stockage local et journaux techniques</h2>
           <p className="mt-1">
             Le navigateur mémorise localement vos préférences d’affichage, notamment le thème et les
-            réglages de lecture. Ce stockage est fonctionnel et n’est pas transmis à Anaginosko.
+            réglages de lecture, et, si vous êtes connecté, votre session. Ce stockage est fonctionnel ; seule la session est transmise, pour vous reconnaître.
             L’hébergeur et le serveur web peuvent par ailleurs traiter temporairement l’adresse IP,
             la date, la ressource demandée et des informations techniques dans leurs journaux, pour
             la sécurité, le diagnostic et le bon fonctionnement du service. Les journaux du serveur

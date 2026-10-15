@@ -6,6 +6,7 @@ import { useAuth } from "../hooks/useAuth";
 import {
   can,
   fetchAdminStats,
+  isLearner,
   fetchMyAnnotations,
   deleteAnnotation,
   fetchAdminReports,
@@ -149,6 +150,7 @@ export default function AdminView() {
   const canAnnotate = can(user, "annotations");
   const canArticles = can(user, "articles") || can(user, "review") || can(user, "publish");
   const canReview = can(user, "review");
+  const canCourses = can(user, "courses");
   const canArbitrage = can(user, "arbitrage");
   const canReports = can(user, "reports");
   const canAccounts = can(user, "accounts");
@@ -221,13 +223,20 @@ export default function AdminView() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
-  if (!ready) return null;
+  // Un apprenant n'a pas d'espace d'équipe : son compte vit sous /mon-compte.
+  const learner = isLearner(user);
+  useEffect(() => {
+    if (learner) router.replace("/mon-compte");
+  }, [learner, router]);
+
+  if (!ready || learner) return null;
   if (user && !canDashboard) return <div className="mx-auto max-w-4xl space-y-5 py-8">
     <h1 className="text-3xl font-bold">Mon espace</h1>
     <p className="text-base-content/65">{user.displayName} · {user.title}</p>
     <div className="grid gap-3 sm:grid-cols-2">
       <NavCard href="/mon-profil" title="Mon profil" desc="Identité et compte" avatar={<Avatar name={user.displayName} photo={photo} size={40} />} />
       {canArticles && <NavCard href="/admin/articles" title="Articles" desc="Mes articles et demandes de relecture" icon={ICON.articles} />}
+      {canCourses && <NavCard href="/admin/cours" title="Cours" desc="Apprendre le grec : parties et leçons" icon={ICON.books} />}
       {canAccounts && <NavCard href="/admin/comptes" title="Comptes et accès" desc="Rôles, permissions et invitations" icon={ICON.accounts} />}
       {canArbitrage && <NavCard href="/admin/arbitrage" title="Atelier de traduction" desc="Septante et Nouveau Testament" icon={ICON.arbitrage} />}
     </div>
@@ -286,6 +295,7 @@ export default function AdminView() {
       <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         <NavCard href="/mon-profil" title="Mon profil" desc="Photo, bio, liens publics" avatar={<Avatar name={user?.displayName ?? ""} photo={photo} size={40} />} />
         {canArticles && <NavCard href="/admin/articles" title="Articles" desc="Rédiger, relire, publier" icon={ICON.articles} />}
+        {canCourses && <NavCard href="/admin/cours" title="Cours" desc="Apprendre le grec : parties et leçons" icon={ICON.books} />}
         {canReview && <NavCard href="/admin/livres" title="Introductions de livres" desc="Présentation éditoriale par livre" icon={ICON.books} />}
         {canArbitrage && <NavCard href="/admin/arbitrage" title="Atelier de traduction" desc="Septante et Nouveau Testament" icon={ICON.arbitrage} />}
         {canAccounts && <NavCard href="/admin/comptes" title="Comptes" desc="Contributeurs, titres, permissions" icon={ICON.accounts} />}

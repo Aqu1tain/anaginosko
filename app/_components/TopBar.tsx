@@ -7,6 +7,7 @@ import { corpusByDataPrefix } from "../../src/data/corpus";
 import { textById } from "../../src/data/texts";
 import { useAuth } from "../../src/hooks/useAuth";
 import Avatar from "../../src/components/profile/Avatar";
+import { isLearner } from "../../src/lib/api";
 import PreprodBadge, { IS_PREPROD } from "./PreprodBadge";
 
 function ThemeToggle({ dark, onToggle }: { dark: boolean; onToggle: () => void }) {
@@ -142,8 +143,8 @@ export default function TopBar({ dark, onToggleTheme }: { dark: boolean; onToggl
             <span className="hidden font-semibold sm:inline">Soutenir</span>
           </a>
           <Link
-            href={user ? "/admin" : "/login"}
-            aria-label={user ? "Tableau de bord" : "Espace contributeurs"}
+            href={!user ? "/login" : isLearner(user) ? "/mon-compte" : "/admin"}
+            aria-label={!user ? "Se connecter" : isLearner(user) ? "Mon compte" : "Tableau de bord"}
             className="btn btn-ghost btn-circle"
           >
             {user ? (

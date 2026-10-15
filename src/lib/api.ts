@@ -45,10 +45,21 @@ export const getToken = (): string | null => {
   }
 };
 
+// Copie du jeton en cookie : les pages serveur (leçons réservées aux comptes) le
+// lisent pour afficher le contenu. Même exposition que le localStorage.
+export const SESSION_COOKIE = "anaginosko_session";
+export const syncSessionCookie = (t: string | null) => {
+  const secure = location.protocol === "https:" ? "; Secure" : "";
+  document.cookie = t
+    ? `${SESSION_COOKIE}=${encodeURIComponent(t)}; Path=/; Max-Age=${30 * 24 * 3600}; SameSite=Lax${secure}`
+    : `${SESSION_COOKIE}=; Path=/; Max-Age=0; SameSite=Lax${secure}`;
+};
+
 const setToken = (t: string | null) => {
   try {
     if (t) localStorage.setItem(TOKEN_KEY, t);
     else localStorage.removeItem(TOKEN_KEY);
+    syncSessionCookie(t);
   } catch {
     /* ignore */
   }
@@ -78,14 +89,27 @@ async function apiFetch<T>(path: string, options: RequestInit = {}): Promise<T> 
   return res.json();
 }
 
-export async function login(email: string, password: string): Promise<AuthUser> {
-  const data = await apiFetch<{ token: string; user: AuthUser }>("/login", {
-    method: "POST",
-    body: JSON.stringify({ email, password }),
-  });
+// Connexion sans mot de passe : code temporaire envoyé par e-mail, ou Google.
+export const startEmailLogin = (email: string) =>
+  apiFetch<{ ok: boolean; message: string }>("/auth/email/start", { method: "POST", body: JSON.stringify({ email }) });
+
+type Session = { token: string; user: AuthUser; created: boolean };
+
+async function openSession(path: string, body: object): Promise<Session> {
+  const data = await apiFetch<Session>(path, { method: "POST", body: JSON.stringify(body) });
   setToken(data.token);
-  return data.user;
+  return data;
 }
+
+export const verifyEmailLogin = (email: string, code: string) => openSession("/auth/email/verify", { email, code });
+export const googleLogin = (credential: string) => openSession("/auth/google", { credential });
+
+export const fetchAuthProviders = () =>
+  apiFetch<{ googleClientId: string | null }>("/auth/providers").catch(() => ({ googleClientId: null }));
+
+// Apprenant : compte sans aucune permission (ni rôle, ni racine).
+export const isLearner = (user: AuthUser | null | undefined): boolean =>
+  !!user && !user.isRoot && user.permissions.length === 0;
 
 export async function logout(): Promise<void> {
   try {
@@ -98,15 +122,22 @@ export async function logout(): Promise<void> {
 
 export const fetchMe = () => apiFetch<{ user: AuthUser }>("/me").then((d) => d.user);
 
-// Mise à jour du compte (e-mail de connexion, nom de compte). Nécessite une API
-// récente : sur une API antérieure, la route n'existe pas (404) et l'appelant doit
-// dégrader proprement.
-export const updateMe = (patch: { email?: string; displayName?: string }) =>
+// Nom affiché du compte. L'e-mail ne se change pas ici : il sert à se connecter.
+export const updateMe = (patch: { displayName: string }) =>
   apiFetch<{ user: AuthUser }>("/me", { method: "PUT", body: JSON.stringify(patch) }).then((d) => d.user);
 
-// Changement de mot de passe par le titulaire (vérifie le mot de passe actuel).
-export const changePassword = (currentPassword: string, newPassword: string) =>
-  apiFetch<void>("/me/password", { method: "PUT", body: JSON.stringify({ currentPassword, newPassword }) });
+// Suppression de son propre compte d'apprenant (refusée aux comptes de l'équipe).
+export async function deleteMe(): Promise<void> {
+  await apiFetch<void>("/me", { method: "DELETE" });
+  setToken(null);
+}
+
+// Progression dans les cours.
+export type LessonProgress = { courseId: string; lessonId: string; completedAt: string };
+export const fetchProgress = () =>
+  apiFetch<{ progress: LessonProgress[] }>("/learning/progress").then((d) => d.progress);
+export const setLessonDone = (courseId: string, lessonId: string, done: boolean) =>
+  apiFetch<{ ok: boolean }>("/learning/progress", { method: "PUT", body: JSON.stringify({ courseId, lessonId, done }) });
 
 // --- Gestion des comptes (admin) ---
 export type Contributor = {
@@ -155,10 +186,10 @@ export const fetchInvitation = (token: string) =>
     `/invitations/${encodeURIComponent(token)}`,
   ).then((d) => d.invitation);
 
-export async function acceptInvitation(token: string, password: string): Promise<AuthUser> {
+export async function acceptInvitation(token: string): Promise<AuthUser> {
   const data = await apiFetch<{ token: string; user: AuthUser }>(
     `/invitations/${encodeURIComponent(token)}/accept`,
-    { method: "POST", body: JSON.stringify({ password }) },
+    { method: "POST", body: JSON.stringify({}) },
   );
   setToken(data.token);
   return data.user;
@@ -296,7 +327,7 @@ export type ReportStatus = "pending" | "in_progress" | "resolved" | "rejected";
 
 export type ReportInput = {
   category: ReportCategory;
-  email: string;
+  email?: string;
   message: string;
   ref?: string | null;
   verse?: number | null;

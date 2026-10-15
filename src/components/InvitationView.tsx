@@ -9,8 +9,6 @@ type Invite = { email: string; displayName: string; title: string };
 export default function InvitationView({ token }: { token: string }) {
   const [invite, setInvite] = useState<Invite | null>(null);
   const [state, setState] = useState<"loading" | "ready" | "invalid">("loading");
-  const [password, setPassword] = useState("");
-  const [confirm, setConfirm] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
@@ -41,11 +39,9 @@ export default function InvitationView({ token }: { token: string }) {
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-    if (password.length < 8) return setError("Le mot de passe doit faire au moins 8 caractères.");
-    if (password !== confirm) return setError("Les deux mots de passe ne correspondent pas.");
     setBusy(true);
     try {
-      await acceptInvitation(token, password);
+      await acceptInvitation(token);
       // Navigation complète : l'état d'authentification se réinitialise avec le
       // nouveau jeton (le contributeur arrive connecté sur son tableau de bord).
       window.location.href = "/admin";
@@ -60,31 +56,10 @@ export default function InvitationView({ token }: { token: string }) {
       <div className="rounded-3xl border border-base-300 bg-base-100 p-6 shadow-sm">
         <h1 className="text-center text-2xl font-bold">Bienvenue, {invite.displayName}</h1>
         <p className="mt-2 text-center text-sm text-base-content/70">
-          Vous rejoignez Anaginosko comme {invite.title}. Choisissez un mot de passe pour activer votre accès.
+          Vous rejoignez Anaginosko comme {invite.title}. Aucun mot de passe : vous vous connecterez
+          ensuite avec un code envoyé à {invite.email}, ou avec Google.
         </p>
         <form onSubmit={submit} className="mt-6 grid gap-3">
-          <label className="block">
-            <span className="text-sm font-medium">Mot de passe</span>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              autoComplete="new-password"
-              className="input input-bordered mt-1 w-full"
-              required
-            />
-          </label>
-          <label className="block">
-            <span className="text-sm font-medium">Confirmer le mot de passe</span>
-            <input
-              type="password"
-              value={confirm}
-              onChange={(e) => setConfirm(e.target.value)}
-              autoComplete="new-password"
-              className="input input-bordered mt-1 w-full"
-              required
-            />
-          </label>
           {error && <p className="rounded-lg bg-error/10 px-3 py-2 text-sm text-error">{error}</p>}
           <button type="submit" disabled={busy} className="btn btn-primary mt-1">
             {busy ? "Activation…" : "Activer mon compte"}

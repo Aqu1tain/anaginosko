@@ -7,7 +7,6 @@ import { fetchMe, updateMe } from "@/src/lib/api";
 import { fetchMyProfile, saveMyProfile, uploadProfilePhoto } from "@/src/lib/profileApi";
 import { compressImage } from "@/src/components/articles/compressImage";
 import Avatar from "./Avatar";
-import PasswordChange from "./PasswordChange";
 import type { Profile, ProfileLink } from "@/lib/profiles";
 
 function Section({ title, desc, children }: { title: string; desc?: string; children: React.ReactNode }) {
@@ -34,7 +33,6 @@ export default function ProfileEditor() {
   const { user, ready, refreshPhoto } = useAuth();
   const [profile, setProfile] = useState<Profile | null>(null);
   const [email, setEmail] = useState("");
-  const [emailSupported, setEmailSupported] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -43,11 +41,8 @@ export default function ProfileEditor() {
     if (!user) return;
     fetchMyProfile().then(setProfile).catch((e) => setError(e.message));
     fetchMe()
-      .then((me) => {
-        if (me.email) setEmail(me.email);
-        else setEmailSupported(false);
-      })
-      .catch(() => setEmailSupported(false));
+      .then((me) => setEmail(me.email ?? ""))
+      .catch(() => {});
   }, [user]);
 
   if (!ready) return null;
@@ -90,16 +85,8 @@ export default function ProfileEditor() {
       });
       setProfile(updated);
       // Aligne le nom de compte (annotations, tableau de bord) sur le nom
-      // d'affichage : règle unique, un seul nom partout. Best-effort : une API
-      // antérieure ne connaît pas encore PUT /me.
-      if (emailSupported) {
-        const patch: { displayName: string; email?: string } = { displayName: updated.displayName };
-        if (email.trim()) patch.email = email.trim();
-        await updateMe(patch).catch((e) => {
-          if ((e as Error).message.includes("404")) setEmailSupported(false);
-          else throw e;
-        });
-      }
+      // d'affichage : règle unique, un seul nom partout.
+      await updateMe({ displayName: updated.displayName });
       setSaved(true);
     } catch (e) {
       setError((e as Error).message);
@@ -164,22 +151,10 @@ export default function ProfileEditor() {
 
         <Section title="Compte" desc="L'adresse e-mail sert uniquement à la connexion, jamais affichée.">
           <Field label="Adresse e-mail">
-            {emailSupported ? (
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="input input-bordered w-full"
-                placeholder="vous@exemple.fr"
-              />
-            ) : (
-              <p className="rounded-lg bg-base-200/70 px-3 py-2 text-sm text-base-content/60">
-                La modification de l&apos;e-mail sera disponible après la prochaine mise à jour du serveur.
-              </p>
-            )}
-          </Field>
-          <Field label="Mot de passe">
-            <PasswordChange />
+            <p className="rounded-lg bg-base-200/70 px-3 py-2 text-sm">{email || "…"}</p>
+            <p className="mt-1 text-xs text-base-content/60">
+              Pas de mot de passe : vous vous connectez avec un code envoyé à cette adresse, ou avec Google.
+            </p>
           </Field>
         </Section>
 

@@ -61,3 +61,9 @@ export async function requireUser(authHeader: string | null): Promise<EditorAuth
   if (!user) return { ok: false };
   return { ok: true, id: user.id, permissions: user.permissions, isRoot: user.isRoot, name: user.name, credit: creditOf(user) };
 }
+
+// Membre de l'équipe (au moins une permission) : un apprenant n'a pas de page publique.
+export async function requireStaff(authHeader: string | null): Promise<EditorAuth> {
+  const auth = await requireUser(authHeader);
+  return { ...auth, ok: auth.ok && (!!auth.isRoot || !!auth.permissions?.length) };
+}

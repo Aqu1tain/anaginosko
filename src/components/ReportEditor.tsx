@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { createPortal } from "react-dom";
 import { createReport, type ReportCategory } from "../lib/api";
+import { useAuth } from "../hooks/useAuth";
 
 export type ReportTarget = {
   ref: string | null;
@@ -42,8 +43,10 @@ export default function ReportEditor({
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [done, setDone] = useState(false);
+  // Connecté : le compte sert d'adresse, le signalement est validé sans e-mail.
+  const { user } = useAuth();
 
-  const valid = message.trim().length > 0 && emailValid(email);
+  const valid = message.trim().length > 0 && (!!user || emailValid(email));
 
   const save = async () => {
     if (!valid) return;
@@ -52,7 +55,7 @@ export default function ReportEditor({
     try {
       await createReport({
         category,
-        email: email.trim(),
+        ...(user ? {} : { email: email.trim() }),
         message: message.trim(),
         ref: target.ref,
         verse: target.verse,
@@ -81,8 +84,9 @@ export default function ReportEditor({
           <div className="text-center">
             <h2 className="text-lg font-semibold">Merci !</h2>
             <p className="mt-2 text-sm text-base-content/80">
-              Un e-mail de confirmation vous a été envoyé. Cliquez sur le lien qu’il contient pour
-              valider votre signalement.
+              {user
+                ? "Votre signalement est enregistré. L’équipe vous répondra à l’adresse de votre compte si besoin."
+                : "Un e-mail de confirmation vous a été envoyé. Cliquez sur le lien qu’il contient pour valider votre signalement."}
             </p>
             <button onClick={onClose} className="btn btn-primary btn-sm mt-5">
               Fermer
@@ -133,6 +137,7 @@ export default function ReportEditor({
               />
             </label>
 
+            {!user && (
             <label className="mt-3 block">
               <span className="text-sm font-medium">
                 Votre e-mail <span className="text-error">*</span>
@@ -153,6 +158,7 @@ export default function ReportEditor({
                 </a>.
               </span>
             </label>
+            )}
 
             {/* Honeypot anti-robot : invisible, laissé vide par un humain. */}
             <input

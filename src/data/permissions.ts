@@ -11,6 +11,7 @@ export const PERMISSIONS = [
   "publish",
   "reports",
   "accounts",
+  "courses",
 ] as const;
 
 export type Permission = (typeof PERMISSIONS)[number];
@@ -25,6 +26,7 @@ export const PERMISSION_LABEL: Record<Permission, string> = {
   publish: "Articles — publication",
   reports: "Signalements",
   accounts: "Comptes",
+  courses: "Cours",
 };
 
 export const PERMISSION_HINT: Record<Permission, string> = {
@@ -37,6 +39,7 @@ export const PERMISSION_HINT: Record<Permission, string> = {
   publish: "Publier une version approuvée, dépublier et archiver",
   reports: "Traiter les signalements des lecteurs",
   accounts: "Gérer les comptes, titres et permissions",
+  courses: "Modifier les cours : structure, leçons, publication",
 };
 
 // Préréglages : remplissent un titre + un jeu de permissions, ajustables ensuite.
