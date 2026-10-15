@@ -15,13 +15,19 @@ export default function AccountView() {
   const router = useRouter();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [newsletter, setNewsletter] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!user) return;
     setName(user.displayName);
-    fetchMe().then((me) => setEmail(me.email ?? "")).catch(() => {});
+    fetchMe()
+      .then((me) => {
+        setEmail(me.email ?? "");
+        setNewsletter(!!me.newsletter);
+      })
+      .catch(() => {});
   }, [user]);
 
   if (!ready) return null;
@@ -39,6 +45,16 @@ export default function AccountView() {
     try {
       signIn(await updateMe({ displayName: name.trim() }));
       setMessage("Nom enregistré.");
+    } catch (err) {
+      setError((err as Error).message);
+    }
+  };
+
+  const toggleNewsletter = async (value: boolean) => {
+    setError(null);
+    try {
+      await updateMe({ newsletter: value });
+      setNewsletter(value);
     } catch (err) {
       setError((err as Error).message);
     }
@@ -80,6 +96,14 @@ export default function AccountView() {
         <button type="submit" className="btn btn-outline btn-sm mt-4 border-base-300">Enregistrer</button>
         {message && <span className="ml-3 text-sm text-success">{message}</span>}
       </form>
+
+      <section className="mt-4 rounded-box border border-base-300 bg-base-100 p-5">
+        <h2 className="font-semibold">E-mails</h2>
+        <label className="mt-3 flex cursor-pointer items-start gap-3 text-sm">
+          <input type="checkbox" className="toggle toggle-sm toggle-primary mt-0.5" checked={newsletter} onChange={(e) => toggleNewsletter(e.target.checked)} />
+          <span>Recevoir les nouveautés par e-mail</span>
+        </label>
+      </section>
 
       {error && <p className="mt-4 rounded-lg bg-error/10 px-3 py-2 text-sm text-error">{error}</p>}
 

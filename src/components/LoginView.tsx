@@ -20,6 +20,7 @@ export default function LoginView() {
   const [code, setCode] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [newsletter, setNewsletter] = useState(false);
 
   useEffect(() => {
     if (!user) return;
@@ -52,7 +53,7 @@ export default function LoginView() {
 
   const checkCode = (e: React.FormEvent) => {
     e.preventDefault();
-    run(async () => onSignedIn((await verifyEmailLogin(email.trim(), code.trim())).user));
+    run(async () => onSignedIn((await verifyEmailLogin(email.trim(), code.trim(), newsletter)).user));
   };
 
   return (
@@ -60,15 +61,7 @@ export default function LoginView() {
       <div className="rounded-3xl border border-base-300 bg-base-100 p-6 shadow-sm">
         <h1 className="text-center text-2xl font-bold">Se connecter ou créer un compte</h1>
 
-        <div className="mt-6">
-          <GoogleSignIn onSignedIn={onSignedIn} />
-        </div>
-
-        <div className="my-5 flex items-center gap-3 text-xs text-base-content/50">
-          <span className="h-px flex-1 bg-base-300" />
-          ou par e-mail
-          <span className="h-px flex-1 bg-base-300" />
-        </div>
+        <GoogleSignIn onSignedIn={onSignedIn} newsletter={newsletter} />
 
         {step === "email" ? (
           <form onSubmit={sendCode} className="grid gap-3">
@@ -117,10 +110,16 @@ export default function LoginView() {
           </form>
         )}
 
-        <p className="mt-5 text-center text-xs text-base-content/55">
-          En créant un compte, vous acceptez notre{" "}
-          <a href="/confidentialite" className="link">politique de confidentialité</a>.
-        </p>
+        <div className="mt-5 grid gap-2 border-t border-base-300 pt-4 text-xs text-base-content/65">
+          <label className="flex cursor-pointer items-start gap-2">
+            <input type="checkbox" className="checkbox checkbox-xs mt-0.5" checked={newsletter} onChange={(e) => setNewsletter(e.target.checked)} />
+            <span>Recevoir les nouveautés par e-mail</span>
+          </label>
+          <p>
+            En créant un compte, vous acceptez les <a href="/conditions" className="link">conditions d’utilisation</a> et la{" "}
+            <a href="/confidentialite" className="link">politique de confidentialité</a>.
+          </p>
+        </div>
       </div>
     </div>
   );

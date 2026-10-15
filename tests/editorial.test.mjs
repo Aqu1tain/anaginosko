@@ -20,11 +20,12 @@ function load(file) {
     },
   }).outputText;
   const loaded = { exports: {} };
+  // Imports relatifs résolus depuis le fichier chargé (lib/articles -> ./courses…).
   const localRequire = (name) =>
     name === "server-only"
       ? {}
-      : name.endsWith("articleCategories")
-        ? load("../src/data/articleCategories.ts")
+      : name.startsWith(".")
+        ? load(new URL(`${name}.ts`, new URL(file, import.meta.url)).href)
         : require(name);
   new Function("require", "module", "exports", code)(
     localRequire,
@@ -293,4 +294,17 @@ test("un échec de notification tardif ne remplace pas un envoi confirmé", () =
   store.recordReviewNotification(a.id, a.reviewRequest.id, true);
   store.recordReviewNotification(a.id, a.reviewRequest.id, false);
   assert.equal(store.getArticle(a.id).reviewRequest.notification, "sent");
+});
+
+test("un article rangé dans un cours devient une leçon et sort de la liste des articles", () => {
+  const courses = load("../lib/courses.ts");
+  let a = approved();
+  a = ok(transition(a, "publish", publisher, { activeReviewerIds: [2] }));
+  assert.ok(store.listPublished().some((p) => p.id === a.id));
+  const { course } = courses.createCourse("Grammaire");
+  const saved = courses.saveCourse(course.id, { rev: course.rev, status: "published", sections: [{ title: "Partie", lessons: [a.id] }] });
+  assert.equal(saved.ok, true, saved.error);
+  assert.equal(store.listPublished().some((p) => p.id === a.id), false);
+  assert.equal(store.getPublishedArticle(a.id).id, a.id);
+  assert.equal(courses.courseOfLesson(a.id).id, course.id);
 });

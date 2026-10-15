@@ -28,8 +28,19 @@ function loadScript(): Promise<void> {
 
 // Bouton « Continuer avec Google » (Google Identity Services). Absent tant que
 // l'API n'a pas d'identifiant client Google configuré.
-export default function GoogleSignIn({ onSignedIn }: { onSignedIn: (user: AuthUser, created: boolean) => void }) {
+export default function GoogleSignIn({
+  onSignedIn,
+  newsletter,
+}: {
+  onSignedIn: (user: AuthUser, created: boolean) => void;
+  newsletter: boolean;
+}) {
   const box = useRef<HTMLDivElement>(null);
+  // Lu au moment du rappel Google : la case peut changer après l'initialisation.
+  const optIn = useRef(newsletter);
+  useEffect(() => {
+    optIn.current = newsletter;
+  }, [newsletter]);
   const [clientId, setClientId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -46,7 +57,7 @@ export default function GoogleSignIn({ onSignedIn }: { onSignedIn: (user: AuthUs
         id.initialize({
           client_id: clientId,
           callback: ({ credential }) =>
-            googleLogin(credential)
+            googleLogin(credential, optIn.current)
               .then((s) => onSignedIn(s.user, s.created))
               .catch((e: Error) => setError(e.message)),
         });
@@ -55,11 +66,16 @@ export default function GoogleSignIn({ onSignedIn }: { onSignedIn: (user: AuthUs
       .catch((e: Error) => setError(e.message));
   }, [clientId, onSignedIn]);
 
-  if (!clientId) return null;
+  if (!clientId) return <div className="mt-6" />;
   return (
-    <div>
+    <div className="mt-6">
       <div ref={box} className="flex min-h-11 justify-center" />
       {error && <p className="mt-2 text-center text-sm text-error">{error}</p>}
+      <div className="my-5 flex items-center gap-3 text-xs text-base-content/50">
+        <span className="h-px flex-1 bg-base-300" />
+        ou par e-mail
+        <span className="h-px flex-1 bg-base-300" />
+      </div>
     </div>
   );
 }

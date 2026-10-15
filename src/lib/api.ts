@@ -15,6 +15,7 @@ export type AuthUser = {
   permissions: Permission[];
   isRoot: boolean;
   email?: string;
+  newsletter?: boolean;
 };
 
 // Un compte a-t-il une permission ? Les comptes racine les ont toutes.
@@ -101,8 +102,10 @@ async function openSession(path: string, body: object): Promise<Session> {
   return data;
 }
 
-export const verifyEmailLogin = (email: string, code: string) => openSession("/auth/email/verify", { email, code });
-export const googleLogin = (credential: string) => openSession("/auth/google", { credential });
+// `newsletter` : consentement donné à l'inscription, ignoré pour un compte existant.
+export const verifyEmailLogin = (email: string, code: string, newsletter = false) =>
+  openSession("/auth/email/verify", { email, code, newsletter });
+export const googleLogin = (credential: string, newsletter = false) => openSession("/auth/google", { credential, newsletter });
 
 export const fetchAuthProviders = () =>
   apiFetch<{ googleClientId: string | null }>("/auth/providers").catch(() => ({ googleClientId: null }));
@@ -123,7 +126,7 @@ export async function logout(): Promise<void> {
 export const fetchMe = () => apiFetch<{ user: AuthUser }>("/me").then((d) => d.user);
 
 // Nom affiché du compte. L'e-mail ne se change pas ici : il sert à se connecter.
-export const updateMe = (patch: { displayName: string }) =>
+export const updateMe = (patch: { displayName?: string; newsletter?: boolean }) =>
   apiFetch<{ user: AuthUser }>("/me", { method: "PUT", body: JSON.stringify(patch) }).then((d) => d.user);
 
 // Suppression de son propre compte d'apprenant (refusée aux comptes de l'équipe).
@@ -131,6 +134,10 @@ export async function deleteMe(): Promise<void> {
   await apiFetch<void>("/me", { method: "DELETE" });
   setToken(null);
 }
+
+// Désinscription en un clic depuis un e-mail (lien porteur d'un jeton).
+export const unsubscribe = (token: string) =>
+  apiFetch<{ ok: boolean }>("/newsletter/unsubscribe", { method: "POST", body: JSON.stringify({ token }) });
 
 // Progression dans les cours.
 export type LessonProgress = { courseId: string; lessonId: string; completedAt: string };
@@ -164,7 +171,7 @@ export type Invitation = {
 };
 
 export const fetchContributors = () =>
-  apiFetch<{ users: Contributor[]; invitations: Invitation[] }>("/admin/users");
+  apiFetch<{ users: Contributor[]; invitations: Invitation[]; learners?: number }>("/admin/users");
 
 export const inviteContributor = (input: { email: string; displayName: string; title: string; permissions: Permission[]; roleIds?: number[] }) =>
   apiFetch<{ invitation: Invitation }>("/admin/invitations", { method: "POST", body: JSON.stringify(input) }).then((d) => d.invitation);

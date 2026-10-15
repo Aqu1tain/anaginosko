@@ -363,6 +363,11 @@ export default function ComptesView() {
           Inviter l’équipe, attribuer des rôles et comprendre qui peut faire
           quoi.
         </p>
+        {data?.learners != null && (
+          <p className="mt-1 text-sm text-base-content/55">
+            {data.learners} compte{data.learners > 1 ? "s" : ""} apprenant{data.learners > 1 ? "s" : ""}
+          </p>
+        )}
       </div>
       <div className="flex gap-2">
         {[

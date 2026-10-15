@@ -59,6 +59,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     url("/prononciation"),
     url("/mentions"),
     url("/confidentialite"),
+    url("/conditions"),
     url("/articles"),
     ...corpusUrls,
     ...texts.map((t) => url(`/text/${t.id}`)),

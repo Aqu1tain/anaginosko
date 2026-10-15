@@ -3,6 +3,8 @@ import { revalidatePath } from "next/cache";
 import { requireEditorial } from "@/lib/auth";
 import { applyTransition, getArticle, recordReviewNotification, type TransitionAction } from "@/lib/articles";
 import { fetchReviewers, notifyReviewer } from "@/lib/reviewers";
+import { lessonIds } from "@/lib/courses";
+import { SITE } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 const ACTIONS: TransitionAction[] = ["submit", "request_changes", "approve", "publish", "revise", "unpublish", "archive", "restore"];
@@ -29,8 +31,10 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
     const reviewer = body?.reviewerId == null ? null : reviewers.find(r => r.id === body.reviewerId);
     if (action === "submit" && body?.reviewerId != null && !reviewer)
       return NextResponse.json({ error: "Relecteur inactif ou non autorisé." }, { status: 400 });
+    const firstPublication = action === "publish" && !a.publishedVersion;
     const result = applyTransition(id, action, auth, body?.note, { rev: body?.rev, reviewer, activeReviewerIds: reviewers.map(r => r.id) });
     if (!result.ok) return NextResponse.json({ error: result.error }, { status: result.status });
+    if (firstPublication && !lessonIds().has(id)) announceArticle(header, result.article);
     if (action === "submit" && result.article.reviewRequest?.reviewerId) await sendNotification(header, result.article);
     revalidatePath("/articles"); revalidatePath(`/articles/${result.article.slug}`); revalidatePath("/"); revalidatePath("/apprendre", "layout");
     return NextResponse.json({ article: getArticle(id) });
@@ -43,4 +47,16 @@ async function sendNotification(header: string | null, a: NonNullable<ReturnType
     await notifyReviewer(header, { articleId: a.id, requestId: request.id, reviewerId: request.reviewerId!, title: a.title, note: request.note });
     recordReviewNotification(a.id, request.id, true);
   } catch { recordReviewNotification(a.id, request.id, false); }
+}
+
+// Première publication d'un article : e-mail aux comptes abonnés, sans bloquer la
+// réponse (un échec d'envoi n'annule pas la publication).
+function announceArticle(header: string | null, a: NonNullable<ReturnType<typeof getArticle>>) {
+  const base = process.env.ARB_API_URL || "http://127.0.0.1:3333/api";
+  fetch(`${base}/admin/notify-article`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...(header ? { Authorization: header } : {}) },
+    body: JSON.stringify({ title: a.title, url: `${SITE}/articles/${a.slug}`, excerpt: a.excerpt }),
+    signal: AbortSignal.timeout(60000),
+  }).catch((e) => console.error(`[annonce] ${a.id}: ${(e as Error).message}`));
 }
