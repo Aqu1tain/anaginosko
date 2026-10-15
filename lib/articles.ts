@@ -513,6 +513,15 @@ export function deleteArticle(
   return { ok: true };
 }
 
+// Leçon jamais publiée d'un cours supprimé : elle n'a pas d'existence propre.
+export function discardLessonDraft(id: string): boolean {
+  const a = getArticle(id);
+  if (!a || a.status !== "draft" || a.publishedAt) return false;
+  fs.rmSync(articlePath(id), { force: true });
+  fs.rmSync(path.join(UPLOADS_SUB, id), { recursive: true, force: true });
+  return true;
+}
+
 // --- Machine à états de revue ---
 
 export type TransitionOptions = {

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { requirePermission } from "@/lib/auth";
+import { discardLessonDraft } from "@/lib/articles";
 import { deleteCourse, getCourse, saveCourse } from "@/lib/courses";
 
 export const dynamic = "force-dynamic";
@@ -36,7 +37,10 @@ export async function PUT(req: Request, { params }: Ctx) {
 export async function DELETE(req: Request, { params }: Ctx) {
   const auth = await requirePermission(req.headers.get("authorization"), "courses");
   if (!auth.ok) return denied();
-  if (!deleteCourse((await params).id)) return NextResponse.json({ error: "Cours introuvable." }, { status: 404 });
+  const course = getCourse((await params).id);
+  if (!course) return NextResponse.json({ error: "Cours introuvable." }, { status: 404 });
+  deleteCourse(course.id);
+  course.sections.flatMap((s) => s.lessons).forEach(discardLessonDraft);
   refresh();
   return new NextResponse(null, { status: 204 });
 }

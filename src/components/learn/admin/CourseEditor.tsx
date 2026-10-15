@@ -130,7 +130,7 @@ export default function CourseEditor({ id }: { id: string }) {
   };
 
   const remove = async () => {
-    if (!window.confirm(`Supprimer le cours « ${course.title} » ? Les leçons restent des articles.`)) return;
+    if (!window.confirm(`Supprimer le cours « ${course.title} » ? Les leçons jamais publiées sont supprimées, les autres deviennent des articles.`)) return;
     await deleteCourse(course.id);
     router.push("/admin/cours");
   };

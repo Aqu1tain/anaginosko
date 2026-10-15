@@ -323,4 +323,7 @@ test("un cours rédigé dans le dépôt s'importe en brouillon, une seule fois",
   assert.ok(first.content.length > 3);
   assert.equal(result.course.status, "draft");
   assert.equal(importer.importBundle("introduction-grec-biblique", { id: 9, name: "Biblion" }).status, 409);
+  assert.ok(first.content.some((b) => b.type === "exercise" && b.props.question));
+  assert.equal(store.discardLessonDraft(lessons[0]), true);
+  assert.equal(store.getArticle(lessons[0]), null);
 });
