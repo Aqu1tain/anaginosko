@@ -8,7 +8,6 @@ import { courseView, lessonPath } from "@/lib/learn";
 import { COURSE_LEVELS } from "@/lib/courses";
 import CourseProgress from "@/src/components/learn/CourseProgress";
 import LessonList from "@/src/components/learn/LessonList";
-import SignupCta from "@/src/components/learn/SignupCta";
 
 export const revalidate = 300;
 export const generateStaticParams = async () => [];
@@ -32,7 +31,7 @@ export default async function CoursePage({ params }: Params) {
   const lessons = parts.flatMap((p) => p.lessons).map((l) => ({ id: l.id, href: l.href }));
 
   return (
-    <div className="mx-auto max-w-3xl pb-10">
+    <div className="mx-auto max-w-5xl pb-10">
       <JsonLd
         data={{
           "@context": "https://schema.org",
@@ -47,19 +46,19 @@ export default async function CoursePage({ params }: Params) {
       />
       <BreadcrumbJsonLd items={[{ name: "Accueil", path: "/" }, { name: "Apprendre", path: "/apprendre" }, { name: c.title }]} />
       <Breadcrumb items={[{ label: "Accueil", href: "/", home: true }, { label: "Apprendre", href: "/apprendre" }, { label: c.title }]} />
-      <p className="text-xs font-semibold uppercase tracking-wide text-primary/80">
-        {COURSE_LEVELS[c.level]} · {c.lessonCount} leçon{c.lessonCount > 1 ? "s" : ""}
-      </p>
-      <h1 className="mt-1 text-3xl font-bold leading-tight sm:text-4xl">{c.title}</h1>
-      {c.summary && <p className="mt-3 text-lg leading-relaxed text-base-content/75">{c.summary}</p>}
-      <div className="mt-6">
-        <CourseProgress lessons={lessons} />
-      </div>
-      <div className="mt-10">
+      <header className="max-w-2xl">
+        <h1 className="text-4xl font-bold leading-tight">{c.title}</h1>
+        {c.summary && <p className="mt-3 text-lg leading-relaxed text-base-content/70">{c.summary}</p>}
+        <p className="mt-4 text-sm text-base-content/55">
+          {COURSE_LEVELS[c.level]} · {c.parts.length} partie{c.parts.length > 1 ? "s" : ""} · {c.lessonCount} leçon{c.lessonCount > 1 ? "s" : ""}
+        </p>
+      </header>
+
+      <div className="mt-10 grid gap-10 wide:grid-cols-[minmax(0,1fr)_17rem] wide:items-start">
         <LessonList parts={parts} />
-      </div>
-      <div className="mt-10">
-        <SignupCta next={`/apprendre/${c.slug}`} />
+        <aside className="order-first rounded-box border border-base-300 bg-base-100 p-5 wide:order-none wide:sticky wide:top-20">
+          <CourseProgress lessons={lessons} />
+        </aside>
       </div>
     </div>
   );

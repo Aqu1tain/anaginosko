@@ -59,7 +59,7 @@ export default async function LessonPage({ params }: Params) {
           { label: v.lesson.title },
         ]}
       />
-      <p className="text-xs font-semibold uppercase tracking-wide text-primary/80">
+      <p className="text-sm text-base-content/55">
         {v.part.title} · leçon {v.index + 1} sur {v.course.lessonCount}
       </p>
       <h1 className="mt-1 text-3xl font-bold leading-tight sm:text-4xl">{v.lesson.title}</h1>
