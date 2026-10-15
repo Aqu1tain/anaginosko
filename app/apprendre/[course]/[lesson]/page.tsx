@@ -29,10 +29,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 function Wall({ path }: { path: string }) {
   return (
     <div className="mt-8 rounded-box border border-base-300 bg-base-200/60 p-6 text-center">
-      <h2 className="text-lg font-semibold">Leçon réservée aux comptes</h2>
-      <p className="mx-auto mt-1 max-w-[46ch] text-sm text-base-content/70">
-        Créez un compte gratuit pour lire les leçons et garder votre progression. Pas de mot de passe : un code par e-mail ou Google.
-      </p>
+      <h2 className="text-lg font-semibold">Connectez-vous pour lire la leçon.</h2>
       <Link href={`/login?next=${encodeURIComponent(path)}`} className="btn btn-primary mt-4 rounded-full px-6">
         Se connecter ou créer un compte
       </Link>
@@ -50,7 +47,7 @@ export default async function LessonPage({ params }: Params) {
   const parts = v.course.parts.map((p) => ({ ...p, lessons: p.lessons.map((l) => ({ ...l, href: lessonPath(v.course, l) })) }));
 
   return (
-    <article className="mx-auto max-w-3xl pb-16">
+    <article className="pb-16">
       <Breadcrumb
         items={[
           { label: "Accueil", href: "/", home: true },
@@ -59,29 +56,33 @@ export default async function LessonPage({ params }: Params) {
           { label: v.lesson.title },
         ]}
       />
-      <p className="text-sm text-base-content/55">
-        {v.part.title} · leçon {v.index + 1} sur {v.course.lessonCount}
-      </p>
-      <h1 className="mt-1 text-3xl font-bold leading-tight sm:text-4xl">{v.lesson.title}</h1>
-      {v.lesson.excerpt && <p className="mt-3 text-lg leading-relaxed text-base-content/70">{v.lesson.excerpt}</p>}
+      <div className="grid gap-10 wide:grid-cols-[minmax(0,1fr)_17rem] wide:items-start">
+        <div className="min-w-0 max-w-3xl">
+          <p className="text-sm text-base-content/55">
+            {v.part.title} · leçon {v.index + 1} sur {v.course.lessonCount}
+          </p>
+          <h1 className="mt-1 text-4xl font-bold leading-tight">{v.lesson.title}</h1>
+          {v.lesson.excerpt && <p className="mt-3 text-lg leading-relaxed text-base-content/70">{v.lesson.excerpt}</p>}
 
-      {session.ok ? (
-        <>
-          <div className="mt-8">
-            <ArticleRenderer content={v.lesson.content} />
-          </div>
-          <LessonActions courseId={v.course.id} lessonId={v.lesson.id} prev={step(v.prev)} next={step(v.next)} />
-        </>
-      ) : (
-        <Wall path={path} />
-      )}
-
-      <details className="mt-12 rounded-box border border-base-300 bg-base-100">
-        <summary className="cursor-pointer px-4 py-3 font-semibold">Plan du cours</summary>
-        <div className="border-t border-base-300 p-4">
-          <LessonList parts={parts} current={v.lesson.id} />
+          {session.ok ? (
+            <>
+              <div className="mt-8">
+                <ArticleRenderer content={v.lesson.content} />
+              </div>
+              <LessonActions courseId={v.course.id} lessonId={v.lesson.id} prev={step(v.prev)} next={step(v.next)} />
+            </>
+          ) : (
+            <Wall path={path} />
+          )}
         </div>
-      </details>
+
+        <aside className="wide:sticky wide:top-20">
+          <p className="mb-3 text-sm font-semibold">
+            <Link href={`/apprendre/${v.course.slug}`} className="hover:text-primary">{v.course.title}</Link>
+          </p>
+          <LessonList parts={parts} current={v.lesson.id} />
+        </aside>
+      </div>
     </article>
   );
 }

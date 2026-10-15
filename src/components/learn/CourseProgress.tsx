@@ -34,11 +34,6 @@ export default function CourseProgress({ lessons, compact = false }: { lessons: 
           {finished === 0 ? "Commencer le cours" : finished === lessons.length ? "Revoir le cours" : "Reprendre"}
         </Link>
       )}
-      {!signedIn && (
-        <p className="text-center text-xs text-base-content/60">
-          Compte gratuit requis pour lire les leçons. Pas de mot de passe.
-        </p>
-      )}
     </div>
   );
 }

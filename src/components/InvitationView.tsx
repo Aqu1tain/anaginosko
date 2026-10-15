@@ -56,8 +56,7 @@ export default function InvitationView({ token }: { token: string }) {
       <div className="rounded-3xl border border-base-300 bg-base-100 p-6 shadow-sm">
         <h1 className="text-center text-2xl font-bold">Bienvenue, {invite.displayName}</h1>
         <p className="mt-2 text-center text-sm text-base-content/70">
-          Vous rejoignez Anaginosko comme {invite.title}. Aucun mot de passe : vous vous connecterez
-          ensuite avec un code envoyé à {invite.email}, ou avec Google.
+          Vous rejoignez Anaginosko comme {invite.title}.
         </p>
         <form onSubmit={submit} className="mt-6 grid gap-3">
           {error && <p className="rounded-lg bg-error/10 px-3 py-2 text-sm text-error">{error}</p>}

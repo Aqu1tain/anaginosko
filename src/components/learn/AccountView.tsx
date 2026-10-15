@@ -77,7 +77,6 @@ export default function AccountView() {
           <span className="text-base-content/65">Adresse de connexion : </span>
           {email || "…"}
         </p>
-        <p className="mt-1 text-xs text-base-content/60">Pas de mot de passe : vous vous connectez avec un code envoyé à cette adresse, ou avec Google.</p>
         <button type="submit" className="btn btn-outline btn-sm mt-4 border-base-300">Enregistrer</button>
         {message && <span className="ml-3 text-sm text-success">{message}</span>}
       </form>

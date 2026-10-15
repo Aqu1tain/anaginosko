@@ -152,9 +152,6 @@ export default function ProfileEditor() {
         <Section title="Compte" desc="L'adresse e-mail sert uniquement à la connexion, jamais affichée.">
           <Field label="Adresse e-mail">
             <p className="rounded-lg bg-base-200/70 px-3 py-2 text-sm">{email || "…"}</p>
-            <p className="mt-1 text-xs text-base-content/60">
-              Pas de mot de passe : vous vous connectez avec un code envoyé à cette adresse, ou avec Google.
-            </p>
           </Field>
         </Section>
 

@@ -31,7 +31,7 @@ export default async function CoursePage({ params }: Params) {
   const lessons = parts.flatMap((p) => p.lessons).map((l) => ({ id: l.id, href: l.href }));
 
   return (
-    <div className="mx-auto max-w-5xl pb-10">
+    <div className="pb-10">
       <JsonLd
         data={{
           "@context": "https://schema.org",

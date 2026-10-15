@@ -59,9 +59,6 @@ export default function LoginView() {
     <div className="mx-auto max-w-sm pt-12">
       <div className="rounded-3xl border border-base-300 bg-base-100 p-6 shadow-sm">
         <h1 className="text-center text-2xl font-bold">Se connecter ou créer un compte</h1>
-        <p className="mt-1 text-center text-sm text-base-content/70">
-          Un compte gratuit donne accès aux cours et garde votre progression. Pas de mot de passe à retenir.
-        </p>
 
         <div className="mt-6">
           <GoogleSignIn onSignedIn={onSignedIn} />
