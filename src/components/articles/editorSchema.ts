@@ -2,6 +2,7 @@ import { BlockNoteSchema, defaultBlockSpecs, defaultInlineContentSpecs } from "@
 import { verseQuoteBlock } from "./blocks/verseQuoteBlock";
 import { chapterRefInline } from "./blocks/chapterRefInline";
 import { embedBlock } from "./blocks/embedBlock";
+import { exerciseBlock } from "./blocks/exerciseBlock";
 
 // On retire audio/vidéo/fichier : l'upload n'accepte que des images, et ces blocs
 // encombraient le menu « / » (et provoquaient un échec d'upload sur un mp3). L'image
@@ -13,6 +14,6 @@ void _video;
 void _file;
 
 export const schema = BlockNoteSchema.create({
-  blockSpecs: { ...baseBlockSpecs, verseQuote: verseQuoteBlock(), embed: embedBlock() },
+  blockSpecs: { ...baseBlockSpecs, verseQuote: verseQuoteBlock(), embed: embedBlock(), exercise: exerciseBlock() },
   inlineContentSpecs: { ...defaultInlineContentSpecs, chapterRef: chapterRefInline },
 });

@@ -82,6 +82,13 @@ export default function ArticleEditor({ articleId, initialContent, editable, dar
       group: "Anaginosko",
       onItemClick: () => editor.insertBlocks([{ type: "embed" }], editor.getTextCursorPosition().block, "after"),
     },
+    {
+      title: "Exercice",
+      subtext: "QCM ou question à réponse cachée",
+      aliases: ["exercice", "quiz", "qcm", "question"],
+      group: "Anaginosko",
+      onItemClick: () => editor.insertBlocks([{ type: "exercise" }], editor.getTextCursorPosition().block, "after"),
+    },
   ];
 
   const handleConfirm = (props: VerseQuoteProps | ChapterRefProps) => {

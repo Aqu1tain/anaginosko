@@ -4,6 +4,8 @@ import { corpusById } from "@/src/data/corpus";
 import VerseQuoteView from "./VerseQuoteView";
 import ChapterRefLink from "./ChapterRefLink";
 import EmbedView from "./EmbedView";
+import ExerciseView from "./ExerciseView";
+import { exerciseFromProps } from "@/src/lib/exercise";
 import { normalizeEmbedUrl } from "@/src/data/embed";
 import type { VerseLine, VerseQuoteProps, ChapterRefProps } from "./citationTypes";
 
@@ -147,6 +149,8 @@ function renderBlock(block: Block): ReactNode {
       const src = normalizeEmbedUrl(String(block.props?.url ?? ""));
       return src ? <EmbedView key={key} src={src} title={block.props?.title ? String(block.props.title) : undefined} /> : null;
     }
+    case "exercise":
+      return <ExerciseView key={key} exercise={exerciseFromProps(block.props ?? {})} />;
     case "table": {
       const content = block.content as { rows?: { cells?: unknown[] }[]; headerRows?: number } | undefined;
       const rows = Array.isArray(content?.rows) ? content.rows : [];

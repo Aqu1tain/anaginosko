@@ -4,7 +4,9 @@
 //
 // Syntaxe : ## et ### pour les titres, paragraphes, listes « - » et « 1. », citations
 // « > », tableaux « | a | b | » (première ligne = en-tête), **gras**, *italique*,
-// [lien](url), et « ::verset nt jn 1 1-3 » pour citer des versets du site.
+// [lien](url), « ::verset nt jn 1 1-3 » pour citer des versets du site, et
+// « ::exercice Question » suivi de lignes « + bonne », « - mauvaise », « = explication »
+// jusqu'à la ligne vide (sans options : question à réponse cachée).
 //
 //   node scripts/courses/build-course.mjs introduction-grec-biblique
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
@@ -49,6 +51,23 @@ function verse(spec) {
   });
 }
 
+function exercise(question, lines) {
+  const options = [];
+  let answer = -1;
+  const explanation = [];
+  for (const line of lines) {
+    const m = line.match(/^([+\-=])\s*(.*)$/);
+    if (!m) throw new Error(`Ligne d'exercice invalide : ${line}`);
+    if (m[1] === "=") explanation.push(m[2]);
+    else {
+      if (m[1] === "+") answer = options.length;
+      options.push(m[2]);
+    }
+  }
+  if (options.length && answer < 0) throw new Error(`Exercice sans bonne réponse : ${question}`);
+  return block("exercise", undefined, { question, options: options.join("\n"), answer, explanation: explanation.join(" ") });
+}
+
 function table(lines) {
   const rows = lines
     .filter((l) => !/^\|\s*-+/.test(l))
@@ -70,6 +89,13 @@ export function markdownToBlocks(md) {
     let m;
     if ((m = line.match(/^(#{2,3})\s+(.*)$/))) { flush(); blocks.push(block("heading", inline(m[2]), { level: m[1].length })); continue; }
     if ((m = line.match(/^::verset\s+(.*)$/))) { flush(); blocks.push(verse(m[1])); continue; }
+    if ((m = line.match(/^::exercice\s+(.*)$/))) {
+      flush();
+      const rows = [];
+      while (i + 1 < lines.length && lines[i + 1].trim()) rows.push(lines[++i].trim());
+      blocks.push(exercise(m[1].trim(), rows));
+      continue;
+    }
     if ((m = line.match(/^-\s+(.*)$/))) { flush(); blocks.push(block("bulletListItem", inline(m[1]))); continue; }
     if ((m = line.match(/^\d+\.\s+(.*)$/))) { flush(); blocks.push(block("numberedListItem", inline(m[1]))); continue; }
     if ((m = line.match(/^>\s?(.*)$/))) { flush(); blocks.push(block("quote", inline(m[1]))); continue; }
