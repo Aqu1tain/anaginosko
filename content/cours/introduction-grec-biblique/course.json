@@ -1,11 +1,11 @@
 {
   "title": "Introduction au grec biblique",
-  "summary": "De l'alphabet à la lecture suivie du Nouveau Testament : prononciation, déclinaisons, pronoms, adjectifs et premiers temps du verbe, avec des exercices tirés de la Bible.",
+  "summary": "De l'alphabet à la lecture suivie du Nouveau Testament : lettres et prononciation, cas et déclinaisons, pronoms, adjectifs et premiers temps du verbe, avec des exercices interactifs sur de vrais versets.",
   "level": "debutant",
   "parts": [
-    { "title": "Lire le grec", "lessons": ["01-histoire.md", "02-outils.md", "03-alphabet.md", "04-prononciation.md", "05-esprits-accents.md"] },
-    { "title": "Les mots et leurs formes", "lessons": ["06-lemme.md", "07-cas.md", "08-article.md", "09-noms.md", "10-pronoms.md", "11-adjectifs.md", "12-prepositions.md"] },
-    { "title": "Le verbe", "lessons": ["13-systeme-verbal.md", "14-present.md", "15-contractes.md", "16-imparfait.md", "17-aoriste.md", "18-participe.md"] },
-    { "title": "Lire des textes", "lessons": ["19-lecture.md"] }
+    { "title": "Lire le grec", "lessons": ["01-histoire.md", "02-alphabet-lettres-amies.md", "03-alphabet-faux-amis.md", "04-prononciation.md", "05-esprits-accents.md"] },
+    { "title": "Les mots et leurs formes", "lessons": ["06-lemme.md", "07-declinaison.md", "08-cas.md", "09-article.md", "10-noms-premiere-deuxieme.md", "11-noms-troisieme.md", "12-pronoms-personnels.md", "13-pronoms-demonstratifs-relatifs.md", "14-adjectifs.md", "15-prepositions.md"] },
+    { "title": "Le verbe", "lessons": ["16-systeme-verbal.md", "17-present.md", "18-contractes.md", "19-imparfait.md", "20-aoriste.md", "21-participe.md"] },
+    { "title": "Lire des textes", "lessons": ["22-lecture.md"] }
   ]
 }
