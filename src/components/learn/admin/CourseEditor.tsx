@@ -116,7 +116,14 @@ export default function CourseEditor({ id }: { id: string }) {
     { action: "publish", label: "Publier les leçons approuvées", n: count((a) => a.status === "approved") },
   ];
 
+  const confirmations: Partial<Record<LessonsAction, string>> = {
+    approve: "Approuver toutes les leçons en relecture ?",
+    publish: "Publier toutes les leçons approuvées ? Elles seront visibles des inscrits.",
+  };
+
   const runStep = async (action: LessonsAction) => {
+    const question = confirmations[action];
+    if (question && !window.confirm(question)) return;
     setError(null);
     setNotice(null);
     try {

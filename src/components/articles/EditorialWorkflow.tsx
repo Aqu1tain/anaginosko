@@ -51,7 +51,13 @@ export default function EditorialWorkflow({
     (a.reviewRequest?.reviewerId == null ||
       a.reviewRequest.reviewerId === user.id);
   const publish = can(user, "publish");
+  const confirmations: Partial<Record<TransitionAction, string>> = {
+    approve: `Approuver la version ${a.contentRevision} de « ${a.title} » ?`,
+    publish: `Publier « ${a.title} » ? L’article sera visible de tous.`,
+  };
   const act = async (action: TransitionAction | "retry_notification") => {
+    const question = action !== "retry_notification" && confirmations[action];
+    if (question && !window.confirm(question)) return;
     setBusy(true);
     setError("");
     try {
