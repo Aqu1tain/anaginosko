@@ -56,7 +56,7 @@ export default function ExplorerControls({
         autoCapitalize="off"
         spellCheck={false}
       />
-      <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:items-center">
+      <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:items-center wide:hidden">
         <div className="col-span-2 flex w-fit gap-1 rounded-full bg-base-200 p-1 text-sm" role="group" aria-label="Corpus">
           {(Object.keys(CORPUS_LABEL) as CorpusFilter[]).map((c) => (
             <button
