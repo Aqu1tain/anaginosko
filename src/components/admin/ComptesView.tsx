@@ -1,521 +1,278 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState, type ReactNode } from "react";
 import { useAuth } from "@/src/hooks/useAuth";
+import Avatar from "@/src/components/profile/Avatar";
 import {
   can,
-  fetchContributors,
-  inviteContributor,
-  updateContributor,
   cancelInvitation,
+  fetchContributors,
+  fetchLearners,
   fetchRoles,
-  saveRole,
   type Contributor,
   type EditorialRole,
+  type Invitation,
+  type Learner,
 } from "@/src/lib/api";
-import {
-  PERMISSIONS,
-  PERMISSION_LABEL,
-  PERMISSION_HINT,
-  type Permission,
-} from "@/src/data/permissions";
+import AccountPanel, { type PanelAccount } from "./accounts/AccountPanel";
+import InviteDialog, { type InviteDraft } from "./accounts/InviteDialog";
+import RolesMatrix from "./accounts/RolesMatrix";
+import { day, matches, relative, roleNamesOf } from "./accounts/format";
 
-function PermissionGrid({
-  value,
-  onChange,
-  disabled = false,
-}: {
-  value: Permission[];
-  onChange: (value: Permission[]) => void;
-  disabled?: boolean;
-}) {
-  return (
-    <div className="grid gap-3 sm:grid-cols-2">
-      {PERMISSIONS.map((p) => (
-        <label key={p} className="flex items-start gap-2 text-sm">
-          <input
-            type="checkbox"
-            className="checkbox checkbox-sm mt-0.5"
-            checked={value.includes(p)}
-            disabled={disabled}
-            onChange={(e) =>
-              onChange(
-                e.target.checked ? [...value, p] : value.filter((x) => x !== p),
-              )
-            }
-          />
-          <span>
-            {PERMISSION_LABEL[p]}
-            <span className="mt-0.5 block text-xs text-base-content/60">
-              {PERMISSION_HINT[p]}
-            </span>
-          </span>
-        </label>
-      ))}
-    </div>
+type Tab = "team" | "learners" | "invitations" | "roles";
+type Team = { users: Contributor[]; invitations: Invitation[]; learners: number };
+type Learners = { items: Learner[]; total: number; pageSize: number; page: number };
+
+const asPanel = (a: Contributor | Learner): PanelAccount =>
+  "roleIds" in a
+    ? a
+    : { ...a, title: "", roleIds: [], permissions: [], isRoot: false };
+
+function Row({ name, sub, badges, meta, onClick }: { name: ReactNode; sub: string; badges?: ReactNode; meta?: ReactNode; onClick?: () => void }) {
+  const body = (
+    <>
+      <Avatar name={typeof name === "string" ? name : sub} photo={null} size={36} />
+      <span className="min-w-0 flex-1">
+        <span className="block truncate font-medium">{name}</span>
+        <span className="block truncate text-sm text-base-content/55">{sub}</span>
+      </span>
+      {badges && <span className="hidden flex-wrap justify-end gap-1.5 sm:flex">{badges}</span>}
+      {meta && <span className="shrink-0 text-right text-xs text-base-content/50 sm:w-28">{meta}</span>}
+    </>
+  );
+  const cls = "flex w-full items-center gap-3 px-4 py-3 text-left";
+  return onClick ? (
+    <button type="button" onClick={onClick} className={`${cls} transition-colors hover:bg-base-200/60`}>
+      {body}
+    </button>
+  ) : (
+    <div className={cls}>{body}</div>
   );
 }
 
-function RolePicker({
-  roles,
-  value,
-  onChange,
-  disabled = false,
-}: {
-  roles: EditorialRole[];
-  value: number[];
-  onChange: (ids: number[]) => void;
-  disabled?: boolean;
-}) {
-  return (
-    <div className="flex flex-wrap gap-2">
-      {roles.map((role) => (
-        <label
-          key={role.id}
-          className={`flex cursor-pointer items-center gap-2 rounded-lg border px-3 py-2 text-sm ${value.includes(role.id) ? "border-primary bg-primary/10" : "border-base-300"}`}
-        >
-          <input
-            className="checkbox checkbox-xs"
-            type="checkbox"
-            disabled={disabled}
-            checked={value.includes(role.id)}
-            onChange={(e) =>
-              onChange(
-                e.target.checked
-                  ? [...value, role.id]
-                  : value.filter((id) => id !== role.id),
-              )
-            }
-          />
-          {role.name}
-        </label>
-      ))}
-    </div>
-  );
-}
+const Badge = ({ children, tone = "neutral" }: { children: ReactNode; tone?: "neutral" | "primary" | "error" }) => (
+  <span
+    className={`whitespace-nowrap rounded-full px-2 py-0.5 text-xs ${tone === "primary" ? "bg-primary/10 text-primary" : tone === "error" ? "bg-error/10 text-error" : "bg-base-200 text-base-content/70"}`}
+  >
+    {children}
+  </span>
+);
 
-function AccountCard({
-  account,
-  roles,
-  self,
-  onSaved,
-}: {
-  account: Contributor;
-  roles: EditorialRole[];
-  self: boolean;
-  onSaved: () => Promise<void>;
-}) {
-  const [title, setTitle] = useState(account.title);
-  const [roleIds, setRoleIds] = useState(account.roleIds ?? []);
-  const [permissions, setPermissions] = useState(account.permissions);
-  const [active, setActive] = useState(account.active);
-  const [busy, setBusy] = useState(false);
-  const [error, setError] = useState("");
-  const [notice, setNotice] = useState("");
-  const inherited = roles
-    .filter((r) => roleIds.includes(r.id))
-    .flatMap((r) => r.permissions);
-  const effective = account.isRoot
-    ? [...PERMISSIONS]
-    : [...new Set([...permissions, ...inherited])];
-  const changed =
-    title !== account.title ||
-    active !== account.active ||
-    JSON.stringify(roleIds) !== JSON.stringify(account.roleIds ?? []) ||
-    JSON.stringify(permissions) !== JSON.stringify(account.permissions);
-  const save = async () => {
-    setBusy(true);
-    setError("");
-    setNotice("");
-    try {
-      await updateContributor(account.id, {
-        title,
-        roleIds,
-        permissions,
-        active,
-      });
-      await onSaved();
-      setNotice("Accès enregistrés.");
-    } catch (e) {
-      setError((e as Error).message);
-    } finally {
-      setBusy(false);
-    }
-  };
-  return (
-    <article className="space-y-4 rounded-xl border border-base-300 bg-base-100 p-5">
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div>
-          <h3 className="font-semibold">
-            {account.displayName}
-            {self && " (vous)"}
-          </h3>
-          <p className="text-sm text-base-content/60">{account.email}</p>
-        </div>
-        <span
-          className={`badge ${account.active ? "badge-success badge-soft" : "badge-error badge-soft"}`}
-        >
-          {account.isRoot
-            ? "Admin racine"
-            : account.active
-              ? "Actif"
-              : "Désactivé"}
-        </span>
-      </div>
-      <fieldset disabled={account.isRoot || busy} className="space-y-4">
-        <label className="block text-sm">
-          Titre public
-          <input
-            className="input input-bordered mt-1 w-full"
-            value={title}
-            maxLength={80}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-        </label>
-        <div>
-          <p className="mb-2 text-sm font-medium">Rôles</p>
-          <RolePicker roles={roles} value={roleIds} onChange={setRoleIds} />
-        </div>
-        <details>
-          <summary className="cursor-pointer text-sm">
-            Droits individuels ({permissions.length})
-          </summary>
-          <p className="my-2 text-xs text-base-content/60">
-            Décocher ne retire pas un droit hérité d’un rôle.
-          </p>
-          <PermissionGrid value={permissions} onChange={setPermissions} />
-        </details>
-        {!self && (
-          <label className="flex items-center gap-2 text-sm">
-            <input
-              type="checkbox"
-              className="toggle toggle-sm"
-              checked={active}
-              onChange={(e) => setActive(e.target.checked)}
-            />
-            Compte actif
-          </label>
-        )}
-      </fieldset>
-      <details>
-        <summary className="cursor-pointer text-sm">
-          Droits effectifs ({effective.length})
-        </summary>
-        <ul className="mt-2 flex flex-wrap gap-2">
-          {effective.map((p) => (
-            <li key={p} className="badge badge-outline">
-              {PERMISSION_LABEL[p]}
-            </li>
-          ))}
-        </ul>
-      </details>
-      {account.isRoot ? (
-        <p className="text-xs text-base-content/60">
-          Tous les droits, sauf approuver ses propres articles.
-        </p>
-      ) : (
-        <button
-          className="btn btn-primary btn-sm"
-          disabled={busy || !changed}
-          onClick={save}
-        >
-          {busy ? "Enregistrement…" : "Enregistrer"}
-        </button>
-      )}
-      {error && (
-        <p role="alert" className="text-sm text-error">
-          {error}
-        </p>
-      )}
-      {notice && (
-        <p role="status" className="text-sm text-success">
-          {notice}
-        </p>
-      )}
-    </article>
+const List = ({ children, empty }: { children: ReactNode[]; empty: string }) =>
+  children.length ? (
+    <div className="divide-y divide-base-300 overflow-hidden rounded-box border border-base-300 bg-base-100">{children}</div>
+  ) : (
+    <p className="rounded-box border border-dashed border-base-300 px-4 py-10 text-center text-sm text-base-content/55">{empty}</p>
   );
-}
-
-function RoleEditor({
-  roles,
-  onSaved,
-}: {
-  roles: EditorialRole[];
-  onSaved: () => Promise<void>;
-}) {
-  const [id, setId] = useState<number | undefined>();
-  const [name, setName] = useState("");
-  const [permissions, setPermissions] = useState<Permission[]>([]);
-  const [busy, setBusy] = useState(false);
-  const [error, setError] = useState("");
-  return (
-    <section className="space-y-4 rounded-xl border border-base-300 bg-base-100 p-5">
-      <h2 className="text-lg font-semibold">Rôles et permissions</h2>
-      <p className="text-sm text-base-content/65">
-        Les modifications s’appliquent à tous les comptes et invitations du rôle.
-      </p>
-      <label className="block text-sm">
-        Rôle à modifier
-        <select
-          className="select select-bordered mt-1 w-full"
-          value={id ?? ""}
-          onChange={(e) => {
-            const role = roles.find((r) => r.id === Number(e.target.value));
-            setId(role?.id);
-            setName(role?.name ?? "");
-            setPermissions(role?.permissions ?? []);
-            setError("");
-          }}
-        >
-          <option value="">Créer un rôle</option>
-          {roles.map((r) => (
-            <option key={r.id} value={r.id}>
-              {r.name}
-            </option>
-          ))}
-        </select>
-      </label>
-      <label className="block text-sm">
-        Nom du rôle
-        <input
-          className="input input-bordered mt-1 w-full"
-          maxLength={80}
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-      </label>
-      <PermissionGrid
-        value={permissions}
-        onChange={setPermissions}
-        disabled={busy}
-      />
-      <button
-        className="btn btn-primary btn-sm"
-        disabled={busy || !name.trim()}
-        onClick={async () => {
-          setBusy(true);
-          setError("");
-          try {
-            const role = await saveRole({ id, name, permissions });
-            await onSaved();
-            setId(role.id);
-          } catch (e) {
-            setError((e as Error).message);
-          } finally {
-            setBusy(false);
-          }
-        }}
-      >
-        {busy
-          ? "Enregistrement…"
-          : id
-            ? "Enregistrer le rôle"
-            : "Créer le rôle"}
-      </button>
-      {error && (
-        <p role="alert" className="text-sm text-error">
-          {error}
-        </p>
-      )}
-    </section>
-  );
-}
 
 export default function ComptesView() {
   const { user, ready } = useAuth();
-  const [data, setData] = useState<Awaited<
-    ReturnType<typeof fetchContributors>
-  > | null>(null);
-  const [roles, setRoles] = useState<EditorialRole[]>([]);
-  const [tab, setTab] = useState("accounts");
-  const [error, setError] = useState("");
-  const [notice, setNotice] = useState("");
-  const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
-  const [title, setTitle] = useState("Auteur");
-  const [roleIds, setRoleIds] = useState<number[]>([]);
-  const [busy, setBusy] = useState(false);
-  const reload = async () => {
-    const [accounts, availableRoles] = await Promise.all([
-      fetchContributors(),
-      fetchRoles(),
-    ]);
-    setData(accounts);
-    setRoles(availableRoles);
-  };
   const allowed = can(user, "accounts");
+  const [team, setTeam] = useState<Team | null>(null);
+  const [roles, setRoles] = useState<EditorialRole[]>([]);
+  const [learners, setLearners] = useState<Learners | null>(null);
+  const [tab, setTab] = useState<Tab>("team");
+  const [q, setQ] = useState("");
+  const [open, setOpen] = useState<PanelAccount | null>(null);
+  const [invite, setInvite] = useState<InviteDraft | "new" | null>(null);
+  const [error, setError] = useState("");
+
+  const loadTeam = useCallback(async () => {
+    const [accounts, available] = await Promise.all([fetchContributors(), fetchRoles()]);
+    setTeam({ users: accounts.users, invitations: accounts.invitations, learners: accounts.learners ?? 0 });
+    setRoles(available);
+    return accounts.users;
+  }, []);
+
+  const loadLearners = useCallback(async (query: string, page = 1) => {
+    const res = await fetchLearners(query, page);
+    setLearners((prev) => ({
+      ...res,
+      page,
+      items: page > 1 && prev ? [...prev.items, ...res.learners] : res.learners,
+    }));
+    return res.learners;
+  }, []);
+
   useEffect(() => {
-    if (allowed) reload().catch((e) => setError(e.message));
-  }, [allowed]);
+    if (allowed) loadTeam().catch((e) => setError(e.message));
+  }, [allowed, loadTeam]);
+
+  useEffect(() => {
+    if (!allowed || tab !== "learners") return;
+    const t = setTimeout(() => loadLearners(q).catch((e) => setError(e.message)), 250);
+    return () => clearTimeout(t);
+  }, [allowed, tab, q, loadLearners]);
+
+  // Après un enregistrement : recharger, puis garder la fiche ouverte à jour (un
+  // lecteur promu passe dans l'équipe, un membre sans rôle redevient lecteur).
+  const refresh = async () => {
+    const [users, readers] = await Promise.all([loadTeam(), loadLearners(tab === "learners" ? q : "")]);
+    const next = [...users, ...readers].find((a) => a.id === open?.id);
+    setOpen(next ? asPanel(next) : null);
+  };
+
   if (!ready) return null;
-  if (!allowed)
-    return <p className="py-12">Accès réservé à la gestion des comptes.</p>;
+  if (!allowed) return <p className="py-12">Accès réservé à la gestion des comptes.</p>;
+
+  const users = team?.users.filter((u) => matches(q, u.displayName, u.email, u.title)) ?? [];
+  const invitations = team?.invitations.filter((i) => matches(q, i.displayName, i.email)) ?? [];
+  const tabs: [Tab, string, number | null][] = [
+    ["team", "Équipe", team?.users.length ?? null],
+    ["learners", "Lecteurs", team?.learners ?? null],
+    ["invitations", "Invitations", team?.invitations.length ?? null],
+    ["roles", "Rôles", roles.length || null],
+  ];
+
   return (
     <div className="mx-auto max-w-4xl space-y-6 py-8">
-      <div>
-        <h1 className="text-3xl font-bold">Comptes et accès</h1>
-        {data?.learners != null && (
-          <p className="mt-1 text-sm text-base-content/55">
-            {data.learners} compte{data.learners > 1 ? "s" : ""} apprenant{data.learners > 1 ? "s" : ""}
-          </p>
+      <header className="flex flex-wrap items-center justify-between gap-3">
+        <h1 className="text-3xl font-bold">Comptes</h1>
+        <button type="button" className="btn btn-primary btn-sm" onClick={() => setInvite("new")}>
+          Inviter
+        </button>
+      </header>
+
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <nav className="flex max-w-full gap-1 overflow-x-auto rounded-full bg-base-200 p-1" aria-label="Sections">
+          {tabs.map(([key, label, count]) => (
+            <button
+              key={key}
+              type="button"
+              aria-pressed={tab === key}
+              onClick={() => setTab(key)}
+              className={`shrink-0 rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors ${tab === key ? "bg-base-100 shadow-sm" : "text-base-content/60 hover:text-base-content"}`}
+            >
+              {label}
+              {count != null && <span className="ml-1.5 tabular-nums text-base-content/45">{count}</span>}
+            </button>
+          ))}
+        </nav>
+        {tab !== "roles" && (
+          <input
+            type="search"
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            placeholder="Rechercher"
+            aria-label="Rechercher un compte"
+            className="input input-bordered input-sm w-full sm:w-56"
+          />
         )}
       </div>
-      <div className="flex gap-2">
-        {[
-          ["accounts", "Comptes"],
-          ["invite", "Invitations"],
-          ["roles", "Rôles et permissions"],
-        ].map(([key, label]) => (
-          <button
-            key={key}
-            aria-pressed={tab === key}
-            className={`btn btn-sm ${tab === key ? "btn-primary" : "btn-ghost"}`}
-            onClick={() => setTab(key)}
-          >
-            {label}
-          </button>
-        ))}
-      </div>
+
       {error && (
         <p role="alert" className="alert alert-error text-sm">
           {error}
         </p>
       )}
-      {notice && (
-        <p role="status" className="text-success">
-          {notice}
-        </p>
+      {!team && !error && <p className="text-sm text-base-content/55">Chargement…</p>}
+
+      {team && tab === "team" && (
+        <List empty="Aucun compte.">
+          {users.map((u) => {
+            const names = roleNamesOf(u.roleIds, roles);
+            return (
+              <Row
+                key={u.id}
+                name={u.id === user?.id ? `${u.displayName} (vous)` : u.displayName}
+                sub={u.email}
+                onClick={() => setOpen(asPanel(u))}
+                badges={
+                  <>
+                    {u.isRoot && <Badge tone="primary">Admin racine</Badge>}
+                    {names.map((n) => (
+                      <Badge key={n}>{n}</Badge>
+                    ))}
+                    {!u.isRoot && !names.length && <Badge>Droits à la carte</Badge>}
+                    {!u.active && <Badge tone="error">Désactivé</Badge>}
+                  </>
+                }
+                meta={relative(u.lastSeenAt) ?? "jamais connecté"}
+              />
+            );
+          })}
+        </List>
       )}
-      {!data && !error && <p>Chargement…</p>}
-      {data && tab === "accounts" && (
-        <div className="space-y-4">
-          {data.users.map((account) => (
-            <AccountCard
-              key={account.id}
-              account={account}
-              roles={roles}
-              self={account.id === user?.id}
-              onSaved={reload}
-            />
-          ))}
+
+      {tab === "learners" && learners && (
+        <div className="space-y-3">
+          <List empty={q ? "Aucun lecteur ne correspond." : "Aucun lecteur inscrit."}>
+            {learners.items.map((l) => (
+              <Row
+                key={l.id}
+                name={l.displayName}
+                sub={l.email}
+                onClick={() => setOpen(asPanel(l))}
+                badges={
+                  <>
+                    {l.newsletter && <Badge>Nouveautés</Badge>}
+                    {!l.active && <Badge tone="error">Désactivé</Badge>}
+                  </>
+                }
+                meta={relative(l.lastSeenAt) ?? day(l.createdAt)}
+              />
+            ))}
+          </List>
+          {learners.items.length < learners.total && (
+            <button type="button" className="btn btn-ghost btn-sm" onClick={() => loadLearners(q, learners.page + 1).catch((e) => setError(e.message))}>
+              Afficher plus ({learners.total - learners.items.length})
+            </button>
+          )}
         </div>
       )}
-      {tab === "roles" && data && <RoleEditor roles={roles} onSaved={reload} />}
-      {tab === "invite" && data && (
-        <>
-          <form
-            className="space-y-4 rounded-xl border border-base-300 p-5"
-            onSubmit={async (e) => {
-              e.preventDefault();
-              setBusy(true);
-              setError("");
-              setNotice("");
-              try {
-                await inviteContributor({
-                  email,
-                  displayName: name,
-                  title,
-                  roleIds,
-                  permissions: [],
-                });
-                await reload();
-                setNotice("Invitation envoyée.");
-                setEmail("");
-                setName("");
-              } catch (e) {
-                setError((e as Error).message);
-              } finally {
-                setBusy(false);
-              }
-            }}
-          >
-            <h2 className="font-semibold">Nouvelle invitation</h2>
-            <label className="block text-sm">
-              Adresse e-mail
-              <input
-                type="email"
-                className="input input-bordered mt-1 w-full"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </label>
-            <label className="block text-sm">
-              Nom d’affichage
-              <input
-                className="input input-bordered mt-1 w-full"
-                required
-                maxLength={80}
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </label>
-            <label className="block text-sm">
-              Titre public
-              <input
-                className="input input-bordered mt-1 w-full"
-                maxLength={80}
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-              />
-            </label>
-            <fieldset disabled={busy}>
-              <legend className="mb-2 text-sm">Rôles accordés</legend>
-              <RolePicker roles={roles} value={roleIds} onChange={setRoleIds} />
-            </fieldset>
-            {!roleIds.length && (
-              <p className="text-xs text-warning">
-                Sans rôle, aucun accès éditorial.
-              </p>
-            )}
-            <button disabled={busy} className="btn btn-primary">
-              {busy ? "Envoi…" : "Envoyer l’invitation"}
-            </button>
-          </form>
-          <section>
-            <h2 className="mb-3 font-semibold">Invitations en attente</h2>
-            {!data.invitations.length && (
-              <p className="text-sm text-base-content/60">
-                Aucune invitation en attente.
-              </p>
-            )}
-            {data.invitations.map((i) => (
-              <div
-                key={i.id}
-                className="mb-2 flex flex-wrap items-center justify-between gap-3 rounded-lg border border-base-300 p-3 text-sm"
-              >
-                <div>
-                  <p>
-                    {i.displayName} · {i.email}
-                  </p>
-                  <p className="text-xs text-base-content/60">
-                    {i.expiresAt && new Date(i.expiresAt) < new Date()
-                      ? "Expirée"
-                      : "En attente"}{" "}
-                    ·{" "}
-                    {roles
-                      .filter((r) => i.roleIds?.includes(r.id))
-                      .map((r) => r.name)
-                      .join(", ")}
-                  </p>
-                </div>
-                <button
-                  className="btn btn-ghost btn-sm text-error"
-                  onClick={async () => {
-                    try {
-                      await cancelInvitation(i.id);
-                      await reload();
-                    } catch (e) {
-                      setError((e as Error).message);
+
+      {team && tab === "invitations" && (
+        <List empty="Aucune invitation en attente.">
+          {invitations.map((i) => {
+            const expired = !!i.expiresAt && new Date(i.expiresAt) < new Date();
+            const draft = { email: i.email, displayName: i.displayName, title: i.title, roleIds: i.roleIds ?? [] };
+            return (
+              <div key={i.id} className="flex flex-wrap items-center gap-3 pr-4">
+                <div className="min-w-0 flex-1">
+                  <Row
+                    name={i.displayName}
+                    sub={i.email}
+                    badges={
+                      <>
+                        {roleNamesOf(i.roleIds, roles).map((n) => (
+                          <Badge key={n}>{n}</Badge>
+                        ))}
+                        {expired && <Badge tone="error">Expirée</Badge>}
+                      </>
                     }
-                  }}
-                >
-                  Annuler
-                </button>
+                  />
+                </div>
+                <div className="flex gap-1 pb-3 pl-4 sm:p-0">
+                  <button type="button" className="btn btn-ghost btn-xs" onClick={() => setInvite(draft)}>
+                    Renvoyer
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-ghost btn-xs text-error"
+                    onClick={() => cancelInvitation(i.id).then(loadTeam).catch((e) => setError(e.message))}
+                  >
+                    Annuler
+                  </button>
+                </div>
               </div>
-            ))}
-          </section>
-        </>
+            );
+          })}
+        </List>
+      )}
+
+      {team && tab === "roles" && <RolesMatrix roles={roles} onSaved={async () => void (await loadTeam())} />}
+
+      {open && <AccountPanel key={open.id} account={open} roles={roles} self={open.id === user?.id} onClose={() => setOpen(null)} onSaved={refresh} />}
+      {invite && (
+        <InviteDialog
+          roles={roles}
+          initial={invite === "new" ? undefined : invite}
+          onClose={() => setInvite(null)}
+          onSent={async () => {
+            await loadTeam();
+            setTab("invitations");
+          }}
+        />
       )}
     </div>
   );

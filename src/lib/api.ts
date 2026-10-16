@@ -158,6 +158,16 @@ export type Contributor = {
   isRoot: boolean;
   active: boolean;
   createdAt: string | null;
+  lastSeenAt?: string | null;
+};
+export type Learner = {
+  id: number;
+  email: string;
+  displayName: string;
+  active: boolean;
+  newsletter: boolean;
+  createdAt: string | null;
+  lastSeenAt: string | null;
 };
 export type Invitation = {
   roleIds: number[];
@@ -172,6 +182,11 @@ export type Invitation = {
 
 export const fetchContributors = () =>
   apiFetch<{ users: Contributor[]; invitations: Invitation[]; learners?: number }>("/admin/users");
+
+export const fetchLearners = (q: string, page = 1) =>
+  apiFetch<{ learners: Learner[]; total: number; pageSize: number }>(
+    `/admin/learners?${new URLSearchParams({ ...(q ? { q } : {}), page: String(page) })}`,
+  );
 
 export const inviteContributor = (input: { email: string; displayName: string; title: string; permissions: Permission[]; roleIds?: number[] }) =>
   apiFetch<{ invitation: Invitation }>("/admin/invitations", { method: "POST", body: JSON.stringify(input) }).then((d) => d.invitation);
