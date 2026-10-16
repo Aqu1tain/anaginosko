@@ -29,7 +29,7 @@ export default function InvitationView({ token }: { token: string }) {
         <div className="rounded-3xl border border-base-300 bg-base-100 p-6 text-center shadow-sm">
           <h1 className="text-xl font-bold">Invitation invalide</h1>
           <p className="mt-2 text-sm text-base-content/70">
-            Ce lien est invalide ou a expiré. Demandez une nouvelle invitation à l’administration.
+            Lien expiré ou invalide. Demandez une nouvelle invitation.
           </p>
           <Link href="/" className="btn btn-outline btn-sm mt-4 border-base-300">Aller à la lecture</Link>
         </div>

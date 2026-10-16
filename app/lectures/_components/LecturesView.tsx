@@ -251,13 +251,13 @@ export default async function LecturesView({ rite, iso }: { rite: Rite; iso: str
 
       {!day && (
         <p className="mt-10 text-lg text-base-content/75">
-          Les lectures de cette date ne sont pas encore disponibles pour la {rite.label.toLowerCase()}.
+          Pas encore de lectures pour cette date.
         </p>
       )}
       {day?.note && <p className="mt-10 text-lg text-base-content/75">{day.note}</p>}
       {day?.projected && (
         <p className="mt-8 text-sm text-base-content/70">
-          Lectures calculées d’après le cycle liturgique : l’AELF n’a pas encore publié cette date.
+          Lectures calculées : l’AELF n’a pas encore publié cette date.
         </p>
       )}
 
@@ -275,7 +275,6 @@ export default async function LecturesView({ rite, iso }: { rite: Rite; iso: str
 
       <footer className="mt-14 flex flex-col gap-4 border-t border-base-300 pt-6 text-sm leading-relaxed text-base-content/65">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <p className="text-base text-base-content/80">Une lecture qui ne correspond pas à ce jour, une erreur dans le texte ?</p>
           <ReportButton
             label="Signaler une erreur"
             className="btn btn-outline btn-primary h-11 min-h-11 rounded-full px-5"
@@ -294,8 +293,8 @@ export default async function LecturesView({ rite, iso }: { rite: Rite; iso: str
           </ReportButton>
         </div>
         <p>
-          {[rite.note, day?.source && `Références des lectures : ${day.source}.`].filter(Boolean).join(" ")} Texte grec
-          du corpus Anaginosko (SBLGNT pour le Nouveau Testament, Septante de Rahlfs), traduction française en regard.
+          {[rite.note, day?.source && `Références des lectures : ${day.source}.`].filter(Boolean).join(" ")} Texte grec :
+          SBLGNT pour le Nouveau Testament, Septante de Rahlfs.
         </p>
       </footer>
     </div>

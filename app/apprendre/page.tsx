@@ -41,11 +41,11 @@ export default function LearnPage() {
       <Breadcrumb items={[{ label: "Accueil", href: "/", home: true }, { label: "Apprendre" }]} />
       <h1 className="font-greek text-4xl font-bold leading-tight wide:text-5xl">Apprendre le grec biblique</h1>
       <p className="mt-3 max-w-[60ch] text-lg leading-relaxed text-base-content/75">
-        Des cours progressifs pour passer de l’alphabet à la lecture suivie du Nouveau Testament et de la Septante.
+        De l’alphabet à la lecture du Nouveau Testament et de la Septante.
       </p>
 
       <section className="mt-10">
-        <h2 className="text-xs font-semibold uppercase tracking-[0.12em] text-base-content/55">En accès libre</h2>
+        <h2 className="text-xs font-semibold uppercase tracking-[0.12em] text-base-content/55">Accès libre</h2>
         <div className="mt-3 grid gap-3 sm:grid-cols-2">
           <ToolCard href="/alphabet" title="L’alphabet grec" text="Les 24 lettres, leur tracé et leurs deux prononciations.">
             <div className="grid grid-cols-4 gap-2">
@@ -57,7 +57,7 @@ export default function LearnPage() {
               ))}
             </div>
           </ToolCard>
-          <ToolCard href="/prononciation" title="La prononciation" text="Érasmienne ou restituée : les deux systèmes expliqués.">
+          <ToolCard href="/prononciation" title="La prononciation" text="Érasmienne ou restituée, lettre par lettre.">
             <table className="w-full text-sm">
               <thead>
                 <tr className="text-left text-[0.65rem] uppercase tracking-wide text-base-content/55">
@@ -84,7 +84,7 @@ export default function LearnPage() {
         <h2 className="text-xs font-semibold uppercase tracking-[0.12em] text-base-content/55">Cours</h2>
         {courses.length === 0 ? (
           <p className="mt-3 rounded-box border border-dashed border-base-300 p-6 text-base-content/70">
-            Les premiers cours sont en cours de relecture. Revenez bientôt.
+            Les premiers cours sont en relecture.
           </p>
         ) : (
           <div className="mt-3 grid gap-4 wide:grid-cols-2">

@@ -43,7 +43,7 @@ export default function LessonActions({
           </button>
         ) : (
           <button type="button" onClick={finish} disabled={busy} className="btn btn-primary rounded-full px-6">
-            {next ? "Terminer et passer à la suite" : "Terminer le cours"}
+            {next ? "Terminer la leçon" : "Terminer le cours"}
           </button>
         )}
       </div>

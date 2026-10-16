@@ -23,7 +23,7 @@ function Wall() {
             <PreprodBadge />
           </h1>
           <p className="text-sm text-base-content/70">
-            Environnement de test réservé aux comptes autorisés. Connectez-vous pour continuer.
+            Réservé aux comptes autorisés.
           </p>
           <Link href={`/login?next=${encodeURIComponent(pathname)}`} className="btn btn-primary btn-sm">
             Se connecter

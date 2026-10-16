@@ -63,9 +63,6 @@ export default function PrononciationPage() {
 
       <section className="mt-8">
         <h2 className="text-lg font-bold">Les lettres qui changent</h2>
-        <p className="mt-1 text-sm text-base-content/70">
-          Les {differing.length} lettres dont la valeur diffère entre les deux systèmes.
-        </p>
         <div className="mt-3 overflow-x-auto">
           <table className="table table-sm">
             <thead>
@@ -121,11 +118,9 @@ export default function PrononciationPage() {
         <h2 className="text-lg font-bold">Pour aller plus loin</h2>
         <p className="mt-2 text-[0.95rem] leading-relaxed text-base-content/85">
           L’<Link href="/alphabet" className="link link-primary">alphabet grec complet</Link>{" "}
-          détaille chaque lettre avec ses deux prononciations, les esprits et les
-          accents. Et le meilleur exercice reste la lecture elle-même :{" "}
+          détaille chaque lettre, les esprits et les accents. Pour pratiquer,{" "}
           <Link href="/nt/jn/1" className="link link-primary">ouvrez l’évangile selon Jean</Link>{" "}
-          et touchez n’importe quel mot pour entendre ses deux prononciations, puis
-          une de ses lettres pour le détail.
+          et touchez un mot pour entendre ses deux prononciations.
         </p>
       </section>
     </article>

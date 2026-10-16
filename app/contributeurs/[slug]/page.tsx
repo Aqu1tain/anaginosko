@@ -72,7 +72,7 @@ export default async function ContributorPage({ params }: { params: Promise<{ sl
           Articles{articles.length > 0 ? ` (${articles.length})` : ""}
         </h2>
         {articles.length === 0 ? (
-          <p className="mt-3 text-base-content/60">Aucun article publié pour le moment.</p>
+          <p className="mt-3 text-base-content/60">Aucun article publié.</p>
         ) : (
           <ul className="mt-3 space-y-4">
             {articles.map((a) => (

@@ -65,17 +65,12 @@ export default function AlphabetView() {
     <div className="pb-4">
       <h1 className="pt-6 text-2xl font-bold">L’alphabet grec</h1>
       <p className="mt-2 text-[0.95rem] leading-relaxed text-base-content/70">
-        Les 24 lettres de l’alphabet grec, d’alpha à oméga, telles qu’on les lit
-        dans le grec koinè de la Bible. Chaque lettre est donnée avec son nom, sa
-        valeur et ses deux prononciations : l’<strong>érasmienne</strong>, héritée
-        de l’enseignement classique, et la <strong>restituée</strong>, qui approche
-        la prononciation du Ier siècle. Touchez une lettre pour le détail ; les
-        diphtongues, esprits et accents suivent plus bas. Pour comprendre d’où
-        viennent ces deux systèmes et lequel choisir, lisez{" "}
+        Les 24 lettres du grec koinè et leurs deux{" "}
         <Link href="/prononciation" className="link link-primary">
-          notre page sur la prononciation du grec biblique
-        </Link>
-        .
+          prononciations
+        </Link>{" "}
+        : l’<strong>érasmienne</strong>, celle de l’enseignement classique, et la{" "}
+        <strong>restituée</strong>, proche du Ier siècle. Touchez une lettre pour le détail.
       </p>
 
       <Section title="Les lettres">

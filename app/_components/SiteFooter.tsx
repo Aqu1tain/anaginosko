@@ -21,9 +21,6 @@ export default function SiteFooter() {
         <Link href="/confidentialite" className="link-hover">Confidentialité</Link>
         <Link href="/conditions" className="link-hover">Conditions d’utilisation</Link>
       </nav>
-      <p className="mt-4 text-center text-xs">
-        Sources et licences détaillées dans les mentions légales.
-      </p>
     </footer>
   );
 }

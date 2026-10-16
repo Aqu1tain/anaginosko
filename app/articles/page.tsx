@@ -101,9 +101,6 @@ export default async function ArticlesPage({ searchParams }: { searchParams: Pro
     <div className="mx-auto max-w-4xl pb-16 pt-8">
       <BreadcrumbJsonLd items={[{ name: "Accueil", path: "/" }, { name: "Articles" }]} />
       <h1 className="text-3xl font-bold tracking-tight">Articles</h1>
-      <p className="mt-2 max-w-prose text-base-content/70">
-        Le grec de la Bible expliqué par les contributeurs du projet, et les coulisses d&apos;Anaginosko.
-      </p>
 
       <div className="mt-6 flex flex-wrap items-center gap-2">
         {tabs.map((t) => (
@@ -123,7 +120,7 @@ export default async function ArticlesPage({ searchParams }: { searchParams: Pro
 
       {!featured ? (
         <div className="mt-10 rounded-box border border-dashed border-base-300 py-16 text-center text-base-content/60">
-          Aucun article publié dans cette rubrique pour le moment.
+          Aucun article dans cette rubrique.
         </div>
       ) : (
         <>

@@ -76,9 +76,9 @@ export default function AccountView() {
       <h1 className="text-3xl font-bold">Mon compte</h1>
 
       <section className="mt-6 rounded-box border border-base-300 bg-base-100 p-5">
-        <h2 className="font-semibold">Votre progression</h2>
+        <h2 className="font-semibold">Progression</h2>
         <p className="mt-1 text-sm text-base-content/70">
-          {done.size === 0 ? "Aucune leçon terminée pour l’instant." : `${done.size} leçon${done.size > 1 ? "s" : ""} terminée${done.size > 1 ? "s" : ""}.`}
+          {done.size === 0 ? "Aucune leçon terminée." : `${done.size} leçon${done.size > 1 ? "s" : ""} terminée${done.size > 1 ? "s" : ""}.`}
         </p>
         <Link href="/apprendre" className="btn btn-primary btn-sm mt-3 rounded-full">Aller aux cours</Link>
       </section>

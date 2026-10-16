@@ -85,7 +85,7 @@ export default function LoginView() {
         ) : (
           <form onSubmit={checkCode} className="grid gap-3">
             <p className="text-sm text-base-content/75">
-              Un code à 6 chiffres vient d’être envoyé à <strong>{email}</strong>. Il est valable 10 minutes.
+              Code envoyé à <strong>{email}</strong>, valable 10 minutes.
             </p>
             <label className="block">
               <span className="text-sm font-medium">Code reçu</span>

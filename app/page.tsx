@@ -80,7 +80,7 @@ function Jump({ books }: { books: { id: string; name: string; chapters: number; 
   return (
     <section className="mt-14 rounded-box bg-base-200 px-5 py-7 wide:mt-28 wide:px-10 wide:py-10">
       <label htmlFor="aller" className="block font-semibold">
-        Aller directement à un passage ou à un mot
+        Aller à un passage ou à un mot
       </label>
       <div className="mt-3">
         <RefJump id="aller" books={books} routePrefix={NT.routePrefix} placeholder="Jean 3, 16 ou λόγος" submitLabel="Ouvrir" />
@@ -101,7 +101,6 @@ function Browse({ corpora }: { corpora: NavCorpus[] }) {
   return (
     <section className="mt-16 wide:mt-20">
       <h2 className={sectionTitle}>Parcourir la Bible</h2>
-      <p className="mt-2 text-base-content/70">Choisissez un livre, puis un chapitre.</p>
       <div className="mt-6 rounded-box border border-base-300 bg-base-100 p-5 wide:p-7">
         <BibleNavigator corpora={corpora} />
       </div>
@@ -204,7 +203,7 @@ function Support() {
       className="mt-14 flex flex-col gap-5 rounded-box bg-base-200 px-5 py-7 wide:mt-16 wide:flex-row wide:items-center wide:justify-between wide:px-10 wide:py-9"
     >
       <p className="max-w-[52ch] text-lg leading-relaxed text-base-content/80">
-        Un projet libre et indépendant, gratuit et sans publicité. Votre soutien finance la suite.
+        Gratuit et sans publicité, Anaginosko vit de vos dons.
       </p>
       <a href={TIPEEE} target="_blank" rel="noreferrer noopener" className="btn btn-accent btn-lg self-start rounded-full px-7 wide:self-auto">
         Nous soutenir

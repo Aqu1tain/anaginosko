@@ -29,7 +29,7 @@ function Wall({ path }: { path: string }) {
     <div className="mt-8 rounded-box border border-base-300 bg-base-200/60 p-6 text-center">
       <h2 className="text-lg font-semibold">Connectez-vous pour lire la leçon.</h2>
       <Link href={`/login?next=${encodeURIComponent(path)}`} className="btn btn-primary mt-4 rounded-full px-6">
-        Se connecter ou créer un compte
+        Se connecter
       </Link>
     </div>
   );

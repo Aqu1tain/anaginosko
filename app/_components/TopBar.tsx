@@ -107,7 +107,7 @@ export default function TopBar({ dark, onToggleTheme }: { dark: boolean; onToggl
               place revient au chevron retour + titre. */}
           <Link
             href="/"
-            aria-label={IS_PREPROD ? "Accueil — environnement NEXT" : "Accueil"}
+            aria-label={IS_PREPROD ? "Accueil, environnement NEXT" : "Accueil"}
             className={`btn btn-ghost gap-1.5 px-2 text-xl font-bold tracking-tight font-[family-name:var(--font-syne)] ${isLibrary ? "" : "hidden wide:inline-flex"}`}
           >
             Anaginosko

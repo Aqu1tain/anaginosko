@@ -118,7 +118,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
             <Avatar name={author.name} photo={author.photo} size={52} />
             <div>
               <p className="font-semibold group-hover:text-primary">{author.name}</p>
-              <p className="text-sm text-base-content/60">Voir le profil et les autres articles</p>
+              <p className="text-sm text-base-content/60">Voir le profil</p>
             </div>
           </Link>
         ) : (

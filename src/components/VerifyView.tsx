@@ -33,7 +33,7 @@ export default function VerifyView() {
           <h1 className="text-xl font-semibold">Confirmer votre signalement</h1>
 
           {!token ? (
-            <p className="text-sm text-error">Lien incomplet : aucun jeton fourni.</p>
+            <p className="text-sm text-error">Lien incomplet.</p>
           ) : state === "success" ? (
             <>
               <span className="badge badge-success badge-soft">Confirmé</span>
@@ -49,15 +49,12 @@ export default function VerifyView() {
             </>
           ) : (
             <>
-              <p className="text-sm text-base-content/70">
-                Cliquez pour valider le signalement que vous venez d’envoyer.
-              </p>
               <button
                 onClick={confirm}
                 disabled={state === "loading"}
                 className="btn btn-primary btn-sm mt-1"
               >
-                {state === "loading" ? "Confirmation…" : "Confirmer mon signalement"}
+                {state === "loading" ? "Confirmation…" : "Confirmer"}
               </button>
             </>
           )}
