@@ -36,33 +36,40 @@ function LemmaRow({ entry, corpus }: { entry: LemmaEntry; corpus: CorpusConfig }
   const bible = isBible(corpus) ? (entry as BibleLemma) : null;
   const base = bible ? lemmaConcordanceBase(bible) : corpus.concordanceBase;
   return (
-    <Link
-      href={`${base}/${encodeURIComponent(entry.lemma)}`}
-      className="flex items-center gap-3 rounded-box border border-base-300 bg-base-100 px-3.5 py-2.5 transition-colors hover:border-primary/40"
-    >
-      <span className="min-w-0 flex-1">
-        <span className="font-greek text-xl">{entry.lemma}</span>
-        <span className="ml-2 text-sm text-base-content/70">{entry.translitR}</span>
-        <span className="ml-1.5 text-xs text-base-content/70">· {entry.translit}</span>
-      </span>
-      <span className="shrink-0 text-xs text-base-content/70">{entry.nature}</span>
-      {bible ? (
-        <span className="flex shrink-0 gap-1">
-          {bible.nt > 0 && <span className="badge badge-sm badge-ghost">NT {bible.nt}</span>}
-          {bible.lxx > 0 && <span className="badge badge-sm badge-ghost">LXX {bible.lxx}</span>}
+    <li>
+      <Link
+        href={`${base}/${encodeURIComponent(entry.lemma)}`}
+        className="flex items-baseline gap-3 rounded-md px-2 py-2 transition-colors hover:bg-base-200/70"
+      >
+        <span lang="grc" className="font-greek text-xl">
+          {entry.lemma}
         </span>
-      ) : (
-        <span className="badge badge-sm badge-ghost shrink-0">{entry.count}</span>
-      )}
-    </Link>
+        <span className="min-w-0 flex-1 truncate text-sm text-base-content/55">
+          {entry.translitR}
+          <span className="hidden sm:inline"> · {entry.nature.toLowerCase()}</span>
+        </span>
+        <span className="shrink-0 text-xs tabular-nums text-base-content/55">
+          {bible ? [bible.nt && `NT ${bible.nt}`, bible.lxx && `LXX ${bible.lxx}`].filter(Boolean).join(" · ") : entry.count}
+        </span>
+      </Link>
+    </li>
   );
 }
 
-const EXAMPLE_LEMMAS = ["λόγος", "ἀγάπη", "θεός", "πίστις", "χάρις", "πνεῦμα"];
+// Sans recherche : les mots pleins les plus fréquents (les mots-outils n'apprennent rien).
+const CONTENT = new Set(["Nom", "Verbe", "Adjectif"]);
+const LIMIT = 200;
 
 function List({ index, corpus }: { index: LemmaEntry[]; corpus: CorpusConfig }) {
   const [query, setQuery] = useState("");
-  const results = useMemo(() => searchLemmaIndex(index, query), [index, query]);
+  const searching = query.trim().length > 0;
+  const results = useMemo(
+    () =>
+      searching
+        ? searchLemmaIndex(index, query)
+        : index.filter((e) => CONTENT.has(e.nature)).sort((a, b) => b.count - a.count),
+    [index, query, searching],
+  );
   // Amorce la recherche depuis ?q= (cible du SearchAction / sitelinks search box).
   // Via window plutôt que useSearchParams pour ne pas forcer le rendu client de
   // toute la page statique.
@@ -70,64 +77,39 @@ function List({ index, corpus }: { index: LemmaEntry[]; corpus: CorpusConfig }) 
     const q = new URLSearchParams(window.location.search).get("q");
     if (q) setQuery(q);
   }, []);
-  const examples = useMemo(() => {
-    const byLemma = new Map(index.map((e) => [e.lemma, e]));
-    return EXAMPLE_LEMMAS.map((l) => byLemma.get(l)).filter((e): e is LemmaEntry => !!e);
-  }, [index]);
 
   return (
-    <div className="pb-4">
-      <div className="max-w-2xl">
-        <p className="max-w-prose pt-6 text-[0.95rem] leading-relaxed text-base-content/75">
-          {index.length.toLocaleString("fr-FR")} lemmes {corpus.genitive}
-          {isBible(corpus) && ", Nouveau Testament et Septante réunis"}.
-        </p>
-        <input
-          type="search"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Chercher : λόγος, arkhi, logos…"
-          className="input input-bordered mt-4 w-full"
-          autoComplete="off"
-          autoCapitalize="off"
-          spellCheck={false}
-        />
-        {!query && examples.length > 0 && (
-          <div className="mt-3 flex flex-wrap items-center gap-1.5">
-            <span className="text-xs font-medium uppercase tracking-wide text-base-content/70">
-              Exemples
-            </span>
-            {examples.map((e) => (
-              <Link
-                key={e.lemma}
-                href={`${corpus.concordanceBase}/${encodeURIComponent(e.lemma)}`}
-                className="badge badge-lg badge-ghost gap-1.5 font-greek hover:badge-primary"
-              >
-                {e.lemma}
-                <span className="text-[0.65rem] text-base-content/70">{e.count}</span>
-              </Link>
-            ))}
-          </div>
-        )}
-      </div>
-      <p className="mt-3 mb-2 text-sm text-base-content/70">
-        {results.length} résultat{results.length > 1 ? "s" : ""}
+    <div className="max-w-3xl pb-4">
+      <h1 className="text-3xl font-bold">Concordance</h1>
+      <input
+        type="search"
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        placeholder="λόγος, logos, arkhi…"
+        aria-label="Chercher un mot grec"
+        className="input input-bordered input-lg mt-5 w-full font-greek"
+        autoComplete="off"
+        autoCapitalize="off"
+        spellCheck={false}
+      />
+      <p className="mt-2 text-xs text-base-content/50">
+        {index.length.toLocaleString("fr-FR")} lemmes {corpus.genitive}, en grec ou en translittération.
       </p>
+
+      <h2 className="mt-8 mb-2 text-sm font-semibold text-base-content/70">
+        {searching ? `${results.length} résultat${results.length > 1 ? "s" : ""}` : "Les plus fréquents"}
+      </h2>
       {results.length === 0 ? (
-        <div className="max-w-2xl rounded-box bg-base-200 px-4 py-6 text-center text-sm text-base-content/70">
-          Aucun résultat. Essayez en grec ou en translittération.
-        </div>
+        <p className="rounded-box bg-base-200 px-4 py-6 text-center text-sm text-base-content/70">Aucun résultat.</p>
       ) : (
-        <div className="grid gap-1.5 wide:grid-cols-2 wide:gap-x-3">
-          {results.slice(0, 300).map((e) => (
+        <ol className="grid divide-y divide-base-300/70 sm:grid-cols-2 sm:gap-x-6 sm:divide-y-0">
+          {results.slice(0, LIMIT).map((e) => (
             <LemmaRow key={e.lemma} entry={e} corpus={corpus} />
           ))}
-        </div>
+        </ol>
       )}
-      {results.length > 300 && (
-        <p className="mt-3 text-center text-sm text-base-content/70">
-          Affinez la recherche pour voir les {results.length - 300} autres.
-        </p>
+      {searching && results.length > LIMIT && (
+        <p className="mt-3 text-sm text-base-content/55">Affinez la recherche pour voir les {results.length - LIMIT} autres.</p>
       )}
     </div>
   );
