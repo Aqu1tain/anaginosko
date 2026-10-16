@@ -41,8 +41,8 @@ export default function LessonBody({
         )}
       </div>
 
-      <aside className="wide:sticky wide:top-20">
-        <p className="mb-3 text-sm font-semibold">
+      <aside className="wide:sticky wide:top-20 wide:max-h-[calc(100dvh-6rem)] wide:overflow-y-auto">
+        <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-base-content/60">
           <Link href={courseHref} className="hover:text-primary">{v.course.title}</Link>
         </p>
         <LessonList parts={parts} current={v.lesson.id} />
