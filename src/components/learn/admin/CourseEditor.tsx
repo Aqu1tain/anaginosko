@@ -165,6 +165,7 @@ export default function CourseEditor({ id }: { id: string }) {
             <input type="checkbox" className="toggle toggle-sm toggle-success" checked={course.status === "published"} onChange={(e) => edit({ status: e.target.checked ? "published" : "draft" })} />
             Publié
           </label>
+          <a href={`/apprendre/apercu/${course.id}`} target="_blank" rel="noreferrer" className="btn btn-outline btn-sm">Aperçu</a>
           {course.status === "published" && (
             <Link href={`/apprendre/${course.slug}`} className="link link-primary text-sm">Voir le cours</Link>
           )}

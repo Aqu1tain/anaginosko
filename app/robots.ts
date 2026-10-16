@@ -5,7 +5,7 @@ const PREPROD = process.env.NEXT_PUBLIC_PREPROD === "1";
 // Les variantes ?w= (mot surligné depuis une fiche-lemme) multiplient chaque chapitre
 // par des centaines d'URL au contenu identique : seule la page canonique est crawlée.
 // /markdown/ est la cible interne des adresses .md, explorables, elles.
-const DISALLOW = ["/admin", "/login", "/mon-profil", "/invitation/", "/verify", "/embed/", "/concordance/api/", "/markdown/", "/*?w="];
+const DISALLOW = ["/admin", "/apprendre/apercu/", "/login", "/mon-profil", "/invitation/", "/verify", "/embed/", "/concordance/api/", "/markdown/", "/*?w="];
 
 export default function robots(): MetadataRoute.Robots {
   // Préproduction : on n'indexe rien.

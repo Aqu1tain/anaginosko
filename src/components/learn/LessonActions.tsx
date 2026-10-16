@@ -8,7 +8,19 @@ import { useProgress } from "../../hooks/useProgress";
 type Step = { href: string; title: string } | null;
 
 // Fin de leçon : la marquer comme terminée (et passer à la suivante), naviguer.
-export default function LessonActions({ courseId, lessonId, prev, next }: { courseId: string; lessonId: string; prev: Step; next: Step }) {
+export default function LessonActions({
+  courseId,
+  lessonId,
+  prev,
+  next,
+  preview = false,
+}: {
+  courseId: string;
+  lessonId: string;
+  prev: Step;
+  next: Step;
+  preview?: boolean;
+}) {
   const { done, mark } = useProgress();
   const router = useRouter();
   const [busy, setBusy] = useState(false);
@@ -23,6 +35,7 @@ export default function LessonActions({ courseId, lessonId, prev, next }: { cour
 
   return (
     <div className="mt-12 grid gap-4 border-t border-base-300 pt-6">
+      {!preview && (
       <div className="flex flex-wrap items-center justify-between gap-3">
         {isDone ? (
           <button type="button" onClick={() => mark(courseId, lessonId, false)} className="btn btn-ghost btn-sm text-success">
@@ -34,6 +47,7 @@ export default function LessonActions({ courseId, lessonId, prev, next }: { cour
           </button>
         )}
       </div>
+      )}
       <nav className="flex items-stretch justify-between gap-3 text-sm">
         {prev ? (
           <Link href={prev.href} className="max-w-[48%] rounded-box border border-base-300 px-4 py-3 hover:bg-base-200">
