@@ -1,21 +1,15 @@
-import ConcordanceView from "@/src/components/ConcordanceView";
-import LemmaIndex from "@/app/_corpus/LemmaIndex";
-import Breadcrumb from "@/app/_components/Breadcrumb";
-import { GREEK_BIBLE } from "@/src/data/corpus";
+import { ConcordanceExplorer, explorerMetadata } from "@/app/_corpus/ConcordanceExplorer";
 
-export const metadata = {
-  title: "Concordance",
-  description:
-    "Concordance de la Bible grecque, Nouveau Testament et Septante : recherchez un lemme grec en grec ou en translittération latine (restituée ou érasmienne), avec définitions Bailly et occurrences.",
-  alternates: { canonical: "/concordance" },
-};
+type Props = { searchParams: Promise<Record<string, string | string[] | undefined>> };
 
-export default function ConcordancePage() {
-  return (
-    <>
-      <Breadcrumb items={[{ label: "Accueil", href: "/", home: true }, { label: "Concordance" }]} />
-      <ConcordanceView corpusId="bible" />
-      <LemmaIndex corpus={GREEK_BIBLE} />
-    </>
-  );
+export const generateMetadata = ({ searchParams }: Props) =>
+  explorerMetadata(searchParams, "all", {
+    title: "Concordance",
+    description:
+      "Concordance de la Bible grecque, Nouveau Testament et Septante : les 15 000 lemmes grecs, à chercher en grec ou en translittération, à filtrer par nature et fréquence.",
+    alternates: { canonical: "/concordance" },
+  });
+
+export default function ConcordancePage({ searchParams }: Props) {
+  return <ConcordanceExplorer searchParams={searchParams} defaultCorpus="all" path="/concordance" title="Concordance" />;
 }

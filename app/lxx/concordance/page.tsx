@@ -1,21 +1,15 @@
-import ConcordanceView from "@/src/components/ConcordanceView";
-import LemmaIndex from "@/app/_corpus/LemmaIndex";
-import Breadcrumb from "@/app/_components/Breadcrumb";
-import { LXX } from "@/src/data/corpus";
+import { ConcordanceExplorer, explorerMetadata } from "@/app/_corpus/ConcordanceExplorer";
 
-export const metadata = {
-  title: "Concordance de la Septante",
-  description:
-    "Concordance de la Septante (LXX) : recherchez un lemme grec en grec ou en translittération latine (restituée ou érasmienne), avec définitions Bailly et occurrences.",
-  alternates: { canonical: "/lxx/concordance" },
-};
+type Props = { searchParams: Promise<Record<string, string | string[] | undefined>> };
 
-export default function LxxConcordancePage() {
-  return (
-    <>
-      <Breadcrumb items={[{ label: "Accueil", href: "/", home: true }, { label: "Concordance de la Septante" }]} />
-      <ConcordanceView corpusId="lxx" />
-      <LemmaIndex corpus={LXX} />
-    </>
-  );
+export const generateMetadata = ({ searchParams }: Props) =>
+  explorerMetadata(searchParams, "lxx", {
+    title: "Concordance de la Septante",
+    description:
+      "Concordance de la Septante (LXX) : tous les lemmes grecs, à chercher en grec ou en translittération, à filtrer par nature et fréquence.",
+    alternates: { canonical: "/lxx/concordance" },
+  });
+
+export default function LxxConcordancePage({ searchParams }: Props) {
+  return <ConcordanceExplorer searchParams={searchParams} defaultCorpus="lxx" path="/lxx/concordance" title="Concordance de la Septante" />;
 }
