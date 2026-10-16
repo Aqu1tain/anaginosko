@@ -301,7 +301,7 @@ export default function LemmaDetail({
   initial,
 }: LemmaData & { cross?: LemmaData; lexicon: GlossAssessment; notice?: BaillyNotice | null; initial?: KwicPage }) {
   const self: LemmaData = { entry, occ, dist, books, colloc, corpus };
-  const [view, setView] = useState<"nt" | "lxx" | "both">(corpus.id === "lxx" ? "lxx" : "nt");
+  const [view, setView] = useState<"nt" | "lxx" | "both">(cross ? "both" : corpus.id === "lxx" ? "lxx" : "nt");
   const [book, setBook] = useState<string | null>(null);
   const [senseOpen, setSenseOpen] = useState(false);
 
@@ -342,14 +342,14 @@ export default function LemmaDetail({
         </div>
         {cross && (
           <div className="flex gap-1 rounded-full bg-base-200 p-1 text-sm" role="group" aria-label="Corpus">
+            <Seg active={view === "both"} onClick={() => pickView("both")}>
+              Tout <span className="tabular-nums opacity-60">{both?.entry.count ?? 0}</span>
+            </Seg>
             <Seg active={view === "nt"} onClick={() => pickView("nt")}>
               {NT.shortLabel} <span className="tabular-nums opacity-60">{nt?.entry.count ?? 0}</span>
             </Seg>
             <Seg active={view === "lxx"} onClick={() => pickView("lxx")}>
               {LXX.shortLabel} <span className="tabular-nums opacity-60">{lxx?.entry.count ?? 0}</span>
-            </Seg>
-            <Seg active={view === "both"} onClick={() => pickView("both")}>
-              Tout <span className="tabular-nums opacity-60">{both?.entry.count ?? 0}</span>
             </Seg>
           </div>
         )}
@@ -388,7 +388,7 @@ export default function LemmaDetail({
               ))}
             </select>
           </div>
-          <OccurrenceFeed sources={sources} book={book} initial={view === (corpus.id === "lxx" ? "lxx" : "nt") ? initial : undefined} />
+          <OccurrenceFeed sources={sources} book={book} initial={initial} initialCorpus={corpus.id} />
         </div>
 
         <aside className="min-w-0 space-y-8 wide:col-start-2 wide:row-start-2">

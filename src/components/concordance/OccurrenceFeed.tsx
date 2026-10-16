@@ -15,21 +15,25 @@ const countIn = (s: FeedSource, book: string | null) =>
 
 // Liste des occurrences en contexte, groupée par livre, chargée page par page.
 // Plusieurs sources (NT puis LXX) s'enchaînent pour la vue « les deux ».
+const PAGE = 30;
+
 export default function OccurrenceFeed({
   sources,
   book,
   initial,
+  initialCorpus,
 }: {
   sources: FeedSource[];
   book: string | null;
   initial?: KwicPage;
+  initialCorpus?: string;
 }) {
   const active = sources.filter((s) => countIn(s, book) > 0);
   const total = active.reduce((n, s) => n + countIn(s, book), 0);
   const key = `${active.map((s) => `${s.corpus.id}:${s.lemma}`).join("|")}#${book ?? ""}`;
-  const seeded = !!initial && !book && active.length > 0 && active[0] === sources[0];
+  const seeded = !!initial && !book && active[0]?.corpus.id === initialCorpus;
 
-  const [lines, setLines] = useState<Line[]>(() => (seeded ? initial!.lines.map((l) => ({ ...l, corpus: sources[0].corpus })) : []));
+  const [lines, setLines] = useState<Line[]>(() => (seeded ? initial!.lines.map((l) => ({ ...l, corpus: active[0].corpus })) : []));
   const [cursor, setCursor] = useState<Cursor>(() =>
     seeded ? (initial!.next !== null ? { src: 0, offset: initial!.next } : active.length > 1 ? { src: 1, offset: 0 } : null) : { src: 0, offset: 0 },
   );
@@ -37,20 +41,26 @@ export default function OccurrenceFeed({
   const [failed, setFailed] = useState(false);
   const [loadedKey, setLoadedKey] = useState(key);
 
+  // Charge une page complète, en passant d'une source à la suivante (NT puis LXX)
+  // sans attendre de clic quand la première est épuisée.
   const more = useCallback(
-    async (from: Cursor, reset: boolean) => {
-      if (!from) return;
-      const s = active[from.src];
-      if (!s) return;
+    async (from: Cursor, reset: boolean, have = 0) => {
+      let cursor: Cursor = from;
+      const added: Line[] = [];
       setLoading(true);
       setFailed(false);
       try {
-        const q = new URLSearchParams({ offset: String(from.offset), ...(book ? { book } : {}) });
-        const res = await fetch(`/concordance/api/kwic/${s.corpus.id}/${encodeURIComponent(s.lemma)}?${q}`);
-        if (!res.ok) throw new Error();
-        const page = (await res.json()) as KwicPage;
-        setLines((prev) => [...(reset ? [] : prev), ...page.lines.map((l) => ({ ...l, corpus: s.corpus }))]);
-        setCursor(page.next !== null ? { src: from.src, offset: page.next } : from.src + 1 < active.length ? { src: from.src + 1, offset: 0 } : null);
+        while (cursor && have + added.length < PAGE) {
+          const s = active[cursor.src];
+          const q = new URLSearchParams({ offset: String(cursor.offset), ...(book ? { book } : {}) });
+          const res = await fetch(`/concordance/api/kwic/${s.corpus.id}/${encodeURIComponent(s.lemma)}?${q}`);
+          if (!res.ok) throw new Error();
+          const page = (await res.json()) as KwicPage;
+          added.push(...page.lines.map((l) => ({ ...l, corpus: s.corpus })));
+          cursor = page.next !== null ? { src: cursor.src, offset: page.next } : cursor.src + 1 < active.length ? { src: cursor.src + 1, offset: 0 } : null;
+        }
+        setLines((prev) => [...(reset ? [] : prev), ...added]);
+        setCursor(cursor);
       } catch {
         setFailed(true);
       }
@@ -59,6 +69,12 @@ export default function OccurrenceFeed({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [key],
   );
+
+  // Page serveur plus courte qu'une page entière : compléter avec la source suivante.
+  useEffect(() => {
+    if (seeded && cursor && lines.length < PAGE) more(cursor, false, lines.length);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (key === loadedKey && lines.length) return;
@@ -118,7 +134,7 @@ export default function OccurrenceFeed({
       )}
       {!loading && !failed && cursor && lines.length > 0 && (
         <button type="button" className="btn btn-outline btn-sm mt-4 w-full" onClick={() => more(cursor, false)}>
-          Afficher plus · {total - lines.length} restantes
+          Afficher plus · {total - lines.length} restante{total - lines.length > 1 ? "s" : ""}
         </button>
       )}
     </section>
