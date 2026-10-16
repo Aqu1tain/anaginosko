@@ -59,8 +59,7 @@ function Hero({ verse, french, word, start }: { verse: Text; french: string | nu
           Lire et étudier la Bible en grec
         </h1>
         <p className="mt-5 max-w-[40ch] text-lg leading-relaxed text-base-content/75 wide:text-xl">
-          Tout le Nouveau Testament et toute la Septante, chaque mot analysé avec sa notice du Bailly,
-          une concordance des deux Testaments, la traduction en regard.
+          Le Nouveau Testament et la Septante en grec, mot à mot.
         </p>
         <div className="mt-8 flex flex-wrap gap-3">
           <Link href={start} className="btn btn-primary btn-lg rounded-full px-7">
