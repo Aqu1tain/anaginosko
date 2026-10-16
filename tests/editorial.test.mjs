@@ -327,3 +327,12 @@ test("un cours rédigé dans le dépôt s'importe en brouillon, une seule fois",
   assert.equal(store.discardLessonDraft(lessons[0]), true);
   assert.equal(store.getArticle(lessons[0]), null);
 });
+
+test("un relecteur retire une approbation non publiée en demandant des corrections", () => {
+  let a = approved();
+  assert.equal(transition(a, "request_changes", author, {}, "Non.").status, 403);
+  a = ok(transition(a, "request_changes", reviewer, {}, "Voir les commentaires."));
+  assert.equal(a.status, "changes_requested");
+  assert.equal(a.approval, null);
+  assert.equal(transition(a, "publish", publisher, { activeReviewerIds: [2] }).ok, false);
+});

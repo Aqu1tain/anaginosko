@@ -187,7 +187,7 @@ export default function EditorialWorkflow({
           </>
         )}
       {((author && ["draft", "changes_requested"].includes(a.status)) ||
-        (review && a.status === "in_review")) && (
+        (review && ["in_review", "approved"].includes(a.status))) && (
         <label className="block text-sm">
           Message / corrections attendues
           <textarea
@@ -208,8 +208,8 @@ export default function EditorialWorkflow({
           a.status === "in_review" &&
           button("approve", "Approuver cette version", true)}
         {review &&
-          a.status === "in_review" &&
-          button("request_changes", "Demander des corrections")}
+          ["in_review", "approved"].includes(a.status) &&
+          button("request_changes", a.status === "approved" ? "Retirer l’approbation et demander des corrections" : "Demander des corrections")}
         {publish &&
           a.status === "approved" &&
           button("publish", "Publier la version approuvée", true)}

@@ -596,13 +596,17 @@ export function applyTransition(
           "La relecture doit être faite par un autre relecteur, y compris pour Admin.",
           403,
         );
+      // Une approbation non encore publiée peut être retirée par un relecteur.
+      const withdrawal = action === "request_changes" && a.status === "approved";
       if (
-        a.status !== "in_review" ||
-        a.reviewRequest?.revision !== a.contentRevision
+        !withdrawal &&
+        (a.status !== "in_review" ||
+          a.reviewRequest?.revision !== a.contentRevision)
       )
         return fail("Cette version doit être soumise à nouveau.");
       if (
-        a.reviewRequest.reviewerId !== null &&
+        !withdrawal &&
+        a.reviewRequest?.reviewerId != null &&
         a.reviewRequest.reviewerId !== auth.id
       )
         return fail("La demande est attribuée à un autre relecteur.", 403);
