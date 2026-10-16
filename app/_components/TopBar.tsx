@@ -4,7 +4,6 @@ import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { corpusByDataPrefix } from "../../src/data/corpus";
-import { textById } from "../../src/data/texts";
 import { useAuth } from "../../src/hooks/useAuth";
 import Avatar from "../../src/components/profile/Avatar";
 import { isLearner } from "../../src/lib/api";
@@ -55,9 +54,6 @@ function chrome(pathname: string): { title: string | null; back: string; isLibra
   if (seg[0] === "articles") return { title: "Articles", back: seg.length > 1 ? "/articles" : "/", isLibrary: false };
   if (seg[0] === "login") return { title: "Connexion", back: "/", isLibrary: false };
   if (seg[0] === "admin") return { title: "Tableau de bord", back: "/", isLibrary: false };
-  if (seg[0] === "text") {
-    return { title: textById(seg[1])?.reference ?? "Texte", back: "/", isLibrary: false };
-  }
   const corpus = corpusByDataPrefix(seg[0]);
   if (corpus) {
     // Concordance d'un corpus (ex. /lxx/concordance) avant la lecture.

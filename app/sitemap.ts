@@ -1,7 +1,6 @@
 import type { MetadataRoute } from "next";
 import { loadBooksFs, loadLemmasFs } from "@/lib/nt-server";
 import { CORPORA } from "@/src/data/corpus";
-import { texts } from "@/src/data/texts";
 import { listPublished } from "@/lib/articles";
 import { listProfiles } from "@/lib/profiles";
 import { RITES } from "@/lib/lectionnaire";
@@ -62,7 +61,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     url("/conditions"),
     url("/articles"),
     ...corpusUrls,
-    ...texts.map((t) => url(`/text/${t.id}`)),
     ...articleUrls,
     ...profileUrls,
   ];

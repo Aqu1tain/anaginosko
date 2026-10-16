@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { textsByCollection, verseCount, type Text } from "../src/data/texts";
+import type { Text } from "../src/data/texts";
 import { loadBooksFs, loadChapterFs, loadLemmasFs } from "../lib/nt-server";
 import { NT, LXX } from "../src/data/corpus";
 import { listPublished } from "../lib/articles";
@@ -29,27 +29,14 @@ const TIPEEE = "https://fr.tipeee.com/anaginosko";
 
 const SHORTCUTS = [
   { href: "/lectures", label: "Lectures du jour" },
-  { href: "/text/passages-1", label: "Prologue de Jean" },
-  { href: "/text/passages-2", label: "Béatitudes" },
+  { href: "/nt/jn/1", label: "Prologue de Jean" },
+  { href: "/nt/mt/5", label: "Béatitudes" },
   { href: "/lxx/gen/1", label: "Genèse 1" },
   { href: `/concordance/${encodeURIComponent("ἀγάπη")}`, label: "ἀγάπη", greek: true },
 ];
 
 const chip = "inline-flex min-h-11 items-center rounded-full bg-base-300 px-4 text-[0.95rem] transition-colors hover:text-accent";
 const sectionTitle = "font-greek text-3xl font-bold leading-tight wide:text-4xl";
-
-// « Jean 1:1-18 (Prologue) » -> « Jean 1, 1-18 » et « Prologue ».
-function splitReference(reference: string) {
-  const m = reference.match(/^(.*?)\s*(?:\((.+)\))?$/);
-  const theme = m?.[2];
-  return {
-    ref: (m?.[1] ?? reference).replace(":", ", "),
-    theme: theme ? theme.charAt(0).toUpperCase() + theme.slice(1) : null,
-  };
-}
-
-const incipit = (grec: string, words = 5) =>
-  grec.split(/\s+/).slice(0, words).join(" ").replace(/[,.;·;·]+$/u, "");
 
 function Hero({ verse, french, word, start }: { verse: Text; french: string | null; word: HeroWord | null; start: string }) {
   return (
@@ -103,36 +90,6 @@ function Browse({ corpora }: { corpora: NavCorpus[] }) {
       <div className="mt-6 rounded-box border border-base-300 bg-base-100 p-5 wide:p-7">
         <BibleNavigator corpora={corpora} />
       </div>
-    </section>
-  );
-}
-
-function Passages({ passages }: { passages: Text[] }) {
-  return (
-    <section className="mt-16 wide:mt-20">
-      <h2 className={sectionTitle}>Passages pour commencer</h2>
-      <ul className="-mx-4 mt-6 flex snap-x snap-mandatory scroll-px-4 gap-4 overflow-x-auto px-4 pb-3 wide:mx-0 wide:scroll-px-0 wide:px-0">
-        {passages.map((t) => {
-          const { ref, theme } = splitReference(t.reference);
-          return (
-            <li key={t.id} className="w-64 shrink-0 snap-start">
-              <Link
-                href={`/text/${t.id}`}
-                className="flex h-full flex-col gap-3 rounded-box border border-base-300 bg-base-100 p-6 transition-colors hover:border-accent/50"
-              >
-                <span lang="grc" className="font-greek text-xl leading-snug text-accent">
-                  {incipit(t.grec)}
-                </span>
-                <span className="mt-auto font-semibold">{ref}</span>
-                <span className="text-sm text-base-content/70">
-                  {theme ? `${theme}, ` : ""}
-                  {verseCount(t)} versets
-                </span>
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
     </section>
   );
 }
@@ -231,14 +188,12 @@ export default async function Home() {
   const verse: Text = { ...jn1, francais: null, mots: (jn1.mots ?? []).filter((m) => m.verse === 1) };
   const logos = ntLemmas.find((e) => e.lemma === "λόγος");
   const word = logos ? { lemma: logos.lemma, gloss: "parole", nature: logos.nature.toLowerCase(), count: logos.count } : null;
-  const passages = textsByCollection("passages");
 
   return (
     <div>
-      <Hero verse={verse} french={jn1.francais?.["1"] ?? null} word={word} start={`/text/${passages[0]?.id ?? "passages-1"}`} />
+      <Hero verse={verse} french={jn1.francais?.["1"] ?? null} word={word} start="/nt/jn/1" />
       <Jump books={allBooks} />
       <Browse corpora={bibleNav} />
-      <Passages passages={passages} />
       <Figures
         figures={[
           { href: "/nt", value: facts.nt.books, label: "livres du Nouveau Testament" },

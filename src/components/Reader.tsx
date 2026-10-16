@@ -142,22 +142,12 @@ export default function Reader({ text }: { text: Text }) {
   }, []);
 
   // Clés de préférence distinctes par mode, pour que chaque mode garde son réglage.
-  // Passage (découverte lettre par lettre) : traduction masquée par défaut. Livre
-  // (lecture suivie) : traduction affichée par défaut, en colonnes si l'écran le
-  // permet (effectiveTranslation retombe sur « verses » quand les colonnes ne sont
-  // pas disponibles, ex. mobile). Les annotations restent masquées par défaut en
-  // passage.
-  const isPassage = text.collection === "passages";
+  // Traduction affichée par défaut, en colonnes si l'écran le permet
+  // (effectiveTranslation retombe sur « verses » sur mobile).
   const [manuscript, setManuscript] = usePersistentState<boolean>("anaginosko:manuscript", false);
   const [mode, setMode] = usePersistentState<TranslitMode>("anaginosko:translit", "off");
-  const [translation, setTranslation] = usePersistentState<"off" | "verses" | "columns">(
-    isPassage ? "anaginosko:translation:passage" : "anaginosko:translation",
-    isPassage ? "off" : "columns",
-  );
-  const [showAnnotations, setShowAnnotations] = usePersistentState<boolean>(
-    isPassage ? "anaginosko:annotations:passage" : "anaginosko:annotations",
-    isPassage ? false : true,
-  );
+  const [translation, setTranslation] = usePersistentState<"off" | "verses" | "columns">("anaginosko:translation", "columns");
+  const [showAnnotations, setShowAnnotations] = usePersistentState<boolean>("anaginosko:annotations", true);
   const [textScale, setTextScale] = usePersistentState<number>("anaginosko:textScale", 1);
   const adjustScale = (d: number) =>
     setTextScale((s) => Math.min(1.6, Math.max(0.8, Math.round((s + d) * 100) / 100)));

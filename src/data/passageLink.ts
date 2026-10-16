@@ -47,6 +47,7 @@ export function refHref(ref: string, wordIndex: number | null): string {
   if (ref.startsWith("lemma:")) return `/concordance/${encodeURIComponent(ref.slice(6))}`;
   if (ref.startsWith("def:")) return `/concordance/${encodeURIComponent(ref.slice(4))}`;
   if (ref.startsWith("lect:")) return `/lectures/${ref.slice(5).replace(":", "/")}`;
+  if (ref in PASSAGE_TO_NT) return refHref(linkedRef(ref)!, null);
   const w = wordIndex != null ? `?w=${wordIndex}` : "";
   const parsed = parseRef(ref);
   if (parsed) return `${corpusById(parsed.corpus).routePrefix}/${parsed.book}/${parsed.chapter}${w}`;
