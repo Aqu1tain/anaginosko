@@ -127,18 +127,6 @@ export default function TopBar({ dark, onToggleTheme }: { dark: boolean; onToggl
         </div>
 
         <div className="flex items-center gap-1">
-          <Link
-            href="/a-propos"
-            aria-label="À propos"
-            aria-current={pathname === "/a-propos" ? "page" : undefined}
-            className="btn btn-ghost btn-sm gap-1.5 px-2 max-sm:min-h-11 max-sm:min-w-11"
-          >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true" className="sm:hidden">
-              <circle cx="12" cy="12" r="9" />
-              <path d="M12 11v5M12 7.5v.5" />
-            </svg>
-            <span className="hidden font-semibold sm:inline">À propos</span>
-          </Link>
           <a
             href="https://fr.tipeee.com/anaginosko"
             target="_blank"
