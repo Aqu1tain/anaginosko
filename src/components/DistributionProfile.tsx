@@ -59,7 +59,7 @@ function Verses({
     return (
       <p className="mt-1 mb-2 ml-2 flex items-center gap-2 border-l-2 border-base-300 pl-3.5 text-xs text-base-content/70" aria-live="polite">
         <span className="loading loading-spinner loading-xs" aria-hidden="true" />
-        Chargement des {row.count} occurrences…
+        Chargement…
       </p>
     );
   }
@@ -230,11 +230,9 @@ export default function DistributionProfile({
         )}
       </div>
 
-      <p className="mt-2 text-xs text-base-content/70">
-        {mode === "density"
-          ? "Occurrences pour 1000 mots du livre. Touchez un livre pour ses versets."
-          : "Touchez un livre pour voir ses versets."}
-      </p>
+      {mode === "density" && (
+        <p className="mt-2 text-xs text-base-content/70">Occurrences pour 1000 mots du livre.</p>
+      )}
 
       {grouped ? groupView() : <div className="mt-3 grid gap-0.5 wide:grid-cols-2 wide:gap-x-8">{rows.map(BarRow)}</div>}
     </div>

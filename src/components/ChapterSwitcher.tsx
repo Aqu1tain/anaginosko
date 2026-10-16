@@ -69,7 +69,7 @@ export default function ChapterSwitcher({
             <div
               role="dialog"
               aria-modal="true"
-              aria-label="Aller à un livre ou un chapitre"
+              aria-label="Aller à un chapitre"
               className="relative max-h-[85dvh] w-full overflow-y-auto rounded-t-3xl border border-base-300 bg-base-100 p-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))] shadow-2xl sm:max-w-2xl sm:rounded-3xl"
             >
               <div className="mb-4 flex items-center justify-between gap-3">

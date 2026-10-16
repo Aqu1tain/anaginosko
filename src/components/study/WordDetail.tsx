@@ -133,9 +133,7 @@ export default function WordDetail({
             </Link>
           </p>
         )}
-        {letter == null ? (
-          <p className="mt-2 text-xs text-base-content/50">Touchez une lettre du mot pour la détailler.</p>
-        ) : (
+        {letter != null && (
           <div className="mt-3 rounded-box border border-accent/25 bg-accent/5 p-3">
             <LetterDetail info={graphemes[letter]} compact />
           </div>
@@ -160,12 +158,12 @@ export default function WordDetail({
               <>
                 <LexiconVia via={lexical.via} />
                 <LexiconSense gloss={lexical.gloss} collapsible />
-                <p className="mt-2 text-xs leading-snug text-base-content/55">Lexique général, à confirmer dans le contexte biblique.</p>
+                <p className="mt-2 text-xs leading-snug text-base-content/55">Lexique général, à vérifier en contexte.</p>
               </>
             ) : lexical.loading || definition === undefined ? (
-              <p className="text-sm text-base-content/60">Recherche du sens…</p>
+              <p className="text-sm text-base-content/60">Chargement…</p>
             ) : (
-              <p className="text-sm leading-snug text-base-content/65">Aucun sens fiable publié pour ce lemme.</p>
+              <p className="text-sm leading-snug text-base-content/65">Pas encore de sens fiable.</p>
             )}
             {notes && notes.length > 0 && (
               <div className="mt-3 rounded-box border border-primary/30 bg-primary/5 px-3 py-2.5">
@@ -190,7 +188,7 @@ export default function WordDetail({
         <div className="flex flex-col gap-3 border-t border-base-300 pt-4">
           {fiche && (
             <Link href={fiche} className="btn btn-primary btn-sm h-10 rounded-full">
-              Toutes les occurrences de <span lang="grc" className="font-greek text-base">{word.lemme}</span>
+              Occurrences de <span lang="grc" className="font-greek text-base">{word.lemme}</span>
             </Link>
           )}
           <div className="flex items-center justify-between gap-2">
@@ -204,7 +202,7 @@ export default function WordDetail({
             </div>
             {word.lemme && (
               <ReportButton
-                label="Signaler la définition ou demander une note"
+                label="Signaler la définition"
                 target={{
                   ref: `def:${word.lemme}`,
                   verse: null,

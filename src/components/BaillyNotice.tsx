@@ -132,7 +132,7 @@ export default function BaillyNotice({
       </div>
       {foldable && (
         <button type="button" onClick={() => setOpen((o) => !o)} aria-expanded={open} className="btn btn-ghost btn-xs mt-2 text-primary">
-          {open ? "Réduire la notice" : "Développer la notice"}
+          {open ? "Réduire" : "Développer"}
         </button>
       )}
     </div>
@@ -174,7 +174,7 @@ export function LexiconVia({ via }: { via?: string }) {
   if (!via) return null;
   return (
     <p className="mb-1.5 text-xs text-base-content/60">
-      Notice du Bailly à la forme <span className="font-greek text-sm text-base-content/80">{via}</span>.
+      Notice à la forme <span className="font-greek text-sm text-base-content/80">{via}</span>.
     </p>
   );
 }
@@ -216,13 +216,13 @@ export function LexiconSense({
           {loaded.loading ? (
             <span className="inline-flex items-center gap-2 text-xs text-base-content/60" aria-live="polite">
               <span className="loading loading-spinner loading-xs" aria-hidden="true" />
-              Chargement de la notice…
+              Chargement…
             </span>
           ) : wanted && loaded.notice === null ? (
             <span className="text-xs text-base-content/60">
-              Notice indisponible pour le moment.{" "}
+              Notice indisponible.{" "}
               <a href={`https://bailly.app/${encodeURIComponent(gloss.uri)}`} target="_blank" rel="noreferrer" className="link">
-                Ouvrir sur Bailly.app ↗
+                Bailly.app ↗
               </a>
             </span>
           ) : (

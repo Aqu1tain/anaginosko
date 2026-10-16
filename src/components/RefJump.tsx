@@ -23,7 +23,7 @@ export default function RefJump({
   books,
   routePrefix,
   id,
-  placeholder = "Chercher un livre, un chapitre… (ex. Jean 3)",
+  placeholder = "Livre, chapitre, verset…",
   submitLabel,
 }: {
   books: Book[];

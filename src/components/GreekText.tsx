@@ -250,7 +250,7 @@ function GreekText({
       dir="ltr"
       lang="grc"
       role="group"
-      aria-label="Texte grec : sélectionnez un mot pour son analyse"
+      aria-label="Texte grec"
       data-text-ref={text.id}
       data-pick={annotateMode ? "letter" : "word"}
       onClick={onClick}

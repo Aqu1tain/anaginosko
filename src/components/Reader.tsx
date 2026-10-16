@@ -26,19 +26,19 @@ import Tour, { type TourStep } from "./Tour";
 const TOUR_STEPS: TourStep[] = [
   {
     title: "Bienvenue sur Anaginosko",
-    body: "La Bible dans le texte grec, chaque mot analysé. Trois repères pour commencer.",
+    body: "La Bible en grec, chaque mot analysé.",
   },
   {
     target: ".glyph",
-    body: "Touchez un mot : son lemme, son analyse, son sens et sa prononciation s’ouvrent à côté. Les flèches passent au mot suivant, et chaque lettre du mot se détaille d’un toucher.",
+    body: "Touchez un mot pour voir son analyse et son sens.",
   },
   {
     target: 'button[aria-controls="reader-settings"]',
-    body: "Réglez l’affichage ici : écriture, prononciation, traduction et taille du texte.",
+    body: "Réglez ici l’écriture, la prononciation et la traduction.",
   },
   {
     target: 'a[href="/concordance"]',
-    body: "Cherchez un mot grec dans toute la Bible depuis la concordance.",
+    body: "Cherchez un mot grec dans toute la Bible.",
   },
 ];
 
@@ -77,9 +77,7 @@ function FrenchChapterBlock({ french, credit }: { french: Record<string, string>
         Traduction · versification distincte
       </div>
       <p className="mt-1 text-xs text-base-content/70">
-        Ce chapitre n’est pas numéroté de la même façon dans le grec et dans la
-        traduction ; l’alignement verset par verset n’est pas affiché ici pour ne
-        pas créer de fausses correspondances.
+        Numérotation différente du grec : pas d’alignement par verset.
       </p>
       <p className="mt-2 leading-relaxed text-base-content/85">
         {keys.map((v) => (
@@ -372,7 +370,7 @@ export default function Reader({ text }: { text: Text }) {
           href={`/admin/arbitrage?corpus=${parsedRef.corpus}&book=${parsedRef.book}&ch=${parsedRef.chapter}`}
           className="link shrink-0 text-base-content/60 underline-offset-2"
         >
-          Traduire ce chapitre dans l’atelier
+          Traduire dans l’atelier
         </a>
       )}
     </div>
@@ -500,10 +498,6 @@ export default function Reader({ text }: { text: Text }) {
 
   return (
     <article ref={rootRef}>
-      {annotateMode && (
-        <div className="text-sm text-base-content/70">Touchez le texte pour sélectionner</div>
-      )}
-
       {!settingsOpen && !annotateMode && (
         <button
           type="button"
@@ -626,7 +620,7 @@ export default function Reader({ text }: { text: Text }) {
             <button
               onClick={() => adjustScale(-0.1)}
               disabled={textScale <= 0.8}
-              aria-label="Réduire la taille du texte"
+              aria-label="Réduire le texte"
               className="btn join-item btn-sm sm:btn-md btn-outline border-base-300 flex-1"
             >
               <span className="text-xs font-semibold">A</span>
@@ -641,7 +635,7 @@ export default function Reader({ text }: { text: Text }) {
             <button
               onClick={() => adjustScale(0.1)}
               disabled={textScale >= 1.6}
-              aria-label="Agrandir la taille du texte"
+              aria-label="Agrandir le texte"
               className="btn join-item btn-sm sm:btn-md btn-outline border-base-300 flex-1"
             >
               <span className="text-lg font-semibold">A</span>
@@ -802,8 +796,7 @@ export default function Reader({ text }: { text: Text }) {
               </>
             ) : (
               <p className="text-center text-sm text-base-content/70">
-                Touchez une lettre pour annoter le <strong>mot</strong> ; ajustez ensuite la portée
-                (caractère, mot, phrase).
+                Touchez le mot à annoter.
               </p>
             )}
           </div>

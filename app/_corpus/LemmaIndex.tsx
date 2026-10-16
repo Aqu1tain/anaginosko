@@ -25,12 +25,7 @@ export default async function LemmaIndex({ corpus }: { corpus: CorpusConfig }) {
 
   return (
     <section className="mt-10 border-t border-base-300 pt-6 pb-6">
-      <h2 className="text-lg font-bold">Tous les lemmes, d’alpha à oméga</h2>
-      <p className="mt-1 text-sm text-base-content/70">
-        Les {lemmas.length.toLocaleString("fr-FR")} lemmes {corpus.genitive}
-        {isBible(corpus) && ", Nouveau Testament et Septante réunis"}, chacun avec sa
-        définition, ses occurrences et sa répartition.
-      </p>
+      <h2 className="text-lg font-bold">Index des lemmes</h2>
       <div className="mt-3 grid gap-1.5">
         {letters.map((L) => (
           <details key={L} className="collapse collapse-arrow border border-base-300 bg-base-100">

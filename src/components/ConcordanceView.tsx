@@ -79,11 +79,8 @@ function List({ index, corpus }: { index: LemmaEntry[]; corpus: CorpusConfig }) 
     <div className="pb-4">
       <div className="max-w-2xl">
         <p className="max-w-prose pt-6 text-[0.95rem] leading-relaxed text-base-content/75">
-          Concordance des {index.length.toLocaleString("fr-FR")} lemmes {corpus.genitive}
-          {isBible(corpus) && ", Nouveau Testament et Septante réunis"}. Cherchez en grec
-          (<span className="font-greek">λόγος</span>) ou en translittération latine, restituée
-          comme érasmienne (ex.&nbsp;<span className="font-greek">ἀρχή</span> : <em>arkhi</em> ou{" "}
-          <em>arkê</em>).
+          {index.length.toLocaleString("fr-FR")} lemmes {corpus.genitive}
+          {isBible(corpus) && ", Nouveau Testament et Septante réunis"}.
         </p>
         <input
           type="search"
@@ -118,7 +115,7 @@ function List({ index, corpus }: { index: LemmaEntry[]; corpus: CorpusConfig }) 
       </p>
       {results.length === 0 ? (
         <div className="max-w-2xl rounded-box bg-base-200 px-4 py-6 text-center text-sm text-base-content/70">
-          Aucun résultat. Essaie en grec ou en translittération latine.
+          Aucun résultat. Essayez en grec ou en translittération.
         </div>
       ) : (
         <div className="grid gap-1.5 wide:grid-cols-2 wide:gap-x-3">

@@ -64,8 +64,7 @@ export default function Collocations({ items, occ, corpus }: { items: Colloc[]; 
         Mots associés
       </div>
       <p className="mt-1 text-sm text-base-content/70">
-        Voisins classés par affinité (la barre) ; «&nbsp;N&nbsp;versets&nbsp;» compte les versets partagés.
-        Touchez un mot pour les voir.
+        Mots fréquents dans les mêmes versets, classés par affinité.
       </p>
 
       <div className="mt-3 grid gap-0.5 wide:grid-cols-2 wide:gap-x-8">

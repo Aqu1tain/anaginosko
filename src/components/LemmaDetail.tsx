@@ -84,9 +84,11 @@ function LemmaDefinitions({ lemma, lexicon, notice }: { lemma: string; lexicon: 
               <div className="text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-primary">
                 Sens du lemme
               </div>
-              <p className="mt-0.5 text-xs text-base-content/60">
-                {definition ? "Dans le grec biblique" : hasLexicon ? "Repère lexicographique général" : "État éditorial"}
-              </p>
+              {(definition || hasLexicon) && (
+                <p className="mt-0.5 text-xs text-base-content/60">
+                  {definition ? "Dans le grec biblique" : "Lexique du grec ancien"}
+                </p>
+              )}
             </div>
             <div className="flex shrink-0 items-center gap-1.5">
               <span className={`badge badge-sm ${definition ? "badge-primary" : hasLexicon ? "badge-ghost" : "badge-warning badge-soft"}`}>
@@ -127,17 +129,14 @@ function LemmaDefinitions({ lemma, lexicon, notice }: { lemma: string; lexicon: 
           ) : definition === undefined ? (
             <div className="mt-3 flex items-center gap-2 text-sm text-base-content/60" aria-live="polite">
               <span className="loading loading-spinner loading-xs" aria-hidden="true" />
-              Recherche d’un sens révisé…
+              Chargement…
             </div>
           ) : (
             <div className="mt-3 rounded-xl bg-base-200/70 px-3.5 py-3">
-              <p className="text-sm font-medium">Aucun sens fiable n’est encore publié.</p>
-              <p className="mt-1 text-sm leading-relaxed text-base-content/65">
-                Une notice approximative n’est pas affichée comme une définition. Les occurrences ci-dessous restent disponibles pour étudier le mot en contexte.
-              </p>
+              <p className="text-sm font-medium">Pas encore de sens fiable.</p>
               {canCreate && (
                 <button onClick={() => setEditing(true)} className="btn btn-primary btn-sm mt-3">
-                  Rédiger le sens Biblion
+                  Rédiger le sens
                 </button>
               )}
             </div>
@@ -145,7 +144,7 @@ function LemmaDefinitions({ lemma, lexicon, notice }: { lemma: string; lexicon: 
 
           {!definition && hasLexicon && (
             <p className="mt-3 text-xs leading-relaxed text-base-content/60">
-              Source générale non spécialisée dans le grec biblique. Le sens peut varier selon le contexte.
+              Sens général, à vérifier dans le contexte biblique.
             </p>
           )}
         </div>
@@ -155,7 +154,7 @@ function LemmaDefinitions({ lemma, lexicon, notice }: { lemma: string; lexicon: 
             <summary className="cursor-pointer list-none px-4 py-3 text-sm font-medium text-base-content/70 marker:content-none sm:px-5">
               <span className="inline-flex items-center gap-2">
                 <span className="transition-transform group-open:rotate-90" aria-hidden="true">›</span>
-                Consulter aussi la notice Bailly
+                Notice Bailly
               </span>
             </summary>
             <div className="border-t border-base-300 px-4 py-3 sm:px-5">
@@ -174,7 +173,7 @@ function LemmaDefinitions({ lemma, lexicon, notice }: { lemma: string; lexicon: 
               rel="noreferrer"
               className="link hover:text-primary"
             >
-              Ouvrir la source ↗
+              Source ↗
             </a>
           </div>
         )}
@@ -185,7 +184,7 @@ function LemmaDefinitions({ lemma, lexicon, notice }: { lemma: string; lexicon: 
           target={target}
           title="Définition Biblion"
           bodyLabel="Définition"
-          bodyPlaceholder="Sens du mot dans le grec biblique, quand Bailly est imprécis ou absent…"
+          bodyPlaceholder="Sens dans le grec biblique…"
           onClose={() => setEditing(false)}
           onSaved={() => {
             setEditing(false);
@@ -234,7 +233,7 @@ function BiblionNote({ lemma }: { lemma: string }) {
       </div>
 
       {notes.length === 0 ? (
-        <p className="mt-1 text-sm text-base-content/70">Aucune note pour ce lemme.</p>
+        <p className="mt-1 text-sm text-base-content/70">Aucune note.</p>
       ) : (
         <div className="mt-2 grid gap-3">
           {notes.map((n) => (
@@ -383,7 +382,7 @@ export default function LemmaDetail({
             </p>
           </div>
           {cross && (
-            <div className="join" role="group" aria-label="Filtrer les occurrences par corpus">
+            <div className="join" role="group" aria-label="Corpus">
               <Seg active={view === "nt"} onClick={() => setView("nt")}>
                 {NT.shortLabel}&nbsp;· {nt?.entry.count ?? 0}
               </Seg>

@@ -54,11 +54,11 @@ export default function CollapsibleIntro({
             aria-expanded={open}
             className="font-medium text-primary transition-colors hover:underline"
           >
-            {open ? "Réduire l’introduction" : "Lire la suite"}
+            {open ? "Réduire" : "Lire la suite"}
           </button>
         )}
         <a href="#chapitres" className="text-base-content/55 transition-colors hover:text-primary">
-          Aller aux chapitres ↓
+          Chapitres ↓
         </a>
       </div>
     </div>

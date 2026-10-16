@@ -23,7 +23,7 @@ export const CATEGORY_LABEL: Record<ReportCategory, string> = {
   texte: "Problème sur le texte grec",
   commentaire: "Commentaire à revoir",
   definition: "Définition à corriger",
-  demande_note: "Demander l’ajout d’une note",
+  demande_note: "Demander une note",
   lecture: "Erreur sur les lectures du jour",
 };
 
@@ -85,8 +85,8 @@ export default function ReportEditor({
             <h2 className="text-lg font-semibold">Merci !</h2>
             <p className="mt-2 text-sm text-base-content/80">
               {user
-                ? "Votre signalement est enregistré. L’équipe vous répondra à l’adresse de votre compte si besoin."
-                : "Un e-mail de confirmation vous a été envoyé. Cliquez sur le lien qu’il contient pour valider votre signalement."}
+                ? "Signalement enregistré."
+                : "Validez le signalement avec le lien reçu par e-mail."}
             </p>
             <button onClick={onClose} className="btn btn-primary btn-sm mt-5">
               Fermer
@@ -125,14 +125,14 @@ export default function ReportEditor({
 
             <label className="mt-3 block">
               <span className="text-sm font-medium">
-                Votre message <span className="text-error">*</span>
+                Message <span className="text-error">*</span>
               </span>
               <textarea
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 rows={4}
                 autoFocus
-                placeholder="Décrivez l’erreur ou la demande, aussi précisément que possible…"
+                placeholder="Décrivez l’erreur ou la demande…"
                 className="textarea textarea-bordered mt-1 w-full"
               />
             </label>
@@ -140,7 +140,7 @@ export default function ReportEditor({
             {!user && (
             <label className="mt-3 block">
               <span className="text-sm font-medium">
-                Votre e-mail <span className="text-error">*</span>
+                E-mail <span className="text-error">*</span>
               </span>
               <input
                 type="email"
