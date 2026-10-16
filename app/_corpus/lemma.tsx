@@ -12,6 +12,7 @@ import {
 import { fetchBaillyNotice } from "@/lib/bailly-server";
 import { lxxLemmaFor, ntLemmaFor } from "@/src/data/lemmaEquivalences";
 import LemmaDetail from "@/src/components/LemmaDetail";
+import { kwic } from "@/lib/kwic";
 import JsonLd from "@/app/_components/JsonLd";
 import { NT, LXX, type CorpusConfig } from "@/src/data/corpus";
 import type { LemmaEntry } from "@/src/data/nt";
@@ -66,6 +67,7 @@ export async function LemmaScreen({ corpus, params }: { corpus: CorpusConfig; pa
     loadGlossFs(l, corpus),
   ]);
   const notice = lexicon.gloss ? await fetchBaillyNotice(lexicon.gloss.uri) : null;
+  const initial = await kwic(l, corpus, dist, {});
 
   const cross = crossEntry
     ? await Promise.all([
@@ -97,7 +99,7 @@ export async function LemmaScreen({ corpus, params }: { corpus: CorpusConfig; pa
   return (
     <>
       <JsonLd data={definedTerm} />
-      <LemmaDetail entry={entry} occ={occ} dist={dist} books={books} colloc={colloc} corpus={corpus} cross={cross} lexicon={lexicon} notice={notice} />
+      <LemmaDetail entry={entry} occ={occ} dist={dist} books={books} colloc={colloc} corpus={corpus} cross={cross} lexicon={lexicon} notice={notice} initial={initial} />
     </>
   );
 }

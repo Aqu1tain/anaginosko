@@ -1,9 +1,10 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
-import Link from "next/link";
+import { useMemo, useState } from "react";
 import Breadcrumb from "../../app/_components/Breadcrumb";
-import DistributionProfile from "./DistributionProfile";
+import OccurrenceFeed, { type FeedSource } from "./concordance/OccurrenceFeed";
+import BookBars from "./concordance/BookBars";
+import type { KwicPage } from "@/lib/kwic";
 import Collocations from "./Collocations";
 import AnnotationEditor, { type AnnotationTarget } from "./AnnotationEditor";
 import { useAuth } from "../hooks/useAuth";
@@ -21,35 +22,6 @@ import {
   type Occ,
 } from "../data/nt";
 import { type CorpusConfig, NT, LXX, GREEK_BIBLE } from "../data/corpus";
-
-function Occurrences({ entry, occ, corpus }: { entry: LemmaEntry; occ: Occ[]; corpus: CorpusConfig }) {
-  return (
-    <div className="mt-4">
-      <div className="text-[0.7rem] font-medium uppercase tracking-wide text-base-content/70">
-        Occurrences
-      </div>
-      {entry.count > occ.length && (
-        <p className="mt-1 text-sm text-base-content/70">
-          {occ.length} premières occurrences sur {entry.count}.
-        </p>
-      )}
-      <div className="mt-2 grid gap-1.5 wide:grid-cols-2 wide:gap-x-3">
-        {occ.map((o, i) => (
-          <Link
-            key={i}
-            href={`${corpus.routePrefixOf?.(o.b) ?? corpus.routePrefix}/${o.b}/${o.c}?w=${o.w}`}
-            className="flex items-center gap-3 rounded-box border border-base-300 bg-base-100 px-3.5 py-2.5 transition-colors hover:border-primary/40"
-          >
-            <span className="font-greek min-w-0 flex-1 truncate text-lg">{o.f}</span>
-            <span className="shrink-0 text-sm text-base-content/70">
-              {corpus.bookNames[o.b] ?? o.b} {o.c}:{o.v}
-            </span>
-          </Link>
-        ))}
-      </div>
-    </div>
-  );
-}
 
 // Définition Biblion : système à part des annotations (ref « def:<lemma> »),
 // PRIORITAIRE sur Bailly. Quand elle existe, elle coiffe la fiche ; Bailly passe
@@ -326,31 +298,31 @@ export default function LemmaDetail({
   cross,
   lexicon,
   notice,
-}: LemmaData & { cross?: LemmaData; lexicon: GlossAssessment; notice?: BaillyNotice | null }) {
+  initial,
+}: LemmaData & { cross?: LemmaData; lexicon: GlossAssessment; notice?: BaillyNotice | null; initial?: KwicPage }) {
   const self: LemmaData = { entry, occ, dist, books, colloc, corpus };
   const [view, setView] = useState<"nt" | "lxx" | "both">(corpus.id === "lxx" ? "lxx" : "nt");
+  const [book, setBook] = useState<string | null>(null);
+  const [senseOpen, setSenseOpen] = useState(false);
 
   const nt = corpus.id === "nt" ? self : cross;
   const lxx = corpus.id === "lxx" ? self : cross;
   const both = useMemo(() => (nt && lxx ? combineData(nt, lxx) : null), [nt, lxx]);
-
   const shown: LemmaData = (view === "both" ? both : view === "lxx" ? lxx : nt) ?? self;
 
-  // Occurrences complètes d'un livre, à la demande : les listes chargées s'arrêtent
-  // aux 500 premières du corpus. Livres NT et LXX disjoints : l'id dit le corpus.
-  const ntLemma = nt?.entry.lemma;
-  const lxxLemma = lxx?.entry.lemma;
-  const loadBook = useCallback(
-    (bookId: string): Promise<Occ[]> => {
-      const inLxx = LXX.bookOrder.includes(bookId);
-      const lemma = inLxx ? lxxLemma : ntLemma;
-      if (!lemma) return Promise.resolve([]);
-      return fetch(`/concordance/api/occ/${inLxx ? "lxx" : "nt"}/${bookId}/${encodeURIComponent(lemma)}`)
-        .then((r) => (r.ok ? (r.json() as Promise<Occ[]>) : []))
-        .catch(() => []);
-    },
-    [ntLemma, lxxLemma],
-  );
+  const sources = useMemo<FeedSource[]>(() => {
+    const parts = view === "both" ? [nt, lxx] : [view === "lxx" ? lxx : nt];
+    return parts.filter((d): d is LemmaData => !!d).map((d) => ({ corpus: d.corpus, lemma: d.entry.lemma, dist: d.dist }));
+  }, [view, nt, lxx]);
+
+  const bookCounts = shown.books
+    .filter((b) => (shown.dist[b.id] ?? 0) > 0)
+    .map((b) => ({ id: b.id, name: shown.corpus.bookNames[b.id] ?? b.name, count: shown.dist[b.id] }));
+  const pickView = (v: typeof view) => {
+    setView(v);
+    setBook(null);
+  };
+  const filtered = book ? bookCounts.find((b) => b.id === book) : null;
 
   return (
     <div className="pb-4">
@@ -361,45 +333,79 @@ export default function LemmaDetail({
           { label: entry.lemma, greek: true },
         ]}
       />
-      <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-        <h1 className="font-greek text-3xl">{entry.lemma}</h1>
-        <span className="text-sm text-base-content/70">restituée&nbsp;: {entry.translitR}</span>
-        <span className="text-xs text-base-content/70">érasmien&nbsp;: {entry.translit}</span>
-        <span className="text-sm text-base-content/70">· {entry.nature}</span>
-      </div>
-
-      <LemmaDefinitions lemma={entry.lemma} lexicon={lexicon} notice={notice} />
-      <BiblionNote lemma={entry.lemma} />
-
-      <section className="mt-6 border-t border-base-300 pt-5" aria-labelledby="occurrence-scope">
-        <div className="flex flex-wrap items-end justify-between gap-3">
-          <div>
-            <h2 id="occurrence-scope" className="text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-base-content/60">
-              Explorer les occurrences
-            </h2>
-            <p className="mt-1 text-sm text-base-content/70">
-              {shown.entry.count} occurrence{shown.entry.count > 1 ? "s" : ""} {shown.corpus.locative}
-            </p>
+      <header className="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <h1 className="font-greek text-4xl leading-tight">{entry.lemma}</h1>
+          <p className="mt-1 text-sm text-base-content/60">
+            {entry.nature} · {entry.translitR} <span className="text-base-content/40">({entry.translit})</span>
+          </p>
+        </div>
+        {cross && (
+          <div className="flex gap-1 rounded-full bg-base-200 p-1 text-sm" role="group" aria-label="Corpus">
+            <Seg active={view === "nt"} onClick={() => pickView("nt")}>
+              {NT.shortLabel} <span className="tabular-nums opacity-60">{nt?.entry.count ?? 0}</span>
+            </Seg>
+            <Seg active={view === "lxx"} onClick={() => pickView("lxx")}>
+              {LXX.shortLabel} <span className="tabular-nums opacity-60">{lxx?.entry.count ?? 0}</span>
+            </Seg>
+            <Seg active={view === "both"} onClick={() => pickView("both")}>
+              Tout <span className="tabular-nums opacity-60">{both?.entry.count ?? 0}</span>
+            </Seg>
           </div>
-          {cross && (
-            <div className="join" role="group" aria-label="Corpus">
-              <Seg active={view === "nt"} onClick={() => setView("nt")}>
-                {NT.shortLabel}&nbsp;· {nt?.entry.count ?? 0}
-              </Seg>
-              <Seg active={view === "lxx"} onClick={() => setView("lxx")}>
-                {LXX.shortLabel}&nbsp;· {lxx?.entry.count ?? 0}
-              </Seg>
-              <Seg active={view === "both"} onClick={() => setView("both")}>
-                Les deux&nbsp;· {both?.entry.count ?? 0}
-              </Seg>
-            </div>
+        )}
+      </header>
+
+      <div className="mt-6 grid gap-8 wide:grid-cols-[minmax(0,1fr)_19rem] wide:grid-rows-[auto_1fr] wide:gap-10">
+        <div className="min-w-0 wide:col-start-2 wide:row-start-1">
+          <div className={`relative ${senseOpen ? "" : "max-h-56 overflow-hidden wide:max-h-none"}`}>
+            <LemmaDefinitions lemma={entry.lemma} lexicon={lexicon} notice={notice} />
+            <BiblionNote lemma={entry.lemma} />
+            {!senseOpen && <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-base-100 wide:hidden" />}
+          </div>
+          {!senseOpen && (
+            <button type="button" className="mt-2 text-sm font-medium text-primary wide:hidden" onClick={() => setSenseOpen(true)}>
+              Lire la notice
+            </button>
           )}
         </div>
-      </section>
 
-      <DistributionProfile entry={shown.entry} dist={shown.dist} books={shown.books} occ={shown.occ} corpus={shown.corpus} loadBook={loadBook} />
-      <Collocations items={shown.colloc} occ={shown.occ} corpus={shown.corpus} />
-      <Occurrences entry={shown.entry} occ={shown.occ} corpus={shown.corpus} />
+        <div className="min-w-0 wide:col-start-1 wide:row-span-2 wide:row-start-1">
+          <div id="occurrences" className="mb-3 flex scroll-mt-20 flex-wrap items-center justify-between gap-3 border-b border-base-300 pb-3">
+            <h2 className="text-lg font-semibold">
+              {filtered ? `${filtered.count} dans ${filtered.name}` : `${shown.entry.count} occurrence${shown.entry.count > 1 ? "s" : ""}`}
+            </h2>
+            <select
+              aria-label="Livre"
+              className="select select-bordered select-sm max-w-[14rem]"
+              value={book ?? ""}
+              onChange={(e) => setBook(e.target.value || null)}
+            >
+              <option value="">Tous les livres</option>
+              {bookCounts.map((b) => (
+                <option key={b.id} value={b.id}>
+                  {b.name} ({b.count})
+                </option>
+              ))}
+            </select>
+          </div>
+          <OccurrenceFeed sources={sources} book={book} initial={view === (corpus.id === "lxx" ? "lxx" : "nt") ? initial : undefined} />
+        </div>
+
+        <aside className="min-w-0 space-y-8 wide:col-start-2 wide:row-start-2">
+          <section>
+            <h2 className="mb-2 text-xs font-semibold uppercase tracking-wide text-base-content/55">Répartition</h2>
+            <BookBars
+              books={bookCounts}
+              value={book}
+              onChange={(id) => {
+                setBook(id);
+                document.getElementById("occurrences")?.scrollIntoView({ behavior: "smooth", block: "start" });
+              }}
+            />
+          </section>
+          <Collocations items={shown.colloc.slice(0, 8)} occ={shown.occ} corpus={shown.corpus} />
+        </aside>
+      </div>
     </div>
   );
 }
@@ -407,9 +413,10 @@ export default function LemmaDetail({
 function Seg({ active, onClick, children }: { active: boolean; onClick: () => void; children: React.ReactNode }) {
   return (
     <button
+      type="button"
       onClick={onClick}
       aria-pressed={active}
-      className={`btn join-item btn-sm ${active ? "btn-primary" : "btn-outline border-base-300"}`}
+      className={`rounded-full px-3 py-1 font-medium transition-colors ${active ? "bg-base-100 shadow-sm" : "text-base-content/60 hover:text-base-content"}`}
     >
       {children}
     </button>
