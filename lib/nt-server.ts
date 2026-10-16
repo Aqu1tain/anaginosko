@@ -4,7 +4,7 @@ import path from "node:path";
 import type { Text } from "../src/data/texts";
 import { bookById, chapterNumbers, type NtBook, type LemmaEntry, type Occ, type Distribution, type Colloc } from "../src/data/nt";
 import type { CorpusConfig } from "../src/data/corpus";
-import { ntMaison } from "./ntMaison";
+import { houseMaison } from "./ntMaison";
 import {
   assessGloss,
   type Gloss,
@@ -118,14 +118,13 @@ export async function loadChapterFs(book: string, chapter: number, c?: CorpusCon
   const maison: Record<string, string> = {};
   for (const k of Object.keys(maisonAll)) { const [mc, mv] = k.split(":"); if (mc === String(chapter)) maison[mv] = maisonAll[k]; }
   const francais = { ...(french?.[chapter] ?? {}) };
-  // NT : les traductions maison (base de l'API) remplacent le néo-Crampon verset par verset.
-  if ((c?.id ?? "nt") === "nt") {
-    for (const [ref, entry] of Object.entries((await ntMaison())[book] ?? {})) {
-      const [mc, mv] = ref.split(":");
-      if (mc !== String(chapter)) continue;
-      francais[mv] = entry.maison;
-      maison[mv] = entry.by;
-    }
+  // Les traductions maison publiées (base de l'API) remplacent la traduction de base
+  // (néo-Crampon, Giguet) verset par verset.
+  for (const [ref, entry] of Object.entries((await houseMaison(c?.id ?? "nt"))[book] ?? {})) {
+    const [mc, mv] = ref.split(":");
+    if (mc !== String(chapter)) continue;
+    francais[mv] = entry.maison;
+    maison[mv] = entry.by;
   }
   return {
     id: `${c?.refPrefix ?? "nt"}-${book}-${chapter}`,
