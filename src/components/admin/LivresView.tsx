@@ -58,7 +58,7 @@ export default function LivresView() {
   );
 
   return (
-    <div className="mx-auto max-w-3xl pb-16 pt-8">
+    <div className="pb-12 pt-6">
       <h1 className="text-3xl font-bold tracking-tight">Introductions de livres</h1>
       {error && <div className="alert alert-error mt-4 text-sm">{error}</div>}
       {section(NT)}

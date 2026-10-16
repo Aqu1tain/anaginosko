@@ -112,7 +112,7 @@ export default function BookIntroWorkbench({ corpus, book }: { corpus: string; b
   if (content === null) return <div className="py-20 text-center text-base-content/60">Chargement…</div>;
 
   return (
-    <div className="mx-auto max-w-3xl pb-20 pt-6">
+    <div className="pb-20 pt-6">
       <Link href="/admin/livres" className="link text-sm text-base-content/60">← Introductions de livres</Link>
       <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
         <div>

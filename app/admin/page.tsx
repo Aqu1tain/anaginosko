@@ -1,10 +1,7 @@
-import AdminView from "@/src/components/AdminView";
+import AdminOverview from "@/src/components/admin/AdminOverview";
 
-export const metadata = {
-  title: "Tableau de bord",
-  robots: { index: false },
-};
+export const metadata = { title: "Tableau de bord", robots: { index: false } };
 
 export default function AdminPage() {
-  return <AdminView />;
+  return <AdminOverview />;
 }

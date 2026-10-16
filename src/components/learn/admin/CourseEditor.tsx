@@ -143,7 +143,7 @@ export default function CourseEditor({ id }: { id: string }) {
   };
 
   return (
-    <div className="mx-auto max-w-3xl pb-24 pt-4">
+    <div className="pb-24 pt-6">
       <Link href="/admin/cours" className="link text-sm text-base-content/60">← Cours</Link>
 
       <div className="mt-4 grid gap-3">

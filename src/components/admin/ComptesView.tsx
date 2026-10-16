@@ -126,7 +126,7 @@ export default function ComptesView() {
   ];
 
   return (
-    <div className="mx-auto max-w-4xl space-y-6 py-8">
+    <div className="space-y-6 pb-12 pt-6">
       <header className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-3xl font-bold">Comptes</h1>
         <button type="button" className="btn btn-primary btn-sm" onClick={() => setInvite("new")}>

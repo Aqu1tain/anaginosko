@@ -24,7 +24,6 @@ import AnnotationEditor, { type AnnotationTarget } from "./AnnotationEditor";
 import { CATEGORY_LABEL } from "./ReportEditor";
 import AdminAnalytics from "./AdminAnalytics";
 import DefinitionCoverage from "./DefinitionCoverage";
-import Avatar from "./profile/Avatar";
 
 const STATUS_LABEL: Record<ReportStatus, string> = {
   pending: "En attente",
@@ -47,58 +46,6 @@ const CATEGORY_ORDER: ReportCategory[] = [
   "demande_note",
 ];
 
-
-function NavCard({ href, title, desc, icon, avatar }: { href: string; title: string; desc: string; icon?: React.ReactNode; avatar?: React.ReactNode }) {
-  return (
-    <a
-      href={href}
-      className="group flex items-start gap-3 rounded-xl border border-base-300 bg-base-100 p-4 shadow-sm transition-all hover:border-primary/40 hover:shadow-md"
-    >
-      {avatar ?? <span className="rounded-lg bg-primary/10 p-2 text-primary">{icon}</span>}
-      <div className="min-w-0">
-        <p className="font-semibold group-hover:text-primary">{title}</p>
-        <p className="text-xs text-base-content/60">{desc}</p>
-      </div>
-    </a>
-  );
-}
-
-function Stat({ label, value, accent }: { label: string; value: number; accent?: boolean }) {
-  return (
-    <div className="rounded-xl border border-base-300 bg-base-100 px-4 py-3 shadow-sm">
-      <p className={`text-2xl font-bold ${accent ? "text-warning" : ""}`}>{value}</p>
-      <p className="text-xs text-base-content/60">{label}</p>
-    </div>
-  );
-}
-
-const ICON = {
-  articles: (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M6 4h9l3 3v13H6z" />
-      <path d="M9 9h6M9 13h6M9 17h4" />
-    </svg>
-  ),
-  books: (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M4 4h7v16H4z" />
-      <path d="M13 6l6-1 1.5 15L14 20" />
-    </svg>
-  ),
-  arbitrage: (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M7 8h10M7 12h10M7 16h6" />
-      <circle cx="18.5" cy="16.5" r="2.5" />
-    </svg>
-  ),
-  accounts: (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <circle cx="9" cy="8" r="3" />
-      <path d="M3 20c0-3.3 2.7-5 6-5s6 1.7 6 5" />
-      <path d="M16 4.5a3 3 0 010 5.8M21 20c0-2.6-1-4.2-2.6-5" />
-    </svg>
-  ),
-};
 
 function locationLabel(ref: string): string {
   if (ref.startsWith("lemma:")) return ref.slice(6);
@@ -142,27 +89,29 @@ function targetFromAnnotation(a: Annotation): AnnotationTarget {
   };
 }
 
-export default function AdminView() {
-  const { user, ready, photo, logout } = useAuth();
+export type AdminSection = "annotations" | "definitions" | "analytics" | "reports";
+
+const TITLES: Record<AdminSection, string> = {
+  annotations: "Annotations",
+  definitions: "Définitions",
+  analytics: "Statistiques",
+  reports: "Signalements",
+};
+
+export default function AdminView({ section }: { section: AdminSection }) {
+  const { user, ready } = useAuth();
   const router = useRouter();
   const canDashboard = can(user, "dashboard");
   const seesAll = can(user, "moderate"); // voit toutes les annotations, pas seulement les siennes
   const canAnnotate = can(user, "annotations");
-  const canArticles = can(user, "articles") || can(user, "review") || can(user, "publish");
-  const canReview = can(user, "review");
-  const canCourses = can(user, "courses");
-  const canArbitrage = can(user, "arbitrage");
   const canReports = can(user, "reports");
-  const canAccounts = can(user, "accounts");
 
   const [stats, setStats] = useState<AdminStats | null>(null);
   const [annos, setAnnos] = useState<Annotation[]>([]);
   const [error, setError] = useState(false);
   const [editing, setEditing] = useState<AnnotationTarget | null>(null);
   const [pendingDelete, setPendingDelete] = useState<Annotation | null>(null);
-  const [tab, setTab] = useState<"annotations" | "definitions" | "analytics" | "reports">(
-    "annotations",
-  );
+  const tab = section;
   const [query, setQuery] = useState("");
   const [reports, setReports] = useState<AdminReport[]>([]);
   const [reportStatus, setReportStatus] = useState<ReportStatus | "all">("all");
@@ -230,18 +179,6 @@ export default function AdminView() {
   }, [learner, router]);
 
   if (!ready || learner) return null;
-  if (user && !canDashboard) return <div className="mx-auto max-w-4xl space-y-5 py-8">
-    <h1 className="text-3xl font-bold">Mon espace</h1>
-    <p className="text-base-content/65">{user.displayName} · {user.title}</p>
-    <div className="grid gap-3 sm:grid-cols-2">
-      <NavCard href="/mon-profil" title="Mon profil" desc="Identité et compte" avatar={<Avatar name={user.displayName} photo={photo} size={40} />} />
-      {canArticles && <NavCard href="/admin/articles" title="Articles" desc="Rédaction et relecture" icon={ICON.articles} />}
-      {canCourses && <NavCard href="/admin/cours" title="Cours" desc="Parties et leçons" icon={ICON.books} />}
-      {canAccounts && <NavCard href="/admin/comptes" title="Comptes" desc="Rôles et invitations" icon={ICON.accounts} />}
-      {canArbitrage && <NavCard href="/admin/arbitrage" title="Atelier de traduction" desc="Septante et Nouveau Testament" icon={ICON.arbitrage} />}
-    </div>
-    <button className="btn btn-ghost btn-sm" onClick={async () => { await logout(); router.push("/"); }}>Se déconnecter</button>
-  </div>;
   if (!canDashboard) {
     return (
       <div className="py-20 text-center text-base-content/70">
@@ -254,75 +191,11 @@ export default function AdminView() {
   }
   if (error) return <p className="py-20 text-center text-base-content/70">Chargement impossible.</p>;
 
-  const pendingCount = reports.filter((r) => r.status === "pending").length;
-  const sections: { key: "annotations" | "definitions" | "analytics" | "reports"; label: string; badge?: number }[] = [
-    { key: "annotations", label: annosTabLabel },
-    { key: "definitions", label: "Définitions" },
-    { key: "analytics", label: "Fréquentation" },
-    ...(canReports ? [{ key: "reports" as const, label: "Signalements", badge: pendingCount }] : []),
-  ];
+  if (section === "reports" && !canReports) return <p className="py-20 text-center text-base-content/70">Accès réservé.</p>;
 
   return (
-    <div className="mx-auto max-w-5xl pb-12 pt-8">
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Tableau de bord</h1>
-          <p className="mt-1 flex items-center gap-2 text-sm text-base-content/60">
-            {user?.displayName}
-            {user?.title && (
-              <span className="rounded-full bg-base-200 px-2 py-0.5 text-xs font-medium text-base-content/70">
-                {user.title}
-              </span>
-            )}
-          </p>
-        </div>
-        <button
-          onClick={async () => {
-            await logout();
-            router.push("/");
-          }}
-          className="btn btn-ghost btn-sm gap-1.5 text-base-content/70"
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
-            <path d="M16 17l5-5-5-5" />
-            <path d="M21 12H9" />
-          </svg>
-          Se déconnecter
-        </button>
-      </div>
-
-      <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        <NavCard href="/mon-profil" title="Mon profil" desc="Photo, bio, liens publics" avatar={<Avatar name={user?.displayName ?? ""} photo={photo} size={40} />} />
-        {canArticles && <NavCard href="/admin/articles" title="Articles" desc="Rédiger, relire, publier" icon={ICON.articles} />}
-        {canCourses && <NavCard href="/admin/cours" title="Cours" desc="Parties et leçons" icon={ICON.books} />}
-        {canReview && <NavCard href="/admin/livres" title="Introductions de livres" desc="Présentation par livre" icon={ICON.books} />}
-        {canArbitrage && <NavCard href="/admin/arbitrage" title="Atelier de traduction" desc="Septante et Nouveau Testament" icon={ICON.arbitrage} />}
-        {canAccounts && <NavCard href="/admin/comptes" title="Comptes" desc="Contributeurs, titres, permissions" icon={ICON.accounts} />}
-      </div>
-
-      {stats && (
-        <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
-          <Stat label={seesAll ? "Annotations" : "Mes annotations"} value={plainAnnos.length} />
-          <Stat label="Définitions" value={defs.length} />
-          {canReports && <Stat label="Signalements en attente" value={pendingCount} accent={pendingCount > 0} />}
-          <Stat label="Lectures de textes" value={stats.views} />
-        </div>
-      )}
-
-      <div className="mt-8 flex flex-wrap gap-1 border-b border-base-300">
-        {sections.map((s) => (
-          <button
-            key={s.key}
-            onClick={() => setTab(s.key)}
-            className={`relative px-4 py-2.5 text-sm font-medium transition-colors ${tab === s.key ? "text-primary" : "text-base-content/60 hover:text-base-content"}`}
-          >
-            {s.label}
-            {s.badge ? <span className="badge badge-warning badge-xs ml-1.5">{s.badge}</span> : null}
-            {tab === s.key && <span className="absolute inset-x-3 -bottom-px h-0.5 rounded-full bg-primary" />}
-          </button>
-        ))}
-      </div>
+    <div className="pb-12 pt-6">
+      <h1 className="text-3xl font-bold tracking-tight">{section === "annotations" ? annosTabLabel : TITLES[section]}</h1>
 
       {tab === "analytics" && (
         <section className="mt-6">

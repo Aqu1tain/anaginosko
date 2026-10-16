@@ -58,8 +58,7 @@ export default function CoursesAdminView() {
   };
 
   return (
-    <div className="mx-auto max-w-3xl pb-10 pt-4">
-      <Link href="/admin" className="link text-sm text-base-content/60">← Tableau de bord</Link>
+    <div className="pb-12 pt-6">
       <h1 className="mt-3 text-2xl font-bold">Cours</h1>
 
       <form onSubmit={create} className="mt-6 flex gap-2">

@@ -88,7 +88,7 @@ export default function ArticlesAdminView() {
     );
 
   return (
-    <div className="mx-auto max-w-4xl pb-16 pt-8">
+    <div className="pb-12 pt-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <h1 className="text-3xl font-bold tracking-tight">Articles</h1>
         {isEditor && (
