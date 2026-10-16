@@ -49,7 +49,7 @@ export default function ProfileEditor() {
   if (!user)
     return (
       <div className="py-20 text-center text-base-content/70">
-        <p>Connexion requise pour éditer votre profil.</p>
+        <p>Connexion requise.</p>
         <a href="/login" className="link link-primary mt-3 inline-block">Se connecter</a>
       </div>
     );
@@ -101,19 +101,14 @@ export default function ProfileEditor() {
   return (
     <div className="mx-auto max-w-2xl pb-16 pt-8">
       <div className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Mon profil</h1>
-          <p className="mt-1 text-sm text-base-content/60">
-            Votre identité publique : elle signe vos articles et votre page.
-          </p>
-        </div>
+        <h1 className="text-3xl font-bold tracking-tight">Mon profil</h1>
         <Link href={`/contributeurs/${profile.slug}`} className="btn btn-outline btn-sm">
           Voir ma page publique
         </Link>
       </div>
 
       <div className="mt-6 space-y-5">
-        <Section title="Identité" desc="Le nom d'affichage et la photo apparaissent sur vos articles.">
+        <Section title="Identité">
           <div className="flex items-center gap-4">
             <Avatar name={profile.displayName} photo={profile.photo} size={80} />
             <label className="btn btn-outline btn-sm cursor-pointer">
@@ -130,7 +125,7 @@ export default function ProfileEditor() {
             </label>
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
-            <Field label="Nom d'affichage" hint="Signe vos articles et votre page publique.">
+            <Field label="Nom d'affichage">
               <input
                 value={profile.displayName}
                 onChange={(e) => set({ displayName: e.target.value })}
@@ -138,7 +133,7 @@ export default function ProfileEditor() {
                 placeholder="ex. Biblion, Βιβλίον…"
               />
             </Field>
-            <Field label="Nom complet" hint="Facultatif, affiché sous le nom d'affichage.">
+            <Field label="Nom complet" hint="Facultatif, affiché publiquement.">
               <input
                 value={profile.fullName}
                 onChange={(e) => set({ fullName: e.target.value })}
@@ -149,7 +144,7 @@ export default function ProfileEditor() {
           </div>
         </Section>
 
-        <Section title="Compte" desc="L'adresse e-mail sert uniquement à la connexion, jamais affichée.">
+        <Section title="Compte">
           <Field label="Adresse e-mail">
             <p className="rounded-lg bg-base-200/70 px-3 py-2 text-sm">{email || "…"}</p>
           </Field>
@@ -213,9 +208,9 @@ export default function ProfileEditor() {
       {error && <div className="alert alert-error mt-4 text-sm">{error}</div>}
       <div className="sticky bottom-4 mt-6 flex items-center gap-3 rounded-xl border border-base-300 bg-base-100/95 p-3 shadow-lg backdrop-blur">
         <button className="btn btn-primary" disabled={busy} onClick={save}>
-          Enregistrer le profil
+          Enregistrer
         </button>
-        {saved && <span className="text-sm text-success">Profil enregistré.</span>}
+        {saved && <span className="text-sm text-success">Enregistré</span>}
       </div>
     </div>
   );

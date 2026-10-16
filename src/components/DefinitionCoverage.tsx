@@ -131,12 +131,7 @@ export default function DefinitionCoverage({ definitions }: { definitions: Annot
   return (
     <div className="mb-6 rounded-2xl border border-base-300 bg-base-200/40 p-4 sm:p-5">
       <div className="flex flex-wrap items-start justify-between gap-3">
-        <div>
-          <h2 className="font-semibold">Couverture des sens</h2>
-          <p className="mt-0.5 max-w-2xl text-xs leading-relaxed text-base-content/60">
-            Une définition Biblion est commune aux corpus. Bailly sert de repli seulement quand sa vedette correspond exactement au lemme.
-          </p>
-        </div>
+        <h2 className="font-semibold">Couverture des sens</h2>
         <div className="join" role="group" aria-label="Corpus de la couverture">
           {(["all", "nt", "lxx"] as const).map((id) => (
             <button
@@ -153,7 +148,7 @@ export default function DefinitionCoverage({ definitions }: { definitions: Annot
       {loading ? (
         <div className="mt-5 flex items-center gap-2 text-sm text-base-content/60">
           <span className="loading loading-spinner loading-sm" aria-hidden="true" />
-          Calcul de la couverture…
+          Calcul…
         </div>
       ) : (
         <>
@@ -171,7 +166,7 @@ export default function DefinitionCoverage({ definitions }: { definitions: Annot
             />
             <Metric
               value={stats.available.length}
-              label="Sens fiable affichable"
+              label="Sens fiable"
               detail={`${percent(stats.availableOccurrences, stats.totalOccurrences)} % des occurrences`}
               tone="text-success"
             />
@@ -185,14 +180,14 @@ export default function DefinitionCoverage({ definitions }: { definitions: Annot
 
           {stats.duplicateCount > 0 && (
             <p className="mt-3 rounded-lg border border-warning/35 bg-warning/10 px-3 py-2 text-xs text-base-content/75">
-              {stats.duplicateCount} définition{stats.duplicateCount > 1 ? "s" : ""} en doublon. Une seule définition devrait être active par lemme.
+              {stats.duplicateCount} définition{stats.duplicateCount > 1 ? "s" : ""} en doublon : une seule par lemme.
             </p>
           )}
 
           <div className="mt-5 flex items-center justify-between gap-3">
             <div>
-              <h3 className="text-sm font-semibold">À traiter en priorité</h3>
-              <p className="text-xs text-base-content/55">Lemmes les plus fréquents sans définition Biblion.</p>
+              <h3 className="text-sm font-semibold">Priorités</h3>
+              <p className="text-xs text-base-content/55">Les plus fréquents sans définition Biblion.</p>
             </div>
           </div>
           <div className="mt-2 grid gap-1.5 sm:grid-cols-2">

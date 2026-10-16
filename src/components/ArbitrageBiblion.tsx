@@ -21,13 +21,13 @@ export async function arb<T>(p: string, opts?: RequestInit): Promise<T> {
   const r = await fetch(`${API}${p}`, { ...opts, headers: { Authorization: `Bearer ${token()}`, "Content-Type": "application/json", ...(opts?.headers || {}) } });
   const body = await r.json().catch(() => null);
   if (r.ok) return body as T;
-  if (r.status === 401) throw new ArbError("Session expirée : reconnecte-toi dans un autre onglet puis réessaie. Ton travail à l'écran est conservé.");
+  if (r.status === 401) throw new ArbError("Session expirée : reconnectez-vous dans un autre onglet. Votre travail est conservé.");
   const message = body?.error || `Erreur du serveur (${r.status}).`;
   throw new ArbError(message, Array.isArray(body?.errors) ? body.errors : [message]);
 }
 
 export const arbErrors = (e: unknown): string[] =>
-  e instanceof ArbError ? e.errors : ["Serveur injoignable. Réessaie ; ton travail à l'écran est conservé."];
+  e instanceof ArbError ? e.errors : ["Serveur injoignable. Votre travail est conservé."];
 
 // Table des noms de livres : la carte canonique complète de la Septante (tous les
 // livres, pas un sous-ensemble codé en dur), partagée avec le lecteur et la concordance.
@@ -46,8 +46,8 @@ export function SinceLastVisit() {
   if (!since || !data || (data.installed.length === 0 && data.archived.length === 0)) return null;
   return (
     <div className="alert alert-info mt-3 flex-col items-start gap-1 text-sm">
-      <span className="font-semibold">Depuis ta dernière visite</span>
-      {data.installed.length > 0 && <span>{data.installed.length} entrée(s) installée(s)/fraîche(s) : {data.installed.slice(0, 8).map((e) => `${e.book} ${e.ref}`).join(", ")}{data.installed.length > 8 ? "…" : ""}</span>}
+      <span className="font-semibold">Depuis votre dernière visite</span>
+      {data.installed.length > 0 && <span>{data.installed.length} nouvelle(s) entrée(s) : {data.installed.slice(0, 8).map((e) => `${e.book} ${e.ref}`).join(", ")}{data.installed.length > 8 ? "…" : ""}</span>}
       {data.archived.length > 0 && <span>{data.archived.length} archivée(s) : {data.archived.slice(0, 8).map((e) => `${e.book} ${e.ref}`).join(", ")}</span>}
     </div>
   );

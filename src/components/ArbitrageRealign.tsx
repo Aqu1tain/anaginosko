@@ -35,10 +35,10 @@ export function ErrorMap({ onOpen }: { onOpen: (book: string, ch: number) => voi
   useEffect(() => { arb<Overview>("/overview").then(setData).catch((e) => setErr(arbErrors(e).join(" "))); }, []);
   if (err) return <div className="alert alert-error mt-6 text-sm">{err}</div>;
   if (!data) return <p className="mt-6 text-sm text-base-content/60">Chargement…</p>;
-  if (!data.books.length) return <p className="mt-6 text-sm text-success">Tout est aligné. Rien à revoir.</p>;
+  if (!data.books.length) return <p className="mt-6 text-sm text-success">Tout est aligné.</p>;
   return (
     <div className="mt-4">
-      <p className="text-sm text-base-content/70"><span className="font-semibold text-primary">{data.grandTotal}</span> versets à revoir, dans {data.books.length} livres. Le reste est aligné.</p>
+      <p className="text-sm text-base-content/70"><span className="font-semibold text-primary">{data.grandTotal}</span> versets à revoir, dans {data.books.length} livres.</p>
       <div className="mt-3 grid gap-2">
         {data.books.map((b) => (
           <div key={b.book} className="overflow-hidden rounded-box border border-base-300 bg-base-100">
@@ -233,7 +233,7 @@ export function ChapterRealign({ book, ch, focusRef, prevCh, nextCh, onNavigate,
   const dirty = assign.map((_, i) => changed(i)).filter(Boolean).length;
   // Fermeture protégée : des heures de cherry-pick ne partent pas sur un clic hors
   // panneau, un changement de chapitre ou la fermeture de l'onglet.
-  const confirmLeave = () => !dirty || window.confirm(`${dirty} modification(s) non enregistrée(s) seront perdues. Continuer sans enregistrer ?`);
+  const confirmLeave = () => !dirty || window.confirm(`Abandonner ${dirty} modification(s) non enregistrée(s) ?`);
   const tryClose = () => { if (confirmLeave()) onClose(); };
   const tryNavigate = (target: number) => { if (confirmLeave()) onNavigate?.(target); };
 
@@ -275,9 +275,9 @@ export function ChapterRealign({ book, ch, focusRef, prevCh, nextCh, onNavigate,
               <button className="btn btn-sm btn-ghost join-item" disabled={!nextCh || busy} title="Chapitre suivant" onClick={() => nextCh && tryNavigate(nextCh)}>→</button>
             </div>
             {(() => { const remaining = data.errorRefs.filter((r) => !valid.has(r)); return remaining.length > 0 ? (
-              <button className="btn btn-xs btn-success btn-outline" title="Marquer tout ce chapitre comme vérifié : il ne remontera plus comme erreur" disabled={busy}
+              <button className="btn btn-xs btn-success btn-outline" title="Ne plus signaler ce chapitre comme erreur" disabled={busy}
                 onClick={() => setValidated(remaining, true)}>
-                ✓ tout ce chapitre est bon ({remaining.length})
+                ✓ tout est bon ({remaining.length})
               </button>
             ) : <span className="badge badge-success badge-sm">chapitre vérifié</span>; })()}
             <div className="ml-auto flex items-center gap-2">
@@ -286,7 +286,6 @@ export function ChapterRealign({ book, ch, focusRef, prevCh, nextCh, onNavigate,
             </div>
           </div>
           <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-base-content/55">
-            <span>Le grec est fixe ; c’est le français qui se recale.</span>
             <span className="ml-auto flex flex-wrap items-center gap-2">
               {range.lo > chBounds.lo || range.hi < chBounds.hi ? null : (
                 <span className="join">
@@ -295,10 +294,10 @@ export function ChapterRealign({ book, ch, focusRef, prevCh, nextCh, onNavigate,
                 </span>
               )}
               {(range.lo < chBounds.lo || range.hi > chBounds.hi) && <span className="badge badge-info badge-sm" title="La bande déborde sur un chapitre voisin">bande étendue</span>}
-              <span>Décaler toute la traduction</span>
+              <span>Tout décaler</span>
               <span className="join">
                 <button className="btn btn-xs join-item" title="Toute la traduction monte d'un cran" onClick={() => slide(0, 1)}>↑</button>
-                <button className="btn btn-xs join-item" title="Toute la traduction descend d'un cran (le premier verset reste sans traduction)" onClick={() => slide(0, -1)}>↓</button>
+                <button className="btn btn-xs join-item" title="Toute la traduction descend d'un cran" onClick={() => slide(0, -1)}>↓</button>
               </span>
             </span>
           </div>
@@ -337,7 +336,7 @@ export function ChapterRealign({ book, ch, focusRef, prevCh, nextCh, onNavigate,
                     // Sélecteur d'extrait : les mots du verset Giguet assigné, 1er clic = début, 2e = fin.
                     <div className="mt-0.5 rounded border-l-2 border-accent bg-accent/5 px-2 py-1.5">
                       <div className="flex items-center justify-between text-[0.7rem] uppercase tracking-wide text-accent">
-                        <span>Extrait de {assignedV(i)!.ch}:{assignedV(i)!.v} : {extractMode.start == null ? "clique le 1er mot" : "clique le dernier mot"}</span>
+                        <span>Extrait de {assignedV(i)!.ch}:{assignedV(i)!.v} : {extractMode.start == null ? "cliquez le premier mot" : "cliquez le dernier mot"}</span>
                         <button className="btn btn-ghost btn-xs" onClick={() => setExtractMode(null)}>annuler</button>
                       </div>
                       <p className="mt-1 text-sm leading-loose">
@@ -356,19 +355,19 @@ export function ChapterRealign({ book, ch, focusRef, prevCh, nextCh, onNavigate,
                     <CherryPick book={book} current={assignedV(i)} defaultCh={ch} onPick={(pch, pv, ptext) => { setRow(i, { kind: "pick", ch: pch, v: pv, text: ptext }); setPickMode(null); }} onCancel={() => setPickMode(null)} />
                   ) : (
                     <>
-                      <p className={`mt-0.5 text-sm leading-relaxed ${!fr.text ? "italic text-base-content/35" : ""}`}>{fr.text || "— sans traduction française"}</p>
+                      <p className={`mt-0.5 text-sm leading-relaxed ${!fr.text ? "italic text-base-content/35" : ""}`}>{fr.text || "sans traduction française"}</p>
                       {fr.tag === "maison" && g.autoText && <p className="mt-1 text-xs leading-relaxed text-base-content/45">Giguet : {g.autoText}</p>}
                     </>
                   )}
                   {extractMode?.i !== i && pickMode !== i && (
                     <div className="mt-1.5 flex flex-wrap items-center gap-1">
                       <MaisonInline current={assign[i].kind === "maison" ? (assign[i] as { text: string }).text : g.french || ""} original={g.autoText} onSet={(t) => setRow(i, { kind: "maison", text: t })} />
-                      {g.overridden && assign[i].kind !== "auto" && <button className="btn btn-ghost btn-xs" title="Abandonner ce réglage et reprendre le lien automatique vers Giguet" onClick={() => setRow(i, { kind: "auto" })}>revenir à Giguet</button>}
+                      {g.overridden && assign[i].kind !== "auto" && <button className="btn btn-ghost btn-xs" title="Reprendre le lien automatique vers Giguet" onClick={() => setRow(i, { kind: "auto" })}>revenir à Giguet</button>}
                       <div className="dropdown dropdown-end">
                         <div tabIndex={0} role="button" className="btn btn-ghost btn-xs">autre lien ▾</div>
                         <ul tabIndex={0} className="dropdown-content menu z-20 w-64 rounded-box border border-base-200 bg-base-100 p-1 text-xs shadow">
                           <li><button onClick={() => { closeMenus(); setPickMode(i); }}>Choisir un verset Giguet…</button></li>
-                          {assignedV(i) && <li><button onClick={() => { closeMenus(); setExtractMode({ i, start: null }); }}>Ne garder qu&apos;un extrait du verset</button></li>}
+                          {assignedV(i) && <li><button onClick={() => { closeMenus(); setExtractMode({ i, start: null }); }}>Garder un extrait</button></li>}
                           <li><button onClick={() => { closeMenus(); setRow(i, { kind: "orphan" }); }}>Sans traduction (orphelin)</button></li>
                         </ul>
                       </div>
@@ -396,10 +395,9 @@ export function LogsSection({ onOpen }: { onOpen?: (book: string, ch: number) =>
   const [entries, setEntries] = useState<LogEntry[] | null>(null);
   useEffect(() => { arb<{ entries: LogEntry[] }>("/logs").then((d) => setEntries(d.entries || [])).catch(() => setEntries([])); }, []);
   if (!entries) return <p className="mt-6 text-sm text-base-content/60">Chargement…</p>;
-  if (!entries.length) return <p className="mt-6 text-sm text-base-content/60">Aucune activité pour l'instant.</p>;
+  if (!entries.length) return <p className="mt-6 text-sm text-base-content/60">Aucune activité.</p>;
   return (
     <div className="mt-4">
-      <p className="text-sm text-base-content/70">Ce que Biblion et les admins ont fait, du plus récent au plus ancien. Clique une ligne pour ouvrir le chapitre.</p>
       <div className="mt-3 grid gap-1">
         {entries.map((e, i) => {
           const ch = Number(e.ref.split(":")[0]);

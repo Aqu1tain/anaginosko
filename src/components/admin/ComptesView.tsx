@@ -164,10 +164,7 @@ function AccountCard({
       </div>
       <fieldset disabled={account.isRoot || busy} className="space-y-4">
         <label className="block text-sm">
-          Titre public{" "}
-          <span className="text-base-content/50">
-            (sans effet sur les droits)
-          </span>
+          Titre public
           <input
             className="input input-bordered mt-1 w-full"
             value={title}
@@ -176,16 +173,15 @@ function AccountCard({
           />
         </label>
         <div>
-          <p className="mb-2 text-sm font-medium">Rôles cumulables</p>
+          <p className="mb-2 text-sm font-medium">Rôles</p>
           <RolePicker roles={roles} value={roleIds} onChange={setRoleIds} />
         </div>
         <details>
           <summary className="cursor-pointer text-sm">
-            Droits individuels supplémentaires ({permissions.length})
+            Droits individuels ({permissions.length})
           </summary>
           <p className="my-2 text-xs text-base-content/60">
-            Ils s’ajoutent aux rôles. Décocher ici ne retire pas un droit
-            accordé par un rôle.
+            Décocher ne retire pas un droit hérité d’un rôle.
           </p>
           <PermissionGrid value={permissions} onChange={setPermissions} />
         </details>
@@ -215,7 +211,7 @@ function AccountCard({
       </details>
       {account.isRoot ? (
         <p className="text-xs text-base-content/60">
-          Accès complets. La validation de ses propres articles reste interdite.
+          Tous les droits, sauf approuver ses propres articles.
         </p>
       ) : (
         <button
@@ -223,7 +219,7 @@ function AccountCard({
           disabled={busy || !changed}
           onClick={save}
         >
-          {busy ? "Enregistrement…" : "Enregistrer les accès"}
+          {busy ? "Enregistrement…" : "Enregistrer"}
         </button>
       )}
       {error && (
@@ -256,8 +252,7 @@ function RoleEditor({
     <section className="space-y-4 rounded-xl border border-base-300 bg-base-100 p-5">
       <h2 className="text-lg font-semibold">Rôles et permissions</h2>
       <p className="text-sm text-base-content/65">
-        Un rôle regroupe des droits. Ses modifications s’appliquent à tous les
-        comptes et invitations qui le portent.
+        Les modifications s’appliquent à tous les comptes et invitations du rôle.
       </p>
       <label className="block text-sm">
         Rôle à modifier
@@ -359,10 +354,6 @@ export default function ComptesView() {
     <div className="mx-auto max-w-4xl space-y-6 py-8">
       <div>
         <h1 className="text-3xl font-bold">Comptes et accès</h1>
-        <p className="mt-2 text-base-content/65">
-          Inviter l’équipe, attribuer des rôles et comprendre qui peut faire
-          quoi.
-        </p>
         {data?.learners != null && (
           <p className="mt-1 text-sm text-base-content/55">
             {data.learners} compte{data.learners > 1 ? "s" : ""} apprenant{data.learners > 1 ? "s" : ""}
@@ -395,7 +386,7 @@ export default function ComptesView() {
           {notice}
         </p>
       )}
-      {!data && !error && <p>Chargement des comptes…</p>}
+      {!data && !error && <p>Chargement…</p>}
       {data && tab === "accounts" && (
         <div className="space-y-4">
           {data.users.map((account) => (
@@ -438,7 +429,7 @@ export default function ComptesView() {
               }
             }}
           >
-            <h2 className="font-semibold">Inviter une personne</h2>
+            <h2 className="font-semibold">Nouvelle invitation</h2>
             <label className="block text-sm">
               Adresse e-mail
               <input
@@ -474,8 +465,7 @@ export default function ComptesView() {
             </fieldset>
             {!roleIds.length && (
               <p className="text-xs text-warning">
-                Sans rôle, cette personne pourra se connecter mais n’aura pas
-                d’accès éditorial.
+                Sans rôle, aucun accès éditorial.
               </p>
             )}
             <button disabled={busy} className="btn btn-primary">

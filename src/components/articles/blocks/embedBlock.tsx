@@ -65,13 +65,13 @@ function EmbedBlockView({
 
   return (
     <div contentEditable={false} className="my-1 rounded-lg border border-dashed border-base-300 p-4">
-      <p className="text-sm font-medium">Intégrer une carte, une vidéo ou un graphique</p>
+      <p className="text-sm font-medium">Carte, vidéo ou graphique</p>
       <div className="mt-2 flex gap-2">
         <input
           value={draft}
           onChange={(e) => setDraft(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && submit()}
-          placeholder="Coller le lien (ex. https://youtu.be/…)"
+          placeholder="https://youtu.be/…"
           className="input input-bordered input-sm w-full"
         />
         <button type="button" className="btn btn-primary btn-sm" onClick={submit}>
@@ -82,7 +82,7 @@ function EmbedBlockView({
         <p className="mt-2 text-xs text-error">{error}</p>
       ) : (
         <p className="mt-2 text-xs text-base-content/50">
-          YouTube : le lien de la vidéo. Google Maps / Datawrapper : le lien « Intégrer » (iframe). Sources : {EMBED_ALLOWLIST}.
+          Maps et Datawrapper : lien « Intégrer ».
         </p>
       )}
     </div>

@@ -60,9 +60,6 @@ export default function LivresView() {
   return (
     <div className="mx-auto max-w-3xl pb-16 pt-8">
       <h1 className="text-3xl font-bold tracking-tight">Introductions de livres</h1>
-      <p className="mt-1 text-sm text-base-content/60">
-        Rédigez une présentation éditoriale par livre (auteur, thème, particularités). Elle s'affiche en tête de la page du livre et améliore son référencement.
-      </p>
       {error && <div className="alert alert-error mt-4 text-sm">{error}</div>}
       {section(NT)}
       {section(LXX)}

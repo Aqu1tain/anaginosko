@@ -13,12 +13,12 @@ export function ToTranslateList({ onOpen }: { onOpen: (book: string, ch: number,
   useEffect(() => { arb<{ items: Item[] }>("/a-traduire").then((d) => setItems(d.items)).catch((e) => setErr(arbErrors(e).join(" "))); }, []);
   if (err) return <div className="alert alert-error mt-6 text-sm">{err}</div>;
   if (!items) return <p className="mt-6 text-sm text-base-content/60">Chargement…</p>;
-  if (!items.length) return <p className="mt-6 text-sm text-success">Rien à traduire pour l'instant.</p>;
+  if (!items.length) return <p className="mt-6 text-sm text-success">Rien à traduire.</p>;
   const proven = items.filter((i) => i.kind === "prouvé").length;
   return (
     <div className="mt-4">
       <p className="text-sm text-base-content/70">
-        <span className="font-semibold text-primary">{proven}</span> omissions prouvées de Giguet, puis {items.length - proven} versets probables où le français est nettement plus court que le grec. Un verset traduit maison ou marqué « c'est bon » disparaît de la liste.
+        <span className="font-semibold text-primary">{proven}</span> omissions prouvées de Giguet, {items.length - proven} probables (français bien plus court que le grec).
       </p>
       <div className="mt-3 grid gap-1">
         {items.map((i) => (

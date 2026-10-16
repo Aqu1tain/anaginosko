@@ -61,9 +61,6 @@ export default function CoursesAdminView() {
     <div className="mx-auto max-w-3xl pb-10 pt-4">
       <Link href="/admin" className="link text-sm text-base-content/60">← Tableau de bord</Link>
       <h1 className="mt-3 text-2xl font-bold">Cours</h1>
-      <p className="mt-1 text-sm text-base-content/70">
-        Un cours range des leçons par parties. Une leçon est un article : elle s’écrit et se relit dans l’éditeur d’articles, puis apparaît dans le cours une fois publiée.
-      </p>
 
       <form onSubmit={create} className="mt-6 flex gap-2">
         <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Titre du nouveau cours" className="input input-bordered flex-1" required />
@@ -73,8 +70,8 @@ export default function CoursesAdminView() {
 
       {bundles.some((b) => !b.imported) && (
         <section className="mt-6 rounded-box border border-primary/30 bg-primary/5 p-4">
-          <h2 className="font-semibold">Cours prêts à importer</h2>
-          <p className="mt-1 text-sm text-base-content/70">Le cours et ses leçons sont créés en brouillon, à votre nom, puis passent par la relecture.</p>
+          <h2 className="font-semibold">À importer</h2>
+          <p className="mt-1 text-sm text-base-content/70">Créés en brouillon, à votre nom.</p>
           <ul className="mt-3 grid gap-2">
             {bundles.filter((b) => !b.imported).map((b) => (
               <li key={b.slug} className="flex items-center justify-between gap-3 rounded-lg bg-base-100 px-3 py-2">
@@ -110,7 +107,7 @@ export default function CoursesAdminView() {
             </li>
           );
         })}
-        {courses?.length === 0 && <li className="px-4 py-6 text-center text-sm text-base-content/60">Aucun cours pour l’instant.</li>}
+        {courses?.length === 0 && <li className="px-4 py-6 text-center text-sm text-base-content/60">Aucun cours.</li>}
       </ul>
     </div>
   );

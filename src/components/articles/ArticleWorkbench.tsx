@@ -533,18 +533,9 @@ export default function ArticleWorkbench({ id }: { id: string }) {
                 {CATEGORY_LABEL[article.category] ?? article.category}
               </span>
             )}
-            <span>
-              {article.author.userId === user.id ? (
-                <>
-                  Signé du nom d&apos;affichage de votre{" "}
-                  <Link href="/mon-profil" className="link">
-                    profil
-                  </Link>
-                </>
-              ) : (
-                <>Auteur : {article.author.name}</>
-              )}
-            </span>
+            {article.author.userId !== user.id && (
+              <span>Auteur : {article.author.name}</span>
+            )}
           </div>
 
           <textarea
@@ -570,7 +561,7 @@ export default function ArticleWorkbench({ id }: { id: string }) {
               setArticle((a) => (a ? { ...a, excerpt } : a));
               queueSave({ excerpt });
             }}
-            placeholder="Résumé (affiché dans la liste et le référencement)"
+            placeholder="Résumé"
             rows={2}
             className="mt-2 w-full resize-none bg-transparent text-base text-base-content/70 focus:outline-none"
           />
@@ -632,8 +623,7 @@ export default function ArticleWorkbench({ id }: { id: string }) {
 
           {saveState === "conflict" && (
             <div className="alert alert-error my-3 text-sm">
-              Version périmée (édité ailleurs). Rechargez la page pour
-              continuer.
+              Modifié ailleurs. Rechargez la page.
             </div>
           )}
 
@@ -767,7 +757,7 @@ export default function ArticleWorkbench({ id }: { id: string }) {
               className="btn btn-ghost btn-sm text-error"
               onClick={() => setConfirmDelete(true)}
             >
-              Supprimer ce brouillon inédit
+              Supprimer le brouillon
             </button>
           )}
           {actionError && (

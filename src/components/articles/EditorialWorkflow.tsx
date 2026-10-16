@@ -53,7 +53,7 @@ export default function EditorialWorkflow({
   const publish = can(user, "publish");
   const confirmations: Partial<Record<TransitionAction, string>> = {
     approve: `Approuver la version ${a.contentRevision} de « ${a.title} » ?`,
-    publish: `Publier « ${a.title} » ? L’article sera visible de tous.`,
+    publish: `Publier « ${a.title} » ? Visible de tous.`,
   };
   const act = async (action: TransitionAction | "retry_notification") => {
     const question = action !== "retry_notification" && confirmations[action];
@@ -96,8 +96,7 @@ export default function EditorialWorkflow({
         Publication · version {a.contentRevision}
       </h2>
       <p className="text-xs text-base-content/65">
-        Une approbation par un autre relecteur est obligatoire, y compris pour
-        les administrateurs.
+        Approbation obligatoire par un autre relecteur.
       </p>
       {a.publishedVersion && (
         <p className="rounded-lg bg-success/10 p-2 text-xs">
@@ -117,7 +116,7 @@ export default function EditorialWorkflow({
           <p>
             Relecture :{" "}
             <strong>
-              {a.reviewRequest.reviewerName ?? "File commune des relecteurs"}
+              {a.reviewRequest.reviewerName ?? "File commune"}
             </strong>
           </p>
           {a.reviewRequest.note && (
@@ -142,7 +141,7 @@ export default function EditorialWorkflow({
                 role="status"
                 className="mt-2 space-y-2 text-xs text-warning"
               >
-                <p>Demande enregistrée ; envoi de l’e-mail à réessayer.</p>
+                <p>E-mail non envoyé.</p>
                 {button("retry_notification", "Réessayer l’e-mail")}
               </div>
             )}
@@ -174,7 +173,7 @@ export default function EditorialWorkflow({
                   .filter((r) => r.id !== user.id)
                   .map((r) => (
                     <option key={r.id} value={r.id}>
-                      {r.displayName} — {r.title}
+                      {r.displayName} · {r.title}
                     </option>
                   ))}
               </select>
@@ -186,8 +185,7 @@ export default function EditorialWorkflow({
             )}
             {!directoryError && !reviewers.some((r) => r.id !== user.id) && (
               <p className="text-xs text-warning">
-                Aucun autre relecteur actif. Un second compte devra être invité
-                pour approuver.
+                Aucun autre relecteur actif : invitez-en un pour approuver.
               </p>
             )}
           </>
@@ -195,7 +193,7 @@ export default function EditorialWorkflow({
       {((author && ["draft", "changes_requested"].includes(a.status)) ||
         (review && ["in_review", "approved"].includes(a.status))) && (
         <label className="block text-sm">
-          Message / corrections attendues
+          Message
           <textarea
             className="textarea textarea-bordered mt-1 w-full"
             rows={3}
@@ -215,10 +213,10 @@ export default function EditorialWorkflow({
           button("approve", "Approuver cette version", true)}
         {review &&
           ["in_review", "approved"].includes(a.status) &&
-          button("request_changes", a.status === "approved" ? "Retirer l’approbation et demander des corrections" : "Demander des corrections")}
+          button("request_changes", a.status === "approved" ? "Retirer l’approbation" : "Demander des corrections")}
         {publish &&
           a.status === "approved" &&
-          button("publish", "Publier la version approuvée", true)}
+          button("publish", "Publier", true)}
         {author &&
           can(user, "articles") &&
           ["published", "approved", "in_review"].includes(a.status) &&
@@ -226,7 +224,7 @@ export default function EditorialWorkflow({
             "revise",
             a.status === "published"
               ? "Préparer une modification"
-              : "Reprendre / changer de relecteur",
+              : "Repasser en brouillon",
           )}
         {publish && a.publishedVersion && button("unpublish", "Dépublier")}
         {publish && a.status !== "archived" && button("archive", "Archiver")}
@@ -250,7 +248,7 @@ export default function EditorialWorkflow({
           {compare && (
             <div className="mt-3 space-y-4 max-h-96 overflow-auto text-sm">
               <section aria-label="Version de référence">
-                <h3 className="font-semibold">Référence — {base.title}</h3>
+                <h3 className="font-semibold">Référence · {base.title}</h3>
                 <p>{base.excerpt}</p>
                 <ArticleRenderer
                   key={`base-${base.revision}`}
@@ -258,7 +256,7 @@ export default function EditorialWorkflow({
                 />
               </section>
               <section aria-label="Version en cours">
-                <h3 className="font-semibold">En cours — {a.title}</h3>
+                <h3 className="font-semibold">En cours · {a.title}</h3>
                 <p>{a.excerpt}</p>
                 <ArticleRenderer
                   key={`current-${a.contentRevision}`}

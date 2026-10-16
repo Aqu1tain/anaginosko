@@ -16,7 +16,7 @@ function syncReader(book: string, ref: string): boolean {
   revalidatePath(`/lxx/${book}/${ch}`); // régénère la page du chapitre
   return ok;
 }
-const staleWarning = (ok: boolean) => (ok ? {} : { warning: "Enregistré, mais le verset n'a pas pu être mis à jour dans le lecteur. Préviens l'administrateur." });
+const staleWarning = (ok: boolean) => (ok ? {} : { warning: "Enregistré, mais verset non mis à jour dans le lecteur. Prévenez l'administrateur." });
 
 // Enregistre (ou révoque) une décision d'arbitrage. Intégrité sur CHAQUE écriture :
 // existence des versets Giguet, ref grec valide (round-trip), zéro-perte (aucun

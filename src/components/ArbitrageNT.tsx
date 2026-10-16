@@ -23,10 +23,11 @@ export function NtBrowse({ onOpen }: { onOpen: (book: string, ch: number) => voi
   const total = books.reduce((s, b) => s + b.chapters.reduce((t, c) => t + c.maison, 0), 0);
   return (
     <div className="mt-4 grid gap-4">
-      <p className="text-sm text-base-content/70">
-        Le néo-Crampon est servi par défaut. Ouvre un chapitre pour remplacer un verset par ta traduction.
-        {total > 0 && <> <span className="font-semibold text-secondary">{total}</span> versets traduits maison.</>}
-      </p>
+      {total > 0 && (
+        <p className="text-sm text-base-content/70">
+          <span className="font-semibold text-secondary">{total}</span> versets traduits maison.
+        </p>
+      )}
       {books.map((b) => (
         <div key={b.book}>
           <h3 className="text-sm font-semibold">{b.label}</h3>
@@ -92,7 +93,7 @@ export function NtChapterEditor({ book, ch, onNavigate, onClose }: { book: strin
     return () => { window.removeEventListener("keydown", onKey); window.removeEventListener("beforeunload", guard); };
   }, [save, dirty]);
 
-  const confirmLeave = () => !dirty || window.confirm(`${dirty} modification(s) non enregistrée(s) seront perdues. Continuer sans enregistrer ?`);
+  const confirmLeave = () => !dirty || window.confirm(`Abandonner ${dirty} modification(s) non enregistrée(s) ?`);
   // Un texte identique à l'état enregistré (ou au Crampon pour un verset non traduit)
   // n'est pas une modification.
   const set = (v: Verse, maison: string | null) =>
@@ -119,7 +120,6 @@ export function NtChapterEditor({ book, ch, onNavigate, onClose }: { book: strin
               <button className="btn btn-sm btn-ghost" onClick={() => confirmLeave() && onClose()}>Fermer</button>
             </div>
           </div>
-          <p className="mt-1 text-xs text-base-content/55">En regard du grec : le néo-Crampon, ou ta traduction quand tu en as écrit une.</p>
         </div>
 
         {err && <div className="alert alert-error mt-3 flex-col items-start gap-0.5 text-xs">{err.map((e, i) => <div key={i}>{e}</div>)}</div>}

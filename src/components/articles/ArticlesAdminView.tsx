@@ -80,7 +80,7 @@ export default function ArticlesAdminView() {
   if (!canAccess)
     return (
       <div className="py-20 text-center text-base-content/70">
-        <p>Espace de rédaction réservé aux contributeurs.</p>
+        <p>Réservé aux contributeurs.</p>
         <a href="/login" className="link link-primary mt-3 inline-block">
           Se connecter
         </a>
@@ -90,12 +90,7 @@ export default function ArticlesAdminView() {
   return (
     <div className="mx-auto max-w-4xl pb-16 pt-8">
       <div className="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Articles</h1>
-          <p className="mt-1 text-sm text-base-content/60">
-            Rédaction, relecture et publication.
-          </p>
-        </div>
+        <h1 className="text-3xl font-bold tracking-tight">Articles</h1>
         {isEditor && (
           <button
             className="btn btn-primary gap-2"
@@ -125,7 +120,7 @@ export default function ArticlesAdminView() {
           ["mine", "Mes articles"],
           ...(isAdmin ? [["review", "À relire"]] : []),
           ["requests", "Mes demandes"],
-          ["all", "Tous les articles accessibles"],
+          ["all", "Tous les articles"],
         ].map(([key, label]) => (
           <button
             key={key}
@@ -305,10 +300,6 @@ function CreateDialog({
             </option>
           ))}
         </select>
-        <p className="mt-3 text-xs text-base-content/50">
-          L&apos;article sera signé du nom d&apos;affichage de votre profil,
-          avec votre photo.
-        </p>
         <div className="mt-5 flex justify-end gap-2">
           <button className="btn btn-ghost btn-sm" onClick={onClose}>
             Annuler

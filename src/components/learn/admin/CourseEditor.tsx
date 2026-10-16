@@ -111,14 +111,14 @@ export default function CourseEditor({ id }: { id: string }) {
   const count = (pred: (a: ArticleSummary) => boolean) => lessons.filter(pred).length;
   const published = count((a) => a.hasPublishedVersion);
   const steps: { action: LessonsAction; label: string; n: number }[] = [
-    { action: "submit", label: "Envoyer les brouillons en relecture", n: count((a) => a.status === "draft") },
-    { action: "approve", label: "Approuver les leçons en relecture", n: count((a) => a.status === "in_review") },
-    { action: "publish", label: "Publier les leçons approuvées", n: count((a) => a.status === "approved") },
+    { action: "submit", label: "Soumettre les brouillons", n: count((a) => a.status === "draft") },
+    { action: "approve", label: "Approuver les relectures", n: count((a) => a.status === "in_review") },
+    { action: "publish", label: "Publier les approuvées", n: count((a) => a.status === "approved") },
   ];
 
   const confirmations: Partial<Record<LessonsAction, string>> = {
     approve: "Approuver toutes les leçons en relecture ?",
-    publish: "Publier toutes les leçons approuvées ? Elles seront visibles des inscrits.",
+    publish: "Publier les leçons approuvées ? Visibles des inscrits.",
   };
 
   const runStep = async (action: LessonsAction) => {
@@ -137,7 +137,7 @@ export default function CourseEditor({ id }: { id: string }) {
   };
 
   const remove = async () => {
-    if (!window.confirm(`Supprimer le cours « ${course.title} » ? Les leçons jamais publiées sont supprimées, les autres deviennent des articles.`)) return;
+    if (!window.confirm(`Supprimer « ${course.title} » ? Les leçons jamais publiées seront supprimées.`)) return;
     await deleteCourse(course.id);
     router.push("/admin/cours");
   };
@@ -151,7 +151,7 @@ export default function CourseEditor({ id }: { id: string }) {
         <textarea
           value={course.summary}
           onChange={(e) => edit({ summary: e.target.value })}
-          placeholder="Présentation du cours : à qui il s’adresse, ce qu’on y apprend."
+          placeholder="Présentation du cours"
           className="textarea textarea-bordered min-h-24"
           aria-label="Présentation"
         />
@@ -176,11 +176,9 @@ export default function CourseEditor({ id }: { id: string }) {
         <p className="text-sm font-medium">
           {published} leçon{published > 1 ? "s" : ""} publiée{published > 1 ? "s" : ""} sur {lessons.length}
         </p>
-        <p className="mt-0.5 text-xs text-base-content/65">
-          {published === 0
-            ? "Le cours reste invisible tant qu’aucune leçon n’est publiée, même s’il est marqué Publié."
-            : "Seules les leçons publiées apparaissent aux lecteurs, dans l’ordre ci-dessous."}
-        </p>
+        {published === 0 && (
+          <p className="mt-0.5 text-xs text-base-content/65">Invisible tant qu’aucune leçon n’est publiée.</p>
+        )}
         <div className="mt-3 flex flex-wrap gap-2">
           {steps.map((s) => (
             <button key={s.action} type="button" disabled={!s.n || dirty} onClick={() => runStep(s.action)} className="btn btn-outline btn-sm border-base-300">
@@ -188,7 +186,7 @@ export default function CourseEditor({ id }: { id: string }) {
             </button>
           ))}
         </div>
-        {dirty && <p className="mt-2 text-xs text-base-content/60">Enregistrez le cours avant d’agir sur les leçons.</p>}
+        {dirty && <p className="mt-2 text-xs text-base-content/60">Enregistrez d’abord le cours.</p>}
         {notice && <p className="mt-2 text-sm text-success">{notice}</p>}
       </section>
 

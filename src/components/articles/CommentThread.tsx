@@ -143,7 +143,7 @@ export default function CommentThread({
       <ul className="max-h-[46dvh] space-y-4 overflow-y-auto px-4 py-4 lg:max-h-80">
         {comments.length === 0 && (
           <li className="text-sm text-base-content/55">
-            Commencez cette discussion.
+            Aucun message.
           </li>
         )}
         {comments.map((comment) => (
@@ -224,7 +224,7 @@ export default function CommentThread({
                 )}
               {deleting === comment.id && (
                 <div className="mt-2 rounded bg-base-200 p-2 text-xs">
-                  <p>Supprimer ce message ? Une trace restera dans le fil.</p>
+                  <p>Supprimer ce message ?</p>
                   <button
                     disabled={busy}
                     className="btn btn-error btn-xs mt-1"

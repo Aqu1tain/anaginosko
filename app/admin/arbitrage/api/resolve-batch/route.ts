@@ -55,5 +55,5 @@ export async function POST(req: Request) {
   // direct (fr.json non inscriptible par le service), on le signale sans échouer : la
   // prod ne rematérialise pas le corpus au déploiement, il faut prévenir l'admin.
   const stale = parsed.length - refreshed;
-  return NextResponse.json({ ok: true, applied: parsed.length, ...(stale ? { warning: `Enregistré, mais ${stale} verset(s) n'ont pas pu être mis à jour dans le lecteur. Préviens l'administrateur.` } : {}) });
+  return NextResponse.json({ ok: true, applied: parsed.length, ...(stale ? { warning: `Enregistré, mais ${stale} verset(s) non mis à jour dans le lecteur. Prévenez l'administrateur.` } : {}) });
 }

@@ -36,27 +36,20 @@ const MATOMO_SINCE = "2026-07-10";
 const EVENTS = [
   { day: "2026-06-24", label: "Lancement" },
   { day: "2026-06-25", label: "1ᵉʳ TikTok (Biblion)" },
-  { day: MATOMO_SINCE, label: "Bascule vers Matomo (source de données)" },
+  { day: MATOMO_SINCE, label: "Bascule vers Matomo" },
 ];
 
 const HELP = {
-  uniqueVisitors:
-    "Personnes distinctes (un appareil, un navigateur) sur la période : un même visiteur revenant 3 fois compte 1.",
-  visits:
-    "Passages sur le site : une visite se termine après 30 min d'inactivité. Un visiteur revenant 3 fois compte 3 visites.",
-  pageviews:
-    "Nombre total de pages affichées, rechargements compris : une visite qui ouvre 5 pages en compte 5.",
-  pagesPerVisit: "Pages vues divisées par le nombre de visites : la profondeur moyenne d'une visite.",
-  avgTime:
-    "Temps moyen passé sur le site par visite. Une visite d'une seule page compte souvent 0 s, faute de seconde mesure.",
-  bounceRate:
-    "Part des visites qui n'ont vu qu'une page avant de repartir. Plus il est bas, mieux c'est.",
-  readings:
-    "Chaque ouverture d'un texte dans le lecteur, comptée par le site lui-même depuis le lancement. Ce n'est ni un nombre de visites ni de visiteurs.",
+  uniqueVisitors: "Appareils distincts sur la période.",
+  visits: "Une visite se clôt après 30 min d'inactivité.",
+  pageviews: "Pages affichées, rechargements compris.",
+  pagesPerVisit: "Pages vues divisées par les visites.",
+  avgTime: "Par visite. Une visite d'une page compte souvent 0 s.",
+  bounceRate: "Part des visites d'une seule page.",
+  readings: "Ouvertures d'un texte dans le lecteur, depuis le lancement.",
 };
 
-const UNIQUE_MISSING =
-  "Matomo ne calcule pas les visiteurs uniques sur une plage de dates tant que enable_processing_unique_visitors_range n'est pas activé dans sa configuration. La courbe quotidienne, elle, les donne jour par jour.";
+const UNIQUE_MISSING = "Activez enable_processing_unique_visitors_range dans Matomo.";
 
 const METRICS = {
   visits: { label: "Visites", unit: "visites" },
@@ -466,8 +459,7 @@ function AiReferrals({
         </div>
       ) : (
         <p className="mt-2 text-sm text-base-content/70">
-          Aucune visite venue d&apos;un assistant IA sur cette période. Quand ChatGPT, Perplexity,
-          Claude, Gemini ou Le Chat citeront le site et enverront des visiteurs, ils apparaîtront ici.
+          Aucune visite sur la période.
         </p>
       )}
     </>
@@ -537,20 +529,17 @@ function MatomoNotice({ state }: { state: "off" | "error" }) {
   return (
     <p className="rounded-xl border border-base-300 px-3 py-2 text-xs text-base-content/70">
       {state === "off"
-        ? "Matomo n'est pas branché : seules les données internes du site sont affichées."
-        : "Matomo est injoignable pour le moment : seules les données internes du site sont affichées."}
+        ? "Matomo non configuré : données internes seules."
+        : "Matomo injoignable : données internes seules."}
     </p>
   );
 }
 
 function chartSubtitle(metric: Metric, matomoOn: boolean, windowText: string, from: string): string {
-  if (!matomoOn) return `${windowText} · ouvertures de textes comptées par le site`;
-  if (metric === "uniqueVisitors")
-    return `${windowText} · par jour : un visiteur revenu deux jours différents compte chaque jour`;
-  if (metric === "pageviews") return `${windowText} · toutes les pages affichées, par jour`;
-  if (from < MATOMO_SINCE)
+  if (!matomoOn) return `${windowText} · compteur interne`;
+  if (metric === "visits" && from < MATOMO_SINCE)
     return `${windowText} · lectures internes avant le ${dayLabel(MATOMO_SINCE)}, visites Matomo après`;
-  return `${windowText} · visites par jour`;
+  return `${windowText} · par jour`;
 }
 
 const PRESETS = [7, 14, 30, 90] as const;
@@ -672,7 +661,7 @@ export default function AdminAnalytics({
           <h2 className="text-sm font-semibold">Audience</h2>
           <p className="mt-0.5 text-xs text-base-content/70">
             {matomoOn
-              ? `${windowText}, comparés aux ${days} jours précédents · source Matomo`
+              ? `${windowText} · Matomo`
               : windowText}
           </p>
         </div>
@@ -695,7 +684,7 @@ export default function AdminAnalytics({
               value={days}
               onChange={(e) => setDaysClamped(Number(e.target.value))}
               className="input input-xs w-16 text-center tabular-nums"
-              aria-label="Nombre de jours personnalisé"
+              aria-label="Nombre de jours"
             />
             j
           </label>
@@ -725,13 +714,13 @@ export default function AdminAnalytics({
 
       <section className="rounded-2xl border border-dashed border-base-300">
         <h3 className="px-4 pt-2.5 text-xs font-medium text-base-content/60">
-          Compteurs internes du site, depuis le lancement
+          Compteurs internes, depuis le lancement
         </h3>
         <div className="grid grid-cols-1 divide-base-300 sm:grid-cols-3 sm:divide-x">
           <InternalStat
             label="Lectures de textes"
             value={stats.views}
-            desc="ouvertures d'un texte dans le lecteur"
+            desc="dans le lecteur"
             help={HELP.readings}
           />
           <InternalStat label="Annotations" value={stats.annotations} desc="au total" />
@@ -767,32 +756,32 @@ export default function AdminAnalytics({
       {matomoOn && analytics && (
         <div className="grid gap-4 lg:grid-cols-2">
           {analytics.topPages && analytics.topPages.length > 0 && (
-            <ChartCard title="Pages les plus vues" subtitle="pages vues, et nombre de visites qui les ont ouvertes">
+            <ChartCard title="Pages les plus vues">
               <PageList pages={analytics.topPages} />
             </ChartCard>
           )}
           {analytics.aiReferrals && (
-            <ChartCard title="Venues depuis les assistants IA" subtitle="ChatGPT, Perplexity, Claude, Gemini…">
+            <ChartCard title="Assistants IA" subtitle="ChatGPT, Perplexity, Claude, Gemini…">
               <AiReferrals data={analytics.aiReferrals} visits={summary?.visits} />
             </ChartCard>
           )}
           {analytics.referrerTypes.length > 0 && (
-            <ChartCard title="Provenance" subtitle="d'où viennent les visites">
+            <ChartCard title="Provenance">
               <RankBars data={analytics.referrerTypes} labelWidth={140} />
             </ChartCard>
           )}
           {analytics.topReferrers.length > 0 && (
-            <ChartCard title="Sites référents" subtitle="principales sources externes">
+            <ChartCard title="Sites référents">
               <RankBars data={analytics.topReferrers} color={C.primary} labelWidth={140} />
             </ChartCard>
           )}
           {analytics.devices.length > 0 && (
-            <ChartCard title="Appareils" subtitle="type d'appareil">
+            <ChartCard title="Appareils">
               <RankBars data={analytics.devices} color={C.primary} labelWidth={90} />
             </ChartCard>
           )}
           {analytics.countries.length > 0 && (
-            <ChartCard title="Pays" subtitle="top pays visiteurs">
+            <ChartCard title="Pays">
               <RankBars data={analytics.countries} labelWidth={110} />
             </ChartCard>
           )}
@@ -802,7 +791,7 @@ export default function AdminAnalytics({
       {topTexts.length > 0 && (
         <ChartCard
           title="Textes les plus lus"
-          subtitle={`${topTexts.length} en tête · compteur interne, depuis le lancement`}
+          subtitle="compteur interne, depuis le lancement"
         >
           <RankBars data={topTexts} unit="lectures" />
         </ChartCard>

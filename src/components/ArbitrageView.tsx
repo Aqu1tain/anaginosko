@@ -72,10 +72,7 @@ export default function ArbitrageView() {
   return (
     <div className="pb-12 pt-6">
       <div className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <h1 className="text-2xl font-bold">Atelier de traduction</h1>
-          <p className="mt-1 text-sm text-base-content/60">{corpus === "lxx" ? "Septante · liens vers Giguet et traductions maison" : "Nouveau Testament · traductions maison du néo-Crampon"}</p>
-        </div>
+        <h1 className="text-2xl font-bold">Atelier de traduction</h1>
         <div className="join" role="group" aria-label="Corpus">
           <button className={`btn btn-sm join-item ${corpus === "lxx" ? "btn-primary" : "btn-ghost border border-base-300"}`} onClick={() => setCorpus("lxx")}>Septante</button>
           <button className={`btn btn-sm join-item ${corpus === "nt" ? "btn-primary" : "btn-ghost border border-base-300"}`} onClick={() => setCorpus("nt")}>Nouveau Testament</button>
@@ -124,7 +121,6 @@ function BrowseList({ states, onOpen }: { states: Record<string, Record<string, 
   if (!books.length) return <p className="mt-6 text-sm text-base-content/60">Aucun chapitre disponible.</p>;
   return (
     <div className="mt-4 grid gap-4">
-      <p className="text-sm text-base-content/70">Tous les chapitres. Ouvre-en un pour l'éditer, même s'il ne lève pas d'erreur.</p>
       {books.map((book) => {
         const chs = Object.keys(states[book]).map(Number).sort((a, b) => a - b);
         const visible = chs.filter((c) => states[book][c].scaled);
@@ -133,7 +129,7 @@ function BrowseList({ states, onOpen }: { states: Record<string, Record<string, 
         return (
           <div key={book}>
             <h3 className="text-sm font-semibold">{BOOK[book] ?? book}
-              {locked > 0 && <span className="ml-2 text-xs font-normal text-base-content/50">· {locked} chapitres verrouillés (pending-scale)</span>}
+              {locked > 0 && <span className="ml-2 text-xs font-normal text-base-content/50">· {locked} chapitres verrouillés</span>}
             </h3>
             <div className="mt-1.5 flex flex-wrap gap-1.5">
               {visible.map((c) => {

@@ -81,8 +81,7 @@ export default function ReviewPanel({
           ))}
         {!threads.length && (
           <p className="text-xs text-base-content/60">
-            Sélectionnez du texte pour démarrer une discussion, ou commentez un
-            passage ci-dessous.
+            Aucune discussion. Sélectionnez du texte pour en ouvrir une.
           </p>
         )}
       </div>

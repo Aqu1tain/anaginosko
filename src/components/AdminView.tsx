@@ -235,9 +235,9 @@ export default function AdminView() {
     <p className="text-base-content/65">{user.displayName} · {user.title}</p>
     <div className="grid gap-3 sm:grid-cols-2">
       <NavCard href="/mon-profil" title="Mon profil" desc="Identité et compte" avatar={<Avatar name={user.displayName} photo={photo} size={40} />} />
-      {canArticles && <NavCard href="/admin/articles" title="Articles" desc="Mes articles et demandes de relecture" icon={ICON.articles} />}
-      {canCourses && <NavCard href="/admin/cours" title="Cours" desc="Apprendre le grec : parties et leçons" icon={ICON.books} />}
-      {canAccounts && <NavCard href="/admin/comptes" title="Comptes et accès" desc="Rôles, permissions et invitations" icon={ICON.accounts} />}
+      {canArticles && <NavCard href="/admin/articles" title="Articles" desc="Rédaction et relecture" icon={ICON.articles} />}
+      {canCourses && <NavCard href="/admin/cours" title="Cours" desc="Parties et leçons" icon={ICON.books} />}
+      {canAccounts && <NavCard href="/admin/comptes" title="Comptes" desc="Rôles et invitations" icon={ICON.accounts} />}
       {canArbitrage && <NavCard href="/admin/arbitrage" title="Atelier de traduction" desc="Septante et Nouveau Testament" icon={ICON.arbitrage} />}
     </div>
     <button className="btn btn-ghost btn-sm" onClick={async () => { await logout(); router.push("/"); }}>Se déconnecter</button>
@@ -295,8 +295,8 @@ export default function AdminView() {
       <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         <NavCard href="/mon-profil" title="Mon profil" desc="Photo, bio, liens publics" avatar={<Avatar name={user?.displayName ?? ""} photo={photo} size={40} />} />
         {canArticles && <NavCard href="/admin/articles" title="Articles" desc="Rédiger, relire, publier" icon={ICON.articles} />}
-        {canCourses && <NavCard href="/admin/cours" title="Cours" desc="Apprendre le grec : parties et leçons" icon={ICON.books} />}
-        {canReview && <NavCard href="/admin/livres" title="Introductions de livres" desc="Présentation éditoriale par livre" icon={ICON.books} />}
+        {canCourses && <NavCard href="/admin/cours" title="Cours" desc="Parties et leçons" icon={ICON.books} />}
+        {canReview && <NavCard href="/admin/livres" title="Introductions de livres" desc="Présentation par livre" icon={ICON.books} />}
         {canArbitrage && <NavCard href="/admin/arbitrage" title="Atelier de traduction" desc="Septante et Nouveau Testament" icon={ICON.arbitrage} />}
         {canAccounts && <NavCard href="/admin/comptes" title="Comptes" desc="Contributeurs, titres, permissions" icon={ICON.accounts} />}
       </div>
@@ -438,11 +438,6 @@ export default function AdminView() {
       {onList && (
         <section className="mt-6">
           {tab === "definitions" && seesAll && <DefinitionCoverage definitions={defs} />}
-          {tab === "definitions" && !seesAll && (
-            <p className="mb-5 rounded-xl bg-base-200 px-3 py-2 text-sm text-base-content/65">
-              Cette liste contient vos définitions. La couverture globale est visible par les modérateurs.
-            </p>
-          )}
           <div className="flex flex-wrap items-center gap-2">
             <input
               type="search"
@@ -514,7 +509,7 @@ export default function AdminView() {
                 {query
                   ? `Aucune ${noun} ne correspond.`
                   : tab === "definitions"
-                    ? "Aucune définition pour l’instant. Créez-en une depuis une fiche de lemme."
+                    ? "Aucune définition. Créez-en depuis une fiche de lemme."
                     : "Aucune annotation pour l’instant."}
               </p>
             )}
