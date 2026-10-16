@@ -16,8 +16,9 @@ import {
 } from "@/src/lib/api";
 import AccountPanel, { type PanelAccount } from "./accounts/AccountPanel";
 import InviteDialog, { type InviteDraft } from "./accounts/InviteDialog";
-import RolesMatrix from "./accounts/RolesMatrix";
+import RolesView from "./accounts/RolesView";
 import { day, matches, relative, roleNamesOf } from "./accounts/format";
+import { RolePill } from "./accounts/parts";
 
 type Tab = "team" | "learners" | "invitations" | "roles";
 type Team = { users: Contributor[]; invitations: Invitation[]; learners: number };
@@ -180,9 +181,11 @@ export default function ComptesView() {
                 badges={
                   <>
                     {u.isRoot && <Badge tone="primary">Admin racine</Badge>}
-                    {names.map((n) => (
-                      <Badge key={n}>{n}</Badge>
-                    ))}
+                    {roles
+                      .filter((r) => u.roleIds?.includes(r.id))
+                      .map((r) => (
+                        <RolePill key={r.id} role={r} />
+                      ))}
                     {!u.isRoot && !names.length && <Badge>Droits à la carte</Badge>}
                     {!u.active && <Badge tone="error">Désactivé</Badge>}
                   </>
@@ -260,7 +263,13 @@ export default function ComptesView() {
         </List>
       )}
 
-      {team && tab === "roles" && <RolesMatrix roles={roles} onSaved={async () => void (await loadTeam())} />}
+      {team && tab === "roles" && (
+        <RolesView
+          roles={roles}
+          members={(id) => team.users.filter((u) => u.roleIds?.includes(id)).length}
+          onSaved={async () => void (await loadTeam())}
+        />
+      )}
 
       {open && <AccountPanel key={open.id} account={open} roles={roles} self={open.id === user?.id} onClose={() => setOpen(null)} onSaved={refresh} />}
       {invite && (

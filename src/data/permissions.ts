@@ -42,6 +42,17 @@ export const PERMISSION_HINT: Record<Permission, string> = {
   courses: "Modifier les cours : structure, leçons, publication",
 };
 
+// Regroupement pour l'affichage (fiche d'un compte, édition d'un rôle).
+export const PERMISSION_GROUPS: { title: string; permissions: Permission[] }[] = [
+  { title: "Articles et cours", permissions: ["articles", "review", "publish", "courses"] },
+  { title: "Texte biblique", permissions: ["annotations", "moderate", "arbitrage"] },
+  { title: "Administration", permissions: ["dashboard", "reports", "accounts"] },
+];
+
+// Couleur stable d'un rôle, d'après son identifiant.
+const ROLE_COLORS = ["#5865f2", "#3ba55d", "#faa61a", "#ed4245", "#eb459e", "#1abc9c", "#9b59b6", "#e67e22"];
+export const roleColor = (id: number) => ROLE_COLORS[(id - 1) % ROLE_COLORS.length];
+
 // Préréglages : remplissent un titre + un jeu de permissions, ajustables ensuite.
 export type Preset = { title: string; permissions: Permission[] };
 

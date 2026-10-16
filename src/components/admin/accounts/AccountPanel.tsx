@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import Avatar from "@/src/components/profile/Avatar";
 import { updateContributor, type EditorialRole } from "@/src/lib/api";
-import { PERMISSIONS, PERMISSION_LABEL, type Permission } from "@/src/data/permissions";
+import { PERMISSIONS, type Permission } from "@/src/data/permissions";
+import { PermissionList, RoleChips } from "./parts";
 import { day, relative } from "./format";
 
 export type PanelAccount = {
@@ -50,8 +51,9 @@ export default function AccountPanel({
     return () => window.removeEventListener("keydown", onKey);
   }, [onClose]);
 
-  const inherited = new Set(roles.filter((r) => roleIds.includes(r.id)).flatMap((r) => r.permissions));
-  const effective = account.isRoot ? [...PERMISSIONS] : PERMISSIONS.filter((p) => inherited.has(p) || permissions.includes(p));
+  const chosen = roles.filter((r) => roleIds.includes(r.id));
+  const grantedBy = (p: Permission) => chosen.filter((r) => r.permissions.includes(p)).map((r) => r.name);
+  const effective = account.isRoot ? [...PERMISSIONS] : PERMISSIONS.filter((p) => grantedBy(p).length || permissions.includes(p));
   const staff = account.isRoot || roleIds.length > 0 || permissions.length > 0;
   const changed = title !== account.title || !sameSet(roleIds, account.roleIds) || !sameSet(permissions, account.permissions);
   const locked = account.isRoot || busy;
@@ -100,32 +102,16 @@ export default function AccountPanel({
 
           <section>
             <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-base-content/55">Rôles</h3>
-            <ul className="divide-y divide-base-300 rounded-box border border-base-300">
-              {roles.map((role) => (
-                <li key={role.id}>
-                  <label className={`flex items-start gap-3 px-3 py-2.5 ${locked ? "" : "cursor-pointer hover:bg-base-200/60"}`}>
-                    <input
-                      type="checkbox"
-                      className="checkbox checkbox-sm checkbox-primary mt-0.5"
-                      disabled={locked}
-                      checked={account.isRoot || roleIds.includes(role.id)}
-                      onChange={(e) => setRoleIds(toggle(roleIds, role.id, e.target.checked))}
-                    />
-                    <span className="min-w-0">
-                      <span className="block text-sm font-medium">{role.name}</span>
-                      <span className="block text-xs text-base-content/55">
-                        {role.permissions.map((p) => PERMISSION_LABEL[p]).join(", ") || "Aucun droit"}
-                      </span>
-                    </span>
-                  </label>
-                </li>
-              ))}
-            </ul>
+            {account.isRoot ? (
+              <p className="text-sm text-base-content/60">Administrateur racine</p>
+            ) : (
+              <RoleChips roles={roles} value={roleIds} onChange={setRoleIds} disabled={locked} />
+            )}
           </section>
 
           {staff && (
             <label className="block">
-              <span className="text-xs font-semibold uppercase tracking-wide text-base-content/55">Titre public</span>
+              <span className="block text-xs font-semibold uppercase tracking-wide text-base-content/55">Titre public</span>
               <input
                 className="input input-bordered input-sm mt-2 w-full"
                 value={title}
@@ -137,42 +123,19 @@ export default function AccountPanel({
             </label>
           )}
 
-          <details className="group">
-            <summary className="cursor-pointer text-sm font-medium text-base-content/70">
-              Droits à la carte{permissions.length > 0 && ` (${permissions.length})`}
-            </summary>
-            <div className="mt-3 grid gap-2 sm:grid-cols-2">
-              {PERMISSIONS.map((p) => (
-                <label key={p} className="flex items-center gap-2 text-sm">
-                  <input
-                    type="checkbox"
-                    className="checkbox checkbox-xs"
-                    disabled={locked}
-                    checked={account.isRoot || permissions.includes(p)}
-                    onChange={(e) => setPermissions(toggle(permissions, p, e.target.checked))}
-                  />
-                  <span className={inherited.has(p) ? "text-base-content/50" : ""}>{PERMISSION_LABEL[p]}</span>
-                </label>
-              ))}
-            </div>
-            <p className="mt-2 text-xs text-base-content/50">En gris : déjà accordé par un rôle.</p>
-          </details>
-
           <section>
-            <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-base-content/55">
-              Droits effectifs ({effective.length})
+            <h3 className="mb-3 flex items-baseline justify-between text-xs font-semibold uppercase tracking-wide text-base-content/55">
+              Droits
+              <span className="font-normal normal-case tracking-normal">
+                {effective.length} sur {PERMISSIONS.length}
+              </span>
             </h3>
-            {effective.length ? (
-              <ul className="flex flex-wrap gap-1.5">
-                {effective.map((p) => (
-                  <li key={p} className="rounded-full bg-base-200 px-2.5 py-0.5 text-xs">
-                    {PERMISSION_LABEL[p]}
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="text-sm text-base-content/55">Lecteur, sans accès à l’administration.</p>
-            )}
+            <PermissionList
+              isOn={(p) => account.isRoot || permissions.includes(p)}
+              via={account.isRoot ? () => [] : grantedBy}
+              onToggle={(p, on) => setPermissions(toggle(permissions, p, on))}
+              disabled={locked}
+            />
           </section>
 
           {error && (
