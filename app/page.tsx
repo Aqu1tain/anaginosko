@@ -43,10 +43,10 @@ function Hero({ verse, french, word, start }: { verse: Text; french: string | nu
     <section className="grid gap-10 pt-8 wide:grid-cols-[minmax(0,6fr)_minmax(0,5fr)] wide:items-center wide:gap-14 wide:pt-16">
       <div>
         <h1 className="font-greek text-4xl font-bold leading-[1.08] tracking-tight wide:text-6xl">
-          Lire et étudier la Bible en grec
+          La Bible en grec
         </h1>
         <p className="mt-5 max-w-[40ch] text-lg leading-relaxed text-base-content/75 wide:text-xl">
-          Le Nouveau Testament et la Septante en grec, mot à mot.
+          Le Nouveau Testament et la Septante, mot à mot.
         </p>
         <div className="mt-8 flex flex-wrap gap-3">
           <Link href={start} className="btn btn-primary btn-lg rounded-full px-7">
