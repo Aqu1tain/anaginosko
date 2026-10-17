@@ -23,9 +23,9 @@ import {
 } from "../data/nt";
 import { type CorpusConfig, NT, LXX, GREEK_BIBLE } from "../data/corpus";
 
-// Définition Biblion : système à part des annotations (ref « def:<lemma> »),
-// PRIORITAIRE sur Bailly. Quand elle existe, elle coiffe la fiche ; Bailly passe
-// en repli. Éditable par les philologues/admin.
+// Deux sources distinctes, affichées l'une sous l'autre, aucune ne remplace l'autre :
+// la définition Biblion (ref « def:<lemma> », sens dans le grec biblique, éditable
+// par les philologues) et la notice du Bailly (lexique du grec ancien).
 function LemmaDefinitions({ lemma, lexicon, notice }: { lemma: string; lexicon: GlossAssessment; notice?: BaillyNotice | null }) {
   const { user } = useAuth();
   const { definition, reload } = useLemmaDefinition(lemma);
@@ -47,109 +47,92 @@ function LemmaDefinitions({ lemma, lexicon, notice }: { lemma: string; lexicon: 
     existing: definition ?? undefined,
   };
 
+  const card = "mt-4 overflow-hidden rounded-2xl border border-base-300 bg-base-100 shadow-sm";
+  const label = "text-[0.7rem] font-semibold uppercase tracking-[0.12em]";
+
   return (
     <>
-      <section className="mt-4 overflow-hidden rounded-2xl border border-base-300 bg-base-100 shadow-sm">
-        <div className="border-l-4 border-primary px-4 py-4 sm:px-5">
-          <div className="flex items-start justify-between gap-3">
-            <div>
-              <div className="text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-primary">
-                Sens du lemme
+      {(definition || canCreate || (definition === null && !hasLexicon)) && (
+        <section className={card} aria-label="Sens biblique, Biblion">
+          <div className="border-l-4 border-primary px-4 py-4 sm:px-5">
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <div className={`${label} text-primary`}>Sens biblique</div>
+                <p className="mt-0.5 text-xs text-base-content/60">Dans le grec biblique</p>
               </div>
-              {(definition || hasLexicon) && (
-                <p className="mt-0.5 text-xs text-base-content/60">
-                  {definition ? "Dans le grec biblique" : "Lexique du grec ancien"}
-                </p>
-              )}
-            </div>
-            <div className="flex shrink-0 items-center gap-1.5">
-              <span className={`badge badge-sm ${definition ? "badge-primary" : hasLexicon ? "badge-ghost" : "badge-warning badge-soft"}`}>
-                {definition ? "Biblion" : hasLexicon ? "Bailly" : "À documenter"}
-              </span>
-              {canEdit && (
-                <button onClick={() => setEditing(true)} className="btn btn-ghost btn-xs">
-                  Modifier
-                </button>
-              )}
-            </div>
-          </div>
-
-          {definition ? (
-            <>
-              <div className="mt-3 space-y-2 text-base leading-relaxed text-base-content/90">
-              {definition.body.split(/\n+/).filter(Boolean).map((p, i) => (
-                <p key={i}>{p}</p>
-              ))}
-              </div>
-              {(definition.author?.displayName || definition.source || definition.link) && (
-                <div className="mt-3 flex flex-wrap items-center gap-x-2 text-xs text-base-content/60">
-                  {definition.author?.displayName && <span>{definition.author.displayName}</span>}
-                  {definition.source && <span>· {definition.source}</span>}
-                {definition.link && (
-                  <a href={definition.link} target="_blank" rel="noreferrer" className="link text-primary">
-                    source ↗
-                  </a>
+              <div className="flex shrink-0 items-center gap-1.5">
+                <span className="badge badge-sm badge-primary">Biblion</span>
+                {canEdit && (
+                  <button onClick={() => setEditing(true)} className="btn btn-ghost btn-xs">
+                    Modifier
+                  </button>
                 )}
+              </div>
+            </div>
+            {definition ? (
+              <>
+                <div className="mt-3 space-y-2 text-base leading-relaxed text-base-content/90">
+                  {definition.body.split(/\n+/).filter(Boolean).map((p, i) => (
+                    <p key={i}>{p}</p>
+                  ))}
                 </div>
-              )}
-            </>
-          ) : hasLexicon ? (
+                {(definition.author?.displayName || definition.source || definition.link) && (
+                  <div className="mt-3 flex flex-wrap items-center gap-x-2 text-xs text-base-content/60">
+                    {definition.author?.displayName && <span>{definition.author.displayName}</span>}
+                    {definition.source && <span>· {definition.source}</span>}
+                    {definition.link && (
+                      <a href={definition.link} target="_blank" rel="noreferrer" className="link text-primary">
+                        source ↗
+                      </a>
+                    )}
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="mt-3 flex flex-wrap items-center gap-3">
+                <p className="text-sm text-base-content/60">Pas encore de sens rédigé.</p>
+                {canCreate && (
+                  <button onClick={() => setEditing(true)} className="btn btn-primary btn-sm">
+                    Rédiger le sens
+                  </button>
+                )}
+              </div>
+            )}
+          </div>
+        </section>
+      )}
+
+      {definition === undefined && !hasLexicon && (
+        <div className="mt-4 flex items-center gap-2 text-sm text-base-content/60" aria-live="polite">
+          <span className="loading loading-spinner loading-xs" aria-hidden="true" />
+          Chargement…
+        </div>
+      )}
+
+      {hasLexicon && (
+        <section className={card} aria-label="Notice Bailly">
+          <div className="px-4 py-4 sm:px-5">
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <div className={`${label} text-base-content/70`}>Notice Bailly</div>
+                <p className="mt-0.5 text-xs text-base-content/60">Lexique du grec ancien</p>
+              </div>
+              <span className="badge badge-sm badge-ghost">Bailly</span>
+            </div>
             <div className="mt-3">
               <LexiconVia via={lexicon.via} />
               <LexiconSense gloss={lexicon.gloss!} notice={notice} collapsible />
             </div>
-          ) : definition === undefined ? (
-            <div className="mt-3 flex items-center gap-2 text-sm text-base-content/60" aria-live="polite">
-              <span className="loading loading-spinner loading-xs" aria-hidden="true" />
-              Chargement…
-            </div>
-          ) : (
-            <div className="mt-3 rounded-xl bg-base-200/70 px-3.5 py-3">
-              <p className="text-sm font-medium">Pas encore de sens fiable.</p>
-              {canCreate && (
-                <button onClick={() => setEditing(true)} className="btn btn-primary btn-sm mt-3">
-                  Rédiger le sens
-                </button>
-              )}
-            </div>
-          )}
-
-          {!definition && hasLexicon && (
-            <p className="mt-3 text-xs leading-relaxed text-base-content/60">
-              Sens général, à vérifier dans le contexte biblique.
-            </p>
-          )}
-        </div>
-
-        {definition && hasLexicon && (
-          <details className="group border-t border-base-300 bg-base-200/35">
-            <summary className="cursor-pointer list-none px-4 py-3 text-sm font-medium text-base-content/70 marker:content-none sm:px-5">
-              <span className="inline-flex items-center gap-2">
-                <span className="transition-transform group-open:rotate-90" aria-hidden="true">›</span>
-                Notice Bailly
-              </span>
-            </summary>
-            <div className="border-t border-base-300 px-4 py-3 sm:px-5">
-              <LexiconVia via={lexicon.via} />
-              <LexiconSense gloss={lexicon.gloss!} notice={notice} collapsible />
-            </div>
-          </details>
-        )}
-
-        {hasLexicon && (
+            <p className="mt-3 text-xs leading-relaxed text-base-content/60">Sens général, à vérifier dans le contexte biblique.</p>
+          </div>
           <div className="flex flex-wrap items-center justify-between gap-2 border-t border-base-300 px-4 py-2.5 text-xs text-base-content/60 sm:px-5">
             <span>Bailly 2020 · CC BY-NC-ND</span>
-            <a
-              href={`https://bailly.app/${encodeURIComponent(lexicon.gloss!.uri)}`}
-              target="_blank"
-              rel="noreferrer"
-              className="link hover:text-primary"
-            >
+            <a href={`https://bailly.app/${encodeURIComponent(lexicon.gloss!.uri)}`} target="_blank" rel="noreferrer" className="link hover:text-primary">
               Source ↗
             </a>
           </div>
-        )}
-      </section>
+        </section>
+      )}
 
       {editing && (
         <AnnotationEditor
@@ -364,7 +347,7 @@ export default function LemmaDetail({
           </div>
           {!senseOpen && (
             <button type="button" className="mt-2 text-sm font-medium text-primary wide:hidden" onClick={() => setSenseOpen(true)}>
-              Lire la notice
+              Lire la suite
             </button>
           )}
         </div>
