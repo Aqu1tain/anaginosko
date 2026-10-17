@@ -56,6 +56,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...RITES.map((r) => url(`/lectures/${r.slug}`)),
     url("/alphabet"),
     url("/prononciation"),
+    url("/contributeurs"),
     url("/mentions"),
     url("/confidentialite"),
     url("/conditions"),

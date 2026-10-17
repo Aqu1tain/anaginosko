@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Breadcrumb from "@/app/_components/Breadcrumb";
 import BreadcrumbJsonLd from "@/app/_components/BreadcrumbJsonLd";
 import JsonLd from "@/app/_components/JsonLd";
+import Avatar from "@/src/components/profile/Avatar";
 import { SITE, SITE_PITCH, pageMetadata } from "@/lib/seo";
 import { fr, loadSiteFacts } from "@/lib/siteFacts";
+import { listTeam } from "@/lib/team";
 
-export const revalidate = 86400;
+export const revalidate = 3600;
 
 export const metadata: Metadata = pageMetadata({
   title: "À propos : une Bible grecque d’étude, gratuite",
@@ -14,31 +15,61 @@ export const metadata: Metadata = pageMetadata({
   path: "/a-propos",
 });
 
-const h2 = "pt-4 text-lg font-bold text-base-content";
+const FEATURES = [
+  {
+    title: "Lire",
+    href: "/nt",
+    body: "Chaque chapitre en grec avec la traduction en regard. Un mot touché donne son lemme, son analyse, sa prononciation et la notice du Bailly.",
+  },
+  {
+    title: "Étudier un mot",
+    href: "/concordance",
+    body: "Toutes les occurrences d’un lemme, sa répartition par livre et son usage dans l’autre Testament.",
+  },
+  {
+    title: "Suivre la liturgie",
+    href: "/lectures",
+    body: "Les lectures du jour en grec pour la forme ordinaire, la forme extraordinaire et le rite byzantin.",
+  },
+  {
+    title: "Apprendre",
+    href: "/apprendre",
+    body: "Un cours de grec biblique avec exercices, l’alphabet et la prononciation.",
+  },
+];
 
 const SOURCES = [
-  ["Nouveau Testament grec", "SBL Greek New Testament (SBLGNT), éd. Michael W. Holmes, CC BY 4.0"],
-  ["Morphologie du Nouveau Testament", "MorphGNT, SBLGNT Edition 6.12, éd. James K. Tauber, CC BY-SA 3.0"],
-  ["Septante grecque et morphologie", "Rahlfs 1935, via LXX-Rahlfs-1935 (Eliran Wong), CC BY-NC-SA 4.0"],
-  ["Dictionnaire", "Bailly 2020 Hugo Chávez (Gérard Gréco et al.), CC BY-NC-ND 4.0"],
-  ["Traduction du Nouveau Testament", "Sainte Bible néo-Crampon Libre (Fraternité de Tibériade, 2022), CC BY-SA 4.0"],
-  ["Traduction de la Septante", "Pierre Giguet (1872), transcription Wikisource adaptée, CC BY-SA 4.0"],
-  ["Traductions Anaginosko", "versets retraduits par l’équipe, signalés comme tels dans le lecteur"],
-  ["Lectionnaires", "AELF (forme ordinaire), Divinum Officium et Missale Meum (1962), orthocal (byzantin) : références seules"],
+  ["Nouveau Testament", "SBLGNT, éd. Michael W. Holmes"],
+  ["Morphologie du NT", "MorphGNT, SBLGNT Edition 6.12, éd. James K. Tauber"],
+  ["Septante", "Rahlfs 1935, via LXX-Rahlfs-1935 (Eliran Wong)"],
+  ["Dictionnaire", "Bailly 2020 Hugo Chávez (Gérard Gréco et al.)"],
+  ["Traduction du NT", "Sainte Bible néo-Crampon Libre (Fraternité de Tibériade, 2022)"],
+  ["Traduction de la Septante", "Pierre Giguet (1872), transcription Wikisource"],
+  ["Lectionnaires", "AELF, Divinum Officium, Missale Meum, orthocal (références seules)"],
 ];
+
+function Section({ id, title, children }: { id: string; title: string; children: React.ReactNode }) {
+  return (
+    <section id={id} className="grid gap-4 border-t border-base-300 py-10 wide:grid-cols-[13rem_minmax(0,1fr)] wide:gap-12">
+      <h2 className="text-lg font-semibold">{title}</h2>
+      <div className="min-w-0 text-[0.95rem] leading-relaxed text-base-content/80">{children}</div>
+    </section>
+  );
+}
 
 export default async function AboutPage() {
   const f = await loadSiteFacts();
+  const team = listTeam();
   const today = new Date().toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric", timeZone: "Europe/Paris" });
   const facts = [
-    { value: fr(f.nt.books), label: "livres du Nouveau Testament", detail: `${fr(f.nt.chapters)} chapitres, ${fr(f.nt.words)} mots` },
-    { value: fr(f.lxx.books), label: "livres de la Septante", detail: `${fr(f.lxx.chapters)} chapitres, ${fr(f.lxx.words)} mots` },
-    { value: fr(f.lemmas), label: "lemmes dans la concordance", detail: `${fr(f.nt.lemmas)} dans le NT, ${fr(f.lxx.lemmas)} dans la Septante` },
-    { value: fr(f.baillyNotices), label: "notices du Bailly", detail: "consultables depuis chaque mot" },
+    { value: fr(f.nt.words), label: "mots du Nouveau Testament", detail: `${f.nt.books} livres, ${fr(f.nt.chapters)} chapitres` },
+    { value: fr(f.lxx.words), label: "mots de la Septante", detail: `${f.lxx.books} livres, ${fr(f.lxx.chapters)} chapitres` },
+    { value: fr(f.lemmas), label: "lemmes", detail: `${fr(f.nt.lemmas)} NT, ${fr(f.lxx.lemmas)} Septante` },
+    { value: fr(f.baillyNotices), label: "notices du Bailly", detail: "depuis chaque mot" },
   ];
 
   return (
-    <article className="mx-auto max-w-2xl pb-10">
+    <div className="pt-6 pb-4">
       <JsonLd
         data={{
           "@context": "https://schema.org",
@@ -50,112 +81,117 @@ export default async function AboutPage() {
         }}
       />
       <BreadcrumbJsonLd items={[{ name: "Accueil", path: "/" }, { name: "À propos" }]} />
-      <Breadcrumb items={[{ label: "Accueil", href: "/", home: true }, { label: "À propos" }]} />
-      <h1 className="text-2xl font-bold">À propos d’Anaginosko</h1>
 
-      <div className="mt-3 space-y-3 text-[0.95rem] leading-relaxed text-base-content/85">
-        <p>
-          Anaginosko (ἀναγινώσκω, « lire, reconnaître ») est une Bible grecque d’étude en ligne,
-          gratuite, sans publicité et sans inscription. Elle donne tout le Nouveau Testament et
-          toute la Septante dans le texte original, avec pour chaque mot son lemme, son analyse
-          morphologique et la notice du Bailly, une concordance qui relie les deux Testaments et
-          la traduction française en regard.
+      <header className="pb-10">
+        <h1 className="text-3xl font-bold tracking-tight">À propos</h1>
+        <p className="mt-4 max-w-[42rem] text-lg leading-relaxed text-base-content/80">
+          Anaginosko (<span className="font-greek">ἀναγινώσκω</span>, « lire, reconnaître ») est une Bible grecque
+          d’étude, gratuite et sans publicité : le Nouveau Testament et la Septante dans le texte, chaque mot analysé, la
+          traduction française en regard.
         </p>
-
-        <dl className="grid gap-3 py-2 sm:grid-cols-2">
+        <ul className="mt-10 grid grid-cols-2 gap-x-8 gap-y-6 wide:grid-cols-4">
           {facts.map((x) => (
-            <div key={x.label} className="rounded-box border border-base-300 bg-base-100 p-4">
-              <dt className="text-sm text-base-content/70">{x.label}</dt>
-              <dd className="font-greek text-3xl font-bold tabular-nums">{x.value}</dd>
-              <dd className="mt-1 text-xs text-base-content/60">{x.detail}</dd>
+            <li key={x.label}>
+              <p className="text-3xl font-bold tracking-tight tabular-nums">{x.value}</p>
+              <p className="mt-1 text-sm font-medium">{x.label}</p>
+              <p className="text-xs text-base-content/55">{x.detail}</p>
+            </li>
+          ))}
+        </ul>
+      </header>
+
+      <Section id="usage" title="Ce qu’on y fait">
+        <ul className="grid gap-x-10 gap-y-6 sm:grid-cols-2">
+          {FEATURES.map((x) => (
+            <li key={x.href}>
+              <Link href={x.href} className="font-semibold text-base-content hover:text-primary">
+                {x.title} →
+              </Link>
+              <p className="mt-1">{x.body}</p>
+            </li>
+          ))}
+        </ul>
+      </Section>
+
+      <Section id="public" title="Pour qui">
+        <p className="max-w-[42rem]">
+          Étudiants en théologie et en lettres classiques, séminaristes, prêtres et pasteurs qui préparent une homélie,
+          hellénistes, chercheurs, et quiconque veut lire la Bible dans sa langue, de l’alphabet jusqu’au travail sur un
+          mot.
+        </p>
+      </Section>
+
+      <Section id="sources" title="Sources">
+        <dl className="divide-y divide-base-300 border-y border-base-300">
+          {SOURCES.map(([what, source]) => (
+            <div key={what} className="grid gap-1 py-2.5 sm:grid-cols-[13rem_minmax(0,1fr)] sm:gap-4">
+              <dt className="text-sm font-semibold text-base-content">{what}</dt>
+              <dd className="text-sm">{source}</dd>
             </div>
           ))}
         </dl>
-
-        <h2 className={h2}>Ce que l’on peut y faire</h2>
-        <ul className="list-disc space-y-1.5 pl-5">
-          <li>
-            <strong>Lire</strong> chaque chapitre en grec, verset par verset, avec la traduction
-            française ; toucher un mot pour voir son lemme, sa nature, son analyse (temps, mode,
-            voix, cas, nombre, genre), sa prononciation érasmienne et restituée et sa notice du Bailly.
-          </li>
-          <li>
-            <strong>Étudier un mot</strong> dans la{" "}
-            <Link href="/concordance" className="link">concordance</Link> : toutes ses occurrences,
-            sa répartition par livre, ses cooccurrences et son usage dans l’autre Testament
-            (du Nouveau Testament à la Septante et inversement).
-          </li>
-          <li>
-            <strong>Suivre la liturgie</strong> avec les{" "}
-            <Link href="/lectures" className="link">lectures du jour en grec</Link> pour la forme
-            ordinaire, la forme extraordinaire et le rite byzantin.
-          </li>
-          <li>
-            <strong>Apprendre</strong> avec l’<Link href="/alphabet" className="link">alphabet</Link>,
-            le guide de <Link href="/prononciation" className="link">prononciation</Link> et les{" "}
-            <Link href="/articles" className="link">articles</Link>.
-          </li>
-        </ul>
-
-        <h2 className={h2}>Pour qui</h2>
-        <p>
-          Étudiants en théologie et en lettres classiques, séminaristes, prêtres et pasteurs qui
-          préparent une homélie, hellénistes, chercheurs, et toute personne qui veut lire la Bible
-          dans sa langue d’origine, du premier contact avec l’alphabet jusqu’au travail sur un mot.
+        <p className="mt-3 text-sm">
+          Licences et droits : <Link href="/mentions#sources" className="link">mentions légales</Link>.
         </p>
+      </Section>
 
-        <h2 className={h2}>Sources et éditions</h2>
-        <table className="table table-sm">
-          <tbody>
-            {SOURCES.map(([what, source]) => (
-              <tr key={what}>
-                <th className="w-2/5 align-top font-semibold">{what}</th>
-                <td>{source}</td>
-              </tr>
+      <Section id="methode" title="Méthode">
+        <div className="max-w-[42rem] space-y-3">
+          <p>
+            Une définition n’est affichée que si la vedette du Bailly correspond au lemme, ou à sa forme active pour un
+            verbe moyen, ce qui est alors indiqué.
+          </p>
+          <p>
+            Les versets retraduits par l’équipe sont signés dans le lecteur. Chaque verset a un bouton pour signaler une
+            erreur ; les corrections sont publiées en continu.
+          </p>
+        </div>
+      </Section>
+
+      <Section id="citer" title="Citer">
+        <p>Indiquez la page et la date de consultation :</p>
+        <p className="mt-3 rounded-box bg-base-200 px-4 py-3 text-sm">
+          Anaginosko, Jean 1, {SITE}/nt/jn/1, consulté le {today}.
+        </p>
+        <p className="mt-3">Citez aussi les éditions sources.</p>
+      </Section>
+
+      <Section id="donnees" title="Données et IA">
+        <p className="max-w-[42rem]">
+          Résumé pour les assistants : <a href="/llms.txt" className="link">llms.txt</a>. Chaque chapitre et chaque fiche
+          de lemme existe en Markdown (<a href="/nt/jn/1.md" className="link">/nt/jn/1.md</a>), et chaque chapitre en
+          JSON mot à mot (<a href="/nt/jn/1.json" className="link">/nt/jn/1.json</a>). Merci de renvoyer vers la page
+          d’origine.
+        </p>
+      </Section>
+
+      <Section id="equipe" title="Équipe">
+        <p className="max-w-[42rem]">
+          Projet indépendant, conçu et développé par Corentin Renard. Les traductions Anaginosko sont signées Corentin
+          Renard et Biblion.
+        </p>
+        {team.length > 0 && (
+          <ul className="mt-5 flex flex-wrap gap-3">
+            {team.map((m) => (
+              <li key={m.userId}>
+                <Link
+                  href={`/contributeurs/${m.slug}`}
+                  className="flex items-center gap-3 rounded-box border border-base-300 py-2 pr-4 pl-2 hover:bg-base-200/50"
+                >
+                  <Avatar name={m.displayName} photo={m.photo} size={36} />
+                  <span className="font-medium text-base-content">{m.displayName}</span>
+                </Link>
+              </li>
             ))}
-          </tbody>
-        </table>
-        <p className="text-sm text-base-content/70">
-          Détail des licences et des droits dans les <Link href="/mentions" className="link">mentions légales</Link>.
-        </p>
-
-        <h2 className={h2}>Méthode</h2>
-        <p>
-          Les définitions ne sont affichées que si la vedette du Bailly correspond au lemme (ou à
-          sa forme active pour un verbe moyen, ce qui est indiqué). Les traductions retraduites par
-          l’équipe sont signées dans le lecteur. Chaque verset et chaque page de lectures a un
-          bouton pour signaler une erreur, et les corrections sont publiées en continu.
-        </p>
-
-        <h2 className={h2}>Citer Anaginosko</h2>
-        <p>
-          Indiquez la page précise et sa date de consultation, par exemple :{" "}
-          <span className="italic">
-            Anaginosko, Jean 1, {SITE}/nt/jn/1, consulté le {today}.
-          </span>{" "}
-          Merci de citer aussi les éditions sources ci-dessus.
-        </p>
-
-        <h2 className={h2}>Assistants IA et développeurs</h2>
-        <p>
-          Un résumé du site pour les assistants est publié dans{" "}
-          <a href="/llms.txt" className="link">llms.txt</a>. Chaque chapitre et chaque fiche de
-          lemme existe aussi en Markdown (ajouter <code>.md</code> à l’adresse, par exemple{" "}
-          <a href="/nt/jn/1.md" className="link">/nt/jn/1.md</a>) et chaque chapitre en données
-          JSON mot à mot (<a href="/nt/jn/1.json" className="link">/nt/jn/1.json</a>). Si vous
-          utilisez ces contenus dans une réponse, merci de renvoyer vers la page d’origine.
-        </p>
-
-        <h2 className={h2}>Équipe et soutien</h2>
-        <p>
-          Anaginosko est un projet indépendant, conçu et développé par Corentin Renard ; les
-          traductions Anaginosko sont signées Corentin Renard et Biblion. Le site vit des dons :{" "}
-          <a href="https://fr.tipeee.com/anaginosko" target="_blank" rel="noreferrer noopener" className="link">
-            nous soutenir sur Tipeee
+          </ul>
+        )}
+        <div className="mt-6 flex flex-wrap items-center gap-3">
+          <a href="https://fr.tipeee.com/anaginosko" target="_blank" rel="noreferrer noopener" className="btn btn-primary btn-sm">
+            Soutenir sur Tipeee
           </a>
-          .
-        </p>
-      </div>
-    </article>
+          <span className="text-sm text-base-content/60">Le site vit des dons.</span>
+        </div>
+      </Section>
+    </div>
   );
 }
