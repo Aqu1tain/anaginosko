@@ -38,7 +38,7 @@ export default function Shell({ children }: { children: React.ReactNode }) {
         <SideNav />
         <main className="min-w-0 flex-1 pb-[calc(5rem+env(safe-area-inset-bottom))] wide:pb-16">
           {children}
-          <SiteFooter />
+          {!pathname?.startsWith("/admin/ianaginosko") && <SiteFooter />}
         </main>
       </div>
       <TabBar />
