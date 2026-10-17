@@ -60,8 +60,7 @@ export const roleColor = (id: number) => ROLE_COLORS[(id - 1) % ROLE_COLORS.leng
 export type Preset = { title: string; permissions: Permission[] };
 
 export const PRESETS: Preset[] = [
-  // L'assistant IA (bêta) ne vient jamais d'un préréglage : il s'accorde à la main.
-  { title: "Administrateur", permissions: PERMISSIONS.filter((p) => p !== "ai") },
+  { title: "Administrateur", permissions: [...PERMISSIONS] },
   { title: "Philologue", permissions: ["dashboard", "annotations", "arbitrage", "articles", "reports"] },
   { title: "Relecteur", permissions: ["dashboard", "articles", "review", "reports"] },
   { title: "Lecteur", permissions: ["dashboard"] },
