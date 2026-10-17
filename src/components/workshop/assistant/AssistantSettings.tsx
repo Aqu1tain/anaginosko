@@ -69,8 +69,13 @@ function ProviderRow({ id, label, saved, onChanged }: { id: ProviderId; label: s
 
 // Réglages de l'assistant : une clé par fournisseur (jamais réaffichée), modèles et
 // efforts par défaut, consommation des 30 derniers jours.
-export default function AssistantSettings() {
-  const { settings, error, reload, choose } = useAiSettings();
+export default function AssistantSettings({ onChanged }: { onChanged?: () => void } = {}) {
+  const { settings, error, reload: refresh, choose: save } = useAiSettings();
+  const choose: typeof save = (kind, pick) => save(kind, pick).then(onChanged);
+  const reload = () => {
+    refresh();
+    onChanged?.();
+  };
   const [usage, setUsage] = useState<Usage | null>(null);
 
   useEffect(() => {

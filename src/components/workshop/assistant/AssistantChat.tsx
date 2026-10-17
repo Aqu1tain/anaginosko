@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Chat, useChat } from "@ai-sdk/react";
 import { DefaultChatTransport, type UIMessage } from "ai";
-import { chatEndpoint, chatHeaders, updateRule, type Target } from "@/src/lib/aiApi";
+import { chatEndpoint, chatHeaders, updateRule } from "@/src/lib/aiApi";
 
 const TOOL_LABEL: Record<string, string> = {
   lire_chapitre: "Lit le chapitre",
@@ -107,8 +107,19 @@ function PartView({ part }: { part: Part }) {
 // Une conversation par chapitre, conservée quand on change d'onglet ou de verset.
 export const newChat = () => new Chat({ transport: new DefaultChatTransport({ api: chatEndpoint(), headers: chatHeaders }) });
 
-// Chat de l'atelier : le contexte (verset et texte en cours) part avec chaque message.
-export default function AssistantChat({ chat, target, text }: { chat: Chat<UIMessage>; target: Target; text: string }) {
+// Chat de l'assistant : `body` part avec chaque message (verset en cours dans
+// l'atelier, mode « site » pour IAnaginosko).
+export default function AssistantChat({
+  chat,
+  body,
+  placeholder,
+  roomy = false,
+}: {
+  chat: Chat<UIMessage>;
+  body: object;
+  placeholder: string;
+  roomy?: boolean;
+}) {
   const { messages, sendMessage, status, error, stop, setMessages } = useChat({ chat });
   const [input, setInput] = useState("");
   const end = useRef<HTMLDivElement>(null);
@@ -122,13 +133,13 @@ export default function AssistantChat({ chat, target, text }: { chat: Chat<UIMes
     const q = input.trim();
     if (!q || busy) return;
     setInput("");
-    sendMessage({ text: q }, { body: { context: { ...target, text } } });
+    sendMessage({ text: q }, { body });
   };
 
   return (
     <div className="flex flex-col gap-3">
       {messages.length > 0 && (
-        <div className="space-y-4 text-sm leading-relaxed">
+        <div className={`space-y-4 leading-relaxed ${roomy ? "text-[0.95rem]" : "text-sm"}`}>
           {messages.map((m) => (
             <div key={m.id} className={m.role === "user" ? "ml-6 rounded-box bg-base-200 px-3 py-2" : ""}>
               <div className="space-y-1.5">
@@ -153,8 +164,8 @@ export default function AssistantChat({ chat, target, text }: { chat: Chat<UIMes
               send();
             }
           }}
-          rows={2}
-          placeholder={`Question sur ${target.chapter}:${target.verse}`}
+          rows={roomy ? 3 : 2}
+          placeholder={placeholder}
           className="block w-full resize-none bg-transparent px-3 py-2 text-sm outline-none"
         />
         <div className="flex items-center justify-between px-2 pb-2">

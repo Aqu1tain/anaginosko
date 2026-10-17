@@ -17,6 +17,7 @@ const TABS: Tab[] = [
   { href: "/admin/cours", label: "Cours", show: (u) => any(u, "courses") },
   { href: "/admin/livres", label: "Livres", show: (u) => any(u, "review") },
   { href: "/admin/arbitrage", label: "Atelier", show: (u) => any(u, "arbitrage") },
+  { href: "/admin/ianaginosko", label: "IAnaginosko", show: (u) => any(u, "ai") },
   { href: "/admin/signalements", label: "Signalements", show: (u) => any(u, "reports"), badge: "reports" },
   { href: "/admin/annotations", label: "Annotations", show: (u) => any(u, "dashboard") },
   { href: "/admin/definitions", label: "Définitions", show: (u) => any(u, "dashboard") },

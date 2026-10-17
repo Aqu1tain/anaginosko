@@ -108,7 +108,7 @@ export default function AssistantPanel({
       </section>
       <section className="border-t border-base-300 pt-4">
         <h2 className="mb-2 text-sm font-semibold">Discussion</h2>
-        <AssistantChat chat={chat} target={target} text={current} />
+        <AssistantChat chat={chat} body={{ context: { ...target, text: current } }} placeholder={`Question sur ${target.chapter}:${target.verse}`} />
       </section>
     </div>
   );
