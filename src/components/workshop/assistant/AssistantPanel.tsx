@@ -74,7 +74,7 @@ export default function AssistantPanel({
       <p className="text-sm text-base-content/60">
         Ajoutez une clé d’API dans{" "}
         <Link href="/mon-compte#assistant" className="link">
-          Mon compte
+          Paramètres
         </Link>
         .
       </p>

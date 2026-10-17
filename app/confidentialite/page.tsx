@@ -36,7 +36,7 @@ const SECTIONS: LegalSection[] = [
           chiffré 10 minutes au plus, ou par Google, soumis à ses propres règles. La session est gardée dans votre
           navigateur (stockage local et cookie fonctionnel, 30 jours).
         </p>
-        <p>Vous pouvez supprimer votre compte et votre progression depuis « Mon compte » : l’effacement est immédiat.</p>
+        <p>Vous pouvez supprimer votre compte et votre progression depuis « Paramètres » : l’effacement est immédiat.</p>
       </>
     ),
   },
@@ -47,7 +47,7 @@ const SECTIONS: LegalSection[] = [
       <p>
         La lettre et les avis de nouvel article ne sont envoyés qu’avec votre accord. Nous conservons la date de cet
         accord et un jeton de désinscription. Les envois passent par {RESEND}. Chaque message contient un lien de
-        désinscription ; le réglage se modifie aussi dans « Mon compte ». Base légale : votre consentement.
+        désinscription ; le réglage se modifie aussi dans « Paramètres ». Base légale : votre consentement.
       </p>
     ),
   },

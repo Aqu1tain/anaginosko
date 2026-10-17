@@ -74,7 +74,7 @@ export default function AccountView() {
 
   return (
     <div className="mx-auto max-w-xl pb-10 pt-6">
-      <h1 className="text-3xl font-bold">Mon compte</h1>
+      <h1 className="text-3xl font-bold">Paramètres</h1>
 
       <section className="mt-6 rounded-box border border-base-300 bg-base-100 p-5">
         <h2 className="font-semibold">Progression</h2>

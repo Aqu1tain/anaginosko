@@ -48,7 +48,7 @@ const SECTIONS: LegalSection[] = [
     body: (
       <p>
         La lettre d’information et les avis de nouvel article ne sont envoyés qu’avec votre accord, donné à
-        l’inscription ou dans « Mon compte ». Chaque message contient un lien de désinscription.
+        l’inscription ou dans « Paramètres ». Chaque message contient un lien de désinscription.
       </p>
     ),
   },

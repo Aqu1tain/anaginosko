@@ -22,7 +22,7 @@ export default function UnsubscribeView({ token }: { token: string }) {
       </h1>
       {state === "done" && <p className="mt-2 text-base-content/70">Vous ne recevrez plus nos e-mails.</p>}
       {state === "error" && <p className="mt-2 text-base-content/70">Gérez vos e-mails depuis votre compte.</p>}
-      <Link href="/mon-compte" className="btn btn-outline btn-sm mt-6 border-base-300">Mon compte</Link>
+      <Link href="/mon-compte" className="btn btn-outline btn-sm mt-6 border-base-300">Paramètres</Link>
     </div>
   );
 }
