@@ -72,62 +72,94 @@ export default function AccountView() {
     }
   };
 
+  const assisted = can(user, "ai");
+  const sections = [
+    ["progression", "Progression"],
+    ["identite", "Identité"],
+    ["emails", "E-mails"],
+    ...(assisted ? [["assistant", "Assistant IA"]] : []),
+    ["compte", "Compte"],
+  ];
+  const signOut = async () => {
+    await logout();
+    router.push("/");
+  };
+
   return (
-    <div className="mx-auto max-w-xl pb-10 pt-6">
-      <h1 className="text-3xl font-bold">Paramètres</h1>
+    <div className="pb-12 pt-6">
+      <h1 className="text-3xl font-bold tracking-tight">Paramètres</h1>
+      <div className="mt-8 wide:grid wide:grid-cols-[11rem_minmax(0,48rem)] wide:gap-12">
+        <nav aria-label="Sections" className="hidden wide:block">
+          <ul className="sticky top-20 space-y-0.5 text-sm">
+            {sections.map(([id, label]) => (
+              <li key={id}>
+                <a href={`#${id}`} className="block rounded-field px-3 py-1.5 text-base-content/65 hover:bg-base-200 hover:text-base-content">
+                  {label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
 
-      <section className="mt-6 rounded-box border border-base-300 bg-base-100 p-5">
-        <h2 className="font-semibold">Progression</h2>
-        <p className="mt-1 text-sm text-base-content/70">
-          {done.size === 0 ? "Aucune leçon terminée." : `${done.size} leçon${done.size > 1 ? "s" : ""} terminée${done.size > 1 ? "s" : ""}.`}
-        </p>
-        <Link href="/apprendre" className="btn btn-primary btn-sm mt-3 rounded-full">Aller aux cours</Link>
-      </section>
+        <div className="divide-y divide-base-300">
+          <section id="progression" className="scroll-mt-20 pb-8">
+            <h2 className="text-lg font-semibold">Progression</h2>
+            <p className="mt-1 text-sm text-base-content/70">
+              {done.size === 0 ? "Aucune leçon terminée." : `${done.size} leçon${done.size > 1 ? "s" : ""} terminée${done.size > 1 ? "s" : ""}.`}
+            </p>
+            <Link href="/apprendre" className="btn btn-outline btn-sm mt-3">Aller aux cours</Link>
+          </section>
 
-      <form onSubmit={rename} className="mt-4 rounded-box border border-base-300 bg-base-100 p-5">
-        <h2 className="font-semibold">Identité</h2>
-        <label className="mt-3 block">
-          <span className="text-sm font-medium">Nom affiché</span>
-          <input value={name} onChange={(e) => setName(e.target.value)} maxLength={80} className="input input-bordered mt-1 w-full" required />
-        </label>
-        <p className="mt-3 text-sm">
-          <span className="text-base-content/65">Adresse de connexion : </span>
-          {email || "…"}
-        </p>
-        <button type="submit" className="btn btn-outline btn-sm mt-4 border-base-300">Enregistrer</button>
-        {message && <span className="ml-3 text-sm text-success">{message}</span>}
-      </form>
+          <form id="identite" onSubmit={rename} className="scroll-mt-20 py-8">
+            <h2 className="text-lg font-semibold">Identité</h2>
+            <label className="mt-4 block max-w-md">
+              <span className="text-sm font-medium">Nom affiché</span>
+              <input value={name} onChange={(e) => setName(e.target.value)} maxLength={80} className="input input-bordered mt-1 w-full" required />
+            </label>
+            <p className="mt-3 text-sm">
+              <span className="text-base-content/60">Adresse de connexion : </span>
+              {email || "…"}
+            </p>
+            {name.trim() !== user.displayName && (
+              <button type="submit" className="btn btn-primary btn-sm mt-4">Enregistrer</button>
+            )}
+            {message && <p className="mt-3 text-sm text-success">{message}</p>}
+          </form>
 
-      <section className="mt-4 rounded-box border border-base-300 bg-base-100 p-5">
-        <h2 className="font-semibold">E-mails</h2>
-        <label className="mt-3 flex cursor-pointer items-start gap-3 text-sm">
-          <input type="checkbox" className="toggle toggle-sm toggle-primary mt-0.5" checked={newsletter} onChange={(e) => toggleNewsletter(e.target.checked)} />
-          <span>Recevoir les nouveautés par e-mail</span>
-        </label>
-      </section>
+          <section id="emails" className="scroll-mt-20 py-8">
+            <h2 className="text-lg font-semibold">E-mails</h2>
+            <label className="mt-4 flex cursor-pointer items-start gap-3 text-sm">
+              <input type="checkbox" className="toggle toggle-sm toggle-primary mt-0.5" checked={newsletter} onChange={(e) => toggleNewsletter(e.target.checked)} />
+              <span>Recevoir les nouveautés par e-mail</span>
+            </label>
+          </section>
 
-      {can(user, "ai") && (
-        <section id="assistant" className="mt-4 scroll-mt-20 rounded-box border border-base-300 bg-base-100 p-5">
-          <h2 className="flex items-center gap-2 font-semibold">
-            Assistant IA <span className="badge badge-sm badge-outline font-normal">Bêta</span>
-          </h2>
-          <div className="mt-3">
-            <AssistantSettings />
-          </div>
-        </section>
-      )}
+          {assisted && (
+            <section id="assistant" className="scroll-mt-20 py-8">
+              <h2 className="flex items-center gap-2 text-lg font-semibold">
+                Assistant IA <span className="badge badge-sm badge-outline font-normal">Bêta</span>
+              </h2>
+              <div className="mt-4">
+                <AssistantSettings />
+              </div>
+            </section>
+          )}
 
-      {error && <p className="mt-4 rounded-lg bg-error/10 px-3 py-2 text-sm text-error">{error}</p>}
-
-      <div className="mt-6 flex flex-wrap gap-3">
-        <button type="button" onClick={async () => { await logout(); router.push("/"); }} className="btn btn-ghost btn-sm">
-          Se déconnecter
-        </button>
-        {isLearner(user) ? (
-          <button type="button" onClick={remove} className="btn btn-ghost btn-sm text-error">Supprimer mon compte</button>
-        ) : (
-          <Link href="/admin" className="btn btn-ghost btn-sm">Tableau de bord</Link>
-        )}
+          <section id="compte" className="scroll-mt-20 pt-8">
+            <h2 className="text-lg font-semibold">Compte</h2>
+            {error && <p className="mt-3 rounded-lg bg-error/10 px-3 py-2 text-sm text-error">{error}</p>}
+            <div className="mt-4 flex flex-wrap gap-3">
+              <button type="button" onClick={signOut} className="btn btn-outline btn-sm">
+                Se déconnecter
+              </button>
+              {isLearner(user) && (
+                <button type="button" onClick={remove} className="btn btn-ghost btn-sm text-error">
+                  Supprimer mon compte
+                </button>
+              )}
+            </div>
+          </section>
+        </div>
       </div>
     </div>
   );

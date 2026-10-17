@@ -82,7 +82,7 @@ export default function ModelPicker({
         value={effort}
         onChange={(e) => value && onChange({ ...value, effort: e.target.value as ModelPick["effort"] })}
         disabled={!value}
-        className={field}
+        className={`${field} ${pill ? "" : "w-40"}`}
         aria-label="Effort"
       >
         {EFFORTS.map((x) => (
