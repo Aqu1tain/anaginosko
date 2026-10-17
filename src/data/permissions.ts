@@ -36,7 +36,7 @@ export const PERMISSION_HINT: Record<Permission, string> = {
   annotations: "Écrire et éditer ses annotations et prononciations",
   moderate: "Éditer les annotations d'autrui, tout voir",
   arbitrage: "Arbitrage LXX (liens grec / Giguet)",
-  ai: "Assistant de traduction avec sa propre clé d'API",
+  ai: "IAnaginosko et assistant de traduction (bêta, clé personnelle)",
   articles: "Rédiger et éditer ses articles",
   review: "Relire et approuver les articles d'un autre auteur",
   publish: "Publier une version approuvée, dépublier et archiver",
