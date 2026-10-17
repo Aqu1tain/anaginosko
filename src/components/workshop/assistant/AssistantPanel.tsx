@@ -2,12 +2,14 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { fetchCredentials, streamDraft, type Credentials, type Proposal, type Target } from "@/src/lib/aiApi";
+import { streamDraft, type Proposal, type Target } from "@/src/lib/aiApi";
 import type { WorkCorpus } from "@/src/lib/workshopApi";
 import DraftProposal, { Progress, type StepState } from "./DraftProposal";
 import type { Chat } from "@ai-sdk/react";
 import type { UIMessage } from "ai";
 import AssistantChat from "./AssistantChat";
+import ModelPicker from "./ModelPicker";
+import { useAiSettings } from "./useAiSettings";
 
 type DraftState = { steps: StepState; result?: Proposal; error?: string; running: boolean };
 
@@ -65,18 +67,12 @@ export default function AssistantPanel({
   onRun: () => void;
   onUse: (text: string) => void;
 }) {
-  const [credentials, setCredentials] = useState<Credentials | null>(null);
+  const { settings, error, choose } = useAiSettings();
 
-  useEffect(() => {
-    fetchCredentials()
-      .then(setCredentials)
-      .catch(() => setCredentials(null));
-  }, []);
-
-  if (credentials && !credentials.configured)
+  if (settings && !settings.keys.length)
     return (
       <p className="text-sm text-base-content/60">
-        Ajoutez votre clé d’API dans{" "}
+        Ajoutez une clé d’API dans{" "}
         <Link href={`?corpus=${target.corpus}&tab=assistant`} className="link">
           Assistant
         </Link>
@@ -86,6 +82,19 @@ export default function AssistantPanel({
 
   return (
     <div className="space-y-5">
+      {settings && (
+        <section className="space-y-2 text-xs text-base-content/55">
+          <div>
+            <p className="mb-1">Analyse</p>
+            <ModelPicker keys={settings.keys} value={settings.analysis} onChange={(p) => choose("analysis", p)} />
+          </div>
+          <div>
+            <p className="mb-1">Rédaction et chat</p>
+            <ModelPicker keys={settings.keys} value={settings.draft} onChange={(p) => choose("draft", p)} />
+          </div>
+          {error && <p className="text-error">{error}</p>}
+        </section>
+      )}
       <section className="space-y-3">
         <div className="flex items-center justify-between gap-2">
           <h2 className="text-sm font-semibold">Verset {target.verse}</h2>

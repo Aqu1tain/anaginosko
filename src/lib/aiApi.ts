@@ -13,22 +13,33 @@ export const PROVIDERS = [
 ] as const;
 export type ProviderId = (typeof PROVIDERS)[number]["id"];
 
-export type Credentials = {
-  configured: boolean;
-  provider: ProviderId | null;
-  baseUrl: string | null;
-  modelAnalysis: string | null;
-  modelDraft: string | null;
-  keyHint: string | null;
-  defaults: Partial<Record<ProviderId, { analysis: string; draft: string }>>;
+export const EFFORT_LABEL: Record<Effort, string> = {
+  "provider-default": "Effort par défaut",
+  none: "Sans réflexion",
+  minimal: "Effort minimal",
+  low: "Effort faible",
+  medium: "Effort moyen",
+  high: "Effort élevé",
+  xhigh: "Effort maximal",
 };
+export type Effort = "provider-default" | "none" | "minimal" | "low" | "medium" | "high" | "xhigh";
+export const EFFORTS = Object.keys(EFFORT_LABEL) as Effort[];
 
-export type CredentialsInput = { provider: ProviderId; apiKey?: string; baseUrl?: string; modelAnalysis: string; modelDraft: string };
+export type ModelPick = { provider: ProviderId; model: string; effort: Effort };
+export type KeyInfo = { provider: ProviderId; baseUrl: string | null; keyHint: string };
+export type Settings = { keys: KeyInfo[]; analysis: ModelPick | null; draft: ModelPick | null };
+export type ModelInfo = { id: string; label: string };
 export type Usage = { models: { model: string; runs: number; input: number; output: number; cached: number }[] };
 
-export const fetchCredentials = () => apiFetch<Credentials>("/ai/credentials");
-export const saveCredentials = (input: CredentialsInput) => apiFetch<Credentials>("/ai/credentials", { method: "PUT", body: JSON.stringify(input) });
-export const deleteCredentials = () => apiFetch<Credentials>("/ai/credentials", { method: "DELETE" });
+export const providerLabel = (id: string) => PROVIDERS.find((p) => p.id === id)?.label ?? id;
+
+export const fetchSettings = () => apiFetch<Settings>("/ai/settings");
+export const saveSettings = (patch: { analysis?: ModelPick; draft?: ModelPick }) =>
+  apiFetch<{ analysis: ModelPick; draft: ModelPick }>("/ai/settings", { method: "PUT", body: JSON.stringify(patch) });
+export const saveKey = (provider: ProviderId, apiKey: string, baseUrl?: string) =>
+  apiFetch<{ models: number }>("/ai/keys", { method: "PUT", body: JSON.stringify({ provider, apiKey, ...(baseUrl ? { baseUrl } : {}) }) });
+export const deleteKey = (provider: ProviderId) => apiFetch(`/ai/keys/${provider}`, { method: "DELETE" });
+export const fetchModels = (provider: ProviderId) => apiFetch<{ models: ModelInfo[] }>(`/ai/models?provider=${provider}`).then((d) => d.models);
 export const fetchUsage = () => apiFetch<Usage>("/ai/usage");
 
 export type Level = "lexical" | "exegetical" | "theological" | "style";

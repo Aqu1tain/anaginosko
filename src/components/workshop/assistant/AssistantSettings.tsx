@@ -1,138 +1,113 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { deleteCredentials, fetchCredentials, fetchUsage, PROVIDERS, saveCredentials, type Credentials, type ProviderId, type Usage } from "@/src/lib/aiApi";
+import { deleteKey, fetchUsage, PROVIDERS, saveKey, type KeyInfo, type ProviderId, type Usage } from "@/src/lib/aiApi";
+import ModelPicker, { forgetCatalog } from "./ModelPicker";
+import { useAiSettings } from "./useAiSettings";
 
 const fr = (n: number) => n.toLocaleString("fr-FR");
 
-// Réglages de l'assistant : clé d'API personnelle (jamais réaffichée), modèles
-// d'analyse et de rédaction, consommation des 30 derniers jours.
-export default function AssistantSettings() {
-  const [creds, setCreds] = useState<Credentials | null>(null);
-  const [usage, setUsage] = useState<Usage | null>(null);
-  const [provider, setProvider] = useState<ProviderId>("anthropic");
+function ProviderRow({ id, label, saved, onChanged }: { id: ProviderId; label: string; saved?: KeyInfo; onChanged: () => void }) {
+  const [open, setOpen] = useState(false);
   const [apiKey, setApiKey] = useState("");
-  const [baseUrl, setBaseUrl] = useState("");
-  const [analysis, setAnalysis] = useState("");
-  const [draft, setDraft] = useState("");
+  const [baseUrl, setBaseUrl] = useState(saved?.baseUrl ?? "");
   const [busy, setBusy] = useState(false);
-  const [message, setMessage] = useState<{ ok: boolean; text: string } | null>(null);
+  const [error, setError] = useState("");
 
-  const apply = (c: Credentials) => {
-    setCreds(c);
-    const p = c.provider ?? "anthropic";
-    setProvider(p);
-    setBaseUrl(c.baseUrl ?? "");
-    setAnalysis(c.modelAnalysis ?? c.defaults[p]?.analysis ?? "");
-    setDraft(c.modelDraft ?? c.defaults[p]?.draft ?? "");
-    setApiKey("");
-  };
-
-  useEffect(() => {
-    fetchCredentials().then(apply).catch((e) => setMessage({ ok: false, text: e.message }));
-    fetchUsage().then(setUsage).catch(() => {});
-  }, []);
-
-  const pick = (p: ProviderId) => {
-    setProvider(p);
-    if (creds?.provider === p) {
-      setAnalysis(creds.modelAnalysis ?? "");
-      setDraft(creds.modelDraft ?? "");
-    } else {
-      setAnalysis(creds?.defaults[p]?.analysis ?? "");
-      setDraft(creds?.defaults[p]?.draft ?? "");
-    }
-  };
-
-  const save = async () => {
+  const submit = async () => {
     setBusy(true);
-    setMessage(null);
+    setError("");
     try {
-      apply(
-        await saveCredentials({
-          provider,
-          ...(apiKey.trim() ? { apiKey: apiKey.trim() } : {}),
-          ...(provider === "compatible" ? { baseUrl: baseUrl.trim() } : {}),
-          modelAnalysis: analysis.trim(),
-          modelDraft: draft.trim(),
-        }),
-      );
-      setMessage({ ok: true, text: "Clé vérifiée et enregistrée." });
+      await saveKey(id, apiKey.trim(), id === "compatible" ? baseUrl.trim() : undefined);
+      forgetCatalog(id);
+      setOpen(false);
+      setApiKey("");
+      onChanged();
     } catch (e) {
-      setMessage({ ok: false, text: (e as Error).message });
+      setError((e as Error).message);
     }
     setBusy(false);
   };
 
-  const keepsKey = creds?.configured && creds.provider === provider;
-  const ready = analysis.trim() && draft.trim() && (apiKey.trim() || keepsKey) && (provider !== "compatible" || baseUrl.trim());
-
-  if (!creds) return message ? <p className="text-sm text-error">{message.text}</p> : <p className="text-sm text-base-content/50">Chargement…</p>;
-
   return (
-    <div className="grid gap-8 wide:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-      <section className="space-y-4">
-        <h2 className="text-lg font-semibold">Clé d’API</h2>
-        <div className="flex flex-wrap gap-1.5">
-          {PROVIDERS.map((p) => (
-            <button
-              key={p.id}
-              type="button"
-              onClick={() => pick(p.id)}
-              className={`btn btn-sm ${provider === p.id ? "btn-primary" : "btn-outline"}`}
-            >
-              {p.label}
-            </button>
-          ))}
-        </div>
-        <label className="block text-sm">
-          <span className="mb-1 block text-xs text-base-content/55">Clé</span>
-          <input
-            type="password"
-            autoComplete="off"
-            value={apiKey}
-            onChange={(e) => setApiKey(e.target.value)}
-            placeholder={keepsKey ? `Enregistrée (${creds.keyHint})` : "sk-…"}
-            className="input input-bordered input-sm w-full font-mono"
-          />
-        </label>
-        {provider === "compatible" && (
-          <label className="block text-sm">
-            <span className="mb-1 block text-xs text-base-content/55">Adresse du serveur</span>
-            <input value={baseUrl} onChange={(e) => setBaseUrl(e.target.value)} placeholder="https://…/v1" className="input input-bordered input-sm w-full font-mono" />
-          </label>
-        )}
-        <div className="grid gap-3 sm:grid-cols-2">
-          <label className="text-sm">
-            <span className="mb-1 block text-xs text-base-content/55">Modèle d’analyse</span>
-            <input value={analysis} onChange={(e) => setAnalysis(e.target.value)} className="input input-bordered input-sm w-full font-mono" />
-          </label>
-          <label className="text-sm">
-            <span className="mb-1 block text-xs text-base-content/55">Modèle de rédaction et de relecture</span>
-            <input value={draft} onChange={(e) => setDraft(e.target.value)} className="input input-bordered input-sm w-full font-mono" />
-          </label>
-        </div>
-        <p className="text-xs text-base-content/55">
-          La clé est chiffrée sur le serveur et ne quitte plus le serveur. Un appel d’essai la vérifie avant l’enregistrement ; il est facturé par le fournisseur.
-        </p>
-        <div className="flex flex-wrap items-center gap-2">
-          <button type="button" className="btn btn-primary btn-sm" disabled={!ready || busy} onClick={save}>
-            {busy ? "Vérification…" : "Vérifier et enregistrer"}
+    <li className="py-3">
+      <div className="flex flex-wrap items-center gap-3">
+        <span className="w-36 font-medium">{label}</span>
+        {saved ? <span className="font-mono text-xs text-base-content/55">clé {saved.keyHint}</span> : <span className="text-xs text-base-content/40">aucune clé</span>}
+        <span className="ml-auto flex gap-1">
+          <button type="button" className="btn btn-ghost btn-xs" onClick={() => setOpen(!open)}>
+            {saved ? "Remplacer" : "Ajouter"}
           </button>
-          {creds.configured && (
+          {saved && (
             <button
               type="button"
-              className="btn btn-ghost btn-sm"
+              className="btn btn-ghost btn-xs"
               onClick={() => {
-                if (confirm("Supprimer votre clé d’API ?")) deleteCredentials().then(apply);
+                if (confirm(`Supprimer la clé ${label} ?`)) deleteKey(id).then(onChanged);
               }}
             >
-              Supprimer la clé
+              Supprimer
             </button>
           )}
+        </span>
+      </div>
+      {open && (
+        <div className="mt-3 grid gap-2 sm:grid-cols-[minmax(0,1fr)_auto]">
+          <div className="grid gap-2">
+            <input type="password" autoComplete="off" value={apiKey} onChange={(e) => setApiKey(e.target.value)} placeholder="Clé d’API" className="input input-bordered input-sm w-full font-mono" />
+            {id === "compatible" && <input value={baseUrl} onChange={(e) => setBaseUrl(e.target.value)} placeholder="https://…/v1" className="input input-bordered input-sm w-full font-mono" />}
+          </div>
+          <button type="button" className="btn btn-primary btn-sm" disabled={busy || apiKey.trim().length < 8 || (id === "compatible" && !baseUrl.trim())} onClick={submit}>
+            {busy ? "Vérification…" : "Vérifier et enregistrer"}
+          </button>
+          {error && <p className="text-sm text-error sm:col-span-2">{error}</p>}
         </div>
-        {message && <p className={`text-sm ${message.ok ? "text-success" : "text-error"}`}>{message.text}</p>}
-      </section>
+      )}
+    </li>
+  );
+}
+
+// Réglages de l'assistant : une clé par fournisseur (jamais réaffichée), modèles et
+// efforts par défaut, consommation des 30 derniers jours.
+export default function AssistantSettings() {
+  const { settings, error, reload, choose } = useAiSettings();
+  const [usage, setUsage] = useState<Usage | null>(null);
+
+  useEffect(() => {
+    fetchUsage().then(setUsage).catch(() => {});
+  }, []);
+
+  if (!settings) return error ? <p className="text-sm text-error">{error}</p> : <p className="text-sm text-base-content/50">Chargement…</p>;
+  const keys = settings.keys;
+
+  return (
+    <div className="grid gap-10 wide:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+      <div className="space-y-10">
+        <section>
+          <h2 className="text-lg font-semibold">Fournisseurs</h2>
+          <ul className="mt-2 divide-y divide-base-300 text-sm">
+            {PROVIDERS.map((p) => (
+              <ProviderRow key={p.id} id={p.id} label={p.label} saved={keys.find((k) => k.provider === p.id)} onChanged={reload} />
+            ))}
+          </ul>
+          <p className="mt-2 text-xs text-base-content/55">Chaque clé est vérifiée en lisant le catalogue du fournisseur, puis chiffrée sur le serveur.</p>
+        </section>
+
+        {keys.length > 0 && (
+          <section className="space-y-4">
+            <h2 className="text-lg font-semibold">Modèles</h2>
+            <div className="text-sm">
+              <p className="mb-1 text-xs text-base-content/55">Analyse du grec</p>
+              <ModelPicker keys={keys} value={settings.analysis} onChange={(p) => choose("analysis", p)} />
+            </div>
+            <div className="text-sm">
+              <p className="mb-1 text-xs text-base-content/55">Rédaction, relecture et chat</p>
+              <ModelPicker keys={keys} value={settings.draft} onChange={(p) => choose("draft", p)} />
+            </div>
+            {error && <p className="text-sm text-error">{error}</p>}
+          </section>
+        )}
+      </div>
 
       <section className="space-y-3">
         <h2 className="text-lg font-semibold">Consommation sur 30 jours</h2>
