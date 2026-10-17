@@ -34,20 +34,31 @@ function useCatalogs(keys: KeyInfo[]) {
 }
 
 // Modèle (tous fournisseurs confondus) et effort : chaque changement s'applique tout de suite.
-export default function ModelPicker({ keys, value, onChange }: { keys: KeyInfo[]; value: ModelPick | null; onChange: (pick: ModelPick) => void }) {
+export default function ModelPicker({
+  keys,
+  value,
+  onChange,
+  pill = false,
+}: {
+  keys: KeyInfo[];
+  value: ModelPick | null;
+  onChange: (pick: ModelPick) => void;
+  pill?: boolean;
+}) {
+  const field = pill ? "select select-ghost select-xs w-auto rounded-full font-medium text-base-content/70" : "select select-bordered select-sm";
   const lists = useCatalogs(keys);
   const effort = value?.effort ?? "provider-default";
   const selected = value ? `${value.provider}|${value.model}` : "";
 
   return (
-    <div className="grid grid-cols-[minmax(0,1fr)_auto] gap-2">
+    <div className={pill ? "flex min-w-0 items-center gap-1" : "grid grid-cols-[minmax(0,1fr)_auto] gap-2"}>
       <select
         value={selected}
         onChange={(e) => {
           const [provider, ...model] = e.target.value.split("|");
           onChange({ provider: provider as ProviderId, model: model.join("|"), effort });
         }}
-        className="select select-bordered select-sm w-full min-w-0"
+        className={`${field} min-w-0 ${pill ? "max-w-56" : "w-full"}`}
         aria-label="Modèle"
       >
         {!value && <option value="">Choisir un modèle</option>}
@@ -71,7 +82,7 @@ export default function ModelPicker({ keys, value, onChange }: { keys: KeyInfo[]
         value={effort}
         onChange={(e) => value && onChange({ ...value, effort: e.target.value as ModelPick["effort"] })}
         disabled={!value}
-        className="select select-bordered select-sm"
+        className={field}
         aria-label="Effort"
       >
         {EFFORTS.map((x) => (

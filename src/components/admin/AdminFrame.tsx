@@ -26,7 +26,7 @@ const TABS: Tab[] = [
 ];
 
 // Éditeurs plein écran : pas d'onglets.
-const FULL = [/^\/admin\/articles\/[^/]+$/, /^\/admin\/arbitrage/];
+const FULL = [/^\/admin\/articles\/[^/]+$/, /^\/admin\/arbitrage/, /^\/admin\/ianaginosko/];
 
 // Cadre de l'administration : une rangée d'onglets commune à toutes les pages.
 export default function AdminFrame({ children }: { children: ReactNode }) {

@@ -121,3 +121,9 @@ export const createRule = (input: RuleInput) => apiFetch<Rule>("/workshop/rules"
 export const updateRule = (id: number, patch: Partial<RuleInput & { status: Rule["status"] }>) =>
   apiFetch<Rule>(`/workshop/rules/${id}`, { method: "PATCH", body: JSON.stringify(patch) });
 export const deleteRule = (id: number) => apiFetch(`/workshop/rules/${id}`, { method: "DELETE" });
+
+export type ConversationInfo = { id: string; title: string; updatedAt: string };
+export const fetchConversations = () => apiFetch<{ conversations: ConversationInfo[] }>("/ai/conversations").then((d) => d.conversations);
+export const fetchConversation = (id: string) => apiFetch<{ id: string; title: string; messages: unknown[] }>(`/ai/conversations/${id}`);
+export const renameConversation = (id: string, title: string) => apiFetch(`/ai/conversations/${id}`, { method: "PATCH", body: JSON.stringify({ title }) });
+export const deleteConversation = (id: string) => apiFetch(`/ai/conversations/${id}`, { method: "DELETE" });
