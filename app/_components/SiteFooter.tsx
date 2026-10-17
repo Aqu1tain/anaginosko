@@ -1,26 +1,84 @@
 import Link from "next/link";
 
-// Footer du site, rendu sur toutes les pages (dans le Shell) : liens de navigation
-// et credits. Sert le maillage interne (indexation) au-dela de l'accueil.
+const COLUMNS: { title: string; links: [string, string][] }[] = [
+  {
+    title: "Lire",
+    links: [
+      ["Nouveau Testament", "/nt"],
+      ["Septante", "/lxx"],
+      ["Lectures du jour", "/lectures"],
+    ],
+  },
+  {
+    title: "Étudier",
+    links: [
+      ["Apprendre le grec", "/apprendre"],
+      ["Concordance", "/concordance"],
+      ["Alphabet", "/alphabet"],
+      ["Prononciation", "/prononciation"],
+    ],
+  },
+  {
+    title: "Projet",
+    links: [
+      ["Articles", "/articles"],
+      ["À propos", "/a-propos"],
+      ["Contributeurs", "/contributeurs"],
+    ],
+  },
+];
+
+const LEGAL: [string, string][] = [
+  ["Mentions légales", "/mentions"],
+  ["Confidentialité", "/confidentialite"],
+  ["Conditions", "/conditions"],
+];
+
 export default function SiteFooter() {
   return (
-    <footer className="mt-16 border-t border-base-300 pt-8 pb-4 text-sm text-base-content/70">
-      <nav aria-label="Liens du site" className="flex flex-wrap justify-center gap-x-5 gap-y-2">
-        <Link href="/nt" className="link-hover">Nouveau Testament</Link>
-        <Link href="/lxx" className="link-hover">Septante</Link>
-        <Link href="/lectures" className="link-hover">Lectures du jour</Link>
-        <Link href="/apprendre" className="link-hover">Apprendre le grec</Link>
-        <Link href="/alphabet" className="link-hover">Alphabet</Link>
-        <Link href="/prononciation" className="link-hover">Prononciation</Link>
-        <Link href="/concordance" className="link-hover">Concordance</Link>
-        <Link href="/a-propos" className="link-hover">À propos</Link>
-        <a href="https://fr.tipeee.com/anaginosko" target="_blank" rel="noreferrer noopener" className="link-hover">
-          Soutenir
-        </a>
-        <Link href="/mentions" className="link-hover">Mentions légales</Link>
-        <Link href="/confidentialite" className="link-hover">Confidentialité</Link>
-        <Link href="/conditions" className="link-hover">Conditions d’utilisation</Link>
-      </nav>
+    <footer className="mt-20 border-t border-base-300 pt-10 pb-6 text-sm">
+      <div className="grid gap-8 sm:grid-cols-[minmax(0,1fr)_auto] sm:gap-16">
+        <div>
+          <Link href="/" className="text-lg font-bold tracking-tight font-[family-name:var(--font-syne)]">
+            Anaginosko
+          </Link>
+          <p className="mt-1 text-base-content/60">La Bible en grec, mot à mot.</p>
+          <a
+            href="https://fr.tipeee.com/anaginosko"
+            target="_blank"
+            rel="noreferrer noopener"
+            className="btn btn-outline btn-sm mt-4"
+          >
+            Soutenir
+          </a>
+        </div>
+        <nav aria-label="Plan du site" className="grid grid-cols-2 gap-x-12 gap-y-6 sm:grid-cols-3">
+          {COLUMNS.map((col) => (
+            <div key={col.title}>
+              <p className="text-xs font-semibold uppercase tracking-wider text-base-content/45">{col.title}</p>
+              <ul className="mt-3 space-y-2">
+                {col.links.map(([label, href]) => (
+                  <li key={href}>
+                    <Link href={href} className="text-base-content/75 hover:text-base-content">
+                      {label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </nav>
+      </div>
+      <div className="mt-10 flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border-t border-base-300 pt-5 text-xs text-base-content/55">
+        <span>© 2026 Anaginosko</span>
+        <nav aria-label="Informations légales" className="flex flex-wrap gap-x-5 gap-y-2">
+          {LEGAL.map(([label, href]) => (
+            <Link key={href} href={href} className="hover:text-base-content">
+              {label}
+            </Link>
+          ))}
+        </nav>
+      </div>
     </footer>
   );
 }
