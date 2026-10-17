@@ -23,10 +23,12 @@
     "test:editorial:e2e": "node tests/e2e/run.mjs"
   },
   "dependencies": {
+    "@ai-sdk/react": "4.0.130",
     "@blocknote/ariakit": "0.51.4",
     "@blocknote/core": "0.51.4",
     "@blocknote/react": "0.51.4",
     "@tailwindcss/postcss": "^4.3.1",
+    "ai": "7.0.127",
     "next": "^15.5.19",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",

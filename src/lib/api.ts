@@ -3,6 +3,7 @@
 import type { Permission } from "../data/permissions";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "/api";
+export const apiUrl = (path: string) => `${API_BASE}${path}`;
 const TOKEN_KEY = "anaginosko:token";
 
 export type { Permission };

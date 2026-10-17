@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type KeyboardEvent } from "react";
 import Link from "next/link";
 import { useAuth } from "@/src/hooks/useAuth";
-import { apiFetch } from "@/src/lib/api";
+import { apiFetch, can } from "@/src/lib/api";
 import { loadBooks, loadChapter, chapterNumbers, type NtBook } from "@/src/data/nt";
 import { corpusById } from "@/src/data/corpus";
 import type { Mot, Text } from "@/src/data/texts";
@@ -23,9 +23,11 @@ import WordPanel from "./WordPanel";
 import VerseSide from "./VerseSide";
 import { checkVerse } from "./checks";
 import GotoPalette from "./GotoPalette";
+import AssistantPanel, { useVerseDrafts } from "./assistant/AssistantPanel";
+import { newChat } from "./assistant/AssistantChat";
 
 type PublishedMap = Record<string, Record<string, { maison: string }>>;
-type Side = "mot" | "verset" | "controles";
+type Side = "mot" | "verset" | "controles" | "assistant";
 const mod = (e: KeyboardEvent) => e.metaKey || e.ctrlKey;
 
 export default function ChapterWorkbench({ corpus, book, chapter }: { corpus: WorkCorpus; book: string; chapter: number }) {
@@ -44,6 +46,9 @@ export default function ChapterWorkbench({ corpus, book, chapter }: { corpus: Wo
   const [noteFor, setNoteFor] = useState<string[] | null>(null);
   const [note, setNote] = useState("");
   const [error, setError] = useState("");
+  const assisted = can(user, "ai");
+  const { drafts: proposals, run: propose } = useVerseDrafts(corpus, book, chapter);
+  const [chat] = useState(newChat);
   const timers = useRef<Record<string, ReturnType<typeof setTimeout>>>({});
   const editsRef = useRef(edits);
   editsRef.current = edits;
@@ -200,6 +205,10 @@ export default function ChapterWorkbench({ corpus, book, chapter }: { corpus: Wo
     } else if (mod(e) && e.key === "ArrowUp") {
       e.preventDefault();
       focusAt(i - 1);
+    } else if (assisted && mod(e) && e.key.toLowerCase() === "i") {
+      e.preventDefault();
+      setSide("assistant");
+      propose(row.verse);
     } else if (mod(e) && e.key.toLowerCase() === "b" && row.base && !row.value.trim()) {
       e.preventDefault();
       change(row.ref, row.base);
@@ -270,7 +279,7 @@ export default function ChapterWorkbench({ corpus, book, chapter }: { corpus: Wo
       </header>
       {error && <p className="mb-2 text-sm text-error">{error}</p>}
 
-      <div className="grid gap-8 wide:grid-cols-[minmax(0,1fr)_22rem]">
+      <div className={`grid gap-8 ${side === "assistant" ? "wide:grid-cols-[minmax(0,1fr)_30rem]" : "wide:grid-cols-[minmax(0,1fr)_22rem]"}`}>
         <ol className="min-w-0">
           {!text || !work ? (
             <p className="py-12 text-center text-base-content/50">Chargement…</p>
@@ -313,6 +322,7 @@ export default function ChapterWorkbench({ corpus, book, chapter }: { corpus: Wo
                   ["mot", "Mot"],
                   ["verset", "Verset"],
                   ["controles", `Contrôles${issues.length ? ` (${issues.length})` : ""}`],
+                  ...(assisted ? [["assistant", "Assistant"]] : []),
                 ] as [Side, string][]
               ).map(([k, label]) => (
                 <button
@@ -366,8 +376,27 @@ export default function ChapterWorkbench({ corpus, book, chapter }: { corpus: Wo
                     <dd>verset suivant à traduire</dd>
                     <dt className="font-mono">⌘ K</dt>
                     <dd>aller à un passage</dd>
+                    {assisted && (
+                      <>
+                        <dt className="font-mono">⌘ I</dt>
+                        <dd>premier jet par l’assistant</dd>
+                      </>
+                    )}
                   </dl>
                 </div>
+              ))}
+            {side === "assistant" &&
+              (activeRow ? (
+                <AssistantPanel
+                  chat={chat}
+                  target={{ corpus, book, chapter, verse: activeRow.verse }}
+                  current={activeRow.value}
+                  state={proposals[activeRow.ref]}
+                  onRun={() => propose(activeRow.verse)}
+                  onUse={(t) => change(activeRow.ref, t)}
+                />
+              ) : (
+                <p className="text-sm text-base-content/50">Cliquez dans un verset, puis ⌘ I pour un premier jet.</p>
               ))}
             {side === "controles" &&
               (issues.length ? (

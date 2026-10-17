@@ -13,6 +13,8 @@ import CorpusChecks from "./CorpusChecks";
 import SearchReplace from "./SearchReplace";
 import Activity from "./Activity";
 import GotoPalette from "./GotoPalette";
+import Charter from "./Charter";
+import AssistantSettings from "./assistant/AssistantSettings";
 
 const TABS = [
   ["pilotage", "Pilotage"],
@@ -20,6 +22,8 @@ const TABS = [
   ["recherche", "Rechercher"],
   ["activite", "Activité"],
   ["glossaire", "Glossaire"],
+  ["charte", "Charte"],
+  ["assistant", "Assistant"],
 ] as const;
 type Tab = (typeof TABS)[number][0];
 
@@ -36,7 +40,9 @@ export default function WorkshopView() {
   const corpus: WorkCorpus = params.get("corpus") === "lxx" ? "lxx" : "nt";
   const book = params.get("book");
   const chapter = Number(params.get("ch"));
-  const tab: Tab = TABS.find(([k]) => k === params.get("tab"))?.[0] ?? "pilotage";
+  const assisted = can(user, "ai");
+  const tabs = TABS.filter(([k]) => k !== "assistant" || assisted);
+  const tab: Tab = tabs.find(([k]) => k === params.get("tab"))?.[0] ?? "pilotage";
 
   if (!ready) return null;
   if (!can(user, "arbitrage")) return <p className="py-20 text-center text-base-content/60">Réservé aux traducteurs.</p>;
@@ -76,7 +82,7 @@ export default function WorkshopView() {
         </div>
       </header>
       <nav className="flex gap-1 overflow-x-auto border-b border-base-300 text-sm" aria-label="Atelier">
-        {TABS.map(([k, label]) => (
+        {tabs.map(([k, label]) => (
           <Link key={k} href={k === "pilotage" ? `?corpus=${corpus}` : `?corpus=${corpus}&tab=${k}`} className={`relative shrink-0 px-3 py-2 font-medium ${tab === k ? "" : "text-base-content/55 hover:text-base-content"}`}>
             {label}
             {tab === k && <span className="absolute inset-x-2 -bottom-px h-0.5 rounded-full bg-primary" />}
@@ -90,6 +96,10 @@ export default function WorkshopView() {
       </nav>
       {tab === "glossaire" ? (
         <Glossary />
+      ) : tab === "charte" ? (
+        <Charter corpus={corpus} />
+      ) : tab === "assistant" ? (
+        <AssistantSettings />
       ) : tab === "verifications" ? (
         <CorpusChecks corpus={corpus} />
       ) : tab === "recherche" ? (
