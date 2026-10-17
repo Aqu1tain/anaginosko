@@ -6,7 +6,7 @@ import { forgetHouseMaison, houseTag } from "@/lib/ntMaison";
 export const dynamic = "force-dynamic";
 
 const API = process.env.ARB_API_URL || "http://127.0.0.1:3333/api";
-const credit = (by: string | undefined) => (!by || by === "Admin" ? "Βιβλίον" : by);
+const credit = (by: string | undefined) => (by === "Admin" ? "Corentin Renard" : by || "Βιβλίον");
 
 // Traductions maison existantes de la Septante (fichier d'arbitrage) : leur nombre,
 // et leur reprise dans l'API pour qu'elles entrent dans l'atelier.

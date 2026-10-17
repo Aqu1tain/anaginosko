@@ -41,13 +41,25 @@ function Queue({ title, items, corpus, tone }: { title: string; items: QueueItem
 
 // Reprise automatique, pour le compte racine, des traductions maison que l'ancien
 // atelier gardait dans son fichier : sans bouton, sans écraser l'existant.
+// Version de la reprise : l'incrémenter relance une reprise (signatures corrigées).
+const IMPORT_VERSION = "2";
+const IMPORT_KEY = "anaginosko:lxx-import";
+
 async function importLxx(published: number): Promise<number> {
   const token = getToken();
   const headers: HeadersInit = token ? { Authorization: `Bearer ${token}` } : {};
   const { count } = await fetch("/admin/arbitrage/api/workshop/import-lxx", { headers }).then((r) => r.json());
-  if (!count || published >= count) return 0;
+  let done = false;
+  try {
+    done = localStorage.getItem(IMPORT_KEY) === IMPORT_VERSION;
+  } catch {}
+  if (!count || (published >= count && done)) return 0;
   const res = await fetch("/admin/arbitrage/api/workshop/import-lxx", { method: "POST", headers });
-  return res.ok ? ((await res.json()).imported ?? 0) : 0;
+  if (!res.ok) return 0;
+  try {
+    localStorage.setItem(IMPORT_KEY, IMPORT_VERSION);
+  } catch {}
+  return (await res.json()).imported ?? 0;
 }
 
 // Pilotage : couverture, file de travail, rythme et traducteurs d'un corpus.
