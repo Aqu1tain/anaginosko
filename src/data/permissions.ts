@@ -6,6 +6,7 @@ export const PERMISSIONS = [
   "annotations",
   "moderate",
   "arbitrage",
+  "ai",
   "articles",
   "review",
   "publish",
@@ -21,6 +22,7 @@ export const PERMISSION_LABEL: Record<Permission, string> = {
   annotations: "Annotations",
   moderate: "Modération",
   arbitrage: "Arbitrage LXX",
+  ai: "Assistant IA",
   articles: "Rédaction d’articles",
   review: "Relecture d’articles",
   publish: "Publication d’articles",
@@ -34,6 +36,7 @@ export const PERMISSION_HINT: Record<Permission, string> = {
   annotations: "Écrire et éditer ses annotations et prononciations",
   moderate: "Éditer les annotations d'autrui, tout voir",
   arbitrage: "Arbitrage LXX (liens grec / Giguet)",
+  ai: "Assistant de traduction avec sa propre clé d'API",
   articles: "Rédiger et éditer ses articles",
   review: "Relire et approuver les articles d'un autre auteur",
   publish: "Publier une version approuvée, dépublier et archiver",
@@ -45,7 +48,7 @@ export const PERMISSION_HINT: Record<Permission, string> = {
 // Regroupement pour l'affichage (fiche d'un compte, édition d'un rôle).
 export const PERMISSION_GROUPS: { title: string; permissions: Permission[] }[] = [
   { title: "Articles et cours", permissions: ["articles", "review", "publish", "courses"] },
-  { title: "Texte biblique", permissions: ["annotations", "moderate", "arbitrage"] },
+  { title: "Texte biblique", permissions: ["annotations", "moderate", "arbitrage", "ai"] },
   { title: "Administration", permissions: ["dashboard", "reports", "accounts"] },
 ];
 
