@@ -4,9 +4,7 @@ import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { corpusByDataPrefix } from "../../src/data/corpus";
-import { useAuth } from "../../src/hooks/useAuth";
-import Avatar from "../../src/components/profile/Avatar";
-import { isLearner } from "../../src/lib/api";
+import AccountMenu from "./AccountMenu";
 import PreprodBadge, { IS_PREPROD } from "./PreprodBadge";
 
 function ThemeToggle({ dark, onToggle }: { dark: boolean; onToggle: () => void }) {
@@ -76,7 +74,6 @@ function chrome(pathname: string): { title: string | null; back: string; isLibra
 export default function TopBar({ dark, onToggleTheme }: { dark: boolean; onToggleTheme: () => void }) {
   const pathname = usePathname();
   const router = useRouter();
-  const { user, photo } = useAuth();
   const { title, back, isLibrary } = chrome(pathname);
 
   // Le bouton retour suit l'historique réel dès qu'on a navigué dans l'app
@@ -138,20 +135,7 @@ export default function TopBar({ dark, onToggleTheme }: { dark: boolean; onToggl
             <img src="/tipeee-icon.webp" alt="" aria-hidden="true" className="h-[18px] w-auto" />
             <span className="hidden font-semibold sm:inline">Soutenir</span>
           </a>
-          <Link
-            href={!user ? "/login" : isLearner(user) ? "/mon-compte" : "/admin"}
-            aria-label={!user ? "Se connecter" : isLearner(user) ? "Mon compte" : "Tableau de bord"}
-            className="btn btn-ghost btn-circle"
-          >
-            {user ? (
-              <Avatar name={user.displayName} photo={photo} size={26} />
-            ) : (
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <circle cx="12" cy="8" r="4" />
-                <path d="M12 13.5c-4 0-7.2 2.4-7.5 5.6A1 1 0 005.5 20.5h13a1 1 0 001-1.4c-.3-3.2-3.5-5.6-7.5-5.6z" />
-              </svg>
-            )}
-          </Link>
+          <AccountMenu />
           <ThemeToggle dark={dark} onToggle={onToggleTheme} />
         </div>
       </div>
