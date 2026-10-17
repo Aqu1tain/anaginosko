@@ -4,7 +4,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
-import { deleteMe, fetchMe, isLearner, updateMe } from "../../lib/api";
+import { can, deleteMe, fetchMe, isLearner, updateMe } from "../../lib/api";
+import AssistantSettings from "../workshop/assistant/AssistantSettings";
 import { useProgress } from "../../hooks/useProgress";
 
 // Compte d'un apprenant : nom, adresse de connexion, progression, déconnexion et
@@ -104,6 +105,17 @@ export default function AccountView() {
           <span>Recevoir les nouveautés par e-mail</span>
         </label>
       </section>
+
+      {can(user, "ai") && (
+        <section id="assistant" className="mt-4 scroll-mt-20 rounded-box border border-base-300 bg-base-100 p-5">
+          <h2 className="flex items-center gap-2 font-semibold">
+            Assistant IA <span className="badge badge-sm badge-outline font-normal">Bêta</span>
+          </h2>
+          <div className="mt-3">
+            <AssistantSettings />
+          </div>
+        </section>
+      )}
 
       {error && <p className="mt-4 rounded-lg bg-error/10 px-3 py-2 text-sm text-error">{error}</p>}
 

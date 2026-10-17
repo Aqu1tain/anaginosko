@@ -73,8 +73,8 @@ export default function AssistantPanel({
     return (
       <p className="text-sm text-base-content/60">
         Ajoutez une clé d’API dans{" "}
-        <Link href={`?corpus=${target.corpus}&tab=assistant`} className="link">
-          Assistant
+        <Link href="/mon-compte#assistant" className="link">
+          Mon compte
         </Link>
         .
       </p>

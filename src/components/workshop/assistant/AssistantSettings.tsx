@@ -86,10 +86,10 @@ export default function AssistantSettings({ onChanged }: { onChanged?: () => voi
   const keys = settings.keys;
 
   return (
-    <div className="grid gap-10 wide:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+    <div className="@container"><div className="grid gap-8 @3xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
       <div className="space-y-10">
         <section>
-          <h2 className="text-lg font-semibold">Fournisseurs</h2>
+          <h3 className="font-semibold">Fournisseurs</h3>
           <ul className="mt-2 divide-y divide-base-300 text-sm">
             {PROVIDERS.map((p) => (
               <ProviderRow key={p.id} id={p.id} label={p.label} saved={keys.find((k) => k.provider === p.id)} onChanged={reload} />
@@ -100,7 +100,7 @@ export default function AssistantSettings({ onChanged }: { onChanged?: () => voi
 
         {keys.length > 0 && (
           <section className="space-y-4">
-            <h2 className="text-lg font-semibold">Modèles</h2>
+            <h3 className="font-semibold">Modèles</h3>
             <div className="text-sm">
               <p className="mb-1 text-xs text-base-content/55">Analyse du grec</p>
               <ModelPicker keys={keys} value={settings.analysis} onChange={(p) => choose("analysis", p)} />
@@ -115,7 +115,7 @@ export default function AssistantSettings({ onChanged }: { onChanged?: () => voi
       </div>
 
       <section className="space-y-3">
-        <h2 className="text-lg font-semibold">Consommation sur 30 jours</h2>
+        <h3 className="font-semibold">Consommation sur 30 jours</h3>
         {usage?.models.length ? (
           <table className="w-full text-sm">
             <thead className="text-left text-xs text-base-content/50">
@@ -144,6 +144,7 @@ export default function AssistantSettings({ onChanged }: { onChanged?: () => voi
         )}
         <p className="text-xs text-base-content/55">En jetons. Le coût dépend des tarifs de votre fournisseur.</p>
       </section>
+    </div>
     </div>
   );
 }

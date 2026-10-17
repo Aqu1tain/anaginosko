@@ -1,12 +1,12 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import type { UIMessage } from "ai";
 import { useAuth } from "@/src/hooks/useAuth";
 import { can } from "@/src/lib/api";
 import { deleteConversation, fetchConversation, fetchConversations, renameConversation, type ConversationInfo } from "@/src/lib/aiApi";
-import AssistantSettings from "@/src/components/workshop/assistant/AssistantSettings";
 import { useAiSettings } from "@/src/components/workshop/assistant/useAiSettings";
 import Conversation from "./Conversation";
 
@@ -122,10 +122,9 @@ export default function IAnaginoskoView() {
   const { user, ready } = useAuth();
   const pathname = usePathname();
   const params = useSearchParams();
-  const { settings, reload, choose } = useAiSettings();
+  const { settings, choose } = useAiSettings();
   const [list, setList] = useState<ConversationInfo[] | null>(null);
   const [current, setCurrent] = useState<{ id: string; messages: UIMessage[] } | null>(null);
-  const [setup, setSetup] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(false);
   const wanted = params.get("c");
   const allowed = can(user, "ai");
@@ -186,18 +185,18 @@ export default function IAnaginoskoView() {
           </button>
           <h1 className="text-lg font-semibold">IAnaginosko</h1>
           <span className="badge badge-sm badge-outline">Bêta</span>
-          <button type="button" className="btn btn-ghost btn-sm ml-auto" onClick={() => setSetup(true)}>
+          <Link href="/mon-compte#assistant" className="btn btn-ghost btn-sm ml-auto">
             Clés<span className="hidden sm:inline">&nbsp;et modèles</span>
-          </button>
+          </Link>
         </header>
 
         <div className="mx-auto max-w-3xl">
           {settings && !keys.length ? (
             <div className="py-16 text-center">
               <p className="text-base-content/70">Ajoutez une clé d’API pour commencer.</p>
-              <button type="button" className="btn btn-primary btn-sm mt-4" onClick={() => setSetup(true)}>
+              <Link href="/mon-compte#assistant" className="btn btn-primary btn-sm mt-4">
                 Ajouter une clé
-              </button>
+              </Link>
             </div>
           ) : (
             current &&
@@ -217,20 +216,6 @@ export default function IAnaginoskoView() {
         </div>
       </div>
 
-      {setup && (
-        <dialog open className="modal modal-open" onClose={() => setSetup(false)}>
-          <div className="modal-box max-w-4xl">
-            <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-lg font-semibold">Clés et modèles</h2>
-              <button type="button" className="btn btn-ghost btn-sm" onClick={() => setSetup(false)}>
-                Fermer
-              </button>
-            </div>
-            <AssistantSettings onChanged={reload} />
-          </div>
-          <button type="button" className="modal-backdrop" aria-label="Fermer" onClick={() => setSetup(false)} />
-        </dialog>
-      )}
     </div>
   );
 }
