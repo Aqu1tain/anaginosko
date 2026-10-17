@@ -185,8 +185,13 @@ export default function IAnaginoskoView() {
           </button>
           <h1 className="text-lg font-semibold">IAnaginosko</h1>
           <span className="badge badge-sm badge-outline">Bêta</span>
-          <Link href="/mon-compte#assistant" className="btn btn-ghost btn-sm ml-auto">
-            Clés<span className="hidden sm:inline">&nbsp;et modèles</span>
+          <Link href="/mon-compte#assistant" className="btn btn-ghost btn-sm ml-auto gap-1.5" aria-label="Paramètres de l’assistant">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M4 7h10M18 7h2M4 17h4M12 17h8" />
+              <circle cx="16" cy="7" r="2" />
+              <circle cx="10" cy="17" r="2" />
+            </svg>
+            <span className="hidden sm:inline">Clés et modèles</span>
           </Link>
         </header>
 

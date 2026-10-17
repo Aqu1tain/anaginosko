@@ -68,6 +68,7 @@ export default function AssistantPanel({
   onUse: (text: string) => void;
 }) {
   const { settings, error, choose } = useAiSettings();
+  const [models, setModels] = useState(false);
 
   if (settings && !settings.keys.length)
     return (
@@ -83,22 +84,32 @@ export default function AssistantPanel({
   return (
     <div className="space-y-5">
       {settings && (
-        <section className="space-y-2 text-xs text-base-content/55">
-          <div>
-            <p className="mb-1">Analyse</p>
-            <ModelPicker keys={settings.keys} value={settings.analysis} onChange={(p) => choose("analysis", p)} />
-          </div>
-          <div>
-            <p className="mb-1">Rédaction et chat</p>
-            <ModelPicker keys={settings.keys} value={settings.draft} onChange={(p) => choose("draft", p)} />
-          </div>
-          {error && <p className="text-error">{error}</p>}
+        <section className="text-xs text-base-content/55">
+          <button type="button" onClick={() => setModels(!models)} aria-expanded={models || !settings.draft} className="flex w-full items-center gap-2 text-left hover:text-base-content">
+            <span className="min-w-0 flex-1 truncate">
+              {settings.analysis && settings.draft ? `${settings.analysis.model} · ${settings.draft.model}` : "Choisir les modèles"}
+            </span>
+            <span aria-hidden>{models ? "▴" : "▾"}</span>
+          </button>
+          {(models || !settings.draft) && (
+            <div className="mt-2 space-y-2">
+              <div>
+                <p className="mb-1">Analyse du grec</p>
+                <ModelPicker keys={settings.keys} value={settings.analysis} onChange={(p) => choose("analysis", p)} />
+              </div>
+              <div>
+                <p className="mb-1">Rédaction, relecture et chat</p>
+                <ModelPicker keys={settings.keys} value={settings.draft} onChange={(p) => choose("draft", p)} />
+              </div>
+            </div>
+          )}
+          {error && <p className="mt-1 text-error">{error}</p>}
         </section>
       )}
       <section className="space-y-3">
         <div className="flex items-center justify-between gap-2">
           <h2 className="text-sm font-semibold">Verset {target.verse}</h2>
-          <button type="button" className="btn btn-primary btn-sm" onClick={onRun} disabled={state?.running} title="⌘ I">
+          <button type="button" className={`btn btn-sm ${state?.result ? "btn-ghost" : "btn-primary"}`} onClick={onRun} disabled={state?.running} title="⌘ I">
             {state?.running ? "En cours…" : state?.result ? "Relancer" : "Proposer un jet"}
           </button>
         </div>

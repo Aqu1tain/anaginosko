@@ -69,10 +69,10 @@ export default function DraftProposal({ proposal, current, onUse }: { proposal: 
       <div className="rounded-box bg-base-200/70 p-3">
         <p className="text-[0.95rem] leading-relaxed">{draft.translation}</p>
         <div className="mt-3 flex flex-wrap items-center gap-2">
-          <button type="button" className="btn btn-primary btn-xs" disabled={same} onClick={() => onUse(draft.translation)}>
+          <button type="button" className="btn btn-primary btn-sm" disabled={same} onClick={() => onUse(draft.translation)}>
             {same ? "Dans l’éditeur" : current.trim() ? "Remplacer" : "Utiliser"}
           </button>
-          <button type="button" className="btn btn-ghost btn-xs" onClick={() => navigator.clipboard?.writeText(draft.translation)}>
+          <button type="button" className="btn btn-ghost btn-sm" onClick={() => navigator.clipboard?.writeText(draft.translation)}>
             Copier
           </button>
           {proposal.revised && <span className="text-xs text-base-content/55">corrigé après relecture</span>}
