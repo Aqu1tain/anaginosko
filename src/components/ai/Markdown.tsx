@@ -23,8 +23,16 @@ const COMPONENTS: Components = {
       <table className="w-full text-sm">{children}</table>
     </div>
   ),
-  th: ({ children }) => <th className="border-b border-base-300 bg-base-200/60 px-3 py-1.5 text-left font-semibold">{children}</th>,
-  td: ({ children }) => <td className="border-b border-base-300/60 px-3 py-1.5 align-top">{children}</td>,
+  th: ({ children, style }) => (
+    <th style={style} className="border-b border-base-300 bg-base-200/60 px-3 py-1.5 text-left font-semibold">
+      {children}
+    </th>
+  ),
+  td: ({ children, style }) => (
+    <td style={style} className="border-b border-base-300/60 px-3 py-1.5 align-top tabular-nums">
+      {children}
+    </td>
+  ),
   a: ({ href = "", children }) => {
     const path = internal(href);
     if (path !== null)
@@ -41,10 +49,37 @@ const COMPONENTS: Components = {
   },
 };
 
+// Le grec des réponses passe en Gentium, comme dans le reste du site.
+const GREEK = /[\u0370-\u03FF\u1F00-\u1FFF][\u0300-\u036F\u0370-\u03FF\u1F00-\u1FFF]*(?:\s+[\u0370-\u03FF\u1F00-\u1FFF][\u0300-\u036F\u0370-\u03FF\u1F00-\u1FFF]*)*/g;
+type HastNode = { type: string; value?: string; tagName?: string; properties?: Record<string, unknown>; children?: HastNode[] };
+
+function splitGreek(text: string): HastNode[] {
+  const out: HastNode[] = [];
+  let last = 0;
+  for (const m of text.matchAll(GREEK)) {
+    if (m.index! > last) out.push({ type: "text", value: text.slice(last, m.index) });
+    out.push({ type: "element", tagName: "span", properties: { className: ["font-greek", "text-[1.08em]"], lang: "grc" }, children: [{ type: "text", value: m[0] }] });
+    last = m.index! + m[0].length;
+  }
+  if (last < text.length) out.push({ type: "text", value: text.slice(last) });
+  return out;
+}
+
+function wrapGreek(node: HastNode) {
+  if (!node.children || node.tagName === "code" || node.tagName === "pre") return;
+  node.children = node.children.flatMap((child) => {
+    if (child.type === "text" && child.value) return splitGreek(child.value);
+    wrapGreek(child);
+    return [child];
+  });
+}
+
+const rehypeGreek = () => (tree: HastNode) => wrapGreek(tree);
+
 export default function Markdown({ text }: { text: string }) {
   return (
     <div className="break-words">
-      <ReactMarkdown remarkPlugins={[remarkGfm]} components={COMPONENTS}>
+      <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeGreek]} components={COMPONENTS}>
         {text}
       </ReactMarkdown>
     </div>
