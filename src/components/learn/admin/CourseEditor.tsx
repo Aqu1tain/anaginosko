@@ -22,7 +22,8 @@ const move = <T,>(list: T[], from: number, to: number): T[] => {
 function LessonStatus({ a }: { a?: ArticleSummary }) {
   if (!a) return <span className="badge badge-sm badge-error badge-soft">Introuvable</span>;
   if (a.hasPublishedVersion) return <span className="badge badge-sm badge-success badge-soft">Publiée</span>;
-  if (a.status === "in_review" || a.status === "approved") return <span className="badge badge-sm badge-warning badge-soft">En relecture</span>;
+  if (a.status === "approved") return <span className="badge badge-sm badge-info badge-soft">Approuvée</span>;
+  if (a.status === "in_review") return <span className="badge badge-sm badge-warning badge-soft">En relecture</span>;
   return <span className="badge badge-sm badge-ghost">Brouillon</span>;
 }
 
