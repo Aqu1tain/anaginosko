@@ -8,6 +8,8 @@ import { newChat } from "@/src/components/workshop/assistant/AssistantChat";
 import ModelPicker from "@/src/components/workshop/assistant/ModelPicker";
 import MessageView from "@/src/components/ai/MessageView";
 import Composer from "@/src/components/ai/Composer";
+import Generating from "@/src/components/ai/Generating";
+import { useStickToBottom } from "@/src/components/ai/useStickToBottom";
 
 const SUGGESTIONS = [
   "Quels sens prend ἔλεος dans la Septante ?",
@@ -66,9 +68,11 @@ export default function Conversation({
   const end = useRef<HTMLDivElement>(null);
   const busy = status === "submitted" || status === "streaming";
 
+  const { follow, jump } = useStickToBottom(end);
+
   useEffect(() => {
-    if (status === "streaming" || status === "submitted") end.current?.scrollIntoView({ block: "end" });
-  }, [messages, status]);
+    if (busy) follow();
+  }, [messages, busy, follow]);
 
   const send = (text = input) => {
     const q = text.trim();
@@ -76,6 +80,7 @@ export default function Conversation({
     setInput("");
     if (!messages.length) onStarted(id);
     sendMessage({ text: q });
+    requestAnimationFrame(jump);
   };
 
   const picker = keys.length > 0 && <ModelPicker pill keys={keys} value={pick} onChange={onPick} />;
@@ -111,11 +116,7 @@ export default function Conversation({
             )}
           </div>
         ))}
-        {status === "submitted" && (
-          <div className="flex items-center gap-2 text-sm text-base-content/50">
-            <span className="loading loading-dots loading-sm" /> Recherche dans le corpus…
-          </div>
-        )}
+        {busy && <Generating messages={messages} />}
         {error && (
           <div className="rounded-box border border-error/30 bg-error/5 px-4 py-3 text-sm text-error">
             {error.message}{" "}
@@ -124,7 +125,7 @@ export default function Conversation({
             </button>
           </div>
         )}
-        <div ref={end} />
+        <div ref={end} className="scroll-mb-48" />
       </div>
       <div className="sticky bottom-0 bg-gradient-to-t from-base-100 from-70% to-transparent pt-4 pb-[calc(5.5rem+env(safe-area-inset-bottom))] wide:pb-6">{composer}</div>
     </div>

@@ -6,6 +6,8 @@ import { DefaultChatTransport, type UIMessage } from "ai";
 import { chatEndpoint, chatHeaders } from "@/src/lib/aiApi";
 import MessageView from "@/src/components/ai/MessageView";
 import Composer from "@/src/components/ai/Composer";
+import Generating from "@/src/components/ai/Generating";
+import { useStickToBottom } from "@/src/components/ai/useStickToBottom";
 
 // Une conversation, conservée quand on change d'onglet ou de verset.
 export const newChat = (init: { id?: string; messages?: UIMessage[]; body?: object; onFinish?: () => void } = {}) =>
@@ -23,15 +25,18 @@ export default function AssistantChat({ chat, body, placeholder }: { chat: Chat<
   const end = useRef<HTMLDivElement>(null);
   const busy = status === "submitted" || status === "streaming";
 
+  const { follow, jump } = useStickToBottom(end);
+
   useEffect(() => {
-    end.current?.scrollIntoView({ block: "nearest" });
-  }, [messages]);
+    if (busy) follow();
+  }, [messages, busy, follow]);
 
   const send = () => {
     const q = input.trim();
     if (!q || busy) return;
     setInput("");
     sendMessage({ text: q }, { body });
+    requestAnimationFrame(jump);
   };
 
   return (
@@ -41,7 +46,7 @@ export default function AssistantChat({ chat, body, placeholder }: { chat: Chat<
           {messages.map((m) => (
             <MessageView key={m.id} message={m} />
           ))}
-          {status === "submitted" && <span className="loading loading-dots loading-sm text-base-content/40" />}
+          {busy && <Generating messages={messages} />}
           <div ref={end} />
         </div>
       )}
