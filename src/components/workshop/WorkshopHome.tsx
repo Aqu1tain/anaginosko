@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/src/hooks/useAuth";
 import { apiFetch, getToken } from "@/src/lib/api";
 import { loadBooks, type NtBook } from "@/src/data/nt";
 import { corpusById } from "@/src/data/corpus";
-import { fetchVerseCounts, fetchWorkshopStats, type QueueItem, type VerseCounts, type WorkCorpus, type WorkshopStats } from "@/src/lib/workshopApi";
+import { downloadBook, fetchVerseCounts, fetchWorkshopStats, type QueueItem, type VerseCounts, type WorkCorpus, type WorkshopStats } from "@/src/lib/workshopApi";
 
 type PublishedMap = Record<string, Record<string, unknown>>;
 const pct = (n: number, total: number) => (total ? Math.round((n / total) * 1000) / 10 : 0);
@@ -39,42 +39,15 @@ function Queue({ title, items, corpus, tone }: { title: string; items: QueueItem
   );
 }
 
-function ImportLxx({ published }: { published: number }) {
-  const [count, setCount] = useState<number | null>(null);
-  const [busy, setBusy] = useState(false);
-  const [done, setDone] = useState<string | null>(null);
-  const headers = (): HeadersInit => {
-    const t = getToken();
-    return t ? { Authorization: `Bearer ${t}` } : {};
-  };
-  useEffect(() => {
-    fetch("/admin/arbitrage/api/workshop/import-lxx", { headers: headers() })
-      .then((r) => r.json())
-      .then((d) => setCount(d.count ?? 0))
-      .catch(() => setCount(0));
-  }, []);
-  if (!count || published >= count) return null;
-  return (
-    <div className="flex flex-wrap items-center justify-between gap-3 rounded-box border border-warning/40 bg-warning/10 px-4 py-3 text-sm">
-      <span>{done ?? `${count} traductions maison de l’ancien atelier ne sont pas encore dans l’atelier.`}</span>
-      {!done && (
-        <button
-          type="button"
-          disabled={busy}
-          className="btn btn-sm"
-          onClick={async () => {
-            setBusy(true);
-            const r = await fetch("/admin/arbitrage/api/workshop/import-lxx", { method: "POST", headers: headers() });
-            const d = await r.json().catch(() => null);
-            setDone(r.ok ? `${d.imported} versets repris.` : (d?.error ?? "Échec de la reprise."));
-            setBusy(false);
-          }}
-        >
-          {busy ? "Reprise…" : "Reprendre"}
-        </button>
-      )}
-    </div>
-  );
+// Reprise automatique, pour le compte racine, des traductions maison que l'ancien
+// atelier gardait dans son fichier : sans bouton, sans écraser l'existant.
+async function importLxx(published: number): Promise<number> {
+  const token = getToken();
+  const headers: HeadersInit = token ? { Authorization: `Bearer ${token}` } : {};
+  const { count } = await fetch("/admin/arbitrage/api/workshop/import-lxx", { headers }).then((r) => r.json());
+  if (!count || published >= count) return 0;
+  const res = await fetch("/admin/arbitrage/api/workshop/import-lxx", { method: "POST", headers });
+  return res.ok ? ((await res.json()).imported ?? 0) : 0;
 }
 
 // Pilotage : couverture, file de travail, rythme et traducteurs d'un corpus.
@@ -87,6 +60,8 @@ export default function WorkshopHome({ corpus }: { corpus: WorkCorpus }) {
   const [published, setPublished] = useState<PublishedMap>({});
   const [open, setOpen] = useState<string | null>(null);
   const [error, setError] = useState("");
+  const [imported, setImported] = useState(0);
+  const tried = useRef(false);
 
   useEffect(() => {
     setStats(null);
@@ -98,6 +73,19 @@ export default function WorkshopHome({ corpus }: { corpus: WorkCorpus }) {
       .then((d) => setPublished(d.translations))
       .catch(() => {});
   }, [corpus, config]);
+
+  useEffect(() => {
+    if (!stats || !user?.isRoot || corpus !== "lxx" || tried.current) return;
+    tried.current = true;
+    const published = Object.values(stats.books).reduce((n, b) => n + b.published, 0);
+    importLxx(published)
+      .then((n) => {
+        if (!n) return;
+        setImported(n);
+        return fetchWorkshopStats(corpus).then(setStats);
+      })
+      .catch(() => {});
+  }, [stats, user, corpus]);
 
   if (error) return <p className="py-12 text-center text-base-content/60">{error}</p>;
   if (!stats) return <p className="py-12 text-center text-base-content/50">Chargement…</p>;
@@ -111,7 +99,7 @@ export default function WorkshopHome({ corpus }: { corpus: WorkCorpus }) {
 
   return (
     <div className="space-y-8">
-      {user?.isRoot && corpus === "lxx" && <ImportLxx published={done} />}
+      {imported > 0 && <p className="rounded-box bg-success/10 px-4 py-2.5 text-sm">{imported} traductions de l’ancien atelier reprises.</p>}
 
       <section className="grid gap-4 wide:grid-cols-[minmax(0,1fr)_20rem]">
         <div className="rounded-box border border-base-300 p-5">
@@ -183,7 +171,7 @@ export default function WorkshopHome({ corpus }: { corpus: WorkCorpus }) {
                   </span>
                 </button>
                 {expanded && verses?.[b.id] && (
-                  <div className="flex flex-wrap gap-1.5 px-4 pb-4">
+                  <div className="flex flex-wrap items-center gap-1.5 px-4 pb-4">
                     {Object.entries(verses[b.id].chapters).map(([ch, n]) => {
                       const got = Object.keys(published[b.id] ?? {}).filter((r) => r.startsWith(`${ch}:`)).length;
                       const ratio = n ? got / n : 0;
@@ -198,6 +186,9 @@ export default function WorkshopHome({ corpus }: { corpus: WorkCorpus }) {
                         </Link>
                       );
                     })}
+                    <button type="button" onClick={() => downloadBook(corpus, b.id).catch(() => {})} className="btn btn-ghost btn-xs ml-auto">
+                      Exporter le livre
+                    </button>
                   </div>
                 )}
               </li>

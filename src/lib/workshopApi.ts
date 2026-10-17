@@ -61,3 +61,33 @@ export async function fetchVerseCounts(corpus: WorkCorpus): Promise<VerseCounts>
   if (!res.ok) throw new Error(`Erreur ${res.status}`);
   return (await res.json()).verses;
 }
+
+export type CorpusDraft = Draft & { book: string };
+export type ActivityEvent = { kind: "published" | "reverted" | DraftStatus | "comment"; book: string; ref: string; by: string; text: string | null; at: string };
+export type CheckIssue = { book: string; ref: string; text: string; status: string; kind: "typo" | "term"; message: string };
+
+export const fetchCorpusDrafts = (corpus: WorkCorpus) => apiFetch<{ drafts: CorpusDraft[] }>(`/workshop/drafts?corpus=${corpus}`).then((d) => d.drafts);
+export const fetchActivity = (corpus: WorkCorpus) => apiFetch<{ events: ActivityEvent[] }>(`/workshop/activity?corpus=${corpus}`).then((d) => d.events);
+
+const site = async <T>(path: string): Promise<T> => {
+  const token = getToken();
+  const res = await fetch(path, { headers: token ? { Authorization: `Bearer ${token}` } : {} });
+  if (!res.ok) throw new Error(`Erreur ${res.status}`);
+  return res.json();
+};
+
+export const fetchChecks = (corpus: WorkCorpus) => site<{ checked: number; issues: CheckIssue[] }>(`/admin/arbitrage/api/workshop/checks?corpus=${corpus}`);
+
+// Téléchargement par en-tête d'autorisation (jamais de jeton dans l'URL).
+export async function downloadBook(corpus: WorkCorpus, book: string) {
+  const token = getToken();
+  const res = await fetch(`/admin/arbitrage/api/workshop/export?corpus=${corpus}&book=${book}`, { headers: token ? { Authorization: `Bearer ${token}` } : {} });
+  if (!res.ok) throw new Error(`Erreur ${res.status}`);
+  const url = URL.createObjectURL(await res.blob());
+  const a = Object.assign(document.createElement("a"), { href: url, download: `${corpus}-${book}.md` });
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+export const fetchPublished = (corpus: WorkCorpus) =>
+  apiFetch<{ translations: Record<string, Record<string, Published & { maison: string }>> }>(`/translations?corpus=${corpus}`).then((d) => d.translations);

@@ -101,6 +101,8 @@ export default function VerseRow({
           onChange={(e) => onChange(e.target.value)}
           onKeyDown={onKey}
           rows={2}
+          lang="fr"
+          spellCheck
           placeholder="Traduction…"
           className={`textarea textarea-bordered w-full resize-none overflow-hidden text-[0.95rem] leading-relaxed ${row.draft?.status === "changes" ? "border-warning" : ""}`}
         />

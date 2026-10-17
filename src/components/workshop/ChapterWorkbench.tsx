@@ -22,6 +22,7 @@ import VerseRow, { type RowState } from "./VerseRow";
 import WordPanel from "./WordPanel";
 import VerseSide from "./VerseSide";
 import { checkVerse } from "./checks";
+import GotoPalette from "./GotoPalette";
 
 type PublishedMap = Record<string, Record<string, { maison: string }>>;
 type Side = "mot" | "verset" | "controles";
@@ -130,6 +131,18 @@ export default function ChapterWorkbench({ corpus, book, chapter }: { corpus: Wo
     timers.current[ref] = setTimeout(() => persist(ref), 1200);
   };
 
+  // Arrivée sur « #v12 » (palette, vérifications, activité) : aller au verset.
+  const landed = useRef(false);
+  useEffect(() => {
+    if (landed.current || !rows.length) return;
+    landed.current = true;
+    const v = Number(window.location.hash.replace("#v", ""));
+    const target = rows.find((r) => r.verse === v);
+    if (!target) return;
+    document.getElementById(`v${v}`)?.scrollIntoView({ block: "center" });
+    document.querySelector<HTMLTextAreaElement>(`textarea[data-ref="${target.ref}"]`)?.focus({ preventScroll: true });
+  }, [rows]);
+
   const focusAt = (index: number) => {
     const target = rows[Math.max(0, Math.min(rows.length - 1, index))];
     if (target) document.querySelector<HTMLTextAreaElement>(`textarea[data-ref="${target.ref}"]`)?.focus();
@@ -158,9 +171,23 @@ export default function ChapterWorkbench({ corpus, book, chapter }: { corpus: Wo
       await discardDrafts(corpus, book, [ref]);
     });
 
+  // Prochain verset sans traduction ni version de travail, après le verset actif.
+  const nextUntranslated = () => {
+    const from = rows.findIndex((r) => r.ref === active);
+    const order = [...rows.slice(from + 1), ...rows.slice(0, from + 1)];
+    const target = order.find((r) => !r.published && !r.draft && !r.value.trim());
+    if (target) {
+      document.getElementById(`v${target.verse}`)?.scrollIntoView({ block: "center" });
+      focusAt(rows.indexOf(target));
+    }
+  };
+
   const onKey = (i: number) => (e: KeyboardEvent<HTMLTextAreaElement>) => {
     const row = rows[i];
-    if (mod(e) && e.key === "Enter" && e.shiftKey) {
+    if (mod(e) && e.key.toLowerCase() === "j") {
+      e.preventDefault();
+      nextUntranslated();
+    } else if (mod(e) && e.key === "Enter" && e.shiftKey) {
       e.preventDefault();
       submit([row.ref]);
     } else if (mod(e) && e.key === "Enter") {
@@ -218,6 +245,12 @@ export default function ChapterWorkbench({ corpus, book, chapter }: { corpus: Wo
           {done} / {rows.length} publiés
         </span>
         <span className="ml-auto flex flex-wrap gap-2">
+          <GotoPalette corpus={corpus} />
+          {done < rows.length && (
+            <button type="button" className="btn btn-ghost btn-sm" onClick={nextUntranslated} title="⌘ J">
+              Suivant à traduire
+            </button>
+          )}
           {corpus === "lxx" && (
             <Link href={`?mode=alignement&corpus=lxx&book=${book}&ch=${chapter}`} className="btn btn-ghost btn-sm">
               Alignement Giguet
@@ -314,6 +347,7 @@ export default function ChapterWorkbench({ corpus, book, chapter }: { corpus: Wo
                   verseRef={activeRow.ref}
                   comments={work.comments[activeRow.ref] ?? []}
                   onChanged={reloadWork}
+                  current={activeRow.value}
                   onRestore={(t) => change(activeRow.ref, t)}
                 />
               ) : (
@@ -328,6 +362,10 @@ export default function ChapterWorkbench({ corpus, book, chapter }: { corpus: Wo
                     <dd>soumettre à relecture</dd>
                     <dt className="font-mono">⌘ B</dt>
                     <dd>partir de la traduction de base</dd>
+                    <dt className="font-mono">⌘ J</dt>
+                    <dd>verset suivant à traduire</dd>
+                    <dt className="font-mono">⌘ K</dt>
+                    <dd>aller à un passage</dd>
                   </dl>
                 </div>
               ))}

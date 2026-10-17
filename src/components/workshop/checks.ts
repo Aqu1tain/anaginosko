@@ -10,11 +10,11 @@ const TYPO: [RegExp, string][] = [
   [/ {2,}/, "Espace double"],
   [/\s[,.)]/, "Espace avant une virgule, un point ou une parenthèse"],
   [/"/, "Guillemets droits : utiliser « »"],
-  [/[^\s  «(][;:!?]/, "Espace manquante avant ; : ! ?"],
+  [/[^\s\u00a0\u202f«(][;:!?]/, "Espace manquante avant ; : ! ?"],
   [/[a-zà-ÿ]\.[A-ZÀ-Ý]/, "Espace manquante après un point"],
 ];
 
-const fold = (s: string) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+const fold = (s: string) => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 
 // « amour » couvre « amours », « amour* » couvre « amoureux » : un rendu se cherche
 // en début de mot ; la casse et les accents sont ignorés.

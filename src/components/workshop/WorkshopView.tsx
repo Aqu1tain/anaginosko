@@ -9,6 +9,19 @@ import type { WorkCorpus } from "@/src/lib/workshopApi";
 import ChapterWorkbench from "./ChapterWorkbench";
 import WorkshopHome from "./WorkshopHome";
 import Glossary from "./Glossary";
+import CorpusChecks from "./CorpusChecks";
+import SearchReplace from "./SearchReplace";
+import Activity from "./Activity";
+import GotoPalette from "./GotoPalette";
+
+const TABS = [
+  ["pilotage", "Pilotage"],
+  ["verifications", "Vérifications"],
+  ["recherche", "Rechercher"],
+  ["activite", "Activité"],
+  ["glossaire", "Glossaire"],
+] as const;
+type Tab = (typeof TABS)[number][0];
 
 const CORPORA: [WorkCorpus, string][] = [
   ["nt", "Nouveau Testament"],
@@ -23,7 +36,7 @@ export default function WorkshopView() {
   const corpus: WorkCorpus = params.get("corpus") === "lxx" ? "lxx" : "nt";
   const book = params.get("book");
   const chapter = Number(params.get("ch"));
-  const tab = params.get("tab") === "glossaire" ? "glossaire" : "pilotage";
+  const tab: Tab = TABS.find(([k]) => k === params.get("tab"))?.[0] ?? "pilotage";
 
   if (!ready) return null;
   if (!can(user, "arbitrage")) return <p className="py-20 text-center text-base-content/60">Réservé aux traducteurs.</p>;
@@ -40,12 +53,14 @@ export default function WorkshopView() {
   }
   if (book && chapter > 0) return <ChapterWorkbench key={`${corpus}/${book}/${chapter}`} corpus={corpus} book={book} chapter={chapter} />;
 
-  const link = (patch: Record<string, string>) => `?${new URLSearchParams({ corpus, ...(tab === "glossaire" ? { tab } : {}), ...patch })}`;
+  const link = (patch: Record<string, string>) => `?${new URLSearchParams({ corpus, ...(tab !== "pilotage" ? { tab } : {}), ...patch })}`;
 
   return (
     <div className="space-y-6 pb-16 pt-6">
       <header className="flex flex-wrap items-center justify-between gap-4">
         <h1 className="text-3xl font-bold">Atelier de traduction</h1>
+        <div className="flex flex-wrap items-center gap-2">
+        <GotoPalette corpus={corpus} />
         <div className="flex gap-1 rounded-full bg-base-200 p-1 text-sm">
           {CORPORA.map(([id, label]) => (
             <Link
@@ -58,13 +73,11 @@ export default function WorkshopView() {
             </Link>
           ))}
         </div>
+        </div>
       </header>
-      <nav className="flex gap-1 border-b border-base-300 text-sm" aria-label="Atelier">
-        {[
-          ["pilotage", "Pilotage", `?corpus=${corpus}`],
-          ["glossaire", "Glossaire", `?corpus=${corpus}&tab=glossaire`],
-        ].map(([k, label, href]) => (
-          <Link key={k} href={href} className={`relative px-3 py-2 font-medium ${tab === k ? "" : "text-base-content/55 hover:text-base-content"}`}>
+      <nav className="flex gap-1 overflow-x-auto border-b border-base-300 text-sm" aria-label="Atelier">
+        {TABS.map(([k, label]) => (
+          <Link key={k} href={k === "pilotage" ? `?corpus=${corpus}` : `?corpus=${corpus}&tab=${k}`} className={`relative shrink-0 px-3 py-2 font-medium ${tab === k ? "" : "text-base-content/55 hover:text-base-content"}`}>
             {label}
             {tab === k && <span className="absolute inset-x-2 -bottom-px h-0.5 rounded-full bg-primary" />}
           </Link>
@@ -75,7 +88,17 @@ export default function WorkshopView() {
           </Link>
         )}
       </nav>
-      {tab === "glossaire" ? <Glossary /> : <WorkshopHome corpus={corpus} />}
+      {tab === "glossaire" ? (
+        <Glossary />
+      ) : tab === "verifications" ? (
+        <CorpusChecks corpus={corpus} />
+      ) : tab === "recherche" ? (
+        <SearchReplace corpus={corpus} />
+      ) : tab === "activite" ? (
+        <Activity corpus={corpus} />
+      ) : (
+        <WorkshopHome corpus={corpus} />
+      )}
     </div>
   );
 }
