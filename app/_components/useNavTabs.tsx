@@ -29,7 +29,21 @@ const ICONS = {
       <path d="M9 9h6M9 13h6M9 17h4" />
     </svg>
   ),
+  assistant: (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M12 3.5l1.9 5.1 5.1 1.9-5.1 1.9L12 17.5l-1.9-5.1-5.1-1.9 5.1-1.9z" />
+      <path d="M18.5 15.5l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z" />
+    </svg>
+  ),
 };
+
+// IAnaginosko : réservé aux comptes de la bêta (rail latéral seulement).
+export const assistantTab = (pathname: string): NavTab => ({
+  href: "/admin/ianaginosko",
+  label: "IAnaginosko",
+  icon: ICONS.assistant,
+  active: pathname.startsWith("/admin/ianaginosko"),
+});
 
 // « Apprendre le grec » : les cours, et les outils libres (alphabet, prononciation).
 const LEARN = ["/apprendre", "/alphabet", "/prononciation"];

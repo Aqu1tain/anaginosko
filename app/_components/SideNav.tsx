@@ -1,12 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import { useNavTabs } from "./useNavTabs";
+import { usePathname } from "next/navigation";
+import { useAuth } from "@/src/hooks/useAuth";
+import { can } from "@/src/lib/api";
+import { assistantTab, useNavTabs } from "./useNavTabs";
 
 // Rail de navigation latéral, desktop uniquement (≥ wide). Dans le flux, à
 // gauche du contenu, collé au défilement.
 export default function SideNav() {
-  const tabs = useNavTabs();
+  const { user } = useAuth();
+  const pathname = usePathname();
+  const tabs = [...useNavTabs(), ...(can(user, "ai") ? [assistantTab(pathname)] : [])];
   return (
     <nav className="sticky top-20 hidden h-fit shrink-0 flex-col gap-2 self-start wide:flex">
       {tabs.map((t) => (
