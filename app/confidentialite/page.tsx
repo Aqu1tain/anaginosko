@@ -83,6 +83,18 @@ const SECTIONS: LegalSection[] = [
     ),
   },
   {
+    id: "assistant",
+    title: "Assistant IA (bêta)",
+    body: (
+      <p>
+        Réservé aux comptes de l’équipe qui l’activent. Chacun fournit sa propre clé d’API, conservée chiffrée et jamais
+        réaffichée. Les questions, les passages et les données du site utiles à la réponse sont envoyés au fournisseur
+        choisi (Anthropic, OpenAI, Google, Mistral, OpenRouter ou un serveur compatible), selon ses propres conditions.
+        Les conversations sont conservées dans le compte jusqu’à leur suppression.
+      </p>
+    ),
+  },
+  {
     id: "audience",
     title: "Mesure d’audience",
     body: (
