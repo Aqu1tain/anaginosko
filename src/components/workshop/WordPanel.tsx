@@ -68,7 +68,7 @@ export default function WordPanel({
           <a href={`${corpusById(corpus).concordanceBase}/${encodeURIComponent(lemma)}`} target="_blank" rel="noreferrer" lang="grc" className="font-greek link">
             {lemma}
           </a>
-          <span className="text-base-content/55">
+          <span className="text-base-content/50">
             {" "}
             · {mot.nature?.toLowerCase()}
             {mot.morph ? ` · ${mot.morph}` : ""}
@@ -77,12 +77,12 @@ export default function WordPanel({
       </header>
 
       <section>
-        <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-base-content/50">Rendus admis</h3>
+        <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-base-content/50">Rendus admis</h3>
         <div className="flex flex-wrap gap-1.5">
           {renderings.map((r) => (
             <span key={r} className="inline-flex items-center gap-1 rounded-md bg-base-200 py-1 pl-2 pr-1.5 text-sm">
               {r}
-              <button type="button" aria-label={`Retirer ${r}`} onClick={() => setRenderings(renderings.filter((x) => x !== r))} className="text-base-content/45 hover:text-base-content">
+              <button type="button" aria-label={`Retirer ${r}`} onClick={() => setRenderings(renderings.filter((x) => x !== r))} className="text-base-content/50 hover:text-base-content">
                 ×
               </button>
             </span>
@@ -110,11 +110,11 @@ export default function WordPanel({
       </section>
 
       <section>
-        <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-base-content/50">
+        <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-base-content/50">
           Ailleurs{elsewhere ? ` · ${elsewhere.total} occurrences` : ""}
         </h3>
         {!elsewhere ? (
-          <p className="text-sm text-base-content/45">Chargement…</p>
+          <p className="text-sm text-base-content/50">Chargement…</p>
         ) : (
           <ul className="space-y-2.5">
             {elsewhere.lines.slice(0, 25).map((l) => {
@@ -129,9 +129,9 @@ export default function WordPanel({
                     {l.left} <strong className="text-base-content">{l.form}</strong> {l.right}
                   </p>
                   {fr ? (
-                    <p className={`text-[0.85rem] ${consistent === false ? "text-warning-content" : "text-base-content/80"}`}>{fr}</p>
+                    <p className={`text-[0.85rem] ${consistent === false ? "text-warning-content" : "text-base-content"}`}>{fr}</p>
                   ) : (
-                    <p className="text-xs text-base-content/40">Pas encore traduit</p>
+                    <p className="text-xs text-base-content/50">Non traduit</p>
                   )}
                 </li>
               );

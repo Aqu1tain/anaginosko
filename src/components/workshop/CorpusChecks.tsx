@@ -20,14 +20,14 @@ export default function CorpusChecks({ corpus }: { corpus: WorkCorpus }) {
   }, [corpus]);
 
   if (error) return <p className="text-sm text-error">{error}</p>;
-  if (!data) return <p className="text-sm text-base-content/50">Vérification de tout le corpus…</p>;
+  if (!data) return <p className="text-sm text-base-content/50">Vérification du corpus…</p>;
   const shown = data.issues.filter((i) => kind === "all" || i.kind === kind);
   const count = (k: "term" | "typo") => data.issues.filter((i) => i.kind === k).length;
 
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <p className="text-sm text-base-content/60">
+        <p className="text-sm text-base-content/50">
           {data.checked.toLocaleString("fr-FR")} versets vérifiés · {data.issues.length} alerte{data.issues.length > 1 ? "s" : ""}
         </p>
         <div className="flex gap-1 rounded-full bg-base-200 p-1 text-sm">
@@ -38,7 +38,7 @@ export default function CorpusChecks({ corpus }: { corpus: WorkCorpus }) {
               ["typo", `Typographie (${count("typo")})`],
             ] as const
           ).map(([k, label]) => (
-            <button key={k} type="button" onClick={() => setKind(k)} className={`rounded-full px-3 py-1 font-medium ${kind === k ? "bg-base-100 shadow-sm" : "text-base-content/60"}`}>
+            <button key={k} type="button" onClick={() => setKind(k)} className={`rounded-full px-3 py-1 font-medium ${kind === k ? "bg-base-100 shadow-sm" : "text-base-content/70 hover:text-base-content"}`}>
               {label}
             </button>
           ))}
@@ -53,11 +53,11 @@ export default function CorpusChecks({ corpus }: { corpus: WorkCorpus }) {
                 <Link href={`?corpus=${corpus}&book=${i.book}&ch=${ch}#v${v}`} className="grid gap-1 px-4 py-2.5 hover:bg-base-200/50 sm:grid-cols-[9rem_minmax(0,1fr)]">
                   <span className="text-sm font-medium">
                     {names[i.book] ?? i.book} {i.ref}
-                    <span className="block text-xs font-normal text-base-content/45">{STATUS[i.status] ?? i.status}</span>
+                    <span className="block text-xs font-normal text-base-content/50">{STATUS[i.status] ?? i.status}</span>
                   </span>
                   <span className="min-w-0">
                     <span className={`block text-sm ${i.kind === "term" ? "text-warning-content" : "text-error"}`}>{i.message}</span>
-                    <span className="block truncate text-sm text-base-content/60">{i.text}</span>
+                    <span className="block truncate text-sm text-base-content/70">{i.text}</span>
                   </span>
                 </Link>
               </li>
@@ -65,7 +65,7 @@ export default function CorpusChecks({ corpus }: { corpus: WorkCorpus }) {
           })}
         </ul>
       ) : (
-        <p className="rounded-box border border-dashed border-base-300 px-4 py-8 text-center text-sm text-base-content/55">Rien à signaler.</p>
+        <p className="rounded-box border border-dashed border-base-300 px-4 py-8 text-center text-sm text-base-content/50">Rien à signaler.</p>
       )}
     </div>
   );

@@ -73,7 +73,7 @@ export default function SearchReplace({ corpus }: { corpus: WorkCorpus }) {
     }
     let saved = 0;
     for (const [book, changes] of byBook) for (let i = 0; i < changes.length; i += 500) saved += (await saveDrafts(corpus, book, changes.slice(i, i + 500))).saved;
-    setNotice(`${saved} version${saved > 1 ? "s" : ""} de travail créée${saved > 1 ? "s" : ""}, à soumettre puis relire.`);
+    setNotice(`${saved} brouillon${saved > 1 ? "s" : ""} créé${saved > 1 ? "s" : ""}.`);
     setBusy(false);
     load();
   };
@@ -82,11 +82,11 @@ export default function SearchReplace({ corpus }: { corpus: WorkCorpus }) {
     <div className="space-y-4">
       <div className="grid gap-3 rounded-box border border-base-300 p-4 sm:grid-cols-2">
         <label className="text-sm">
-          <span className="mb-1 block text-xs text-base-content/55">Rechercher</span>
+          <span className="mb-1 block text-xs text-base-content/70">Rechercher</span>
           <input value={q} onChange={(e) => setQ(e.target.value)} className="input input-bordered input-sm w-full" placeholder="charité" autoFocus />
         </label>
         <label className="text-sm">
-          <span className="mb-1 block text-xs text-base-content/55">Remplacer par</span>
+          <span className="mb-1 block text-xs text-base-content/70">Remplacer par</span>
           <input value={by} onChange={(e) => setBy(e.target.value)} className="input input-bordered input-sm w-full" placeholder="amour" disabled={!accents} />
         </label>
         <div className="flex flex-wrap gap-4 text-sm sm:col-span-2">
@@ -104,19 +104,19 @@ export default function SearchReplace({ corpus }: { corpus: WorkCorpus }) {
           </label>
           {q && accents && hits.length > 0 && (
             <button type="button" disabled={busy} onClick={replaceAll} className="btn btn-primary btn-xs ml-auto">
-              {busy ? "…" : `Remplacer dans ${hits.length} verset${hits.length > 1 ? "s" : ""}`}
+              {busy ? "…" : `Remplacer ${hits.length} verset${hits.length > 1 ? "s" : ""}`}
             </button>
           )}
         </div>
       </div>
       {notice && <p className="text-sm text-success">{notice}</p>}
       {!verses ? (
-        <p className="text-sm text-base-content/50">Chargement de la traduction…</p>
+        <p className="text-sm text-base-content/50">Chargement…</p>
       ) : !q ? (
         <p className="text-sm text-base-content/50">{verses.length.toLocaleString("fr-FR")} versets traduits.</p>
       ) : (
         <>
-          <p className="text-sm text-base-content/60">
+          <p className="text-sm text-base-content/50">
             {hits.length} verset{hits.length > 1 ? "s" : ""}
           </p>
           <ul className="divide-y divide-base-300 rounded-box border border-base-300">
@@ -128,11 +128,11 @@ export default function SearchReplace({ corpus }: { corpus: WorkCorpus }) {
                   <Link href={`?corpus=${corpus}&book=${v.book}&ch=${ch}#v${n}`} className="grid gap-1 px-4 py-2.5 hover:bg-base-200/50 sm:grid-cols-[9rem_minmax(0,1fr)]">
                     <span className="text-sm font-medium">
                       {names[v.book] ?? v.book} {v.ref}
-                      {v.draft && <span className="block text-xs font-normal text-base-content/45">version de travail</span>}
+                      {v.draft && <span className="block text-xs font-normal text-base-content/50">brouillon</span>}
                     </span>
                     <span className="min-w-0 text-sm">
                       <Highlight text={shown} re={re!} />
-                      {by && accents && <span className="mt-0.5 block text-base-content/55">→ {v.text.replace(re!, by)}</span>}
+                      {by && accents && <span className="mt-0.5 block text-base-content/70">→ {v.text.replace(re!, by)}</span>}
                     </span>
                   </Link>
                 </li>

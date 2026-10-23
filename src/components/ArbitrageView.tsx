@@ -72,22 +72,22 @@ export default function ArbitrageView() {
   return (
     <div className="pb-12 pt-6">
       <div className="flex flex-wrap items-end justify-between gap-3">
-        <h1 className="text-2xl font-bold">Atelier de traduction</h1>
+        <h1 className="text-3xl font-bold tracking-tight">Alignement Giguet</h1>
         <div className="join" role="group" aria-label="Corpus">
           <button className={`btn btn-sm join-item ${corpus === "lxx" ? "btn-primary" : "btn-ghost border border-base-300"}`} onClick={() => setCorpus("lxx")}>Septante</button>
           <button className={`btn btn-sm join-item ${corpus === "nt" ? "btn-primary" : "btn-ghost border border-base-300"}`} onClick={() => setCorpus("nt")}>Nouveau Testament</button>
         </div>
       </div>
-      {err && <div className="alert alert-warning mt-3 text-sm">{err}</div>}
+      {err && <p className="mt-3 text-sm text-error">{err}</p>}
 
       {corpus === "lxx" && (
         <>
           <SinceLastVisit />
-          <div role="tablist" className="tabs tabs-boxed mt-4 w-fit">
+          <div role="tablist" className="tabs tabs-box mt-4 w-fit">
             <button className={`tab ${tab === "corriger" ? "tab-active" : ""}`} onClick={() => setTab("corriger")}>Corriger</button>
             <button className={`tab ${tab === "traduire" ? "tab-active" : ""}`} onClick={() => setTab("traduire")}>À traduire</button>
-            <button className={`tab ${tab === "browse" ? "tab-active" : ""}`} onClick={() => setTab("browse")}>Parcourir tout</button>
-            <button className={`tab ${tab === "logs" ? "tab-active" : ""}`} onClick={() => setTab("logs")}>Logs</button>
+            <button className={`tab ${tab === "browse" ? "tab-active" : ""}`} onClick={() => setTab("browse")}>Tout parcourir</button>
+            <button className={`tab ${tab === "logs" ? "tab-active" : ""}`} onClick={() => setTab("logs")}>Activité</button>
           </div>
           {tab === "corriger" && <ErrorMap onOpen={open} />}
           {tab === "traduire" && <ToTranslateList onOpen={open} />}
@@ -118,7 +118,7 @@ export default function ArbitrageView() {
 // chapitre qui ne lève aucune erreur. Ouvre le même éditeur que Corriger.
 function BrowseList({ states, onOpen }: { states: Record<string, Record<string, State>>; onOpen: (b: string, c: number) => void }) {
   const books = Object.keys(states).sort();
-  if (!books.length) return <p className="mt-6 text-sm text-base-content/60">Aucun chapitre disponible.</p>;
+  if (!books.length) return <p className="mt-6 text-sm text-base-content/50">Aucun chapitre.</p>;
   return (
     <div className="mt-4 grid gap-4">
       {books.map((book) => {
@@ -141,7 +141,7 @@ function BrowseList({ states, onOpen }: { states: Record<string, Record<string, 
                     title={notConv ? "Non convergé : liage manuel" : s.pending ? `${s.pending} arbitrage(s) en attente` : "Auto-résolu"}>
                     {c}
                     {s.pending > 0 && <span className="badge badge-xs badge-error ml-1">{s.pending}</span>}
-                    {notConv && <span className="ml-1 text-[0.65rem] uppercase">manuel</span>}
+                    {notConv && <span className="ml-1 text-xs uppercase">manuel</span>}
                   </button>
                 );
               })}

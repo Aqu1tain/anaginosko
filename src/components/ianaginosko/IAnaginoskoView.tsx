@@ -58,14 +58,14 @@ function History({
         <input type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Rechercher" className="input input-bordered input-sm w-full" />
       )}
       {list === null ? (
-        <p className="px-2 text-sm text-base-content/45">Chargement…</p>
+        <p className="px-2 text-sm text-base-content/50">Chargement…</p>
       ) : !list.length ? (
-        <p className="px-2 text-sm text-base-content/45">Aucune conversation.</p>
+        <p className="px-2 text-sm text-base-content/50">Aucune conversation.</p>
       ) : (
         <nav aria-label="Conversations" className="space-y-4">
           {groups(shown).map((g) => (
             <div key={g.label}>
-              <p className="px-2 pb-1 text-xs font-medium text-base-content/45">{g.label}</p>
+              <p className="px-2 pb-1 text-xs font-medium text-base-content/50">{g.label}</p>
               <ul>
                 {g.items.map((c) => (
                   <li key={c.id} className="group relative">
@@ -73,7 +73,7 @@ function History({
                       type="button"
                       onClick={() => onOpen(c.id)}
                       aria-current={c.id === active ? "true" : undefined}
-                      className={`block w-full truncate rounded-lg py-1.5 pr-14 pl-2 text-left text-sm ${c.id === active ? "bg-base-200 font-medium" : "text-base-content/75 hover:bg-base-200/60"}`}
+                      className={`block w-full truncate rounded-lg py-1.5 pr-14 pl-2 text-left text-sm ${c.id === active ? "bg-base-200 font-medium" : "text-base-content/70 hover:bg-base-200/60"}`}
                     >
                       {c.title}
                     </button>
@@ -155,7 +155,7 @@ export default function IAnaginoskoView() {
   }, [wanted, allowed]);
 
   if (!ready) return null;
-  if (!allowed) return <p className="py-20 text-center text-base-content/60">Réservé aux comptes de la bêta.</p>;
+  if (!allowed) return <p className="py-20 text-center text-base-content/70">Réservé aux comptes de la bêta.</p>;
 
   const keys = settings?.keys ?? [];
   const open = (id: string) => {
@@ -198,7 +198,7 @@ export default function IAnaginoskoView() {
         <div className="mx-auto max-w-3xl">
           {settings && !keys.length ? (
             <div className="py-16 text-center">
-              <p className="text-base-content/70">Ajoutez une clé d’API pour commencer.</p>
+              <p className="text-base-content/70">Aucune clé d’API.</p>
               <Link href="/mon-compte#assistant" className="btn btn-primary btn-sm mt-4">
                 Ajouter une clé
               </Link>

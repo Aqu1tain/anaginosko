@@ -20,7 +20,7 @@ export function Progress({ steps }: { steps: StepState }) {
       {STEPS.filter(([k]) => k !== "correction" || steps[k]).map(([k, label]) => {
         const s = steps[k];
         return (
-          <li key={k} className={`flex items-center gap-2 ${s ? "" : "text-base-content/40"}`}>
+          <li key={k} className={`flex items-center gap-2 ${s ? "" : "text-base-content/50"}`}>
             <span className="w-4 text-center">{s?.status === "done" ? "✓" : s ? <span className="loading loading-spinner loading-xs" /> : "·"}</span>
             {label}
             {s?.detail && <span className="text-xs text-warning">{s.detail}</span>}
@@ -59,7 +59,7 @@ export default function DraftProposal({ proposal, current, onUse }: { proposal: 
   const greek = (ids: number[]) => ids.map((i) => words[i]?.grec).filter(Boolean).join(" ");
   const segments = [
     ...draft.alignment.map((a) => ({ at: Math.min(...a.words), greek: greek(a.words), french: a.french, tone: "" })),
-    ...draft.omitted.map((o) => ({ at: o.i, greek: greek([o.i]), french: `(${o.reason})`, tone: "text-base-content/45" })),
+    ...draft.omitted.map((o) => ({ at: o.i, greek: greek([o.i]), french: `(${o.reason})`, tone: "text-base-content/50" })),
     ...proposal.missing.map((i) => ({ at: i, greek: greek([i]), french: "non traité", tone: "text-error" })),
   ].sort((a, b) => a.at - b.at);
   const same = current.trim() === draft.translation.trim();
@@ -75,7 +75,7 @@ export default function DraftProposal({ proposal, current, onUse }: { proposal: 
           <button type="button" className="btn btn-ghost btn-sm" onClick={() => navigator.clipboard?.writeText(draft.translation)}>
             Copier
           </button>
-          {proposal.revised && <span className="text-xs text-base-content/55">corrigé après relecture</span>}
+          {proposal.revised && <span className="text-xs text-base-content/50">corrigé après relecture</span>}
         </div>
       </div>
 
@@ -107,7 +107,7 @@ export default function DraftProposal({ proposal, current, onUse }: { proposal: 
 
       {review.issues.some((i) => i.severity === "minor") && (
         <Section title="Remarques de relecture">
-          <ul className="space-y-1 text-sm text-base-content/75">
+          <ul className="space-y-1 text-sm text-base-content/70">
             {review.issues
               .filter((i) => i.severity === "minor")
               .map((i, k) => (
@@ -132,13 +132,13 @@ export default function DraftProposal({ proposal, current, onUse }: { proposal: 
       </Section>
 
       <Section title="Analyse du grec">
-        <p className="text-sm text-base-content/75">{analysis.structure}</p>
+        <p className="text-sm text-base-content/70">{analysis.structure}</p>
         {analysis.decisions.length > 0 && (
           <ul className="mt-2 space-y-2 text-sm">
             {analysis.decisions.map((d, k) => (
               <li key={k}>
                 <p className="font-medium">{d.question}</p>
-                <p className="text-base-content/65">
+                <p className="text-base-content/70">
                   {d.options.join(" / ")} → {d.leaning}
                 </p>
               </li>
@@ -164,7 +164,7 @@ export default function DraftProposal({ proposal, current, onUse }: { proposal: 
         </Section>
       )}
 
-      <p className="text-xs text-base-content/45">
+      <p className="text-xs text-base-content/50">
         {proposal.usage.input.toLocaleString("fr-FR")} jetons lus{proposal.usage.cached ? ` (${proposal.usage.cached.toLocaleString("fr-FR")} en cache)` : ""},{" "}
         {proposal.usage.output.toLocaleString("fr-FR")} écrits
       </p>

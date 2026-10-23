@@ -69,18 +69,18 @@ export default function VerseSide({
   return (
     <div className="space-y-5">
       <section>
-        <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-base-content/50">Discussion · {verseRef}</h3>
+        <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-base-content/50">Discussion · {verseRef}</h3>
         <ul className="space-y-2">
           {comments.map((c) => (
-            <li key={c.id} className={`rounded-md border border-base-300 p-2 text-sm ${c.resolved ? "opacity-50" : ""}`}>
-              <p className="flex items-baseline justify-between gap-2 text-xs text-base-content/55">
-                <span className="font-medium text-base-content/80">{c.author}</span>
+            <li key={c.id} className={`rounded-md bg-base-200/60 p-2 text-sm ${c.resolved ? "opacity-50" : ""}`}>
+              <p className="flex items-baseline justify-between gap-2 text-xs text-base-content/50">
+                <span className="font-medium text-base-content">{c.author}</span>
                 <button type="button" className="hover:text-primary" onClick={() => resolveComment(c.id, !c.resolved).then(onChanged)}>
-                  {c.resolved ? "Rouvrir" : "Résolu"}
+                  {c.resolved ? "Rouvrir" : "Résoudre"}
                 </button>
               </p>
               <p className="mt-0.5 whitespace-pre-wrap">{c.body}</p>
-              <p className="mt-0.5 text-[0.7rem] text-base-content/40">{when(c.at)}</p>
+              <p className="mt-0.5 text-xs text-base-content/50">{when(c.at)}</p>
             </li>
           ))}
         </ul>
@@ -94,16 +94,16 @@ export default function VerseSide({
           placeholder="Commenter ce verset"
           className="textarea textarea-bordered mt-2 w-full text-sm"
         />
-        <button type="button" onClick={post} disabled={busy || !body.trim()} className="btn btn-outline btn-xs">
-          Publier
+        <button type="button" onClick={post} disabled={busy || !body.trim()} className="btn btn-outline btn-xs mt-1">
+          Commenter
         </button>
       </section>
 
       <section>
-        <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-base-content/50">Versions publiées</h3>
-        <p className="mb-2 text-xs text-base-content/45">Comparées au texte actuel : <span className="bg-error/15 line-through">retiré</span> <span className="bg-success/20">ajouté</span></p>
+        <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-base-content/50">Versions publiées</h3>
+        <p className="mb-2 text-xs text-base-content/50">Comparées au texte actuel : <span className="bg-error/15 line-through">retiré</span> <span className="bg-success/20">ajouté</span></p>
         {history === null ? (
-          <p className="text-sm text-base-content/45">Chargement…</p>
+          <p className="text-sm text-base-content/50">Chargement…</p>
         ) : history.length ? (
           <ul className="space-y-2">
             {history.map((h, i) => (
@@ -131,7 +131,7 @@ export default function VerseSide({
             ))}
           </ul>
         ) : (
-          <p className="text-sm text-base-content/45">Jamais publié.</p>
+          <p className="text-sm text-base-content/50">Jamais publié.</p>
         )}
       </section>
     </div>

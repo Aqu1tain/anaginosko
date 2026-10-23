@@ -29,7 +29,7 @@ function Queue({ title, items, corpus, tone }: { title: string; items: QueueItem
                 <span>
                   {names[q.book] ?? q.book} {q.ref}
                 </span>
-                <span className="truncate text-xs text-base-content/45">{q.note ?? q.author}</span>
+                <span className="truncate text-xs text-base-content/50">{q.note ?? q.author}</span>
               </Link>
             </li>
           );
@@ -99,8 +99,8 @@ export default function WorkshopHome({ corpus }: { corpus: WorkCorpus }) {
       .catch(() => {});
   }, [stats, user, corpus]);
 
-  if (error) return <p className="py-12 text-center text-base-content/60">{error}</p>;
-  if (!stats) return <p className="py-12 text-center text-base-content/50">Chargement…</p>;
+  if (error) return <p className="py-12 text-center text-sm text-error">{error}</p>;
+  if (!stats) return <p className="py-12 text-center text-sm text-base-content/50">Chargement…</p>;
 
   const totalVerses = verses ? Object.values(verses).reduce((n, b) => n + b.total, 0) : 0;
   const sum = (k: "published" | "draft" | "review" | "changes") => Object.values(stats.books).reduce((n, b) => n + b[k], 0);
@@ -115,10 +115,10 @@ export default function WorkshopHome({ corpus }: { corpus: WorkCorpus }) {
 
       <section className="grid gap-4 wide:grid-cols-[minmax(0,1fr)_20rem]">
         <div className="rounded-box border border-base-300 p-5">
-          <p className="text-sm text-base-content/55">Traduction maison · {config.label}</p>
+          <p className="text-sm text-base-content/70">Traduction maison · {config.label}</p>
           <p className="mt-1 flex items-baseline gap-3">
             <span className="text-4xl font-bold tabular-nums">{verses ? `${pct(done, totalVerses).toLocaleString("fr-FR")} %` : "…"}</span>
-            <span className="text-sm text-base-content/55">
+            <span className="text-sm text-base-content/70">
               {done.toLocaleString("fr-FR")} verset{done > 1 ? "s" : ""} publié{done > 1 ? "s" : ""}
               {verses ? ` sur ${totalVerses.toLocaleString("fr-FR")}` : ""} · {ongoing} en cours
             </span>
@@ -142,7 +142,7 @@ export default function WorkshopHome({ corpus }: { corpus: WorkCorpus }) {
             {stats.translators.map((t) => (
               <li key={t.name} className="flex justify-between">
                 <span>{t.name}</span>
-                <span className="tabular-nums text-base-content/55">{t.published.toLocaleString("fr-FR")}</span>
+                <span className="tabular-nums text-base-content/50">{t.published.toLocaleString("fr-FR")}</span>
               </li>
             ))}
           </ul>
@@ -156,13 +156,13 @@ export default function WorkshopHome({ corpus }: { corpus: WorkCorpus }) {
         {stats.queue.waiting > 0 && (
           <section className="rounded-box border border-base-300 p-4 text-sm">
             <h3 className="font-semibold">En attente de relecture</h3>
-            <p className="mt-2 text-base-content/60">{stats.queue.waiting} de vos versets attendent un relecteur.</p>
+            <p className="mt-2 text-base-content/70">{stats.queue.waiting} de vos versets attendent un relecteur.</p>
           </section>
         )}
       </section>
 
       <section>
-        <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-base-content/50">Livres</h2>
+        <h2 className="mb-3 text-lg font-semibold">Livres</h2>
         <ul className="divide-y divide-base-300 rounded-box border border-base-300">
           {books.map((b) => {
             const total = verses?.[b.id]?.total ?? 0;
@@ -177,7 +177,7 @@ export default function WorkshopHome({ corpus }: { corpus: WorkCorpus }) {
                     <span className="bg-success" style={{ width: `${pct(s.published, total)}%` }} />
                     <span className="bg-warning/70" style={{ width: `${pct(busy, total)}%` }} />
                   </span>
-                  <span className="text-right text-xs tabular-nums text-base-content/55">
+                  <span className="text-right text-xs tabular-nums text-base-content/50">
                     {s.published} / {total}
                     {busy ? ` · ${busy} en cours` : ""}
                   </span>

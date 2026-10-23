@@ -19,7 +19,7 @@ function RuleRow({ rule, onChanged }: { rule: Rule; onChanged: () => void }) {
   const proposed = rule.status === "proposed";
   return (
     <li className={`grid gap-2 py-3 sm:grid-cols-[9rem_minmax(0,1fr)_auto] sm:gap-4 ${proposed ? "rounded-box bg-warning/10 px-3" : ""}`}>
-      <div className="text-xs text-base-content/55">
+      <div className="text-xs text-base-content/50">
         <span className="font-semibold text-base-content">R{rule.id}</span>
         {rule.lemma && <span className="ml-1.5 font-greek text-sm text-base-content">{rule.lemma}</span>}
         <span className="block">{scope(rule) || "Partout"}</span>
@@ -36,13 +36,13 @@ function RuleRow({ rule, onChanged }: { rule: Rule; onChanged: () => void }) {
           </button>
         )}
         {proposed && (
-          <button type="button" className="btn btn-success btn-xs" onClick={() => updateRule(rule.id, { status: "active", text, examples: examples || null }).then(onChanged)}>
+          <button type="button" className="btn btn-outline btn-xs" onClick={() => updateRule(rule.id, { status: "active", text, examples: examples || null }).then(onChanged)}>
             Valider
           </button>
         )}
         <button
           type="button"
-          className="btn btn-ghost btn-xs"
+          className="btn btn-ghost btn-xs text-error"
           onClick={() => {
             if (confirm(`Supprimer la règle R${rule.id} ?`)) deleteRule(rule.id).then(onChanged);
           }}
@@ -87,14 +87,14 @@ export default function Charter({ corpus }: { corpus: WorkCorpus }) {
         }}
       >
         <label className="text-sm">
-          <span className="mb-1 block text-xs text-base-content/55">Type</span>
+          <span className="mb-1 block text-xs text-base-content/70">Type</span>
           <select value={form.kind} onChange={(e) => set({ kind: e.target.value as Rule["kind"] })} className="select select-bordered select-sm w-full">
             <option value="rule">Règle</option>
             <option value="style">Style d’un livre</option>
           </select>
         </label>
         <label className="text-sm">
-          <span className="mb-1 block text-xs text-base-content/55">Corpus</span>
+          <span className="mb-1 block text-xs text-base-content/70">Corpus</span>
           <select value={form.corpus ?? ""} onChange={(e) => set({ corpus: (e.target.value || null) as WorkCorpus | null, book: null })} className="select select-bordered select-sm w-full">
             <option value="">Tous</option>
             <option value="nt">Nouveau Testament</option>
@@ -102,7 +102,7 @@ export default function Charter({ corpus }: { corpus: WorkCorpus }) {
           </select>
         </label>
         <label className="text-sm">
-          <span className="mb-1 block text-xs text-base-content/55">Livre</span>
+          <span className="mb-1 block text-xs text-base-content/70">Livre</span>
           <select value={form.book ?? ""} onChange={(e) => set({ book: e.target.value || null })} disabled={!form.corpus} className="select select-bordered select-sm w-full">
             <option value="">Tous les livres</option>
             {form.corpus &&
@@ -114,11 +114,11 @@ export default function Charter({ corpus }: { corpus: WorkCorpus }) {
           </select>
         </label>
         <label className="text-sm">
-          <span className="mb-1 block text-xs text-base-content/55">Lemme</span>
+          <span className="mb-1 block text-xs text-base-content/70">Lemme</span>
           <input value={form.lemma ?? ""} onChange={(e) => set({ lemma: e.target.value })} disabled={form.kind === "style"} className="input input-bordered input-sm w-full font-greek" placeholder="καί" />
         </label>
         <label className="text-sm sm:col-span-3">
-          <span className="mb-1 block text-xs text-base-content/55">Règle</span>
+          <span className="mb-1 block text-xs text-base-content/70">Règle</span>
           <textarea
             value={form.text}
             onChange={(e) => set({ text: e.target.value })}
@@ -142,7 +142,7 @@ export default function Charter({ corpus }: { corpus: WorkCorpus }) {
         <>
           {proposed.length > 0 && (
             <section>
-              <h2 className="mb-2 text-sm font-semibold">À valider ({proposed.length})</h2>
+              <h2 className="mb-2 text-lg font-semibold">À valider ({proposed.length})</h2>
               <ul className="space-y-2">
                 {proposed.map((r) => (
                   <RuleRow key={`${r.id}:${r.updatedAt}`} rule={r} onChanged={load} />
@@ -151,7 +151,7 @@ export default function Charter({ corpus }: { corpus: WorkCorpus }) {
             </section>
           )}
           <section>
-            <h2 className="mb-1 text-sm font-semibold">Règles en vigueur ({active.length})</h2>
+            <h2 className="mb-1 text-lg font-semibold">Règles en vigueur ({active.length})</h2>
             {active.length ? (
               <ul className="divide-y divide-base-300">
                 {active.map((r) => (
@@ -159,7 +159,7 @@ export default function Charter({ corpus }: { corpus: WorkCorpus }) {
                 ))}
               </ul>
             ) : (
-              <p className="rounded-box border border-dashed border-base-300 px-4 py-8 text-center text-sm text-base-content/55">
+              <p className="rounded-box border border-dashed border-base-300 px-4 py-8 text-center text-sm text-base-content/50">
                 Aucune règle.
               </p>
             )}

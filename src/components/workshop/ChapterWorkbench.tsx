@@ -227,15 +227,15 @@ export default function ChapterWorkbench({ corpus, book, chapter }: { corpus: Wo
   const selected = word !== null ? text?.mots?.[word] : null;
   const issues = rows.flatMap((r) => r.issues.map((i) => ({ ref: r.ref, verse: r.verse, ...i })));
 
-  if (error && !text) return <p className="py-12 text-center text-base-content/60">{error}</p>;
+  if (error && !text) return <p className="py-12 text-center text-sm text-error">{error}</p>;
 
   return (
-    <div className="pb-16 pt-4">
+    <div className="pb-12 pt-4">
       <header className="sticky top-14 z-10 -mx-4 mb-2 flex flex-wrap items-center gap-x-4 gap-y-2 border-b border-base-300 bg-base-100/95 px-4 py-3 backdrop-blur wide:mx-0 wide:px-0">
-        <Link href={`?corpus=${corpus}`} className="text-sm text-base-content/55 hover:text-base-content">
+        <Link href={`?corpus=${corpus}`} className="text-sm text-base-content/70 hover:text-base-content">
           Atelier
         </Link>
-        <h1 className="text-xl font-bold">
+        <h1 className="text-xl font-bold tracking-tight">
           {config.bookNames[book] ?? book} {chapter}
         </h1>
         <span className="flex items-center gap-1">
@@ -250,7 +250,7 @@ export default function ChapterWorkbench({ corpus, book, chapter }: { corpus: Wo
             </Link>
           )}
         </span>
-        <span className="text-sm tabular-nums text-base-content/55">
+        <span className="text-sm tabular-nums text-base-content/50">
           {done} / {rows.length} publiés
         </span>
         <span className="ml-auto flex flex-wrap gap-2">
@@ -271,7 +271,7 @@ export default function ChapterWorkbench({ corpus, book, chapter }: { corpus: Wo
             </button>
           )}
           {toReview.length > 0 && (
-            <button type="button" className="btn btn-success btn-sm" onClick={() => approve(toReview)}>
+            <button type="button" className="btn btn-primary btn-sm" onClick={() => approve(toReview)}>
               Valider {toReview.length}
             </button>
           )}
@@ -282,7 +282,7 @@ export default function ChapterWorkbench({ corpus, book, chapter }: { corpus: Wo
       <div className={`grid gap-8 ${side === "assistant" ? "wide:grid-cols-[minmax(0,1fr)_30rem]" : "wide:grid-cols-[minmax(0,1fr)_22rem]"}`}>
         <ol className="min-w-0">
           {!text || !work ? (
-            <p className="py-12 text-center text-base-content/50">Chargement…</p>
+            <p className="py-12 text-center text-sm text-base-content/50">Chargement…</p>
           ) : (
             rows.map((row, i) => (
               <VerseRow
@@ -329,7 +329,7 @@ export default function ChapterWorkbench({ corpus, book, chapter }: { corpus: Wo
                   key={k}
                   type="button"
                   onClick={() => setSide(k)}
-                  className={`rounded-md px-2.5 py-1 ${side === k ? "bg-base-200 font-medium" : "text-base-content/55 hover:text-base-content"}`}
+                  className={`rounded-md px-2.5 py-1 ${side === k ? "bg-base-200 font-medium" : "text-base-content/70 hover:text-base-content"}`}
                 >
                   {label}
                 </button>
@@ -361,7 +361,7 @@ export default function ChapterWorkbench({ corpus, book, chapter }: { corpus: Wo
                   onRestore={(t) => change(activeRow.ref, t)}
                 />
               ) : (
-                <div className="space-y-3 text-sm text-base-content/55">
+                <div className="space-y-3 text-sm text-base-content/50">
                   <p>Cliquez dans un verset.</p>
                   <dl className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-xs">
                     <dt className="font-mono">⌘ Entrée</dt>
@@ -379,7 +379,7 @@ export default function ChapterWorkbench({ corpus, book, chapter }: { corpus: Wo
                     {assisted && (
                       <>
                         <dt className="font-mono">⌘ I</dt>
-                        <dd>premier jet par l’assistant</dd>
+                        <dd>premier jet de l’assistant</dd>
                       </>
                     )}
                   </dl>
@@ -419,15 +419,15 @@ export default function ChapterWorkbench({ corpus, book, chapter }: { corpus: Wo
       {noteFor && (
         <dialog open className="modal modal-open">
           <div className="modal-box max-w-md">
-            <h2 className="font-semibold">Corrections demandées</h2>
+            <h2 className="text-lg font-semibold">Demander des corrections</h2>
             <textarea autoFocus value={note} onChange={(e) => setNote(e.target.value)} rows={3} className="textarea textarea-bordered mt-3 w-full" placeholder="Ce qu’il faut revoir" />
             <div className="modal-action">
-              <button type="button" className="btn btn-ghost" onClick={() => setNoteFor(null)}>
+              <button type="button" className="btn btn-ghost btn-sm" onClick={() => setNoteFor(null)}>
                 Annuler
               </button>
               <button
                 type="button"
-                className="btn btn-primary"
+                className="btn btn-primary btn-sm"
                 disabled={!note.trim()}
                 onClick={() => {
                   const refs = noteFor;

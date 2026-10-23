@@ -33,9 +33,9 @@ export function ErrorMap({ onOpen }: { onOpen: (book: string, ch: number) => voi
   const [err, setErr] = useState<string | null>(null);
   const [openBook, setOpenBook] = useState<string | null>(null);
   useEffect(() => { arb<Overview>("/overview").then(setData).catch((e) => setErr(arbErrors(e).join(" "))); }, []);
-  if (err) return <div className="alert alert-error mt-6 text-sm">{err}</div>;
-  if (!data) return <p className="mt-6 text-sm text-base-content/60">Chargement…</p>;
-  if (!data.books.length) return <p className="mt-6 text-sm text-success">Tout est aligné.</p>;
+  if (err) return <p className="mt-6 text-sm text-error">{err}</p>;
+  if (!data) return <p className="mt-6 text-sm text-base-content/50">Chargement…</p>;
+  if (!data.books.length) return <p className="mt-6 text-sm text-base-content/50">Tout est aligné.</p>;
   return (
     <div className="mt-4">
       <p className="text-sm text-base-content/70"><span className="font-semibold text-primary">{data.grandTotal}</span> versets à revoir, dans {data.books.length} livres.</p>
@@ -159,7 +159,7 @@ export function ChapterRealign({ book, ch, focusRef, prevCh, nextCh, onNavigate,
         <div className="absolute inset-0 bg-black/40" onClick={onClose} />
         <div className="relative h-full w-full max-w-4xl overflow-y-auto bg-base-100 p-5">
           <button className="btn btn-sm btn-ghost" onClick={onClose}>Fermer</button>
-          {err && <div className="alert alert-error mt-3 text-sm">{err.join(" ")}</div>}
+          {err && <p className="mt-3 text-sm text-error">{err.join(" ")}</p>}
         </div>
       </div>
     );
@@ -277,23 +277,23 @@ export function ChapterRealign({ book, ch, focusRef, prevCh, nextCh, onNavigate,
             {(() => { const remaining = data.errorRefs.filter((r) => !valid.has(r)); return remaining.length > 0 ? (
               <button className="btn btn-xs btn-success btn-outline" title="Ne plus signaler ce chapitre comme erreur" disabled={busy}
                 onClick={() => setValidated(remaining, true)}>
-                ✓ tout est bon ({remaining.length})
+                ✓ Tout est bon ({remaining.length})
               </button>
-            ) : <span className="badge badge-success badge-sm">chapitre vérifié</span>; })()}
+            ) : <span className="badge badge-success badge-sm">Chapitre vérifié</span>; })()}
             <div className="ml-auto flex items-center gap-2">
               <button className="btn btn-sm btn-primary" disabled={busy || !dirty} onClick={save} title="Ctrl+S">Enregistrer{dirty ? ` (${dirty})` : ""}</button>
               <button className="btn btn-sm btn-ghost" onClick={tryClose}>Fermer</button>
             </div>
           </div>
-          <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-base-content/55">
+          <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-base-content/50">
             <span className="ml-auto flex flex-wrap items-center gap-2">
               {range.lo > chBounds.lo || range.hi < chBounds.hi ? null : (
                 <span className="join">
-                  {hasCh(ch - 1) && <button className="btn btn-xs join-item" title="Le bon français vient du chapitre précédent" onClick={() => extend(-1)}>← inclure ch. {ch - 1}</button>}
-                  {hasCh(ch + 1) && <button className="btn btn-xs join-item" title="Le bon français vient du chapitre suivant" onClick={() => extend(1)}>inclure ch. {ch + 1} →</button>}
+                  {hasCh(ch - 1) && <button className="btn btn-xs join-item" title="Le bon français vient du chapitre précédent" onClick={() => extend(-1)}>← Inclure ch. {ch - 1}</button>}
+                  {hasCh(ch + 1) && <button className="btn btn-xs join-item" title="Le bon français vient du chapitre suivant" onClick={() => extend(1)}>Inclure ch. {ch + 1} →</button>}
                 </span>
               )}
-              {(range.lo < chBounds.lo || range.hi > chBounds.hi) && <span className="badge badge-info badge-sm" title="La bande déborde sur un chapitre voisin">bande étendue</span>}
+              {(range.lo < chBounds.lo || range.hi > chBounds.hi) && <span className="badge badge-info badge-sm" title="La bande déborde sur un chapitre voisin">Bande étendue</span>}
               <span>Tout décaler</span>
               <span className="join">
                 <button className="btn btn-xs join-item" title="Toute la traduction monte d'un cran" onClick={() => slide(0, 1)}>↑</button>
@@ -303,7 +303,7 @@ export function ChapterRealign({ book, ch, focusRef, prevCh, nextCh, onNavigate,
           </div>
         </div>
 
-        {err && <div className="alert alert-error mt-3 flex-col items-start gap-0.5 text-xs">{err.map((e, i) => <div key={i}>{e}</div>)}</div>}
+        {err && <div className="mt-3 space-y-0.5 text-sm text-error">{err.map((e, i) => <p key={i}>{e}</p>)}</div>}
         {notice && <div className="alert alert-info mt-3 text-xs">{notice}</div>}
 
         <div className="mt-3 grid gap-1.5">
@@ -316,9 +316,9 @@ export function ChapterRealign({ book, ch, focusRef, prevCh, nextCh, onNavigate,
                 <div className="min-w-0">
                   <div className="flex items-center gap-1.5">
                     <span className="text-xs font-semibold text-base-content/50">v.{g.v}</span>
-                    <button className={`btn btn-xs ${valid.has(g.ref) ? "btn-success" : "btn-ghost text-success"}`} title="Vérifié, ne plus signaler comme erreur" onClick={() => toggleValid(g.ref)}>{valid.has(g.ref) ? "✓ vérifié" : "c'est bon"}</button>
-                    {g.flagged && !valid.has(g.ref) && <span className="badge badge-warning badge-xs" title="Signalé par les lecteurs, à vérifier">à vérifier</span>}
-                    {g.overridden && <span className="badge badge-primary badge-xs">{g.by === "Βιβλίον" ? "Biblion" : g.by || "réglé"}</span>}
+                    <button className={`btn btn-xs ${valid.has(g.ref) ? "btn-success" : "btn-ghost text-success"}`} title="Vérifié, ne plus signaler comme erreur" onClick={() => toggleValid(g.ref)}>{valid.has(g.ref) ? "✓ Vérifié" : "C’est bon"}</button>
+                    {g.flagged && !valid.has(g.ref) && <span className="badge badge-warning badge-xs" title="Signalé par les lecteurs">À vérifier</span>}
+                    {g.overridden && <span className="badge badge-primary badge-xs">{g.by === "Βιβλίον" ? "Biblion" : g.by || "Réglé"}</span>}
                   </div>
                   <p className="font-greek mt-0.5 leading-snug">{g.greek}</p>
                 </div>
@@ -326,7 +326,7 @@ export function ChapterRealign({ book, ch, focusRef, prevCh, nextCh, onNavigate,
                     monte/descend dans le vide voisin ; désactivées s'il n'y a pas de place). */}
                 <div className="min-w-0 border-t border-base-200 pt-2 sm:border-l sm:border-t-0 sm:pl-3 sm:pt-0">
                   <div className="flex items-center gap-1.5">
-                    <span className="text-[0.7rem] uppercase tracking-wide text-base-content/45">{fr.tag}{fr.tag === "maison" && g.by ? ` · ${g.by === "Βιβλίον" ? "Biblion" : g.by}` : ""}</span>
+                    <span className="text-xs uppercase tracking-wider text-base-content/50">{fr.tag}{fr.tag === "maison" && g.by ? ` · ${g.by === "Βιβλίον" ? "Biblion" : g.by}` : ""}</span>
                     <span className="join ml-auto">
                       <button className="btn btn-ghost btn-xs join-item" title="Monter ce bloc de traduction d'un cran" disabled={!canUp(i)} onClick={() => moveBlock(i, -1)}>↑</button>
                       <button className="btn btn-ghost btn-xs join-item" title="Descendre ce bloc de traduction d'un cran" disabled={!canDown(i)} onClick={() => moveBlock(i, 1)}>↓</button>
@@ -335,9 +335,9 @@ export function ChapterRealign({ book, ch, focusRef, prevCh, nextCh, onNavigate,
                   {extractMode?.i === i && assignedV(i) ? (
                     // Sélecteur d'extrait : les mots du verset Giguet assigné, 1er clic = début, 2e = fin.
                     <div className="mt-0.5 rounded border-l-2 border-accent bg-accent/5 px-2 py-1.5">
-                      <div className="flex items-center justify-between text-[0.7rem] uppercase tracking-wide text-accent">
+                      <div className="flex items-center justify-between text-xs uppercase tracking-wider text-accent">
                         <span>Extrait de {assignedV(i)!.ch}:{assignedV(i)!.v} : {extractMode.start == null ? "cliquez le premier mot" : "cliquez le dernier mot"}</span>
-                        <button className="btn btn-ghost btn-xs" onClick={() => setExtractMode(null)}>annuler</button>
+                        <button className="btn btn-ghost btn-xs" onClick={() => setExtractMode(null)}>Annuler</button>
                       </div>
                       <p className="mt-1 text-sm leading-loose">
                         {wordsOf(assignedV(i)!.ch, assignedV(i)!.v).map((w, wi) => (
@@ -355,23 +355,23 @@ export function ChapterRealign({ book, ch, focusRef, prevCh, nextCh, onNavigate,
                     <CherryPick book={book} current={assignedV(i)} defaultCh={ch} onPick={(pch, pv, ptext) => { setRow(i, { kind: "pick", ch: pch, v: pv, text: ptext }); setPickMode(null); }} onCancel={() => setPickMode(null)} />
                   ) : (
                     <>
-                      <p className={`mt-0.5 text-sm leading-relaxed ${!fr.text ? "italic text-base-content/35" : ""}`}>{fr.text || "sans traduction française"}</p>
-                      {fr.tag === "maison" && g.autoText && <p className="mt-1 text-xs leading-relaxed text-base-content/45">Giguet : {g.autoText}</p>}
+                      <p className={`mt-0.5 text-sm leading-relaxed ${!fr.text ? "italic text-base-content/50" : ""}`}>{fr.text || "Sans traduction française"}</p>
+                      {fr.tag === "maison" && g.autoText && <p className="mt-1 text-xs leading-relaxed text-base-content/50">Giguet : {g.autoText}</p>}
                     </>
                   )}
                   {extractMode?.i !== i && pickMode !== i && (
                     <div className="mt-1.5 flex flex-wrap items-center gap-1">
                       <MaisonInline current={assign[i].kind === "maison" ? (assign[i] as { text: string }).text : g.french || ""} original={g.autoText} onSet={(t) => setRow(i, { kind: "maison", text: t })} />
-                      {g.overridden && assign[i].kind !== "auto" && <button className="btn btn-ghost btn-xs" title="Reprendre le lien automatique vers Giguet" onClick={() => setRow(i, { kind: "auto" })}>revenir à Giguet</button>}
+                      {g.overridden && assign[i].kind !== "auto" && <button className="btn btn-ghost btn-xs" title="Reprendre le lien automatique vers Giguet" onClick={() => setRow(i, { kind: "auto" })}>Revenir à Giguet</button>}
                       <div className="dropdown dropdown-end">
-                        <div tabIndex={0} role="button" className="btn btn-ghost btn-xs">autre lien ▾</div>
-                        <ul tabIndex={0} className="dropdown-content menu z-20 w-64 rounded-box border border-base-200 bg-base-100 p-1 text-xs shadow">
+                        <div tabIndex={0} role="button" className="btn btn-ghost btn-xs">Autre lien ▾</div>
+                        <ul tabIndex={0} className="dropdown-content menu z-20 w-64 rounded-box border border-base-300 bg-base-100 p-1 text-xs shadow">
                           <li><button onClick={() => { closeMenus(); setPickMode(i); }}>Choisir un verset Giguet…</button></li>
                           {assignedV(i) && <li><button onClick={() => { closeMenus(); setExtractMode({ i, start: null }); }}>Garder un extrait</button></li>}
                           <li><button onClick={() => { closeMenus(); setRow(i, { kind: "orphan" }); }}>Sans traduction (orphelin)</button></li>
                         </ul>
                       </div>
-                      {isDirty && <button className="btn btn-ghost btn-xs" onClick={() => setRow(i, { ...orig[i] })}>annuler</button>}
+                      {isDirty && <button className="btn btn-ghost btn-xs" onClick={() => setRow(i, { ...orig[i] })}>Annuler</button>}
                     </div>
                   )}
                 </div>
@@ -394,22 +394,22 @@ const when = (iso: string) => { const d = new Date(iso); return isNaN(d.getTime(
 export function LogsSection({ onOpen }: { onOpen?: (book: string, ch: number) => void }) {
   const [entries, setEntries] = useState<LogEntry[] | null>(null);
   useEffect(() => { arb<{ entries: LogEntry[] }>("/logs").then((d) => setEntries(d.entries || [])).catch(() => setEntries([])); }, []);
-  if (!entries) return <p className="mt-6 text-sm text-base-content/60">Chargement…</p>;
-  if (!entries.length) return <p className="mt-6 text-sm text-base-content/60">Aucune activité.</p>;
+  if (!entries) return <p className="mt-6 text-sm text-base-content/50">Chargement…</p>;
+  if (!entries.length) return <p className="mt-6 text-sm text-base-content/50">Aucune activité.</p>;
   return (
     <div className="mt-4">
-      <div className="mt-3 grid gap-1">
+      <div className="grid gap-1">
         {entries.map((e, i) => {
           const ch = Number(e.ref.split(":")[0]);
           return (
             <button key={i} type="button" disabled={!onOpen || !Number.isInteger(ch)}
               onClick={() => onOpen?.(e.book, ch)}
-              className="flex flex-wrap items-center gap-2 rounded-box border border-base-200 bg-base-100 px-3 py-2 text-left text-sm enabled:hover:border-primary/40 enabled:cursor-pointer">
+              className="flex flex-wrap items-center gap-2 rounded-box border border-base-300 bg-base-100 px-3 py-2 text-left text-sm enabled:hover:border-primary/40 enabled:cursor-pointer">
               <span className={`badge badge-xs ${KIND_CLASS[e.kind] || "badge-ghost"}`}>{KIND_LABEL[e.kind] || e.kind}</span>
               <span className="font-medium">{who(e.by)}</span>
               <span className="text-base-content/70">{BOOK[e.book] ?? e.book} {e.ref}</span>
               {e.detail && <span className="truncate text-xs text-base-content/50">{e.kind === "maison" ? `« ${e.detail}… »` : `← ${e.detail}`}</span>}
-              <span className="ml-auto text-xs text-base-content/45">{when(e.at)}</span>
+              <span className="ml-auto text-xs text-base-content/50">{when(e.at)}</span>
             </button>
           );
         })}
@@ -458,10 +458,10 @@ function CherryPick({ book, current, defaultCh, onPick, onCancel }: { book: stri
     <div className="mt-0.5 rounded border-l-2 border-primary bg-primary/5 px-2 py-1.5">
       <div className="flex items-center gap-1.5">
         <input autoFocus value={q} onChange={(e) => setQ(e.target.value)} placeholder="Chercher dans tout le livre…" className="input input-bordered input-xs min-w-0 flex-1" spellCheck={false} autoComplete="off" />
-        <button className="btn btn-ghost btn-xs" onClick={onCancel}>annuler</button>
+        <button className="btn btn-ghost btn-xs" onClick={onCancel}>Annuler</button>
       </div>
       {!searching && (
-        <div className="mt-1 flex items-center justify-between text-[0.7rem] uppercase tracking-wide text-base-content/50">
+        <div className="mt-1 flex items-center justify-between text-xs uppercase tracking-wider text-base-content/50">
           <button className="btn btn-ghost btn-xs" disabled={browseCh <= 1} onClick={() => setBrowseCh((c) => Math.max(1, c - 1))}>← ch. {browseCh - 1}</button>
           <span>Giguet · chapitre {browseCh}</span>
           <button className="btn btn-ghost btn-xs" onClick={() => setBrowseCh((c) => c + 1)}>ch. {browseCh + 1} →</button>
@@ -475,8 +475,8 @@ function CherryPick({ book, current, defaultCh, onPick, onCancel }: { book: stri
               className={`block w-full rounded px-1.5 py-1 text-left text-sm hover:bg-primary/10 ${isCur ? "bg-primary/15 ring-1 ring-primary/40" : ""}`}
               onClick={() => onPick(r.ch, r.v, r.text)}>
               <span className="verse-num">{r.ch}:{r.v}</span>
-              {isCur && <span className="badge badge-primary badge-xs mr-1 align-middle">actuel</span>}
-              {r.linkedTo && <span className="badge badge-ghost badge-xs mr-1 align-middle" title={`Déjà lié au grec ${r.linkedTo}`}>lié {r.linkedTo}{r.partial ? " (part.)" : ""}</span>}
+              {isCur && <span className="badge badge-primary badge-xs mr-1 align-middle">Actuel</span>}
+              {r.linkedTo && <span className="badge badge-ghost badge-xs mr-1 align-middle" title={`Déjà lié au grec ${r.linkedTo}`}>Lié {r.linkedTo}{r.partial ? " (part.)" : ""}</span>}
               {r.text.slice(0, 90)}{r.text.length > 90 ? "…" : ""}
             </button>
           );
@@ -501,7 +501,7 @@ export function MaisonInline({ current, original, originalLabel = "Giguet", onSe
     el.style.height = `${el.scrollHeight}px`;
   }, [text, open]);
   const validate = () => { if (!text.trim()) return; onSet(text.trim()); setOpen(false); };
-  if (!open) return <button className="btn btn-ghost btn-xs text-secondary" onClick={() => { setText(current); setOpen(true); }}>traduire moi-même</button>;
+  if (!open) return <button className="btn btn-ghost btn-xs text-secondary" onClick={() => { setText(current); setOpen(true); }}>Traduire moi-même</button>;
   return (
     <span className="flex w-full flex-col gap-1">
       <textarea ref={area} className="textarea textarea-bordered textarea-sm w-full resize-none text-sm leading-relaxed" rows={3} value={text} autoFocus
@@ -510,11 +510,11 @@ export function MaisonInline({ current, original, originalLabel = "Giguet", onSe
           if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) { e.preventDefault(); validate(); }
           if (e.key === "Escape") { e.preventDefault(); setOpen(false); }
         }} />
-      {original && <span className="text-xs leading-relaxed text-base-content/45">{originalLabel} : {original}</span>}
+      {original && <span className="text-xs leading-relaxed text-base-content/50">{originalLabel} : {original}</span>}
       <span className="flex items-center gap-1">
-        <button className="btn btn-primary btn-xs" disabled={!text.trim()} onClick={validate}>ok</button>
-        <button className="btn btn-ghost btn-xs" onClick={() => setOpen(false)}>annuler</button>
-        <span className="ml-auto text-[0.7rem] text-base-content/40">Ctrl+Entrée pour valider · Échap pour annuler</span>
+        <button className="btn btn-primary btn-xs" disabled={!text.trim()} onClick={validate}>Valider</button>
+        <button className="btn btn-ghost btn-xs" onClick={() => setOpen(false)}>Annuler</button>
+        <span className="ml-auto text-xs text-base-content/50">Ctrl+Entrée valide · Échap annule</span>
       </span>
     </span>
   );

@@ -20,7 +20,7 @@ function TermRow({ term, onSaved }: { term: KeyTerm; onSaved: () => void }) {
       <td className="py-2 pr-4">
         <input value={note} onChange={(e) => setNote(e.target.value)} className="input input-bordered input-sm w-full" placeholder="Note" />
       </td>
-      <td className="py-2 text-right text-xs text-base-content/45">
+      <td className="py-2 text-right text-xs text-base-content/50">
         {changed ? (
           <button type="button" className="btn btn-primary btn-xs" onClick={() => saveTerm(term.lemma, split(renderings), note || undefined).then(onSaved)}>
             Enregistrer
@@ -61,11 +61,11 @@ export default function Glossary() {
         }}
       >
         <label className="text-sm">
-          <span className="mb-1 block text-xs text-base-content/55">Lemme</span>
+          <span className="mb-1 block text-xs text-base-content/70">Lemme</span>
           <input value={lemma} onChange={(e) => setLemma(e.target.value)} className="input input-bordered input-sm w-40 font-greek" placeholder="ἀγάπη" />
         </label>
         <label className="min-w-48 flex-1 text-sm">
-          <span className="mb-1 block text-xs text-base-content/55">Rendus admis</span>
+          <span className="mb-1 block text-xs text-base-content/70">Rendus admis</span>
           <input value={renderings} onChange={(e) => setRenderings(e.target.value)} className="input input-bordered input-sm w-full" placeholder="amour, charité" />
         </label>
         <button className="btn btn-primary btn-sm">Ajouter</button>
@@ -90,7 +90,7 @@ export default function Glossary() {
           </tbody>
         </table>
       ) : (
-        <p className="rounded-box border border-dashed border-base-300 px-4 py-8 text-center text-sm text-base-content/55">Aucun terme. Ajoutez-en ici ou depuis un mot grec de l’éditeur.</p>
+        <p className="rounded-box border border-dashed border-base-300 px-4 py-8 text-center text-sm text-base-content/50">Aucun terme.</p>
       )}
     </div>
   );

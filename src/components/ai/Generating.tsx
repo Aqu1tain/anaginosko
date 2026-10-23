@@ -14,7 +14,7 @@ export default function Generating({ messages }: { messages: UIMessage[] }) {
         ? "Rédaction"
         : "Réflexion";
   return (
-    <div className="flex items-center gap-2 text-sm text-base-content/55" role="status" aria-live="polite">
+    <div className="flex items-center gap-2 text-sm text-base-content/50" role="status" aria-live="polite">
       <span className="relative flex h-2.5 w-2.5">
         <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary/50" />
         <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-primary" />

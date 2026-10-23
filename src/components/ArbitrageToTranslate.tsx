@@ -11,9 +11,9 @@ export function ToTranslateList({ onOpen }: { onOpen: (book: string, ch: number,
   const [items, setItems] = useState<Item[] | null>(null);
   const [err, setErr] = useState<string | null>(null);
   useEffect(() => { arb<{ items: Item[] }>("/a-traduire").then((d) => setItems(d.items)).catch((e) => setErr(arbErrors(e).join(" "))); }, []);
-  if (err) return <div className="alert alert-error mt-6 text-sm">{err}</div>;
-  if (!items) return <p className="mt-6 text-sm text-base-content/60">Chargement…</p>;
-  if (!items.length) return <p className="mt-6 text-sm text-success">Rien à traduire.</p>;
+  if (err) return <p className="mt-6 text-sm text-error">{err}</p>;
+  if (!items) return <p className="mt-6 text-sm text-base-content/50">Chargement…</p>;
+  if (!items.length) return <p className="mt-6 text-sm text-base-content/50">Rien à traduire.</p>;
   const proven = items.filter((i) => i.kind === "prouvé").length;
   return (
     <div className="mt-4">
@@ -23,10 +23,10 @@ export function ToTranslateList({ onOpen }: { onOpen: (book: string, ch: number,
       <div className="mt-3 grid gap-1">
         {items.map((i) => (
           <button key={`${i.book}:${i.ref}`} type="button" onClick={() => onOpen(i.book, Number(i.ref.split(":")[0]), i.ref)}
-            className="flex flex-wrap items-center gap-2 rounded-box border border-base-200 bg-base-100 px-3 py-2 text-left text-sm hover:border-primary/40">
+            className="flex flex-wrap items-center gap-2 rounded-box border border-base-300 bg-base-100 px-3 py-2 text-left text-sm hover:border-primary/40">
             <span className={`badge badge-xs ${i.kind === "prouvé" ? "badge-error" : "badge-warning"}`}>{i.kind}</span>
             <span className="font-medium">{i.label} {i.ref}</span>
-            <span className="min-w-0 flex-1 truncate text-xs text-base-content/55">{i.reason}</span>
+            <span className="min-w-0 flex-1 truncate text-xs text-base-content/50">{i.reason}</span>
           </button>
         ))}
       </div>

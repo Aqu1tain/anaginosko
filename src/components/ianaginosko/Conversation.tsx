@@ -23,7 +23,7 @@ const textOf = (m: UIMessage) => m.parts.map((p) => (p.type === "text" ? p.text 
 function Actions({ message, last, onRegenerate }: { message: UIMessage; last: boolean; onRegenerate: () => void }) {
   const [copied, setCopied] = useState(false);
   return (
-    <div className="mt-2 flex gap-1 text-xs text-base-content/45">
+    <div className="mt-2 flex gap-1 text-xs text-base-content/50">
       <button
         type="button"
         className="rounded-md px-2 py-1 hover:bg-base-200 hover:text-base-content"
