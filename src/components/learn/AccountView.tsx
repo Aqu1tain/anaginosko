@@ -101,8 +101,8 @@ export default function AccountView() {
           </ul>
         </nav>
 
-        <div className="divide-y divide-base-300">
-          <section id="progression" className="scroll-mt-20 pb-8">
+        <div className="space-y-12">
+          <section id="progression" className="scroll-mt-20">
             <h2 className="text-lg font-semibold">Progression</h2>
             <p className="mt-1 text-sm text-base-content/70">
               {done.size === 0 ? "Aucune leçon terminée." : `${done.size} leçon${done.size > 1 ? "s" : ""} terminée${done.size > 1 ? "s" : ""}.`}
@@ -110,7 +110,7 @@ export default function AccountView() {
             <Link href="/apprendre" className="btn btn-outline btn-sm mt-3">Aller aux cours</Link>
           </section>
 
-          <form id="identite" onSubmit={rename} className="scroll-mt-20 py-8">
+          <form id="identite" onSubmit={rename} className="scroll-mt-20">
             <h2 className="text-lg font-semibold">Identité</h2>
             <label className="mt-4 block max-w-md">
               <span className="text-sm font-medium">Nom affiché</span>
@@ -126,7 +126,7 @@ export default function AccountView() {
             {message && <p className="mt-3 text-sm text-success">{message}</p>}
           </form>
 
-          <section id="emails" className="scroll-mt-20 py-8">
+          <section id="emails" className="scroll-mt-20">
             <h2 className="text-lg font-semibold">E-mails</h2>
             <label className="mt-4 flex cursor-pointer items-start gap-3 text-sm">
               <input type="checkbox" className="toggle toggle-sm toggle-primary mt-0.5" checked={newsletter} onChange={(e) => toggleNewsletter(e.target.checked)} />
@@ -135,7 +135,7 @@ export default function AccountView() {
           </section>
 
           {assisted && (
-            <section id="assistant" className="scroll-mt-20 py-8">
+            <section id="assistant" className="scroll-mt-20">
               <h2 className="flex items-center gap-2 text-lg font-semibold">
                 Assistant IA <span className="badge badge-sm badge-outline font-normal">Bêta</span>
               </h2>
@@ -145,7 +145,7 @@ export default function AccountView() {
             </section>
           )}
 
-          <section id="compte" className="scroll-mt-20 pt-8">
+          <section id="compte" className="scroll-mt-20">
             <h2 className="text-lg font-semibold">Compte</h2>
             {error && <p className="mt-3 rounded-lg bg-error/10 px-3 py-2 text-sm text-error">{error}</p>}
             <div className="mt-4 flex flex-wrap gap-3">

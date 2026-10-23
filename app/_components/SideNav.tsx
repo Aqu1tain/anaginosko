@@ -15,7 +15,7 @@ export default function SideNav() {
   return (
     <nav
       aria-label="Navigation principale"
-      className="fixed bottom-0 left-0 top-[calc(3.5rem+env(safe-area-inset-top)+1px)] z-20 hidden w-[5.5rem] flex-col items-center gap-1 overflow-y-auto border-r border-base-300 bg-base-100 py-4 wide:flex"
+      className="fixed bottom-0 left-0 top-[calc(3.5rem+env(safe-area-inset-top)+1px)] z-20 hidden w-[5.5rem] flex-col items-center gap-1 overflow-y-auto bg-base-100 py-4 wide:flex"
     >
       {tabs.map((t) => (
         <Link
