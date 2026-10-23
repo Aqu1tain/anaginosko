@@ -34,12 +34,14 @@ export default function Shell({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-dvh bg-base-100 text-base-content">
       <TopBar dark={dark ?? false} onToggleTheme={() => setDark((d) => !d)} />
-      <div className="study-shift mx-auto flex w-full max-w-2xl px-4 wide:max-w-[84rem] wide:gap-8 wide:px-6">
-        <SideNav />
-        <main className="min-w-0 flex-1 pb-[calc(5rem+env(safe-area-inset-bottom))] wide:pb-16">
-          {children}
-          {!pathname?.startsWith("/admin/ianaginosko") && <SiteFooter />}
-        </main>
+      <SideNav />
+      <div className="wide:pl-[5.5rem]">
+        <div className="study-shift mx-auto flex w-full max-w-2xl px-4 wide:max-w-[84rem] wide:px-8">
+          <main className="min-w-0 flex-1 pb-[calc(5rem+env(safe-area-inset-bottom))] wide:pb-16">
+            {children}
+            {!pathname?.startsWith("/admin/ianaginosko") && <SiteFooter />}
+          </main>
+        </div>
       </div>
       <TabBar />
     </div>

@@ -96,7 +96,7 @@ export default function TopBar({ dark, onToggleTheme }: { dark: boolean; onToggl
 
   return (
     <header className="sticky top-0 z-30 border-b border-base-300 bg-base-100/85 pt-[env(safe-area-inset-top)] backdrop-blur-md">
-      <div className="navbar mx-auto min-h-14 w-full max-w-2xl gap-1 px-2 wide:max-w-[84rem] wide:px-6">
+      <div className="navbar mx-auto min-h-14 w-full max-w-2xl gap-1 px-2 wide:max-w-none wide:px-4">
         <div className="flex min-w-0 flex-1 items-center gap-1">
           {/* Wordmark : lien accueil permanent sur desktop (convention wordmark ->
               accueil). Sur mobile, visible seulement sur l'accueil ; ailleurs la
