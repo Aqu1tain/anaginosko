@@ -21,7 +21,7 @@ export type BookOption = { id: string; name: string; group: string };
 
 const field = "input input-bordered input-sm w-full";
 const select = "select select-bordered select-sm w-full";
-const label = "mb-1 block text-xs font-medium text-base-content/60";
+const label = "mb-1 block text-xs font-medium text-base-content/70";
 const toCount = (v: string) => (v.trim() === "" ? null : Math.max(0, Math.floor(Number(v))) || 0);
 
 // Filtres pour chercheurs : motif à jokers, plage d'occurrences, présence par
@@ -80,7 +80,7 @@ export default function AdvancedFilters({
         <label className="sm:col-span-2 lg:col-span-1">
           <span className={label}>Motif</span>
           <input className={`${field} font-greek`} value={d.pattern} onChange={(e) => set({ pattern: e.target.value })} placeholder="*εύω, ἀπο*, *logos" />
-          <span className="mt-1 block text-[0.7rem] text-base-content/45">* : n’importe quelle suite · ? : une lettre</span>
+          <span className="mt-1 block text-[0.7rem] text-base-content/50">* : n’importe quelle suite · ? : une lettre</span>
         </label>
         <div>
           <span className={label}>Occurrences</span>

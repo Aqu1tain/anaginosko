@@ -126,11 +126,14 @@ export default function OccurrenceFeed({
         })}
       </ol>
 
-      {loading && <p className="py-4 text-sm text-base-content/55">Chargement…</p>}
+      {loading && <p className="py-4 text-sm text-base-content/50">Chargement…</p>}
       {failed && (
-        <button type="button" className="btn btn-ghost btn-sm mt-3" onClick={() => more(cursor ?? { src: 0, offset: 0 }, !lines.length)}>
-          Réessayer
-        </button>
+        <div className="mt-3 flex flex-wrap items-center gap-3">
+          <p className="text-sm text-error">Chargement impossible.</p>
+          <button type="button" className="btn btn-ghost btn-sm" onClick={() => more(cursor ?? { src: 0, offset: 0 }, !lines.length)}>
+            Réessayer
+          </button>
+        </div>
       )}
       {!loading && !failed && cursor && lines.length > 0 && (
         <button type="button" className="btn btn-outline btn-sm mt-4 w-full" onClick={() => more(cursor, false)}>

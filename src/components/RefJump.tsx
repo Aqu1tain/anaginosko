@@ -114,7 +114,7 @@ export default function RefJump({
       <div className="relative min-w-0 flex-1">
         <svg
           aria-hidden="true"
-          className="pointer-events-none absolute left-4 top-1/2 z-10 h-[19px] w-[19px] -translate-y-1/2 text-base-content/45"
+          className="pointer-events-none absolute left-4 top-1/2 z-10 h-[19px] w-[19px] -translate-y-1/2 text-base-content/50"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"

@@ -47,8 +47,8 @@ function LemmaDefinitions({ lemma, lexicon, notice }: { lemma: string; lexicon: 
     existing: definition ?? undefined,
   };
 
-  const card = "mt-4 overflow-hidden rounded-2xl border border-base-300 bg-base-100 shadow-sm";
-  const label = "text-[0.7rem] font-semibold uppercase tracking-[0.12em]";
+  const card = "mt-4 overflow-hidden rounded-box border border-base-300 bg-base-100";
+  const label = "text-xs font-semibold uppercase tracking-wider";
 
   return (
     <>
@@ -56,10 +56,7 @@ function LemmaDefinitions({ lemma, lexicon, notice }: { lemma: string; lexicon: 
         <section className={card} aria-label="Sens biblique, Biblion">
           <div className="border-l-4 border-primary px-4 py-4 sm:px-5">
             <div className="flex items-start justify-between gap-3">
-              <div>
-                <div className={`${label} text-primary`}>Sens biblique</div>
-                <p className="mt-0.5 text-xs text-base-content/60">Dans le grec biblique</p>
-              </div>
+              <div className={`${label} text-primary`}>Sens biblique</div>
               <div className="flex shrink-0 items-center gap-1.5">
                 <span className="badge badge-sm badge-primary">Biblion</span>
                 {canEdit && (
@@ -77,7 +74,7 @@ function LemmaDefinitions({ lemma, lexicon, notice }: { lemma: string; lexicon: 
                   ))}
                 </div>
                 {(definition.author?.displayName || definition.source || definition.link) && (
-                  <div className="mt-3 flex flex-wrap items-center gap-x-2 text-xs text-base-content/60">
+                  <div className="mt-3 flex flex-wrap items-center gap-x-2 text-xs text-base-content/50">
                     {definition.author?.displayName && <span>{definition.author.displayName}</span>}
                     {definition.source && <span>· {definition.source}</span>}
                     {definition.link && (
@@ -90,7 +87,7 @@ function LemmaDefinitions({ lemma, lexicon, notice }: { lemma: string; lexicon: 
               </>
             ) : (
               <div className="mt-3 flex flex-wrap items-center gap-3">
-                <p className="text-sm text-base-content/60">Pas encore de sens rédigé.</p>
+                <p className="text-sm text-base-content/50">Aucun sens rédigé.</p>
                 {canCreate && (
                   <button onClick={() => setEditing(true)} className="btn btn-primary btn-sm">
                     Rédiger le sens
@@ -103,7 +100,7 @@ function LemmaDefinitions({ lemma, lexicon, notice }: { lemma: string; lexicon: 
       )}
 
       {definition === undefined && !hasLexicon && (
-        <div className="mt-4 flex items-center gap-2 text-sm text-base-content/60" aria-live="polite">
+        <div className="mt-4 flex items-center gap-2 text-sm text-base-content/50" aria-live="polite">
           <span className="loading loading-spinner loading-xs" aria-hidden="true" />
           Chargement…
         </div>
@@ -114,18 +111,17 @@ function LemmaDefinitions({ lemma, lexicon, notice }: { lemma: string; lexicon: 
           <div className="px-4 py-4 sm:px-5">
             <div className="flex items-start justify-between gap-3">
               <div>
-                <div className={`${label} text-base-content/70`}>Notice Bailly</div>
-                <p className="mt-0.5 text-xs text-base-content/60">Lexique du grec ancien</p>
+                <div className={`${label} text-base-content/50`}>Notice Bailly</div>
+                <p className="mt-0.5 text-xs text-base-content/50">Lexique du grec ancien</p>
               </div>
-              <span className="badge badge-sm badge-ghost">Bailly</span>
             </div>
             <div className="mt-3">
               <LexiconVia via={lexicon.via} />
               <LexiconSense gloss={lexicon.gloss!} notice={notice} collapsible />
             </div>
-            <p className="mt-3 text-xs leading-relaxed text-base-content/60">Sens général, à vérifier dans le contexte biblique.</p>
+            <p className="mt-3 text-xs leading-relaxed text-base-content/50">Sens général, à vérifier dans le contexte biblique.</p>
           </div>
-          <div className="flex flex-wrap items-center justify-between gap-2 border-t border-base-300 px-4 py-2.5 text-xs text-base-content/60 sm:px-5">
+          <div className="flex flex-wrap items-center justify-between gap-2 border-t border-base-300 px-4 py-2.5 text-xs text-base-content/50 sm:px-5">
             <span>Bailly 2020 · CC BY-NC-ND</span>
             <a href={`https://bailly.app/${encodeURIComponent(lexicon.gloss!.uri)}`} target="_blank" rel="noreferrer" className="link hover:text-primary">
               Source ↗
@@ -177,7 +173,7 @@ function BiblionNote({ lemma }: { lemma: string }) {
   return (
     <section className="mt-4 rounded-box border border-primary/30 bg-primary/5 px-4 py-3">
       <div className="flex items-center justify-between gap-2">
-        <div className="text-[0.7rem] font-medium uppercase tracking-wide text-primary">
+        <div className="text-xs font-semibold uppercase tracking-wider text-primary">
           Note · Biblion
         </div>
         {canEdit && (
@@ -188,7 +184,7 @@ function BiblionNote({ lemma }: { lemma: string }) {
       </div>
 
       {notes.length === 0 ? (
-        <p className="mt-1 text-sm text-base-content/70">Aucune note.</p>
+        <p className="mt-1 text-sm text-base-content/50">Aucune note.</p>
       ) : (
         <div className="mt-2 grid gap-3">
           {notes.map((n) => (
@@ -198,7 +194,7 @@ function BiblionNote({ lemma }: { lemma: string }) {
                   <p key={i}>{p}</p>
                 ))}
               </div>
-              <div className="mt-1.5 flex flex-wrap items-center gap-x-2 text-xs text-base-content/70">
+              <div className="mt-1.5 flex flex-wrap items-center gap-x-2 text-xs text-base-content/50">
                 {n.author?.displayName && <span className="font-greek">{n.author.displayName}</span>}
                 {n.source && <span>· {n.source}</span>}
                 {n.link && (
@@ -308,7 +304,7 @@ export default function LemmaDetail({
   const filtered = book ? bookCounts.find((b) => b.id === book) : null;
 
   return (
-    <div className="pb-4">
+    <div className="pb-12 pt-6">
       <Breadcrumb
         items={[
           { label: "Accueil", href: "/", home: true },
@@ -319,7 +315,7 @@ export default function LemmaDetail({
       <header className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 className="font-greek text-4xl leading-tight">{entry.lemma}</h1>
-          <p className="mt-1 text-sm text-base-content/60">
+          <p className="mt-1 text-sm text-base-content/50">
             {entry.nature} · {entry.translitR} <span className="text-base-content/40">({entry.translit})</span>
           </p>
         </div>
@@ -376,7 +372,7 @@ export default function LemmaDetail({
 
         <aside className="min-w-0 space-y-8 wide:col-start-2 wide:row-start-2">
           <section>
-            <h2 className="mb-2 text-xs font-semibold uppercase tracking-wide text-base-content/55">Répartition</h2>
+            <h2 className="mb-2 text-xs font-semibold uppercase tracking-wider text-base-content/50">Répartition</h2>
             <BookBars
               books={bookCounts}
               value={book}
@@ -399,7 +395,7 @@ function Seg({ active, onClick, children }: { active: boolean; onClick: () => vo
       type="button"
       onClick={onClick}
       aria-pressed={active}
-      className={`rounded-full px-3 py-1 font-medium transition-colors ${active ? "bg-base-100 shadow-sm" : "text-base-content/60 hover:text-base-content"}`}
+      className={`rounded-full px-3 py-1 font-medium transition-colors ${active ? "bg-base-100 shadow-sm" : "text-base-content/70 hover:text-base-content"}`}
     >
       {children}
     </button>

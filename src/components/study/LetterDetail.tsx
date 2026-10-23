@@ -5,7 +5,7 @@ import { accentLabel, breathingLabel, type GraphemeInfo } from "../../lib/greek"
 function Pron({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex-1 rounded-box bg-base-200 px-3 py-2.5">
-      <div className="text-[0.7rem] font-medium uppercase tracking-wide text-base-content/70">{label}</div>
+      <div className="text-xs font-semibold uppercase tracking-wider text-base-content/50">{label}</div>
       <div className="mt-0.5 text-lg font-medium">{value}</div>
     </div>
   );

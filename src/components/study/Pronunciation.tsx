@@ -102,7 +102,7 @@ export function PronunciationEditor({
 }) {
   return (
     <div className="mt-2 rounded-box border border-base-300 bg-base-200/60 p-3">
-      <div className="text-[0.7rem] font-medium uppercase tracking-wide text-base-content/70">
+      <div className="text-xs font-semibold uppercase tracking-wider text-base-content/50">
         Prononciation {system === "erasmien" ? "érasmienne" : "restituée"}
       </div>
       <label className="mt-2 block text-xs text-base-content/70">

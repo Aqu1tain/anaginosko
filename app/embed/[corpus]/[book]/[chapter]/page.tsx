@@ -82,7 +82,7 @@ export default async function EmbedPage({
       <div className="mt-3 font-greek text-lg leading-relaxed text-base-content">
         {numbers.map((n) => (
           <p key={n} className="mt-1">
-            <sup className="mr-1 align-super text-xs text-base-content/45">{n}</sup>
+            <sup className="mr-1 align-super text-xs text-base-content/50">{n}</sup>
             {byVerse[n].join(" ")}
           </p>
         ))}

@@ -37,7 +37,7 @@ export default function CollapsibleIntro({
   const folded = overflows && !open;
 
   return (
-    <div className="mb-6 border-b border-base-200 pb-5">
+    <div className="mb-8">
       <div className="relative">
         <div ref={ref} className={folded ? "max-h-44 overflow-hidden" : undefined}>
           {children}
@@ -57,7 +57,7 @@ export default function CollapsibleIntro({
             {open ? "Réduire" : "Lire la suite"}
           </button>
         )}
-        <a href="#chapitres" className="text-base-content/55 transition-colors hover:text-primary">
+        <a href="#chapitres" className="text-base-content/50 transition-colors hover:text-primary">
           Chapitres ↓
         </a>
       </div>

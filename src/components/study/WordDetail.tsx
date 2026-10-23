@@ -15,11 +15,11 @@ import { LexiconSense, LexiconVia } from "../BaillyNotice";
 import LetterDetail from "./LetterDetail";
 import { WordPronunciation } from "./Pronunciation";
 
-const eyebrow = "text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-base-content/55";
+const eyebrow = "text-xs font-semibold uppercase tracking-wider text-base-content/50";
 
 function Section({ title, aside, children }: { title: string; aside?: ReactNode; children: ReactNode }) {
   return (
-    <section className="border-t border-base-300 py-4">
+    <section>
       <div className="mb-2 flex items-center justify-between gap-2">
         <h3 className={eyebrow}>{title}</h3>
         {aside}
@@ -140,12 +140,12 @@ export default function WordDetail({
         )}
       </header>
 
-      <div className="mt-4">
+      <div className="mt-6 space-y-6">
         {word.morph && (
           <Section title="Analyse">
             <p className="text-[0.95rem] leading-snug">
               <span className="font-semibold">{word.nature}</span>
-              <span className="text-base-content/75"> · {word.morph}</span>
+              <span className="text-base-content/70"> · {word.morph}</span>
             </p>
           </Section>
         )}
@@ -158,21 +158,21 @@ export default function WordDetail({
               <>
                 <LexiconVia via={lexical.via} />
                 <LexiconSense gloss={lexical.gloss} collapsible />
-                <p className="mt-2 text-xs leading-snug text-base-content/55">Lexique général, à vérifier en contexte.</p>
+                <p className="mt-2 text-xs leading-snug text-base-content/50">Lexique général, à vérifier en contexte.</p>
               </>
             ) : lexical.loading || definition === undefined ? (
-              <p className="text-sm text-base-content/60">Chargement…</p>
+              <p className="text-sm text-base-content/50">Chargement…</p>
             ) : (
-              <p className="text-sm leading-snug text-base-content/65">Pas encore de sens fiable.</p>
+              <p className="text-sm leading-snug text-base-content/50">Aucun sens vérifié.</p>
             )}
             {notes && notes.length > 0 && (
               <div className="mt-3 rounded-box border border-primary/30 bg-primary/5 px-3 py-2.5">
-                <div className="text-[0.65rem] font-semibold uppercase tracking-wide text-primary">Note · Biblion</div>
+                <div className="text-xs font-semibold uppercase tracking-wider text-primary">Note · Biblion</div>
                 <div className="mt-1 grid gap-2">
                   {notes.map((n) => (
                     <div key={n.id}>
                       <p className="text-sm leading-snug text-base-content/85">{n.body}</p>
-                      {n.source && <p className="mt-0.5 text-xs text-base-content/60">{n.source}</p>}
+                      {n.source && <p className="mt-0.5 text-xs text-base-content/50">{n.source}</p>}
                     </div>
                   ))}
                 </div>
@@ -185,9 +185,9 @@ export default function WordDetail({
           <WordPronunciation word={word} textRef={textRef} wordIndex={wordIndex} canEdit={can(user, "annotations")} />
         </Section>
 
-        <div className="flex flex-col gap-3 border-t border-base-300 pt-4">
+        <div className="flex flex-col gap-3">
           {fiche && (
-            <Link href={fiche} className="btn btn-primary btn-sm h-10 rounded-full">
+            <Link href={fiche} className="btn btn-primary btn-sm">
               Occurrences de <span lang="grc" className="font-greek text-base">{word.lemme}</span>
             </Link>
           )}

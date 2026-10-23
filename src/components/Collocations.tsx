@@ -23,14 +23,14 @@ function SharedVerses({ colloc, formByVerse, corpus }: { colloc: Colloc; formByV
             className="flex items-center gap-2 rounded px-1.5 py-1 text-sm transition-colors hover:bg-base-200"
           >
             {o && <span className="font-greek min-w-0 flex-1 truncate">{o.f}</span>}
-            <span className={`shrink-0 text-xs text-base-content/70 ${o ? "" : "flex-1"}`}>
+            <span className={`shrink-0 text-xs text-base-content/50 ${o ? "" : "flex-1"}`}>
               {corpus.bookNames[vr.b] ?? vr.b} {vr.c}:{vr.v}
             </span>
           </Link>
         );
       })}
       {colloc.n > verses.length && (
-        <p className="px-1.5 text-xs text-base-content/70">
+        <p className="px-1.5 text-xs text-base-content/50">
           {verses.length} premiers sur {colloc.n}.
         </p>
       )}
@@ -59,15 +59,15 @@ export default function Collocations({ items, occ, corpus }: { items: Colloc[]; 
   const max = items[0].score || 1;
 
   return (
-    <div className="mt-4 rounded-box border border-base-300 bg-base-100 px-4 py-3">
-      <div className="text-[0.7rem] font-medium uppercase tracking-wide text-base-content/70">
+    <section>
+      <h2 className="text-xs font-semibold uppercase tracking-wider text-base-content/50">
         Mots associés
-      </div>
-      <p className="mt-1 text-sm text-base-content/70">
-        Mots fréquents dans les mêmes versets, classés par affinité.
+      </h2>
+      <p className="mt-1 text-xs text-base-content/50">
+        Fréquents dans les mêmes versets, classés par affinité.
       </p>
 
-      <div className="mt-3 grid gap-0.5 wide:grid-cols-2 wide:gap-x-8">
+      <div className="mt-2 grid gap-0.5">
         {items.map((c, i) => {
           const isOpen = open === i;
           return (
@@ -82,7 +82,7 @@ export default function Collocations({ items, occ, corpus }: { items: Colloc[]; 
                     <span className="font-greek text-lg">{c.lemma}</span>
                     <span className="ml-2 text-sm text-base-content/70">{c.translitR}</span>
                   </span>
-                  <span className="shrink-0 text-xs tabular-nums text-base-content/70">
+                  <span className="shrink-0 text-xs tabular-nums text-base-content/50">
                     {c.n} versets
                   </span>
                 </div>
@@ -98,6 +98,6 @@ export default function Collocations({ items, occ, corpus }: { items: Colloc[]; 
           );
         })}
       </div>
-    </div>
+    </section>
   );
 }

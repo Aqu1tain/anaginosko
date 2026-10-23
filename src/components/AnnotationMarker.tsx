@@ -45,7 +45,7 @@ export default function AnnotationMarker({
       )}
       <span className="mt-2 flex items-center justify-between gap-2">
         {a.author ? (
-          <span className="text-xs text-base-content/70">
+          <span className="text-xs text-base-content/50">
             <span className="font-greek">{a.author.displayName}</span>
           </span>
         ) : (
@@ -59,7 +59,7 @@ export default function AnnotationMarker({
                 close();
                 onReport(a);
               }}
-              className="btn btn-ghost btn-xs text-base-content/60"
+              className="btn btn-ghost btn-xs text-base-content/70"
             >
               Signaler
             </button>

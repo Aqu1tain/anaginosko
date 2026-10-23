@@ -119,7 +119,7 @@ export default function BaillyNotice({
         {notice.senses.map((sense, i) => (
           <div key={i} className={i > 0 ? "mt-4 border-t border-dashed border-base-300 pt-3" : undefined}>
             {many && (
-              <div className="mb-1 text-[0.65rem] font-semibold uppercase tracking-[0.1em] text-base-content/50">
+              <div className="mb-1 text-xs font-semibold uppercase tracking-wider text-base-content/50">
                 Homonyme {i + 1}
               </div>
             )}
@@ -151,7 +151,7 @@ export function BaillyExcerpt({ excerpt, compact = false }: { excerpt: string; c
         return (
           <div key={i} className="flex items-start gap-2.5">
             {segments.length > 1 && (
-              <span className="mt-0.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-base-200 px-1 text-[0.65rem] font-semibold text-base-content/60">
+              <span className="mt-0.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-base-200 px-1 text-[0.65rem] font-semibold text-base-content/50">
                 {i + 1}
               </span>
             )}
@@ -173,8 +173,8 @@ export function BaillyExcerpt({ excerpt, compact = false }: { excerpt: string; c
 export function LexiconVia({ via }: { via?: string }) {
   if (!via) return null;
   return (
-    <p className="mb-1.5 text-xs text-base-content/60">
-      Notice à la forme <span className="font-greek text-sm text-base-content/80">{via}</span>.
+    <p className="mb-1.5 text-xs text-base-content/50">
+      Notice à la forme <span className="font-greek text-sm text-base-content/70">{via}</span>.
     </p>
   );
 }
@@ -214,12 +214,12 @@ export function LexiconSense({
       {cropped && (
         <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1">
           {loaded.loading ? (
-            <span className="inline-flex items-center gap-2 text-xs text-base-content/60" aria-live="polite">
+            <span className="inline-flex items-center gap-2 text-xs text-base-content/50" aria-live="polite">
               <span className="loading loading-spinner loading-xs" aria-hidden="true" />
               Chargement…
             </span>
           ) : wanted && loaded.notice === null ? (
-            <span className="text-xs text-base-content/60">
+            <span className="text-xs text-base-content/50">
               Notice indisponible.{" "}
               <a href={`https://bailly.app/${encodeURIComponent(gloss.uri)}`} target="_blank" rel="noreferrer" className="link">
                 Bailly.app ↗

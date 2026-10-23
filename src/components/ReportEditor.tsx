@@ -67,7 +67,7 @@ export default function ReportEditor({
       });
       setDone(true);
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Erreur");
+      setError(e instanceof Error ? e.message : "Envoi impossible. Réessayez.");
       setSaving(false);
     }
   };
@@ -82,12 +82,12 @@ export default function ReportEditor({
       >
         {done ? (
           <div className="text-center">
-            <h2 className="text-lg font-semibold">Merci !</h2>
-            <p className="mt-2 text-sm text-base-content/80">
-              {user
-                ? "Signalement enregistré."
-                : "Validez le signalement avec le lien reçu par e-mail."}
-            </p>
+            <h2 className="text-lg font-semibold">Signalement envoyé</h2>
+            {!user && (
+              <p className="mt-2 text-sm text-base-content/70">
+                Validez-le avec le lien reçu par e-mail.
+              </p>
+            )}
             <button onClick={onClose} className="btn btn-primary btn-sm mt-5">
               Fermer
             </button>
@@ -150,7 +150,7 @@ export default function ReportEditor({
                 placeholder="vous@exemple.fr"
                 className={`input input-bordered mt-1 w-full ${email && !emailValid(email) ? "input-error" : ""}`}
               />
-              <span className="mt-1 block text-xs text-base-content/60">
+              <span className="mt-1 block text-xs text-base-content/50">
                 Sert uniquement à vérifier et suivre ce signalement. Transmis à notre prestataire
                 d’envoi d’e-mails ; détails dans la{" "}
                 <a className="link" href="/confidentialite" target="_blank" rel="noreferrer">

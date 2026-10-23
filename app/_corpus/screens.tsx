@@ -85,24 +85,24 @@ export async function chapterMetadata(
 export async function TocScreen({ corpus }: { corpus: CorpusConfig }) {
   const books = await loadBooksFs(corpus);
   return (
-    <div className="pb-4">
+    <div className="pb-12 pt-6">
       <BreadcrumbJsonLd items={[{ name: "Accueil", path: "/" }, { name: corpus.label, path: corpus.routePrefix }]} />
       <Breadcrumb items={[{ label: "Accueil", href: "/", home: true }, { label: corpus.label }]} />
-      <h1 className="text-2xl font-bold">{corpus.label}</h1>
-      <p className="mt-1 mb-2 text-sm text-base-content/70">
+      <h1 className="text-3xl font-bold tracking-tight">{corpus.label}</h1>
+      <p className="mt-1 text-sm text-base-content/70">
         {books.length} livres · texte grec {corpus.sourceLabel}
       </p>
 
-      <div className="mt-3 max-w-md">
+      <div className="mt-6 max-w-md">
         <RefJump books={books} routePrefix={corpus.routePrefix} />
       </div>
 
       {corpus.editorialGroups.map((group) => (
-        <section key={group.title} className="pt-5">
-          <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-base-content/70">
+        <section key={group.title} className="mt-8">
+          <h2 className="mb-3 text-lg font-semibold">
             {group.title}
           </h2>
-          <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 wide:grid-cols-4">
             {group.ids.map((id) => {
               const b = bookById(books, id);
               if (!b) return null;
@@ -113,7 +113,7 @@ export async function TocScreen({ corpus }: { corpus: CorpusConfig }) {
                   className="flex items-center justify-between gap-2 rounded-box border border-base-300 bg-base-100 px-3.5 py-2.5 transition-colors hover:border-primary/40"
                 >
                   <span className="min-w-0 truncate font-medium">{b.name}</span>
-                  <span className="badge badge-sm badge-ghost shrink-0">{b.chapters}</span>
+                  <span className="shrink-0 text-xs tabular-nums text-base-content/50">{b.chapters}</span>
                 </Link>
               );
             })}
@@ -142,7 +142,7 @@ export async function BookScreen({ corpus, params }: { corpus: CorpusConfig; par
   };
 
   return (
-    <div className="pb-4">
+    <div className="pb-12 pt-6">
       <JsonLd data={bookJsonLd} />
       <BreadcrumbJsonLd
         items={[
@@ -159,10 +159,10 @@ export async function BookScreen({ corpus, params }: { corpus: CorpusConfig; par
         ]}
       />
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <h1 className="text-2xl font-bold">{b.name}</h1>
+        <h1 className="text-3xl font-bold tracking-tight">{b.name}</h1>
         <EditBookIntro corpus={corpus.id} book={book} />
       </div>
-      <p className="mt-1 mb-3 text-sm text-base-content/70">
+      <p className="mt-1 mb-6 text-sm text-base-content/70">
         {b.chapters} chapitre{b.chapters > 1 ? "s" : ""}
       </p>
       {intro && (
@@ -320,7 +320,7 @@ export async function ChapterScreen({
         ) : nextBook ? (
           <Link
             href={`${corpus.routePrefix}/${nextBook.id}/${firstCh(nextBook)}`}
-            className="btn btn-sm btn-primary"
+            className="btn btn-sm btn-outline border-base-300"
             title={`${bookName(nextBook.id)} ${chLabel(firstCh(nextBook))}`}
           >
             {bookName(nextBook.id)} →

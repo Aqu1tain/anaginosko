@@ -81,7 +81,7 @@ export default function AnnotationEditor({
       }
       onSaved();
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Erreur");
+      setError(e instanceof Error ? e.message : "Enregistrement impossible. Réessayez.");
       setSaving(false);
     }
   };
@@ -128,7 +128,7 @@ export default function AnnotationEditor({
 
         <label className="mt-3 block">
           <span className="text-sm font-medium">
-            Lien <span className="font-normal text-base-content/70">(optionnel)</span>
+            Lien <span className="font-normal text-base-content/50">(optionnel)</span>
           </span>
           <input
             type="url"

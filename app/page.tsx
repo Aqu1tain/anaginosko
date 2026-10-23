@@ -45,7 +45,7 @@ function Hero({ verse, french, word, start }: { verse: Text; french: string | nu
         <h1 className="font-greek text-4xl font-bold leading-[1.08] tracking-tight wide:text-6xl">
           La Bible en grec
         </h1>
-        <p className="mt-5 max-w-[40ch] text-lg leading-relaxed text-base-content/75 wide:text-xl">
+        <p className="mt-5 max-w-[40ch] text-lg leading-relaxed text-base-content/70 wide:text-xl">
           Le Nouveau Testament et la Septante, mot à mot.
         </p>
         <div className="mt-8 flex flex-wrap gap-3">
@@ -96,7 +96,7 @@ function Browse({ corpora }: { corpora: NavCorpus[] }) {
 
 function Figures({ figures }: { figures: { href: string; value: number; label: string }[] }) {
   return (
-    <section className="mt-14 grid gap-8 border-t border-base-300 pt-12 sm:grid-cols-2 wide:mt-16 wide:grid-cols-4 wide:pt-16">
+    <section className="mt-24 grid gap-8 sm:grid-cols-2 wide:mt-32 wide:grid-cols-4">
       {figures.map((f) => (
         <Link key={f.href} href={f.href} className="group flex flex-col gap-2">
           <span className="font-greek text-5xl leading-none tabular-nums wide:text-6xl">{f.value.toLocaleString("fr-FR")}</span>
@@ -113,7 +113,7 @@ function LatestArticles() {
   const latest = listPublished().slice(0, 3);
   if (latest.length === 0) return null;
   return (
-    <section className="mt-14 border-t border-base-300 pt-12 wide:mt-16 wide:pt-16">
+    <section className="mt-24 wide:mt-32">
       <div className="flex flex-wrap items-baseline justify-between gap-3">
         <h2 className={sectionTitle}>Derniers articles</h2>
         <Link href="/articles" className="font-semibold text-primary hover:underline">
@@ -134,12 +134,12 @@ function LatestArticles() {
                 <img src={a.cover} alt="" className="h-40 w-full object-cover" loading="lazy" />
               )}
               <div className="flex flex-1 flex-col p-5">
-                <p className="text-[0.7rem] font-semibold uppercase tracking-wide text-primary/80">
+                <p className="text-xs font-semibold uppercase tracking-wider text-primary">
                   {CATEGORY_LABEL[a.category]}
                 </p>
                 <h3 className="mt-1.5 text-lg font-semibold leading-snug group-hover:text-primary">{a.title}</h3>
                 {a.excerpt && <p className="mt-1.5 line-clamp-3 text-sm text-base-content/70">{a.excerpt}</p>}
-                <div className="mt-auto flex items-center gap-2 pt-4 text-xs text-base-content/60">
+                <div className="mt-auto flex items-center gap-2 pt-4 text-xs text-base-content/50">
                   <Avatar name={author.name} photo={author.photo} size={22} />
                   <span className="min-w-0 truncate">{author.name}</span>
                 </div>
@@ -158,7 +158,7 @@ function Support() {
       data-nosnippet=""
       className="mt-14 flex flex-col gap-5 rounded-box bg-base-200 px-5 py-7 wide:mt-16 wide:flex-row wide:items-center wide:justify-between wide:px-10 wide:py-9"
     >
-      <p className="max-w-[52ch] text-lg leading-relaxed text-base-content/80">
+      <p className="max-w-[52ch] text-lg leading-relaxed text-base-content/70">
         Gratuit et sans publicité, Anaginosko vit de vos dons.
       </p>
       <a href={TIPEEE} target="_blank" rel="noreferrer noopener" className="btn btn-accent btn-lg self-start rounded-full px-7 wide:self-auto">

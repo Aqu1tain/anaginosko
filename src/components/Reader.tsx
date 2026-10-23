@@ -48,7 +48,7 @@ function TranslatorTip({ by }: { by: string }) {
   const maison = ANAGINOSKO_TRANSLATORS.has(by);
   return (
     <span
-      className={`tooltip tooltip-left ml-1 inline-block cursor-help select-none align-middle text-[0.85em] ${maison ? "text-secondary/90" : "text-base-content/45"}`}
+      className={`tooltip tooltip-left ml-1 inline-block cursor-help select-none align-middle text-[0.85em] ${maison ? "text-secondary/90" : "text-base-content/50"}`}
       data-tip={`Traduit par ${creditName(by)}`}
     >ⓘ</span>
   );
@@ -73,11 +73,11 @@ function FrenchChapterBlock({ french, credit }: { french: Record<string, string>
     .sort((a, b) => a - b);
   return (
     <div className="mt-6 rounded-box bg-base-200 px-4 py-3">
-      <div className="text-[0.7rem] font-medium uppercase tracking-wide text-base-content/70">
-        Traduction · versification distincte
+      <div className="text-xs font-semibold uppercase tracking-wider text-base-content/50">
+        Traduction
       </div>
-      <p className="mt-1 text-xs text-base-content/70">
-        Numérotation différente du grec : pas d’alignement par verset.
+      <p className="mt-1 text-xs text-base-content/50">
+        Numérotation différente du grec, sans alignement par verset.
       </p>
       <p className="mt-2 leading-relaxed text-base-content/85">
         {keys.map((v) => (
@@ -104,7 +104,7 @@ const SCOPES: { id: AnnoScope; label: string }[] = [
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="flex w-full flex-col gap-1">
-      <span className="px-0.5 text-[0.6rem] font-semibold uppercase tracking-wide text-base-content/70">
+      <span className="px-0.5 text-xs font-semibold uppercase tracking-wider text-base-content/50">
         {label}
       </span>
       {children}
@@ -358,7 +358,7 @@ export default function Reader({ text }: { text: Text }) {
       {can(user, "arbitrage") && parsedRef && (
         <a
           href={`/admin/arbitrage?corpus=${parsedRef.corpus}&book=${parsedRef.book}&ch=${parsedRef.chapter}`}
-          className="link shrink-0 text-base-content/60 underline-offset-2"
+          className="link shrink-0 text-base-content/70 underline-offset-2"
         >
           Traduire dans l’atelier
         </a>
