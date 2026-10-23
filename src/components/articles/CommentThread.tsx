@@ -76,13 +76,13 @@ export default function CommentThread({
 
   return (
     <section
-      className="overflow-hidden rounded-xl border border-base-300 bg-base-100 shadow-xl lg:shadow-sm"
+      className="overflow-hidden rounded-box border border-base-300 bg-base-100 shadow-xl lg:shadow-none"
       aria-label="Fil de commentaires"
     >
-      <header className="border-b border-base-200 bg-base-200/35 px-4 py-3">
+      <header className="border-b border-base-200 bg-base-200/60 px-4 py-3">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
-            <p className="text-[11px] font-semibold uppercase tracking-wide text-base-content/45">
+            <p className="text-xs font-semibold uppercase tracking-wider text-base-content/50">
               {excerpt ? "Passage commenté" : "Discussion générale"}
             </p>
             {excerpt && (
@@ -142,7 +142,7 @@ export default function CommentThread({
 
       <ul className="max-h-[46dvh] space-y-4 overflow-y-auto px-4 py-4 lg:max-h-80">
         {comments.length === 0 && (
-          <li className="text-sm text-base-content/55">
+          <li className="text-sm text-base-content/50">
             Aucun message.
           </li>
         )}
@@ -158,7 +158,7 @@ export default function CommentThread({
                 <span className="font-semibold">
                   {comment.author.name || "Contributeur"}
                 </span>
-                <time className="text-base-content/40">
+                <time className="text-base-content/50">
                   {new Date(comment.createdAt).toLocaleString("fr-FR", {
                     day: "2-digit",
                     month: "short",
@@ -191,12 +191,12 @@ export default function CommentThread({
                   </button>
                 </div>
               ) : (
-                <p className="mt-1 whitespace-pre-wrap text-sm leading-relaxed text-base-content/90">
+                <p className="mt-1 whitespace-pre-wrap text-sm leading-relaxed">
                   {comment.deletedAt ? "Message supprimé" : comment.text}
                 </p>
               )}
               {comment.editedAt && !comment.deletedAt && (
-                <span className="text-[10px] text-base-content/50">
+                <span className="text-xs text-base-content/50">
                   Modifié
                 </span>
               )}
@@ -230,7 +230,7 @@ export default function CommentThread({
                     className="btn btn-error btn-xs mt-1"
                     onClick={() => update(comment.id, null)}
                   >
-                    Confirmer
+                    Supprimer
                   </button>
                   <button
                     className="btn btn-ghost btn-xs"
@@ -271,7 +271,7 @@ export default function CommentThread({
             </p>
           )}
           <div className="mt-2 flex items-center justify-between gap-3">
-            <span className="text-[10px] text-base-content/40">
+            <span className="text-xs text-base-content/50">
               Ctrl/⌘ + Entrée
             </span>
             <button

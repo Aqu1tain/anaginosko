@@ -21,10 +21,10 @@ const percent = (part: number, total: number) =>
 
 function Metric({ value, label, detail, tone = "" }: { value: number; label: string; detail: string; tone?: string }) {
   return (
-    <div className="rounded-xl border border-base-300 bg-base-100 px-3.5 py-3">
+    <div className="rounded-box border border-base-300 bg-base-100 p-3">
       <p className={`text-xl font-bold tabular-nums ${tone}`}>{value.toLocaleString("fr-FR")}</p>
       <p className="text-xs font-medium">{label}</p>
-      <p className="mt-0.5 text-[0.7rem] text-base-content/55">{detail}</p>
+      <p className="mt-1 text-xs text-base-content/50">{detail}</p>
     </div>
   );
 }
@@ -125,13 +125,13 @@ export default function DefinitionCoverage({ definitions }: { definitions: Annot
   );
 
   if (failed) {
-    return <p className="mb-5 rounded-xl bg-base-200 px-3 py-2 text-sm text-base-content/65">Couverture lexicale indisponible.</p>;
+    return <p className="mb-6 text-sm text-base-content/50">Couverture lexicale indisponible.</p>;
   }
 
   return (
-    <div className="mb-6 rounded-2xl border border-base-300 bg-base-200/40 p-4 sm:p-5">
+    <div className="mb-8">
       <div className="flex flex-wrap items-start justify-between gap-3">
-        <h2 className="font-semibold">Couverture des sens</h2>
+        <h2 className="text-lg font-semibold">Couverture des sens</h2>
         <div className="join" role="group" aria-label="Corpus de la couverture">
           {(["all", "nt", "lxx"] as const).map((id) => (
             <button
@@ -146,9 +146,9 @@ export default function DefinitionCoverage({ definitions }: { definitions: Annot
       </div>
 
       {loading ? (
-        <div className="mt-5 flex items-center gap-2 text-sm text-base-content/60">
+        <div className="mt-4 flex items-center gap-2 text-sm text-base-content/50">
           <span className="loading loading-spinner loading-sm" aria-hidden="true" />
-          Calcul…
+          Chargement…
         </div>
       ) : (
         <>
@@ -179,31 +179,31 @@ export default function DefinitionCoverage({ definitions }: { definitions: Annot
           </div>
 
           {stats.duplicateCount > 0 && (
-            <p className="mt-3 rounded-lg border border-warning/35 bg-warning/10 px-3 py-2 text-xs text-base-content/75">
+            <p className="mt-3 rounded-lg bg-warning/10 px-3 py-2 text-xs text-base-content/70">
               {stats.duplicateCount} définition{stats.duplicateCount > 1 ? "s" : ""} en doublon : une seule par lemme.
             </p>
           )}
 
-          <div className="mt-5 flex items-center justify-between gap-3">
+          <div className="mt-6 flex items-center justify-between gap-3">
             <div>
-              <h3 className="text-sm font-semibold">Priorités</h3>
-              <p className="text-xs text-base-content/55">Les plus fréquents sans définition Biblion.</p>
+              <h3 className="font-semibold">Priorités</h3>
+              <p className="text-xs text-base-content/50">Les plus fréquents sans définition Biblion.</p>
             </div>
           </div>
-          <div className="mt-2 grid gap-1.5 sm:grid-cols-2">
+          <div className="mt-3 grid gap-2 sm:grid-cols-2">
             {priorities.map((row) => {
               const base = row.inNt ? NT.concordanceBase : LXX.concordanceBase;
               return (
                 <a
                   key={row.lemma}
                   href={`${base}/${encodeURIComponent(row.lemma)}`}
-                  className="group flex items-center gap-3 rounded-xl border border-base-300 bg-base-100 px-3 py-2.5 transition-colors hover:border-primary/40"
+                  className="group flex items-center gap-3 rounded-box border border-base-300 bg-base-100 px-3 py-2 transition-colors hover:border-primary/40"
                 >
                   <span className="font-greek min-w-0 flex-1 truncate text-lg group-hover:text-primary">{row.lemma}</span>
                   <span className={`badge badge-xs ${row.hasLexicon ? "badge-ghost" : "badge-warning badge-soft"}`}>
                     {row.hasLexicon ? "Bailly vérifié" : "Sans sens"}
                   </span>
-                  <span className="min-w-10 text-right text-xs tabular-nums text-base-content/55">{row.count.toLocaleString("fr-FR")}×</span>
+                  <span className="min-w-10 text-right text-xs tabular-nums text-base-content/50">{row.count.toLocaleString("fr-FR")}×</span>
                 </a>
               );
             })}

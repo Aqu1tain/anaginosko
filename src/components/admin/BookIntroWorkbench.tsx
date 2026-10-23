@@ -109,15 +109,15 @@ export default function BookIntroWorkbench({ corpus, book }: { corpus: string; b
         <a href="/login" className="link link-primary mt-3 inline-block">Se connecter</a>
       </div>
     );
-  if (content === null) return <div className="py-20 text-center text-base-content/60">Chargement…</div>;
+  if (content === null) return <p className="pb-12 pt-6 text-sm text-base-content/50">Chargement…</p>;
 
   return (
-    <div className="pb-20 pt-6">
-      <Link href="/admin/livres" className="link text-sm text-base-content/60">← Introductions de livres</Link>
+    <div className="pb-12 pt-6">
+      <Link href="/admin/livres" className="link text-sm text-base-content/70">← Introductions de livres</Link>
       <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Introduction · {bookName}</h1>
-          <p className="mt-0.5 h-4 text-xs text-base-content/55">
+          <h1 className="text-3xl font-bold tracking-tight">Introduction · {bookName}</h1>
+          <p className="mt-1 h-4 text-xs text-base-content/50">
             {saveState === "saving" ? "Enregistrement…" : saveState === "saved" ? "Enregistré" : saveState === "error" ? "Erreur d'enregistrement" : ""}
           </p>
         </div>
@@ -125,13 +125,13 @@ export default function BookIntroWorkbench({ corpus, book }: { corpus: string; b
           <span className={`badge badge-sm ${published ? "badge-success badge-soft" : "badge-ghost"}`}>
             {published ? "Publiée" : "Brouillon"}
           </span>
-          <button onClick={togglePublish} disabled={busy} className={`btn btn-sm ${published ? "btn-outline border-base-300" : "btn-primary"}`}>
+          <button onClick={togglePublish} disabled={busy} className={`btn btn-sm ${published ? "btn-outline" : "btn-primary"}`}>
             {busy ? "…" : published ? "Dépublier" : "Publier"}
           </button>
         </div>
       </div>
 
-      {error && <div className="alert alert-error mt-3 text-sm">{error}</div>}
+      {error && <p className="mt-3 text-sm text-error">{error}</p>}
 
       <div className="article-editor relative mt-6">
         <ArticleEditor

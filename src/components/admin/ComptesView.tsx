@@ -35,7 +35,7 @@ function Row({ name, sub, badges, meta, onClick }: { name: ReactNode; sub: strin
       <Avatar name={typeof name === "string" ? name : sub} photo={null} size={36} />
       <span className="min-w-0 flex-1">
         <span className="block truncate font-medium">{name}</span>
-        <span className="block truncate text-sm text-base-content/55">{sub}</span>
+        <span className="block truncate text-sm text-base-content/50">{sub}</span>
       </span>
       {badges && <span className="hidden flex-wrap justify-end gap-1.5 sm:flex">{badges}</span>}
       {meta && <span className="shrink-0 text-right text-xs text-base-content/50 sm:w-28">{meta}</span>}
@@ -63,7 +63,7 @@ const List = ({ children, empty }: { children: ReactNode[]; empty: string }) =>
   children.length ? (
     <div className="divide-y divide-base-300 overflow-hidden rounded-box border border-base-300 bg-base-100">{children}</div>
   ) : (
-    <p className="rounded-box border border-dashed border-base-300 px-4 py-10 text-center text-sm text-base-content/55">{empty}</p>
+    <p className="text-sm text-base-content/50">{empty}</p>
   );
 
 export default function ComptesView() {
@@ -114,7 +114,7 @@ export default function ComptesView() {
   };
 
   if (!ready) return null;
-  if (!allowed) return <p className="py-12">Accès réservé à la gestion des comptes.</p>;
+  if (!allowed) return <p className="py-12 text-base-content/70">Réservé à la gestion des comptes.</p>;
 
   const users = team?.users.filter((u) => matches(q, u.displayName, u.email, u.title)) ?? [];
   const invitations = team?.invitations.filter((i) => matches(q, i.displayName, i.email)) ?? [];
@@ -128,7 +128,7 @@ export default function ComptesView() {
   return (
     <div className="space-y-6 pb-12 pt-6">
       <header className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-3xl font-bold">Comptes</h1>
+        <h1 className="text-3xl font-bold tracking-tight">Comptes</h1>
         <button type="button" className="btn btn-primary btn-sm" onClick={() => setInvite("new")}>
           Inviter
         </button>
@@ -142,10 +142,10 @@ export default function ComptesView() {
               type="button"
               aria-pressed={tab === key}
               onClick={() => setTab(key)}
-              className={`shrink-0 rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors ${tab === key ? "bg-base-100 shadow-sm" : "text-base-content/60 hover:text-base-content"}`}
+              className={`shrink-0 rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors ${tab === key ? "bg-base-100 shadow-sm" : "text-base-content/70 hover:text-base-content"}`}
             >
               {label}
-              {count != null && <span className="ml-1.5 tabular-nums text-base-content/45">{count}</span>}
+              {count != null && <span className="ml-1.5 tabular-nums text-base-content/50">{count}</span>}
             </button>
           ))}
         </nav>
@@ -162,11 +162,11 @@ export default function ComptesView() {
       </div>
 
       {error && (
-        <p role="alert" className="alert alert-error text-sm">
+        <p role="alert" className="text-sm text-error">
           {error}
         </p>
       )}
-      {!team && !error && <p className="text-sm text-base-content/55">Chargement…</p>}
+      {!team && !error && <p className="text-sm text-base-content/50">Chargement…</p>}
 
       {team && tab === "team" && (
         <List empty="Aucun compte.">

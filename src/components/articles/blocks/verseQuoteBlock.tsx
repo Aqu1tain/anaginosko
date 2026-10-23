@@ -69,7 +69,7 @@ function VerseQuoteBlockView({
     <div contentEditable={false} className="my-1">
       <VerseQuoteView {...props} verses={verses} linked={false} />
       {editable && (
-        <div className="mt-1 flex items-center gap-3 text-xs text-base-content/60">
+        <div className="mt-1 flex items-center gap-3 text-xs text-base-content/50">
           <button type="button" className="link" onClick={() => citation && onEdit(citation.editVerse)}>
             Modifier
           </button>

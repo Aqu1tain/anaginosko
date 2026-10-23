@@ -60,7 +60,7 @@ export default function RolesView({
               >
                 <RoleDot id={r.id} />
                 <span className="min-w-0 flex-1 truncate">{r.name}</span>
-                <span className="text-xs tabular-nums text-base-content/45">{members(r.id)}</span>
+                <span className="text-xs tabular-nums text-base-content/50">{members(r.id)}</span>
               </button>
             </li>
           ))}
@@ -73,7 +73,7 @@ export default function RolesView({
       {draft && (
         <div className="space-y-6 p-5">
           <label className="block">
-            <span className="block text-xs font-semibold uppercase tracking-wide text-base-content/55">Nom du rôle</span>
+            <span className="block text-xs font-semibold uppercase tracking-wider text-base-content/50">Nom du rôle</span>
             <input
               className="input input-bordered input-sm mt-2 w-full max-w-xs"
               value={draft.name}
@@ -100,7 +100,7 @@ export default function RolesView({
                 <button type="button" className="btn btn-ghost btn-sm text-neutral-content" onClick={() => setDraft(original ? { ...original } : roles[0] ? { ...roles[0] } : null)}>
                   Annuler
                 </button>
-                <button type="button" className="btn btn-success btn-sm" disabled={busy || !draft.name.trim()} onClick={save}>
+                <button type="button" className="btn btn-primary btn-sm" disabled={busy || !draft.name.trim()} onClick={save}>
                   {busy ? "Enregistrement…" : "Enregistrer"}
                 </button>
               </span>

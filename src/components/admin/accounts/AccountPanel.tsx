@@ -81,9 +81,9 @@ export default function AccountPanel({
           <div className="min-w-0 flex-1">
             <h2 id="account-panel-title" className="truncate text-lg font-semibold">
               {account.displayName}
-              {self && <span className="font-normal text-base-content/55"> (vous)</span>}
+              {self && <span className="font-normal text-base-content/50"> (vous)</span>}
             </h2>
-            <p className="truncate text-sm text-base-content/60">{account.email}</p>
+            <p className="truncate text-sm text-base-content/70">{account.email}</p>
             <p className="mt-1 text-xs text-base-content/50">
               Inscrit le {day(account.createdAt)}
               {account.lastSeenAt && ` · actif ${relative(account.lastSeenAt)}`}
@@ -101,9 +101,9 @@ export default function AccountPanel({
           )}
 
           <section>
-            <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-base-content/55">Rôles</h3>
+            <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-base-content/50">Rôles</h3>
             {account.isRoot ? (
-              <p className="text-sm text-base-content/60">Administrateur racine</p>
+              <p className="text-sm text-base-content/70">Administrateur racine</p>
             ) : (
               <RoleChips roles={roles} value={roleIds} onChange={setRoleIds} disabled={locked} />
             )}
@@ -111,7 +111,7 @@ export default function AccountPanel({
 
           {staff && (
             <label className="block">
-              <span className="block text-xs font-semibold uppercase tracking-wide text-base-content/55">Titre public</span>
+              <span className="block text-xs font-semibold uppercase tracking-wider text-base-content/50">Titre public</span>
               <input
                 className="input input-bordered input-sm mt-2 w-full"
                 value={title}
@@ -124,7 +124,7 @@ export default function AccountPanel({
           )}
 
           <section>
-            <h3 className="mb-3 flex items-baseline justify-between text-xs font-semibold uppercase tracking-wide text-base-content/55">
+            <h3 className="mb-3 flex items-baseline justify-between text-xs font-semibold uppercase tracking-wider text-base-content/50">
               Droits
               <span className="font-normal normal-case tracking-normal">
                 {effective.length} sur {PERMISSIONS.length}

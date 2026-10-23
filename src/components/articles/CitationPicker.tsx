@@ -74,7 +74,7 @@ export default function CitationPicker({
   return (
     <div className="fixed inset-0 z-[60] flex items-start justify-center overflow-y-auto bg-black/40 p-4 pt-[10vh]" onClick={onClose}>
       <div className="w-full max-w-lg rounded-box bg-base-100 p-5 shadow-xl" onClick={(e) => e.stopPropagation()}>
-        <h2 className="text-lg font-bold">{mode === "verse" ? "Citation biblique" : "Référence de chapitre"}</h2>
+        <h2 className="text-lg font-semibold">{mode === "verse" ? "Citation biblique" : "Référence de chapitre"}</h2>
 
         <input
           autoFocus
@@ -105,20 +105,20 @@ export default function CitationPicker({
           <p className="mt-2 text-sm text-error">Ce livre n&apos;a que {maxChapter} chapitres.</p>
         )}
         {ref && chapterValid && needsVerse && (
-          <p className="mt-2 text-sm text-base-content/60">Précisez au moins un verset (ex. {bookFullName(ref.corpus, ref.book)} {ref.chapter}:1).</p>
+          <p className="mt-2 text-sm text-base-content/50">Précisez au moins un verset (ex. {bookFullName(ref.corpus, ref.book)} {ref.chapter}:1).</p>
         )}
 
         {mode === "verse" && ref && chapterValid && !needsVerse && (
-          <div className="mt-3 rounded-lg border border-base-300 p-3">
+          <div className="mt-3 rounded-box border border-base-300 p-3">
             <div className="font-greek text-base leading-relaxed">
               {verses === null ? (
-                <span className="text-base-content/40">Chargement…</span>
+                <span className="text-sm text-base-content/50">Chargement…</span>
               ) : verses.length === 0 ? (
                 <span className="text-error">Verset introuvable.</span>
               ) : (
                 verses.map((v) => (
                   <span key={v.v}>
-                    <sup className="mr-0.5 text-[0.6em] text-base-content/45">{v.v}</sup>
+                    <sup className="mr-0.5 text-[0.6em] text-base-content/50">{v.v}</sup>
                     {v.greek}{" "}
                   </span>
                 ))
@@ -147,7 +147,7 @@ export default function CitationPicker({
                 <button
                   key={f}
                   type="button"
-                  className={`btn btn-sm ${form === f ? "btn-primary" : "btn-outline"}`}
+                  className={`btn btn-sm btn-outline ${form === f ? "btn-primary" : ""}`}
                   onClick={() => setForm(f)}
                   disabled={!ref}
                 >

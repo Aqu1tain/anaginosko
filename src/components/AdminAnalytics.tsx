@@ -198,11 +198,11 @@ function ChartCard({
   children: React.ReactNode;
 }) {
   return (
-    <section className="rounded-2xl border border-base-300 bg-base-100 p-4">
+    <section className="rounded-box border border-base-300 bg-base-100 p-4">
       <div className="mb-3 flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h2 className="text-sm font-semibold">{title}</h2>
-          {subtitle && <p className="mt-0.5 text-xs text-base-content/70">{subtitle}</p>}
+          <h2 className="font-semibold">{title}</h2>
+          {subtitle && <p className="mt-1 text-xs text-base-content/50">{subtitle}</p>}
         </div>
         {controls}
       </div>
@@ -326,7 +326,7 @@ function ViewsChart({
   ));
 
   return (
-    <div className="relative h-60 text-base-content/55">
+    <div className="relative h-60 text-base-content/50">
       <ResponsiveContainer width="100%" height="100%">
         {type === "bar" ? (
           <BarChart {...common}>
@@ -388,7 +388,7 @@ function RankBars({
   labelWidth?: number;
 }) {
   return (
-    <div className="text-base-content/55" style={{ height: Math.max(120, data.length * 34) }}>
+    <div className="text-base-content/50" style={{ height: Math.max(120, data.length * 34) }}>
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data} layout="vertical" margin={{ top: 0, right: 12, left: 0, bottom: 0 }}>
           <CartesianGrid stroke={C.grid} strokeDasharray="3 3" horizontal={false} />
@@ -469,11 +469,11 @@ function AiReferrals({
 // Requêtes de conteneur : 6 tuiles par ligne en pleine largeur, 3 puis 2 quand la place manque.
 const KPI_GRID = "grid grid-cols-2 gap-3 @xl:grid-cols-3 @4xl:grid-cols-6";
 
-const TONE = { good: "text-success", bad: "text-error", flat: "text-base-content/60" } as const;
+const TONE = { good: "text-success", bad: "text-error", flat: "text-base-content/50" } as const;
 
 function KpiTile({ kpi, compare }: { kpi: Kpi; compare: string }) {
   return (
-    <div className="rounded-2xl border border-base-300 bg-base-100 px-3 py-3" title={kpi.help}>
+    <div className="rounded-box border border-base-300 bg-base-100 p-3" title={kpi.help}>
       <div className="flex items-center gap-1 text-xs text-base-content/70">
         {kpi.label}
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true" className="opacity-60">
@@ -482,7 +482,7 @@ function KpiTile({ kpi, compare }: { kpi: Kpi; compare: string }) {
         </svg>
       </div>
       <div className="mt-1 whitespace-nowrap text-xl font-semibold leading-tight tabular-nums @xl:text-2xl @4xl:text-xl">{kpi.value}</div>
-      <div className="mt-0.5 text-xs">
+      <div className="mt-1 text-xs">
         {kpi.trend ? (
           <>
             <span className={`font-medium ${TONE[kpi.trend.tone]}`}>{kpi.trend.text}</span>{" "}
@@ -499,7 +499,7 @@ function KpiTile({ kpi, compare }: { kpi: Kpi; compare: string }) {
 function Glossary({ kpis }: { kpis: Kpi[] }) {
   const entries = [...kpis.map((k) => ({ label: k.label, help: k.help })), { label: "Lectures de textes", help: HELP.readings }];
   return (
-    <details className="rounded-xl bg-base-200/60 px-3 py-2 text-xs">
+    <details className="rounded-box bg-base-200/60 px-3 py-2 text-xs">
       <summary className="cursor-pointer select-none font-medium text-base-content/70">
         Que signifient ces chiffres ?
       </summary>
@@ -517,7 +517,7 @@ function Glossary({ kpis }: { kpis: Kpi[] }) {
 
 function InternalStat({ label, value, desc, help }: { label: string; value: number; desc: string; help?: string }) {
   return (
-    <div className="px-4 py-2.5" title={help}>
+    <div className="px-4 py-3" title={help}>
       <div className="text-xs text-base-content/70">{label}</div>
       <div className="text-xl font-semibold tabular-nums">{fmt(value)}</div>
       <div className="text-xs text-base-content/50">{desc}</div>
@@ -527,7 +527,7 @@ function InternalStat({ label, value, desc, help }: { label: string; value: numb
 
 function MatomoNotice({ state }: { state: "off" | "error" }) {
   return (
-    <p className="rounded-xl border border-base-300 px-3 py-2 text-xs text-base-content/70">
+    <p className="text-sm text-base-content/70">
       {state === "off"
         ? "Matomo non configuré : données internes seules."
         : "Matomo injoignable : données internes seules."}
@@ -658,8 +658,8 @@ export default function AdminAnalytics({
     <div className="@container mt-4 grid gap-4">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h2 className="text-sm font-semibold">Audience</h2>
-          <p className="mt-0.5 text-xs text-base-content/70">
+          <h2 className="text-lg font-semibold">Audience</h2>
+          <p className="mt-1 text-xs text-base-content/50">
             {matomoOn
               ? `${windowText} · Matomo`
               : windowText}
@@ -676,7 +676,7 @@ export default function AdminAnalytics({
               </Seg>
             ))}
           </div>
-          <label className="flex items-center gap-1 text-xs text-base-content/60">
+          <label className="flex items-center gap-1 text-xs text-base-content/50">
             <input
               type="number"
               min={1}
@@ -703,7 +703,7 @@ export default function AdminAnalytics({
       ) : analyticsState === "loading" && !analytics ? (
         <div className={KPI_GRID}>
           {Array.from({ length: 6 }, (_, i) => (
-            <div key={i} className="skeleton h-[5.5rem] rounded-2xl" />
+            <div key={i} className="skeleton h-[5.5rem] rounded-box" />
           ))}
         </div>
       ) : analyticsState === "error" ? (
@@ -712,8 +712,8 @@ export default function AdminAnalytics({
         <MatomoNotice state="off" />
       ) : null}
 
-      <section className="rounded-2xl border border-dashed border-base-300">
-        <h3 className="px-4 pt-2.5 text-xs font-medium text-base-content/60">
+      <section className="rounded-box bg-base-200/60">
+        <h3 className="px-4 pt-3 text-xs font-semibold uppercase tracking-wider text-base-content/50">
           Compteurs internes, depuis le lancement
         </h3>
         <div className="grid grid-cols-1 divide-base-300 sm:grid-cols-3 sm:divide-x">
@@ -791,7 +791,7 @@ export default function AdminAnalytics({
       {topTexts.length > 0 && (
         <ChartCard
           title="Textes les plus lus"
-          subtitle="compteur interne, depuis le lancement"
+          subtitle="Compteur interne, depuis le lancement"
         >
           <RankBars data={topTexts} unit="lectures" />
         </ChartCard>

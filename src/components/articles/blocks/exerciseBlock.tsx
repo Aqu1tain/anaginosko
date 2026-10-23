@@ -33,7 +33,7 @@ function ExerciseBlockView({ props, editable, onSet }: { props: ExerciseProps; e
   if (!editable) return <div contentEditable={false}><ExerciseView exercise={exercise} /></div>;
 
   return (
-    <div contentEditable={false} className="my-1 w-full rounded-lg border border-dashed border-base-300 p-4">
+    <div contentEditable={false} className="my-1 w-full rounded-box border border-dashed border-base-300 p-4">
       <p className="text-sm font-medium">Exercice</p>
       <textarea
         value={draft}

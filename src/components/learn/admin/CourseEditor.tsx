@@ -64,7 +64,7 @@ export default function CourseEditor({ id }: { id: string }) {
 
   if (!ready) return null;
   if (!allowed) return <p className="py-16 text-center text-base-content/70">Réservé à l’équipe des cours.</p>;
-  if (!course) return <p className="py-16 text-center text-base-content/70">{error ?? "Chargement…"}</p>;
+  if (!course) return <p className={`pb-12 pt-6 text-sm ${error ? "text-error" : "text-base-content/50"}`}>{error ?? "Chargement…"}</p>;
 
   const edit = (patch: Partial<Course>) => {
     setCourse({ ...course, ...patch });
@@ -145,7 +145,7 @@ export default function CourseEditor({ id }: { id: string }) {
 
   return (
     <div className="pb-24 pt-6">
-      <Link href="/admin/cours" className="link text-sm text-base-content/60">← Cours</Link>
+      <Link href="/admin/cours" className="link text-sm text-base-content/70">← Cours</Link>
 
       <div className="mt-4 grid gap-3">
         <input value={course.title} onChange={(e) => edit({ title: e.target.value })} className="input input-bordered text-xl font-bold" aria-label="Titre du cours" />
@@ -178,16 +178,16 @@ export default function CourseEditor({ id }: { id: string }) {
           {published} leçon{published > 1 ? "s" : ""} publiée{published > 1 ? "s" : ""} sur {lessons.length}
         </p>
         {published === 0 && (
-          <p className="mt-0.5 text-xs text-base-content/65">Invisible tant qu’aucune leçon n’est publiée.</p>
+          <p className="mt-1 text-xs text-base-content/70">Invisible tant qu’aucune leçon n’est publiée.</p>
         )}
         <div className="mt-3 flex flex-wrap gap-2">
           {steps.map((s) => (
-            <button key={s.action} type="button" disabled={!s.n || dirty} onClick={() => runStep(s.action)} className="btn btn-outline btn-sm border-base-300">
+            <button key={s.action} type="button" disabled={!s.n || dirty} onClick={() => runStep(s.action)} className="btn btn-outline btn-sm">
               {s.label} ({s.n})
             </button>
           ))}
         </div>
-        {dirty && <p className="mt-2 text-xs text-base-content/60">Enregistrez d’abord le cours.</p>}
+        {dirty && <p className="mt-2 text-xs text-base-content/50">Enregistrez d’abord le cours.</p>}
         {notice && <p className="mt-2 text-sm text-success">{notice}</p>}
       </section>
 
@@ -195,7 +195,7 @@ export default function CourseEditor({ id }: { id: string }) {
         {course.sections.map((section, i) => (
           <section key={section.id} className="rounded-box border border-base-300 bg-base-100 p-4">
             <div className="flex items-center gap-2">
-              <span className="text-xs font-semibold uppercase tracking-wide text-base-content/55">Partie {i + 1}</span>
+              <span className="text-xs font-semibold uppercase tracking-wider text-base-content/50">Partie {i + 1}</span>
               <input value={section.title} onChange={(e) => setSection(i, { title: e.target.value })} className="input input-sm input-bordered flex-1 font-semibold" aria-label="Titre de la partie" />
               <button type="button" className={iconBtn} onClick={() => setSections(move(course.sections, i, i - 1))} aria-label="Monter la partie">↑</button>
               <button type="button" className={iconBtn} onClick={() => setSections(move(course.sections, i, i + 1))} aria-label="Descendre la partie">↓</button>
@@ -225,7 +225,7 @@ export default function CourseEditor({ id }: { id: string }) {
                   </li>
                 );
               })}
-              {section.lessons.length === 0 && <li className="px-3 py-2 text-sm text-base-content/55">Aucune leçon.</li>}
+              {section.lessons.length === 0 && <li className="px-3 py-2 text-sm text-base-content/50">Aucune leçon.</li>}
             </ol>
 
             <div className="mt-3 flex flex-wrap gap-2">
@@ -242,7 +242,7 @@ export default function CourseEditor({ id }: { id: string }) {
                   </option>
                 ))}
               </select>
-              <button type="button" onClick={() => newLesson(i)} className="btn btn-outline btn-sm border-base-300">Nouvelle leçon</button>
+              <button type="button" onClick={() => newLesson(i)} className="btn btn-outline btn-sm">Nouvelle leçon</button>
             </div>
           </section>
         ))}
@@ -261,7 +261,7 @@ export default function CourseEditor({ id }: { id: string }) {
             {busy ? "Enregistrement…" : "Enregistrer"}
           </button>
           {saved && !dirty && <span className="text-sm text-success">Enregistré</span>}
-          {dirty && <span className="text-sm text-base-content/60">Modifications non enregistrées</span>}
+          {dirty && <span className="text-sm text-base-content/50">Modifications non enregistrées</span>}
           {error && <span className="text-sm text-error">{error}</span>}
           <button type="button" onClick={remove} className="btn btn-ghost btn-sm ml-auto text-error">Supprimer le cours</button>
         </div>

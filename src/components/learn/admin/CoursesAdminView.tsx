@@ -59,13 +59,13 @@ export default function CoursesAdminView() {
 
   return (
     <div className="pb-12 pt-6">
-      <h1 className="mt-3 text-2xl font-bold">Cours</h1>
+      <h1 className="text-3xl font-bold tracking-tight">Cours</h1>
 
       <form onSubmit={create} className="mt-6 flex gap-2">
-        <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Titre du nouveau cours" className="input input-bordered flex-1" required />
-        <button type="submit" className="btn btn-primary">Créer</button>
+        <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Titre du nouveau cours" className="input input-bordered input-sm flex-1" required />
+        <button type="submit" className="btn btn-primary btn-sm">Créer</button>
       </form>
-      {error && <p className="mt-3 rounded-lg bg-error/10 px-3 py-2 text-sm text-error">{error}</p>}
+      {error && <p className="mt-3 text-sm text-error">{error}</p>}
 
       {bundles.some((b) => !b.imported) && (
         <section className="mt-6 rounded-box border border-primary/30 bg-primary/5 p-4">
@@ -76,9 +76,9 @@ export default function CoursesAdminView() {
               <li key={b.slug} className="flex items-center justify-between gap-3 rounded-lg bg-base-100 px-3 py-2">
                 <span className="text-sm">
                   <span className="font-medium">{b.title}</span>
-                  <span className="text-base-content/60"> · {b.lessons} leçons</span>
+                  <span className="text-base-content/50"> · {b.lessons} leçons</span>
                 </span>
-                <button type="button" onClick={() => runImport(b.slug)} disabled={importing !== null} className="btn btn-primary btn-sm">
+                <button type="button" onClick={() => runImport(b.slug)} disabled={importing !== null} className="btn btn-outline btn-sm">
                   {importing === b.slug ? "Import…" : "Importer"}
                 </button>
               </li>
@@ -92,21 +92,21 @@ export default function CoursesAdminView() {
           const n = c.sections.reduce((k, s) => k + s.lessons.length, 0);
           return (
             <li key={c.id}>
-              <Link href={`/admin/cours/${c.id}`} className="flex items-center justify-between gap-3 px-4 py-3 hover:bg-base-200">
+              <Link href={`/admin/cours/${c.id}`} className="flex items-center justify-between gap-3 px-4 py-3 transition-colors hover:bg-base-200/60">
                 <span>
                   <span className="font-medium">{c.title}</span>
-                  <span className="block text-xs text-base-content/60">
+                  <span className="block text-xs text-base-content/50">
                     {COURSE_LEVELS[c.level]} · {c.sections.length} partie{c.sections.length > 1 ? "s" : ""} · {n} leçon{n > 1 ? "s" : ""}
                   </span>
                 </span>
-                <span className={`badge badge-sm ${c.status === "published" ? "badge-success" : "badge-ghost"}`}>
+                <span className={`badge badge-sm ${c.status === "published" ? "badge-success badge-soft" : "badge-ghost"}`}>
                   {c.status === "published" ? "Publié" : "Brouillon"}
                 </span>
               </Link>
             </li>
           );
         })}
-        {courses?.length === 0 && <li className="px-4 py-6 text-center text-sm text-base-content/60">Aucun cours.</li>}
+        {courses?.length === 0 && <li className="px-4 py-6 text-center text-sm text-base-content/50">Aucun cours.</li>}
       </ul>
     </div>
   );

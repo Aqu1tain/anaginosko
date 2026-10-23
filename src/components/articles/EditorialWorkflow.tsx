@@ -73,11 +73,12 @@ export default function EditorialWorkflow({
     action: TransitionAction | "retry_notification",
     label: string,
     primary = false,
+    danger = false,
   ) => (
     <button
       key={action}
       type="button"
-      className={`btn btn-sm w-full ${primary ? "btn-primary" : "btn-outline"}`}
+      className={`btn btn-sm w-full ${primary ? "btn-primary" : danger ? "btn-outline btn-error" : "btn-outline"}`}
       disabled={busy}
       onClick={() => act(action)}
     >
@@ -89,13 +90,13 @@ export default function EditorialWorkflow({
     a.versions.findLast((v) => v.revision < a.contentRevision);
   return (
     <section
-      className="space-y-3 rounded-xl border border-base-300 bg-base-100 p-4 shadow-sm"
+      className="space-y-3 rounded-box border border-base-300 bg-base-100 p-4"
       aria-label="Circuit de publication"
     >
       <h2 className="font-semibold">
         Publication · version {a.contentRevision}
       </h2>
-      <p className="text-xs text-base-content/65">
+      <p className="text-xs text-base-content/50">
         Approbation obligatoire par un autre relecteur.
       </p>
       {a.publishedVersion && (
@@ -130,7 +131,7 @@ export default function EditorialWorkflow({
             </p>
           )}
           {a.reviewRequest.notification === "sent" && (
-            <p className="text-xs text-base-content/60">
+            <p className="text-xs text-base-content/50">
               Demande envoyée par e-mail.
             </p>
           )}
@@ -142,7 +143,7 @@ export default function EditorialWorkflow({
                 className="mt-2 space-y-2 text-xs text-warning"
               >
                 <p>E-mail non envoyé.</p>
-                {button("retry_notification", "Réessayer l’e-mail")}
+                {button("retry_notification", "Renvoyer l’e-mail")}
               </div>
             )}
         </div>
@@ -164,7 +165,7 @@ export default function EditorialWorkflow({
             <label className="block text-sm">
               Demander à
               <select
-                className="select select-bordered mt-1 w-full"
+                className="select select-bordered select-sm mt-1 w-full"
                 value={reviewerId}
                 onChange={(e) => setReviewerId(e.target.value)}
               >
@@ -195,7 +196,7 @@ export default function EditorialWorkflow({
         <label className="block text-sm">
           Message
           <textarea
-            className="textarea textarea-bordered mt-1 w-full"
+            className="textarea textarea-bordered textarea-sm mt-1 w-full"
             rows={3}
             maxLength={10000}
             value={note}
@@ -226,7 +227,7 @@ export default function EditorialWorkflow({
               ? "Préparer une modification"
               : "Repasser en brouillon",
           )}
-        {publish && a.publishedVersion && button("unpublish", "Dépublier")}
+        {publish && a.publishedVersion && button("unpublish", "Dépublier", false, true)}
         {publish && a.status !== "archived" && button("archive", "Archiver")}
         {publish &&
           a.status === "archived" &&

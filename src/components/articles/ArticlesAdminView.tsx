@@ -93,12 +93,12 @@ export default function ArticlesAdminView() {
         <h1 className="text-3xl font-bold tracking-tight">Articles</h1>
         {isEditor && (
           <button
-            className="btn btn-primary gap-2"
+            className="btn btn-primary btn-sm gap-2"
             onClick={() => setCreating(true)}
           >
             <svg
-              width="18"
-              height="18"
+              width="16"
+              height="16"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -113,7 +113,7 @@ export default function ArticlesAdminView() {
         )}
       </div>
 
-      {error && <div className="alert alert-warning mt-4 text-sm">{error}</div>}
+      {error && <p className="mt-4 text-sm text-error">{error}</p>}
 
       <div className="mt-6 flex flex-wrap gap-2" aria-label="Files éditoriales">
         {[
@@ -124,7 +124,7 @@ export default function ArticlesAdminView() {
         ].map(([key, label]) => (
           <button
             key={key}
-            className={`btn btn-sm ${scope === key ? "btn-primary" : "btn-ghost"}`}
+            className={`btn btn-ghost btn-sm ${scope === key ? "bg-base-200" : "text-base-content/70"}`}
             aria-pressed={scope === key}
             onClick={() => setScope(key)}
           >
@@ -152,11 +152,11 @@ export default function ArticlesAdminView() {
       </div>
 
       {shown.length === 0 ? (
-        <div className="mt-8 rounded-box border border-dashed border-base-300 py-16 text-center">
-          <p className="text-base-content/60">Aucun article ici.</p>
+        <div className="mt-6">
+          <p className="text-sm text-base-content/50">Aucun article.</p>
           {isEditor && (
             <button
-              className="btn btn-primary btn-sm mt-4"
+              className="btn btn-outline btn-sm mt-3"
               onClick={() => setCreating(true)}
             >
               Créer un article
@@ -164,12 +164,12 @@ export default function ArticlesAdminView() {
           )}
         </div>
       ) : (
-        <ul className="mt-5 space-y-2.5">
+        <ul className="mt-6 space-y-2">
           {shown.map((a) => (
             <li key={a.id}>
               <Link
                 href={`/admin/articles/${a.id}`}
-                className="group flex items-center gap-4 rounded-xl border border-base-300 bg-base-100 px-4 py-3.5 shadow-sm transition-all hover:border-base-content/20 hover:shadow-md"
+                className="group flex items-center gap-4 rounded-box border border-base-300 bg-base-100 px-4 py-3 transition-colors hover:border-base-content/20"
               >
                 <span
                   className={`h-2.5 w-2.5 shrink-0 rounded-full ${STATUS_DOT[a.status]}`}
@@ -179,7 +179,7 @@ export default function ArticlesAdminView() {
                   <p className="truncate font-semibold group-hover:text-primary">
                     {a.title || "Sans titre"}
                   </p>
-                  <p className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-base-content/50">
+                  <p className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-base-content/50">
                     <span>{CATEGORY_LABEL[a.category]}</span>
                     <span aria-hidden>·</span>
                     <span>{STATUS_LABEL[a.status]}</span>
@@ -210,7 +210,7 @@ export default function ArticlesAdminView() {
                   </span>
                 )}
                 <svg
-                  className="shrink-0 text-base-content/30 transition-transform group-hover:translate-x-0.5"
+                  className="shrink-0 text-base-content/50 transition-transform group-hover:translate-x-0.5"
                   width="18"
                   height="18"
                   viewBox="0 0 24 24"
@@ -276,7 +276,7 @@ function CreateDialog({
         className="w-full max-w-md rounded-box bg-base-100 p-5 shadow-xl"
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 className="text-lg font-bold">Nouvel article</h2>
+        <h2 className="text-lg font-semibold">Nouvel article</h2>
         <label className="mt-4 block text-sm font-medium">Titre</label>
         <input
           autoFocus

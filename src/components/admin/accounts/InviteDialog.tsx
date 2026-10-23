@@ -84,10 +84,10 @@ export default function InviteDialog({
           </p>
         )}
         <div className="modal-action">
-          <button type="button" className="btn btn-ghost" onClick={onClose}>
+          <button type="button" className="btn btn-ghost btn-sm" onClick={onClose}>
             Annuler
           </button>
-          <button className="btn btn-primary" disabled={busy || !draft.roleIds.length}>
+          <button className="btn btn-primary btn-sm" disabled={busy || !draft.roleIds.length}>
             {busy ? "Envoi…" : "Envoyer"}
           </button>
         </div>

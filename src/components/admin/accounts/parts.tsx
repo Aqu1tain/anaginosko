@@ -14,7 +14,7 @@ export function RolePill({ role, onRemove }: { role: EditorialRole; onRemove?: (
       <RoleDot id={role.id} />
       {role.name}
       {onRemove && (
-        <button type="button" onClick={onRemove} aria-label={`Retirer le rôle ${role.name}`} className="-mr-0.5 ml-0.5 text-base-content/45 hover:text-base-content">
+        <button type="button" onClick={onRemove} aria-label={`Retirer le rôle ${role.name}`} className="-mr-0.5 ml-0.5 text-base-content/50 hover:text-base-content">
           ×
         </button>
       )}
@@ -58,7 +58,7 @@ export function RoleChips({
           aria-label="Ajouter un rôle"
           aria-expanded={open}
           onClick={() => setOpen(!open)}
-          className="grid h-6 w-6 place-items-center rounded-md bg-base-200 text-base-content/60 hover:bg-base-300 hover:text-base-content"
+          className="grid h-6 w-6 place-items-center rounded-md bg-base-200 text-base-content/70 hover:bg-base-300 hover:text-base-content"
         >
           +
         </button>
@@ -103,7 +103,7 @@ export function PermissionList({
     <div className="space-y-6">
       {PERMISSION_GROUPS.map((g) => (
         <section key={g.title}>
-          <h4 className="mb-1 text-xs font-semibold uppercase tracking-wide text-base-content/55">{g.title}</h4>
+          <h4 className="mb-1 text-xs font-semibold uppercase tracking-wider text-base-content/50">{g.title}</h4>
           <ul className="divide-y divide-base-300">
             {g.permissions.map((p) => {
               const from = via(p);
@@ -113,7 +113,7 @@ export function PermissionList({
                   <label className={`flex items-start gap-4 py-3 ${locked ? "" : "cursor-pointer"}`}>
                     <span className="min-w-0 flex-1">
                       <span className="block text-sm font-medium">{PERMISSION_LABEL[p]}</span>
-                      <span className="block text-xs text-base-content/55">
+                      <span className="block text-xs text-base-content/50">
                         {PERMISSION_HINT[p]}
                         {from.length > 0 && <span className="text-base-content/70"> · via {from.join(", ")}</span>}
                       </span>

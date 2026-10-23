@@ -44,7 +44,7 @@ function EmbedBlockView({
       <div contentEditable={false} className="my-1">
         <EmbedView src={url} title={title} />
         {editable && (
-          <button type="button" className="link text-xs text-base-content/60" onClick={() => onSet("", "")}>
+          <button type="button" className="link text-xs text-base-content/50" onClick={() => onSet("", "")}>
             Retirer l&apos;intégration
           </button>
         )}
@@ -64,7 +64,7 @@ function EmbedBlockView({
   };
 
   return (
-    <div contentEditable={false} className="my-1 rounded-lg border border-dashed border-base-300 p-4">
+    <div contentEditable={false} className="my-1 rounded-box border border-dashed border-base-300 p-4">
       <p className="text-sm font-medium">Carte, vidéo ou graphique</p>
       <div className="mt-2 flex gap-2">
         <input
@@ -74,7 +74,7 @@ function EmbedBlockView({
           placeholder="https://youtu.be/…"
           className="input input-bordered input-sm w-full"
         />
-        <button type="button" className="btn btn-primary btn-sm" onClick={submit}>
+        <button type="button" className="btn btn-outline btn-sm" onClick={submit}>
           Intégrer
         </button>
       </div>

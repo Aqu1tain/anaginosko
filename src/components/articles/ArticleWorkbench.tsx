@@ -455,17 +455,17 @@ export default function ArticleWorkbench({ id }: { id: string }) {
   )
     return (
       <div className="py-20 text-center text-base-content/70">
-        <p>Édition réservée aux contributeurs.</p>
+        <p>Réservé aux contributeurs.</p>
         <a href={`/login?next=${encodeURIComponent(`/admin/articles/${id}`)}`} className="link link-primary mt-3 inline-block">
           Se connecter
         </a>
       </div>
     );
   if (error)
-    return <div className="alert alert-warning mt-6 text-sm">{error}</div>;
+    return <p className="pb-12 pt-6 text-sm text-error">{error}</p>;
   if (!article)
     return (
-      <div className="py-20 text-center text-base-content/60">Chargement…</div>
+      <p className="pb-12 pt-6 text-sm text-base-content/50">Chargement…</p>
     );
 
   const isAdmin = can(user, "review");
@@ -475,11 +475,11 @@ export default function ArticleWorkbench({ id }: { id: string }) {
     isAuthor && article.status === "draft" && !article.publishedAt;
 
   return (
-    <div className="mx-auto max-w-5xl pb-16 pt-4">
-      <div className="mb-5 flex items-center justify-between gap-3 border-b border-base-300 pb-3">
+    <div className="mx-auto max-w-5xl pb-12 pt-6">
+      <div className="mb-6 flex items-center justify-between gap-3">
         <Link
           href={course ? `/admin/cours/${course.id}` : "/admin/articles"}
-          className="flex items-center gap-1.5 text-sm text-base-content/60 hover:text-base-content"
+          className="flex items-center gap-1.5 text-sm text-base-content/70 hover:text-base-content"
         >
           <svg
             width="16"
@@ -509,7 +509,7 @@ export default function ArticleWorkbench({ id }: { id: string }) {
 
       <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_300px]">
         <div>
-          <div className="mb-4 flex flex-wrap items-center gap-3 text-xs text-base-content/60">
+          <div className="mb-4 flex flex-wrap items-center gap-3 text-xs text-base-content/50">
             {editable ? (
               <select
                 className="select select-xs select-bordered"
@@ -569,7 +569,7 @@ export default function ArticleWorkbench({ id }: { id: string }) {
           {(article.cover || editable) && (
             <div className="mt-3">
               {article.cover ? (
-                <div className="relative overflow-hidden rounded-xl border border-base-300">
+                <div className="relative overflow-hidden rounded-box border border-base-300">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={article.cover}
@@ -622,9 +622,9 @@ export default function ArticleWorkbench({ id }: { id: string }) {
           )}
 
           {saveState === "conflict" && (
-            <div className="alert alert-error my-3 text-sm">
+            <p role="alert" className="my-3 text-sm text-error">
               Modifié ailleurs. Rechargez la page.
-            </div>
+            </p>
           )}
 
           {canComment && selectionAnchor && (
@@ -679,7 +679,7 @@ export default function ArticleWorkbench({ id }: { id: string }) {
                 className={`absolute hidden h-6 min-w-6 items-center justify-center rounded-full px-1.5 text-[11px] font-semibold shadow-sm transition-transform hover:scale-110 lg:flex ${
                   m.hot
                     ? "bg-warning text-warning-content"
-                    : "bg-base-200 text-base-content/60"
+                    : "bg-base-200 text-base-content/70"
                 }`}
                 style={{ top: m.top, right: -34 }}
               >
@@ -721,7 +721,7 @@ export default function ArticleWorkbench({ id }: { id: string }) {
 
         <aside className="space-y-4 lg:sticky lg:top-20 lg:self-start">
           <nav
-            className="flex flex-wrap gap-1 rounded-xl border border-base-300 bg-base-100 p-1"
+            className="flex flex-wrap gap-1 rounded-box bg-base-200 p-1"
             aria-label="Outils de l’article"
           >
             {[
@@ -734,7 +734,7 @@ export default function ArticleWorkbench({ id }: { id: string }) {
             ].map(([key, label]) => (
               <button
                 key={key}
-                className={`btn btn-xs flex-1 whitespace-nowrap ${asideView === key ? "btn-primary" : "btn-ghost"}`}
+                className={`btn btn-ghost btn-xs flex-1 whitespace-nowrap ${asideView === key ? "bg-base-100 shadow-sm" : "text-base-content/70"}`}
                 aria-pressed={asideView === key}
                 onClick={() => {
                   setAsideView(key);
@@ -769,7 +769,7 @@ export default function ArticleWorkbench({ id }: { id: string }) {
           {asideView === "discussions" &&
             (selectedThread ? (
               <div
-                className="fixed inset-0 z-[70] flex items-end bg-black/45 p-3 lg:static lg:block lg:bg-transparent lg:p-0"
+                className="fixed inset-0 z-[70] flex items-end bg-black/40 p-3 lg:static lg:block lg:bg-transparent lg:p-0"
                 onClick={() => setSelectedThread(null)}
               >
                 <div
@@ -815,7 +815,7 @@ export default function ArticleWorkbench({ id }: { id: string }) {
                 </div>
               </div>
             ) : (
-              <div className="rounded-xl border border-base-300 bg-base-100 p-4 shadow-sm">
+              <div className="rounded-box border border-base-300 bg-base-100 p-4">
                 <ReviewPanel
                   comments={article.comments}
                   canComment={canComment}
@@ -827,11 +827,11 @@ export default function ArticleWorkbench({ id }: { id: string }) {
             ))}
 
           {asideView === "historique" && article.events.length > 0 && (
-            <div className="rounded-xl border border-base-300 bg-base-100 p-4 shadow-sm">
-              <h2 className="text-sm font-semibold uppercase tracking-wide text-base-content/60">
+            <div className="rounded-box border border-base-300 bg-base-100 p-4">
+              <h2 className="text-xs font-semibold uppercase tracking-wider text-base-content/50">
                 Historique
               </h2>
-              <ul className="mt-2 space-y-2 text-xs">
+              <ul className="mt-3 space-y-3 text-xs">
                 {[...article.events].reverse().map((e, i) => (
                   <li key={i}>
                     <span className="font-medium">
@@ -843,7 +843,7 @@ export default function ArticleWorkbench({ id }: { id: string }) {
                       {new Date(e.at).toLocaleDateString("fr-FR")}
                     </span>
                     {e.note && (
-                      <p className="mt-0.5 whitespace-pre-wrap rounded bg-base-200/60 px-2 py-1 text-base-content/80">
+                      <p className="mt-1 whitespace-pre-wrap rounded bg-base-200/60 px-2 py-1 text-base-content/70">
                         {e.note}
                       </p>
                     )}
@@ -865,7 +865,7 @@ export default function ArticleWorkbench({ id }: { id: string }) {
             onClick={(e) => e.stopPropagation()}
           >
             <p className="text-sm font-medium">Supprimer cet article ?</p>
-            <p className="mt-1 text-xs text-base-content/60">
+            <p className="mt-1 text-xs text-base-content/70">
               « {article.title} » et ses images seront supprimés définitivement.
             </p>
             <div className="mt-4 flex justify-end gap-2">

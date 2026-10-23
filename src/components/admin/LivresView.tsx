@@ -18,7 +18,7 @@ export default function LivresView() {
     if (!canManage) return;
     const token = getToken();
     fetch("/admin/livres/api", { headers: token ? { Authorization: `Bearer ${token}` } : {} })
-      .then((r) => (r.ok ? r.json() : Promise.reject(new Error("Chargement impossible."))))
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error("Chargement impossible. Rechargez la page."))))
       .then((d: { intros: IntroStatus[] }) => setStatuses(new Map(d.intros.map((i) => [`${i.corpus}-${i.book}`, i.published]))))
       .catch((e) => setError((e as Error).message));
   }, [canManage]);
@@ -33,9 +33,9 @@ export default function LivresView() {
     );
 
   const section = (corpus: CorpusConfig) => (
-    <section className="mt-6">
-      <h2 className="text-sm font-semibold text-base-content/70">{corpus.label}</h2>
-      <div className="mt-2 grid gap-1.5 sm:grid-cols-2">
+    <section className="mt-8">
+      <h2 className="text-lg font-semibold">{corpus.label}</h2>
+      <div className="mt-3 grid gap-2 sm:grid-cols-2">
         {corpus.bookOrder.map((book) => {
           const key = `${corpus.id}-${book}`;
           const published = statuses.get(key);
@@ -44,7 +44,7 @@ export default function LivresView() {
             <Link
               key={book}
               href={`/admin/livres/${corpus.id}/${book}`}
-              className="flex items-center justify-between gap-2 rounded-lg border border-base-300 bg-base-100 px-3 py-2 text-sm transition-colors hover:border-primary/40"
+              className="flex items-center justify-between gap-2 rounded-box border border-base-300 bg-base-100 px-3 py-2 text-sm transition-colors hover:border-primary/40"
             >
               <span className="truncate">{corpus.bookNames[book] ?? book}</span>
               {state && (
@@ -60,7 +60,7 @@ export default function LivresView() {
   return (
     <div className="pb-12 pt-6">
       <h1 className="text-3xl font-bold tracking-tight">Introductions de livres</h1>
-      {error && <div className="alert alert-error mt-4 text-sm">{error}</div>}
+      {error && <p className="mt-4 text-sm text-error">{error}</p>}
       {section(NT)}
       {section(LXX)}
     </div>

@@ -30,7 +30,7 @@ export default function ReviewPanel({
   );
   return (
     <section aria-label="Discussions de relecture">
-      <h2 className="text-sm font-semibold">
+      <h2 className="font-semibold">
         Discussions · {threads.filter((t) => !t.resolved).length} en cours
       </h2>
       <div className="my-3 flex gap-1">
@@ -43,7 +43,7 @@ export default function ReviewPanel({
             key={key}
             type="button"
             aria-pressed={filter === key}
-            className={`btn btn-xs ${filter === key ? "btn-primary" : "btn-ghost"}`}
+            className={`btn btn-ghost btn-xs ${filter === key ? "bg-base-200" : "text-base-content/70"}`}
             onClick={() => setFilter(key)}
           >
             {label}
@@ -60,7 +60,7 @@ export default function ReviewPanel({
           .map((t) => (
             <button
               key={t.threadId}
-              className="block w-full rounded-lg border border-base-300 p-3 text-left text-xs hover:bg-base-200"
+              className="block w-full rounded-box border border-base-300 p-3 text-left text-xs transition-colors hover:bg-base-200/60"
               onClick={() => onOpenThread(t.blockId, t.threadId)}
             >
               <span className="block font-medium">
@@ -73,20 +73,20 @@ export default function ReviewPanel({
                   Passage supprimé · citation conservée
                 </span>
               )}
-              <span className="mt-1 block text-base-content/60">
-                {t.count} message(s) · version {t.revision} ·{" "}
+              <span className="mt-1 block text-base-content/50">
+                {t.count} message{t.count > 1 ? "s" : ""} · version {t.revision} ·{" "}
                 {t.resolved ? "Résolue" : "En cours"}
               </span>
             </button>
           ))}
         {!threads.length && (
-          <p className="text-xs text-base-content/60">
+          <p className="text-xs text-base-content/50">
             Aucune discussion. Sélectionnez du texte pour en ouvrir une.
           </p>
         )}
       </div>
       {canComment && (
-        <div className="mt-3 space-y-2 border-t border-base-200 pt-3">
+        <div className="mt-4 space-y-2">
           <button
             className="btn btn-outline btn-sm w-full"
             onClick={() => onOpenThread(null)}
@@ -101,7 +101,7 @@ export default function ReviewPanel({
               {passages.map((p) => (
                 <button
                   key={p.blockId}
-                  className="block w-full rounded p-2 text-left text-xs hover:bg-base-200"
+                  className="block w-full rounded p-2 text-left text-xs hover:bg-base-200/60"
                   onClick={() => onOpenThread(p.blockId)}
                 >
                   {p.excerpt}
