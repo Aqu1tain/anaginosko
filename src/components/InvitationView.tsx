@@ -21,18 +21,16 @@ export default function InvitationView({ token }: { token: string }) {
       .catch(() => setState("invalid"));
   }, [token]);
 
-  if (state === "loading") return <div className="py-20 text-center text-base-content/60">Chargement…</div>;
+  if (state === "loading") return <div className="py-12 text-center text-sm text-base-content/50">Chargement…</div>;
 
   if (state === "invalid" || !invite)
     return (
-      <div className="mx-auto max-w-sm pt-12">
-        <div className="rounded-3xl border border-base-300 bg-base-100 p-6 text-center shadow-sm">
-          <h1 className="text-xl font-bold">Invitation invalide</h1>
-          <p className="mt-2 text-sm text-base-content/70">
-            Lien expiré ou invalide. Demandez une nouvelle invitation.
-          </p>
-          <Link href="/" className="btn btn-outline btn-sm mt-4 border-base-300">Aller à la lecture</Link>
-        </div>
+      <div className="mx-auto max-w-sm pb-12 pt-12 text-center">
+        <h1 className="text-3xl font-bold tracking-tight">Invitation invalide</h1>
+        <p className="mt-2 text-sm text-base-content/70">
+          Lien expiré ou invalide. Demandez une nouvelle invitation.
+        </p>
+        <Link href="/" className="btn btn-outline btn-sm mt-6">Retour à l’accueil</Link>
       </div>
     );
 
@@ -52,19 +50,17 @@ export default function InvitationView({ token }: { token: string }) {
   };
 
   return (
-    <div className="mx-auto max-w-sm pt-12">
-      <div className="rounded-3xl border border-base-300 bg-base-100 p-6 shadow-sm">
-        <h1 className="text-center text-2xl font-bold">Bienvenue, {invite.displayName}</h1>
-        <p className="mt-2 text-center text-sm text-base-content/70">
-          Vous rejoignez Anaginosko comme {invite.title}.
-        </p>
-        <form onSubmit={submit} className="mt-6 grid gap-3">
-          {error && <p className="rounded-lg bg-error/10 px-3 py-2 text-sm text-error">{error}</p>}
-          <button type="submit" disabled={busy} className="btn btn-primary mt-1">
-            {busy ? "Activation…" : "Activer mon compte"}
-          </button>
-        </form>
-      </div>
+    <div className="mx-auto max-w-sm pb-12 pt-12">
+      <h1 className="text-center text-3xl font-bold tracking-tight">Bienvenue, {invite.displayName}</h1>
+      <p className="mt-2 text-center text-sm text-base-content/70">
+        Vous rejoignez Anaginosko comme {invite.title}.
+      </p>
+      <form onSubmit={submit} className="mt-6 flex flex-col items-center gap-3">
+        {error && <p className="text-sm text-error">{error}</p>}
+        <button type="submit" disabled={busy} className="btn btn-primary btn-sm">
+          {busy ? "Activation…" : "Activer mon compte"}
+        </button>
+      </form>
     </div>
   );
 }

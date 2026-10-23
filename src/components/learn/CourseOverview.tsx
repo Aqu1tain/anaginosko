@@ -11,14 +11,14 @@ export default function CourseOverview({ course: c, hrefOf }: { course: CourseVi
   return (
     <>
       <header className="max-w-2xl">
-        <h1 className="text-4xl font-bold leading-tight">{c.title}</h1>
+        <h1 className="text-3xl font-bold tracking-tight">{c.title}</h1>
         {c.summary && <p className="mt-3 text-lg leading-relaxed text-base-content/70">{c.summary}</p>}
-        <p className="mt-4 text-sm text-base-content/55">
+        <p className="mt-4 text-sm text-base-content/50">
           {COURSE_LEVELS[c.level]} · {c.parts.length} partie{c.parts.length > 1 ? "s" : ""} · {c.lessonCount} leçon{c.lessonCount > 1 ? "s" : ""}
         </p>
       </header>
 
-      <div className="mt-10 grid gap-10 wide:grid-cols-[minmax(0,1fr)_17rem] wide:items-start">
+      <div className="mt-8 grid gap-8 wide:gap-12 wide:grid-cols-[minmax(0,1fr)_17rem] wide:items-start">
         <LessonList parts={parts} />
         <aside className="order-first rounded-box border border-base-300 bg-base-100 p-5 wide:order-none wide:sticky wide:top-20">
           <CourseProgress lessons={lessons} />

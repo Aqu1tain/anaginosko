@@ -17,7 +17,7 @@ export default function LessonList({ parts, current }: { parts: Part[]; current?
       {parts.map((part, i) => (
         <li key={part.id}>
           <h2 className={`flex items-baseline font-semibold ${compact ? "gap-2 text-sm" : "gap-3 text-lg"}`}>
-            <span className={`font-normal tabular-nums text-base-content/45 ${compact ? "text-xs" : "text-sm"}`}>{i + 1}</span>
+            <span className={`font-normal tabular-nums text-base-content/50 ${compact ? "text-xs" : "text-sm"}`}>{i + 1}</span>
             {part.title}
           </h2>
           <ol className={`border-l border-base-300 ${compact ? "mt-1 pl-2" : "mt-2 pl-4"}`}>

@@ -13,7 +13,7 @@ export default async function CoursePreviewPage({ params }: { params: Promise<{ 
   const c = previewCourse((await params).id);
   if (!c) notFound();
   return (
-    <div className="pb-10">
+    <div className="pb-12">
       <PreviewBanner courseId={c.id} status={c.status} />
       <CourseOverview course={c} hrefOf={(l) => previewPath(c, l)} />
     </div>

@@ -44,16 +44,16 @@ export default async function ContributorPage({ params }: { params: Promise<{ sl
   };
 
   return (
-    <div className="mx-auto max-w-2xl pb-16 pt-8">
+    <div className="mx-auto max-w-2xl pb-12 pt-6">
       <JsonLd data={jsonLd} />
 
       <header className="flex flex-col items-center text-center">
         <Avatar name={p.displayName} photo={p.photo} size={112} />
-        <h1 className="mt-4 text-3xl font-bold">{p.displayName}</h1>
+        <h1 className="mt-4 text-3xl font-bold tracking-tight">{p.displayName}</h1>
         {p.fullName && p.fullName !== p.displayName && (
-          <p className="mt-1 text-base-content/55">{p.fullName}</p>
+          <p className="mt-1 text-base-content/70">{p.fullName}</p>
         )}
-        {p.bio && <p className="mt-3 max-w-prose whitespace-pre-wrap text-base-content/80">{p.bio}</p>}
+        {p.bio && <p className="mt-3 max-w-prose whitespace-pre-wrap text-base-content/70">{p.bio}</p>}
         {p.links.length > 0 && (
           <ul className="mt-4 flex flex-wrap justify-center gap-2">
             {p.links.map((l, i) => (
@@ -67,25 +67,25 @@ export default async function ContributorPage({ params }: { params: Promise<{ sl
         )}
       </header>
 
-      <section className="mt-10">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-base-content/60">
+      <section className="mt-12">
+        <h2 className="text-lg font-semibold">
           Articles{articles.length > 0 ? ` (${articles.length})` : ""}
         </h2>
         {articles.length === 0 ? (
-          <p className="mt-3 text-base-content/60">Aucun article publié.</p>
+          <p className="mt-3 text-sm text-base-content/50">Aucun article publié.</p>
         ) : (
-          <ul className="mt-3 space-y-4">
+          <ul className="mt-3 space-y-3">
             {articles.map((a) => (
               <li key={a.id}>
-                <Link href={`/articles/${a.slug}`} className="group block rounded-box border border-base-300 p-4 transition-colors hover:bg-base-200">
+                <Link href={`/articles/${a.slug}`} className="group block rounded-box border border-base-300 p-4 transition-colors hover:border-primary/40">
                   <div className="flex items-center gap-2 text-xs">
-                    <span className="badge badge-outline badge-sm">{CATEGORY_LABEL[a.category]}</span>
+                    <span className="font-semibold uppercase tracking-wide text-primary/80">{CATEGORY_LABEL[a.category]}</span>
                     {a.publishedAt && (
                       <time className="text-base-content/50">{new Date(a.publishedAt).toLocaleDateString("fr-FR", { year: "numeric", month: "long", day: "numeric" })}</time>
                     )}
                   </div>
-                  <h3 className="mt-1 text-lg font-semibold group-hover:text-primary">{a.title}</h3>
-                  {a.excerpt && <p className="mt-1 line-clamp-2 text-sm text-base-content/75">{a.excerpt}</p>}
+                  <h3 className="mt-1 font-semibold group-hover:text-primary">{a.title}</h3>
+                  {a.excerpt && <p className="mt-1 line-clamp-2 text-sm text-base-content/70">{a.excerpt}</p>}
                 </Link>
               </li>
             ))}

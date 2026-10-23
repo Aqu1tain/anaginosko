@@ -99,7 +99,7 @@ function ReadingBody({ r }: { r: ResolvedReading }) {
       {r.resolved.map((p, idx) => (
         <PassageText key={idx} p={p} />
       ))}
-      <p className="mt-3 flex flex-wrap justify-between gap-x-4 gap-y-1 text-xs text-base-content/65">
+      <p className="mt-3 flex flex-wrap justify-between gap-x-4 gap-y-1 text-xs text-base-content/50">
         {credit && <span>Traduction : {credit}</span>}
         {first && (
           <Link href={chapterHref(first)} className="font-medium text-primary hover:underline">
@@ -115,7 +115,7 @@ async function ReadingGroup({ group }: { group: Reading[] }) {
   const resolved = await Promise.all(group.map(resolveReading));
   const head = resolved[0];
   return (
-    <section className="border-t border-base-300 pt-8">
+    <section>
       <h2 className="font-greek text-2xl font-bold leading-tight">{head.label}</h2>
       {resolved.length === 1 ? (
         <>
@@ -137,7 +137,7 @@ async function ReadingGroup({ group }: { group: Reading[] }) {
 
 function MassReadings({ mass }: { mass: Mass }) {
   return (
-    <div className="mt-8 flex flex-col gap-10">
+    <div className="mt-8 flex flex-col gap-12">
       {groupReadings(mass.readings).map((group, idx) => (
         <ReadingGroup key={idx} group={group} />
       ))}
@@ -195,7 +195,7 @@ export default async function LecturesView({ rite, iso }: { rite: Rite; iso: str
   const initialMass = Math.max(0, masses.findIndex((m) => /messe du jour/i.test(m.name ?? "")));
 
   return (
-    <div className="pt-6 wide:pt-10">
+    <div className="pb-12 pt-6">
       <header className="flex flex-col gap-6">
         <div>
           <h1 className="font-greek text-3xl font-bold leading-tight wide:text-5xl">
@@ -241,7 +241,7 @@ export default async function LecturesView({ rite, iso }: { rite: Rite; iso: str
           <div className="flex items-end gap-3">
             <DateJump base={`/lectures/${rite.slug}`} value={iso} min={range?.first} max={range?.last} />
             {iso !== today && (
-              <Link href={lecturesHref(rite, today, today)} className="btn btn-outline btn-primary h-11 min-h-11 rounded-full px-5">
+              <Link href={lecturesHref(rite, today, today)} className="btn btn-outline btn-sm">
                 Aujourd’hui
               </Link>
             )}
@@ -250,11 +250,9 @@ export default async function LecturesView({ rite, iso }: { rite: Rite; iso: str
       </header>
 
       {!day && (
-        <p className="mt-10 text-lg text-base-content/75">
-          Pas encore de lectures pour cette date.
-        </p>
+        <p className="mt-8 text-base-content/50">Aucune lecture pour cette date.</p>
       )}
-      {day?.note && <p className="mt-10 text-lg text-base-content/75">{day.note}</p>}
+      {day?.note && <p className="mt-8 text-lg text-base-content/70">{day.note}</p>}
       {day?.projected && (
         <p className="mt-8 text-sm text-base-content/70">
           Lectures calculées : l’AELF n’a pas encore publié cette date.
@@ -262,7 +260,7 @@ export default async function LecturesView({ rite, iso }: { rite: Rite; iso: str
       )}
 
       {masses.length > 1 ? (
-        <div className="mt-10">
+        <div className="mt-8">
           <Choice label="Messes du jour" options={masses.map((m, idx) => m.name ?? `Messe ${idx + 1}`)} initial={initialMass}>
             {masses.map((m, idx) => (
               <MassReadings key={idx} mass={m} />
@@ -273,11 +271,11 @@ export default async function LecturesView({ rite, iso }: { rite: Rite; iso: str
         masses[0] && <MassReadings mass={masses[0]} />
       )}
 
-      <footer className="mt-14 flex flex-col gap-4 border-t border-base-300 pt-6 text-sm leading-relaxed text-base-content/65">
+      <footer className="mt-12 flex flex-col gap-4 text-sm leading-relaxed text-base-content/50">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <ReportButton
             label="Signaler une erreur"
-            className="btn btn-outline btn-primary h-11 min-h-11 rounded-full px-5"
+            className="btn btn-outline btn-sm"
             target={{
               ref: `lect:${rite.slug}:${iso}`,
               verse: null,

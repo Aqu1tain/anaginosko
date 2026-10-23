@@ -27,7 +27,7 @@ export default async function CoursePage({ params }: Params) {
   if (!c) notFound();
 
   return (
-    <div className="pb-10">
+    <div className="pb-12">
       <JsonLd
         data={{
           "@context": "https://schema.org",

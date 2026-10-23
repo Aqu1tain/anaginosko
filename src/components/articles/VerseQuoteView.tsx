@@ -34,20 +34,20 @@ export default function VerseQuoteView({
     <figure className="my-1 rounded-r-lg border-l-4 border-primary bg-base-200/50 px-4 py-3">
       <div className="font-greek text-lg leading-relaxed text-base-content">
         {verses === null ? (
-          <span className="text-base-content/40">Chargement…</span>
+          <span className="text-sm text-base-content/50">Chargement…</span>
         ) : verses.length === 0 ? (
-          <span className="text-base-content/60">{label}</span>
+          <span className="text-base-content/50">{label}</span>
         ) : (
           verses.map((v) => (
             <span key={v.v}>
-              <sup className="mr-0.5 select-none text-[0.6em] text-base-content/45">{v.v}</sup>
+              <sup className="mr-0.5 select-none text-[0.6em] text-base-content/50">{v.v}</sup>
               {v.greek}{" "}
             </span>
           ))
         )}
       </div>
       {french.length > 0 && (
-        <div className="mt-2 space-y-1 text-sm text-base-content/75">
+        <div className="mt-2 space-y-1 text-sm text-base-content/70">
           {french.map((v) => (
             <p key={v.v}>{v.french}</p>
           ))}

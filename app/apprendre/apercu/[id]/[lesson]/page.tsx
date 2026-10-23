@@ -14,7 +14,7 @@ export default async function LessonPreviewPage({ params }: { params: Promise<{ 
   const v = previewLesson(id, lesson);
   if (!v) notFound();
   return (
-    <article className="pb-16">
+    <article className="pb-12">
       <PreviewBanner courseId={v.course.id} status={v.course.status} />
       <LessonBody view={v} hrefOf={(l) => previewPath(v.course, l)} courseHref={previewPath(v.course)} preview />
     </article>

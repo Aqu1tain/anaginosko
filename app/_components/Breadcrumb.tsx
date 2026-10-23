@@ -14,7 +14,7 @@ function HomeIcon() {
 // Fil d'Ariane (breadcrumb) : dernier élément = page courante (sans lien).
 export default function Breadcrumb({ items }: { items: Crumb[] }) {
   return (
-    <nav aria-label="Fil d’Ariane" className="breadcrumbs max-w-full pt-4 pb-2 text-sm text-base-content/80">
+    <nav aria-label="Fil d’Ariane" className="breadcrumbs max-w-full pt-4 pb-2 text-sm text-base-content/70">
       <ul>
         {items.map((it, i) => (
           <li key={i}>
@@ -31,7 +31,7 @@ export default function Breadcrumb({ items }: { items: Crumb[] }) {
             ) : (
               <span
                 aria-current="page"
-                className={`font-medium text-base-content/90${it.greek ? " font-greek" : ""}`}
+                className={`font-medium text-base-content${it.greek ? " font-greek" : ""}`}
               >
                 {it.label}
               </span>

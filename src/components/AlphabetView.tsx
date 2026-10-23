@@ -23,8 +23,8 @@ const asInfo = (letter: Letter): GraphemeInfo => ({
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <section className="pt-7">
-      <h2 className="mb-3 text-lg font-bold">{title}</h2>
+    <section className="pt-8">
+      <h2 className="mb-3 text-lg font-semibold">{title}</h2>
       {children}
     </section>
   );
@@ -35,11 +35,11 @@ function Row({ greek, eras, rest }: { greek: string; eras: string; rest: string 
     <div className="flex items-center gap-3 rounded-box bg-base-200 px-3.5 py-2.5">
       <span className="font-greek w-16 shrink-0 text-xl">{greek}</span>
       <span className="flex-1 text-sm">
-        <span className="text-base-content/70">éras. </span>
+        <span className="text-base-content/50">éras. </span>
         {eras}
       </span>
       <span className="flex-1 text-sm">
-        <span className="text-base-content/70">rest. </span>
+        <span className="text-base-content/50">rest. </span>
         {rest}
       </span>
     </div>
@@ -62,15 +62,15 @@ export default function AlphabetView() {
   const { openLetter } = useSheet();
 
   return (
-    <div className="pb-4">
-      <h1 className="pt-6 text-2xl font-bold">L’alphabet grec</h1>
+    <div className="pb-12">
+      <h1 className="text-3xl font-bold tracking-tight">L’alphabet grec</h1>
       <p className="mt-2 text-[0.95rem] leading-relaxed text-base-content/70">
         Les 24 lettres du grec koinè et leurs deux{" "}
         <Link href="/prononciation" className="link link-primary">
           prononciations
         </Link>{" "}
         : l’<strong>érasmienne</strong>, celle de l’enseignement classique, et la{" "}
-        <strong>restituée</strong>, proche du Ier siècle. Touchez une lettre pour le détail.
+        <strong>restituée</strong>, proche du Ier siècle.
       </p>
 
       <Section title="Les lettres">
@@ -79,7 +79,7 @@ export default function AlphabetView() {
             <button
               key={letter.name}
               onClick={() => openLetter(asInfo(letter))}
-              className="card border border-base-300 bg-base-100 py-3 transition-colors hover:border-primary/40 hover:bg-base-200"
+              className="card rounded-box border border-base-300 bg-base-100 py-3 transition-colors hover:border-primary/40"
             >
               <span className="font-greek text-2xl">
                 {letter.upper} {letter.lower}

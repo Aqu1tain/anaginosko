@@ -15,7 +15,7 @@ export default function CourseProgress({ lessons, compact = false }: { lessons: 
 
   const bar = signedIn && (
     <div>
-      <div className="flex justify-between text-xs text-base-content/60">
+      <div className="flex justify-between text-xs text-base-content/70">
         <span>{finished === lessons.length ? "Cours terminé" : `${finished} sur ${lessons.length} leçons`}</span>
         <span className="tabular-nums">{pct} %</span>
       </div>
@@ -30,7 +30,7 @@ export default function CourseProgress({ lessons, compact = false }: { lessons: 
     <div className="grid gap-4">
       {bar}
       {next && (
-        <Link href={next.href} className="btn btn-primary w-full rounded-full">
+        <Link href={next.href} className="btn btn-primary btn-sm w-full">
           {finished === 0 ? "Commencer le cours" : finished === lessons.length ? "Revoir le cours" : "Reprendre"}
         </Link>
       )}

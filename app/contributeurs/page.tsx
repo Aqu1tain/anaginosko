@@ -15,25 +15,25 @@ export const metadata: Metadata = pageMetadata({
 export default function TeamPage() {
   const members = listTeam();
   return (
-    <div className="pt-6 pb-4">
+    <div className="pb-12 pt-6">
       <h1 className="text-3xl font-bold tracking-tight">Équipe</h1>
-      {members.length === 0 && <p className="mt-6 text-base-content/60">Aucun profil public.</p>}
+      {members.length === 0 && <p className="mt-8 text-sm text-base-content/50">Aucun profil public.</p>}
       <ul className="mt-8 grid gap-4 sm:grid-cols-2 wide:grid-cols-3">
         {members.map((m) => (
           <li key={m.userId}>
             <Link
               href={`/contributeurs/${m.slug}`}
-              className="flex h-full gap-4 rounded-box border border-base-300 p-5 transition-colors hover:bg-base-200/50"
+              className="flex h-full gap-4 rounded-box border border-base-300 p-5 transition-colors hover:border-primary/40"
             >
               <Avatar name={m.displayName} photo={m.photo} size={56} />
               <div className="min-w-0">
                 <p className="font-semibold">{m.displayName}</p>
                 {m.articles > 0 && (
-                  <p className="text-sm text-base-content/55">
+                  <p className="text-sm text-base-content/50">
                     {m.articles} article{m.articles > 1 ? "s" : ""}
                   </p>
                 )}
-                {m.bio && <p className="mt-2 line-clamp-3 text-sm text-base-content/75">{m.bio}</p>}
+                {m.bio && <p className="mt-2 line-clamp-3 text-sm text-base-content/70">{m.bio}</p>}
               </div>
             </Link>
           </li>

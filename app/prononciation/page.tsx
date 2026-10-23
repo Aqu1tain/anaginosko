@@ -23,17 +23,17 @@ export default function PrononciationPage() {
   const differing = letters.filter((l) => l.erasmien !== l.restituee);
 
   return (
-    <article className="mx-auto max-w-2xl pb-10">
+    <article className="mx-auto max-w-2xl pb-12">
       <Breadcrumb items={[{ label: "Accueil", href: "/", home: true }, { label: "Prononciation" }]} />
-      <h1 className="text-2xl font-bold">Prononciation du grec biblique : érasmienne ou restituée ?</h1>
+      <h1 className="text-3xl font-bold tracking-tight">Prononciation du grec biblique : érasmienne ou restituée ?</h1>
 
-      <div className="mt-3 space-y-3 text-[0.95rem] leading-relaxed text-base-content/85">
+      <div className="mt-4 space-y-3 text-[0.95rem] leading-relaxed">
         <p>
           Comment prononçait-on le grec du Nouveau Testament et de la Septante ? Deux
           systèmes coexistent aujourd’hui dans l’étude du grec biblique, et Anaginosko
           affiche les deux, mot par mot et lettre par lettre.
         </p>
-        <h2 className="pt-2 text-lg font-bold text-base-content">La prononciation érasmienne</h2>
+        <h2 className="pt-3 text-lg font-semibold">La prononciation érasmienne</h2>
         <p>
           Héritée d’Érasme de Rotterdam (<em>De recta latini graecique sermonis
           pronuntiatione</em>, 1528), c’est la convention de l’enseignement classique :
@@ -43,7 +43,7 @@ export default function PrononciationPage() {
           cours de grec ancien, pratique pour apprendre à lire et mémoriser
           l’orthographe.
         </p>
-        <h2 className="pt-2 text-lg font-bold text-base-content">La prononciation restituée</h2>
+        <h2 className="pt-3 text-lg font-semibold">La prononciation restituée</h2>
         <p>
           Reconstituée par la philologie à partir des inscriptions, des papyrus et des
           fautes d’orthographe des copistes, elle approche la koinè telle qu’on la
@@ -52,7 +52,7 @@ export default function PrononciationPage() {
           se réduisent à une voyelle simple (ει se lit « i », αι se lit « é »). C’est la
           prononciation la plus proche de la langue vivante du Nouveau Testament.
         </p>
-        <h2 className="pt-2 text-lg font-bold text-base-content">Laquelle choisir ?</h2>
+        <h2 className="pt-3 text-lg font-semibold">Laquelle choisir ?</h2>
         <p>
           Les deux se défendent : l’érasmienne pour étudier et épeler, la restituée pour
           entendre le texte comme ses premiers auditeurs. Sur Anaginosko, chaque lettre
@@ -62,7 +62,7 @@ export default function PrononciationPage() {
       </div>
 
       <section className="mt-8">
-        <h2 className="text-lg font-bold">Les lettres qui changent</h2>
+        <h2 className="text-lg font-semibold">Les lettres qui changent</h2>
         <div className="mt-3 overflow-x-auto">
           <table className="table table-sm">
             <thead>
@@ -88,7 +88,7 @@ export default function PrononciationPage() {
       </section>
 
       <section className="mt-8">
-        <h2 className="text-lg font-bold">Les diphtongues</h2>
+        <h2 className="text-lg font-semibold">Les diphtongues</h2>
         <p className="mt-1 text-sm text-base-content/70">
           C’est là que les deux systèmes s’écartent le plus.
         </p>
@@ -115,8 +115,8 @@ export default function PrononciationPage() {
       </section>
 
       <section className="mt-8">
-        <h2 className="text-lg font-bold">Pour aller plus loin</h2>
-        <p className="mt-2 text-[0.95rem] leading-relaxed text-base-content/85">
+        <h2 className="text-lg font-semibold">Pour aller plus loin</h2>
+        <p className="mt-2 text-[0.95rem] leading-relaxed">
           L’<Link href="/alphabet" className="link link-primary">alphabet grec complet</Link>{" "}
           détaille chaque lettre, les esprits et les accents. Pour pratiquer,{" "}
           <Link href="/nt/jn/1" className="link link-primary">ouvrez l’évangile selon Jean</Link>{" "}

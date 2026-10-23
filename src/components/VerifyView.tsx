@@ -27,38 +27,36 @@ export default function VerifyView() {
   };
 
   return (
-    <div className="grid min-h-[60vh] place-items-center p-6">
-      <div className="card w-full max-w-sm border border-base-300 bg-base-100 shadow-sm">
-        <div className="card-body items-center gap-3 text-center">
-          <h1 className="text-xl font-semibold">Confirmer votre signalement</h1>
+    <div className="mx-auto max-w-sm pb-12 pt-12">
+      <div className="flex flex-col items-center gap-3 text-center">
+        <h1 className="text-3xl font-bold tracking-tight">Confirmer votre signalement</h1>
 
-          {!token ? (
-            <p className="text-sm text-error">Lien incomplet.</p>
-          ) : state === "success" ? (
-            <>
-              <span className="badge badge-success badge-soft">Confirmé</span>
-              <p className="text-sm text-base-content/80">{message}</p>
-              <Link href="/" className="btn btn-primary btn-sm mt-1">
-                Retour à l’accueil
-              </Link>
-            </>
-          ) : state === "error" ? (
-            <>
-              <span className="badge badge-error badge-soft">Échec</span>
-              <p className="text-sm text-base-content/80">{message}</p>
-            </>
-          ) : (
-            <>
-              <button
-                onClick={confirm}
-                disabled={state === "loading"}
-                className="btn btn-primary btn-sm mt-1"
-              >
-                {state === "loading" ? "Confirmation…" : "Confirmer"}
-              </button>
-            </>
-          )}
-        </div>
+        {!token ? (
+          <p className="text-sm text-error">Lien incomplet. Ouvrez le lien reçu par e-mail.</p>
+        ) : state === "success" ? (
+          <>
+            <span className="badge badge-success badge-soft">Confirmé</span>
+            <p className="text-sm text-base-content/70">{message}</p>
+            <Link href="/" className="btn btn-primary btn-sm mt-1">
+              Retour à l’accueil
+            </Link>
+          </>
+        ) : state === "error" ? (
+          <>
+            <span className="badge badge-error badge-soft">Échec</span>
+            <p className="text-sm text-error">{message}</p>
+          </>
+        ) : (
+          <>
+            <button
+              onClick={confirm}
+              disabled={state === "loading"}
+              className="btn btn-primary btn-sm mt-1"
+            >
+              {state === "loading" ? "Confirmation…" : "Confirmer"}
+            </button>
+          </>
+        )}
       </div>
     </div>
   );

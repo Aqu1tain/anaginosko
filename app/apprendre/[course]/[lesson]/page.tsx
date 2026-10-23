@@ -26,9 +26,9 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 
 function Wall({ path }: { path: string }) {
   return (
-    <div className="mt-8 rounded-box border border-base-300 bg-base-200/60 p-6 text-center">
+    <div className="mt-8 rounded-box bg-base-200 p-6 text-center">
       <h2 className="text-lg font-semibold">Connectez-vous pour lire la leçon.</h2>
-      <Link href={`/login?next=${encodeURIComponent(path)}`} className="btn btn-primary mt-4 rounded-full px-6">
+      <Link href={`/login?next=${encodeURIComponent(path)}`} className="btn btn-primary btn-sm mt-4">
         Se connecter
       </Link>
     </div>
@@ -43,7 +43,7 @@ export default async function LessonPage({ params }: Params) {
   const session = await sessionUser();
 
   return (
-    <article className="pb-16">
+    <article className="pb-12">
       <Breadcrumb
         items={[
           { label: "Accueil", href: "/", home: true },

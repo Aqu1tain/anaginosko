@@ -13,7 +13,7 @@ function rich(text: string): ReactNode {
 }
 
 function optionClass(i: number, picked: number | null, answer: number): string {
-  const base = "w-full rounded-xl border px-4 py-3 text-left transition-colors";
+  const base = "w-full rounded-field border px-4 py-3 text-left transition-colors";
   if (picked === null) return `${base} border-base-300 bg-base-100 hover:border-primary/60 hover:bg-primary/5`;
   if (i === answer) return `${base} border-success bg-success/10`;
   if (i === picked) return `${base} border-error bg-error/10`;
@@ -31,8 +31,8 @@ export default function ExerciseView({ exercise }: { exercise: Exercise }) {
   const right = picked === answer;
 
   return (
-    <div className="not-prose my-6 rounded-2xl border border-base-300 bg-base-200/40 p-5">
-      <p className="text-xs font-semibold uppercase tracking-wide text-primary">Exercice</p>
+    <div className="not-prose my-6 rounded-box border border-base-300 p-5">
+      <p className="text-xs font-semibold uppercase tracking-wide text-primary/80">Exercice</p>
       <p className="mt-1 text-lg font-medium leading-snug">{rich(question)}</p>
 
       {isQuiz ? (
@@ -52,9 +52,9 @@ export default function ExerciseView({ exercise }: { exercise: Exercise }) {
       )}
 
       {done && (
-        <div className="mt-4 border-t border-base-300 pt-3">
+        <div className="mt-4">
           {isQuiz && <p className={`font-semibold ${right ? "text-success" : "text-error"}`}>{right ? "Exact." : "Pas tout à fait."}</p>}
-          {explanation && <p className="mt-1 leading-relaxed text-base-content/80">{rich(explanation)}</p>}
+          {explanation && <p className="mt-1 leading-relaxed text-base-content/70">{rich(explanation)}</p>}
         </div>
       )}
     </div>

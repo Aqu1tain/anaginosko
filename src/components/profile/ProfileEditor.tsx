@@ -11,9 +11,9 @@ import type { Profile, ProfileLink } from "@/lib/profiles";
 
 function Section({ title, desc, children }: { title: string; desc?: string; children: React.ReactNode }) {
   return (
-    <section className="rounded-xl border border-base-300 bg-base-100 p-5 shadow-sm">
-      <h2 className="font-semibold">{title}</h2>
-      {desc && <p className="mt-0.5 text-xs text-base-content/55">{desc}</p>}
+    <section>
+      <h2 className="text-lg font-semibold">{title}</h2>
+      {desc && <p className="mt-1 text-sm text-base-content/70">{desc}</p>}
       <div className="mt-4 space-y-4">{children}</div>
     </section>
   );
@@ -48,13 +48,13 @@ export default function ProfileEditor() {
   if (!ready) return null;
   if (!user)
     return (
-      <div className="py-20 text-center text-base-content/70">
-        <p>Connexion requise.</p>
-        <a href="/login" className="link link-primary mt-3 inline-block">Se connecter</a>
+      <div className="py-16 text-center">
+        <p className="text-base-content/70">Connectez-vous pour modifier votre profil.</p>
+        <a href="/login" className="btn btn-primary btn-sm mt-4">Se connecter</a>
       </div>
     );
-  if (error && !profile) return <div className="alert alert-warning mt-6 text-sm">{error}</div>;
-  if (!profile) return <div className="py-20 text-center text-base-content/60">Chargement…</div>;
+  if (error && !profile) return <p className="mt-6 text-sm text-error">{error}</p>;
+  if (!profile) return <div className="py-12 text-center text-sm text-base-content/50">Chargement…</div>;
 
   const set = (patch: Partial<Profile>) => setProfile((p) => (p ? { ...p, ...patch } : p));
 
@@ -99,15 +99,15 @@ export default function ProfileEditor() {
     set({ links: profile.links.map((l, j) => (j === i ? { ...l, ...patch } : l)) });
 
   return (
-    <div className="mx-auto max-w-2xl pb-16 pt-8">
+    <div className="mx-auto max-w-2xl pb-12 pt-6">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <h1 className="text-3xl font-bold tracking-tight">Mon profil</h1>
         <Link href={`/contributeurs/${profile.slug}`} className="btn btn-outline btn-sm">
-          Voir ma page publique
+          Voir ma page
         </Link>
       </div>
 
-      <div className="mt-6 space-y-5">
+      <div className="mt-8 space-y-12">
         <Section title="Identité">
           <div className="flex items-center gap-4">
             <Avatar name={profile.displayName} photo={profile.photo} size={80} />
@@ -205,12 +205,12 @@ export default function ProfileEditor() {
         </Section>
       </div>
 
-      {error && <div className="alert alert-error mt-4 text-sm">{error}</div>}
-      <div className="sticky bottom-4 mt-6 flex items-center gap-3 rounded-xl border border-base-300 bg-base-100/95 p-3 shadow-lg backdrop-blur">
-        <button className="btn btn-primary" disabled={busy} onClick={save}>
+      {error && <p className="mt-6 text-sm text-error">{error}</p>}
+      <div className="sticky bottom-4 mt-8 flex items-center gap-3 rounded-box border border-base-300 bg-base-100/95 p-3 shadow-lg backdrop-blur">
+        <button className="btn btn-primary btn-sm" disabled={busy} onClick={save}>
           Enregistrer
         </button>
-        {saved && <span className="text-sm text-success">Enregistré</span>}
+        {saved && <span className="text-sm text-success">Profil enregistré.</span>}
       </div>
     </div>
   );

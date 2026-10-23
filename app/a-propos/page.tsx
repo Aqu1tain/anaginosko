@@ -50,9 +50,9 @@ const SOURCES = [
 
 function Section({ id, title, children }: { id: string; title: string; children: React.ReactNode }) {
   return (
-    <section id={id} className="grid gap-4 border-t border-base-300 py-10 wide:grid-cols-[13rem_minmax(0,1fr)] wide:gap-12">
+    <section id={id} className="mt-12 grid gap-4 wide:grid-cols-[13rem_minmax(0,1fr)] wide:gap-12">
       <h2 className="text-lg font-semibold">{title}</h2>
-      <div className="min-w-0 text-[0.95rem] leading-relaxed text-base-content/80">{children}</div>
+      <div className="min-w-0 text-[0.95rem] leading-relaxed">{children}</div>
     </section>
   );
 }
@@ -69,7 +69,7 @@ export default async function AboutPage() {
   ];
 
   return (
-    <div className="pt-6 pb-4">
+    <div className="pb-12 pt-6">
       <JsonLd
         data={{
           "@context": "https://schema.org",
@@ -82,19 +82,19 @@ export default async function AboutPage() {
       />
       <BreadcrumbJsonLd items={[{ name: "Accueil", path: "/" }, { name: "À propos" }]} />
 
-      <header className="pb-10">
+      <header>
         <h1 className="text-3xl font-bold tracking-tight">À propos</h1>
-        <p className="mt-4 max-w-[42rem] text-lg leading-relaxed text-base-content/80">
+        <p className="mt-4 max-w-[42rem] text-lg leading-relaxed text-base-content/70">
           Anaginosko (<span className="font-greek">ἀναγινώσκω</span>, « lire, reconnaître ») est une Bible grecque
           d’étude, gratuite et sans publicité : le Nouveau Testament et la Septante dans le texte, chaque mot analysé, la
           traduction française en regard.
         </p>
-        <ul className="mt-10 grid grid-cols-2 gap-x-8 gap-y-6 wide:grid-cols-4">
+        <ul className="mt-8 grid grid-cols-2 gap-x-8 gap-y-6 wide:grid-cols-4">
           {facts.map((x) => (
             <li key={x.label}>
               <p className="text-3xl font-bold tracking-tight tabular-nums">{x.value}</p>
               <p className="mt-1 text-sm font-medium">{x.label}</p>
-              <p className="text-xs text-base-content/55">{x.detail}</p>
+              <p className="text-xs text-base-content/50">{x.detail}</p>
             </li>
           ))}
         </ul>
@@ -122,7 +122,7 @@ export default async function AboutPage() {
       </Section>
 
       <Section id="sources" title="Sources">
-        <dl className="divide-y divide-base-300 border-y border-base-300">
+        <dl className="divide-y divide-base-300">
           {SOURCES.map(([what, source]) => (
             <div key={what} className="grid gap-1 py-2.5 sm:grid-cols-[13rem_minmax(0,1fr)] sm:gap-4">
               <dt className="text-sm font-semibold text-base-content">{what}</dt>
@@ -176,7 +176,7 @@ export default async function AboutPage() {
               <li key={m.userId}>
                 <Link
                   href={`/contributeurs/${m.slug}`}
-                  className="flex items-center gap-3 rounded-box border border-base-300 py-2 pr-4 pl-2 hover:bg-base-200/50"
+                  className="flex items-center gap-3 rounded-box border border-base-300 py-2 pr-4 pl-2 transition-colors hover:border-primary/40"
                 >
                   <Avatar name={m.displayName} photo={m.photo} size={36} />
                   <span className="font-medium text-base-content">{m.displayName}</span>
@@ -189,7 +189,7 @@ export default async function AboutPage() {
           <a href="https://fr.tipeee.com/anaginosko" target="_blank" rel="noreferrer noopener" className="btn btn-primary btn-sm">
             Soutenir sur Tipeee
           </a>
-          <span className="text-sm text-base-content/60">Le site vit des dons.</span>
+          <span className="text-sm text-base-content/50">Le site vit des dons.</span>
         </div>
       </Section>
     </div>

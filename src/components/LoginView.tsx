@@ -57,69 +57,67 @@ export default function LoginView() {
   };
 
   return (
-    <div className="mx-auto max-w-sm pt-12">
-      <div className="rounded-3xl border border-base-300 bg-base-100 p-6 shadow-sm">
-        <h1 className="text-center text-2xl font-bold">Se connecter ou créer un compte</h1>
+    <div className="mx-auto max-w-sm pb-12 pt-12">
+      <h1 className="text-center text-3xl font-bold tracking-tight">Se connecter ou créer un compte</h1>
 
-        <GoogleSignIn onSignedIn={onSignedIn} newsletter={newsletter} />
+      <GoogleSignIn onSignedIn={onSignedIn} newsletter={newsletter} />
 
-        {step === "email" ? (
-          <form onSubmit={sendCode} className="grid gap-3">
-            <label className="block">
-              <span className="text-sm font-medium">Adresse e-mail</span>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                autoComplete="email"
-                placeholder="vous@exemple.fr"
-                className="input input-bordered mt-1 w-full"
-                required
-              />
-            </label>
-            {error && <p className="rounded-lg bg-error/10 px-3 py-2 text-sm text-error">{error}</p>}
-            <button type="submit" disabled={busy} className="btn btn-primary">
-              {busy ? "Envoi…" : "Recevoir un code"}
-            </button>
-          </form>
-        ) : (
-          <form onSubmit={checkCode} className="grid gap-3">
-            <p className="text-sm text-base-content/75">
-              Code envoyé à <strong>{email}</strong>, valable 10 minutes.
-            </p>
-            <label className="block">
-              <span className="text-sm font-medium">Code reçu</span>
-              <input
-                value={code}
-                onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
-                inputMode="numeric"
-                autoComplete="one-time-code"
-                placeholder="123456"
-                className="input input-bordered mt-1 w-full text-center text-xl tracking-[0.4em] tabular-nums"
-                autoFocus
-                required
-              />
-            </label>
-            {error && <p className="rounded-lg bg-error/10 px-3 py-2 text-sm text-error">{error}</p>}
-            <button type="submit" disabled={busy || code.length !== 6} className="btn btn-primary">
-              {busy ? "Vérification…" : "Se connecter"}
-            </button>
-            <button type="button" onClick={() => setStep("email")} className="btn btn-ghost btn-sm">
-              Changer d’adresse ou renvoyer un code
-            </button>
-          </form>
-        )}
-
-        <div className="mt-5 grid gap-2 border-t border-base-300 pt-4 text-xs text-base-content/65">
-          <label className="flex cursor-pointer items-start gap-2">
-            <input type="checkbox" className="checkbox checkbox-xs mt-0.5" checked={newsletter} onChange={(e) => setNewsletter(e.target.checked)} />
-            <span>Recevoir les nouveautés par e-mail</span>
+      {step === "email" ? (
+        <form onSubmit={sendCode} className="grid gap-3">
+          <label className="block">
+            <span className="text-sm font-medium">Adresse e-mail</span>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              autoComplete="email"
+              placeholder="vous@exemple.fr"
+              className="input input-bordered mt-1 w-full"
+              required
+            />
           </label>
-          <p>
-            En créant un compte, vous acceptez les <a href="/conditions" className="link">conditions d’utilisation</a> et la{" "}
-            <a href="/confidentialite" className="link">politique de confidentialité</a>.
+          {error && <p className="text-sm text-error">{error}</p>}
+          <button type="submit" disabled={busy} className="btn btn-primary">
+            {busy ? "Envoi…" : "Recevoir un code"}
+          </button>
+        </form>
+      ) : (
+        <form onSubmit={checkCode} className="grid gap-3">
+          <p className="text-sm text-base-content/70">
+            Code envoyé à <strong>{email}</strong>, valable 10 minutes.
           </p>
-        </div>
+          <label className="block">
+            <span className="text-sm font-medium">Code reçu</span>
+            <input
+              value={code}
+              onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
+              inputMode="numeric"
+              autoComplete="one-time-code"
+              placeholder="123456"
+              className="input input-bordered mt-1 w-full text-center text-xl tracking-[0.4em] tabular-nums"
+              autoFocus
+              required
+            />
+          </label>
+          {error && <p className="text-sm text-error">{error}</p>}
+          <button type="submit" disabled={busy || code.length !== 6} className="btn btn-primary">
+            {busy ? "Vérification…" : "Se connecter"}
+          </button>
+          <button type="button" onClick={() => setStep("email")} className="btn btn-ghost btn-sm">
+            Changer d’adresse ou renvoyer un code
+          </button>
+        </form>
+      )}
+
+      <div className="mt-6 grid gap-2 text-xs text-base-content/70">
+        <label className="flex cursor-pointer items-start gap-2">
+          <input type="checkbox" className="checkbox checkbox-xs mt-0.5" checked={newsletter} onChange={(e) => setNewsletter(e.target.checked)} />
+          <span>Recevoir les nouveautés par e-mail</span>
+        </label>
+        <p className="text-base-content/50">
+          En créant un compte, vous acceptez les <a href="/conditions" className="link">conditions d’utilisation</a> et la{" "}
+          <a href="/confidentialite" className="link">politique de confidentialité</a>.
+        </p>
       </div>
     </div>
   );

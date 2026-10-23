@@ -8,9 +8,9 @@ export default function SignupCta({ next = "/apprendre" }: { next?: string }) {
   const { user, ready } = useAuth();
   if (!ready || user) return null;
   return (
-    <section className="flex flex-col gap-4 rounded-box bg-base-200 px-5 py-6 wide:flex-row wide:items-center wide:justify-between wide:px-8">
+    <section className="flex flex-col gap-4 rounded-box bg-base-200 p-6 wide:flex-row wide:items-center wide:justify-between wide:px-8">
       <h2 className="text-lg font-semibold">Suivez les cours et votre progression.</h2>
-      <Link href={`/login?next=${encodeURIComponent(next)}`} className="btn btn-primary shrink-0 rounded-full px-6">
+      <Link href={`/login?next=${encodeURIComponent(next)}`} className="btn btn-primary btn-sm shrink-0">
         Créer un compte
       </Link>
     </section>

@@ -21,11 +21,11 @@ const dateLabel = (iso: string | null) =>
 
 function AuthorLine({ author, date }: { author: PublicAuthor; date: string | null }) {
   return (
-    <span className="flex items-center gap-2 text-sm text-base-content/60">
+    <span className="flex items-center gap-2 text-sm text-base-content/70">
       <Avatar name={author.name} photo={author.photo} size={26} />
       <span className="min-w-0 truncate">
         {author.name}
-        {date && <span className="text-base-content/45"> · {date}</span>}
+        {date && <span className="text-base-content/50"> · {date}</span>}
       </span>
     </span>
   );
@@ -35,7 +35,7 @@ function FeaturedCard({ a, author }: { a: ArticleSummary; author: PublicAuthor }
   return (
     <Link
       href={`/articles/${a.slug}`}
-      className="group grid overflow-hidden rounded-box border border-base-300 bg-base-100 shadow-sm transition-all hover:border-base-content/20 hover:shadow-md sm:grid-cols-2"
+      className="group grid overflow-hidden rounded-box border border-base-300 bg-base-100 transition-colors hover:border-primary/40 sm:grid-cols-2"
     >
       {a.cover ? (
         // eslint-disable-next-line @next/next/no-img-element
@@ -47,7 +47,7 @@ function FeaturedCard({ a, author }: { a: ArticleSummary; author: PublicAuthor }
       )}
       <div className="flex flex-col justify-center p-6">
         <p className="text-xs font-semibold uppercase tracking-wide text-primary/80">{CATEGORY_LABEL[a.category]}</p>
-        <h2 className="mt-1.5 text-2xl font-bold leading-snug group-hover:text-primary">{a.title}</h2>
+        <h2 className="mt-2 text-2xl font-bold leading-snug group-hover:text-primary">{a.title}</h2>
         {a.excerpt && <p className="mt-2 line-clamp-3 text-base-content/70">{a.excerpt}</p>}
         <div className="mt-4">
           <AuthorLine author={author} date={dateLabel(a.publishedAt)} />
@@ -61,7 +61,7 @@ function ArticleCard({ a, author }: { a: ArticleSummary; author: PublicAuthor })
   return (
     <Link
       href={`/articles/${a.slug}`}
-      className="group flex h-full flex-col overflow-hidden rounded-box border border-base-300 bg-base-100 shadow-sm transition-all hover:border-base-content/20 hover:shadow-md"
+      className="group flex h-full flex-col overflow-hidden rounded-box border border-base-300 bg-base-100 transition-colors hover:border-primary/40"
     >
       {a.cover && (
         // eslint-disable-next-line @next/next/no-img-element
@@ -70,7 +70,7 @@ function ArticleCard({ a, author }: { a: ArticleSummary; author: PublicAuthor })
       <div className="flex flex-1 flex-col p-5">
         <p className="text-xs font-semibold uppercase tracking-wide text-primary/80">{CATEGORY_LABEL[a.category]}</p>
         <h2 className="mt-1 text-lg font-semibold leading-snug group-hover:text-primary">{a.title}</h2>
-        {a.excerpt && <p className="mt-1.5 line-clamp-2 text-sm text-base-content/70">{a.excerpt}</p>}
+        {a.excerpt && <p className="mt-2 line-clamp-2 text-sm text-base-content/70">{a.excerpt}</p>}
         <div className="mt-auto pt-3">
           <AuthorLine author={author} date={dateLabel(a.publishedAt)} />
         </div>
@@ -98,7 +98,7 @@ export default async function ArticlesPage({ searchParams }: { searchParams: Pro
   const [featured, ...rest] = articles;
 
   return (
-    <div className="mx-auto max-w-4xl pb-16 pt-8">
+    <div className="mx-auto max-w-4xl pb-12 pt-6">
       <BreadcrumbJsonLd items={[{ name: "Accueil", path: "/" }, { name: "Articles" }]} />
       <h1 className="text-3xl font-bold tracking-tight">Articles</h1>
 
@@ -119,16 +119,14 @@ export default async function ArticlesPage({ searchParams }: { searchParams: Pro
       </div>
 
       {!featured ? (
-        <div className="mt-10 rounded-box border border-dashed border-base-300 py-16 text-center text-base-content/60">
-          Aucun article dans cette rubrique.
-        </div>
+        <p className="mt-8 text-sm text-base-content/50">Aucun article publié.</p>
       ) : (
         <>
-          <div className="mt-7">
+          <div className="mt-6">
             <FeaturedCard a={featured} author={authors.get(featured.author.userId)!} />
           </div>
           {rest.length > 0 && (
-            <div className="mt-6 grid gap-5 sm:grid-cols-2">
+            <div className="mt-4 grid gap-4 sm:grid-cols-2">
               {rest.map((a) => (
                 <ArticleCard key={a.id} a={a} author={authors.get(a.author.userId)!} />
               ))}
