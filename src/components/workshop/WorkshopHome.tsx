@@ -149,16 +149,9 @@ export default function WorkshopHome({ corpus }: { corpus: WorkCorpus }) {
         </div>
       </section>
 
-      <section className="grid gap-4 sm:grid-cols-2 wide:grid-cols-4">
-        <Queue title="À relire" items={stats.queue.toReview} corpus={corpus} tone="bg-info/15 text-info" />
-        <Queue title="À corriger" items={stats.queue.changes} corpus={corpus} tone="bg-warning/20" />
+      <section className="grid gap-4 sm:grid-cols-2">
         <Queue title="Mes brouillons" items={stats.queue.drafts} corpus={corpus} tone="bg-base-200" />
-        {stats.queue.waiting > 0 && (
-          <section className="rounded-box border border-base-300 p-4 text-sm">
-            <h3 className="font-semibold">En attente de relecture</h3>
-            <p className="mt-2 text-base-content/70">{stats.queue.waiting} de vos versets attendent un relecteur.</p>
-          </section>
-        )}
+        {stats.queue.changes.length > 0 && <Queue title="À corriger" items={stats.queue.changes} corpus={corpus} tone="bg-warning/20" />}
       </section>
 
       <section>

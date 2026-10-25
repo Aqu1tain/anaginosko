@@ -21,7 +21,7 @@ export type RowState = {
 const STATUS: Record<string, { label: string; tone: string }> = {
   published: { label: "Publié", tone: "bg-success/15 text-success" },
   draft: { label: "Brouillon", tone: "bg-base-200 text-base-content/70" },
-  review: { label: "À relire", tone: "bg-info/15 text-info" },
+  review: { label: "Soumis", tone: "bg-info/15 text-info" },
   changes: { label: "À corriger", tone: "bg-warning/20 text-warning-content" },
   empty: { label: "Non traduit", tone: "bg-base-200/60 text-base-content/50" },
 };
@@ -40,8 +40,7 @@ export default function VerseRow({
   onChange,
   onWord,
   onKey,
-  onSubmit,
-  onApprove,
+  onPublish,
   onRequestChanges,
   onDiscard,
 }: {
@@ -53,8 +52,7 @@ export default function VerseRow({
   onChange: (value: string) => void;
   onWord: (index: number) => void;
   onKey: (e: KeyboardEvent<HTMLTextAreaElement>) => void;
-  onSubmit: () => void;
-  onApprove: () => void;
+  onPublish: () => void;
   onRequestChanges: () => void;
   onDiscard: () => void;
 }) {
@@ -112,20 +110,15 @@ export default function VerseRow({
           {row.draft && <span className="text-base-content/50">{row.draft.author}</span>}
           {row.comments > 0 && <span className="text-base-content/50">{row.comments} commentaire{row.comments > 1 ? "s" : ""}</span>}
           <span className="ml-auto flex flex-wrap gap-1">
-            {(status === "draft" || status === "changes") && row.draft?.authorId === me && (
-              <button type="button" onClick={onSubmit} className="btn btn-ghost btn-xs">
-                Soumettre
+            {row.draft && (row.draft.authorId === me || row.draft.status === "review") && (
+              <button type="button" onClick={onPublish} className="btn btn-outline btn-xs" title="⌘ ⇧ Entrée">
+                Publier
               </button>
             )}
             {reviewable && (
-              <>
-                <button type="button" onClick={onApprove} className="btn btn-outline btn-xs">
-                  Valider
-                </button>
-                <button type="button" onClick={onRequestChanges} className="btn btn-ghost btn-xs">
-                  Corrections
-                </button>
-              </>
+              <button type="button" onClick={onRequestChanges} className="btn btn-ghost btn-xs">
+                Corrections
+              </button>
             )}
             {row.draft && (
               <button type="button" onClick={onDiscard} className="btn btn-ghost btn-xs text-base-content/50">

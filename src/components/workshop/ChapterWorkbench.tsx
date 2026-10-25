@@ -13,7 +13,6 @@ import {
   fetchTerms,
   reviewDrafts,
   saveDrafts,
-  submitDrafts,
   type ChapterWork,
   type KeyTerm,
   type WorkCorpus,
@@ -163,8 +162,7 @@ export default function ChapterWorkbench({ corpus, book, chapter }: { corpus: Wo
     }
   };
   const flushAll = () => Promise.all(Object.keys(editsRef.current).map(persist));
-  const submit = (refs: string[]) => act(async () => (await flushAll(), submitDrafts(corpus, book, refs)));
-  const approve = (refs: string[]) => act(() => reviewDrafts(corpus, book, refs, "approve"));
+  const publish = (refs: string[]) => act(async () => (await flushAll(), reviewDrafts(corpus, book, refs, "approve")));
   const discard = (ref: string) =>
     act(async () => {
       clearTimeout(timers.current[ref]);
@@ -194,7 +192,7 @@ export default function ChapterWorkbench({ corpus, book, chapter }: { corpus: Wo
       nextUntranslated();
     } else if (mod(e) && e.key === "Enter" && e.shiftKey) {
       e.preventDefault();
-      submit([row.ref]);
+      publish([row.ref]);
     } else if (mod(e) && e.key === "Enter") {
       e.preventDefault();
       persist(row.ref);
@@ -216,8 +214,7 @@ export default function ChapterWorkbench({ corpus, book, chapter }: { corpus: Wo
   };
 
   const me = user?.id;
-  const mine = rows.filter((r) => (r.draft?.status === "draft" || r.draft?.status === "changes") && r.draft.authorId === me).map((r) => r.ref);
-  const toReview = rows.filter((r) => r.draft?.status === "review" && r.draft.authorId !== me).map((r) => r.ref);
+  const publishable = rows.filter((r) => r.draft && (r.draft.authorId === me || r.draft.status === "review")).map((r) => r.ref);
   const done = rows.filter((r) => r.published).length;
   const meta = books.find((b) => b.id === book);
   const chapters = meta ? chapterNumbers(meta) : [];
@@ -265,14 +262,9 @@ export default function ChapterWorkbench({ corpus, book, chapter }: { corpus: Wo
               Alignement Giguet
             </Link>
           )}
-          {mine.length > 0 && (
-            <button type="button" className="btn btn-outline btn-sm" onClick={() => submit(mine)}>
-              Soumettre {mine.length}
-            </button>
-          )}
-          {toReview.length > 0 && (
-            <button type="button" className="btn btn-primary btn-sm" onClick={() => approve(toReview)}>
-              Valider {toReview.length}
+          {publishable.length > 0 && (
+            <button type="button" className="btn btn-primary btn-sm" onClick={() => publish(publishable)} title="Publier les brouillons du chapitre">
+              Publier {publishable.length}
             </button>
           )}
         </span>
@@ -302,8 +294,7 @@ export default function ChapterWorkbench({ corpus, book, chapter }: { corpus: Wo
                   setSide("mot");
                 }}
                 onKey={onKey(i)}
-                onSubmit={() => submit([row.ref])}
-                onApprove={() => approve([row.ref])}
+                onPublish={() => publish([row.ref])}
                 onRequestChanges={() => {
                   setNoteFor([row.ref]);
                   setNote("");
@@ -369,7 +360,7 @@ export default function ChapterWorkbench({ corpus, book, chapter }: { corpus: Wo
                     <dt className="font-mono">⌘ ↑ ↓</dt>
                     <dd>changer de verset</dd>
                     <dt className="font-mono">⌘ ⇧ Entrée</dt>
-                    <dd>soumettre à relecture</dd>
+                    <dd>publier le verset</dd>
                     <dt className="font-mono">⌘ B</dt>
                     <dd>partir de la traduction de base</dd>
                     <dt className="font-mono">⌘ J</dt>

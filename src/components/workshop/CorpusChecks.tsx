@@ -5,7 +5,7 @@ import Link from "next/link";
 import { corpusById } from "@/src/data/corpus";
 import { fetchChecks, type CheckIssue, type WorkCorpus } from "@/src/lib/workshopApi";
 
-const STATUS: Record<string, string> = { published: "publié", draft: "brouillon", review: "à relire", changes: "à corriger" };
+const STATUS: Record<string, string> = { published: "publié", draft: "brouillon", review: "soumis", changes: "à corriger" };
 
 // Vérifications de tout le corpus : termes clés et typographie, filtrables.
 export default function CorpusChecks({ corpus }: { corpus: WorkCorpus }) {
