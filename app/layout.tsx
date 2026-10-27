@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
-import { gentium, inter, syne } from "./fonts";
+import { gentium, gentiumAccents, inter, syne } from "./fonts";
 import Providers from "./providers";
 import Shell from "./shell";
 import { SITE_PITCH } from "../lib/seo";
@@ -41,7 +41,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr" className={`${gentium.variable} ${inter.variable} ${syne.variable}`} suppressHydrationWarning>
+    <html lang="fr" className={`${gentium.variable} ${gentiumAccents.variable} ${inter.variable} ${syne.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT }} />
         <script
