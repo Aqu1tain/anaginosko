@@ -48,7 +48,7 @@ function TranslatorTip({ by }: { by: string }) {
   const maison = ANAGINOSKO_TRANSLATORS.has(by);
   return (
     <span
-      className={`tooltip tooltip-left ml-1 inline-block cursor-help select-none align-middle text-[0.85em] ${maison ? "text-secondary/90" : "text-base-content/70"}`}
+      className={`tip ml-1 inline-block cursor-help select-none align-middle text-[0.85em] ${maison ? "text-secondary/90" : "text-base-content/70"}`}
       data-tip={`Traduit par ${creditName(by)}`}
     >ⓘ</span>
   );

@@ -1,5 +1,12 @@
 @import "tailwindcss";
-@plugin "daisyui";
+/* Composants daisyUI que le site n'utilise pas : exclus, sinon un simple mot
+   (« menu », « tab », « status »…) dans le code suffit à embarquer leur CSS. */
+@plugin "daisyui" {
+  exclude: avatar, calendar, carousel, chat, collapse, countdown, diff, divider, dock, drawer, fab, fieldset,
+    fileinput, filter, footer, hero, hover3d, hovergallery, indicator, label, list, mask, mockup, progress,
+    radialprogress, radio, range, rating, stack, stat, status, steps, swap, textrotate, timeline, toast, validator,
+    menu, dropdown, tab, tooltip;
+}
 
 /* Composants hors du dossier app/ : forcer le scan pour ne pas tree-shaker
    les classes DaisyUI/Tailwind utilisées seulement dans src/. */
@@ -194,6 +201,34 @@ body {
   [data-pick="letter"] .glyph:hover {
     background-color: color-mix(in oklab, var(--color-accent) 12%, transparent);
   }
+}
+
+/* Infobulle au survol (traducteur d'un verset). */
+.tip {
+  position: relative;
+}
+.tip::after {
+  content: attr(data-tip);
+  position: absolute;
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-right: 0.4rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.375rem;
+  background: var(--color-neutral);
+  color: var(--color-neutral-content);
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+  z-index: 10;
+}
+.tip:hover::after,
+.tip:focus-visible::after {
+  opacity: 1;
 }
 
 /* Mot rendu d'un seul tenant : même espacement que des lettres séparées. */

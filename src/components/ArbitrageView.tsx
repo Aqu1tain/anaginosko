@@ -83,11 +83,11 @@ export default function ArbitrageView() {
       {corpus === "lxx" && (
         <>
           <SinceLastVisit />
-          <div role="tablist" className="tabs tabs-box mt-4 w-fit">
-            <button className={`tab ${tab === "corriger" ? "tab-active" : ""}`} onClick={() => setTab("corriger")}>Corriger</button>
-            <button className={`tab ${tab === "traduire" ? "tab-active" : ""}`} onClick={() => setTab("traduire")}>À traduire</button>
-            <button className={`tab ${tab === "browse" ? "tab-active" : ""}`} onClick={() => setTab("browse")}>Tout parcourir</button>
-            <button className={`tab ${tab === "logs" ? "tab-active" : ""}`} onClick={() => setTab("logs")}>Activité</button>
+          <div role="tablist" className="mt-4 inline-flex gap-1 rounded-field bg-base-200 p-1 text-sm">
+            <button role="tab" aria-selected={tab === "corriger"} className={`rounded-md px-3 py-1 ${tab === "corriger" ? "bg-base-100 font-medium shadow-sm" : "text-base-content/70 hover:text-base-content"}`} onClick={() => setTab("corriger")}>Corriger</button>
+            <button role="tab" aria-selected={tab === "traduire"} className={`rounded-md px-3 py-1 ${tab === "traduire" ? "bg-base-100 font-medium shadow-sm" : "text-base-content/70 hover:text-base-content"}`} onClick={() => setTab("traduire")}>À traduire</button>
+            <button role="tab" aria-selected={tab === "browse"} className={`rounded-md px-3 py-1 ${tab === "browse" ? "bg-base-100 font-medium shadow-sm" : "text-base-content/70 hover:text-base-content"}`} onClick={() => setTab("browse")}>Tout parcourir</button>
+            <button role="tab" aria-selected={tab === "logs"} className={`rounded-md px-3 py-1 ${tab === "logs" ? "bg-base-100 font-medium shadow-sm" : "text-base-content/70 hover:text-base-content"}`} onClick={() => setTab("logs")}>Activité</button>
           </div>
           {tab === "corriger" && <ErrorMap onOpen={open} />}
           {tab === "traduire" && <ToTranslateList onOpen={open} />}

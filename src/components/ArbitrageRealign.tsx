@@ -363,9 +363,9 @@ export function ChapterRealign({ book, ch, focusRef, prevCh, nextCh, onNavigate,
                     <div className="mt-1.5 flex flex-wrap items-center gap-1">
                       <MaisonInline current={assign[i].kind === "maison" ? (assign[i] as { text: string }).text : g.french || ""} original={g.autoText} onSet={(t) => setRow(i, { kind: "maison", text: t })} />
                       {g.overridden && assign[i].kind !== "auto" && <button className="btn btn-ghost btn-xs" title="Reprendre le lien automatique vers Giguet" onClick={() => setRow(i, { kind: "auto" })}>Revenir à Giguet</button>}
-                      <div className="dropdown dropdown-end">
+                      <div className="group relative">
                         <div tabIndex={0} role="button" className="btn btn-ghost btn-xs">Autre lien ▾</div>
-                        <ul tabIndex={0} className="dropdown-content menu z-20 w-64 rounded-box border border-base-300 bg-base-100 p-1 text-xs shadow">
+                        <ul tabIndex={0} className="invisible absolute right-0 top-full z-20 mt-1 w-64 rounded-box border border-base-300 bg-base-100 p-1 text-xs shadow group-focus-within:visible [&_button]:w-full [&_button]:rounded-md [&_button]:px-3 [&_button]:py-1.5 [&_button]:text-left [&_button:hover]:bg-base-200">
                           <li><button onClick={() => { closeMenus(); setPickMode(i); }}>Choisir un verset Giguet…</button></li>
                           {assignedV(i) && <li><button onClick={() => { closeMenus(); setExtractMode({ i, start: null }); }}>Garder un extrait</button></li>}
                           <li><button onClick={() => { closeMenus(); setRow(i, { kind: "orphan" }); }}>Sans traduction (orphelin)</button></li>
