@@ -230,6 +230,31 @@ function GreekText({
       );
     });
 
+  // En lecture, le clic ouvre le mot : un seul élément par mot (au lieu d'un par
+  // lettre) allège le DOM et l'hydratation. Le détail lettre par lettre reste pour
+  // l'annotation, les annotations de lettre et les mots sans analyse.
+  const letterLevel = annotateMode || !!charSpots?.size || selection?.scope === "char";
+
+  const renderWord = (graphemes: GraphemeInfo[], w: number) => {
+    const g = graphemes.findIndex(isClickable);
+    const label = manuscript
+      ? graphemes.filter(isClickable).map((i) => i.letter!.upper).join("")
+      : graphemes.map((i) => i.cluster).join("");
+    if (g < 0) return label;
+    return (
+      <span
+        className="glyph glyph-word"
+        role="button"
+        tabIndex={`${w}:${g}` === tabbableKey ? 0 : -1}
+        aria-expanded={mine?.w === w}
+        data-w={w}
+        data-g={g}
+      >
+        {label}
+      </span>
+    );
+  };
+
   const markerFor = (w: number) => {
     const annos = markers?.get(w);
     if (!annos?.length) return null;
@@ -260,7 +285,8 @@ function GreekText({
       className={`font-greek ${containerSpacing}`}
     >
       {shown.map(([w, token], idx) => {
-        const glyphs = renderGlyphs(token.word.graphemes, w);
+        const glyphs =
+          letterLevel || !token.word.context ? renderGlyphs(token.word.graphemes, w) : renderWord(token.word.graphemes, w);
         const annoCls = spanWords?.has(w) ? " word-annotated" : "";
         const selCls = wordSelected(w) ? " word-selected" : "";
         const wordCls = `word whitespace-nowrap${w === activeWord ? " word-active" : ""}${w === flashW ? " word-flash" : ""}${annoCls}${selCls}`;
@@ -293,7 +319,7 @@ function GreekText({
               {markerFor(w)}
             </span>
             {tr && (
-              <span className="mt-0.5 font-sans text-[0.5em] leading-tight text-base-content/70">
+              <span className="mt-0.5 font-sans text-[0.5em] leading-tight text-base-content/80">
                 <Translit value={tr} stressedClass="text-accent" />
               </span>
             )}

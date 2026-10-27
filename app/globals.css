@@ -196,6 +196,11 @@ body {
   }
 }
 
+/* Mot rendu d'un seul tenant : même espacement que des lettres séparées. */
+.glyph-word {
+  letter-spacing: 2px;
+}
+
 .glyph:focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 1px;
