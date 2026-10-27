@@ -9,6 +9,8 @@ const AI_BOTS = [
   "GPTBot", "OAI-SearchBot", "ChatGPT-User", "ClaudeBot", "Claude-SearchBot", "Claude-User", "Claude-Web",
   "PerplexityBot", "Perplexity-User", "meta-externalagent", "meta-externalfetcher", "meta-webindexer",
   "Amazonbot", "Amzn-SearchBot", "CCBot", "Bytespider", "MistralAI-User", "DuckAssistBot", "cohere-ai", "YouBot",
+  // Audits Lighthouse : voir la page comme un moteur de recherche.
+  "Chrome-Lighthouse",
 ];
 
 const nextConfig: NextConfig = {
