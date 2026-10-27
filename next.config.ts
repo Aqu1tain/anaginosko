@@ -13,9 +13,41 @@ const AI_BOTS = [
   "Chrome-Lighthouse",
 ];
 
+// Origines tierces chargées par le navigateur : connexion Google, Matomo. Les scripts
+// inline restent permis (Next, JSON-LD) ; le reste est fermé.
+const MATOMO = "https://analytics.anaginosko.fr";
+const GOOGLE = "https://accounts.google.com";
+const CSP = [
+  "default-src 'self'",
+  `script-src 'self' 'unsafe-inline' ${GOOGLE} ${MATOMO}`,
+  `style-src 'self' 'unsafe-inline' ${GOOGLE}`,
+  "img-src 'self' data: blob: https:",
+  "font-src 'self' data:",
+  `connect-src 'self' ${GOOGLE} ${MATOMO}`,
+  "media-src 'self' blob:",
+  "frame-src https:",
+  "worker-src 'self' blob:",
+  "object-src 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+  "upgrade-insecure-requests",
+].join("; ");
+
+const SECURITY_HEADERS = [
+  { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains" },
+  { key: "X-Content-Type-Options", value: "nosniff" },
+  { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+  { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), payment=(), usb=()" },
+];
+
+const production = process.env.NODE_ENV === "production";
+
 const nextConfig: NextConfig = {
   // Sortie autonome pour un déploiement Node minimal derrière nginx (VPS).
   output: "standalone",
+  poweredByHeader: false,
+  // next/image n'est pas utilisé : l'optimiseur d'images reste fermé.
+  images: { unoptimized: true },
   htmlLimitedBots: new RegExp(`${HTML_LIMITED_BOT_UA_RE.source}|${AI_BOTS.join("|")}`, "i"),
   // L'audio (~30k mp3) et les données /nt restent servis par nginx, pas par Next.
 
@@ -68,12 +100,18 @@ const nextConfig: NextConfig = {
     return { beforeFiles: markdown, afterFiles: dev, fallback: [] };
   },
 
-  // Le widget d'intégration doit pouvoir être encadré par n'importe quel site.
+  // Le widget d'intégration peut être encadré par n'importe quel site ; le reste
+  // seulement par le site lui-même.
   async headers() {
+    if (!production) return [];
     return [
       {
+        source: "/((?!embed/).*)",
+        headers: [...SECURITY_HEADERS, { key: "Content-Security-Policy", value: `${CSP}; frame-ancestors 'self'` }],
+      },
+      {
         source: "/embed/:path*",
-        headers: [{ key: "Content-Security-Policy", value: "frame-ancestors *" }],
+        headers: [...SECURITY_HEADERS, { key: "Content-Security-Policy", value: `${CSP}; frame-ancestors *` }],
       },
     ];
   },
