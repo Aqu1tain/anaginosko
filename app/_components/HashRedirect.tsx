@@ -9,8 +9,8 @@ import { useRouter } from "next/navigation";
 export default function HashRedirect() {
   const router = useRouter();
   useEffect(() => {
-    const h = window.location.hash;
-    if (h.startsWith("#/")) router.replace(h.slice(1));
+    const path = window.location.hash.slice(1);
+    if (/^\/(?![/\\])/.test(path)) router.replace(path);
   }, [router]);
   return null;
 }
