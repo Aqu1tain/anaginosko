@@ -47,11 +47,20 @@ export function initMatomo(): void {
   document.head.appendChild(s);
 }
 
+// URL suivie sans jeton : invitation, vérification, désinscription.
+function trackedUrl(): string {
+  const url = new URL(window.location.href);
+  url.searchParams.delete("token");
+  url.pathname = url.pathname.replace(/^\/invitation\/[^/]+/, "/invitation");
+  url.hash = "";
+  return url.toString();
+}
+
 // Vue de page (routes SPA incluses). Le référent est joint automatiquement.
 export function trackPageView(title?: string): void {
   const q = paq();
   if (!q) return;
-  q.push(["setCustomUrl", window.location.href]);
+  q.push(["setCustomUrl", trackedUrl()]);
   q.push(["setDocumentTitle", title ?? document.title]);
   q.push(["trackPageView"]);
 }
