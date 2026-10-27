@@ -19,8 +19,13 @@ const corpusDir = (c?: CorpusConfig) =>
   process.env[c?.dataDirEnv ?? "NT_DATA_DIR"] ||
   path.join(process.cwd(), "public", c?.dataPrefix ?? "nt");
 
-const readJson = async <T>(rel: string, c?: CorpusConfig): Promise<T> =>
-  JSON.parse(await readFile(path.join(corpusDir(c), rel), "utf8")) as T;
+// Chemin relatif au dossier du corpus, sans possibilité d'en sortir.
+async function readJson<T>(rel: string, c?: CorpusConfig): Promise<T> {
+  const root = path.resolve(corpusDir(c));
+  const file = path.resolve(root, rel);
+  if (!file.startsWith(root + path.sep)) throw new Error(`Chemin refusé : ${rel}`);
+  return JSON.parse(await readFile(file, "utf8")) as T;
+}
 
 export async function loadBooksFs(c?: CorpusConfig): Promise<NtBook[]> {
   const data = await readJson<{ books: NtBook[] }>("books.json", c);

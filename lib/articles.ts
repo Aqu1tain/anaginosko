@@ -403,6 +403,20 @@ export type ArticlePatch = {
   content?: unknown[];
 };
 
+// Blocs de l'éditeur : un type nommé simplement, et aucune clé qui toucherait au
+// prototype une fois rechargée dans l'éditeur.
+const FORBIDDEN_KEYS = new Set(["__proto__", "constructor", "prototype"]);
+
+function safeTree(value: unknown): boolean {
+  if (Array.isArray(value)) return value.every(safeTree);
+  if (value === null || typeof value !== "object") return true;
+  return Object.keys(value).every((k) => !FORBIDDEN_KEYS.has(k) && safeTree((value as Record<string, unknown>)[k]));
+}
+
+const wellFormedBlocks = (blocks: unknown[]) =>
+  safeTree(blocks) &&
+  blocks.every((b) => typeof b === "object" && b !== null && /^[A-Za-z]{1,40}$/.test(String((b as { type?: unknown }).type)));
+
 export function saveArticle(
   id: string,
   auth: { id?: number; isRoot?: boolean; permissions?: string[] },
@@ -475,6 +489,8 @@ export function saveArticle(
       return { ok: false, status: 400, error: "Contenu invalide." };
     if (JSON.stringify(patch.content).length > MAX_CONTENT_BYTES)
       return { ok: false, status: 413, error: "Contenu trop volumineux." };
+    if (!wellFormedBlocks(patch.content))
+      return { ok: false, status: 400, error: "Contenu invalide." };
     a.content = patch.content;
   }
   const after =
