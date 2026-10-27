@@ -57,7 +57,7 @@ export default function CollapsibleIntro({
             {open ? "Réduire" : "Lire la suite"}
           </button>
         )}
-        <a href="#chapitres" className="text-base-content/50 transition-colors hover:text-primary">
+        <a href="#chapitres" className="text-base-content/70 transition-colors hover:text-primary">
           Chapitres ↓
         </a>
       </div>

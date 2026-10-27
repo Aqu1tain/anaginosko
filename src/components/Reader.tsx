@@ -48,7 +48,7 @@ function TranslatorTip({ by }: { by: string }) {
   const maison = ANAGINOSKO_TRANSLATORS.has(by);
   return (
     <span
-      className={`tooltip tooltip-left ml-1 inline-block cursor-help select-none align-middle text-[0.85em] ${maison ? "text-secondary/90" : "text-base-content/50"}`}
+      className={`tooltip tooltip-left ml-1 inline-block cursor-help select-none align-middle text-[0.85em] ${maison ? "text-secondary/90" : "text-base-content/70"}`}
       data-tip={`Traduit par ${creditName(by)}`}
     >ⓘ</span>
   );
@@ -73,10 +73,10 @@ function FrenchChapterBlock({ french, credit }: { french: Record<string, string>
     .sort((a, b) => a - b);
   return (
     <div className="mt-6 rounded-box bg-base-200 px-4 py-3">
-      <div className="text-xs font-semibold uppercase tracking-wider text-base-content/50">
+      <div className="text-xs font-semibold uppercase tracking-wider text-base-content/70">
         Traduction
       </div>
-      <p className="mt-1 text-xs text-base-content/50">
+      <p className="mt-1 text-xs text-base-content/70">
         Numérotation différente du grec, sans alignement par verset.
       </p>
       <p className="mt-2 leading-relaxed text-base-content/85">
@@ -104,7 +104,7 @@ const SCOPES: { id: AnnoScope; label: string }[] = [
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="flex w-full flex-col gap-1">
-      <span className="px-0.5 text-xs font-semibold uppercase tracking-wider text-base-content/50">
+      <span className="px-0.5 text-xs font-semibold uppercase tracking-wider text-base-content/70">
         {label}
       </span>
       {children}
@@ -353,12 +353,12 @@ export default function Reader({ text }: { text: Text }) {
   // Pied de traduction : le crédit, et pour un traducteur l'accès direct à l'atelier
   // du chapitre lu, aligné sur la colonne de lecture.
   const creditRow = (
-    <div className="mt-3 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 text-xs text-base-content/70">
+    <div className="mt-3 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 text-xs text-base-content/80">
       <p>{translatedBy}</p>
       {can(user, "arbitrage") && parsedRef && (
         <a
           href={`/admin/arbitrage?corpus=${parsedRef.corpus}&book=${parsedRef.book}&ch=${parsedRef.chapter}`}
-          className="link shrink-0 text-base-content/70 underline-offset-2"
+          className="link shrink-0 text-base-content/80 underline-offset-2"
         >
           Traduire dans l’atelier
         </a>
@@ -639,7 +639,7 @@ export default function Reader({ text }: { text: Text }) {
                 setTipSeen(false);
                 setSettingsOpen(false);
               }}
-              className="mt-1 self-start text-xs font-medium text-base-content/70 underline-offset-2 hover:underline"
+              className="mt-1 self-start text-xs font-medium text-base-content/80 underline-offset-2 hover:underline"
             >
               Revoir le tutoriel
             </button>
@@ -785,7 +785,7 @@ export default function Reader({ text }: { text: Text }) {
                 </button>
               </>
             ) : (
-              <p className="text-center text-sm text-base-content/70">
+              <p className="text-center text-sm text-base-content/80">
                 Touchez le mot à annoter.
               </p>
             )}
@@ -815,7 +815,7 @@ export default function Reader({ text }: { text: Text }) {
             <div className="absolute inset-0 bg-black/45 backdrop-blur-sm" onClick={() => setPendingDelete(null)} aria-hidden="true" />
             <div role="dialog" aria-label="Confirmer la suppression" className="relative w-full max-w-xs rounded-2xl border border-base-300 bg-base-100 p-5 shadow-2xl">
               <p className="text-sm">Supprimer cette annotation&nbsp;?</p>
-              <p className="mt-1 line-clamp-3 text-xs text-base-content/70">{pendingDelete.body}</p>
+              <p className="mt-1 line-clamp-3 text-xs text-base-content/80">{pendingDelete.body}</p>
               <div className="mt-4 flex justify-end gap-2">
                 <button onClick={() => setPendingDelete(null)} className="btn btn-ghost btn-sm">
                   Annuler

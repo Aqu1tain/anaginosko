@@ -24,8 +24,8 @@ export default function Activity({ corpus }: { corpus: WorkCorpus }) {
     fetchActivity(corpus).then(setEvents).catch(() => setEvents([]));
   }, [corpus]);
 
-  if (!events) return <p className="text-sm text-base-content/50">Chargement…</p>;
-  if (!events.length) return <p className="rounded-box border border-dashed border-base-300 px-4 py-8 text-center text-sm text-base-content/50">Aucune activité.</p>;
+  if (!events) return <p className="text-sm text-base-content/70">Chargement…</p>;
+  if (!events.length) return <p className="rounded-box border border-dashed border-base-300 px-4 py-8 text-center text-sm text-base-content/70">Aucune activité.</p>;
   return (
     <ol className="divide-y divide-base-300 rounded-box border border-base-300">
       {events.map((e, i) => {
@@ -40,9 +40,9 @@ export default function Activity({ corpus }: { corpus: WorkCorpus }) {
                     {names[e.book] ?? e.book} {e.ref}
                   </span>
                 </span>
-                <span className="text-xs text-base-content/50">{when(e.at)}</span>
+                <span className="text-xs text-base-content/70">{when(e.at)}</span>
               </span>
-              {e.text && <span className="mt-0.5 block truncate text-sm text-base-content/70">{e.text}</span>}
+              {e.text && <span className="mt-0.5 block truncate text-sm text-base-content/80">{e.text}</span>}
             </Link>
           </li>
         );

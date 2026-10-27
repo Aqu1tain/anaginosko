@@ -21,7 +21,7 @@ export type BookOption = { id: string; name: string; group: string };
 
 const field = "input input-bordered input-sm w-full";
 const select = "select select-bordered select-sm w-full";
-const label = "mb-1 block text-xs font-medium text-base-content/70";
+const label = "mb-1 block text-xs font-medium text-base-content/80";
 const toCount = (v: string) => (v.trim() === "" ? null : Math.max(0, Math.floor(Number(v))) || 0);
 
 // Filtres pour chercheurs : motif à jokers, plage d'occurrences, présence par
@@ -72,7 +72,7 @@ export default function AdvancedFilters({
     <details className="group rounded-box border border-base-300" open={hasAdvanced(query)}>
       <summary className="flex cursor-pointer list-none items-center justify-between px-4 py-2.5 text-sm font-medium">
         Filtres avancés
-        <span className="text-base-content/40 transition-transform group-open:rotate-180" aria-hidden="true">
+        <span className="text-base-content/70 transition-transform group-open:rotate-180" aria-hidden="true">
           ▾
         </span>
       </summary>
@@ -80,13 +80,13 @@ export default function AdvancedFilters({
         <label className="sm:col-span-2 lg:col-span-1">
           <span className={label}>Motif</span>
           <input className={`${field} font-greek`} value={d.pattern} onChange={(e) => set({ pattern: e.target.value })} placeholder="*εύω, ἀπο*, *logos" />
-          <span className="mt-1 block text-[0.7rem] text-base-content/50">* : n’importe quelle suite · ? : une lettre</span>
+          <span className="mt-1 block text-[0.7rem] text-base-content/70">* : n’importe quelle suite · ? : une lettre</span>
         </label>
         <div>
           <span className={label}>Occurrences</span>
           <div className="flex items-center gap-2">
             <input type="number" min={0} inputMode="numeric" aria-label="Minimum" placeholder="min" className={field} value={d.min} onChange={(e) => set({ min: e.target.value })} />
-            <span className="text-base-content/40">à</span>
+            <span className="text-base-content/70">à</span>
             <input type="number" min={0} inputMode="numeric" aria-label="Maximum" placeholder="max" className={field} value={d.max} onChange={(e) => set({ max: e.target.value })} />
           </div>
         </div>

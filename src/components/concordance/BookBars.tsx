@@ -36,7 +36,7 @@ export default function BookBars({
               >
                 <span className="flex items-baseline justify-between gap-2 text-sm">
                   <span className={`truncate ${on ? "font-semibold text-primary" : ""}`}>{b.name}</span>
-                  <span className="tabular-nums text-xs text-base-content/50">{b.count}</span>
+                  <span className="tabular-nums text-xs text-base-content/70">{b.count}</span>
                 </span>
                 <span className="mt-1 block h-1 rounded-full bg-base-200">
                   <span className={`block h-1 rounded-full ${on ? "bg-primary" : "bg-primary/45"}`} style={{ width: `${Math.max(4, (b.count / max) * 100)}%` }} />

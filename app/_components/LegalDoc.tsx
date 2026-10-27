@@ -51,7 +51,7 @@ export default function LegalDoc({
                   className={`block whitespace-nowrap border-b-2 px-2.5 py-2 text-sm wide:rounded-field wide:border-0 wide:px-3 wide:py-1.5 ${
                     active
                       ? "border-primary font-semibold text-base-content wide:bg-base-200"
-                      : "border-transparent text-base-content/60 hover:text-base-content wide:hover:bg-base-200/60"
+                      : "border-transparent text-base-content/70 hover:text-base-content wide:hover:bg-base-200/60"
                   }`}
                 >
                   {doc.label}
@@ -64,7 +64,7 @@ export default function LegalDoc({
 
       <article className="mt-6 max-w-[42rem] wide:mt-0">
         <h1 className="text-3xl font-bold tracking-tight">{title}</h1>
-        <p className="mt-2 text-sm text-base-content/55">Mis à jour le {updated}</p>
+        <p className="mt-2 text-sm text-base-content/70">Mis à jour le {updated}</p>
         <div className="mt-8 space-y-10">
           {sections.map((s) => (
             <section key={s.id} id={s.id} className="scroll-mt-20">
@@ -79,11 +79,11 @@ export default function LegalDoc({
 
       <nav aria-label="Sur cette page" className="hidden wide:block">
         <div className="sticky top-20">
-          <p className="text-xs font-semibold uppercase tracking-wider text-base-content/45">Sur cette page</p>
+          <p className="text-xs font-semibold uppercase tracking-wider text-base-content/70">Sur cette page</p>
           <ul className="mt-3 space-y-2 border-l border-base-300 text-sm">
             {sections.map((s) => (
               <li key={s.id}>
-                <a href={`#${s.id}`} className="-ml-px block border-l border-transparent pl-3 text-base-content/60 hover:border-base-content/40 hover:text-base-content">
+                <a href={`#${s.id}`} className="-ml-px block border-l border-transparent pl-3 text-base-content/70 hover:border-base-content/40 hover:text-base-content">
                   {s.title}
                 </a>
               </li>

@@ -24,7 +24,7 @@ function Metric({ value, label, detail, tone = "" }: { value: number; label: str
     <div className="rounded-box border border-base-300 bg-base-100 p-3">
       <p className={`text-xl font-bold tabular-nums ${tone}`}>{value.toLocaleString("fr-FR")}</p>
       <p className="text-xs font-medium">{label}</p>
-      <p className="mt-1 text-xs text-base-content/50">{detail}</p>
+      <p className="mt-1 text-xs text-base-content/70">{detail}</p>
     </div>
   );
 }
@@ -125,7 +125,7 @@ export default function DefinitionCoverage({ definitions }: { definitions: Annot
   );
 
   if (failed) {
-    return <p className="mb-6 text-sm text-base-content/50">Couverture lexicale indisponible.</p>;
+    return <p className="mb-6 text-sm text-base-content/70">Couverture lexicale indisponible.</p>;
   }
 
   return (
@@ -146,7 +146,7 @@ export default function DefinitionCoverage({ definitions }: { definitions: Annot
       </div>
 
       {loading ? (
-        <div className="mt-4 flex items-center gap-2 text-sm text-base-content/50">
+        <div className="mt-4 flex items-center gap-2 text-sm text-base-content/70">
           <span className="loading loading-spinner loading-sm" aria-hidden="true" />
           Chargement…
         </div>
@@ -179,7 +179,7 @@ export default function DefinitionCoverage({ definitions }: { definitions: Annot
           </div>
 
           {stats.duplicateCount > 0 && (
-            <p className="mt-3 rounded-lg bg-warning/10 px-3 py-2 text-xs text-base-content/70">
+            <p className="mt-3 rounded-lg bg-warning/10 px-3 py-2 text-xs text-base-content/80">
               {stats.duplicateCount} définition{stats.duplicateCount > 1 ? "s" : ""} en doublon : une seule par lemme.
             </p>
           )}
@@ -187,7 +187,7 @@ export default function DefinitionCoverage({ definitions }: { definitions: Annot
           <div className="mt-6 flex items-center justify-between gap-3">
             <div>
               <h3 className="font-semibold">Priorités</h3>
-              <p className="text-xs text-base-content/50">Les plus fréquents sans définition Biblion.</p>
+              <p className="text-xs text-base-content/70">Les plus fréquents sans définition Biblion.</p>
             </div>
           </div>
           <div className="mt-3 grid gap-2 sm:grid-cols-2">
@@ -203,7 +203,7 @@ export default function DefinitionCoverage({ definitions }: { definitions: Annot
                   <span className={`badge badge-xs ${row.hasLexicon ? "badge-ghost" : "badge-warning badge-soft"}`}>
                     {row.hasLexicon ? "Bailly vérifié" : "Sans sens"}
                   </span>
-                  <span className="min-w-10 text-right text-xs tabular-nums text-base-content/50">{row.count.toLocaleString("fr-FR")}×</span>
+                  <span className="min-w-10 text-right text-xs tabular-nums text-base-content/70">{row.count.toLocaleString("fr-FR")}×</span>
                 </a>
               );
             })}

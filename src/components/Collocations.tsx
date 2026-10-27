@@ -23,20 +23,20 @@ function SharedVerses({ colloc, formByVerse, corpus }: { colloc: Colloc; formByV
             className="flex items-center gap-2 rounded px-1.5 py-1 text-sm transition-colors hover:bg-base-200"
           >
             {o && <span className="font-greek min-w-0 flex-1 truncate">{o.f}</span>}
-            <span className={`shrink-0 text-xs text-base-content/50 ${o ? "" : "flex-1"}`}>
+            <span className={`shrink-0 text-xs text-base-content/70 ${o ? "" : "flex-1"}`}>
               {corpus.bookNames[vr.b] ?? vr.b} {vr.c}:{vr.v}
             </span>
           </Link>
         );
       })}
       {colloc.n > verses.length && (
-        <p className="px-1.5 text-xs text-base-content/50">
+        <p className="px-1.5 text-xs text-base-content/70">
           {verses.length} premiers sur {colloc.n}.
         </p>
       )}
       <Link
         href={`${colloc.hrefBase ?? corpus.concordanceBase}/${encodeURIComponent(colloc.lemma)}`}
-        className="link px-1.5 py-1 text-xs text-base-content/70"
+        className="link px-1.5 py-1 text-xs text-base-content/80"
       >
         Concordance de <span className="font-greek">{colloc.lemma}</span>
       </Link>
@@ -60,10 +60,10 @@ export default function Collocations({ items, occ, corpus }: { items: Colloc[]; 
 
   return (
     <section>
-      <h2 className="text-xs font-semibold uppercase tracking-wider text-base-content/50">
+      <h2 className="text-xs font-semibold uppercase tracking-wider text-base-content/70">
         Mots associés
       </h2>
-      <p className="mt-1 text-xs text-base-content/50">
+      <p className="mt-1 text-xs text-base-content/70">
         Fréquents dans les mêmes versets, classés par affinité.
       </p>
 
@@ -80,9 +80,9 @@ export default function Collocations({ items, occ, corpus }: { items: Colloc[]; 
                 <div className="flex items-baseline justify-between gap-2">
                   <span className="min-w-0 truncate">
                     <span className="font-greek text-lg">{c.lemma}</span>
-                    <span className="ml-2 text-sm text-base-content/70">{c.translitR}</span>
+                    <span className="ml-2 text-sm text-base-content/80">{c.translitR}</span>
                   </span>
-                  <span className="shrink-0 text-xs tabular-nums text-base-content/50">
+                  <span className="shrink-0 text-xs tabular-nums text-base-content/70">
                     {c.n} versets
                   </span>
                 </div>

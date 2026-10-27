@@ -63,7 +63,7 @@ export default function GotoPalette({ corpus }: { corpus: WorkCorpus }) {
 
   return (
     <>
-      <button type="button" onClick={() => setOpen(true)} className="btn btn-ghost btn-sm gap-2 text-base-content/70">
+      <button type="button" onClick={() => setOpen(true)} className="btn btn-ghost btn-sm gap-2 text-base-content/80">
         Aller à…
         <kbd className="kbd kbd-xs">⌘K</kbd>
       </button>
@@ -86,11 +86,11 @@ export default function GotoPalette({ corpus }: { corpus: WorkCorpus }) {
                       {t.name} {t.chapter}
                       {t.verse ? `,${t.verse}` : ""}
                     </span>
-                    <span className="text-xs text-base-content/50">{t.corpus === "nt" ? "NT" : "Septante"}</span>
+                    <span className="text-xs text-base-content/70">{t.corpus === "nt" ? "NT" : "Septante"}</span>
                   </button>
                 </li>
               ))}
-              {q && !targets.length && <li className="px-4 py-3 text-sm text-base-content/50">Aucun livre.</li>}
+              {q && !targets.length && <li className="px-4 py-3 text-sm text-base-content/70">Aucun livre.</li>}
             </ul>
           </div>
         </div>

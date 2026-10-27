@@ -105,27 +105,27 @@ export default function CitationPicker({
           <p className="mt-2 text-sm text-error">Ce livre n&apos;a que {maxChapter} chapitres.</p>
         )}
         {ref && chapterValid && needsVerse && (
-          <p className="mt-2 text-sm text-base-content/50">Précisez au moins un verset (ex. {bookFullName(ref.corpus, ref.book)} {ref.chapter}:1).</p>
+          <p className="mt-2 text-sm text-base-content/70">Précisez au moins un verset (ex. {bookFullName(ref.corpus, ref.book)} {ref.chapter}:1).</p>
         )}
 
         {mode === "verse" && ref && chapterValid && !needsVerse && (
           <div className="mt-3 rounded-box border border-base-300 p-3">
             <div className="font-greek text-base leading-relaxed">
               {verses === null ? (
-                <span className="text-sm text-base-content/50">Chargement…</span>
+                <span className="text-sm text-base-content/70">Chargement…</span>
               ) : verses.length === 0 ? (
                 <span className="text-error">Verset introuvable.</span>
               ) : (
                 verses.map((v) => (
                   <span key={v.v}>
-                    <sup className="mr-0.5 text-[0.6em] text-base-content/50">{v.v}</sup>
+                    <sup className="mr-0.5 text-[0.6em] text-base-content/70">{v.v}</sup>
                     {v.greek}{" "}
                   </span>
                 ))
               )}
             </div>
             {showFrench && verses && verses.some((v) => v.french) && (
-              <div className="mt-2 space-y-1 text-sm text-base-content/70">
+              <div className="mt-2 space-y-1 text-sm text-base-content/80">
                 {verses.filter((v) => v.french).map((v) => (
                   <p key={v.v}>{v.french}</p>
                 ))}

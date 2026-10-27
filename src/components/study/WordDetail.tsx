@@ -15,7 +15,7 @@ import { LexiconSense, LexiconVia } from "../BaillyNotice";
 import LetterDetail from "./LetterDetail";
 import { WordPronunciation } from "./Pronunciation";
 
-const eyebrow = "text-xs font-semibold uppercase tracking-wider text-base-content/50";
+const eyebrow = "text-xs font-semibold uppercase tracking-wider text-base-content/70";
 
 function Section({ title, aside, children }: { title: string; aside?: ReactNode; children: ReactNode }) {
   return (
@@ -126,7 +126,7 @@ export default function WordDetail({
           )}
         </div>
         {word.lemme && fiche && (
-          <p className="mt-1 text-base text-base-content/70">
+          <p className="mt-1 text-base text-base-content/80">
             de{" "}
             <Link href={fiche} lang="grc" className="font-greek text-xl font-semibold text-base-content hover:text-primary">
               {word.lemme}
@@ -145,7 +145,7 @@ export default function WordDetail({
           <Section title="Analyse">
             <p className="text-[0.95rem] leading-snug">
               <span className="font-semibold">{word.nature}</span>
-              <span className="text-base-content/70"> · {word.morph}</span>
+              <span className="text-base-content/80"> · {word.morph}</span>
             </p>
           </Section>
         )}
@@ -158,12 +158,12 @@ export default function WordDetail({
               <>
                 <LexiconVia via={lexical.via} />
                 <LexiconSense gloss={lexical.gloss} collapsible />
-                <p className="mt-2 text-xs leading-snug text-base-content/50">Lexique général, à vérifier en contexte.</p>
+                <p className="mt-2 text-xs leading-snug text-base-content/70">Lexique général, à vérifier en contexte.</p>
               </>
             ) : lexical.loading || definition === undefined ? (
-              <p className="text-sm text-base-content/50">Chargement…</p>
+              <p className="text-sm text-base-content/70">Chargement…</p>
             ) : (
-              <p className="text-sm leading-snug text-base-content/50">Aucun sens vérifié.</p>
+              <p className="text-sm leading-snug text-base-content/70">Aucun sens vérifié.</p>
             )}
             {notes && notes.length > 0 && (
               <div className="mt-3 rounded-box border border-primary/30 bg-primary/5 px-3 py-2.5">
@@ -172,7 +172,7 @@ export default function WordDetail({
                   {notes.map((n) => (
                     <div key={n.id}>
                       <p className="text-sm leading-snug text-base-content/85">{n.body}</p>
-                      {n.source && <p className="mt-0.5 text-xs text-base-content/50">{n.source}</p>}
+                      {n.source && <p className="mt-0.5 text-xs text-base-content/70">{n.source}</p>}
                     </div>
                   ))}
                 </div>

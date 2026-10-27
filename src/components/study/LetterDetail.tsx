@@ -5,7 +5,7 @@ import { accentLabel, breathingLabel, type GraphemeInfo } from "../../lib/greek"
 function Pron({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex-1 rounded-box bg-base-200 px-3 py-2.5">
-      <div className="text-xs font-semibold uppercase tracking-wider text-base-content/50">{label}</div>
+      <div className="text-xs font-semibold uppercase tracking-wider text-base-content/70">{label}</div>
       <div className="mt-0.5 text-lg font-medium">{value}</div>
     </div>
   );
@@ -34,7 +34,7 @@ export default function LetterDetail({ info, compact = false }: { info: Grapheme
         </div>
         <div className="min-w-0">
           <div className={compact ? "text-lg font-semibold" : "text-xl font-semibold"}>{letter.name}</div>
-          <div className="font-greek text-base text-base-content/70">
+          <div className="font-greek text-base text-base-content/80">
             {letter.upper} {letter.lower}
             {letter.final ? ` ${letter.final}` : ""}
             <span className="font-sans"> · « {letter.latin} »</span>
@@ -45,7 +45,7 @@ export default function LetterDetail({ info, compact = false }: { info: Grapheme
         <Pron label="Érasmien" value={letter.erasmien} />
         <Pron label="Restituée" value={letter.restituee} />
       </div>
-      {letter.note && <p className="mt-3 text-sm leading-relaxed text-base-content/70">{letter.note}</p>}
+      {letter.note && <p className="mt-3 text-sm leading-relaxed text-base-content/80">{letter.note}</p>}
       {marks.length > 0 && (
         <div className="mt-3 flex flex-wrap gap-1.5">
           {marks.map((m) => (

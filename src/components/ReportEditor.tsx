@@ -84,7 +84,7 @@ export default function ReportEditor({
           <div className="text-center">
             <h2 className="text-lg font-semibold">Signalement envoyé</h2>
             {!user && (
-              <p className="mt-2 text-sm text-base-content/70">
+              <p className="mt-2 text-sm text-base-content/80">
                 Validez-le avec le lien reçu par e-mail.
               </p>
             )}
@@ -94,7 +94,7 @@ export default function ReportEditor({
           </div>
         ) : (
           <>
-            <div className="mb-1 flex flex-wrap items-center gap-2 text-xs text-base-content/70">
+            <div className="mb-1 flex flex-wrap items-center gap-2 text-xs text-base-content/80">
               <span className="badge badge-sm badge-primary badge-soft capitalize">
                 {target.scopeLabel}
               </span>
@@ -150,7 +150,7 @@ export default function ReportEditor({
                 placeholder="vous@exemple.fr"
                 className={`input input-bordered mt-1 w-full ${email && !emailValid(email) ? "input-error" : ""}`}
               />
-              <span className="mt-1 block text-xs text-base-content/50">
+              <span className="mt-1 block text-xs text-base-content/70">
                 Sert uniquement à vérifier et suivre ce signalement. Transmis à notre prestataire
                 d’envoi d’e-mails ; détails dans la{" "}
                 <a className="link" href="/confidentialite" target="_blank" rel="noreferrer">

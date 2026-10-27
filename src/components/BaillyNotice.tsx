@@ -15,18 +15,18 @@ const BLOCKS: Record<string, string> = {
   sect: "mt-2 pl-3",
   moyen: "mt-2 pl-3",
   fleche: "mt-2 pl-3",
-  etymor: "mt-3 border-t border-base-300 pt-2 text-[0.9em] text-base-content/70",
-  etymrev: "mt-3 border-t border-base-300 pt-2 text-[0.9em] text-base-content/70",
+  etymor: "mt-3 border-t border-base-300 pt-2 text-[0.9em] text-base-content/80",
+  etymrev: "mt-3 border-t border-base-300 pt-2 text-[0.9em] text-base-content/80",
 };
 
 // Repères de sens, rendus en pastilles pour aérer le pavé du dictionnaire.
 const MARKS: Record<string, string> = {
   Ruba: "bg-primary/10 text-primary",
-  ruba: "bg-base-200 text-base-content/70",
-  ppa: "border border-base-300 text-base-content/60",
-  secta: "bg-base-200 text-base-content/70",
-  moyena: "bg-base-200 text-base-content/70",
-  flechea: "bg-base-200 text-base-content/70",
+  ruba: "bg-base-200 text-base-content/80",
+  ppa: "border border-base-300 text-base-content/70",
+  secta: "bg-base-200 text-base-content/80",
+  moyena: "bg-base-200 text-base-content/80",
+  flechea: "bg-base-200 text-base-content/80",
 };
 
 const INLINES: Record<string, string> = {
@@ -36,13 +36,13 @@ const INLINES: Record<string, string> = {
   gens: "font-semibold",
   des: "font-semibold",
   es: "font-semibold",
-  ital: "italic text-base-content/70",
-  aut: "[font-variant:small-caps] text-base-content/60",
-  oeuv: "italic text-base-content/60",
-  oeuva: "italic text-base-content/60",
-  refch: "italic text-base-content/60",
-  refpa: "italic text-base-content/60",
-  refpb: "ml-0.5 text-base-content/60",
+  ital: "italic text-base-content/80",
+  aut: "[font-variant:small-caps] text-base-content/70",
+  oeuv: "italic text-base-content/70",
+  oeuva: "italic text-base-content/70",
+  refch: "italic text-base-content/70",
+  refpa: "italic text-base-content/70",
+  refpb: "ml-0.5 text-base-content/70",
   lat: "italic",
   indoeurop: "italic",
   etiqetymor: "mr-1 text-[0.75em] font-semibold uppercase tracking-wide",
@@ -119,7 +119,7 @@ export default function BaillyNotice({
         {notice.senses.map((sense, i) => (
           <div key={i} className={i > 0 ? "mt-4 border-t border-dashed border-base-300 pt-3" : undefined}>
             {many && (
-              <div className="mb-1 text-xs font-semibold uppercase tracking-wider text-base-content/50">
+              <div className="mb-1 text-xs font-semibold uppercase tracking-wider text-base-content/70">
                 Homonyme {i + 1}
               </div>
             )}
@@ -151,7 +151,7 @@ export function BaillyExcerpt({ excerpt, compact = false }: { excerpt: string; c
         return (
           <div key={i} className="flex items-start gap-2.5">
             {segments.length > 1 && (
-              <span className="mt-0.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-base-200 px-1 text-[0.65rem] font-semibold text-base-content/50">
+              <span className="mt-0.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-base-200 px-1 text-[0.65rem] font-semibold text-base-content/70">
                 {i + 1}
               </span>
             )}
@@ -173,8 +173,8 @@ export function BaillyExcerpt({ excerpt, compact = false }: { excerpt: string; c
 export function LexiconVia({ via }: { via?: string }) {
   if (!via) return null;
   return (
-    <p className="mb-1.5 text-xs text-base-content/50">
-      Notice à la forme <span className="font-greek text-sm text-base-content/70">{via}</span>.
+    <p className="mb-1.5 text-xs text-base-content/70">
+      Notice à la forme <span className="font-greek text-sm text-base-content/80">{via}</span>.
     </p>
   );
 }
@@ -214,12 +214,12 @@ export function LexiconSense({
       {cropped && (
         <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1">
           {loaded.loading ? (
-            <span className="inline-flex items-center gap-2 text-xs text-base-content/50" aria-live="polite">
+            <span className="inline-flex items-center gap-2 text-xs text-base-content/70" aria-live="polite">
               <span className="loading loading-spinner loading-xs" aria-hidden="true" />
               Chargement…
             </span>
           ) : wanted && loaded.notice === null ? (
-            <span className="text-xs text-base-content/50">
+            <span className="text-xs text-base-content/70">
               Notice indisponible.{" "}
               <a href={`https://bailly.app/${encodeURIComponent(gloss.uri)}`} target="_blank" rel="noreferrer" className="link">
                 Bailly.app ↗

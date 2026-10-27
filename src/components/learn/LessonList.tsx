@@ -17,7 +17,7 @@ export default function LessonList({ parts, current }: { parts: Part[]; current?
       {parts.map((part, i) => (
         <li key={part.id}>
           <h2 className={`flex items-baseline font-semibold ${compact ? "gap-2 text-sm" : "gap-3 text-lg"}`}>
-            <span className={`font-normal tabular-nums text-base-content/50 ${compact ? "text-xs" : "text-sm"}`}>{i + 1}</span>
+            <span className={`font-normal tabular-nums text-base-content/70 ${compact ? "text-xs" : "text-sm"}`}>{i + 1}</span>
             {part.title}
           </h2>
           <ol className={`border-l border-base-300 ${compact ? "mt-1 pl-2" : "mt-2 pl-4"}`}>
@@ -33,7 +33,7 @@ export default function LessonList({ parts, current }: { parts: Part[]; current?
                     className={`-ml-px flex rounded-r-lg border-l-2 pr-2 transition-colors ${compact ? "items-start gap-2 py-1 pl-2" : "items-center gap-3 py-2 pl-3"} hover:bg-base-200 ${isCurrent ? "border-primary bg-primary/5 font-medium" : "border-transparent"}`}
                   >
                     <span
-                      className={`grid shrink-0 place-items-center rounded-full tabular-nums ${compact ? "h-5 w-5 text-[11px]" : "h-6 w-6 text-xs"} ${isDone ? "bg-success text-success-content" : "text-base-content/50"}`}
+                      className={`grid shrink-0 place-items-center rounded-full tabular-nums ${compact ? "h-5 w-5 text-[11px]" : "h-6 w-6 text-xs"} ${isDone ? "bg-success text-success-content" : "text-base-content/70"}`}
                       aria-label={isDone ? "Terminée" : undefined}
                     >
                       {isDone ? "✓" : n}

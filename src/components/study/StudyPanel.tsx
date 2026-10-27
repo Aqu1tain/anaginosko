@@ -60,7 +60,7 @@ export default function StudyPanel({ label, onClose, children }: { label: string
         type="button"
         onClick={onClose}
         aria-label="Fermer"
-        className="btn btn-ghost btn-sm btn-circle absolute right-3 top-3 z-10 text-base-content/70 wide:right-4 wide:top-4"
+        className="btn btn-ghost btn-sm btn-circle absolute right-3 top-3 z-10 text-base-content/80 wide:right-4 wide:top-4"
       >
         <svg width="18" height="18" viewBox="0 0 16 16" fill="none" aria-hidden="true">
           <path d="M3 3l10 10M13 3L3 13" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />

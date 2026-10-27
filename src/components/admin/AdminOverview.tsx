@@ -108,7 +108,7 @@ export default function AdminOverview() {
           <Avatar name={user.displayName} photo={photo} size={48} />
           <div>
             <h1 className="text-3xl font-bold tracking-tight">Bonjour, {user.displayName}</h1>
-            {user.title && <p className="text-sm text-base-content/50">{user.title}</p>}
+            {user.title && <p className="text-sm text-base-content/70">{user.title}</p>}
           </div>
         </div>
         <div className="flex gap-2">
@@ -131,14 +131,14 @@ export default function AdminOverview() {
       <section>
         <h2 className="mb-3 text-lg font-semibold">À traiter</h2>
         {tasks === null ? (
-          <p className="text-sm text-base-content/50">Chargement…</p>
+          <p className="text-sm text-base-content/70">Chargement…</p>
         ) : tasks.length ? (
           <ul className="divide-y divide-base-300 overflow-hidden rounded-box border border-base-300 bg-base-100">
             {tasks.map((t) => (
               <li key={t.label(t.count)}>
                 <Link href={t.href} className="flex items-center justify-between gap-4 px-4 py-3 transition-colors hover:bg-base-200/60">
                   <span className="font-medium">{t.label(t.count)}</span>
-                  <span className="text-base-content/50" aria-hidden="true">
+                  <span className="text-base-content/70" aria-hidden="true">
                     →
                   </span>
                 </Link>
@@ -146,7 +146,7 @@ export default function AdminOverview() {
             ))}
           </ul>
         ) : (
-          <p className="text-sm text-base-content/50">Rien à traiter.</p>
+          <p className="text-sm text-base-content/70">Rien à traiter.</p>
         )}
       </section>
 
@@ -157,7 +157,7 @@ export default function AdminOverview() {
             {tiles.map((t) => (
               <Link key={t.label} href={t.href} className="rounded-box border border-base-300 bg-base-100 p-4 transition-colors hover:border-base-content/20">
                 <span className="block text-3xl font-semibold tabular-nums">{t.value!.toLocaleString("fr-FR")}</span>
-                <span className="mt-1 block text-sm text-base-content/70">{t.label}</span>
+                <span className="mt-1 block text-sm text-base-content/80">{t.label}</span>
               </Link>
             ))}
           </div>

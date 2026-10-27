@@ -44,7 +44,7 @@ function EmbedBlockView({
       <div contentEditable={false} className="my-1">
         <EmbedView src={url} title={title} />
         {editable && (
-          <button type="button" className="link text-xs text-base-content/50" onClick={() => onSet("", "")}>
+          <button type="button" className="link text-xs text-base-content/70" onClick={() => onSet("", "")}>
             Retirer l&apos;intégration
           </button>
         )}
@@ -81,7 +81,7 @@ function EmbedBlockView({
       {error ? (
         <p className="mt-2 text-xs text-error">{error}</p>
       ) : (
-        <p className="mt-2 text-xs text-base-content/50">
+        <p className="mt-2 text-xs text-base-content/70">
           Maps et Datawrapper : lien « Intégrer ».
         </p>
       )}

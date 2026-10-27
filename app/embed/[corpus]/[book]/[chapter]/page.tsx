@@ -21,7 +21,7 @@ function parseRange(v: string | undefined): { vs: number; ve: number } | null {
 
 function Fallback({ note }: { note: string }) {
   return (
-    <div className="mx-auto max-w-2xl p-5 text-sm text-base-content/70">
+    <div className="mx-auto max-w-2xl p-5 text-sm text-base-content/80">
       {note} ·{" "}
       <a href={SITE} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
         anaginosko.fr
@@ -82,7 +82,7 @@ export default async function EmbedPage({
       <div className="mt-3 font-greek text-lg leading-relaxed text-base-content">
         {numbers.map((n) => (
           <p key={n} className="mt-1">
-            <sup className="mr-1 align-super text-xs text-base-content/50">{n}</sup>
+            <sup className="mr-1 align-super text-xs text-base-content/70">{n}</sup>
             {byVerse[n].join(" ")}
           </p>
         ))}
@@ -91,7 +91,7 @@ export default async function EmbedPage({
         href={SITE}
         target="_blank"
         rel="noopener noreferrer"
-        className="mt-4 inline-block text-xs text-base-content/50 hover:text-primary"
+        className="mt-4 inline-block text-xs text-base-content/70 hover:text-primary"
       >
         Lire sur Anaginosko →
       </a>

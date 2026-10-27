@@ -54,7 +54,7 @@ export default function ExerciseView({ exercise }: { exercise: Exercise }) {
       {done && (
         <div className="mt-4">
           {isQuiz && <p className={`font-semibold ${right ? "text-success" : "text-error"}`}>{right ? "Exact." : "Pas tout à fait."}</p>}
-          {explanation && <p className="mt-1 leading-relaxed text-base-content/70">{rich(explanation)}</p>}
+          {explanation && <p className="mt-1 leading-relaxed text-base-content/80">{rich(explanation)}</p>}
         </div>
       )}
     </div>

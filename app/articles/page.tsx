@@ -21,11 +21,11 @@ const dateLabel = (iso: string | null) =>
 
 function AuthorLine({ author, date }: { author: PublicAuthor; date: string | null }) {
   return (
-    <span className="flex items-center gap-2 text-sm text-base-content/70">
+    <span className="flex items-center gap-2 text-sm text-base-content/80">
       <Avatar name={author.name} photo={author.photo} size={26} />
       <span className="min-w-0 truncate">
         {author.name}
-        {date && <span className="text-base-content/50"> · {date}</span>}
+        {date && <span className="text-base-content/70"> · {date}</span>}
       </span>
     </span>
   );
@@ -48,7 +48,7 @@ function FeaturedCard({ a, author }: { a: ArticleSummary; author: PublicAuthor }
       <div className="flex flex-col justify-center p-6">
         <p className="text-xs font-semibold uppercase tracking-wide text-primary/80">{CATEGORY_LABEL[a.category]}</p>
         <h2 className="mt-2 text-2xl font-bold leading-snug group-hover:text-primary">{a.title}</h2>
-        {a.excerpt && <p className="mt-2 line-clamp-3 text-base-content/70">{a.excerpt}</p>}
+        {a.excerpt && <p className="mt-2 line-clamp-3 text-base-content/80">{a.excerpt}</p>}
         <div className="mt-4">
           <AuthorLine author={author} date={dateLabel(a.publishedAt)} />
         </div>
@@ -70,7 +70,7 @@ function ArticleCard({ a, author }: { a: ArticleSummary; author: PublicAuthor })
       <div className="flex flex-1 flex-col p-5">
         <p className="text-xs font-semibold uppercase tracking-wide text-primary/80">{CATEGORY_LABEL[a.category]}</p>
         <h2 className="mt-1 text-lg font-semibold leading-snug group-hover:text-primary">{a.title}</h2>
-        {a.excerpt && <p className="mt-2 line-clamp-2 text-sm text-base-content/70">{a.excerpt}</p>}
+        {a.excerpt && <p className="mt-2 line-clamp-2 text-sm text-base-content/80">{a.excerpt}</p>}
         <div className="mt-auto pt-3">
           <AuthorLine author={author} date={dateLabel(a.publishedAt)} />
         </div>
@@ -110,7 +110,7 @@ export default async function ArticlesPage({ searchParams }: { searchParams: Pro
             className={`rounded-full border px-3.5 py-1.5 text-sm transition-colors ${
               active === t.key
                 ? "border-primary bg-primary text-primary-content"
-                : "border-base-300 text-base-content/70 hover:bg-base-200"
+                : "border-base-300 text-base-content/80 hover:bg-base-200"
             }`}
           >
             {t.label}
@@ -119,7 +119,7 @@ export default async function ArticlesPage({ searchParams }: { searchParams: Pro
       </div>
 
       {!featured ? (
-        <p className="mt-8 text-sm text-base-content/50">Aucun article publié.</p>
+        <p className="mt-8 text-sm text-base-content/70">Aucun article publié.</p>
       ) : (
         <>
           <div className="mt-6">

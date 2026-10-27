@@ -19,12 +19,12 @@ export function NtBrowse({ onOpen }: { onOpen: (book: string, ch: number) => voi
   const [err, setErr] = useState<string | null>(null);
   useEffect(() => { arb<{ books: NtBook[] }>("/nt/books").then((d) => setBooks(d.books)).catch((e) => setErr(arbErrors(e).join(" "))); }, []);
   if (err) return <p className="mt-6 text-sm text-error">{err}</p>;
-  if (!books) return <p className="mt-6 text-sm text-base-content/50">Chargement…</p>;
+  if (!books) return <p className="mt-6 text-sm text-base-content/70">Chargement…</p>;
   const total = books.reduce((s, b) => s + b.chapters.reduce((t, c) => t + c.maison, 0), 0);
   return (
     <div className="mt-4 grid gap-4">
       {total > 0 && (
-        <p className="text-sm text-base-content/70">
+        <p className="text-sm text-base-content/80">
           <span className="font-semibold text-secondary">{total}</span> versets traduits maison.
         </p>
       )}
@@ -123,7 +123,7 @@ export function NtChapterEditor({ book, ch, onNavigate, onClose }: { book: strin
         </div>
 
         {err && <div className="mt-3 space-y-0.5 text-sm text-error">{err.map((e, i) => <p key={i}>{e}</p>)}</div>}
-        {!data && !err && <p className="mt-6 text-sm text-base-content/50">Chargement…</p>}
+        {!data && !err && <p className="mt-6 text-sm text-base-content/70">Chargement…</p>}
 
         <div className="mt-3 grid gap-1.5">
           {data?.verses.map((v) => {
@@ -132,13 +132,13 @@ export function NtChapterEditor({ book, ch, onNavigate, onClose }: { book: strin
             return (
               <div key={v.ref} className={`grid gap-3 rounded-box border p-2.5 sm:grid-cols-2 ${changed ? "border-primary bg-primary/5" : current ? "border-secondary/40" : "border-base-200"}`}>
                 <div className="min-w-0">
-                  <span className="text-xs font-semibold text-base-content/50">v.{v.v}</span>
+                  <span className="text-xs font-semibold text-base-content/70">v.{v.v}</span>
                   <p className="font-greek mt-0.5 leading-snug">{v.greek}</p>
                 </div>
                 <div className="min-w-0 border-t border-base-200 pt-2 sm:border-l sm:border-t-0 sm:pl-3 sm:pt-0">
-                  <span className="text-xs uppercase tracking-wider text-base-content/50">{current ? `maison${v.by && !changed ? ` · ${who(v.by)}` : ""}` : "néo-Crampon"}</span>
-                  <p className={`mt-0.5 text-sm leading-relaxed ${!(current ?? v.crampon) ? "italic text-base-content/50" : ""}`}>{current ?? v.crampon ?? "Sans traduction française"}</p>
-                  {current && v.crampon && <p className="mt-1 text-xs leading-relaxed text-base-content/50">Crampon : {v.crampon}</p>}
+                  <span className="text-xs uppercase tracking-wider text-base-content/70">{current ? `maison${v.by && !changed ? ` · ${who(v.by)}` : ""}` : "néo-Crampon"}</span>
+                  <p className={`mt-0.5 text-sm leading-relaxed ${!(current ?? v.crampon) ? "italic text-base-content/70" : ""}`}>{current ?? v.crampon ?? "Sans traduction française"}</p>
+                  {current && v.crampon && <p className="mt-1 text-xs leading-relaxed text-base-content/70">Crampon : {v.crampon}</p>}
                   <div className="mt-1.5 flex flex-wrap items-center gap-1">
                     <MaisonInline current={current ?? v.crampon ?? ""} original={v.crampon} originalLabel="Crampon" onSet={(t) => set(v, t)} />
                     {current && <button className="btn btn-ghost btn-xs" onClick={() => set(v, null)}>Revenir au Crampon</button>}
@@ -149,8 +149,8 @@ export function NtChapterEditor({ book, ch, onNavigate, onClose }: { book: strin
                     <ol className="mt-1.5 grid gap-1 border-l-2 border-base-300 pl-2 text-xs">
                       {history[v.ref].map((r, k) => (
                         <li key={k} className="flex flex-wrap items-baseline gap-x-2">
-                          <span className="text-base-content/50">{when(r.at)} · {who(r.by)}</span>
-                          <span className={`min-w-0 flex-1 ${r.text ? "" : "italic text-base-content/50"}`}>{r.text ?? "Retour au Crampon"}</span>
+                          <span className="text-base-content/70">{when(r.at)} · {who(r.by)}</span>
+                          <span className={`min-w-0 flex-1 ${r.text ? "" : "italic text-base-content/70"}`}>{r.text ?? "Retour au Crampon"}</span>
                           {k > 0 && <button className="btn btn-ghost btn-xs" onClick={() => set(v, r.text)}>Reprendre</button>}
                         </li>
                       ))}

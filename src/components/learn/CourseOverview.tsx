@@ -12,8 +12,8 @@ export default function CourseOverview({ course: c, hrefOf }: { course: CourseVi
     <>
       <header className="max-w-2xl">
         <h1 className="text-3xl font-bold tracking-tight">{c.title}</h1>
-        {c.summary && <p className="mt-3 text-lg leading-relaxed text-base-content/70">{c.summary}</p>}
-        <p className="mt-4 text-sm text-base-content/50">
+        {c.summary && <p className="mt-3 text-lg leading-relaxed text-base-content/80">{c.summary}</p>}
+        <p className="mt-4 text-sm text-base-content/70">
           {COURSE_LEVELS[c.level]} · {c.parts.length} partie{c.parts.length > 1 ? "s" : ""} · {c.lessonCount} leçon{c.lessonCount > 1 ? "s" : ""}
         </p>
       </header>

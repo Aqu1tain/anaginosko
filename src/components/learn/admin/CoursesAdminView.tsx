@@ -41,7 +41,7 @@ export default function CoursesAdminView() {
   if (!allowed)
     return (
       <div className="py-16 text-center">
-        <p className="text-base-content/70">Réservé à l’équipe des cours.</p>
+        <p className="text-base-content/80">Réservé à l’équipe des cours.</p>
         <a href="/login?next=/admin/cours" className="link link-primary mt-3 inline-block">Se connecter</a>
       </div>
     );
@@ -70,13 +70,13 @@ export default function CoursesAdminView() {
       {bundles.some((b) => !b.imported) && (
         <section className="mt-6 rounded-box border border-primary/30 bg-primary/5 p-4">
           <h2 className="font-semibold">À importer</h2>
-          <p className="mt-1 text-sm text-base-content/70">Créés en brouillon, à votre nom.</p>
+          <p className="mt-1 text-sm text-base-content/80">Créés en brouillon, à votre nom.</p>
           <ul className="mt-3 grid gap-2">
             {bundles.filter((b) => !b.imported).map((b) => (
               <li key={b.slug} className="flex items-center justify-between gap-3 rounded-lg bg-base-100 px-3 py-2">
                 <span className="text-sm">
                   <span className="font-medium">{b.title}</span>
-                  <span className="text-base-content/50"> · {b.lessons} leçons</span>
+                  <span className="text-base-content/70"> · {b.lessons} leçons</span>
                 </span>
                 <button type="button" onClick={() => runImport(b.slug)} disabled={importing !== null} className="btn btn-outline btn-sm">
                   {importing === b.slug ? "Import…" : "Importer"}
@@ -95,7 +95,7 @@ export default function CoursesAdminView() {
               <Link href={`/admin/cours/${c.id}`} className="flex items-center justify-between gap-3 px-4 py-3 transition-colors hover:bg-base-200/60">
                 <span>
                   <span className="font-medium">{c.title}</span>
-                  <span className="block text-xs text-base-content/50">
+                  <span className="block text-xs text-base-content/70">
                     {COURSE_LEVELS[c.level]} · {c.sections.length} partie{c.sections.length > 1 ? "s" : ""} · {n} leçon{n > 1 ? "s" : ""}
                   </span>
                 </span>
@@ -106,7 +106,7 @@ export default function CoursesAdminView() {
             </li>
           );
         })}
-        {courses?.length === 0 && <li className="px-4 py-6 text-center text-sm text-base-content/50">Aucun cours.</li>}
+        {courses?.length === 0 && <li className="px-4 py-6 text-center text-sm text-base-content/70">Aucun cours.</li>}
       </ul>
     </div>
   );

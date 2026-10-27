@@ -81,7 +81,7 @@ function SavedKey({ k, onChanged }: { k: KeyInfo; onChanged: () => void }) {
   return (
     <li className="flex flex-wrap items-center gap-3 py-2.5">
       <span className="w-40 font-medium">{providerLabel(k.provider)}</span>
-      <span className="font-mono text-xs text-base-content/50">{k.keyHint}</span>
+      <span className="font-mono text-xs text-base-content/70">{k.keyHint}</span>
       <span className="ml-auto flex gap-1">
         <button type="button" className="btn btn-ghost btn-xs" onClick={() => setEditing(true)}>
           Remplacer
@@ -116,7 +116,7 @@ export default function AssistantSettings({ onChanged }: { onChanged?: () => voi
     fetchUsage().then(setUsage).catch(() => {});
   }, []);
 
-  if (!settings) return error ? <p className="text-sm text-error">{error}</p> : <p className="text-sm text-base-content/50">Chargement…</p>;
+  if (!settings) return error ? <p className="text-sm text-error">{error}</p> : <p className="text-sm text-base-content/70">Chargement…</p>;
   const keys = settings.keys;
   const free = PROVIDERS.map((p) => p.id).filter((id) => !keys.some((k) => k.provider === id));
   const showForm = free.length > 0 && (adding || !keys.length);
@@ -125,7 +125,7 @@ export default function AssistantSettings({ onChanged }: { onChanged?: () => voi
     <div className="space-y-8 text-sm">
       <div>
         <h3 className="font-semibold">Clés d’API</h3>
-        <p className="mt-0.5 text-xs text-base-content/50">Une par fournisseur, vérifiée puis chiffrée sur le serveur.</p>
+        <p className="mt-0.5 text-xs text-base-content/70">Une par fournisseur, vérifiée puis chiffrée sur le serveur.</p>
         {keys.length > 0 && (
           <ul className="mt-2 divide-y divide-base-300 border-y border-base-300">
             {keys.map((k) => (
@@ -158,11 +158,11 @@ export default function AssistantSettings({ onChanged }: { onChanged?: () => voi
         <div className="space-y-4">
           <h3 className="font-semibold">Modèles</h3>
           <div>
-            <p className="mb-1 text-xs text-base-content/50">Analyse du grec</p>
+            <p className="mb-1 text-xs text-base-content/70">Analyse du grec</p>
             <ModelPicker keys={keys} value={settings.analysis} onChange={(p) => choose("analysis", p)} />
           </div>
           <div>
-            <p className="mb-1 text-xs text-base-content/50">Rédaction, relecture et chat</p>
+            <p className="mb-1 text-xs text-base-content/70">Rédaction, relecture et chat</p>
             <ModelPicker keys={keys} value={settings.draft} onChange={(p) => choose("draft", p)} />
           </div>
           {error && <p className="text-error">{error}</p>}
@@ -172,9 +172,9 @@ export default function AssistantSettings({ onChanged }: { onChanged?: () => voi
       {usage && usage.models.length > 0 && (
         <div>
           <h3 className="font-semibold">Consommation sur 30 jours</h3>
-          <p className="mt-0.5 text-xs text-base-content/50">En jetons.</p>
+          <p className="mt-0.5 text-xs text-base-content/70">En jetons.</p>
           <table className="mt-2 w-full">
-            <thead className="text-left text-xs text-base-content/50">
+            <thead className="text-left text-xs text-base-content/70">
               <tr>
                 <th className="pb-2 font-medium">Modèle</th>
                 <th className="pb-2 text-right font-medium">Appels</th>

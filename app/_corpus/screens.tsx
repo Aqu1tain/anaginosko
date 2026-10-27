@@ -89,7 +89,7 @@ export async function TocScreen({ corpus }: { corpus: CorpusConfig }) {
       <BreadcrumbJsonLd items={[{ name: "Accueil", path: "/" }, { name: corpus.label, path: corpus.routePrefix }]} />
       <Breadcrumb items={[{ label: "Accueil", href: "/", home: true }, { label: corpus.label }]} />
       <h1 className="text-3xl font-bold tracking-tight">{corpus.label}</h1>
-      <p className="mt-1 text-sm text-base-content/70">
+      <p className="mt-1 text-sm text-base-content/80">
         {books.length} livres · texte grec {corpus.sourceLabel}
       </p>
 
@@ -113,7 +113,7 @@ export async function TocScreen({ corpus }: { corpus: CorpusConfig }) {
                   className="flex items-center justify-between gap-2 rounded-box border border-base-300 bg-base-100 px-3.5 py-2.5 transition-colors hover:border-primary/40"
                 >
                   <span className="min-w-0 truncate font-medium">{b.name}</span>
-                  <span className="shrink-0 text-xs tabular-nums text-base-content/50">{b.chapters}</span>
+                  <span className="shrink-0 text-xs tabular-nums text-base-content/70">{b.chapters}</span>
                 </Link>
               );
             })}
@@ -162,7 +162,7 @@ export async function BookScreen({ corpus, params }: { corpus: CorpusConfig; par
         <h1 className="text-3xl font-bold tracking-tight">{b.name}</h1>
         <EditBookIntro corpus={corpus.id} book={book} />
       </div>
-      <p className="mt-1 mb-6 text-sm text-base-content/70">
+      <p className="mt-1 mb-6 text-sm text-base-content/80">
         {b.chapters} chapitre{b.chapters > 1 ? "s" : ""}
       </p>
       {intro && (

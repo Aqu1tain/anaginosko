@@ -23,7 +23,7 @@ const textOf = (m: UIMessage) => m.parts.map((p) => (p.type === "text" ? p.text 
 function Actions({ message, last, onRegenerate }: { message: UIMessage; last: boolean; onRegenerate: () => void }) {
   const [copied, setCopied] = useState(false);
   return (
-    <div className="mt-2 flex gap-1 text-xs text-base-content/50">
+    <div className="mt-2 flex gap-1 text-xs text-base-content/70">
       <button
         type="button"
         className="rounded-md px-2 py-1 hover:bg-base-200 hover:text-base-content"
@@ -95,7 +95,7 @@ export default function Conversation({
         {composer}
         <div className="flex flex-wrap justify-center gap-2">
           {SUGGESTIONS.map((s) => (
-            <button key={s} type="button" onClick={() => send(s)} className="rounded-full border border-base-300 px-3.5 py-1.5 text-sm text-base-content/70 hover:bg-base-200 hover:text-base-content">
+            <button key={s} type="button" onClick={() => send(s)} className="rounded-full border border-base-300 px-3.5 py-1.5 text-sm text-base-content/80 hover:bg-base-200 hover:text-base-content">
               {s}
             </button>
           ))}

@@ -13,7 +13,7 @@ function Section({ title, desc, children }: { title: string; desc?: string; chil
   return (
     <section>
       <h2 className="text-lg font-semibold">{title}</h2>
-      {desc && <p className="mt-1 text-sm text-base-content/70">{desc}</p>}
+      {desc && <p className="mt-1 text-sm text-base-content/80">{desc}</p>}
       <div className="mt-4 space-y-4">{children}</div>
     </section>
   );
@@ -24,7 +24,7 @@ function Field({ label, hint, children }: { label: string; hint?: string; childr
     <div>
       <label className="text-sm font-medium">{label}</label>
       <div className="mt-1">{children}</div>
-      {hint && <p className="mt-1 text-xs text-base-content/50">{hint}</p>}
+      {hint && <p className="mt-1 text-xs text-base-content/70">{hint}</p>}
     </div>
   );
 }
@@ -49,12 +49,12 @@ export default function ProfileEditor() {
   if (!user)
     return (
       <div className="py-16 text-center">
-        <p className="text-base-content/70">Connectez-vous pour modifier votre profil.</p>
+        <p className="text-base-content/80">Connectez-vous pour modifier votre profil.</p>
         <a href="/login" className="btn btn-primary btn-sm mt-4">Se connecter</a>
       </div>
     );
   if (error && !profile) return <p className="mt-6 text-sm text-error">{error}</p>;
-  if (!profile) return <div className="py-12 text-center text-sm text-base-content/50">Chargement…</div>;
+  if (!profile) return <div className="py-12 text-center text-sm text-base-content/70">Chargement…</div>;
 
   const set = (patch: Partial<Profile>) => setProfile((p) => (p ? { ...p, ...patch } : p));
 
@@ -153,7 +153,7 @@ export default function ProfileEditor() {
         <Section title="Page publique">
           <Field label="Adresse de la page">
             <label className="input input-bordered flex w-full items-center gap-0.5 pl-3">
-              <span className="whitespace-nowrap text-sm text-base-content/40">/contributeurs/</span>
+              <span className="whitespace-nowrap text-sm text-base-content/70">/contributeurs/</span>
               <input
                 value={profile.slug}
                 onChange={(e) => set({ slug: e.target.value })}

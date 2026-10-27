@@ -41,11 +41,11 @@ export default function AnnotationMarker({
           <span className="truncate">{a.source}</span>
         </a>
       ) : (
-        <span className="mt-2 block text-xs italic text-base-content/70">{a.source}</span>
+        <span className="mt-2 block text-xs italic text-base-content/80">{a.source}</span>
       )}
       <span className="mt-2 flex items-center justify-between gap-2">
         {a.author ? (
-          <span className="text-xs text-base-content/50">
+          <span className="text-xs text-base-content/70">
             <span className="font-greek">{a.author.displayName}</span>
           </span>
         ) : (
@@ -59,7 +59,7 @@ export default function AnnotationMarker({
                 close();
                 onReport(a);
               }}
-              className="btn btn-ghost btn-xs text-base-content/70"
+              className="btn btn-ghost btn-xs text-base-content/80"
             >
               Signaler
             </button>

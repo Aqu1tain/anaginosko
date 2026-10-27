@@ -79,7 +79,7 @@ export default function ArticlesAdminView() {
   if (!ready) return null;
   if (!canAccess)
     return (
-      <div className="py-20 text-center text-base-content/70">
+      <div className="py-20 text-center text-base-content/80">
         <p>Réservé aux contributeurs.</p>
         <a href="/login" className="link link-primary mt-3 inline-block">
           Se connecter
@@ -124,7 +124,7 @@ export default function ArticlesAdminView() {
         ].map(([key, label]) => (
           <button
             key={key}
-            className={`btn btn-ghost btn-sm ${scope === key ? "bg-base-200" : "text-base-content/70"}`}
+            className={`btn btn-ghost btn-sm ${scope === key ? "bg-base-200" : "text-base-content/80"}`}
             aria-pressed={scope === key}
             onClick={() => setScope(key)}
           >
@@ -140,7 +140,7 @@ export default function ArticlesAdminView() {
             className={`rounded-full border px-3.5 py-1.5 text-sm transition-colors ${
               filter === f.key
                 ? "border-primary bg-primary text-primary-content"
-                : "border-base-300 text-base-content/70 hover:bg-base-200"
+                : "border-base-300 text-base-content/80 hover:bg-base-200"
             }`}
           >
             {f.label}
@@ -153,7 +153,7 @@ export default function ArticlesAdminView() {
 
       {shown.length === 0 ? (
         <div className="mt-6">
-          <p className="text-sm text-base-content/50">Aucun article.</p>
+          <p className="text-sm text-base-content/70">Aucun article.</p>
           {isEditor && (
             <button
               className="btn btn-outline btn-sm mt-3"
@@ -179,7 +179,7 @@ export default function ArticlesAdminView() {
                   <p className="truncate font-semibold group-hover:text-primary">
                     {a.title || "Sans titre"}
                   </p>
-                  <p className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-base-content/50">
+                  <p className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-base-content/70">
                     <span>{CATEGORY_LABEL[a.category]}</span>
                     <span aria-hidden>·</span>
                     <span>{STATUS_LABEL[a.status]}</span>
@@ -210,7 +210,7 @@ export default function ArticlesAdminView() {
                   </span>
                 )}
                 <svg
-                  className="shrink-0 text-base-content/50 transition-transform group-hover:translate-x-0.5"
+                  className="shrink-0 text-base-content/70 transition-transform group-hover:translate-x-0.5"
                   width="18"
                   height="18"
                   viewBox="0 0 24 24"

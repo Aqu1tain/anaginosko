@@ -51,9 +51,9 @@ export default async function ContributorPage({ params }: { params: Promise<{ sl
         <Avatar name={p.displayName} photo={p.photo} size={112} />
         <h1 className="mt-4 text-3xl font-bold tracking-tight">{p.displayName}</h1>
         {p.fullName && p.fullName !== p.displayName && (
-          <p className="mt-1 text-base-content/70">{p.fullName}</p>
+          <p className="mt-1 text-base-content/80">{p.fullName}</p>
         )}
-        {p.bio && <p className="mt-3 max-w-prose whitespace-pre-wrap text-base-content/70">{p.bio}</p>}
+        {p.bio && <p className="mt-3 max-w-prose whitespace-pre-wrap text-base-content/80">{p.bio}</p>}
         {p.links.length > 0 && (
           <ul className="mt-4 flex flex-wrap justify-center gap-2">
             {p.links.map((l, i) => (
@@ -72,7 +72,7 @@ export default async function ContributorPage({ params }: { params: Promise<{ sl
           Articles{articles.length > 0 ? ` (${articles.length})` : ""}
         </h2>
         {articles.length === 0 ? (
-          <p className="mt-3 text-sm text-base-content/50">Aucun article publié.</p>
+          <p className="mt-3 text-sm text-base-content/70">Aucun article publié.</p>
         ) : (
           <ul className="mt-3 space-y-3">
             {articles.map((a) => (
@@ -81,11 +81,11 @@ export default async function ContributorPage({ params }: { params: Promise<{ sl
                   <div className="flex items-center gap-2 text-xs">
                     <span className="font-semibold uppercase tracking-wide text-primary/80">{CATEGORY_LABEL[a.category]}</span>
                     {a.publishedAt && (
-                      <time className="text-base-content/50">{new Date(a.publishedAt).toLocaleDateString("fr-FR", { year: "numeric", month: "long", day: "numeric" })}</time>
+                      <time className="text-base-content/70">{new Date(a.publishedAt).toLocaleDateString("fr-FR", { year: "numeric", month: "long", day: "numeric" })}</time>
                     )}
                   </div>
                   <h3 className="mt-1 font-semibold group-hover:text-primary">{a.title}</h3>
-                  {a.excerpt && <p className="mt-1 line-clamp-2 text-sm text-base-content/70">{a.excerpt}</p>}
+                  {a.excerpt && <p className="mt-1 line-clamp-2 text-sm text-base-content/80">{a.excerpt}</p>}
                 </Link>
               </li>
             ))}

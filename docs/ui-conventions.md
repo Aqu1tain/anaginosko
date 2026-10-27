@@ -23,13 +23,15 @@ chaque chose, une hiérarchie claire, des textes courts.
 - Titre de section (h2) : `text-lg font-semibold`.
 - Sous-titre (h3) : `font-semibold`.
 - Étiquette de groupe dans un panneau dense : `text-xs font-semibold uppercase
-  tracking-wider text-base-content/50`.
+  tracking-wider text-base-content/70`.
 
 ## Couleurs du texte
 
-Trois niveaux seulement : `text-base-content` (principal), `text-base-content/70`
-(secondaire), `text-base-content/50` (discret : légendes, métadonnées, vides). Le rouge,
-le vert et l'orange sont réservés aux états (erreur, succès, attention).
+Trois niveaux seulement : `text-base-content` (principal), `text-base-content/80`
+(secondaire), `text-base-content/70` (discret : légendes, métadonnées, vides). En dessous
+de `/70`, le texte n'atteint plus le contraste minimal (4,5:1) sur fond clair : ne pas
+descendre plus bas, sauf pour un élément purement décoratif. Le rouge, le vert et
+l'orange sont réservés aux états (erreur, succès, attention).
 
 ## Boutons
 

@@ -19,7 +19,7 @@ function RuleRow({ rule, onChanged }: { rule: Rule; onChanged: () => void }) {
   const proposed = rule.status === "proposed";
   return (
     <li className={`grid gap-2 py-3 sm:grid-cols-[9rem_minmax(0,1fr)_auto] sm:gap-4 ${proposed ? "rounded-box bg-warning/10 px-3" : ""}`}>
-      <div className="text-xs text-base-content/50">
+      <div className="text-xs text-base-content/70">
         <span className="font-semibold text-base-content">R{rule.id}</span>
         {rule.lemma && <span className="ml-1.5 font-greek text-sm text-base-content">{rule.lemma}</span>}
         <span className="block">{scope(rule) || "Partout"}</span>
@@ -87,14 +87,14 @@ export default function Charter({ corpus }: { corpus: WorkCorpus }) {
         }}
       >
         <label className="text-sm">
-          <span className="mb-1 block text-xs text-base-content/70">Type</span>
+          <span className="mb-1 block text-xs text-base-content/80">Type</span>
           <select value={form.kind} onChange={(e) => set({ kind: e.target.value as Rule["kind"] })} className="select select-bordered select-sm w-full">
             <option value="rule">Règle</option>
             <option value="style">Style d’un livre</option>
           </select>
         </label>
         <label className="text-sm">
-          <span className="mb-1 block text-xs text-base-content/70">Corpus</span>
+          <span className="mb-1 block text-xs text-base-content/80">Corpus</span>
           <select value={form.corpus ?? ""} onChange={(e) => set({ corpus: (e.target.value || null) as WorkCorpus | null, book: null })} className="select select-bordered select-sm w-full">
             <option value="">Tous</option>
             <option value="nt">Nouveau Testament</option>
@@ -102,7 +102,7 @@ export default function Charter({ corpus }: { corpus: WorkCorpus }) {
           </select>
         </label>
         <label className="text-sm">
-          <span className="mb-1 block text-xs text-base-content/70">Livre</span>
+          <span className="mb-1 block text-xs text-base-content/80">Livre</span>
           <select value={form.book ?? ""} onChange={(e) => set({ book: e.target.value || null })} disabled={!form.corpus} className="select select-bordered select-sm w-full">
             <option value="">Tous les livres</option>
             {form.corpus &&
@@ -114,11 +114,11 @@ export default function Charter({ corpus }: { corpus: WorkCorpus }) {
           </select>
         </label>
         <label className="text-sm">
-          <span className="mb-1 block text-xs text-base-content/70">Lemme</span>
+          <span className="mb-1 block text-xs text-base-content/80">Lemme</span>
           <input value={form.lemma ?? ""} onChange={(e) => set({ lemma: e.target.value })} disabled={form.kind === "style"} className="input input-bordered input-sm w-full font-greek" placeholder="καί" />
         </label>
         <label className="text-sm sm:col-span-3">
-          <span className="mb-1 block text-xs text-base-content/70">Règle</span>
+          <span className="mb-1 block text-xs text-base-content/80">Règle</span>
           <textarea
             value={form.text}
             onChange={(e) => set({ text: e.target.value })}
@@ -137,7 +137,7 @@ export default function Charter({ corpus }: { corpus: WorkCorpus }) {
       {error && <p className="text-sm text-error">{error}</p>}
 
       {rules === null ? (
-        <p className="text-sm text-base-content/50">Chargement…</p>
+        <p className="text-sm text-base-content/70">Chargement…</p>
       ) : (
         <>
           {proposed.length > 0 && (
@@ -159,7 +159,7 @@ export default function Charter({ corpus }: { corpus: WorkCorpus }) {
                 ))}
               </ul>
             ) : (
-              <p className="rounded-box border border-dashed border-base-300 px-4 py-8 text-center text-sm text-base-content/50">
+              <p className="rounded-box border border-dashed border-base-300 px-4 py-8 text-center text-sm text-base-content/70">
                 Aucune règle.
               </p>
             )}

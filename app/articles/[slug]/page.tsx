@@ -79,10 +79,10 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
   return (
     <article className="mx-auto max-w-3xl pb-12 pt-6">
       <JsonLd data={jsonLd} />
-      <Link href="/articles" className="link text-sm text-base-content/70">← Articles</Link>
+      <Link href="/articles" className="link text-sm text-base-content/80">← Articles</Link>
       <p className="mt-4 text-xs font-semibold uppercase tracking-wide text-primary/80">{CATEGORY_LABEL[a.category]}</p>
       <h1 className="mt-1 text-3xl font-bold leading-tight sm:text-4xl">{a.title}</h1>
-      {a.excerpt && <p className="mt-3 max-w-prose text-lg leading-relaxed text-base-content/70">{a.excerpt}</p>}
+      {a.excerpt && <p className="mt-3 max-w-prose text-lg leading-relaxed text-base-content/80">{a.excerpt}</p>}
 
       <div className="mt-6 flex items-center gap-3">
         <Avatar name={author.name} photo={author.photo} size={44} />
@@ -94,7 +94,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
           ) : (
             <span className="font-medium">{author.name}</span>
           )}
-          {dateLabel && <p className="text-xs text-base-content/50">{dateLabel}</p>}
+          {dateLabel && <p className="text-xs text-base-content/70">{dateLabel}</p>}
         </div>
         <div className="ml-auto shrink-0">
           <ShareArticle title={a.title} />
@@ -118,7 +118,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
             <Avatar name={author.name} photo={author.photo} size={52} />
             <div>
               <p className="font-semibold group-hover:text-primary">{author.name}</p>
-              <p className="text-sm text-base-content/50">Voir le profil</p>
+              <p className="text-sm text-base-content/70">Voir le profil</p>
             </div>
           </Link>
         ) : (

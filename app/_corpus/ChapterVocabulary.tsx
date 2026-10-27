@@ -20,7 +20,7 @@ export default async function ChapterVocabulary({ text, corpus, label }: { text:
       <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 font-semibold">
         <span>
           Vocabulaire de {label}{" "}
-          <span className="font-normal text-base-content/50">({words.length} mots)</span>
+          <span className="font-normal text-base-content/70">({words.length} mots)</span>
         </span>
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="transition-transform group-open:rotate-180">
           <path d="m6 9 6 6 6-6" />
@@ -34,7 +34,7 @@ export default async function ChapterVocabulary({ text, corpus, label }: { text:
               <Link href={`${corpus.concordanceBase}/${encodeURIComponent(lemma)}`} lang="grc" className="font-greek text-lg hover:text-primary">
                 {lemma}
               </Link>
-              <span className="shrink-0 text-xs text-base-content/50">
+              <span className="shrink-0 text-xs text-base-content/70">
                 {entry.nature.toLowerCase()} · {n} ici, {entry.count.toLocaleString("fr-FR")} en tout
               </span>
             </li>

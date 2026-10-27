@@ -45,7 +45,7 @@ export default function ModelPicker({
   onChange: (pick: ModelPick) => void;
   pill?: boolean;
 }) {
-  const field = pill ? "select select-ghost select-xs w-auto rounded-full font-medium text-base-content/70" : "select select-bordered select-sm";
+  const field = pill ? "select select-ghost select-xs w-auto rounded-full font-medium text-base-content/80" : "select select-bordered select-sm";
   const lists = useCatalogs(keys);
   const effort = value?.effort ?? "provider-default";
   const selected = value ? `${value.provider}|${value.model}` : "";

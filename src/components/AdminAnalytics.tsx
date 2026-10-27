@@ -178,7 +178,7 @@ function ChartTooltip({ active, payload, label, unit }: TipProps) {
   return (
     <div className="rounded-lg border border-base-300 bg-base-100 px-2.5 py-1.5 text-xs shadow-lg">
       {label != null && <div className="font-medium">{label}</div>}
-      <div className="text-base-content/70">
+      <div className="text-base-content/80">
         <span className="font-semibold text-base-content">{payload[0].value}</span> {text}
       </div>
     </div>
@@ -202,7 +202,7 @@ function ChartCard({
       <div className="mb-3 flex flex-wrap items-start justify-between gap-3">
         <div>
           <h2 className="font-semibold">{title}</h2>
-          {subtitle && <p className="mt-1 text-xs text-base-content/50">{subtitle}</p>}
+          {subtitle && <p className="mt-1 text-xs text-base-content/70">{subtitle}</p>}
         </div>
         {controls}
       </div>
@@ -326,7 +326,7 @@ function ViewsChart({
   ));
 
   return (
-    <div className="relative h-60 text-base-content/50">
+    <div className="relative h-60 text-base-content/70">
       <ResponsiveContainer width="100%" height="100%">
         {type === "bar" ? (
           <BarChart {...common}>
@@ -388,7 +388,7 @@ function RankBars({
   labelWidth?: number;
 }) {
   return (
-    <div className="text-base-content/50" style={{ height: Math.max(120, data.length * 34) }}>
+    <div className="text-base-content/70" style={{ height: Math.max(120, data.length * 34) }}>
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data} layout="vertical" margin={{ top: 0, right: 12, left: 0, bottom: 0 }}>
           <CartesianGrid stroke={C.grid} strokeDasharray="3 3" horizontal={false} />
@@ -425,7 +425,7 @@ function PageList({ pages }: { pages: NonNullable<MatomoAnalytics["topPages"]> }
             <a href={p.label} target="_blank" rel="noreferrer" title={p.label} className="link-hover truncate">
               {p.label}
             </a>
-            <span className="shrink-0 tabular-nums text-base-content/70">
+            <span className="shrink-0 tabular-nums text-base-content/80">
               <span className="font-semibold text-base-content">{fmt(p.pageviews)}</span>{" "}
               {plural(p.pageviews, "vue")} · {fmt(p.visits)} {plural(p.visits, "visite")}
             </span>
@@ -448,7 +448,7 @@ function AiReferrals({
     <>
       <p className="flex flex-wrap items-baseline gap-x-2">
         <span className="text-3xl font-semibold tabular-nums">{fmt(data.total)}</span>
-        <span className="text-xs text-base-content/70">
+        <span className="text-xs text-base-content/80">
           {plural(data.total, "visite")} sur la période
           {share != null && data.total > 0 && `, soit ${fmt(share, 1)}${NBSP}% des visites`}
         </span>
@@ -458,7 +458,7 @@ function AiReferrals({
           <RankBars data={data.sources} color={C.primary} labelWidth={100} />
         </div>
       ) : (
-        <p className="mt-2 text-sm text-base-content/70">
+        <p className="mt-2 text-sm text-base-content/80">
           Aucune visite sur la période.
         </p>
       )}
@@ -469,12 +469,12 @@ function AiReferrals({
 // Requêtes de conteneur : 6 tuiles par ligne en pleine largeur, 3 puis 2 quand la place manque.
 const KPI_GRID = "grid grid-cols-2 gap-3 @xl:grid-cols-3 @4xl:grid-cols-6";
 
-const TONE = { good: "text-success", bad: "text-error", flat: "text-base-content/50" } as const;
+const TONE = { good: "text-success", bad: "text-error", flat: "text-base-content/70" } as const;
 
 function KpiTile({ kpi, compare }: { kpi: Kpi; compare: string }) {
   return (
     <div className="rounded-box border border-base-300 bg-base-100 p-3" title={kpi.help}>
-      <div className="flex items-center gap-1 text-xs text-base-content/70">
+      <div className="flex items-center gap-1 text-xs text-base-content/80">
         {kpi.label}
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true" className="opacity-60">
           <circle cx="12" cy="12" r="9" />
@@ -486,10 +486,10 @@ function KpiTile({ kpi, compare }: { kpi: Kpi; compare: string }) {
         {kpi.trend ? (
           <>
             <span className={`font-medium ${TONE[kpi.trend.tone]}`}>{kpi.trend.text}</span>{" "}
-            <span className="text-base-content/50">{compare}</span>
+            <span className="text-base-content/70">{compare}</span>
           </>
         ) : (
-          <span className="text-base-content/50">{kpi.note ?? "pas de comparaison"}</span>
+          <span className="text-base-content/70">{kpi.note ?? "pas de comparaison"}</span>
         )}
       </div>
     </div>
@@ -500,14 +500,14 @@ function Glossary({ kpis }: { kpis: Kpi[] }) {
   const entries = [...kpis.map((k) => ({ label: k.label, help: k.help })), { label: "Lectures de textes", help: HELP.readings }];
   return (
     <details className="rounded-box bg-base-200/60 px-3 py-2 text-xs">
-      <summary className="cursor-pointer select-none font-medium text-base-content/70">
+      <summary className="cursor-pointer select-none font-medium text-base-content/80">
         Que signifient ces chiffres ?
       </summary>
       <dl className="mt-2 grid gap-x-6 gap-y-2 sm:grid-cols-2">
         {entries.map((e) => (
           <div key={e.label}>
             <dt className="font-medium">{e.label}</dt>
-            <dd className="text-base-content/70">{e.help}</dd>
+            <dd className="text-base-content/80">{e.help}</dd>
           </div>
         ))}
       </dl>
@@ -518,16 +518,16 @@ function Glossary({ kpis }: { kpis: Kpi[] }) {
 function InternalStat({ label, value, desc, help }: { label: string; value: number; desc: string; help?: string }) {
   return (
     <div className="px-4 py-3" title={help}>
-      <div className="text-xs text-base-content/70">{label}</div>
+      <div className="text-xs text-base-content/80">{label}</div>
       <div className="text-xl font-semibold tabular-nums">{fmt(value)}</div>
-      <div className="text-xs text-base-content/50">{desc}</div>
+      <div className="text-xs text-base-content/70">{desc}</div>
     </div>
   );
 }
 
 function MatomoNotice({ state }: { state: "off" | "error" }) {
   return (
-    <p className="text-sm text-base-content/70">
+    <p className="text-sm text-base-content/80">
       {state === "off"
         ? "Matomo non configuré : données internes seules."
         : "Matomo injoignable : données internes seules."}
@@ -659,7 +659,7 @@ export default function AdminAnalytics({
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <h2 className="text-lg font-semibold">Audience</h2>
-          <p className="mt-1 text-xs text-base-content/50">
+          <p className="mt-1 text-xs text-base-content/70">
             {matomoOn
               ? `${windowText} · Matomo`
               : windowText}
@@ -676,7 +676,7 @@ export default function AdminAnalytics({
               </Seg>
             ))}
           </div>
-          <label className="flex items-center gap-1 text-xs text-base-content/50">
+          <label className="flex items-center gap-1 text-xs text-base-content/70">
             <input
               type="number"
               min={1}
@@ -713,7 +713,7 @@ export default function AdminAnalytics({
       ) : null}
 
       <section className="rounded-box bg-base-200/60">
-        <h3 className="px-4 pt-3 text-xs font-semibold uppercase tracking-wider text-base-content/50">
+        <h3 className="px-4 pt-3 text-xs font-semibold uppercase tracking-wider text-base-content/70">
           Compteurs internes, depuis le lancement
         </h3>
         <div className="grid grid-cols-1 divide-base-300 sm:grid-cols-3 sm:divide-x">

@@ -28,7 +28,7 @@ function ToolCard({ href, title, text, children }: { href: string; title: string
       <div className="bg-base-200/50 px-5 py-4">{children}</div>
       <div className="p-5">
         <span className="block font-semibold group-hover:text-primary">{title}</span>
-        <span className="text-sm text-base-content/70">{text}</span>
+        <span className="text-sm text-base-content/80">{text}</span>
       </div>
     </Link>
   );
@@ -40,7 +40,7 @@ export default function LearnPage() {
     <div className="pb-12">
       <Breadcrumb items={[{ label: "Accueil", href: "/", home: true }, { label: "Apprendre" }]} />
       <h1 className="text-3xl font-bold tracking-tight">Apprendre le grec biblique</h1>
-      <p className="mt-3 max-w-[42rem] text-lg leading-relaxed text-base-content/70">
+      <p className="mt-3 max-w-[42rem] text-lg leading-relaxed text-base-content/80">
         De l’alphabet à la lecture du Nouveau Testament et de la Septante.
       </p>
 
@@ -52,7 +52,7 @@ export default function LearnPage() {
               {PREVIEW_LETTERS.map((l) => (
                 <span key={l.name} className="flex flex-col items-center rounded-lg bg-base-100 py-1.5">
                   <span lang="grc" className="font-greek text-2xl leading-none">{l.upper}{l.lower}</span>
-                  <span className="mt-1 text-[0.65rem] text-base-content/50">{l.name}</span>
+                  <span className="mt-1 text-[0.65rem] text-base-content/70">{l.name}</span>
                 </span>
               ))}
             </div>
@@ -60,7 +60,7 @@ export default function LearnPage() {
           <ToolCard href="/prononciation" title="La prononciation" text="Érasmienne ou restituée, lettre par lettre.">
             <table className="w-full text-sm">
               <thead>
-                <tr className="text-left text-[0.65rem] uppercase tracking-wide text-base-content/50">
+                <tr className="text-left text-[0.65rem] uppercase tracking-wide text-base-content/70">
                   <th className="pb-1 font-semibold">Lettre</th>
                   <th className="pb-1 font-semibold">Érasmienne</th>
                   <th className="pb-1 font-semibold">Restituée</th>
@@ -83,7 +83,7 @@ export default function LearnPage() {
       <section className="mt-12">
         <h2 className="text-lg font-semibold">Cours</h2>
         {courses.length === 0 ? (
-          <p className="mt-3 text-sm text-base-content/50">Aucun cours publié.</p>
+          <p className="mt-3 text-sm text-base-content/70">Aucun cours publié.</p>
         ) : (
           <div className="mt-3 grid gap-4 wide:grid-cols-2">
             {courses.map((c) => {
@@ -91,10 +91,10 @@ export default function LearnPage() {
               return (
                 <Link key={c.id} href={`/apprendre/${c.slug}`} className="group flex flex-col rounded-box border border-base-300 bg-base-100 p-5 transition-colors hover:border-primary/40">
                   <h3 className="text-lg font-semibold leading-snug group-hover:text-primary">{c.title}</h3>
-                  <p className="mt-1 text-sm text-base-content/50">
+                  <p className="mt-1 text-sm text-base-content/70">
                     {COURSE_LEVELS[c.level]} · {c.lessonCount} leçon{c.lessonCount > 1 ? "s" : ""}
                   </p>
-                  {c.summary && <p className="mt-3 line-clamp-3 text-base-content/70">{c.summary}</p>}
+                  {c.summary && <p className="mt-3 line-clamp-3 text-base-content/80">{c.summary}</p>}
                   <div className="mt-auto pt-4">
                     <CourseProgress lessons={lessons} compact />
                   </div>

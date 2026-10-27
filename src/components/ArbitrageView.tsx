@@ -62,7 +62,7 @@ export default function ArbitrageView() {
   if (!ready) return null;
   if (!editor)
     return (
-      <div className="py-20 text-center text-base-content/70">
+      <div className="py-20 text-center text-base-content/80">
         <p>Atelier réservé aux traducteurs.</p>
         <a href="/login" className="link link-primary mt-3 inline-block">Se connecter</a>
       </div>
@@ -118,7 +118,7 @@ export default function ArbitrageView() {
 // chapitre qui ne lève aucune erreur. Ouvre le même éditeur que Corriger.
 function BrowseList({ states, onOpen }: { states: Record<string, Record<string, State>>; onOpen: (b: string, c: number) => void }) {
   const books = Object.keys(states).sort();
-  if (!books.length) return <p className="mt-6 text-sm text-base-content/50">Aucun chapitre.</p>;
+  if (!books.length) return <p className="mt-6 text-sm text-base-content/70">Aucun chapitre.</p>;
   return (
     <div className="mt-4 grid gap-4">
       {books.map((book) => {
@@ -129,7 +129,7 @@ function BrowseList({ states, onOpen }: { states: Record<string, Record<string, 
         return (
           <div key={book}>
             <h3 className="text-sm font-semibold">{BOOK[book] ?? book}
-              {locked > 0 && <span className="ml-2 text-xs font-normal text-base-content/50">· {locked} chapitres verrouillés</span>}
+              {locked > 0 && <span className="ml-2 text-xs font-normal text-base-content/70">· {locked} chapitres verrouillés</span>}
             </h3>
             <div className="mt-1.5 flex flex-wrap gap-1.5">
               {visible.map((c) => {

@@ -60,7 +60,7 @@ function Pagination({ query, page, pages, path, defaultCorpus }: { query: Explor
       )}
       {pageList(page, pages).map((p, i) =>
         p === null ? (
-          <span key={`gap-${i}`} className={`${cell} text-base-content/40`}>
+          <span key={`gap-${i}`} className={`${cell} text-base-content/70`}>
             …
           </span>
         ) : (
@@ -90,7 +90,7 @@ function FacetLink({ href, active, label, count, greek }: { href: string; active
       className={`flex items-baseline justify-between gap-2 rounded-md px-2 py-1 text-sm transition-colors ${active ? "bg-primary/10 font-semibold text-primary" : "hover:bg-base-200/70"}`}
     >
       <span className={greek ? "font-greek text-base" : ""}>{label}</span>
-      <span className="text-xs tabular-nums text-base-content/50">{count.toLocaleString("fr-FR")}</span>
+      <span className="text-xs tabular-nums text-base-content/70">{count.toLocaleString("fr-FR")}</span>
     </Link>
   );
 }
@@ -98,7 +98,7 @@ function FacetLink({ href, active, label, count, greek }: { href: string; active
 function FacetGroup({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section>
-      <h2 className="mb-1 px-2 text-xs font-semibold uppercase tracking-wider text-base-content/50">{title}</h2>
+      <h2 className="mb-1 px-2 text-xs font-semibold uppercase tracking-wider text-base-content/70">{title}</h2>
       {children}
     </section>
   );
@@ -142,7 +142,7 @@ export async function ConcordanceExplorer({
       <Breadcrumb items={[{ label: "Accueil", href: "/", home: true }, { label: title }]} />
       <div className="flex flex-wrap items-baseline justify-between gap-x-4">
         <h1 className="text-3xl font-bold tracking-tight">{title}</h1>
-        <p className="text-sm text-base-content/50">{lemmas.toLocaleString("fr-FR")} lemmes</p>
+        <p className="text-sm text-base-content/70">{lemmas.toLocaleString("fr-FR")} lemmes</p>
       </div>
 
       <div className="mt-6 grid gap-8 wide:grid-cols-[14rem_minmax(0,1fr)]">
@@ -218,7 +218,7 @@ export async function ConcordanceExplorer({
           )}
 
           <div className="mt-6 mb-1 flex flex-wrap items-center justify-between gap-2">
-            <p className="text-sm text-base-content/50">
+            <p className="text-sm text-base-content/70">
               {total
                 ? `${from.toLocaleString("fr-FR")} à ${(from + rows.length - 1).toLocaleString("fr-FR")} sur ${total.toLocaleString("fr-FR")}`
                 : "Aucun lemme ne correspond."}
@@ -230,7 +230,7 @@ export async function ConcordanceExplorer({
                   href={link({ sort: k })}
                   scroll={false}
                   aria-current={query.sort === k ? "true" : undefined}
-                  className={`rounded-md px-2 py-1 ${query.sort === k ? "bg-base-200 font-medium" : "text-base-content/70 hover:text-base-content"}`}
+                  className={`rounded-md px-2 py-1 ${query.sort === k ? "bg-base-200 font-medium" : "text-base-content/80 hover:text-base-content"}`}
                 >
                   {SORTS[k]}
                 </Link>
@@ -240,7 +240,7 @@ export async function ConcordanceExplorer({
 
           {total > 0 && (
             <div role="table" aria-label="Lemmes" className="text-sm">
-              <div role="row" className={`${grid} border-b border-base-300 py-2 text-xs text-base-content/50`}>
+              <div role="row" className={`${grid} border-b border-base-300 py-2 text-xs text-base-content/70`}>
                 <span role="columnheader">Lemme</span>
                 <span role="columnheader" className="hidden sm:block">Translittération</span>
                 <span role="columnheader" className="hidden md:block">Nature</span>
@@ -259,10 +259,10 @@ export async function ConcordanceExplorer({
                       <span lang="grc" className="font-greek text-lg group-hover:text-primary">
                         {e.lemma}
                       </span>
-                      <span className="ml-2 text-xs text-base-content/50 sm:hidden">{e.translitR}</span>
+                      <span className="ml-2 text-xs text-base-content/70 sm:hidden">{e.translitR}</span>
                     </span>
-                    <span role="cell" className="hidden truncate text-base-content/70 sm:block">{e.translitR}</span>
-                    <span role="cell" className="hidden truncate text-base-content/70 md:block">{e.nature.toLowerCase()}</span>
+                    <span role="cell" className="hidden truncate text-base-content/80 sm:block">{e.translitR}</span>
+                    <span role="cell" className="hidden truncate text-base-content/80 md:block">{e.nature.toLowerCase()}</span>
                     <span role="cell" className={`${num} ${e.nt ? "" : "text-base-content/25"} ${query.corpus === "nt" ? "font-medium" : ""}`}>{e.nt ? e.nt.toLocaleString("fr-FR") : "·"}</span>
                     <span role="cell" className={`${num} ${e.lxx ? "" : "text-base-content/25"} ${query.corpus === "lxx" ? "font-medium" : ""}`}>{e.lxx ? e.lxx.toLocaleString("fr-FR") : "·"}</span>
                   </Link>

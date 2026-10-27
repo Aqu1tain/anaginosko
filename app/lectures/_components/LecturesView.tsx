@@ -68,7 +68,7 @@ function translators(r: ResolvedReading) {
 function PassageText({ p }: { p: ResolvedPassage }) {
   if (p.absent || !p.text) {
     return (
-      <p className="py-3 text-base-content/70">
+      <p className="py-3 text-base-content/80">
         {p.corpus === "lxx"
           ? "Ce passage ne figure pas dans la Septante."
           : "Ce passage ne figure pas dans le texte grec critique (SBLGNT)."}
@@ -79,7 +79,7 @@ function PassageText({ p }: { p: ResolvedPassage }) {
     <div>
       <PassageGreek text={p.text} verses={p.verses} french={p.frenchBlock ? null : p.french} />
       {p.frenchBlock && (
-        <p className="pt-2 text-sm text-base-content/70">
+        <p className="pt-2 text-sm text-base-content/80">
           La traduction de Giguet suit ici une autre numérotation :{" "}
           <Link href={chapterHref(p)} className="link">
             lire le chapitre entier
@@ -99,7 +99,7 @@ function ReadingBody({ r }: { r: ResolvedReading }) {
       {r.resolved.map((p, idx) => (
         <PassageText key={idx} p={p} />
       ))}
-      <p className="mt-3 flex flex-wrap justify-between gap-x-4 gap-y-1 text-xs text-base-content/50">
+      <p className="mt-3 flex flex-wrap justify-between gap-x-4 gap-y-1 text-xs text-base-content/70">
         {credit && <span>Traduction : {credit}</span>}
         {first && (
           <Link href={chapterHref(first)} className="font-medium text-primary hover:underline">
@@ -119,7 +119,7 @@ async function ReadingGroup({ group }: { group: Reading[] }) {
       <h2 className="font-greek text-2xl font-bold leading-tight">{head.label}</h2>
       {resolved.length === 1 ? (
         <>
-          <p className="mt-1 text-base-content/70">{head.ref}</p>
+          <p className="mt-1 text-base-content/80">{head.ref}</p>
           <ReadingBody r={head} />
         </>
       ) : (
@@ -214,7 +214,7 @@ export default async function LecturesView({ rite, iso }: { rite: Rite; iso: str
                 )}
                 {day.title}
               </span>
-              {day.detail && <span className="text-base-content/70">{day.detail}</span>}
+              {day.detail && <span className="text-base-content/80">{day.detail}</span>}
             </p>
           )}
         </div>
@@ -250,11 +250,11 @@ export default async function LecturesView({ rite, iso }: { rite: Rite; iso: str
       </header>
 
       {!day && (
-        <p className="mt-8 text-base-content/50">Aucune lecture pour cette date.</p>
+        <p className="mt-8 text-base-content/70">Aucune lecture pour cette date.</p>
       )}
-      {day?.note && <p className="mt-8 text-lg text-base-content/70">{day.note}</p>}
+      {day?.note && <p className="mt-8 text-lg text-base-content/80">{day.note}</p>}
       {day?.projected && (
-        <p className="mt-8 text-sm text-base-content/70">
+        <p className="mt-8 text-sm text-base-content/80">
           Lectures calculées : l’AELF n’a pas encore publié cette date.
         </p>
       )}
@@ -271,7 +271,7 @@ export default async function LecturesView({ rite, iso }: { rite: Rite; iso: str
         masses[0] && <MassReadings mass={masses[0]} />
       )}
 
-      <footer className="mt-12 flex flex-col gap-4 text-sm leading-relaxed text-base-content/50">
+      <footer className="mt-12 flex flex-col gap-4 text-sm leading-relaxed text-base-content/70">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <ReportButton
             label="Signaler une erreur"

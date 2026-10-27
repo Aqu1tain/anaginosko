@@ -43,7 +43,7 @@ export default function ReviewPanel({
             key={key}
             type="button"
             aria-pressed={filter === key}
-            className={`btn btn-ghost btn-xs ${filter === key ? "bg-base-200" : "text-base-content/70"}`}
+            className={`btn btn-ghost btn-xs ${filter === key ? "bg-base-200" : "text-base-content/80"}`}
             onClick={() => setFilter(key)}
           >
             {label}
@@ -73,14 +73,14 @@ export default function ReviewPanel({
                   Passage supprimé · citation conservée
                 </span>
               )}
-              <span className="mt-1 block text-base-content/50">
+              <span className="mt-1 block text-base-content/70">
                 {t.count} message{t.count > 1 ? "s" : ""} · version {t.revision} ·{" "}
                 {t.resolved ? "Résolue" : "En cours"}
               </span>
             </button>
           ))}
         {!threads.length && (
-          <p className="text-xs text-base-content/50">
+          <p className="text-xs text-base-content/70">
             Aucune discussion. Sélectionnez du texte pour en ouvrir une.
           </p>
         )}

@@ -84,7 +84,7 @@ export default async function AboutPage() {
 
       <header>
         <h1 className="text-3xl font-bold tracking-tight">À propos</h1>
-        <p className="mt-4 max-w-[42rem] text-lg leading-relaxed text-base-content/70">
+        <p className="mt-4 max-w-[42rem] text-lg leading-relaxed text-base-content/80">
           Anaginosko (<span className="font-greek">ἀναγινώσκω</span>, « lire, reconnaître ») est une Bible grecque
           d’étude, gratuite et sans publicité : le Nouveau Testament et la Septante dans le texte, chaque mot analysé, la
           traduction française en regard.
@@ -94,7 +94,7 @@ export default async function AboutPage() {
             <li key={x.label}>
               <p className="text-3xl font-bold tracking-tight tabular-nums">{x.value}</p>
               <p className="mt-1 text-sm font-medium">{x.label}</p>
-              <p className="text-xs text-base-content/50">{x.detail}</p>
+              <p className="text-xs text-base-content/70">{x.detail}</p>
             </li>
           ))}
         </ul>
@@ -189,7 +189,7 @@ export default async function AboutPage() {
           <a href="https://fr.tipeee.com/anaginosko" target="_blank" rel="noreferrer noopener" className="btn btn-primary btn-sm">
             Soutenir sur Tipeee
           </a>
-          <span className="text-sm text-base-content/50">Le site vit des dons.</span>
+          <span className="text-sm text-base-content/70">Le site vit des dons.</span>
         </div>
       </Section>
     </div>

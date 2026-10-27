@@ -14,7 +14,7 @@ const COMPONENTS: Components = {
   p: ({ children }) => <p className="my-2.5 first:mt-0 last:mb-0">{children}</p>,
   ul: ({ children }) => <ul className="my-2.5 list-disc space-y-1 pl-5 marker:text-base-content/40">{children}</ul>,
   ol: ({ children }) => <ol className="my-2.5 list-decimal space-y-1 pl-5 marker:text-base-content/50">{children}</ol>,
-  blockquote: ({ children }) => <blockquote className="my-3 border-l-2 border-primary/40 pl-3 text-base-content/75">{children}</blockquote>,
+  blockquote: ({ children }) => <blockquote className="my-3 border-l-2 border-primary/40 pl-3 text-base-content/80">{children}</blockquote>,
   code: ({ children }) => <code className="rounded bg-base-200 px-1 py-0.5 text-[0.85em]">{children}</code>,
   pre: ({ children }) => <pre className="my-3 overflow-x-auto rounded-box bg-base-200 p-3 text-sm">{children}</pre>,
   hr: () => <hr className="my-4 border-base-300" />,

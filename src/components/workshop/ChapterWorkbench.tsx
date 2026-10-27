@@ -229,7 +229,7 @@ export default function ChapterWorkbench({ corpus, book, chapter }: { corpus: Wo
   return (
     <div className="pb-12 pt-4">
       <header className="sticky top-14 z-10 -mx-4 mb-2 flex flex-wrap items-center gap-x-4 gap-y-2 border-b border-base-300 bg-base-100/95 px-4 py-3 backdrop-blur wide:mx-0 wide:px-0">
-        <Link href={`?corpus=${corpus}`} className="text-sm text-base-content/70 hover:text-base-content">
+        <Link href={`?corpus=${corpus}`} className="text-sm text-base-content/80 hover:text-base-content">
           Atelier
         </Link>
         <h1 className="text-xl font-bold tracking-tight">
@@ -247,7 +247,7 @@ export default function ChapterWorkbench({ corpus, book, chapter }: { corpus: Wo
             </Link>
           )}
         </span>
-        <span className="text-sm tabular-nums text-base-content/50">
+        <span className="text-sm tabular-nums text-base-content/70">
           {done} / {rows.length} publiés
         </span>
         <span className="ml-auto flex flex-wrap gap-2">
@@ -274,7 +274,7 @@ export default function ChapterWorkbench({ corpus, book, chapter }: { corpus: Wo
       <div className={`grid gap-8 ${side === "assistant" ? "wide:grid-cols-[minmax(0,1fr)_30rem]" : "wide:grid-cols-[minmax(0,1fr)_22rem]"}`}>
         <ol className="min-w-0">
           {!text || !work ? (
-            <p className="py-12 text-center text-sm text-base-content/50">Chargement…</p>
+            <p className="py-12 text-center text-sm text-base-content/70">Chargement…</p>
           ) : (
             rows.map((row, i) => (
               <VerseRow
@@ -320,7 +320,7 @@ export default function ChapterWorkbench({ corpus, book, chapter }: { corpus: Wo
                   key={k}
                   type="button"
                   onClick={() => setSide(k)}
-                  className={`rounded-md px-2.5 py-1 ${side === k ? "bg-base-200 font-medium" : "text-base-content/70 hover:text-base-content"}`}
+                  className={`rounded-md px-2.5 py-1 ${side === k ? "bg-base-200 font-medium" : "text-base-content/80 hover:text-base-content"}`}
                 >
                   {label}
                 </button>
@@ -337,7 +337,7 @@ export default function ChapterWorkbench({ corpus, book, chapter }: { corpus: Wo
                   onTermSaved={reloadTerms}
                 />
               ) : (
-                <p className="text-sm text-base-content/50">Cliquez un mot grec.</p>
+                <p className="text-sm text-base-content/70">Cliquez un mot grec.</p>
               ))}
             {side === "verset" &&
               (activeRow && work ? (
@@ -352,7 +352,7 @@ export default function ChapterWorkbench({ corpus, book, chapter }: { corpus: Wo
                   onRestore={(t) => change(activeRow.ref, t)}
                 />
               ) : (
-                <div className="space-y-3 text-sm text-base-content/50">
+                <div className="space-y-3 text-sm text-base-content/70">
                   <p>Cliquez dans un verset.</p>
                   <dl className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-xs">
                     <dt className="font-mono">⌘ Entrée</dt>
@@ -387,7 +387,7 @@ export default function ChapterWorkbench({ corpus, book, chapter }: { corpus: Wo
                   onUse={(t) => change(activeRow.ref, t)}
                 />
               ) : (
-                <p className="text-sm text-base-content/50">Cliquez dans un verset, puis ⌘ I pour un premier jet.</p>
+                <p className="text-sm text-base-content/70">Cliquez dans un verset, puis ⌘ I pour un premier jet.</p>
               ))}
             {side === "controles" &&
               (issues.length ? (
@@ -401,7 +401,7 @@ export default function ChapterWorkbench({ corpus, book, chapter }: { corpus: Wo
                   ))}
                 </ul>
               ) : (
-                <p className="text-sm text-base-content/50">Rien à signaler.</p>
+                <p className="text-sm text-base-content/70">Rien à signaler.</p>
               ))}
           </div>
         </aside>

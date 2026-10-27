@@ -11,7 +11,7 @@ const item = "flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text
 
 function Icon({ d }: { d: string }) {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="text-base-content/60">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="text-base-content/70">
       <path d={d} />
     </svg>
   );
@@ -66,7 +66,7 @@ export default function AccountMenu() {
             <Avatar name={user.displayName} photo={photo} size={34} />
             <div className="min-w-0">
               <p className="truncate text-sm font-semibold">{user.displayName}</p>
-              {user.email && <p className="truncate text-xs text-base-content/55">{user.email}</p>}
+              {user.email && <p className="truncate text-xs text-base-content/70">{user.email}</p>}
             </div>
           </div>
           <div className="my-1 border-t border-base-300" />

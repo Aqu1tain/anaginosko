@@ -22,7 +22,7 @@ export default function SideNav() {
           key={t.label}
           href={t.href}
           aria-current={t.active ? "page" : undefined}
-          className={`group flex w-full flex-col items-center gap-1 py-1.5 text-[0.7rem] font-medium transition-colors ${t.active ? "text-primary" : "text-base-content/70 hover:text-base-content"}`}
+          className={`group flex w-full flex-col items-center gap-1 py-1.5 text-[0.7rem] font-medium transition-colors ${t.active ? "text-primary" : "text-base-content/80 hover:text-base-content"}`}
         >
           <span className={`grid h-11 w-11 place-items-center rounded-2xl transition-colors ${t.active ? "bg-primary/12 text-primary" : "group-hover:bg-base-200"}`}>
             {t.icon}

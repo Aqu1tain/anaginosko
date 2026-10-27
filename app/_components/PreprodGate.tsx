@@ -22,7 +22,7 @@ function Wall() {
             Anaginosko
             <PreprodBadge />
           </h1>
-          <p className="text-sm text-base-content/70">
+          <p className="text-sm text-base-content/80">
             Réservé aux comptes autorisés.
           </p>
           <Link href={`/login?next=${encodeURIComponent(pathname)}`} className="btn btn-primary btn-sm">

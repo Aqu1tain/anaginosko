@@ -89,7 +89,7 @@ export default function PrononciationPage() {
 
       <section className="mt-8">
         <h2 className="text-lg font-semibold">Les diphtongues</h2>
-        <p className="mt-1 text-sm text-base-content/70">
+        <p className="mt-1 text-sm text-base-content/80">
           C’est là que les deux systèmes s’écartent le plus.
         </p>
         <div className="mt-3 overflow-x-auto">

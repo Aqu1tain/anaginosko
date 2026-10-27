@@ -96,7 +96,7 @@ export default function EditorialWorkflow({
       <h2 className="font-semibold">
         Publication · version {a.contentRevision}
       </h2>
-      <p className="text-xs text-base-content/50">
+      <p className="text-xs text-base-content/70">
         Approbation obligatoire par un autre relecteur.
       </p>
       {a.publishedVersion && (
@@ -121,7 +121,7 @@ export default function EditorialWorkflow({
             </strong>
           </p>
           {a.reviewRequest.note && (
-            <p className="mt-1 whitespace-pre-wrap text-xs text-base-content/70">
+            <p className="mt-1 whitespace-pre-wrap text-xs text-base-content/80">
               {a.reviewRequest.note}
             </p>
           )}
@@ -131,7 +131,7 @@ export default function EditorialWorkflow({
             </p>
           )}
           {a.reviewRequest.notification === "sent" && (
-            <p className="text-xs text-base-content/50">
+            <p className="text-xs text-base-content/70">
               Demande envoyée par e-mail.
             </p>
           )}

@@ -77,7 +77,7 @@ export default function AdminFrame({ children }: { children: ReactNode }) {
               <Link
                 href={t.href}
                 aria-current={active(t.href) ? "page" : undefined}
-                className={`relative flex items-center gap-1.5 px-3 py-2.5 text-sm font-medium transition-colors ${active(t.href) ? "text-base-content" : "text-base-content/55 hover:text-base-content"}`}
+                className={`relative flex items-center gap-1.5 px-3 py-2.5 text-sm font-medium transition-colors ${active(t.href) ? "text-base-content" : "text-base-content/70 hover:text-base-content"}`}
               >
                 <span className={active(t.href) ? "text-primary" : "opacity-70"}>
                   <TabIcon d={t.icon} />

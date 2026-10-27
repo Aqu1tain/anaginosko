@@ -43,7 +43,7 @@ function ExerciseBlockView({ props, editable, onSet }: { props: ExerciseProps; e
         placeholder={"Quelle lettre se lit « ph » ?\n+ φ\n- ψ\n- θ\n= Le phi a donné le « ph » de philosophie."}
         className="textarea textarea-bordered mt-2 w-full font-mono text-sm"
       />
-      <p className="mt-1 text-xs text-base-content/50">
+      <p className="mt-1 text-xs text-base-content/70">
         1re ligne : la question. « + » bonne réponse, « - » mauvaise, « = » explication. Sans options : réponse cachée.
       </p>
       <ExerciseView key={exerciseText(exercise)} exercise={exercise} />

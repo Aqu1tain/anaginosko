@@ -31,7 +31,7 @@ export default function ShareArticle({ title }: { title: string }) {
       type="button"
       onClick={share}
       aria-label="Partager cet article"
-      className="btn btn-ghost btn-sm gap-1.5 text-base-content/70 hover:text-primary"
+      className="btn btn-ghost btn-sm gap-1.5 text-base-content/80 hover:text-primary"
     >
       <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
         <circle cx="18" cy="5" r="3" />

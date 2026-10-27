@@ -72,7 +72,7 @@ export default function AssistantPanel({
 
   if (settings && !settings.keys.length)
     return (
-      <p className="text-sm text-base-content/70">
+      <p className="text-sm text-base-content/80">
         Ajoutez une clé d’API dans{" "}
         <Link href="/mon-compte#assistant" className="link">
           Paramètres
@@ -84,7 +84,7 @@ export default function AssistantPanel({
   return (
     <div className="space-y-5">
       {settings && (
-        <section className="text-xs text-base-content/50">
+        <section className="text-xs text-base-content/70">
           <button type="button" onClick={() => setModels(!models)} aria-expanded={models || !settings.draft} className="flex w-full items-center gap-2 text-left hover:text-base-content">
             <span className="min-w-0 flex-1 truncate">
               {settings.analysis && settings.draft ? `${settings.analysis.model} · ${settings.draft.model}` : "Choisir les modèles"}
@@ -108,7 +108,7 @@ export default function AssistantPanel({
       )}
       <section className="space-y-3">
         <div className="flex items-center justify-between gap-2">
-          <h2 className="text-xs font-semibold uppercase tracking-wider text-base-content/50">Verset {target.verse}</h2>
+          <h2 className="text-xs font-semibold uppercase tracking-wider text-base-content/70">Verset {target.verse}</h2>
           <button type="button" className={`btn btn-sm ${state?.result ? "btn-ghost" : "btn-primary"}`} onClick={onRun} disabled={state?.running} title="⌘ I">
             {state?.running ? "En cours…" : state?.result ? "Relancer" : "Proposer un jet"}
           </button>
@@ -118,7 +118,7 @@ export default function AssistantPanel({
         {state?.result && <DraftProposal proposal={state.result} current={current} onUse={onUse} />}
       </section>
       <section>
-        <h2 className="mb-2 text-xs font-semibold uppercase tracking-wider text-base-content/50">Discussion</h2>
+        <h2 className="mb-2 text-xs font-semibold uppercase tracking-wider text-base-content/70">Discussion</h2>
         <AssistantChat chat={chat} body={{ context: { ...target, text: current } }} placeholder={`Question sur ${target.chapter}:${target.verse}`} />
       </section>
     </div>

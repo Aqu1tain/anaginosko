@@ -69,18 +69,18 @@ export default function VerseSide({
   return (
     <div className="space-y-5">
       <section>
-        <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-base-content/50">Discussion · {verseRef}</h3>
+        <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-base-content/70">Discussion · {verseRef}</h3>
         <ul className="space-y-2">
           {comments.map((c) => (
             <li key={c.id} className={`rounded-md bg-base-200/60 p-2 text-sm ${c.resolved ? "opacity-50" : ""}`}>
-              <p className="flex items-baseline justify-between gap-2 text-xs text-base-content/50">
+              <p className="flex items-baseline justify-between gap-2 text-xs text-base-content/70">
                 <span className="font-medium text-base-content">{c.author}</span>
                 <button type="button" className="hover:text-primary" onClick={() => resolveComment(c.id, !c.resolved).then(onChanged)}>
                   {c.resolved ? "Rouvrir" : "Résoudre"}
                 </button>
               </p>
               <p className="mt-0.5 whitespace-pre-wrap">{c.body}</p>
-              <p className="mt-0.5 text-xs text-base-content/50">{when(c.at)}</p>
+              <p className="mt-0.5 text-xs text-base-content/70">{when(c.at)}</p>
             </li>
           ))}
         </ul>
@@ -100,15 +100,15 @@ export default function VerseSide({
       </section>
 
       <section>
-        <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-base-content/50">Versions publiées</h3>
-        <p className="mb-2 text-xs text-base-content/50">Comparées au texte actuel : <span className="bg-error/15 line-through">retiré</span> <span className="bg-success/20">ajouté</span></p>
+        <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-base-content/70">Versions publiées</h3>
+        <p className="mb-2 text-xs text-base-content/70">Comparées au texte actuel : <span className="bg-error/15 line-through">retiré</span> <span className="bg-success/20">ajouté</span></p>
         {history === null ? (
-          <p className="text-sm text-base-content/50">Chargement…</p>
+          <p className="text-sm text-base-content/70">Chargement…</p>
         ) : history.length ? (
           <ul className="space-y-2">
             {history.map((h, i) => (
               <li key={`${h.at}-${i}`} className="text-sm">
-                <p className="text-xs text-base-content/50">
+                <p className="text-xs text-base-content/70">
                   {h.by} · {when(h.at)}
                 </p>
                 {h.text && current && h.text !== current ? (
@@ -120,7 +120,7 @@ export default function VerseSide({
                     ))}
                   </p>
                 ) : (
-                  <p className={h.text ? "" : "italic text-base-content/50"}>{h.text ?? "Retour à la traduction de base"}</p>
+                  <p className={h.text ? "" : "italic text-base-content/70"}>{h.text ?? "Retour à la traduction de base"}</p>
                 )}
                 {h.text && i > 0 && (
                   <button type="button" onClick={() => onRestore(h.text!)} className="text-xs text-primary hover:underline">
@@ -131,7 +131,7 @@ export default function VerseSide({
             ))}
           </ul>
         ) : (
-          <p className="text-sm text-base-content/50">Jamais publié.</p>
+          <p className="text-sm text-base-content/70">Jamais publié.</p>
         )}
       </section>
     </div>

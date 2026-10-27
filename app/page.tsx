@@ -45,7 +45,7 @@ function Hero({ verse, french, word, start }: { verse: Text; french: string | nu
         <h1 className="font-greek text-4xl font-bold leading-[1.08] tracking-tight wide:text-6xl">
           La Bible en grec
         </h1>
-        <p className="mt-5 max-w-[40ch] text-lg leading-relaxed text-base-content/70 wide:text-xl">
+        <p className="mt-5 max-w-[40ch] text-lg leading-relaxed text-base-content/80 wide:text-xl">
           Le Nouveau Testament et la Septante, mot à mot.
         </p>
         <div className="mt-8 flex flex-wrap gap-3">
@@ -138,8 +138,8 @@ function LatestArticles() {
                   {CATEGORY_LABEL[a.category]}
                 </p>
                 <h3 className="mt-1.5 text-lg font-semibold leading-snug group-hover:text-primary">{a.title}</h3>
-                {a.excerpt && <p className="mt-1.5 line-clamp-3 text-sm text-base-content/70">{a.excerpt}</p>}
-                <div className="mt-auto flex items-center gap-2 pt-4 text-xs text-base-content/50">
+                {a.excerpt && <p className="mt-1.5 line-clamp-3 text-sm text-base-content/80">{a.excerpt}</p>}
+                <div className="mt-auto flex items-center gap-2 pt-4 text-xs text-base-content/70">
                   <Avatar name={author.name} photo={author.photo} size={22} />
                   <span className="min-w-0 truncate">{author.name}</span>
                 </div>
@@ -158,7 +158,7 @@ function Support() {
       data-nosnippet=""
       className="mt-14 flex flex-col gap-5 rounded-box bg-base-200 px-5 py-7 wide:mt-16 wide:flex-row wide:items-center wide:justify-between wide:px-10 wide:py-9"
     >
-      <p className="max-w-[52ch] text-lg leading-relaxed text-base-content/70">
+      <p className="max-w-[52ch] text-lg leading-relaxed text-base-content/80">
         Gratuit et sans publicité, Anaginosko vit de vos dons.
       </p>
       <a href={TIPEEE} target="_blank" rel="noreferrer noopener" className="btn btn-accent btn-lg self-start rounded-full px-7 wide:self-auto">

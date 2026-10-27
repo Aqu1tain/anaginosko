@@ -20,8 +20,8 @@ export default function ReportButton({
 }) {
   const [open, setOpen] = useState(false);
   const defaultClass = children
-    ? "btn btn-ghost btn-xs text-base-content/70"
-    : "btn btn-ghost btn-sm btn-circle text-base-content/50 opacity-70 transition hover:text-error hover:opacity-100 focus-visible:opacity-100 wide:opacity-0 wide:group-hover:opacity-100";
+    ? "btn btn-ghost btn-xs text-base-content/80"
+    : "btn btn-ghost btn-sm btn-circle text-base-content/70 opacity-70 transition hover:text-error hover:opacity-100 focus-visible:opacity-100 wide:opacity-0 wide:group-hover:opacity-100";
   return (
     <>
       <button

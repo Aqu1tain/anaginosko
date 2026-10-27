@@ -40,7 +40,7 @@ export default function LessonActions({
           {isDone ? (
             <button type="button" onClick={() => mark(courseId, lessonId, false)} className="btn btn-ghost btn-sm gap-2 text-success">
               ✓ Leçon terminée
-              <span className="font-normal text-base-content/50">Annuler</span>
+              <span className="font-normal text-base-content/70">Annuler</span>
             </button>
           ) : (
             <button type="button" onClick={finish} disabled={busy} className="btn btn-primary btn-sm">
@@ -52,7 +52,7 @@ export default function LessonActions({
       <nav className="flex items-stretch justify-between gap-3 text-sm">
         {prev ? (
           <Link href={prev.href} className="max-w-[48%] rounded-box border border-base-300 px-4 py-3 transition-colors hover:border-primary/40">
-            <span className="block text-xs text-base-content/50">← Précédente</span>
+            <span className="block text-xs text-base-content/70">← Précédente</span>
             <span className="font-medium">{prev.title}</span>
           </Link>
         ) : (
@@ -60,7 +60,7 @@ export default function LessonActions({
         )}
         {next && (
           <Link href={next.href} className="max-w-[48%] rounded-box border border-base-300 px-4 py-3 text-right transition-colors hover:border-primary/40">
-            <span className="block text-xs text-base-content/50">Suivante →</span>
+            <span className="block text-xs text-base-content/70">Suivante →</span>
             <span className="font-medium">{next.title}</span>
           </Link>
         )}

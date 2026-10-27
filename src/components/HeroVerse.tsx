@@ -13,13 +13,13 @@ export type HeroWord = { lemma: string; gloss: string; nature: string; count: nu
 export default function HeroVerse({ text, french, word }: { text: Text; french: string | null; word: HeroWord | null }) {
   return (
     <figure className="relative min-w-0 rounded-box border border-base-300 bg-base-100 p-6 shadow-[0_32px_64px_-32px_rgb(13_59_102/0.35)] wide:p-9">
-      <figcaption className="text-sm font-semibold text-base-content/70">Jean 1, 1</figcaption>
+      <figcaption className="text-sm font-semibold text-base-content/80">Jean 1, 1</figcaption>
       <div className="mt-3 font-greek leading-relaxed text-base-content">
         <GreekText text={text} size="lg" scale={0.9} />
       </div>
-      {french && <p className="mt-4 font-greek text-lg italic leading-relaxed text-base-content/70">{french}</p>}
+      {french && <p className="mt-4 font-greek text-lg italic leading-relaxed text-base-content/80">{french}</p>}
       <div className="mt-6 flex flex-col gap-5 wide:flex-row wide:items-end wide:justify-between">
-        <p className="text-sm leading-relaxed text-base-content/70 wide:max-w-[26ch]">
+        <p className="text-sm leading-relaxed text-base-content/80 wide:max-w-[26ch]">
           Touchez un mot : sens, analyse et{" "}
           <Link href="/prononciation" className="link decoration-primary/40 underline-offset-2">
             prononciation

@@ -82,11 +82,11 @@ export default function CommentThread({
       <header className="border-b border-base-200 bg-base-200/60 px-4 py-3">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
-            <p className="text-xs font-semibold uppercase tracking-wider text-base-content/50">
+            <p className="text-xs font-semibold uppercase tracking-wider text-base-content/70">
               {excerpt ? "Passage commenté" : "Discussion générale"}
             </p>
             {excerpt && (
-              <p className="mt-1 line-clamp-2 text-sm italic leading-snug text-base-content/70">
+              <p className="mt-1 line-clamp-2 text-sm italic leading-snug text-base-content/80">
                 « {excerpt} »
               </p>
             )}
@@ -142,7 +142,7 @@ export default function CommentThread({
 
       <ul className="max-h-[46dvh] space-y-4 overflow-y-auto px-4 py-4 lg:max-h-80">
         {comments.length === 0 && (
-          <li className="text-sm text-base-content/50">
+          <li className="text-sm text-base-content/70">
             Aucun message.
           </li>
         )}
@@ -158,7 +158,7 @@ export default function CommentThread({
                 <span className="font-semibold">
                   {comment.author.name || "Contributeur"}
                 </span>
-                <time className="text-base-content/50">
+                <time className="text-base-content/70">
                   {new Date(comment.createdAt).toLocaleString("fr-FR", {
                     day: "2-digit",
                     month: "short",
@@ -196,7 +196,7 @@ export default function CommentThread({
                 </p>
               )}
               {comment.editedAt && !comment.deletedAt && (
-                <span className="text-xs text-base-content/50">
+                <span className="text-xs text-base-content/70">
                   Modifié
                 </span>
               )}
@@ -271,7 +271,7 @@ export default function CommentThread({
             </p>
           )}
           <div className="mt-2 flex items-center justify-between gap-3">
-            <span className="text-xs text-base-content/50">
+            <span className="text-xs text-base-content/70">
               Ctrl/⌘ + Entrée
             </span>
             <button

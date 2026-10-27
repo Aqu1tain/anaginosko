@@ -29,7 +29,7 @@ function Queue({ title, items, corpus, tone }: { title: string; items: QueueItem
                 <span>
                   {names[q.book] ?? q.book} {q.ref}
                 </span>
-                <span className="truncate text-xs text-base-content/50">{q.note ?? q.author}</span>
+                <span className="truncate text-xs text-base-content/70">{q.note ?? q.author}</span>
               </Link>
             </li>
           );
@@ -100,7 +100,7 @@ export default function WorkshopHome({ corpus }: { corpus: WorkCorpus }) {
   }, [stats, user, corpus]);
 
   if (error) return <p className="py-12 text-center text-sm text-error">{error}</p>;
-  if (!stats) return <p className="py-12 text-center text-sm text-base-content/50">Chargement…</p>;
+  if (!stats) return <p className="py-12 text-center text-sm text-base-content/70">Chargement…</p>;
 
   const totalVerses = verses ? Object.values(verses).reduce((n, b) => n + b.total, 0) : 0;
   const sum = (k: "published" | "draft" | "review" | "changes") => Object.values(stats.books).reduce((n, b) => n + b[k], 0);
@@ -115,10 +115,10 @@ export default function WorkshopHome({ corpus }: { corpus: WorkCorpus }) {
 
       <section className="grid gap-4 wide:grid-cols-[minmax(0,1fr)_20rem]">
         <div className="rounded-box border border-base-300 p-5">
-          <p className="text-sm text-base-content/70">Traduction maison · {config.label}</p>
+          <p className="text-sm text-base-content/80">Traduction maison · {config.label}</p>
           <p className="mt-1 flex items-baseline gap-3">
             <span className="text-4xl font-bold tabular-nums">{verses ? `${pct(done, totalVerses).toLocaleString("fr-FR")} %` : "…"}</span>
-            <span className="text-sm text-base-content/70">
+            <span className="text-sm text-base-content/80">
               {done.toLocaleString("fr-FR")} verset{done > 1 ? "s" : ""} publié{done > 1 ? "s" : ""}
               {verses ? ` sur ${totalVerses.toLocaleString("fr-FR")}` : ""} · {ongoing} en cours
             </span>
@@ -128,7 +128,7 @@ export default function WorkshopHome({ corpus }: { corpus: WorkCorpus }) {
             <span className="bg-warning/70" style={{ width: `${pct(ongoing, totalVerses)}%` }} />
           </div>
           <div className="mt-5">
-            <p className="mb-1 text-xs text-base-content/50">Versets publiés par semaine</p>
+            <p className="mb-1 text-xs text-base-content/70">Versets publiés par semaine</p>
             <div className="flex h-16 items-end gap-1.5">
               {weeks.map((w, i) => (
                 <span key={i} title={w ? `${w.revisions} le ${w.week}` : undefined} className="flex-1 rounded-t bg-primary/60" style={{ height: w ? `${Math.max(6, (w.revisions / maxWeek) * 100)}%` : "2px", opacity: w ? 1 : 0.25 }} />
@@ -142,7 +142,7 @@ export default function WorkshopHome({ corpus }: { corpus: WorkCorpus }) {
             {stats.translators.map((t) => (
               <li key={t.name} className="flex justify-between">
                 <span>{t.name}</span>
-                <span className="tabular-nums text-base-content/50">{t.published.toLocaleString("fr-FR")}</span>
+                <span className="tabular-nums text-base-content/70">{t.published.toLocaleString("fr-FR")}</span>
               </li>
             ))}
           </ul>
@@ -170,7 +170,7 @@ export default function WorkshopHome({ corpus }: { corpus: WorkCorpus }) {
                     <span className="bg-success" style={{ width: `${pct(s.published, total)}%` }} />
                     <span className="bg-warning/70" style={{ width: `${pct(busy, total)}%` }} />
                   </span>
-                  <span className="text-right text-xs tabular-nums text-base-content/50">
+                  <span className="text-right text-xs tabular-nums text-base-content/70">
                     {s.published} / {total}
                     {busy ? ` · ${busy} en cours` : ""}
                   </span>

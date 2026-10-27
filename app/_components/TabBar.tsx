@@ -14,7 +14,7 @@ export default function TabBar() {
             key={t.label}
             href={t.href}
             aria-current={t.active ? "page" : undefined}
-            className={`flex flex-1 flex-col items-center justify-center gap-0.5 py-2 text-[0.7rem] font-medium transition-colors ${t.active ? "text-primary" : "text-base-content/70 hover:text-base-content"}`}
+            className={`flex flex-1 flex-col items-center justify-center gap-0.5 py-2 text-[0.7rem] font-medium transition-colors ${t.active ? "text-primary" : "text-base-content/80 hover:text-base-content"}`}
           >
             {t.icon}
             <span>{t.label}</span>

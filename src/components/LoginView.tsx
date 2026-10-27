@@ -83,7 +83,7 @@ export default function LoginView() {
         </form>
       ) : (
         <form onSubmit={checkCode} className="grid gap-3">
-          <p className="text-sm text-base-content/70">
+          <p className="text-sm text-base-content/80">
             Code envoyé à <strong>{email}</strong>, valable 10 minutes.
           </p>
           <label className="block">
@@ -109,12 +109,12 @@ export default function LoginView() {
         </form>
       )}
 
-      <div className="mt-6 grid gap-2 text-xs text-base-content/70">
+      <div className="mt-6 grid gap-2 text-xs text-base-content/80">
         <label className="flex cursor-pointer items-start gap-2">
           <input type="checkbox" className="checkbox checkbox-xs mt-0.5" checked={newsletter} onChange={(e) => setNewsletter(e.target.checked)} />
           <span>Recevoir les nouveautés par e-mail</span>
         </label>
-        <p className="text-base-content/50">
+        <p className="text-base-content/70">
           En créant un compte, vous acceptez les <a href="/conditions" className="link">conditions d’utilisation</a> et la{" "}
           <a href="/confidentialite" className="link">politique de confidentialité</a>.
         </p>

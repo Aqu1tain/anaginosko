@@ -52,7 +52,7 @@ function ProposedRule({ output }: { output: unknown }) {
 function StatusIcon({ state }: { state: string }) {
   if (state === "output-available") return <span className="text-success">✓</span>;
   if (state === "output-error") return <span className="text-error">!</span>;
-  return <span className="loading loading-spinner loading-xs text-base-content/40" />;
+  return <span className="loading loading-spinner loading-xs text-base-content/70" />;
 }
 
 // Étapes de recherche (appels d'outils), repliées en une ligne, dépliables.
@@ -62,7 +62,7 @@ function Steps({ tools }: { tools: ToolPart[] }) {
   const last = tools.at(-1)!;
   return (
     <div className="my-2 rounded-box border border-base-300 text-sm">
-      <button type="button" onClick={() => setOpen(!open)} className="flex w-full items-center gap-2 px-3 py-2 text-left text-base-content/70 hover:text-base-content" aria-expanded={open}>
+      <button type="button" onClick={() => setOpen(!open)} className="flex w-full items-center gap-2 px-3 py-2 text-left text-base-content/80 hover:text-base-content" aria-expanded={open}>
         <StatusIcon state={running ? "running" : "output-available"} />
         <span className="min-w-0 flex-1 truncate">
           {running ? (
@@ -84,10 +84,10 @@ function Steps({ tools }: { tools: ToolPart[] }) {
               <div className="flex items-center gap-2">
                 <StatusIcon state={t.state} />
                 <span className="font-medium">{TOOL_LABEL[t.type.slice(5)] ?? t.type.slice(5)}</span>
-                <span className="truncate font-greek text-base-content/70">{toolArg(t)}</span>
+                <span className="truncate font-greek text-base-content/80">{toolArg(t)}</span>
               </div>
               {t.state === "output-available" && t.output !== undefined && (
-                <pre className="mt-1 ml-6 max-h-40 overflow-auto whitespace-pre-wrap rounded bg-base-200/70 p-2 text-xs text-base-content/70">{preview(t.output)}</pre>
+                <pre className="mt-1 ml-6 max-h-40 overflow-auto whitespace-pre-wrap rounded bg-base-200/70 p-2 text-xs text-base-content/80">{preview(t.output)}</pre>
               )}
               {t.state === "output-error" && <p className="mt-1 ml-6 text-xs text-error">{t.errorText}</p>}
             </li>
@@ -112,7 +112,7 @@ function Sources({ sources }: { sources: { url: string; title?: string }[] }) {
           <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-base-200 text-[0.65rem] font-semibold">{i + 1}</span>
           <span className="min-w-0">
             <span className="block truncate font-medium">{s.title || new URL(s.url).hostname}</span>
-            <span className="block truncate text-base-content/50">{new URL(s.url).hostname.replace(/^www\./, "")}</span>
+            <span className="block truncate text-base-content/70">{new URL(s.url).hostname.replace(/^www\./, "")}</span>
           </span>
         </a>
       ))}
@@ -125,10 +125,10 @@ function Reasoning({ text }: { text: string }) {
   if (!text.trim()) return null;
   return (
     <div className="my-2 text-sm">
-      <button type="button" onClick={() => setOpen(!open)} className="text-base-content/50 hover:text-base-content" aria-expanded={open}>
+      <button type="button" onClick={() => setOpen(!open)} className="text-base-content/70 hover:text-base-content" aria-expanded={open}>
         Réflexion {open ? "▴" : "▾"}
       </button>
-      {open && <p className="mt-1 whitespace-pre-wrap border-l-2 border-base-300 pl-3 text-base-content/70">{text}</p>}
+      {open && <p className="mt-1 whitespace-pre-wrap border-l-2 border-base-300 pl-3 text-base-content/80">{text}</p>}
     </div>
   );
 }

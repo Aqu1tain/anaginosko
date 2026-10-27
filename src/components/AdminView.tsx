@@ -187,7 +187,7 @@ export default function AdminView({ section }: { section: AdminSection }) {
   if (!ready || learner) return null;
   if (!canDashboard) {
     return (
-      <div className="py-20 text-center text-base-content/70">
+      <div className="py-20 text-center text-base-content/80">
         <p>Réservé aux contributeurs.</p>
         <a href="/login" className="link link-primary mt-3 inline-block">
           Se connecter
@@ -197,7 +197,7 @@ export default function AdminView({ section }: { section: AdminSection }) {
   }
   if (error) return <p className="py-20 text-center text-sm text-error">Chargement impossible. Rechargez la page.</p>;
 
-  if (section === "reports" && !canReports) return <p className="py-20 text-center text-base-content/70">Réservé à l’équipe des signalements.</p>;
+  if (section === "reports" && !canReports) return <p className="py-20 text-center text-base-content/80">Réservé à l’équipe des signalements.</p>;
 
   return (
     <div className="pb-12 pt-6">
@@ -208,7 +208,7 @@ export default function AdminView({ section }: { section: AdminSection }) {
           {stats ? (
             <AdminAnalytics stats={stats} refLabel={locationLabel} />
           ) : (
-            <p className="text-sm text-base-content/70">Statistiques indisponibles.</p>
+            <p className="text-sm text-base-content/80">Statistiques indisponibles.</p>
           )}
         </section>
       )}
@@ -259,7 +259,7 @@ export default function AdminView({ section }: { section: AdminSection }) {
                 </button>
               ))}
             </div>
-            <span className="text-xs text-base-content/50">
+            <span className="text-xs text-base-content/70">
               {filteredReports.length} signalement{filteredReports.length > 1 ? "s" : ""}
             </span>
           </div>
@@ -279,18 +279,18 @@ export default function AdminView({ section }: { section: AdminSection }) {
                       {locationLabel(r.ref)}{r.verse != null ? `, v.${r.verse}` : ""}
                     </a>
                   )}
-                  {r.createdAt && <span className="text-base-content/50">· {formatDate(r.createdAt)}</span>}
+                  {r.createdAt && <span className="text-base-content/70">· {formatDate(r.createdAt)}</span>}
                 </div>
                 <p className="mt-2 whitespace-pre-wrap text-sm leading-relaxed [overflow-wrap:anywhere]">
                   {r.message}
                 </p>
                 {r.annotation && (
-                  <p className="mt-2 rounded-lg bg-base-200/60 px-3 py-2 text-xs text-base-content/70">
+                  <p className="mt-2 rounded-lg bg-base-200/60 px-3 py-2 text-xs text-base-content/80">
                     Annotation visée : « {r.annotation.body} »
                   </p>
                 )}
                 <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
-                  <a href={`mailto:${r.email}`} className="text-xs text-base-content/50 hover:underline">
+                  <a href={`mailto:${r.email}`} className="text-xs text-base-content/70 hover:underline">
                     {r.email}
                   </a>
                   <div className="flex flex-wrap gap-1">
@@ -308,7 +308,7 @@ export default function AdminView({ section }: { section: AdminSection }) {
               </div>
             ))}
             {filteredReports.length === 0 && (
-              <p className="text-sm text-base-content/50">Aucun signalement pour ces filtres.</p>
+              <p className="text-sm text-base-content/70">Aucun signalement pour ces filtres.</p>
             )}
           </div>
         </section>
@@ -327,7 +327,7 @@ export default function AdminView({ section }: { section: AdminSection }) {
               autoComplete="off"
               spellCheck={false}
             />
-            <span className="text-xs text-base-content/50">
+            <span className="text-xs text-base-content/70">
               {filtered.length}{query ? ` / ${baseList.length}` : ""} {noun}{filtered.length > 1 ? "s" : ""}
             </span>
           </div>
@@ -357,9 +357,9 @@ export default function AdminView({ section }: { section: AdminSection }) {
                       <span className="min-w-0 truncate">{a.source}</span>
                     </a>
                   ) : (
-                    <div className="mt-1 text-xs italic text-base-content/70 [overflow-wrap:anywhere]">{a.source}</div>
+                    <div className="mt-1 text-xs italic text-base-content/80 [overflow-wrap:anywhere]">{a.source}</div>
                   )}
-                  <div className="mt-2 flex flex-wrap items-center gap-x-2 text-xs text-base-content/50">
+                  <div className="mt-2 flex flex-wrap items-center gap-x-2 text-xs text-base-content/70">
                     <a href={refHref(a.ref, a.wordIndex)} className="font-medium text-primary hover:underline">
                       {locationLabel(a.ref)}{a.verse != null ? `, v.${a.verse}` : ""}
                     </a>
@@ -384,7 +384,7 @@ export default function AdminView({ section }: { section: AdminSection }) {
             </div>
             ))}
             {filtered.length === 0 && (
-              <p className="text-sm text-base-content/50">
+              <p className="text-sm text-base-content/70">
                 {query
                   ? `Aucune ${noun} ne correspond.`
                   : tab === "definitions"
@@ -412,7 +412,7 @@ export default function AdminView({ section }: { section: AdminSection }) {
           <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setPendingDelete(null)} aria-hidden="true" />
           <div role="dialog" aria-label="Confirmer la suppression" className="relative w-full max-w-xs rounded-box border border-base-300 bg-base-100 p-5 shadow-2xl">
             <p className="text-sm font-medium">Supprimer cette {noun}&nbsp;?</p>
-            <p className="mt-1 line-clamp-3 text-xs text-base-content/70">{pendingDelete.body}</p>
+            <p className="mt-1 line-clamp-3 text-xs text-base-content/80">{pendingDelete.body}</p>
             <div className="mt-4 flex justify-end gap-2">
               <button onClick={() => setPendingDelete(null)} className="btn btn-ghost btn-sm">
                 Annuler

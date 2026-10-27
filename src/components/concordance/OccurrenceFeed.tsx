@@ -95,7 +95,7 @@ export default function OccurrenceFeed({
               {heading && (
                 <li className="sticky top-14 z-[1] flex items-baseline justify-between bg-base-100/95 pb-1.5 pt-5 backdrop-blur first:pt-0">
                   <h3 className="font-semibold">{l.corpus.bookNames[l.b] ?? l.b}</h3>
-                  <span className="text-xs tabular-nums text-base-content/50">{l.corpus.id === "lxx" ? "LXX · " : ""}{(active.find((s) => s.corpus.id === l.corpus.id)?.dist[l.b]) ?? ""}</span>
+                  <span className="text-xs tabular-nums text-base-content/70">{l.corpus.id === "lxx" ? "LXX · " : ""}{(active.find((s) => s.corpus.id === l.corpus.id)?.dist[l.b]) ?? ""}</span>
                 </li>
               )}
               <li>
@@ -103,18 +103,18 @@ export default function OccurrenceFeed({
                   href={`${prefix}/${l.b}/${l.c}?w=${l.w}#v${l.v}`}
                   className="grid grid-cols-[3.25rem_minmax(0,1fr)] items-baseline gap-3 rounded-md px-1 py-2 transition-colors hover:bg-base-200/70"
                 >
-                  <span className="text-xs tabular-nums text-base-content/50">
+                  <span className="text-xs tabular-nums text-base-content/70">
                     {l.c}:{l.v}
                   </span>
                   <span lang="grc" className="font-greek text-[1.05rem] leading-snug sm:grid sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] sm:gap-1.5">
-                    <span className="text-base-content/70 sm:truncate sm:text-right sm:[direction:rtl]">
+                    <span className="text-base-content/80 sm:truncate sm:text-right sm:[direction:rtl]">
                       <bdi>
                         {l.cutLeft && "… "}
                         {l.left}
                       </bdi>{" "}
                     </span>
                     <strong className="font-semibold text-primary">{l.form}</strong>{" "}
-                    <span className="text-base-content/70 sm:truncate">
+                    <span className="text-base-content/80 sm:truncate">
                       {l.right}
                       {l.cutRight && " …"}
                     </span>
@@ -126,7 +126,7 @@ export default function OccurrenceFeed({
         })}
       </ol>
 
-      {loading && <p className="py-4 text-sm text-base-content/50">Chargement…</p>}
+      {loading && <p className="py-4 text-sm text-base-content/70">Chargement…</p>}
       {failed && (
         <div className="mt-3 flex flex-wrap items-center gap-3">
           <p className="text-sm text-error">Chargement impossible.</p>

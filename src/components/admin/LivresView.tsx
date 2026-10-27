@@ -26,7 +26,7 @@ export default function LivresView() {
   if (!ready) return null;
   if (!canManage)
     return (
-      <div className="py-20 text-center text-base-content/70">
+      <div className="py-20 text-center text-base-content/80">
         <p>Réservé aux éditeurs.</p>
         <a href="/login" className="link link-primary mt-3 inline-block">Se connecter</a>
       </div>

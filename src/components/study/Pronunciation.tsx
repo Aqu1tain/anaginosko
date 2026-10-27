@@ -40,7 +40,7 @@ export function SpeakRow({
   // gap-1.5 de chaque côté → faux espaces autour des lettres rouges.
   const content = (
     <span className="min-w-0">
-      <span className="text-sm text-base-content/70">{label}&nbsp;</span>
+      <span className="text-sm text-base-content/80">{label}&nbsp;</span>
       <Translit value={value} stressedClass="text-accent" />
     </span>
   );
@@ -62,7 +62,7 @@ export function SpeakRow({
         <button
           onClick={onEdit}
           aria-label="Ajuster la prononciation"
-          className="btn btn-ghost btn-xs btn-circle shrink-0 text-base-content/70"
+          className="btn btn-ghost btn-xs btn-circle shrink-0 text-base-content/80"
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             <path d="M12 20h9" />
@@ -102,10 +102,10 @@ export function PronunciationEditor({
 }) {
   return (
     <div className="mt-2 rounded-box border border-base-300 bg-base-200/60 p-3">
-      <div className="text-xs font-semibold uppercase tracking-wider text-base-content/50">
+      <div className="text-xs font-semibold uppercase tracking-wider text-base-content/70">
         Prononciation {system === "erasmien" ? "érasmienne" : "restituée"}
       </div>
-      <label className="mt-2 block text-xs text-base-content/70">
+      <label className="mt-2 block text-xs text-base-content/80">
         Transcription (latin, MAJUSCULE = syllabe accentuée)
       </label>
       <input
@@ -115,7 +115,7 @@ export function PronunciationEditor({
         className="input input-sm mt-1 w-full"
         aria-label="Transcription en caractères latins"
       />
-      <label className="mt-2 block text-xs text-base-content/70">Phonème (IPA)</label>
+      <label className="mt-2 block text-xs text-base-content/80">Phonème (IPA)</label>
       <input
         value={ipa}
         onChange={(e) => onIpaChange(e.target.value)}

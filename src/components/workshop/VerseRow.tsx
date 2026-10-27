@@ -20,10 +20,10 @@ export type RowState = {
 
 const STATUS: Record<string, { label: string; tone: string }> = {
   published: { label: "Publié", tone: "bg-success/15 text-success" },
-  draft: { label: "Brouillon", tone: "bg-base-200 text-base-content/70" },
+  draft: { label: "Brouillon", tone: "bg-base-200 text-base-content/80" },
   review: { label: "Soumis", tone: "bg-info/15 text-info" },
   changes: { label: "À corriger", tone: "bg-warning/20 text-warning-content" },
-  empty: { label: "Non traduit", tone: "bg-base-200/60 text-base-content/50" },
+  empty: { label: "Non traduit", tone: "bg-base-200/60 text-base-content/70" },
 };
 
 export const statusOf = (r: Pick<RowState, "draft" | "published">) => r.draft?.status ?? (r.published ? "published" : "empty");
@@ -72,7 +72,7 @@ export default function VerseRow({
       id={`v${row.verse}`}
       className={`grid scroll-mt-28 gap-3 border-b border-base-300/70 py-4 lg:grid-cols-[2.5rem_minmax(0,1fr)_minmax(0,1fr)] ${active ? "bg-primary/[0.03]" : ""}`}
     >
-      <span className="pt-1 text-sm font-semibold tabular-nums text-base-content/50">{row.verse}</span>
+      <span className="pt-1 text-sm font-semibold tabular-nums text-base-content/70">{row.verse}</span>
 
       <div className="min-w-0">
         <p lang="grc" className="font-greek text-lg leading-relaxed">
@@ -87,7 +87,7 @@ export default function VerseRow({
             </button>
           ))}
         </p>
-        {row.base && <p className="mt-2 text-sm leading-relaxed text-base-content/70">{row.base}</p>}
+        {row.base && <p className="mt-2 text-sm leading-relaxed text-base-content/80">{row.base}</p>}
       </div>
 
       <div className="min-w-0">
@@ -106,9 +106,9 @@ export default function VerseRow({
         />
         <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
           <span className={`rounded-full px-2 py-0.5 font-medium ${STATUS[status].tone}`}>{STATUS[status].label}</span>
-          {row.saving && <span className="text-base-content/50">Enregistrement…</span>}
-          {row.draft && <span className="text-base-content/50">{row.draft.author}</span>}
-          {row.comments > 0 && <span className="text-base-content/50">{row.comments} commentaire{row.comments > 1 ? "s" : ""}</span>}
+          {row.saving && <span className="text-base-content/70">Enregistrement…</span>}
+          {row.draft && <span className="text-base-content/70">{row.draft.author}</span>}
+          {row.comments > 0 && <span className="text-base-content/70">{row.comments} commentaire{row.comments > 1 ? "s" : ""}</span>}
           <span className="ml-auto flex flex-wrap gap-1">
             {row.draft && (row.draft.authorId === me || row.draft.status === "review") && (
               <button type="button" onClick={onPublish} className="btn btn-outline btn-xs" title="⌘ ⇧ Entrée">
@@ -121,7 +121,7 @@ export default function VerseRow({
               </button>
             )}
             {row.draft && (
-              <button type="button" onClick={onDiscard} className="btn btn-ghost btn-xs text-base-content/50">
+              <button type="button" onClick={onDiscard} className="btn btn-ghost btn-xs text-base-content/70">
                 Annuler
               </button>
             )}

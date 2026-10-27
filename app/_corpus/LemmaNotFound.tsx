@@ -3,7 +3,7 @@ import Link from "next/link";
 export default function LemmaNotFound({ href }: { href: string }) {
   return (
     <div className="py-20 text-center">
-      <p className="text-base-content/70">Lemme introuvable.</p>
+      <p className="text-base-content/80">Lemme introuvable.</p>
       <Link href={href} className="link link-primary mt-3 inline-block">
         Toute la concordance
       </Link>

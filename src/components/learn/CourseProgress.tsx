@@ -15,7 +15,7 @@ export default function CourseProgress({ lessons, compact = false }: { lessons: 
 
   const bar = signedIn && (
     <div>
-      <div className="flex justify-between text-xs text-base-content/70">
+      <div className="flex justify-between text-xs text-base-content/80">
         <span>{finished === lessons.length ? "Cours terminé" : `${finished} sur ${lessons.length} leçons`}</span>
         <span className="tabular-nums">{pct} %</span>
       </div>

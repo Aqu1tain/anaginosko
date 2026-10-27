@@ -107,7 +107,7 @@ export default function BibleNavigator({
           </label>
           {groups.map((g) => (
             <section key={g.title}>
-              <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-base-content/50">{g.title}</h3>
+              <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-base-content/70">{g.title}</h3>
               <div className="flex flex-wrap gap-1.5">
                 {g.books.map((b) => (
                   <button
@@ -126,7 +126,7 @@ export default function BibleNavigator({
               </div>
             </section>
           ))}
-          {!groups.length && <p className="text-sm text-base-content/50">Aucun livre ne correspond.</p>}
+          {!groups.length && <p className="text-sm text-base-content/70">Aucun livre ne correspond.</p>}
         </div>
       )}
     </div>

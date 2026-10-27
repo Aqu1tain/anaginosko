@@ -108,7 +108,7 @@ function renderBlock(block: Block): ReactNode {
     }
     case "quote":
       return (
-        <blockquote key={key} className={`my-4 border-l-4 border-base-300 pl-4 italic text-base-content/70${alignClass(block)}`}>
+        <blockquote key={key} className={`my-4 border-l-4 border-base-300 pl-4 italic text-base-content/80${alignClass(block)}`}>
           {renderInline(block.content)}
         </blockquote>
       );
@@ -139,7 +139,7 @@ function renderBlock(block: Block): ReactNode {
             className={`max-w-full rounded-lg ${marginClass}`}
             style={width ? { width } : undefined}
           />
-          {caption && <figcaption className="mt-1 text-center text-sm text-base-content/50">{caption}</figcaption>}
+          {caption && <figcaption className="mt-1 text-center text-sm text-base-content/70">{caption}</figcaption>}
         </figure>
       );
     }

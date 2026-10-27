@@ -41,12 +41,12 @@ export default function WorkshopView() {
   const tab: Tab = TABS.find(([k]) => k === params.get("tab"))?.[0] ?? "pilotage";
 
   if (!ready) return null;
-  if (!can(user, "arbitrage")) return <p className="py-20 text-center text-base-content/70">Réservé aux traducteurs.</p>;
+  if (!can(user, "arbitrage")) return <p className="py-20 text-center text-base-content/80">Réservé aux traducteurs.</p>;
 
   if (params.get("mode") === "alignement") {
     return (
       <div>
-        <Link href={`?corpus=lxx${book ? `&book=${book}&ch=${chapter}` : ""}`} className="mt-4 inline-block text-sm text-base-content/70 hover:text-base-content">
+        <Link href={`?corpus=lxx${book ? `&book=${book}&ch=${chapter}` : ""}`} className="mt-4 inline-block text-sm text-base-content/80 hover:text-base-content">
           ← Atelier
         </Link>
         <ArbitrageView />
@@ -69,7 +69,7 @@ export default function WorkshopView() {
               key={id}
               href={link({ corpus: id })}
               aria-current={corpus === id ? "true" : undefined}
-              className={`rounded-full px-3 py-1 font-medium ${corpus === id ? "bg-base-100 shadow-sm" : "text-base-content/70 hover:text-base-content"}`}
+              className={`rounded-full px-3 py-1 font-medium ${corpus === id ? "bg-base-100 shadow-sm" : "text-base-content/80 hover:text-base-content"}`}
             >
               {label}
             </Link>
@@ -79,13 +79,13 @@ export default function WorkshopView() {
       </header>
       <nav className="flex gap-1 overflow-x-auto border-b border-base-300 text-sm" aria-label="Atelier">
         {TABS.map(([k, label]) => (
-          <Link key={k} href={k === "pilotage" ? `?corpus=${corpus}` : `?corpus=${corpus}&tab=${k}`} className={`relative shrink-0 px-3 py-2 font-medium ${tab === k ? "" : "text-base-content/70 hover:text-base-content"}`}>
+          <Link key={k} href={k === "pilotage" ? `?corpus=${corpus}` : `?corpus=${corpus}&tab=${k}`} className={`relative shrink-0 px-3 py-2 font-medium ${tab === k ? "" : "text-base-content/80 hover:text-base-content"}`}>
             {label}
             {tab === k && <span className="absolute inset-x-2 -bottom-px h-0.5 rounded-full bg-primary" />}
           </Link>
         ))}
         {corpus === "lxx" && (
-          <Link href="?mode=alignement&corpus=lxx" className="ml-auto px-3 py-2 text-base-content/70 hover:text-base-content">
+          <Link href="?mode=alignement&corpus=lxx" className="ml-auto px-3 py-2 text-base-content/80 hover:text-base-content">
             Alignement Giguet
           </Link>
         )}

@@ -64,7 +64,7 @@ export default function ExplorerControls({
               type="button"
               aria-pressed={query.corpus === c}
               onClick={() => go({ corpus: c })}
-              className={`rounded-full px-3 py-1 font-medium transition-colors ${query.corpus === c ? "bg-base-100 shadow-sm" : "text-base-content/70 hover:text-base-content"}`}
+              className={`rounded-full px-3 py-1 font-medium transition-colors ${query.corpus === c ? "bg-base-100 shadow-sm" : "text-base-content/80 hover:text-base-content"}`}
             >
               {CORPUS_LABEL[c]}
             </button>

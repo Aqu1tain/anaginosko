@@ -34,17 +34,17 @@ export function ErrorMap({ onOpen }: { onOpen: (book: string, ch: number) => voi
   const [openBook, setOpenBook] = useState<string | null>(null);
   useEffect(() => { arb<Overview>("/overview").then(setData).catch((e) => setErr(arbErrors(e).join(" "))); }, []);
   if (err) return <p className="mt-6 text-sm text-error">{err}</p>;
-  if (!data) return <p className="mt-6 text-sm text-base-content/50">Chargement…</p>;
-  if (!data.books.length) return <p className="mt-6 text-sm text-base-content/50">Tout est aligné.</p>;
+  if (!data) return <p className="mt-6 text-sm text-base-content/70">Chargement…</p>;
+  if (!data.books.length) return <p className="mt-6 text-sm text-base-content/70">Tout est aligné.</p>;
   return (
     <div className="mt-4">
-      <p className="text-sm text-base-content/70"><span className="font-semibold text-primary">{data.grandTotal}</span> versets à revoir, dans {data.books.length} livres.</p>
+      <p className="text-sm text-base-content/80"><span className="font-semibold text-primary">{data.grandTotal}</span> versets à revoir, dans {data.books.length} livres.</p>
       <div className="mt-3 grid gap-2">
         {data.books.map((b) => (
           <div key={b.book} className="overflow-hidden rounded-box border border-base-300 bg-base-100">
             <button className="flex w-full items-center justify-between px-3.5 py-3 text-left hover:bg-base-200" onClick={() => setOpenBook(openBook === b.book ? null : b.book)}>
               <span className="font-medium">{b.label}</span>
-              <span className="flex items-center gap-2"><span className="badge badge-warning badge-sm">{b.total} à revoir</span><span className="text-xs text-base-content/50">{openBook === b.book ? "▲" : "▼"}</span></span>
+              <span className="flex items-center gap-2"><span className="badge badge-warning badge-sm">{b.total} à revoir</span><span className="text-xs text-base-content/70">{openBook === b.book ? "▲" : "▼"}</span></span>
             </button>
             {openBook === b.book && (
               <div className="flex flex-wrap gap-1.5 border-t border-base-200 p-2.5">
@@ -285,7 +285,7 @@ export function ChapterRealign({ book, ch, focusRef, prevCh, nextCh, onNavigate,
               <button className="btn btn-sm btn-ghost" onClick={tryClose}>Fermer</button>
             </div>
           </div>
-          <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-base-content/50">
+          <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-base-content/70">
             <span className="ml-auto flex flex-wrap items-center gap-2">
               {range.lo > chBounds.lo || range.hi < chBounds.hi ? null : (
                 <span className="join">
@@ -315,7 +315,7 @@ export function ChapterRealign({ book, ch, focusRef, prevCh, nextCh, onNavigate,
                 {/* Colonne GAUCHE : grec (fixe, autorité) */}
                 <div className="min-w-0">
                   <div className="flex items-center gap-1.5">
-                    <span className="text-xs font-semibold text-base-content/50">v.{g.v}</span>
+                    <span className="text-xs font-semibold text-base-content/70">v.{g.v}</span>
                     <button className={`btn btn-xs ${valid.has(g.ref) ? "btn-success" : "btn-ghost text-success"}`} title="Vérifié, ne plus signaler comme erreur" onClick={() => toggleValid(g.ref)}>{valid.has(g.ref) ? "✓ Vérifié" : "C’est bon"}</button>
                     {g.flagged && !valid.has(g.ref) && <span className="badge badge-warning badge-xs" title="Signalé par les lecteurs">À vérifier</span>}
                     {g.overridden && <span className="badge badge-primary badge-xs">{g.by === "Βιβλίον" ? "Biblion" : g.by || "Réglé"}</span>}
@@ -326,7 +326,7 @@ export function ChapterRealign({ book, ch, focusRef, prevCh, nextCh, onNavigate,
                     monte/descend dans le vide voisin ; désactivées s'il n'y a pas de place). */}
                 <div className="min-w-0 border-t border-base-200 pt-2 sm:border-l sm:border-t-0 sm:pl-3 sm:pt-0">
                   <div className="flex items-center gap-1.5">
-                    <span className="text-xs uppercase tracking-wider text-base-content/50">{fr.tag}{fr.tag === "maison" && g.by ? ` · ${g.by === "Βιβλίον" ? "Biblion" : g.by}` : ""}</span>
+                    <span className="text-xs uppercase tracking-wider text-base-content/70">{fr.tag}{fr.tag === "maison" && g.by ? ` · ${g.by === "Βιβλίον" ? "Biblion" : g.by}` : ""}</span>
                     <span className="join ml-auto">
                       <button className="btn btn-ghost btn-xs join-item" title="Monter ce bloc de traduction d'un cran" disabled={!canUp(i)} onClick={() => moveBlock(i, -1)}>↑</button>
                       <button className="btn btn-ghost btn-xs join-item" title="Descendre ce bloc de traduction d'un cran" disabled={!canDown(i)} onClick={() => moveBlock(i, 1)}>↓</button>
@@ -355,8 +355,8 @@ export function ChapterRealign({ book, ch, focusRef, prevCh, nextCh, onNavigate,
                     <CherryPick book={book} current={assignedV(i)} defaultCh={ch} onPick={(pch, pv, ptext) => { setRow(i, { kind: "pick", ch: pch, v: pv, text: ptext }); setPickMode(null); }} onCancel={() => setPickMode(null)} />
                   ) : (
                     <>
-                      <p className={`mt-0.5 text-sm leading-relaxed ${!fr.text ? "italic text-base-content/50" : ""}`}>{fr.text || "Sans traduction française"}</p>
-                      {fr.tag === "maison" && g.autoText && <p className="mt-1 text-xs leading-relaxed text-base-content/50">Giguet : {g.autoText}</p>}
+                      <p className={`mt-0.5 text-sm leading-relaxed ${!fr.text ? "italic text-base-content/70" : ""}`}>{fr.text || "Sans traduction française"}</p>
+                      {fr.tag === "maison" && g.autoText && <p className="mt-1 text-xs leading-relaxed text-base-content/70">Giguet : {g.autoText}</p>}
                     </>
                   )}
                   {extractMode?.i !== i && pickMode !== i && (
@@ -394,8 +394,8 @@ const when = (iso: string) => { const d = new Date(iso); return isNaN(d.getTime(
 export function LogsSection({ onOpen }: { onOpen?: (book: string, ch: number) => void }) {
   const [entries, setEntries] = useState<LogEntry[] | null>(null);
   useEffect(() => { arb<{ entries: LogEntry[] }>("/logs").then((d) => setEntries(d.entries || [])).catch(() => setEntries([])); }, []);
-  if (!entries) return <p className="mt-6 text-sm text-base-content/50">Chargement…</p>;
-  if (!entries.length) return <p className="mt-6 text-sm text-base-content/50">Aucune activité.</p>;
+  if (!entries) return <p className="mt-6 text-sm text-base-content/70">Chargement…</p>;
+  if (!entries.length) return <p className="mt-6 text-sm text-base-content/70">Aucune activité.</p>;
   return (
     <div className="mt-4">
       <div className="grid gap-1">
@@ -407,9 +407,9 @@ export function LogsSection({ onOpen }: { onOpen?: (book: string, ch: number) =>
               className="flex flex-wrap items-center gap-2 rounded-box border border-base-300 bg-base-100 px-3 py-2 text-left text-sm enabled:hover:border-primary/40 enabled:cursor-pointer">
               <span className={`badge badge-xs ${KIND_CLASS[e.kind] || "badge-ghost"}`}>{KIND_LABEL[e.kind] || e.kind}</span>
               <span className="font-medium">{who(e.by)}</span>
-              <span className="text-base-content/70">{BOOK[e.book] ?? e.book} {e.ref}</span>
-              {e.detail && <span className="truncate text-xs text-base-content/50">{e.kind === "maison" ? `« ${e.detail}… »` : `← ${e.detail}`}</span>}
-              <span className="ml-auto text-xs text-base-content/50">{when(e.at)}</span>
+              <span className="text-base-content/80">{BOOK[e.book] ?? e.book} {e.ref}</span>
+              {e.detail && <span className="truncate text-xs text-base-content/70">{e.kind === "maison" ? `« ${e.detail}… »` : `← ${e.detail}`}</span>}
+              <span className="ml-auto text-xs text-base-content/70">{when(e.at)}</span>
             </button>
           );
         })}
@@ -461,7 +461,7 @@ function CherryPick({ book, current, defaultCh, onPick, onCancel }: { book: stri
         <button className="btn btn-ghost btn-xs" onClick={onCancel}>Annuler</button>
       </div>
       {!searching && (
-        <div className="mt-1 flex items-center justify-between text-xs uppercase tracking-wider text-base-content/50">
+        <div className="mt-1 flex items-center justify-between text-xs uppercase tracking-wider text-base-content/70">
           <button className="btn btn-ghost btn-xs" disabled={browseCh <= 1} onClick={() => setBrowseCh((c) => Math.max(1, c - 1))}>← ch. {browseCh - 1}</button>
           <span>Giguet · chapitre {browseCh}</span>
           <button className="btn btn-ghost btn-xs" onClick={() => setBrowseCh((c) => c + 1)}>ch. {browseCh + 1} →</button>
@@ -481,8 +481,8 @@ function CherryPick({ book, current, defaultCh, onPick, onCancel }: { book: stri
             </button>
           );
         })}
-        {searching && found.length === 0 && <p className="px-1.5 py-1 text-xs text-base-content/50">Aucun résultat.</p>}
-        {!searching && browse.length === 0 && <p className="px-1.5 py-1 text-xs text-base-content/50">Chapitre vide.</p>}
+        {searching && found.length === 0 && <p className="px-1.5 py-1 text-xs text-base-content/70">Aucun résultat.</p>}
+        {!searching && browse.length === 0 && <p className="px-1.5 py-1 text-xs text-base-content/70">Chapitre vide.</p>}
       </div>
     </div>
   );
@@ -510,11 +510,11 @@ export function MaisonInline({ current, original, originalLabel = "Giguet", onSe
           if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) { e.preventDefault(); validate(); }
           if (e.key === "Escape") { e.preventDefault(); setOpen(false); }
         }} />
-      {original && <span className="text-xs leading-relaxed text-base-content/50">{originalLabel} : {original}</span>}
+      {original && <span className="text-xs leading-relaxed text-base-content/70">{originalLabel} : {original}</span>}
       <span className="flex items-center gap-1">
         <button className="btn btn-primary btn-xs" disabled={!text.trim()} onClick={validate}>Valider</button>
         <button className="btn btn-ghost btn-xs" onClick={() => setOpen(false)}>Annuler</button>
-        <span className="ml-auto text-xs text-base-content/50">Ctrl+Entrée valide · Échap annule</span>
+        <span className="ml-auto text-xs text-base-content/70">Ctrl+Entrée valide · Échap annule</span>
       </span>
     </span>
   );

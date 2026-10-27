@@ -25,11 +25,11 @@ export default function LessonBody({
   return (
     <div className="grid gap-8 wide:gap-12 wide:grid-cols-[minmax(0,1fr)_17rem] wide:items-start">
       <div className="min-w-0 max-w-3xl">
-        <p className="text-sm text-base-content/50">
+        <p className="text-sm text-base-content/70">
           {v.part.title} · leçon {v.index + 1} sur {v.course.lessonCount}
         </p>
         <h1 className="mt-1 text-4xl font-bold leading-tight">{v.lesson.title}</h1>
-        {v.lesson.excerpt && <p className="mt-3 text-lg leading-relaxed text-base-content/70">{v.lesson.excerpt}</p>}
+        {v.lesson.excerpt && <p className="mt-3 text-lg leading-relaxed text-base-content/80">{v.lesson.excerpt}</p>}
 
         {locked ?? (
           <>
@@ -42,7 +42,7 @@ export default function LessonBody({
       </div>
 
       <aside className="wide:sticky wide:top-20 wide:max-h-[calc(100dvh-6rem)] wide:overflow-y-auto">
-        <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-base-content/50">
+        <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-base-content/70">
           <Link href={courseHref} className="hover:text-primary">{v.course.title}</Link>
         </p>
         <LessonList parts={parts} current={v.lesson.id} />

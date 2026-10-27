@@ -21,13 +21,13 @@ export default function InvitationView({ token }: { token: string }) {
       .catch(() => setState("invalid"));
   }, [token]);
 
-  if (state === "loading") return <div className="py-12 text-center text-sm text-base-content/50">Chargement…</div>;
+  if (state === "loading") return <div className="py-12 text-center text-sm text-base-content/70">Chargement…</div>;
 
   if (state === "invalid" || !invite)
     return (
       <div className="mx-auto max-w-sm pb-12 pt-12 text-center">
         <h1 className="text-3xl font-bold tracking-tight">Invitation invalide</h1>
-        <p className="mt-2 text-sm text-base-content/70">
+        <p className="mt-2 text-sm text-base-content/80">
           Lien expiré ou invalide. Demandez une nouvelle invitation.
         </p>
         <Link href="/" className="btn btn-outline btn-sm mt-6">Retour à l’accueil</Link>
@@ -52,7 +52,7 @@ export default function InvitationView({ token }: { token: string }) {
   return (
     <div className="mx-auto max-w-sm pb-12 pt-12">
       <h1 className="text-center text-3xl font-bold tracking-tight">Bienvenue, {invite.displayName}</h1>
-      <p className="mt-2 text-center text-sm text-base-content/70">
+      <p className="mt-2 text-center text-sm text-base-content/80">
         Vous rejoignez Anaginosko comme {invite.title}.
       </p>
       <form onSubmit={submit} className="mt-6 flex flex-col items-center gap-3">

@@ -104,20 +104,20 @@ export default function BookIntroWorkbench({ corpus, book }: { corpus: string; b
   if (!ready) return null;
   if (!can(user, "review"))
     return (
-      <div className="py-20 text-center text-base-content/70">
+      <div className="py-20 text-center text-base-content/80">
         <p>Réservé aux éditeurs.</p>
         <a href="/login" className="link link-primary mt-3 inline-block">Se connecter</a>
       </div>
     );
-  if (content === null) return <p className="pb-12 pt-6 text-sm text-base-content/50">Chargement…</p>;
+  if (content === null) return <p className="pb-12 pt-6 text-sm text-base-content/70">Chargement…</p>;
 
   return (
     <div className="pb-12 pt-6">
-      <Link href="/admin/livres" className="link text-sm text-base-content/70">← Introductions de livres</Link>
+      <Link href="/admin/livres" className="link text-sm text-base-content/80">← Introductions de livres</Link>
       <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Introduction · {bookName}</h1>
-          <p className="mt-1 h-4 text-xs text-base-content/50">
+          <p className="mt-1 h-4 text-xs text-base-content/70">
             {saveState === "saving" ? "Enregistrement…" : saveState === "saved" ? "Enregistré" : saveState === "error" ? "Erreur d'enregistrement" : ""}
           </p>
         </div>

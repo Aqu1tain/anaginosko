@@ -17,7 +17,7 @@ export default function TeamPage() {
   return (
     <div className="pb-12 pt-6">
       <h1 className="text-3xl font-bold tracking-tight">Équipe</h1>
-      {members.length === 0 && <p className="mt-8 text-sm text-base-content/50">Aucun profil public.</p>}
+      {members.length === 0 && <p className="mt-8 text-sm text-base-content/70">Aucun profil public.</p>}
       <ul className="mt-8 grid gap-4 sm:grid-cols-2 wide:grid-cols-3">
         {members.map((m) => (
           <li key={m.userId}>
@@ -29,11 +29,11 @@ export default function TeamPage() {
               <div className="min-w-0">
                 <p className="font-semibold">{m.displayName}</p>
                 {m.articles > 0 && (
-                  <p className="text-sm text-base-content/50">
+                  <p className="text-sm text-base-content/70">
                     {m.articles} article{m.articles > 1 ? "s" : ""}
                   </p>
                 )}
-                {m.bio && <p className="mt-2 line-clamp-3 text-sm text-base-content/70">{m.bio}</p>}
+                {m.bio && <p className="mt-2 line-clamp-3 text-sm text-base-content/80">{m.bio}</p>}
               </div>
             </Link>
           </li>

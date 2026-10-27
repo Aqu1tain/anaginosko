@@ -71,7 +71,7 @@ export default function GoogleSignIn({
     <div className="mt-6">
       <div ref={box} className="flex min-h-11 justify-center" />
       {error && <p className="mt-2 text-center text-sm text-error">{error}</p>}
-      <div className="my-5 flex items-center gap-3 text-xs text-base-content/50">
+      <div className="my-5 flex items-center gap-3 text-xs text-base-content/70">
         <span className="h-px flex-1 bg-base-300" />
         ou par e-mail
         <span className="h-px flex-1 bg-base-300" />

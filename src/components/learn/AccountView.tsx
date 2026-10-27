@@ -35,7 +35,7 @@ export default function AccountView() {
   if (!user)
     return (
       <div className="py-16 text-center">
-        <p className="text-base-content/70">Connectez-vous pour voir votre compte.</p>
+        <p className="text-base-content/80">Connectez-vous pour voir votre compte.</p>
         <Link href="/login?next=/mon-compte" className="btn btn-primary mt-4 rounded-full">Se connecter</Link>
       </div>
     );
@@ -93,7 +93,7 @@ export default function AccountView() {
           <ul className="sticky top-20 space-y-0.5 text-sm">
             {sections.map(([id, label]) => (
               <li key={id}>
-                <a href={`#${id}`} className="block rounded-field px-3 py-1.5 text-base-content/65 hover:bg-base-200 hover:text-base-content">
+                <a href={`#${id}`} className="block rounded-field px-3 py-1.5 text-base-content/70 hover:bg-base-200 hover:text-base-content">
                   {label}
                 </a>
               </li>
@@ -104,7 +104,7 @@ export default function AccountView() {
         <div className="space-y-12">
           <section id="progression" className="scroll-mt-20">
             <h2 className="text-lg font-semibold">Progression</h2>
-            <p className="mt-1 text-sm text-base-content/70">
+            <p className="mt-1 text-sm text-base-content/80">
               {done.size === 0 ? "Aucune leçon terminée." : `${done.size} leçon${done.size > 1 ? "s" : ""} terminée${done.size > 1 ? "s" : ""}.`}
             </p>
             <Link href="/apprendre" className="btn btn-outline btn-sm mt-3">Aller aux cours</Link>
@@ -117,7 +117,7 @@ export default function AccountView() {
               <input value={name} onChange={(e) => setName(e.target.value)} maxLength={80} className="input input-bordered mt-1 w-full" required />
             </label>
             <p className="mt-3 text-sm">
-              <span className="text-base-content/60">Adresse de connexion : </span>
+              <span className="text-base-content/70">Adresse de connexion : </span>
               {email || "…"}
             </p>
             {name.trim() !== user.displayName && (

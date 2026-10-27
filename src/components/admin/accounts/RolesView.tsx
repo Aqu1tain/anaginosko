@@ -60,7 +60,7 @@ export default function RolesView({
               >
                 <RoleDot id={r.id} />
                 <span className="min-w-0 flex-1 truncate">{r.name}</span>
-                <span className="text-xs tabular-nums text-base-content/50">{members(r.id)}</span>
+                <span className="text-xs tabular-nums text-base-content/70">{members(r.id)}</span>
               </button>
             </li>
           ))}
@@ -73,7 +73,7 @@ export default function RolesView({
       {draft && (
         <div className="space-y-6 p-5">
           <label className="block">
-            <span className="block text-xs font-semibold uppercase tracking-wider text-base-content/50">Nom du rôle</span>
+            <span className="block text-xs font-semibold uppercase tracking-wider text-base-content/70">Nom du rôle</span>
             <input
               className="input input-bordered input-sm mt-2 w-full max-w-xs"
               value={draft.name}

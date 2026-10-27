@@ -36,7 +36,7 @@ export default function VerifyView() {
         ) : state === "success" ? (
           <>
             <span className="badge badge-success badge-soft">Confirmé</span>
-            <p className="text-sm text-base-content/70">{message}</p>
+            <p className="text-sm text-base-content/80">{message}</p>
             <Link href="/" className="btn btn-primary btn-sm mt-1">
               Retour à l’accueil
             </Link>
