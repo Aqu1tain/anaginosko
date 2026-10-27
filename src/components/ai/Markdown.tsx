@@ -5,7 +5,7 @@ import ReactMarkdown, { type Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
 
 // Liens vers le site : navigation interne, quelle que soit l'origine écrite par le modèle.
-const internal = (href: string) => href.match(/^https?:\/\/(?:next\.)?anaginosko\.fr(\/[^\s]*)?$/)?.[1] ?? null;
+const internal = (href: string) => href.match(/^https?:\/\/(?:next\.)?anaginosko\.fr((?:\/(?![/\\])[^\s]*)?)$/)?.[1] ?? null;
 
 const COMPONENTS: Components = {
   h1: ({ children }) => <h3 className="mt-5 mb-2 text-lg font-semibold">{children}</h3>,
@@ -18,6 +18,13 @@ const COMPONENTS: Components = {
   code: ({ children }) => <code className="rounded bg-base-200 px-1 py-0.5 text-[0.85em]">{children}</code>,
   pre: ({ children }) => <pre className="my-3 overflow-x-auto rounded-box bg-base-200 p-3 text-sm">{children}</pre>,
   hr: () => <hr className="my-4 border-base-300" />,
+  // Pas d'image chargée depuis une réponse : une URL piégée pourrait exfiltrer la conversation.
+  img: ({ src, alt }) =>
+    typeof src === "string" ? (
+      <a href={src} target="_blank" rel="noreferrer noopener" className="link link-primary">
+        {alt || "Image"}
+      </a>
+    ) : null,
   table: ({ children }) => (
     <div className="my-3 overflow-x-auto rounded-box border border-base-300">
       <table className="w-full text-sm">{children}</table>
