@@ -5,6 +5,8 @@ export type Mot = {
   erasmien: string;
   restituee: string;
   verse: number | null;
+  /** Lettre du sous-verset de Rahlfs (« a » pour 2:35a), hors additions d'Esther. */
+  sub?: string;
   lemme: string | null;
   nature: string | null;
   /** analyse morphologique en français (cas/genre/nombre ou personne/temps/voix/mode). */

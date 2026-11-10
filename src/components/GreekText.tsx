@@ -180,13 +180,16 @@ function GreekText({
         ? "leading-[1.85]"
         : "leading-[1.8]";
 
+  // Premier mot de chaque verset, et de chaque sous-verset lettré (« 35a »).
   const verseAt = useMemo(() => {
-    const map = new Map<number, number>();
-    let last: number | null = null;
+    const map = new Map<number, { verse: number; sub: string | null }>();
+    let last: string | null = null;
     for (const [w, t] of words) {
-      const v = t.word.verse;
-      if (v != null && v !== last) map.set(w, v);
-      if (v != null) last = v;
+      const { verse, sub } = t.word;
+      if (verse == null) continue;
+      const key = `${verse}${sub ?? ""}`;
+      if (key !== last) map.set(w, { verse, sub });
+      last = key;
     }
     return map;
   }, [words]);
@@ -196,10 +199,11 @@ function GreekText({
   // du lecteur qui la porte (on évite un id en double).
   const verseMark = (w: number) => {
     if (manuscript || !verseAt.has(w)) return null;
-    const v = verseAt.get(w)!;
+    const { verse: v, sub } = verseAt.get(w)!;
     return (
-      <span id={verseOnly == null ? `v${v}` : undefined} className="verse-num scroll-mt-20">
+      <span id={verseOnly == null && !sub ? `v${v}` : undefined} className="verse-num scroll-mt-20">
         {verseLabel ? verseLabel(v) : v}
+        {sub}
       </span>
     );
   };

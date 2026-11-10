@@ -46,7 +46,8 @@ function parseLabel(label) {
   const vsStr = colon === -1 ? rest : rest.slice(colon + 1);
   const chapter = chStr === null ? 1 : /^\d+$/.test(chStr) ? Number(chStr) : 0; // Prolog -> 0
   const verse = parseInt(vsStr, 10);
-  return { code, chapter, verse: Number.isNaN(verse) ? 1 : verse, label: `${chapter}:${vsStr}` };
+  const sub = vsStr.match(/[a-z]+$/)?.[0];
+  return { code, chapter, verse: Number.isNaN(verse) ? 1 : verse, sub, label: `${chapter}:${vsStr}` };
 }
 
 console.log("Lecture des CSV alignés…");
@@ -120,7 +121,8 @@ for (let i = 1; i <= N; i++) {
     continue;
   }
   const { book } = res;
-  const { chapter, verse } = book.id === "est" ? placeEsther(m) : { chapter: res.chapter, verse: m.verse };
+  // Hors Esther, un sous-verset lettré (« 2:35a ») reste dans son verset et garde sa lettre.
+  const { chapter, verse, sub } = book.id === "est" ? placeEsther(m) : { chapter: res.chapter, verse: m.verse, sub: m.sub };
   const grec = grecs[i - 1].replace(/[⸀-ⸯ]/g, "");
   const [pos, parse] = morphs[i - 1].split(".");
   const corr = correctLemma(lemmaRules, book.id, grec, lemmes[i - 1], natureOf(pos), decodeMorphCcat(pos, parse));
@@ -136,7 +138,7 @@ for (let i = 1; i <= N; i++) {
   if (!chapters.has(chapter)) chapters.set(chapter, []);
   const arr = chapters.get(chapter);
   const w = arr.length * 2;
-  arr.push({ grec, erasmien: grecToErasmien(grec), restituee: grecToRestituee(grec), verse, lemme, nature, ...(morph ? { morph } : {}) });
+  arr.push({ grec, erasmien: grecToErasmien(grec), restituee: grecToRestituee(grec), verse, ...(sub ? { sub } : {}), lemme, nature, ...(morph ? { morph } : {}) });
   mapped++;
 
   let e = lemmaMap.get(lemme);

@@ -16,6 +16,8 @@ export type Word = {
   context: WordContext | null;
   /** numéro de verset, si connu */
   verse: number | null;
+  /** lettre du sous-verset (« a » pour 35a) */
+  sub: string | null;
 };
 
 export type Token =
@@ -45,6 +47,7 @@ export function tokenizeText(text: Text): Token[] {
             morph: mot.morph,
           },
           verse: mot.verse,
+          sub: mot.sub ?? null,
         },
       });
     });
@@ -57,7 +60,7 @@ export function tokenizeText(text: Text): Token[] {
     .map((chunk): Token =>
       /\s/.test(chunk)
         ? { type: "space" }
-        : { type: "word", word: { graphemes: segmentToGraphemes(chunk), context: null, verse: null } },
+        : { type: "word", word: { graphemes: segmentToGraphemes(chunk), context: null, verse: null, sub: null } },
     );
 }
 
