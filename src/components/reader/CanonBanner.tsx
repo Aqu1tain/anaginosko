@@ -5,15 +5,15 @@ import Chevron from "../Chevron";
 
 // « Deutérocanonique » et sa définition, au survol ou au focus du point d'interrogation.
 // Le parent porte `relative` : l'infobulle s'aligne sur le début de la ligne.
-function Tier({ children }: { children?: React.ReactNode }) {
+function Tier({ detail }: { detail?: string }) {
   return (
-    <p className="pointer-events-none relative text-xs font-medium text-base-content/70">
+    <p className="pointer-events-none relative flex flex-wrap items-center gap-x-1 text-xs font-medium text-base-content/70">
       Deutérocanonique
-      <span className="group/tip">
+      <span className="group/tip flex">
         <button
           type="button"
           aria-label="Définition de deutérocanonique"
-          className="pointer-events-auto relative z-10 ml-1 inline-grid size-4 cursor-help place-items-center rounded-full border border-current align-[-0.2em] text-[0.625rem] leading-none before:absolute before:-inset-3.5 hover:text-base-content"
+          className="pointer-events-auto relative z-10 grid size-4 cursor-help place-items-center rounded-full border border-current text-[0.625rem] leading-none before:absolute before:-inset-3.5 hover:text-base-content"
         >
           ?
         </button>
@@ -24,7 +24,7 @@ function Tier({ children }: { children?: React.ReactNode }) {
           Reçu comme Écriture par l’Église catholique, absent de la Bible hébraïque.
         </span>
       </span>
-      {children}
+      {detail && <span>· {detail}</span>}
     </p>
   );
 }
@@ -32,7 +32,7 @@ function Tier({ children }: { children?: React.ReactNode }) {
 export function CanonBanner({ passage }: { passage: CanonPassage }) {
   return (
     <div className="relative my-4 before:absolute before:inset-y-0 before:-left-3 before:w-0.5 before:bg-secondary first:mt-0">
-      <Tier>{passage.place ? ` · ${passage.place}` : null}</Tier>
+      <Tier detail={passage.place} />
       <p className="mt-0.5 font-semibold leading-snug">{passage.title}</p>
     </div>
   );
@@ -47,7 +47,7 @@ export function AdditionLink({ addition }: { addition: EstherAddition }) {
         <Link href={`/lxx/est/${addition.id}`} className="font-medium after:absolute after:inset-0">
           {additionTitle(addition)}
         </Link>
-        <Tier> · {addition.units.length} versets à lire ici</Tier>
+        <Tier detail={`${addition.units.length} versets`} />
       </div>
       <span className="text-base text-base-content/70">
         <Chevron to="right" />
