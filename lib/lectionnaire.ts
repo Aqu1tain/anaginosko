@@ -2,13 +2,13 @@ import "server-only";
 import { readFile, readdir } from "node:fs/promises";
 import path from "node:path";
 import type { Text } from "../src/data/texts";
-import { NT, LXX } from "../src/data/corpus";
+import { NT, LXX, type ChapterId } from "../src/data/corpus";
 import { loadChapterFs } from "./nt-server";
 
 // Lectionnaires précalculés (scripts/lectionnaire) : des références seulement,
 // résolues ici dans le corpus du site (grec et traduction).
 
-export type Passage = { corpus: "nt" | "lxx"; book: string; chapter: number; from: number; to: number; absent?: boolean };
+export type Passage = { corpus: "nt" | "lxx"; book: string; chapter: ChapterId; from: number; to: number; absent?: boolean };
 export type Reading = { kind: string; label: string; ref: string; passages: Passage[]; alternative?: boolean };
 export type Mass = { name?: string; readings: Reading[] };
 export type Day = { title: string; detail?: string; color?: string; note?: string; projected?: boolean; masses: Mass[] };

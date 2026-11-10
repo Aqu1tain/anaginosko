@@ -48,7 +48,7 @@ for (const book of Object.keys(giguet).sort()) {
   if (!fs.existsSync(path.join(LXX, book))) continue;
   const stats = { ...ZERO };
   // côté grec
-  for (const chFile of fs.readdirSync(path.join(LXX, book)).filter((f) => /^\d+\.json$/.test(f))) {
+  for (const chFile of fs.readdirSync(path.join(LXX, book)).filter((f) => /^(\d+|[A-F])\.json$/.test(f))) {
     const ch = chFile.replace(".json", "");
     const mots = JSON.parse(fs.readFileSync(path.join(LXX, book, chFile), "utf8")).mots;
     const verseText = new Map(); // v -> texte grec reconstruit (pour la file de lecture)

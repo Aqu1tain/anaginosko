@@ -103,6 +103,15 @@ function psalmOffset(lxx, hebrew, verse) {
   return verse;
 }
 
+// Additions d'Esther : le lectionnaire cite les lettres de la Néo-Vulgate, que le
+// site range en chapitres-lettres dans la numérotation de Rahlfs.
+const ESTHER = {
+  "4, 17n.p-r.aa.bb.gg.hh": [
+    { chapter: "C", from: 10, to: 12 },
+    { chapter: "C", from: 17, to: 19 },
+  ],
+};
+
 function parseRef(raw, type) {
   let ref = normalize(raw).replace(/^Cantique\s+/i, "");
   if (type === "psaume" && /^\d/.test(ref)) ref = `Ps ${ref}`;
@@ -126,7 +135,7 @@ function parseRef(raw, type) {
     }
     return { book, display: `${NAMES.psa} ${rest}`, segments };
   }
-  const segments = rest.split(/\s*;\s*/).flatMap((g) => parseGroup(g, SINGLE_CHAPTER.has(book)));
+  const segments = (book === "est" && ESTHER[rest]) || rest.split(/\s*;\s*/).flatMap((g) => parseGroup(g, SINGLE_CHAPTER.has(book)));
   return { book, display: `${NAMES[book]} ${rest}`, segments };
 }
 

@@ -20,18 +20,14 @@ const NFC = (s) => (s ?? "").normalize("NFC");
 const rules = loadLemmaOverrides();
 
 const books = JSON.parse(fs.readFileSync(path.join(LXX, "books.json"), "utf8")).books;
-// Ordre numerique des chapitres (comme build-lxx) : occ/ reste en ordre source.
-const chapterFiles = (id) =>
-  fs
-    .readdirSync(path.join(LXX, id))
-    .filter((f) => /^\d+\.json$/.test(f))
-    .sort((a, b) => Number(a.slice(0, -5)) - Number(b.slice(0, -5)));
+// Chapitres dans l'ordre du manifeste (comme build-lxx) : occ/ reste en ordre source.
+const chapterFile = (ch) => `${ch}.json`;
 
 // 1) Patch des chapitres : reassigne lemme/nature/morph des mots qui matchent.
 const touched = new Set(); // lemmes affectes (from + to)
 let changed = 0;
 for (const b of books) {
-  for (const f of chapterFiles(b.id)) {
+  for (const f of b.chapterList.map(chapterFile)) {
     const p = path.join(LXX, b.id, f);
     const data = JSON.parse(fs.readFileSync(p, "utf8"));
     let dirty = false;
@@ -60,8 +56,8 @@ const OCC_CAP = 500;
 const counts = new Map(); // lemma -> count total
 const occByOid = new Map(); // oid -> [{b,c,v,w,f}] (touched lemmes seulement)
 for (const b of books) {
-  for (const f of chapterFiles(b.id)) {
-    const c = Number(f.slice(0, -5));
+  for (const c of b.chapterList) {
+    const f = chapterFile(c);
     const data = JSON.parse(fs.readFileSync(path.join(LXX, b.id, f), "utf8"));
     data.mots.forEach((m, i) => {
       const lem = NFC(m.lemme);

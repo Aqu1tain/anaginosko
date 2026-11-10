@@ -99,7 +99,7 @@ def parse_short(text):
     book, rest = text.split(" ")
     chapter, verses = rest.split(":")
     start, end = verses.split("-")
-    return book, int(chapter), int(start), int(end)
+    return book, int(chapter) if chapter.isdigit() else chapter, int(start), int(end)
 
 
 def parse_ref(text):

@@ -80,10 +80,11 @@ export default function BibleNavigator({
                     href={`${corpus.routePrefix}/${book.id}/${ch}`}
                     onClick={onNavigate}
                     aria-current={isCurrent ? "page" : undefined}
+                    title={typeof ch === "string" ? `Addition ${ch}, deutérocanonique` : undefined}
                     className={`grid h-11 place-items-center rounded-lg border text-base font-medium tabular-nums transition-colors ${
                       isCurrent
                         ? "border-primary bg-primary text-primary-content"
-                        : "border-base-300 bg-base-100 hover:border-primary/40 hover:bg-base-200"
+                        : `${typeof ch === "string" ? "border-secondary" : "border-base-300"} bg-base-100 hover:border-primary/40 hover:bg-base-200`
                     }`}
                   >
                     {chapterShort(ch)}

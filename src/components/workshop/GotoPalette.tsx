@@ -2,10 +2,11 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { NT, LXX } from "@/src/data/corpus";
+import { NT, LXX, type ChapterId } from "@/src/data/corpus";
+import { parseEstherAddition } from "@/src/data/refParse";
 import type { WorkCorpus } from "@/src/lib/workshopApi";
 
-type Target = { corpus: WorkCorpus; book: string; name: string; chapter: number; verse: number | null };
+type Target = { corpus: WorkCorpus; book: string; name: string; chapter: ChapterId; verse: number | null };
 
 const fold = (s: string) => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/\s+/g, "");
 const BOOKS = [NT, LXX].flatMap((c) => Object.entries(c.bookNames).map(([id, name]) => ({ corpus: c.id as WorkCorpus, id, name, key: fold(name) })));
@@ -21,6 +22,9 @@ function abbreviates(q: string, name: string): boolean {
 
 // « Jean 3,16 », « jn 3 16 », « 1 Co 13 », « Gn 1 » : livre (nom ou abréviation), chapitre, verset.
 function parse(input: string, prefer: WorkCorpus): Target[] {
+  const addition = parseEstherAddition(input.trim());
+  const esther = addition && BOOKS.find((b) => b.id === "est" && b.key.startsWith(fold(addition.bookQuery)));
+  if (addition && esther) return [{ corpus: esther.corpus, book: esther.id, name: esther.name, chapter: addition.chapter, verse: addition.verse }];
   const m = input.trim().match(/^((?:[1-4]\s*)?[^\d]+?)\s*(\d+)(?:\s*[,:. ]\s*(\d+))?$/);
   if (!m) return [];
   const q = fold(m[1]);

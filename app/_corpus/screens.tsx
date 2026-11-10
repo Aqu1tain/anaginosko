@@ -23,6 +23,17 @@ import { chapterVerses } from "@/lib/chapterVerses";
 // que de fines enveloppes passant la config du corpus. Les valeurs NT reproduisent
 // les littéraux historiques (URL, libellés, JSON-LD) à l'identique.
 
+const plural = (n: number, word: string) => `${n} ${word}${n > 1 ? "s" : ""}`;
+
+// « 10 chapitres, 6 additions grecques » : les chapitres-lettres se comptent à part.
+const numberedChapters = (chapters: ChapterId[]) => chapters.filter((ch) => typeof ch === "number").length;
+
+function chapterCount(chapters: ChapterId[]): string {
+  const additions = chapters.length - numberedChapters(chapters);
+  const numbered = plural(numberedChapters(chapters), "chapitre");
+  return additions ? `${numbered}, ${additions} additions grecques` : numbered;
+}
+
 // --- generateStaticParams / generateMetadata helpers ---
 
 export async function bookStaticParams(corpus: CorpusConfig) {
@@ -44,13 +55,13 @@ export async function bookMetadata(corpus: CorpusConfig, params: Promise<{ book:
   const name = corpus.bookNames[book] ?? "Livre";
   const books = await loadBooksFs(corpus);
   const b = bookById(books, book);
-  const chapters = b ? chapterNumbers(b).length : 0;
+  const chapters = b ? chapterCount(chapterNumbers(b)) : "0 chapitre";
   // Description = extrait de l'intro éditoriale si publiée (prose unique, meilleur SEO),
   // sinon le gabarit générique.
   const intro = getPublishedIntro(corpus.id, book);
   const description = intro?.excerpt?.trim()
     ? clip(intro.excerpt, 220)
-    : `${name} en grec (${corpus.sourceLabel}) et en français : ${chapters} chapitre${chapters > 1 ? "s" : ""}, chaque mot analysé (lemme, morphologie, notice du Bailly), traduction française en regard.`;
+    : `${name} en grec (${corpus.sourceLabel}) et en français : ${chapters}, chaque mot analysé (lemme, morphologie, notice du Bailly), traduction française en regard.`;
   return pageMetadata({ title: `${name} en grec`, description, path: `${corpus.routePrefix}/${book}` });
 }
 
@@ -111,7 +122,7 @@ export async function TocScreen({ corpus }: { corpus: CorpusConfig }) {
                   className="flex items-center justify-between gap-2 rounded-box border border-base-300 bg-base-100 px-3.5 py-2.5 transition-colors hover:border-primary/40"
                 >
                   <span className="min-w-0 truncate font-medium">{b.name}</span>
-                  <span className="shrink-0 text-xs tabular-nums text-base-content/70">{b.chapters}</span>
+                  <span className="shrink-0 text-xs tabular-nums text-base-content/70">{numberedChapters(chapterNumbers(b))}</span>
                 </Link>
               );
             })}
@@ -160,9 +171,7 @@ export async function BookScreen({ corpus, params }: { corpus: CorpusConfig; par
         <h1 className="text-3xl font-bold tracking-tight">{b.name}</h1>
         <EditBookIntro corpus={corpus.id} book={book} />
       </div>
-      <p className="mt-1 mb-6 text-sm text-base-content/80">
-        {b.chapters} chapitre{b.chapters > 1 ? "s" : ""}
-      </p>
+      <p className="mt-1 mb-6 text-sm text-base-content/80">{chapterCount(chapterNumbers(b))}</p>
       {intro && (
         <CollapsibleIntro corpus={corpus.id} book={book} long={bookIntroIsLong(intro.content)}>
           <ArticleRenderer content={intro.content} />
@@ -173,7 +182,10 @@ export async function BookScreen({ corpus, params }: { corpus: CorpusConfig; par
           <Link
             key={ch}
             href={`${corpus.routePrefix}/${book}/${ch}`}
-            className="grid h-11 place-items-center rounded-lg border border-base-300 bg-base-100 text-base font-medium transition-colors hover:border-primary/40 hover:bg-base-200"
+            title={typeof ch === "string" ? `Addition ${ch}, deutérocanonique` : undefined}
+            className={`grid h-11 place-items-center rounded-lg border bg-base-100 text-base font-medium transition-colors hover:border-primary/40 hover:bg-base-200 ${
+              typeof ch === "string" ? "border-secondary" : "border-base-300"
+            }`}
           >
             {chapterShort(ch)}
           </Link>
