@@ -22,7 +22,7 @@ const bookWords = {}; // bookId -> nombre total de mots
 
 for (const b of books) {
   bookWords[b.id] = 0;
-  const files = readdirSync(resolve(ntDir, b.id)).filter((f) => /^\d+\.json$/.test(f));
+  const files = readdirSync(resolve(ntDir, b.id)).filter((f) => /^(\d+|[A-F])\.json$/.test(f));
   for (const f of files) {
     const data = JSON.parse(readFileSync(resolve(ntDir, b.id, f), "utf8"));
     for (const m of data.mots) {

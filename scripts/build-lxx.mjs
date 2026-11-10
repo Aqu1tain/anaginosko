@@ -13,6 +13,7 @@ import { grecToErasmien, grecToRestituee } from "./translit.mjs";
 import { decodeMorphCcat } from "./morph.mjs";
 import { BOOKS, resolveBook } from "./lib/lxx-books.mjs";
 import { loadLemmaOverrides, correctLemma } from "./lib/lemma-overrides.mjs";
+import { ESTHER_CHAPTER_ORDER, ESTHER_RAHLFS_LABELS, estherTarget, rahlfsLabel } from "../lib/esther-additions.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const SRC = process.env.LXX_SRC || resolve(root, "data-sources/lxx-rahlfs");
@@ -45,7 +46,7 @@ function parseLabel(label) {
   const vsStr = colon === -1 ? rest : rest.slice(colon + 1);
   const chapter = chStr === null ? 1 : /^\d+$/.test(chStr) ? Number(chStr) : 0; // Prolog -> 0
   const verse = parseInt(vsStr, 10);
-  return { code, chapter, verse: Number.isNaN(verse) ? 1 : verse };
+  return { code, chapter, verse: Number.isNaN(verse) ? 1 : verse, label: `${chapter}:${vsStr}` };
 }
 
 console.log("Lecture des CSV alignés…");
@@ -81,7 +82,7 @@ if (existsSync(outDir)) {
   for (const b of readdirSync(outDir)) {
     const bdir = resolve(outDir, b);
     if (!statSync(bdir).isDirectory()) continue;
-    for (const f of readdirSync(bdir)) if (/^\d+\.json$/.test(f)) rmSync(resolve(bdir, f), { force: true });
+    for (const f of readdirSync(bdir)) if (/^(\d+|[A-F])\.json$/.test(f)) rmSync(resolve(bdir, f), { force: true });
   }
 }
 mkdirSync(outDir, { recursive: true });
@@ -96,6 +97,20 @@ let mapped = 0, nullMorph = 0, autre = 0;
 const lemmaRules = loadLemmaOverrides();
 let lemmaFixed = 0;
 
+// Esther : les additions grecques sortent en chapitres-lettres (lib/esther-additions).
+// Un sous-verset lettré absent de la table arrête le build plutôt que de se fondre
+// dans son verset d'ancrage.
+const estherSeen = new Set();
+function placeEsther(m) {
+  const target = estherTarget(m.label);
+  if (target) {
+    estherSeen.add(m.label);
+    return target;
+  }
+  if (/[a-z]$/.test(m.label)) throw new Error(`Esther : sous-verset hors table « ${m.label} »`);
+  return { chapter: m.chapter, verse: m.verse };
+}
+
 for (let i = 1; i <= N; i++) {
   const m = meta[i];
   if (!m) continue;
@@ -104,7 +119,8 @@ for (let i = 1; i <= N; i++) {
     skipped.set(m.code, (skipped.get(m.code) ?? 0) + 1);
     continue;
   }
-  const { book, chapter } = res;
+  const { book } = res;
+  const { chapter, verse } = book.id === "est" ? placeEsther(m) : { chapter: res.chapter, verse: m.verse };
   const grec = grecs[i - 1].replace(/[⸀-ⸯ]/g, "");
   const [pos, parse] = morphs[i - 1].split(".");
   const corr = correctLemma(lemmaRules, book.id, grec, lemmes[i - 1], natureOf(pos), decodeMorphCcat(pos, parse));
@@ -120,13 +136,29 @@ for (let i = 1; i <= N; i++) {
   if (!chapters.has(chapter)) chapters.set(chapter, []);
   const arr = chapters.get(chapter);
   const w = arr.length * 2;
-  arr.push({ grec, erasmien: grecToErasmien(grec), restituee: grecToRestituee(grec), verse: m.verse, lemme, nature, ...(morph ? { morph } : {}) });
+  arr.push({ grec, erasmien: grecToErasmien(grec), restituee: grecToRestituee(grec), verse, lemme, nature, ...(morph ? { morph } : {}) });
   mapped++;
 
   let e = lemmaMap.get(lemme);
   if (!e) { e = { nature, count: 0, occ: [] }; lemmaMap.set(lemme, e); }
   e.count++;
-  if (e.occ.length < OCC_CAP) e.occ.push({ b: book.id, c: chapter, v: m.verse, w, f: grec });
+  if (e.occ.length < OCC_CAP) e.occ.push({ b: book.id, c: chapter, v: verse, w, f: grec });
+}
+
+const estherMissing = ESTHER_RAHLFS_LABELS.filter((label) => !estherSeen.has(label));
+if (estherMissing.length) throw new Error(`Esther : sous-versets attendus absents de la source : ${estherMissing.join(", ")}`);
+
+const chapterOrder = (book, chapters) =>
+  book.id === "est"
+    ? ESTHER_CHAPTER_ORDER.filter((ch) => chapters.has(ch))
+    : [...chapters.keys()].sort((a, b) => a - b);
+
+// Chapitre-lettre : étiquette Rahlfs de chaque verset (« 4:17k »), pour la citer.
+function rahlfsLabels(ch, mots) {
+  if (typeof ch !== "string") return {};
+  const labels = {};
+  for (const m of mots) labels[m.verse] = rahlfsLabel(ch, m.verse);
+  return { labels };
 }
 
 const manifest = [];
@@ -134,13 +166,13 @@ for (const book of BOOKS) {
   const chapters = byBook.get(book.id);
   if (!chapters) continue; // livre absent des données (ne devrait pas arriver)
   mkdirSync(resolve(outDir, book.id), { recursive: true });
-  const nums = [...chapters.keys()].sort((a, b) => a - b);
+  const nums = chapterOrder(book, chapters);
   let words = 0;
   for (const ch of nums) {
     const mots = chapters.get(ch);
     words += mots.length;
     const reference = ch === 0 ? `${book.name}, prologue` : `${book.name} ${ch}`;
-    writeFileSync(resolve(outDir, book.id, `${ch}.json`), JSON.stringify({ reference, mots }));
+    writeFileSync(resolve(outDir, book.id, `${ch}.json`), JSON.stringify({ reference, mots, ...rahlfsLabels(ch, mots) }));
   }
   manifest.push({ id: book.id, name: book.name, usfm: book.usfm, chapters: nums.length, words, canon: book.canon, chapterList: nums });
   process.stdout.write(`${book.id}(${nums.length}) `);

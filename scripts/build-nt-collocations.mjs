@@ -28,9 +28,10 @@ let N = 0; // nombre total de versets
 const pairKey = (a, b) => (a < b ? `${a}|${b}` : `${b}|${a}`);
 
 for (const b of books) {
-  const files = readdirSync(resolve(ntDir, b.id)).filter((f) => /^\d+\.json$/.test(f));
+  const files = readdirSync(resolve(ntDir, b.id)).filter((f) => /^(\d+|[A-F])\.json$/.test(f));
   for (const f of files) {
-    const ch = Number(f.slice(0, -5));
+    const name = f.slice(0, -5);
+    const ch = /^\d+$/.test(name) ? Number(name) : name;
     const data = JSON.parse(readFileSync(resolve(ntDir, b.id, f), "utf8"));
     const byVerse = new Map();
     for (const m of data.mots) {
