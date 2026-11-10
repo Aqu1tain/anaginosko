@@ -18,6 +18,33 @@ Avant tout `deploy_corpus`, versionner l'arbitrage de prod dans `data/lxx-arbitr
 `/var/www/anaginosko/lxx` appartient à `anag-web` (écritures de l'arbitrage) : `deploy_corpus`
 y échoue sans préparation par l'administrateur. Pour le seul NT, lancer `deploy_nt`.
 
+## Mettre à jour le grec de la Septante
+
+Quand le build LXX change le grec (chapitres, `books.json`, concordance), la mise en prod
+se lance avec la liste des livres dont le français doit être régénéré :
+
+```
+gh workflow run promote.yml -f sync_lxx_books=est
+```
+
+Le déploiement dépose alors le grec dans la release (`lxx-greek/`, sans aucun `fr.json`) et
+lance `scripts/sync-lxx.mjs` sous `anag-web`, avant la bascule :
+
+1. le français des livres listés est régénéré dans un dossier temporaire depuis l'arbitrage
+   de prod, puis contrôlé par les sentinelles ; un échec arrête tout, corpus servi inchangé ;
+2. le `fr.json` de ces livres est sauvegardé dans `ARB_DIR/lxx-fr-backups/<release>/` ;
+3. le grec est copié (aucune suppression), puis le français régénéré est installé.
+
+Le `fr.json` des autres livres n'est ni copié ni réécrit. Retour arrière : remettre le
+`fr.json` sauvegardé, et relancer la synchronisation depuis le commit précédent pour le grec.
+
+Droit à installer une fois par l'administrateur :
+
+```
+sudo install -m 0440 -o root -g root anag-web-lxx.sudoers /etc/sudoers.d/anag-web-lxx
+sudo visudo -cf /etc/sudoers.d/anag-web-lxx
+```
+
 ## nginx
 
 - `anaginosko.fr.nginx` : vhost réel, dans `/etc/nginx/sites-available/anaginosko.fr`.

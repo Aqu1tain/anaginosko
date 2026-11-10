@@ -5,6 +5,12 @@ name: Mettre en prod
 # et la préprod ne sont pas vertes sur le commit exact de next.
 on:
   workflow_dispatch:
+    inputs:
+      sync_lxx_books:
+        description: "Copier le grec de la LXX et régénérer le français de ces livres (ex. est). Vide : LXX intacte"
+        required: false
+        default: ""
+        type: string
 
 permissions:
   contents: write
@@ -51,4 +57,5 @@ jobs:
         if: steps.check.outputs.skip != 'true'
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh workflow run deploy.yml --ref main -f deploy_corpus=false -f deploy_nt=false
+          LXX_BOOKS: ${{ inputs.sync_lxx_books }}
+        run: gh workflow run deploy.yml --ref main -f deploy_corpus=false -f deploy_nt=false -f sync_lxx_books="$LXX_BOOKS"

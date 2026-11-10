@@ -1,0 +1,4 @@
+# À installer par un administrateur dans /etc/sudoers.d/anag-web-lxx (jamais par le CI).
+# Autorise le compte de déploiement à lancer, sous le compte du service, le seul script
+# de synchronisation LXX d'une release. sudo >= 1.9.10 (expressions régulières d'arguments).
+anag-deploy ALL=(anag-web) NOPASSWD: /usr/bin/node ^-- /opt/anaginosko-web/releases/[0-9]{14}/scripts/sync-lxx[.]mjs [a-z0-9]+(,[a-z0-9]+)*$

@@ -48,6 +48,7 @@ test('wrong owner stops deployment without attempting to repair ownership', t =>
 test('privileged commands match the installed production contract', () => {
   const commands = [...deploy.matchAll(/\bsudo\s+[^"\n]+/g)].map(match => match[0]);
   assert.deepEqual(commands, [
+    'sudo -n -u anag-web /usr/bin/node -- $REL/scripts/sync-lxx.mjs $LXX_BOOKS',
     'sudo -n chown -hR -P -- anag-web:anag-web $REL/.next',
     'sudo -n systemctl restart anaginosko-web',
     'sudo -n /usr/local/sbin/anag-web-purge-releases',
@@ -63,6 +64,21 @@ test('production corpus transfers remain restricted to explicit manual dispatch'
   assert.match(deploy, /if \[ "\$\{\{ github.event_name \}\}" = "workflow_dispatch" \] && \[ "\$\{\{ inputs.deploy_corpus \}\}" = "true" \]; then\s+rsync/);
   assert.match(deploy, /for FILE in lxx-arbitration\.json lxx-biblion-validated\.json/);
 });
+test('LXX sync is opt-in, never copies a fr.json and runs before the release goes live', () => {
+  assert.equal(workflow.on.workflow_dispatch.inputs.sync_lxx_books.default, '');
+  const step = workflow.jobs.deploy.steps.find(s => s.name === 'Deploy to VPS');
+  assert.equal(step.env.LXX_BOOKS, "${{ github.event_name == 'workflow_dispatch' && inputs.sync_lxx_books || '' }}");
+  assert.doesNotMatch(deploy, /inputs\.sync_lxx_books/);
+  assert.match(deploy, /if \[ -n "\$LXX_BOOKS" \]; then\s+\[\[ "\$LXX_BOOKS" =~ \^\[a-z0-9\]\+\(,\[a-z0-9\]\+\)\*\$ \]\] \|\| \{[^}]*exit 1; \}\s+rsync -az --exclude fr\.json -e "\$SSH" public\/lxx\/ "\$HOST:\$REL\/lxx-greek\/"/);
+  assert.ok(deploy.indexOf('scripts/sync-lxx.mjs') < deploy.indexOf('ln -sfn $REL'));
+  const sudoers = readFileSync(new URL('../deploy/anag-web-lxx.sudoers', import.meta.url), 'utf8');
+  const rule = sudoers.split('\n').find(line => line.startsWith('anag-deploy '));
+  const args = new RegExp(rule.match(/\/usr\/bin\/node (\^.*\$)$/)[1]);
+  assert.match('-- /opt/anaginosko-web/releases/20261110153000/scripts/sync-lxx.mjs est', args);
+  assert.match('-- /opt/anaginosko-web/releases/20261110153000/scripts/sync-lxx.mjs est,dan', args);
+  assert.doesNotMatch('-- /opt/anaginosko-web/releases/20261110153000/scripts/sync-lxx.mjs est --x', args);
+  assert.doesNotMatch('-- /tmp/scripts/sync-lxx.mjs est', args);
+});
 test('complete deployment shell remains syntactically valid', () => {
   const r = spawnSync('bash', ['-n'], { input: deploy.replace(/\$\{\{[\s\S]*?\}\}/g, 'test-value'), encoding: 'utf8' });
   assert.equal(r.status, 0, r.stderr);
@@ -77,5 +93,6 @@ test('promotion to production only fast-forwards main to a green next', () => {
   assert.match(run, /green ci\.yml/);
   assert.match(run, /green deploy-preprod\.yml/);
   assert.match(run, /git push origin "\$\{\{ steps\.check\.outputs\.sha \}\}:refs\/heads\/main"/);
-  assert.match(run, /gh workflow run deploy\.yml --ref main -f deploy_corpus=false -f deploy_nt=false/);
+  assert.match(run, /gh workflow run deploy\.yml --ref main -f deploy_corpus=false -f deploy_nt=false -f sync_lxx_books="\$LXX_BOOKS"/);
+  assert.equal(promote.on.workflow_dispatch.inputs.sync_lxx_books.default, '');
 });

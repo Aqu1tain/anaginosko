@@ -15,6 +15,11 @@ on:
         required: true
         default: false
         type: boolean
+      sync_lxx_books:
+        description: "Copier le grec de la LXX et régénérer le français de ces livres (ex. est). Vide : LXX intacte"
+        required: false
+        default: ""
+        type: string
 
 concurrency:
   group: deploy
@@ -54,8 +59,15 @@ jobs:
           # nginx) ; le serveur les lit au runtime depuis NT_DATA_DIR / LXX_DATA_DIR
           # pour le SSR des fiches-lemme. Le standalone Next charge .env.production.
           printf 'NT_DATA_DIR=/var/www/anaginosko/nt\nLXX_DATA_DIR=/var/www/anaginosko/lxx\n' > deploy-out/.env.production
+          # Outils de la synchronisation LXX (sync_lxx_books), exécutés sur le serveur.
+          mkdir -p deploy-out/scripts deploy-out/lib deploy-out/data
+          cp scripts/sync-lxx.mjs scripts/materialize-links.mjs scripts/check-sentinelles.mjs deploy-out/scripts/
+          cp lib/lxx-materialize.mjs deploy-out/lib/
+          cp data/giguet-lxx.json data/lxx-links.json data/lxx-arbitration-gaps.json data/lxx-sentinelles.json deploy-out/data/
 
       - name: Deploy to VPS
+        env:
+          LXX_BOOKS: ${{ github.event_name == 'workflow_dispatch' && inputs.sync_lxx_books || '' }}
         run: |
           set -euo pipefail
           mkdir -p ~/.ssh
@@ -104,7 +116,17 @@ jobs:
           done
           CHECK_ARTICLES
 
-          # 2c) Le service (anag-web) écrit le cache ISR dans .next (revalidatePath,
+          # 2c) Grec de la Septante : copié sans jamais toucher un fr.json, puis français
+          #     des seuls livres listés régénéré depuis l'arbitrage de prod. Le script
+          #     tourne sous anag-web et valide tout dans un dossier temporaire avant
+          #     d'écrire : un échec arrête le déploiement, corpus servi inchangé.
+          if [ -n "$LXX_BOOKS" ]; then
+            [[ "$LXX_BOOKS" =~ ^[a-z0-9]+(,[a-z0-9]+)*$ ]] || { echo "sync_lxx_books invalide : $LXX_BOOKS" >&2; exit 1; }
+            rsync -az --exclude fr.json -e "$SSH" public/lxx/ "$HOST:$REL/lxx-greek/"
+            $SSH "$HOST" "sudo -n -u anag-web /usr/bin/node -- $REL/scripts/sync-lxx.mjs $LXX_BOOKS"
+          fi
+
+          # 2d) Le service (anag-web) écrit le cache ISR dans .next (revalidatePath,
           #     régénération SSG). Le rsync dépose la release en anag-deploy ; sans ce
           #     chown, l'écriture du cache échoue en EACCES -> NoFallbackError -> 404
           #     sur toute page revalidée (intro de livre, refresh ISR 300s).

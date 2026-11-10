@@ -43,6 +43,8 @@ jobs:
         run: node tests/merge-arb-git-server.test.mjs
       - name: Test Esther additions
         run: node --test tests/esther-additions.test.mjs
+      - name: Test LXX sync to production
+        run: node --test tests/sync-lxx.test.mjs
       - name: Test NT versification
         run: node tests/nt-versification.test.mjs
       - name: Check lectionaries against the corpus
