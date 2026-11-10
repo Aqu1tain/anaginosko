@@ -89,6 +89,10 @@ Les recensions exclues sont documentées ici et pourront faire l'objet d'un modu
     au verset 3. « 1:1s » est l'incipit hébreu, il reste Esther 1:1.
   - B et E se lisent au milieu des chapitres 3 et 8 (après 3:13 et 8:12) : le
     lecteur y pose un renvoi.
+- **Sous-versets lettrés hors Esther** (3 Règnes 2:35a-o et 12:24a-z, Proverbes,
+  Job 42:17a-e…) : ces plus du grec restent dans leur verset d'ancrage, qui garde
+  son numéro et sa traduction ; chaque mot porte sa lettre (`sub`) et le lecteur
+  l'affiche (« 35a »).
 - **Daniel 3:24-90** (Prière d'Azarias, cantique des trois jeunes gens) : plage
   deutérocanonique signalée dans le chapitre (`src/data/canon.ts`).
 - **Règnes / Paralipomènes** : libellés catholiques familiers en tête (1–2 Samuel,

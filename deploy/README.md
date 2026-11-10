@@ -35,7 +35,8 @@ lance `scripts/sync-lxx.mjs` sous `anag-web`, avant la bascule :
 2. le `fr.json` de ces livres est sauvegardé dans `ARB_DIR/lxx-fr-backups/<release>/` ;
 3. le grec est copié (aucune suppression), puis le français régénéré est installé.
 
-Le `fr.json` des autres livres n'est ni copié ni réécrit. Retour arrière : remettre le
+Le `fr.json` des autres livres n'est ni copié ni réécrit. Quand seul le grec change,
+lister un livre déjà régénéré (`est`) : son français ressort identique et n'est pas réécrit. Retour arrière : remettre le
 `fr.json` sauvegardé, et relancer la synchronisation depuis le commit précédent pour le grec.
 
 Droit à installer une fois par l'administrateur :
