@@ -90,10 +90,10 @@ const nextConfig: NextConfig = {
     const markdown = [
       { source: "/concordance/:lemma.md", destination: "/markdown/lemme/nt/:lemma" },
       { source: "/lxx/concordance/:lemma.md", destination: "/markdown/lemme/lxx/:lemma" },
-      { source: "/:corpus(nt|lxx)/:book/:chapter(\\d+).md", destination: "/markdown/chapitre/:corpus/:book/:chapter" },
+      { source: "/:corpus(nt|lxx)/:book/:chapter(\\d+|[A-F]).md", destination: "/markdown/chapitre/:corpus/:book/:chapter" },
       { source: "/concordance/:lemma", has: wantsMarkdown, destination: "/markdown/lemme/nt/:lemma" },
       { source: "/lxx/concordance/:lemma", has: wantsMarkdown, destination: "/markdown/lemme/lxx/:lemma" },
-      { source: "/:corpus(nt|lxx)/:book/:chapter(\\d+)", has: wantsMarkdown, destination: "/markdown/chapitre/:corpus/:book/:chapter" },
+      { source: "/:corpus(nt|lxx)/:book/:chapter(\\d+|[A-F])", has: wantsMarkdown, destination: "/markdown/chapitre/:corpus/:book/:chapter" },
     ];
     const api = process.env.API_PROXY ?? "http://localhost:3333";
     const dev = process.env.NODE_ENV === "development" ? [{ source: "/api/:path*", destination: `${api}/api/:path*` }] : [];

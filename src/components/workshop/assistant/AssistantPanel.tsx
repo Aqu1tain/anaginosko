@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { streamDraft, type Proposal, type Target } from "@/src/lib/aiApi";
 import type { WorkCorpus } from "@/src/lib/workshopApi";
+import type { ChapterId } from "@/src/data/corpus";
 import DraftProposal, { Progress, type StepState } from "./DraftProposal";
 import type { Chat } from "@ai-sdk/react";
 import type { UIMessage } from "ai";
@@ -14,7 +15,7 @@ import { useAiSettings } from "./useAiSettings";
 type DraftState = { steps: StepState; result?: Proposal; error?: string; running: boolean };
 
 // Propositions de l'assistant, verset par verset, gardées le temps de la session du chapitre.
-export function useVerseDrafts(corpus: WorkCorpus, book: string, chapter: number) {
+export function useVerseDrafts(corpus: WorkCorpus, book: string, chapter: ChapterId) {
   const [drafts, setDrafts] = useState<Record<string, DraftState>>({});
   const controllers = useRef<Record<string, AbortController>>({});
 

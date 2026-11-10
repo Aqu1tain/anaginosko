@@ -1,5 +1,5 @@
 import type { Text, Mot } from "./texts";
-import type { CorpusConfig } from "./corpus";
+import type { ChapterId, CorpusConfig } from "./corpus";
 
 export type NtBook = {
   id: string;
@@ -8,12 +8,12 @@ export type NtBook = {
   chapters: number;
   words: number;
   canon?: "proto" | "deutero" | "extra"; // LXX : tier canonique
-  chapterList?: number[]; // LXX : chapitres réels (non contigus : Proverbes, prologue du Siracide)
+  chapterList?: ChapterId[]; // LXX : chapitres réels (non contigus : Proverbes, prologue du Siracide, additions d'Esther)
 };
 
 // Chapitres réels d'un livre : contigus (NT) ou liste explicite (LXX : Proverbes
 // a des trous, le Siracide commence au prologue 0).
-export const chapterNumbers = (b: NtBook): number[] =>
+export const chapterNumbers = (b: NtBook): ChapterId[] =>
   b.chapterList ?? Array.from({ length: b.chapters }, (_, i) => i + 1);
 
 // Ordre canonique des 27 livres.
@@ -107,7 +107,7 @@ export type LemmaEntry = {
   oid: number;
 };
 
-export type Occ = { b: string; c: number; v: number; w: number; f: string };
+export type Occ = { b: string; c: ChapterId; v: number; w: number; f: string };
 
 const lemmaIndexCache = new Map<string, LemmaEntry[]>();
 const occCache = new Map<string, Occ[]>();
@@ -133,7 +133,7 @@ export async function loadOccurrences(oid: number, c?: CorpusConfig): Promise<Oc
 
 // Voisins lexicaux (collocations PMI au niveau du verset). `verses` liste les
 // versets communs (plafonnés) pour les déplier sous le mot, comme la répartition.
-export type VerseRef = { b: string; c: number; v: number };
+export type VerseRef = { b: string; c: ChapterId; v: number };
 export type Colloc = {
   oid: number;
   lemma: string;
@@ -191,7 +191,7 @@ export const lemmaEntry = (index: LemmaEntry[], lemma: string): LemmaEntry | und
   index.find((e) => e.lemma === lemma);
 
 /** Charge un chapitre et l'adapte au type Text consommé par le Reader. */
-export async function loadChapter(book: string, chapter: number, c?: CorpusConfig): Promise<Text> {
+export async function loadChapter(book: string, chapter: ChapterId, c?: CorpusConfig): Promise<Text> {
   const key = `${cid(c)}:${book}/${chapter}`;
   const cached = chapterCache.get(key);
   if (cached) return cached;
@@ -220,8 +220,8 @@ export async function loadChapter(book: string, chapter: number, c?: CorpusConfi
 }
 
 // Cf. lib/nt-server : `undefined` quand le manifeste `_align` est absent.
-function blockedChapter(french: FrenchByChapter | null, chapter: number): boolean | undefined {
-  const align = (french as { _align?: { blocks?: number[] } } | null)?._align;
+function blockedChapter(french: FrenchByChapter | null, chapter: ChapterId): boolean | undefined {
+  const align = (french as { _align?: { blocks?: ChapterId[] } } | null)?._align;
   if (!align) return undefined;
   return (align.blocks ?? []).includes(chapter);
 }

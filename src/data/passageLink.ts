@@ -29,7 +29,7 @@ const NT_TO_PASSAGE: Record<string, string> = Object.fromEntries(
  *  utilisent `parseRef` du registre. */
 export function parseNtRef(ref: string): { book: string; chapter: number } | null {
   const p = parseRef(ref);
-  return p && p.corpus === "nt" ? { book: p.book, chapter: p.chapter } : null;
+  return p && p.corpus === "nt" && typeof p.chapter === "number" ? { book: p.book, chapter: p.chapter } : null;
 }
 
 /** Ref NT correspondant à un passage, ou inversement (null si pas de lien). */

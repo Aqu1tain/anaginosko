@@ -2,11 +2,13 @@
 
 import { useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { chapterStep, type ChapterId } from "../data/corpus";
+import { estherPlace, parseEstherAddition, type Place } from "../data/refParse";
 
 // routePrefix optionnel : sur l'accueil, on melange NT et LXX, chaque livre pointe
 // vers son corpus. Sur un sommaire (corpus unique), il est absent -> on retombe sur
 // le routePrefix passe en prop.
-type Book = { id: string; name: string; chapters: number; routePrefix?: string };
+type Book = { id: string; name: string; chapters: number; chapterList?: ChapterId[]; routePrefix?: string };
 
 type Option = { key: string; label: string; detail: string; href: string; greek?: boolean };
 
@@ -14,6 +16,14 @@ const norm = (s: string) =>
   s.normalize("NFD").replace(/\p{M}/gu, "").toLowerCase().trim();
 
 const GREEK = /[Ͱ-Ͽἀ-῿]/;
+
+const matches = (b: Book, bookQ: string) => norm(b.name).includes(bookQ) || norm(b.id).startsWith(bookQ);
+
+const hasChapter = (b: Book, chapter: number) =>
+  b.chapterList ? b.chapterList.includes(chapter) : chapter >= 1 && chapter <= b.chapters;
+
+const placeDetail = ({ chapter, verse }: Place) =>
+  `${chapterStep(chapter).toLowerCase()}${verse ? `, verset ${verse}` : ""}`;
 
 // Recherche de reference : on tape « Jean 3 », « Jean 3, 16 » (ou « gen 1 », « 1co 13 »)
 // et on saute au chapitre, voire au verset. Un livre n'a jamais d'id finissant par un
@@ -53,23 +63,35 @@ export default function RefJump({
         },
       ];
     }
+    const addition = parseEstherAddition(term);
+    const esther = addition && books.find((b) => b.id === "est" && matches(b, norm(addition.bookQuery)));
+    if (addition && esther) {
+      return [
+        {
+          key: esther.id,
+          label: esther.name,
+          detail: placeDetail(addition),
+          href: `${esther.routePrefix ?? routePrefix}/${esther.id}/${addition.chapter}${addition.verse ? `#v${addition.verse}` : ""}`,
+        },
+      ];
+    }
     const m = term.match(/^(.+?)\s*(?:(\d+)(?:\s*[:.,]\s*(\d+)?)?)?$/);
     const bookQ = norm(m?.[1] ?? "");
     if (!bookQ) return [];
     const chapter = m?.[2] ? Number(m[2]) : null;
     const verse = m?.[3] ? Number(m[3]) : null;
     return books
-      .filter((b) => norm(b.name).includes(bookQ) || norm(b.id).startsWith(bookQ))
+      .filter((b) => matches(b, bookQ))
       .sort((a, b) => Number(norm(b.name).startsWith(bookQ)) - Number(norm(a.name).startsWith(bookQ)))
       .slice(0, 6)
       .map((b) => {
-        const valid = chapter != null && chapter >= 1 && chapter <= b.chapters;
-        const ch = valid ? chapter : 1;
-        const v = valid ? verse : null;
+        const valid = chapter != null && hasChapter(b, chapter);
+        const place = valid && b.id === "est" ? estherPlace(chapter, verse) : { chapter: valid ? chapter : 1, verse: valid ? verse : null };
+        const { chapter: ch, verse: v } = place;
         return {
           key: b.id,
           label: b.name,
-          detail: v ? `chapitre ${ch}, verset ${v}` : `chapitre ${ch}${b.chapters > 1 ? ` / ${b.chapters}` : ""}`,
+          detail: v || typeof ch === "string" ? placeDetail(place) : `chapitre ${ch}${b.chapters > 1 ? ` / ${b.chapters}` : ""}`,
           href: `${b.routePrefix ?? routePrefix}/${b.id}/${ch}${v ? `#v${v}` : ""}`,
         };
       });

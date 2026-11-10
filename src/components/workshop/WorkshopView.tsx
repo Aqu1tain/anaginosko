@@ -6,6 +6,7 @@ import { useAuth } from "@/src/hooks/useAuth";
 import { can } from "@/src/lib/api";
 import ArbitrageView from "@/src/components/ArbitrageView";
 import type { WorkCorpus } from "@/src/lib/workshopApi";
+import { parseChapterId } from "@/src/data/corpus";
 import ChapterWorkbench from "./ChapterWorkbench";
 import WorkshopHome from "./WorkshopHome";
 import Glossary from "./Glossary";
@@ -37,7 +38,7 @@ export default function WorkshopView() {
   const params = useSearchParams();
   const corpus: WorkCorpus = params.get("corpus") === "lxx" ? "lxx" : "nt";
   const book = params.get("book");
-  const chapter = Number(params.get("ch"));
+  const chapter = parseChapterId(params.get("ch") ?? "");
   const tab: Tab = TABS.find(([k]) => k === params.get("tab"))?.[0] ?? "pilotage";
 
   if (!ready) return null;
@@ -46,14 +47,14 @@ export default function WorkshopView() {
   if (params.get("mode") === "alignement") {
     return (
       <div>
-        <Link href={`?corpus=lxx${book ? `&book=${book}&ch=${chapter}` : ""}`} className="mt-4 inline-block text-sm text-base-content/80 hover:text-base-content">
+        <Link href={`?corpus=lxx${book && chapter !== null ? `&book=${book}&ch=${chapter}` : ""}`} className="mt-4 inline-block text-sm text-base-content/80 hover:text-base-content">
           ← Atelier
         </Link>
         <ArbitrageView />
       </div>
     );
   }
-  if (book && chapter > 0) return <ChapterWorkbench key={`${corpus}/${book}/${chapter}`} corpus={corpus} book={book} chapter={chapter} />;
+  if (book && chapter) return <ChapterWorkbench key={`${corpus}/${book}/${chapter}`} corpus={corpus} book={book} chapter={chapter} />;
 
   const link = (patch: Record<string, string>) => `?${new URLSearchParams({ corpus, ...(tab !== "pilotage" ? { tab } : {}), ...patch })}`;
 

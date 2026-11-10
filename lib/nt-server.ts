@@ -3,7 +3,7 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 import type { Text } from "../src/data/texts";
 import { bookById, chapterNumbers, type NtBook, type LemmaEntry, type Occ, type Distribution, type Colloc } from "../src/data/nt";
-import type { CorpusConfig } from "../src/data/corpus";
+import type { ChapterId, CorpusConfig } from "../src/data/corpus";
 import { houseMaison } from "./ntMaison";
 import {
   assessGloss,
@@ -104,8 +104,8 @@ type FrenchByChapter = Record<string, Record<string, string>>;
 // Chapitres dont la traduction n'est pas appariable verset par verset (manifeste
 // `_align` écrit par realign-lxx-french). `undefined` = pas de manifeste → le
 // lecteur retombe sur son heuristique.
-function blockedChapter(french: FrenchByChapter | null, chapter: number): boolean | undefined {
-  const align = (french as { _align?: { blocks?: number[] } } | null)?._align;
+function blockedChapter(french: FrenchByChapter | null, chapter: ChapterId): boolean | undefined {
+  const align = (french as { _align?: { blocks?: ChapterId[] } } | null)?._align;
   if (!align) return undefined;
   return (align.blocks ?? []).includes(chapter);
 }
@@ -113,7 +113,7 @@ function blockedChapter(french: FrenchByChapter | null, chapter: number): boolea
 export const loadFrenchFs = (book: string, c?: CorpusConfig): Promise<FrenchByChapter | null> =>
   readJson<FrenchByChapter>(`${book}/fr.json`, c).catch(() => null);
 
-export async function loadChapterFs(book: string, chapter: number, c?: CorpusConfig): Promise<Text> {
+export async function loadChapterFs(book: string, chapter: ChapterId, c?: CorpusConfig): Promise<Text> {
   const [data, french] = await Promise.all([
     readJson<{ reference: string; mots: Text["mots"] }>(`${book}/${chapter}.json`, c),
     readJson<FrenchByChapter>(`${book}/fr.json`, c).catch(() => null),

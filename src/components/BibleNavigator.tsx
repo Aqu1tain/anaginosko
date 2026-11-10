@@ -2,13 +2,14 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
+import { chapterShort, type ChapterId } from "../data/corpus";
 
-export type NavBook = { id: string; name: string; chapters: number | number[] };
+export type NavBook = { id: string; name: string; chapters: number | ChapterId[] };
 export type NavCorpus = { id: string; label: string; routePrefix: string; groups: { title: string; books: NavBook[] }[] };
-export type NavPosition = { corpus: string; book: string; chapter: number };
+export type NavPosition = { corpus: string; book: string; chapter: ChapterId };
 
 const norm = (s: string) => s.normalize("NFD").replace(/\p{M}/gu, "").toLowerCase();
-const chapterList = (b: NavBook) => (Array.isArray(b.chapters) ? b.chapters : Array.from({ length: b.chapters }, (_, i) => i + 1));
+const chapterList = (b: NavBook): ChapterId[] => (Array.isArray(b.chapters) ? b.chapters : Array.from({ length: b.chapters }, (_, i) => i + 1));
 
 // Navigateur livre puis chapitre, pour les deux corpus. Ouvert sur le livre en cours
 // quand on le lance depuis un chapitre ; sinon sur la liste des livres.
@@ -85,7 +86,7 @@ export default function BibleNavigator({
                         : "border-base-300 bg-base-100 hover:border-primary/40 hover:bg-base-200"
                     }`}
                   >
-                    {ch === 0 ? "Pr." : ch}
+                    {chapterShort(ch)}
                   </Link>
                 </li>
               );

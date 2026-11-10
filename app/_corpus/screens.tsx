@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { loadBooksFs, loadChapterFs } from "@/lib/nt-server";
 import { bookById, chapterNumbers, type NtBook } from "@/src/data/nt";
-import type { CorpusConfig } from "@/src/data/corpus";
+import { chapterShort, chapterStep, chapterTitle, parseChapterId, type ChapterId, type CorpusConfig } from "@/src/data/corpus";
 import Reader from "@/src/components/Reader";
 import RefJump from "@/src/components/RefJump";
 import ChapterSwitcher from "@/src/components/ChapterSwitcher";
@@ -22,9 +22,6 @@ import { chapterVerses } from "@/lib/chapterVerses";
 // Écrans de lecture partagés entre corpus (NT, LXX). Les fichiers de route ne sont
 // que de fines enveloppes passant la config du corpus. Les valeurs NT reproduisent
 // les littéraux historiques (URL, libellés, JSON-LD) à l'identique.
-
-const chapterLabel = (name: string, ch: number): string =>
-  ch === 0 ? `${name}, prologue` : `${name} ${ch}`;
 
 // --- generateStaticParams / generateMetadata helpers ---
 
@@ -63,9 +60,10 @@ export async function chapterMetadata(
 ): Promise<Metadata> {
   const { book, chapter } = await params;
   const name = corpus.bookNames[book] ?? "Livre";
-  const label = chapterLabel(name, Number(chapter));
+  const ch = parseChapterId(chapter);
+  const label = ch === null ? name : chapterTitle(name, ch);
   const path = `${corpus.routePrefix}/${book}/${chapter}`;
-  const text = await loadChapterFs(book, Number(chapter), corpus).catch(() => null);
+  const text = ch === null ? null : await loadChapterFs(book, ch, corpus).catch(() => null);
   const first = text ? chapterVerses(text, corpus).verses[0] : undefined;
   // L'incipit grec et français rend chaque description unique et répond aux
   // recherches de citation (« Ἐν ἀρχῇ ἦν ὁ λόγος »).
@@ -177,7 +175,7 @@ export async function BookScreen({ corpus, params }: { corpus: CorpusConfig; par
             href={`${corpus.routePrefix}/${book}/${ch}`}
             className="grid h-11 place-items-center rounded-lg border border-base-300 bg-base-100 text-base font-medium transition-colors hover:border-primary/40 hover:bg-base-200"
           >
-            {ch === 0 ? "Pr." : ch}
+            {chapterShort(ch)}
           </Link>
         ))}
       </div>
@@ -193,10 +191,10 @@ export async function ChapterScreen({
   params: Promise<{ book: string; chapter: string }>;
 }) {
   const { book, chapter } = await params;
-  const ch = Number(chapter);
+  const ch = parseChapterId(chapter);
   const books = await loadBooksFs(corpus);
   const b = bookById(books, book);
-  if (!b || !Number.isInteger(ch) || !chapterNumbers(b).includes(ch)) notFound();
+  if (!b || ch === null || !chapterNumbers(b).includes(ch)) notFound();
   const [text, bibleNav] = await Promise.all([loadChapterFs(book, ch, corpus), loadBibleNav()]);
 
   // Texte continu (grec + français), rendu serveur en tête de page pour les moteurs,
@@ -214,7 +212,7 @@ export async function ChapterScreen({
   const nextBook = next == null && bIdx >= 0 && bIdx < books.length - 1 ? books[bIdx + 1] : null;
   const prevBook = prev == null && bIdx > 0 ? books[bIdx - 1] : null;
   const bookName = (id: string) => corpus.bookNames[id] ?? id;
-  const chLabel = (n: number) => (n === 0 ? "Prol." : String(n));
+  const chLabel = (n: ChapterId) => (n === 0 ? "Prol." : String(n));
   const firstCh = (bk: NtBook) => chapterNumbers(bk)[0];
   const lastCh = (bk: NtBook) => {
     const n = chapterNumbers(bk);
@@ -222,10 +220,10 @@ export async function ChapterScreen({
   };
 
   const name = corpus.bookNames[book] ?? "Livre";
-  const label = chapterLabel(name, ch);
-  const stepTo = (bk: string, n: number) => ({
+  const label = chapterTitle(name, ch);
+  const stepTo = (bk: string, n: ChapterId) => ({
     href: `${corpus.routePrefix}/${bk}/${n}`,
-    label: chapterLabel(bookName(bk), n),
+    label: chapterTitle(bookName(bk), n),
   });
   const prevStep = prev != null ? stepTo(book, prev) : prevBook ? stepTo(prevBook.id, lastCh(prevBook)) : null;
   const nextStep = next != null ? stepTo(book, next) : nextBook ? stepTo(nextBook.id, firstCh(nextBook)) : null;
@@ -287,7 +285,7 @@ export async function ChapterScreen({
         <ChapterSwitcher
           corpora={bibleNav}
           current={{ corpus: corpus.id, book, chapter: ch }}
-          label={ch === 0 ? `${name}, prologue` : `${name} ${ch}`}
+          label={label}
           prev={prevStep}
           next={nextStep}
         />
@@ -297,7 +295,7 @@ export async function ChapterScreen({
       <nav className="reading-col mt-8 flex items-center justify-between gap-3">
         {prev != null ? (
           <Link href={`${corpus.routePrefix}/${book}/${prev}`} className="btn btn-sm btn-outline border-base-300">
-            ← {prev === 0 ? "Prologue" : `Chapitre ${prev}`}
+            ← {chapterStep(prev)}
           </Link>
         ) : prevBook ? (
           <Link
@@ -315,7 +313,7 @@ export async function ChapterScreen({
         </Link>
         {next != null ? (
           <Link href={`${corpus.routePrefix}/${book}/${next}`} className="btn btn-sm btn-outline border-base-300">
-            Chapitre {next} →
+            {chapterStep(next)} →
           </Link>
         ) : nextBook ? (
           <Link

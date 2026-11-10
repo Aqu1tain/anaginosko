@@ -1,5 +1,6 @@
 import { apiFetch, apiUrl, getToken } from "./api";
 import type { WorkCorpus } from "./workshopApi";
+import type { ChapterId } from "../data/corpus";
 
 // Client de l'assistant IA (BYOK) et de la charte de traduction.
 
@@ -74,7 +75,7 @@ export type DraftEvent =
   | { type: "error"; message: string }
   | { type: "ping" };
 
-export type Target = { corpus: WorkCorpus; book: string; chapter: number; verse: number };
+export type Target = { corpus: WorkCorpus; book: string; chapter: ChapterId; verse: number };
 
 const authHeaders = (): Record<string, string> => {
   const token = getToken();

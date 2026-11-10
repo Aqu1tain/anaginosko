@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useAuth } from "@/src/hooks/useAuth";
 import { apiFetch, can } from "@/src/lib/api";
 import { loadBooks, loadChapter, chapterNumbers, type NtBook } from "@/src/data/nt";
-import { corpusById } from "@/src/data/corpus";
+import { corpusById, type ChapterId } from "@/src/data/corpus";
 import type { Mot, Text } from "@/src/data/texts";
 import {
   discardDrafts,
@@ -29,7 +29,7 @@ type PublishedMap = Record<string, Record<string, { maison: string }>>;
 type Side = "mot" | "verset" | "controles" | "assistant";
 const mod = (e: KeyboardEvent) => e.metaKey || e.ctrlKey;
 
-export default function ChapterWorkbench({ corpus, book, chapter }: { corpus: WorkCorpus; book: string; chapter: number }) {
+export default function ChapterWorkbench({ corpus, book, chapter }: { corpus: WorkCorpus; book: string; chapter: ChapterId }) {
   const config = corpusById(corpus);
   const { user } = useAuth();
   const [text, setText] = useState<Text | null>(null);
@@ -219,7 +219,7 @@ export default function ChapterWorkbench({ corpus, book, chapter }: { corpus: Wo
   const meta = books.find((b) => b.id === book);
   const chapters = meta ? chapterNumbers(meta) : [];
   const pos = chapters.indexOf(chapter);
-  const href = (ch: number) => `?corpus=${corpus}&book=${book}&ch=${ch}`;
+  const href = (ch: ChapterId) => `?corpus=${corpus}&book=${book}&ch=${ch}`;
   const activeRow = rows.find((r) => r.ref === active) ?? null;
   const selected = word !== null ? text?.mots?.[word] : null;
   const issues = rows.flatMap((r) => r.issues.map((i) => ({ ref: r.ref, verse: r.verse, ...i })));

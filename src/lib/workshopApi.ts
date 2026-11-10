@@ -1,4 +1,5 @@
 import { apiFetch, getToken } from "./api";
+import type { ChapterId } from "../data/corpus";
 
 // Client de l'atelier de traduction : l'API Adonis (/api/workshop), sauf la
 // validation, qui passe par le site pour régénérer les pages du lecteur.
@@ -17,11 +18,11 @@ export type WorkshopStats = {
   weekly: { week: string; revisions: number }[];
   queue: { toReview: QueueItem[]; changes: QueueItem[]; drafts: QueueItem[]; waiting: number };
 };
-export type VerseCounts = Record<string, { total: number; chapters: Record<number, number> }>;
+export type VerseCounts = Record<string, { total: number; chapters: Record<string, number> }>;
 
 const json = (body: unknown): RequestInit => ({ method: "POST", body: JSON.stringify(body) });
 
-export const fetchChapterWork = (corpus: WorkCorpus, book: string, chapter: number) =>
+export const fetchChapterWork = (corpus: WorkCorpus, book: string, chapter: ChapterId) =>
   apiFetch<ChapterWork>(`/workshop/chapter?${new URLSearchParams({ corpus, book, chapter: String(chapter) })}`);
 
 export const saveDrafts = (corpus: WorkCorpus, book: string, changes: { ref: string; text: string | null }[]) =>

@@ -13,7 +13,7 @@ import { fetchBaillyNotice } from "./bailly-server";
 import { chapterVerses } from "./chapterVerses";
 import { SITE, aiNote } from "./seo";
 import { bookById, chapterNumbers } from "../src/data/nt";
-import { NT, LXX, type CorpusConfig } from "../src/data/corpus";
+import { NT, LXX, chapterTitle, parseChapterId, type ChapterId, type CorpusConfig } from "../src/data/corpus";
 import { lxxLemmaFor, ntLemmaFor } from "../src/data/lemmaEquivalences";
 import { creditName } from "../src/data/translators";
 import { romanize } from "../src/lib/romanize";
@@ -35,10 +35,7 @@ const SOURCES: Record<string, { greek: string; french: string }> = {
   },
 };
 
-const chapterName = (corpus: CorpusConfig, book: string, ch: number) => {
-  const name = corpus.bookNames[book] ?? book;
-  return ch === 0 ? `${name}, prologue` : `${name} ${ch}`;
-};
+const chapterName = (corpus: CorpusConfig, book: string, ch: ChapterId) => chapterTitle(corpus.bookNames[book] ?? book, ch);
 
 const plain = (html: string) =>
   html
@@ -51,10 +48,10 @@ const plain = (html: string) =>
     .trim();
 
 export async function chapterMarkdown(corpus: CorpusConfig, book: string, chapter: string): Promise<string | null> {
-  const ch = Number(chapter);
+  const ch = parseChapterId(chapter);
   const books = await loadBooksFs(corpus);
   const b = bookById(books, book);
-  if (!b || !Number.isInteger(ch) || !chapterNumbers(b).includes(ch)) return null;
+  if (!b || ch === null || !chapterNumbers(b).includes(ch)) return null;
 
   const text = await loadChapterFs(book, ch, corpus);
   const { verses, frenchBlock } = chapterVerses(text, corpus);
@@ -68,7 +65,7 @@ export async function chapterMarkdown(corpus: CorpusConfig, book: string, chapte
     : `${SOURCES[corpus.id].french}${house.size ? `, sauf les versets marqués « traduction ${houseNames} »` : ""}`;
   const nums = chapterNumbers(b);
   const i = nums.indexOf(ch);
-  const neighbour = (n: number | undefined) => (n == null ? null : `[${chapterName(corpus, book, n)}](${SITE}${corpus.routePrefix}/${book}/${n}.md)`);
+  const neighbour = (n: ChapterId | undefined) => (n == null ? null : `[${chapterName(corpus, book, n)}](${SITE}${corpus.routePrefix}/${book}/${n}.md)`);
 
   const lines = [
     `# ${label} en grec et en français`,

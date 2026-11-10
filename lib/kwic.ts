@@ -2,13 +2,13 @@ import "server-only";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { bookById, chapterNumbers, type Distribution } from "../src/data/nt";
-import type { CorpusConfig } from "../src/data/corpus";
+import type { ChapterId, CorpusConfig } from "../src/data/corpus";
 import { loadBooksFs } from "./nt-server";
 
 // Concordance en contexte (KWIC) : chaque occurrence avec les mots qui l'entourent
 // dans son verset, lue dans les chapitres et paginée dans l'ordre du canon.
 
-export type KwicLine = { b: string; c: number; v: number; w: number; left: string; form: string; right: string; cutLeft: boolean; cutRight: boolean };
+export type KwicLine = { b: string; c: ChapterId; v: number; w: number; left: string; form: string; right: string; cutLeft: boolean; cutRight: boolean };
 export type KwicPage = { lines: KwicLine[]; total: number; next: number | null };
 
 type Mot = { grec: string; lemme: string | null; verse: number | null };
@@ -17,7 +17,7 @@ const WINDOW = 6;
 const CACHE_MAX = 600;
 const chapters = new Map<string, Mot[]>();
 
-async function mots(book: string, chapter: number, c: CorpusConfig): Promise<Mot[]> {
+async function mots(book: string, chapter: ChapterId, c: CorpusConfig): Promise<Mot[]> {
   const key = `${c.id}/${book}/${chapter}`;
   const hit = chapters.get(key);
   if (hit) return hit;
@@ -28,7 +28,7 @@ async function mots(book: string, chapter: number, c: CorpusConfig): Promise<Mot
   return mots;
 }
 
-function line(list: Mot[], i: number, b: string, c: number): KwicLine {
+function line(list: Mot[], i: number, b: string, c: ChapterId): KwicLine {
   const verse = list[i].verse;
   const inVerse = (j: number) => j >= 0 && j < list.length && list[j].verse === verse;
   let from = i;

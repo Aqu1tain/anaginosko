@@ -3,12 +3,13 @@
 import { useEffect, useRef, useState } from "react";
 import { loadChapterVerses, sliceVerses } from "./articles/citationText";
 import { verseRefLabel } from "../data/refParse";
+import type { ChapterId } from "../data/corpus";
 
 // Partage d'un verset : lien profond, citation (grec + français + référence + lien)
 // et code d'intégration <iframe>. Remplace l'ancien CopyVerseLink (le lien devient
 // une action du menu). Popover en position fixed (ancrée au bouton) pour ne jamais
 // être rognée par la colonne de lecture. Discret : révélé au survol comme avant.
-type Props = { corpus: string; book: string; chapter: number; v: number };
+type Props = { corpus: string; book: string; chapter: ChapterId; v: number };
 
 export default function ShareVerse({ corpus, book, chapter, v }: Props) {
   const [open, setOpen] = useState(false);

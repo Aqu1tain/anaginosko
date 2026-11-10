@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { loadChapterFs } from "@/lib/nt-server";
-import { CORPORA } from "@/src/data/corpus";
+import { CORPORA, parseChapterId } from "@/src/data/corpus";
 import { chapterHref, verseHref, verseRefLabel, chapterRefLabel } from "@/src/data/refParse";
 
 // Widget d'intégration : rendu autonome d'un passage (grec), encadrable en <iframe>
@@ -40,8 +40,8 @@ export default async function EmbedPage({
   const { corpus: corpusId, book, chapter: chapterStr } = await params;
   const { v } = await searchParams;
   const corpus = CORPORA.find((c) => c.id === corpusId);
-  const chapter = Number(chapterStr);
-  if (!corpus || !Number.isInteger(chapter) || chapter < 1) return <Fallback note="Passage introuvable" />;
+  const chapter = parseChapterId(chapterStr);
+  if (!corpus || !chapter) return <Fallback note="Passage introuvable" />;
 
   let text;
   try {

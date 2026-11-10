@@ -1,4 +1,4 @@
-import { corpusById } from "@/src/data/corpus";
+import { corpusById, type ChapterId } from "@/src/data/corpus";
 import type { VerseLine } from "./citationTypes";
 
 // Résolution client du texte d'une citation, pour l'aperçu du picker et le rendu des
@@ -10,7 +10,7 @@ export type VerseData = { greek: string; french: string | null };
 const chapterCache = new Map<string, Promise<Record<number, VerseData>>>();
 const booksCache = new Map<string, Promise<Record<string, number>>>();
 
-export function loadChapterVerses(corpus: string, book: string, chapter: number): Promise<Record<number, VerseData>> {
+export function loadChapterVerses(corpus: string, book: string, chapter: ChapterId): Promise<Record<number, VerseData>> {
   const c = corpusById(corpus);
   const key = `${c.dataPrefix}/${book}/${chapter}`;
   const hit = chapterCache.get(key);

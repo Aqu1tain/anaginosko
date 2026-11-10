@@ -1,4 +1,4 @@
-import { corpusById } from "@/src/data/corpus";
+import { corpusById, parseChapterId } from "@/src/data/corpus";
 import { loadChapterFs } from "@/lib/nt-server";
 import { chapterRefLabel } from "@/src/data/refParse";
 import { passageCard } from "./cards";
@@ -6,7 +6,7 @@ import { passageCard } from "./cards";
 // Carte OG d'un chapitre : référence + grec d'ouverture (premier verset). Partagé
 // par les routes NT et LXX. Le grec est chargé au runtime (NT_DATA_DIR/LXX_DATA_DIR).
 export async function chapterOgImage(corpusId: string, book: string, chapterStr: string) {
-  const chapter = Number(chapterStr);
+  const chapter = parseChapterId(chapterStr) ?? 1;
   const corpus = corpusById(corpusId);
   let greek: string | null = null;
   try {

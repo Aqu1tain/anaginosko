@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import type { Text } from "../src/data/texts";
 import { loadBooksFs, loadChapterFs, loadLemmasFs } from "../lib/nt-server";
-import { NT, LXX } from "../src/data/corpus";
+import { NT, LXX, type ChapterId } from "../src/data/corpus";
 import { listPublished } from "../lib/articles";
 import { publicAuthor } from "../lib/profiles";
 import { CATEGORY_LABEL } from "../src/components/articles/labels";
@@ -62,7 +62,7 @@ function Hero({ verse, french, word, start }: { verse: Text; french: string | nu
   );
 }
 
-function Jump({ books }: { books: { id: string; name: string; chapters: number; routePrefix: string }[] }) {
+function Jump({ books }: { books: { id: string; name: string; chapters: number; chapterList?: ChapterId[]; routePrefix: string }[] }) {
   return (
     <section className="mt-14 rounded-box bg-base-200 px-5 py-7 wide:mt-28 wide:px-10 wide:py-10">
       <label htmlFor="aller" className="block font-semibold">
@@ -181,7 +181,7 @@ export default async function Home() {
   // son corpus (les noms et ids ne se chevauchent pas entre les deux).
   const allBooks = [
     ...ntBooks.map((b) => ({ id: b.id, name: b.name, chapters: b.chapters, routePrefix: NT.routePrefix })),
-    ...lxxBooks.map((b) => ({ id: b.id, name: b.name, chapters: b.chapters, routePrefix: LXX.routePrefix })),
+    ...lxxBooks.map((b) => ({ id: b.id, name: b.name, chapters: b.chapters, chapterList: b.chapterList, routePrefix: LXX.routePrefix })),
   ];
   // Verset vitrine (Jean 1,1) réduit au 1er verset : charge légère, rendu interactif
   // par HeroVerse via le SheetContext global.

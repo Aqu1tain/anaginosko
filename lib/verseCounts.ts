@@ -6,7 +6,7 @@ import type { CorpusConfig } from "../src/data/corpus";
 import { loadBooksFs } from "./nt-server";
 
 // Versets grecs par livre (et par chapitre), lus une fois dans les chapitres.
-export type VerseCounts = Record<string, { total: number; chapters: Record<number, number> }>;
+export type VerseCounts = Record<string, { total: number; chapters: Record<string, number> }>;
 const cache = new Map<string, Promise<VerseCounts>>();
 
 export function verseCounts(c: CorpusConfig): Promise<VerseCounts> {
@@ -16,7 +16,7 @@ export function verseCounts(c: CorpusConfig): Promise<VerseCounts> {
   const job = (async () => {
     const out: VerseCounts = {};
     for (const b of await loadBooksFs(c)) {
-      const chapters: Record<number, number> = {};
+      const chapters: Record<string, number> = {};
       for (const ch of chapterNumbers(b)) {
         const { mots } = JSON.parse(await readFile(path.join(dir, b.id, `${ch}.json`), "utf8")) as { mots: { verse: number | null }[] };
         chapters[ch] = new Set(mots.map((m) => m.verse).filter((v) => v !== null)).size;

@@ -1,4 +1,5 @@
-import { CORPORA, corpusById } from "./corpus";
+import { CORPORA, chapterTitle, corpusById, type ChapterId } from "./corpus";
+import { estherTarget, isEstherAddition, rahlfsLabel } from "../../lib/esther-additions.mjs";
 
 // Parsing de références bibliques libres pour les citations d'articles. Étend la
 // logique de RefJump (pliage d'accents, correspondance nom/id) avec les versets et
@@ -60,16 +61,43 @@ export function shortBookLabel(book: string): string {
 
 export const bookFullName = (corpus: string, book: string): string => corpusById(corpus).bookNames[book] ?? book;
 
-export function chapterRefLabel(corpus: string, book: string, chapter: number, form: "short" | "long"): string {
-  return form === "short" ? `${shortBookLabel(book)} ${chapter}` : `${bookFullName(corpus, book)} ${chapter}`;
+export function chapterRefLabel(corpus: string, book: string, chapter: ChapterId, form: "short" | "long"): string {
+  if (form === "short") return `${shortBookLabel(book)} ${chapter}`;
+  return typeof chapter === "string" ? chapterTitle(bookFullName(corpus, book), chapter) : `${bookFullName(corpus, book)} ${chapter}`;
 }
 
-export function verseRefLabel(corpus: string, book: string, chapter: number, vs: number, ve: number): string {
-  return `${bookFullName(corpus, book)} ${chapter}, ${ve > vs ? `${vs}-${ve}` : vs}`;
+const rahlfsCitation = (chapter: ChapterId, v: number) => rahlfsLabel(chapter, v)?.replace(":", ", ") ?? String(v);
+
+// Une addition d'Esther se cite dans la numérotation de Rahlfs : « Esther 4, 17k (addition C) ».
+export function verseRefLabel(corpus: string, book: string, chapter: ChapterId, vs: number, ve: number): string {
+  const name = bookFullName(corpus, book);
+  if (!isEstherAddition(book, chapter)) return `${name} ${chapter}, ${ve > vs ? `${vs}-${ve}` : vs}`;
+  const verses = ve > vs ? `${rahlfsCitation(chapter, vs)} – ${rahlfsCitation(chapter, ve)}` : rahlfsCitation(chapter, vs);
+  return `${name} ${verses} (addition ${chapter})`;
 }
 
-export const chapterHref = (corpus: string, book: string, chapter: number): string =>
+export type Place = { chapter: ChapterId; verse: number | null };
+
+// Esther : un verset que Rahlfs range dans une addition (« 5:1 », « 4:17k ») mène à
+// son chapitre-lettre.
+export const estherPlace = (chapter: ChapterId, verse: number | null, sub = ""): Place =>
+  (verse !== null && estherTarget(`${chapter}:${verse}${sub}`)) || { chapter, verse };
+
+const ESTHER_LETTER = /^(.+?)\s+([A-F])(?:\s*[:.,]?\s*(\d+))?$/;
+const ESTHER_SUB = /^(.+?)\s*(\d+)\s*[:.,]\s*(\d+)([a-z])$/;
+
+// « Est C », « Est C 3 », « Est 4,17k » : le texte du livre et la place visée, à
+// condition que l'appelant vérifie que le livre est bien Esther.
+export function parseEstherAddition(input: string): ({ bookQuery: string } & Place) | null {
+  const letter = input.match(ESTHER_LETTER);
+  if (letter) return { bookQuery: letter[1], chapter: letter[2], verse: letter[3] ? Number(letter[3]) : null };
+  const sub = input.match(ESTHER_SUB);
+  const target = sub && estherTarget(`${sub[2]}:${sub[3]}${sub[4]}`);
+  return sub && target ? { bookQuery: sub[1], ...target } : null;
+}
+
+export const chapterHref = (corpus: string, book: string, chapter: ChapterId): string =>
   `${corpusById(corpus).routePrefix}/${book}/${chapter}`;
 
-export const verseHref = (corpus: string, book: string, chapter: number, verseStart: number): string =>
+export const verseHref = (corpus: string, book: string, chapter: ChapterId, verseStart: number): string =>
   `${chapterHref(corpus, book, chapter)}#v${verseStart}`;

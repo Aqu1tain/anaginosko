@@ -110,14 +110,37 @@ export const corpusById = (id: string): CorpusConfig => byId.get(id) ?? NT;
 export const corpusByDataPrefix = (seg: string): CorpusConfig | undefined =>
   CORPORA.find((c) => c.dataPrefix === seg);
 
-export const makeRef = (c: CorpusConfig, book: string, chapter: number): string =>
+// Un chapitre est un entier, ou une lettre A-F pour les additions grecques d'Esther.
+export type ChapterId = number | string;
+
+export const CHAPTER_ID = "\\d+|[A-F]";
+
+export const parseChapterId = (raw: string): ChapterId | null => {
+  if (/^\d+$/.test(raw)) return Number(raw);
+  return /^[A-F]$/.test(raw) ? raw : null;
+};
+
+export const chapterTitle = (name: string, ch: ChapterId): string => {
+  if (ch === 0) return `${name}, prologue`;
+  return typeof ch === "string" ? `${name}, addition ${ch}` : `${name} ${ch}`;
+};
+
+export const chapterStep = (ch: ChapterId): string => {
+  if (ch === 0) return "Prologue";
+  return typeof ch === "string" ? `Addition ${ch}` : `Chapitre ${ch}`;
+};
+
+export const chapterShort = (ch: ChapterId): string => (ch === 0 ? "Pr." : String(ch));
+
+export const makeRef = (c: CorpusConfig, book: string, chapter: ChapterId): string =>
   `${c.refPrefix}-${book}-${chapter}`;
 
 // Préfixes connus assemblés depuis le registre : une ref est `<prefix>-<book>-<ch>`.
-// Contrainte : un id de livre ne finit jamais par `-<chiffres>`.
-const refPattern = () => new RegExp(`^(${CORPORA.map((c) => c.refPrefix).join("|")})-(.+)-(\\d+)$`);
+// Contrainte : un id de livre ne finit jamais par `-<chiffres>` ni par `-<A-F>`.
+const refPattern = () => new RegExp(`^(${CORPORA.map((c) => c.refPrefix).join("|")})-(.+)-(${CHAPTER_ID})$`);
 
-export function parseRef(ref: string): { corpus: string; book: string; chapter: number } | null {
+export function parseRef(ref: string): { corpus: string; book: string; chapter: ChapterId } | null {
   const m = ref.match(refPattern());
-  return m ? { corpus: m[1], book: m[2], chapter: Number(m[3]) } : null;
+  const chapter = m && parseChapterId(m[3]);
+  return m && chapter !== null ? { corpus: m[1], book: m[2], chapter } : null;
 }
