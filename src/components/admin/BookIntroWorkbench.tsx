@@ -7,6 +7,7 @@ import { useAuth } from "@/src/hooks/useAuth";
 import { can } from "@/src/lib/api";
 import { corpusById } from "@/src/data/corpus";
 import { fetchBookIntro, saveBookIntro, uploadBookIntroImage } from "@/src/lib/bookIntrosApi";
+import Chevron from "@/src/components/Chevron";
 
 // Éditeur BlockNote côté admin uniquement (dynamic ssr:false) : pas de fuite dans le
 // bundle public des pages de livre.
@@ -113,7 +114,7 @@ export default function BookIntroWorkbench({ corpus, book }: { corpus: string; b
 
   return (
     <div className="pb-12 pt-6">
-      <Link href="/admin/livres" className="link text-sm text-base-content/80">← Introductions de livres</Link>
+      <Link href="/admin/livres" className="link text-sm text-base-content/80"><Chevron to="left" /> Introductions de livres</Link>
       <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Introduction · {bookName}</h1>
@@ -146,7 +147,7 @@ export default function BookIntroWorkbench({ corpus, book }: { corpus: string; b
 
       {published && (
         <Link href={`/${corpus}/${book}`} target="_blank" rel="noreferrer" className="link link-primary mt-6 inline-block text-sm">
-          Voir la page du livre →
+          Voir la page du livre <Chevron to="right" />
         </Link>
       )}
     </div>

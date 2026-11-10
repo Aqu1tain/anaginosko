@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { loadChapterFs } from "@/lib/nt-server";
 import { CORPORA, parseChapterId } from "@/src/data/corpus";
 import { chapterHref, verseHref, verseRefLabel, chapterRefLabel } from "@/src/data/refParse";
+import Chevron from "@/src/components/Chevron";
 
 // Widget d'intégration : rendu autonome d'un passage (grec), encadrable en <iframe>
 // par un site tiers. Sans le shell du site (cf. app/shell.tsx). Non indexable :
@@ -93,7 +94,7 @@ export default async function EmbedPage({
         rel="noopener noreferrer"
         className="mt-4 inline-block text-xs text-base-content/70 hover:text-primary"
       >
-        Lire sur Anaginosko →
+        Lire sur Anaginosko <Chevron to="right" />
       </a>
     </div>
   );

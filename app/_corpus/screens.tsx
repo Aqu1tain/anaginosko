@@ -18,6 +18,7 @@ import JsonLd from "@/app/_components/JsonLd";
 import ChapterVocabulary from "./ChapterVocabulary";
 import { SITE, clip, pageMetadata } from "@/lib/seo";
 import { chapterVerses } from "@/lib/chapterVerses";
+import Chevron from "@/src/components/Chevron";
 
 // Écrans de lecture partagés entre corpus (NT, LXX). Les fichiers de route ne sont
 // que de fines enveloppes passant la config du corpus. Les valeurs NT reproduisent
@@ -307,7 +308,7 @@ export async function ChapterScreen({
       <nav className="reading-col mt-8 flex items-center justify-between gap-3">
         {prev != null ? (
           <Link href={`${corpus.routePrefix}/${book}/${prev}`} className="btn btn-sm btn-outline border-base-300">
-            ← {chapterStep(prev)}
+            <Chevron to="left" /> {chapterStep(prev)}
           </Link>
         ) : prevBook ? (
           <Link
@@ -315,7 +316,7 @@ export async function ChapterScreen({
             className="btn btn-sm btn-outline border-base-300"
             title={`${bookName(prevBook.id)} ${chLabel(lastCh(prevBook))}`}
           >
-            ← {bookName(prevBook.id)}
+            <Chevron to="left" /> {bookName(prevBook.id)}
           </Link>
         ) : (
           <span />
@@ -325,7 +326,7 @@ export async function ChapterScreen({
         </Link>
         {next != null ? (
           <Link href={`${corpus.routePrefix}/${book}/${next}`} className="btn btn-sm btn-outline border-base-300">
-            {chapterStep(next)} →
+            {chapterStep(next)} <Chevron to="right" />
           </Link>
         ) : nextBook ? (
           <Link
@@ -333,7 +334,7 @@ export async function ChapterScreen({
             className="btn btn-sm btn-outline border-base-300"
             title={`${bookName(nextBook.id)} ${chLabel(firstCh(nextBook))}`}
           >
-            {bookName(nextBook.id)} →
+            {bookName(nextBook.id)} <Chevron to="right" />
           </Link>
         ) : (
           <span />

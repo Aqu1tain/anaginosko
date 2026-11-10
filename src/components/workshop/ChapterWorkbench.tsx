@@ -24,6 +24,7 @@ import { checkVerse } from "./checks";
 import GotoPalette from "./GotoPalette";
 import AssistantPanel, { useVerseDrafts } from "./assistant/AssistantPanel";
 import { newChat } from "./assistant/AssistantChat";
+import Chevron from "@/src/components/Chevron";
 
 type PublishedMap = Record<string, Record<string, { maison: string }>>;
 type Side = "mot" | "verset" | "controles" | "assistant";
@@ -238,12 +239,12 @@ export default function ChapterWorkbench({ corpus, book, chapter }: { corpus: Wo
         <span className="flex items-center gap-1">
           {pos > 0 && (
             <Link href={href(chapters[pos - 1])} className="btn btn-ghost btn-xs" aria-label="Chapitre précédent">
-              ←
+              <Chevron to="left" />
             </Link>
           )}
           {pos >= 0 && pos < chapters.length - 1 && (
             <Link href={href(chapters[pos + 1])} className="btn btn-ghost btn-xs" aria-label="Chapitre suivant">
-              →
+              <Chevron to="right" />
             </Link>
           )}
         </span>

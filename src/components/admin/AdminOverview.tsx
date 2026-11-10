@@ -8,6 +8,7 @@ import { can, fetchAdminReports, fetchAdminStats, fetchContributors, isLearner, 
 import { fetchArticles } from "@/src/lib/articlesApi";
 import { fetchCourses } from "@/src/lib/coursesApi";
 import Avatar from "@/src/components/profile/Avatar";
+import Chevron from "@/src/components/Chevron";
 
 type Task = { href: string; count: number; label: (n: number) => string };
 type Figures = { views?: number; annotations?: number; learners?: number; published?: number };
@@ -139,7 +140,7 @@ export default function AdminOverview() {
                 <Link href={t.href} className="flex items-center justify-between gap-4 px-4 py-3 transition-colors hover:bg-base-200/60">
                   <span className="font-medium">{t.label(t.count)}</span>
                   <span className="text-base-content/70" aria-hidden="true">
-                    →
+                    <Chevron to="right" />
                   </span>
                 </Link>
               </li>

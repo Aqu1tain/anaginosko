@@ -10,6 +10,7 @@ import { deleteCourse, fetchCourses, lessonsAction, saveCourse, type LessonsActi
 import { COURSE_LEVELS, type CourseLevel } from "@/src/data/courseLevels";
 import type { ArticleSummary } from "@/lib/articles";
 import type { Course, CourseSection } from "@/lib/courses";
+import Chevron from "@/src/components/Chevron";
 
 const move = <T,>(list: T[], from: number, to: number): T[] => {
   if (to < 0 || to >= list.length) return list;
@@ -145,7 +146,7 @@ export default function CourseEditor({ id }: { id: string }) {
 
   return (
     <div className="pb-24 pt-6">
-      <Link href="/admin/cours" className="link text-sm text-base-content/80">← Cours</Link>
+      <Link href="/admin/cours" className="link text-sm text-base-content/80"><Chevron to="left" /> Cours</Link>
 
       <div className="mt-4 grid gap-3">
         <input value={course.title} onChange={(e) => edit({ title: e.target.value })} className="input input-bordered text-xl font-bold" aria-label="Titre du cours" />

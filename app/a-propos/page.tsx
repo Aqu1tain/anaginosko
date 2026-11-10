@@ -6,6 +6,7 @@ import Avatar from "@/src/components/profile/Avatar";
 import { SITE, SITE_PITCH, pageMetadata } from "@/lib/seo";
 import { fr, loadSiteFacts } from "@/lib/siteFacts";
 import { listTeam } from "@/lib/team";
+import Chevron from "@/src/components/Chevron";
 
 export const revalidate = 3600;
 
@@ -105,7 +106,7 @@ export default async function AboutPage() {
           {FEATURES.map((x) => (
             <li key={x.href}>
               <Link href={x.href} className="font-semibold text-base-content hover:text-primary">
-                {x.title} →
+                {x.title} <Chevron to="right" />
               </Link>
               <p className="mt-1">{x.body}</p>
             </li>

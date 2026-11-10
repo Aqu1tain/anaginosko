@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { arb, arbErrors, BOOK } from "./ArbitrageBiblion";
+import Chevron from "@/src/components/Chevron";
 
 // Refonte : carte des erreurs (où corriger) + réalignement DEUX COLONNES d'un chapitre.
 // Le grec est fixe (gauche) ; le français Giguet est une bande glissable (droite) qui
@@ -270,9 +271,9 @@ export function ChapterRealign({ book, ch, focusRef, prevCh, nextCh, onNavigate,
         <div className="sticky -top-5 z-10 -mx-5 -mt-5 border-b border-base-200 bg-base-100 px-5 py-3">
           <div className="flex flex-wrap items-center gap-2">
             <div className="join">
-              <button className="btn btn-sm btn-ghost join-item" disabled={!prevCh || busy} title="Chapitre précédent" onClick={() => prevCh && tryNavigate(prevCh)}>←</button>
+              <button className="btn btn-sm btn-ghost join-item" disabled={!prevCh || busy} title="Chapitre précédent" onClick={() => prevCh && tryNavigate(prevCh)}><Chevron to="left" /></button>
               <h2 className="join-item px-1 text-lg font-bold">{BOOK[book] ?? book} {ch}</h2>
-              <button className="btn btn-sm btn-ghost join-item" disabled={!nextCh || busy} title="Chapitre suivant" onClick={() => nextCh && tryNavigate(nextCh)}>→</button>
+              <button className="btn btn-sm btn-ghost join-item" disabled={!nextCh || busy} title="Chapitre suivant" onClick={() => nextCh && tryNavigate(nextCh)}><Chevron to="right" /></button>
             </div>
             {(() => { const remaining = data.errorRefs.filter((r) => !valid.has(r)); return remaining.length > 0 ? (
               <button className="btn btn-xs btn-success btn-outline" title="Ne plus signaler ce chapitre comme erreur" disabled={busy}
@@ -289,8 +290,8 @@ export function ChapterRealign({ book, ch, focusRef, prevCh, nextCh, onNavigate,
             <span className="ml-auto flex flex-wrap items-center gap-2">
               {range.lo > chBounds.lo || range.hi < chBounds.hi ? null : (
                 <span className="join">
-                  {hasCh(ch - 1) && <button className="btn btn-xs join-item" title="Le bon français vient du chapitre précédent" onClick={() => extend(-1)}>← Inclure ch. {ch - 1}</button>}
-                  {hasCh(ch + 1) && <button className="btn btn-xs join-item" title="Le bon français vient du chapitre suivant" onClick={() => extend(1)}>Inclure ch. {ch + 1} →</button>}
+                  {hasCh(ch - 1) && <button className="btn btn-xs join-item" title="Le bon français vient du chapitre précédent" onClick={() => extend(-1)}><Chevron to="left" /> Inclure ch. {ch - 1}</button>}
+                  {hasCh(ch + 1) && <button className="btn btn-xs join-item" title="Le bon français vient du chapitre suivant" onClick={() => extend(1)}>Inclure ch. {ch + 1} <Chevron to="right" /></button>}
                 </span>
               )}
               {(range.lo < chBounds.lo || range.hi > chBounds.hi) && <span className="badge badge-info badge-sm" title="La bande déborde sur un chapitre voisin">Bande étendue</span>}
@@ -462,9 +463,9 @@ function CherryPick({ book, current, defaultCh, onPick, onCancel }: { book: stri
       </div>
       {!searching && (
         <div className="mt-1 flex items-center justify-between text-xs uppercase tracking-wider text-base-content/70">
-          <button className="btn btn-ghost btn-xs" disabled={browseCh <= 1} onClick={() => setBrowseCh((c) => Math.max(1, c - 1))}>← ch. {browseCh - 1}</button>
+          <button className="btn btn-ghost btn-xs" disabled={browseCh <= 1} onClick={() => setBrowseCh((c) => Math.max(1, c - 1))}><Chevron to="left" /> ch. {browseCh - 1}</button>
           <span>Giguet · chapitre {browseCh}</span>
-          <button className="btn btn-ghost btn-xs" onClick={() => setBrowseCh((c) => c + 1)}>ch. {browseCh + 1} →</button>
+          <button className="btn btn-ghost btn-xs" onClick={() => setBrowseCh((c) => c + 1)}>ch. {browseCh + 1} <Chevron to="right" /></button>
         </div>
       )}
       <div ref={boxRef} className="relative mt-1 max-h-64 overflow-y-auto">

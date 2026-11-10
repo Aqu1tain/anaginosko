@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { arb, arbErrors } from "./ArbitrageBiblion";
 import { MaisonInline } from "./ArbitrageRealign";
+import Chevron from "@/src/components/Chevron";
 
 // Atelier de traduction du NT : le néo-Crampon est apparié verset par verset, il n'y a
 // rien à réaligner ; on peut seulement le remplacer par une traduction maison.
@@ -111,9 +112,9 @@ export function NtChapterEditor({ book, ch, onNavigate, onClose }: { book: strin
         <div className="sticky -top-5 z-10 -mx-5 -mt-5 border-b border-base-200 bg-base-100 px-5 py-3">
           <div className="flex flex-wrap items-center gap-2">
             <div className="join">
-              <button className="btn btn-sm btn-ghost join-item" disabled={ch <= 1 || busy} title="Chapitre précédent" onClick={() => confirmLeave() && onNavigate(ch - 1)}>←</button>
+              <button className="btn btn-sm btn-ghost join-item" disabled={ch <= 1 || busy} title="Chapitre précédent" onClick={() => confirmLeave() && onNavigate(ch - 1)}><Chevron to="left" /></button>
               <h2 className="join-item px-1 text-lg font-bold">{data?.label ?? book} {ch}</h2>
-              <button className="btn btn-sm btn-ghost join-item" disabled={!data || ch >= data.chapters || busy} title="Chapitre suivant" onClick={() => confirmLeave() && onNavigate(ch + 1)}>→</button>
+              <button className="btn btn-sm btn-ghost join-item" disabled={!data || ch >= data.chapters || busy} title="Chapitre suivant" onClick={() => confirmLeave() && onNavigate(ch + 1)}><Chevron to="right" /></button>
             </div>
             <div className="ml-auto flex items-center gap-2">
               <button className="btn btn-sm btn-primary" disabled={busy || !dirty} onClick={save} title="Ctrl+S">Enregistrer{dirty ? ` (${dirty})` : ""}</button>

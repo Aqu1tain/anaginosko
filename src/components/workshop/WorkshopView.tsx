@@ -15,6 +15,7 @@ import SearchReplace from "./SearchReplace";
 import Activity from "./Activity";
 import GotoPalette from "./GotoPalette";
 import Charter from "./Charter";
+import Chevron from "@/src/components/Chevron";
 
 const TABS = [
   ["pilotage", "Pilotage"],
@@ -48,7 +49,7 @@ export default function WorkshopView() {
     return (
       <div>
         <Link href={`?corpus=lxx${book && chapter !== null ? `&book=${book}&ch=${chapter}` : ""}`} className="mt-4 inline-block text-sm text-base-content/80 hover:text-base-content">
-          ← Atelier
+          <Chevron to="left" /> Atelier
         </Link>
         <ArbitrageView />
       </div>

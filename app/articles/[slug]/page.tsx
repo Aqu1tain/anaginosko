@@ -9,6 +9,7 @@ import ArticleRenderer from "@/src/components/articles/ArticleRenderer";
 import ShareArticle from "@/src/components/articles/ShareArticle";
 import Avatar from "@/src/components/profile/Avatar";
 import JsonLd from "@/app/_components/JsonLd";
+import Chevron from "@/src/components/Chevron";
 
 export const dynamic = "force-dynamic";
 
@@ -79,7 +80,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
   return (
     <article className="mx-auto max-w-3xl pb-12 pt-6">
       <JsonLd data={jsonLd} />
-      <Link href="/articles" className="link text-sm text-base-content/80">← Articles</Link>
+      <Link href="/articles" className="link text-sm text-base-content/80"><Chevron to="left" /> Articles</Link>
       <p className="mt-4 text-xs font-semibold uppercase tracking-wide text-primary/80">{CATEGORY_LABEL[a.category]}</p>
       <h1 className="mt-1 text-3xl font-bold leading-tight sm:text-4xl">{a.title}</h1>
       {a.excerpt && <p className="mt-3 max-w-prose text-lg leading-relaxed text-base-content/80">{a.excerpt}</p>}

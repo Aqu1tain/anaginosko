@@ -21,6 +21,7 @@ import {
   type ExplorerQuery,
 } from "@/src/data/explorerQuery";
 import { LXX, NT } from "@/src/data/corpus";
+import Chevron from "@/src/components/Chevron";
 
 type SearchParams = Promise<Record<string, string | string[] | undefined>>;
 
@@ -55,7 +56,7 @@ function Pagination({ query, page, pages, path, defaultCorpus }: { query: Explor
     <nav aria-label="Pages" className="mt-6 flex flex-wrap items-center justify-center gap-1">
       {page > 1 && (
         <Link href={href(page - 1)} rel="prev" className={`${cell} hover:bg-base-200`}>
-          ← Précédente
+          <Chevron to="left" /> Précédente
         </Link>
       )}
       {pageList(page, pages).map((p, i) =>
@@ -71,7 +72,7 @@ function Pagination({ query, page, pages, path, defaultCorpus }: { query: Explor
       )}
       {page < pages && (
         <Link href={href(page + 1)} rel="next" className={`${cell} hover:bg-base-200`}>
-          Suivante →
+          Suivante <Chevron to="right" />
         </Link>
       )}
     </nav>

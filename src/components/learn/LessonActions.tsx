@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useProgress } from "../../hooks/useProgress";
+import Chevron from "@/src/components/Chevron";
 
 type Step = { href: string; title: string } | null;
 
@@ -52,7 +53,7 @@ export default function LessonActions({
       <nav className="flex items-stretch justify-between gap-3 text-sm">
         {prev ? (
           <Link href={prev.href} className="max-w-[48%] rounded-box border border-base-300 px-4 py-3 transition-colors hover:border-primary/40">
-            <span className="block text-xs text-base-content/70">← Précédente</span>
+            <span className="block text-xs text-base-content/70"><Chevron to="left" /> Précédente</span>
             <span className="font-medium">{prev.title}</span>
           </Link>
         ) : (
@@ -60,7 +61,7 @@ export default function LessonActions({
         )}
         {next && (
           <Link href={next.href} className="max-w-[48%] rounded-box border border-base-300 px-4 py-3 text-right transition-colors hover:border-primary/40">
-            <span className="block text-xs text-base-content/70">Suivante →</span>
+            <span className="block text-xs text-base-content/70">Suivante <Chevron to="right" /></span>
             <span className="font-medium">{next.title}</span>
           </Link>
         )}
