@@ -590,20 +590,26 @@
       "id": "est",
       "name": "Esther",
       "usfm": "ESG",
-      "chapters": 10,
+      "chapters": 16,
       "words": 5843,
       "canon": "proto",
       "chapterList": [
+        "A",
         1,
         2,
         3,
+        "B",
         4,
+        "C",
+        "D",
         5,
         6,
         7,
         8,
+        "E",
         9,
-        10
+        10,
+        "F"
       ]
     },
     {
