@@ -20,6 +20,7 @@ function GreekText({
   translit = "off",
   manuscript = false,
   verseOnly = null,
+  verseLabel,
   highlightWord = null,
   spanWords,
   charSpots,
@@ -41,6 +42,8 @@ function GreekText({
   manuscript?: boolean;
   /** Ne rendre que les mots de ce verset (mode étude). */
   verseOnly?: number | null;
+  /** Numéro affiché d'un verset quand il diffère du numéro interne (additions d'Esther). */
+  verseLabel?: (v: number) => string;
   /** Index de jeton à surligner temporairement (suivi de concordance). */
   highlightWord?: number | null;
   /** Mots couverts par une annotation mot/phrase -> soulignement du mot. */
@@ -196,7 +199,7 @@ function GreekText({
     const v = verseAt.get(w)!;
     return (
       <span id={verseOnly == null ? `v${v}` : undefined} className="verse-num scroll-mt-20">
-        {v}
+        {verseLabel ? verseLabel(v) : v}
       </span>
     );
   };

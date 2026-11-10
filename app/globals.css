@@ -298,6 +298,16 @@ body {
   }
 }
 
+/* Plage deutérocanonique au sein d'un chapitre : filet continu dans la marge. */
+.canon-range::before {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  left: -0.75rem;
+  width: 2px;
+  background: var(--color-secondary);
+}
+
 /* Numéro de verset, discret, pour se repérer. */
 .verse-num {
   font-family: var(--font-sans);

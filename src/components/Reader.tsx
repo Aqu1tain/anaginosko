@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { type Text } from "../data/texts";
 import { corpusById, parseRef } from "../data/corpus";
@@ -18,6 +18,8 @@ import {
 import GreekText, { type TranslitMode, type AnnoScope, type AnnoSelection } from "./GreekText";
 import { ANAGINOSKO_TRANSLATORS, creditName } from "../data/translators";
 import ShareVerse from "./ShareVerse";
+import { AdditionLink, CanonBanner } from "./reader/CanonBanner";
+import { additionsReadAfter, canonPassage, inCanonPassage, verseLabel } from "../data/canon";
 import ReportButton from "./ReportButton";
 import ReportEditor, { type ReportTarget } from "./ReportEditor";
 import AnnotationEditor, { type AnnotationTarget } from "./AnnotationEditor";
@@ -399,6 +401,34 @@ export default function Reader({ text }: { text: Text }) {
       </span>
     );
 
+  // Matière deutérocanonique du chapitre : bandeau, numéros de Rahlfs dans les
+  // additions d'Esther, et renvoi vers l'addition qui se lit après un verset.
+  const book = parsedRef?.book ?? "";
+  const chapter = parsedRef?.chapter ?? 0;
+  const passage = useMemo(() => (isLxx ? canonPassage(book, chapter) : null), [isLxx, book, chapter]);
+  const readAfter = useMemo(() => (isLxx ? additionsReadAfter(book, chapter) : new Map()), [isLxx, book, chapter]);
+  const labelOf = useCallback((v: number) => verseLabel(book, chapter, v), [book, chapter]);
+  const additionAfter = (v: number) => (readAfter.has(v) ? <AdditionLink addition={readAfter.get(v)!} /> : null);
+  const chapterLead = (
+    <>
+      {passage && passage.from == null && <CanonBanner passage={passage} />}
+      {additionAfter(0)}
+    </>
+  );
+  const verseRow = (v: number, className: string, children: React.ReactNode) => (
+    <Fragment key={v}>
+      {passage?.from === v && <CanonBanner passage={passage} />}
+      <div
+        id={`v${v}`}
+        className={`group relative scroll-mt-20 border-b border-base-300/70 ${className}${inCanonPassage(passage, v) ? " canon-range" : ""}`}
+      >
+        {copyLink(v)}
+        {children}
+      </div>
+      {additionAfter(v)}
+    </Fragment>
+  );
+
   // La traduction n'est appariée verset par verset que si ses clés recouvrent
   // exactement celles du grec. Pour le NT (Crampon), les écarts sont purement
   // additifs (versets du TR omis par SBLGNT) : apparier par numéro reste juste,
@@ -649,77 +679,33 @@ export default function Reader({ text }: { text: Text }) {
 
       {transMode === "off" ? (
         <div className="mt-5 mx-auto max-w-2xl">
+          {chapterLead}
           {manuscript ? (
             // Scriptio continua : tout le grec en continu, sans découpe ni lien de verset.
             <GreekText text={text} size="lg" scale={textScale} translit={mode} manuscript={manuscript} highlightWord={highlight} {...greekProps} />
           ) : (
-            verses.map((v) => (
-              <div key={v} id={`v${v}`} className="group relative scroll-mt-20 border-b border-base-300/70 py-4 first:pt-0 last:border-0">
-                {copyLink(v)}
-                <GreekText text={text} size="lg" scale={textScale} translit={mode} manuscript={manuscript} verseOnly={v} highlightWord={highlight} {...greekProps} />
-                {copyLinkInline(v)}
-              </div>
-            ))
+            verses.map((v) =>
+              verseRow(
+                v,
+                "py-4 first:pt-0 last:border-0",
+                <>
+                  <GreekText text={text} size="lg" scale={textScale} translit={mode} manuscript={manuscript} verseOnly={v} verseLabel={labelOf} highlightWord={highlight} {...greekProps} />
+                  {copyLinkInline(v)}
+                </>,
+              ),
+            )
           )}
         </div>
       ) : useFrenchBlock ? (
         // Versification divergente : on rend le grec verset par verset (texte
         // primaire, complet) puis la traduction en bloc continu, sans apparier.
         <div className="mt-5 mx-auto max-w-2xl">
-          {verses.map((v) => (
-            <div key={v} id={`v${v}`} className="group relative scroll-mt-20 border-b border-base-300/70 py-4 first:pt-0 last:border-0">
-              {copyLink(v)}
-              <GreekText
-                text={text}
-                size="lg"
-                scale={textScale}
-                translit={mode}
-                manuscript={manuscript}
-                verseOnly={v}
-                highlightWord={highlight}
-                {...greekProps}
-              />
-              {copyLinkInline(v)}
-            </div>
-          ))}
-          <FrenchChapterBlock french={french!} credit={creditRow} />
-        </div>
-      ) : transMode === "verses" ? (
-        <div className="mt-5 mx-auto max-w-2xl">
-          {verses.map((v) => (
-            <div key={v} id={`v${v}`} className="group relative scroll-mt-20 border-b border-base-300/70 py-4 first:pt-0 last:border-0">
-              {copyLink(v)}
-              <GreekText
-                text={text}
-                size="lg"
-                scale={textScale}
-                translit={mode}
-                manuscript={manuscript}
-                verseOnly={v}
-                highlightWord={highlight}
-                {...greekProps}
-              />
-              {v in french! && (
-                <p className="mt-2 leading-relaxed text-base-content/85">
-                  <span className="verse-num">{v}</span>
-                  {french![v]}
-                  <TranslatorTip by={text.maison?.[v] ?? baseTranslator} />
-                  {copyLinkInline(v)}
-                </p>
-              )}
-            </div>
-          ))}
-          {creditRow}
-        </div>
-      ) : (
-        // Côte à côte : grec | français, alignés par verset. Sous 640px, dégrade
-        // en colonne unique empilée (interligne) pour rester lisible (US-6). Sur
-        // desktop, profite de la largeur (les deux colonnes respirent).
-        <div className="mt-5 mx-auto wide:max-w-5xl">
-          {verses.map((v) => (
-            <div key={v} id={`v${v}`} className="trans-row group relative scroll-mt-20 border-b border-base-300/70 py-3">
-              {copyLink(v)}
-              <div className="trans-grec">
+          {chapterLead}
+          {verses.map((v) =>
+            verseRow(
+              v,
+              "py-4 first:pt-0 last:border-0",
+              <>
                 <GreekText
                   text={text}
                   size="lg"
@@ -727,22 +713,85 @@ export default function Reader({ text }: { text: Text }) {
                   translit={mode}
                   manuscript={manuscript}
                   verseOnly={v}
+                  verseLabel={labelOf}
                   highlightWord={highlight}
                   {...greekProps}
                 />
-              </div>
-              <div className="trans-fr leading-relaxed text-base-content/85">
+                {copyLinkInline(v)}
+              </>,
+            ),
+          )}
+          <FrenchChapterBlock french={french!} credit={creditRow} />
+        </div>
+      ) : transMode === "verses" ? (
+        <div className="mt-5 mx-auto max-w-2xl">
+          {chapterLead}
+          {verses.map((v) =>
+            verseRow(
+              v,
+              "py-4 first:pt-0 last:border-0",
+              <>
+                <GreekText
+                  text={text}
+                  size="lg"
+                  scale={textScale}
+                  translit={mode}
+                  manuscript={manuscript}
+                  verseOnly={v}
+                  verseLabel={labelOf}
+                  highlightWord={highlight}
+                  {...greekProps}
+                />
                 {v in french! && (
-                  <>
-                    <span className="verse-num">{v}</span>
+                  <p className="mt-2 leading-relaxed text-base-content/85">
+                    <span className="verse-num">{labelOf(v)}</span>
                     {french![v]}
                     <TranslatorTip by={text.maison?.[v] ?? baseTranslator} />
                     {copyLinkInline(v)}
-                  </>
+                  </p>
                 )}
-              </div>
-            </div>
-          ))}
+              </>,
+            ),
+          )}
+          {creditRow}
+        </div>
+      ) : (
+        // Côte à côte : grec | français, alignés par verset. Sous 640px, dégrade
+        // en colonne unique empilée (interligne) pour rester lisible (US-6). Sur
+        // desktop, profite de la largeur (les deux colonnes respirent).
+        <div className="mt-5 mx-auto wide:max-w-5xl">
+          {chapterLead}
+          {verses.map((v) =>
+            verseRow(
+              v,
+              "trans-row py-3",
+              <>
+                <div className="trans-grec">
+                  <GreekText
+                    text={text}
+                    size="lg"
+                    scale={textScale}
+                    translit={mode}
+                    manuscript={manuscript}
+                    verseOnly={v}
+                    verseLabel={labelOf}
+                    highlightWord={highlight}
+                    {...greekProps}
+                  />
+                </div>
+                <div className="trans-fr leading-relaxed text-base-content/85">
+                  {v in french! && (
+                    <>
+                      <span className="verse-num">{labelOf(v)}</span>
+                      {french![v]}
+                      <TranslatorTip by={text.maison?.[v] ?? baseTranslator} />
+                      {copyLinkInline(v)}
+                    </>
+                  )}
+                </div>
+              </>,
+            ),
+          )}
           {creditRow}
         </div>
       )}
