@@ -26,6 +26,7 @@ const ARB_DIR = process.env.ARB_DIR || path.join(repo, "data");
 const APPLY = process.argv.includes("--apply");
 const CHECK = process.argv.includes("--check");
 const OUTDIR = process.env.MATERIALIZE_OUT; // écrit la matérialisation ailleurs (validation), sans toucher au repo
+const ONLY = process.env.LXX_BOOKS ? new Set(process.env.LXX_BOOKS.split(",")) : null; // limite la passe à ces livres
 
 const giguet = JSON.parse(fs.readFileSync(path.join(repo, "data/giguet-lxx.json"), "utf8"));
 const autoLinks = JSON.parse(fs.readFileSync(path.join(repo, "data/lxx-links.json"), "utf8"));
@@ -51,6 +52,7 @@ const residual = []; // { book, ref, current, materialized } — refs où fr.jso
 const excluded = []; // segments Giguet exclus du servi (marqueur / ponctuation), refs nommées
 
 for (const id of Object.keys(giguet)) {
+  if (ONLY && !ONLY.has(id)) continue;
   const frPath = path.join(LXX, id, "fr.json");
   if (!fs.existsSync(frPath)) continue;
   const current = JSON.parse(fs.readFileSync(frPath, "utf8"));

@@ -11,7 +11,8 @@ import { fileURLToPath } from "node:url";
 
 const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const LXX = process.env.LXX_DATA_DIR || path.join(repo, "public/lxx");
-const { sentinelles } = JSON.parse(fs.readFileSync(path.join(repo, "data/lxx-sentinelles.json"), "utf8"));
+const ONLY = process.env.LXX_BOOKS ? new Set(process.env.LXX_BOOKS.split(",")) : null;
+const sentinelles = JSON.parse(fs.readFileSync(path.join(repo, "data/lxx-sentinelles.json"), "utf8")).sentinelles.filter((s) => !ONLY || ONLY.has(s.book));
 
 let ko = 0;
 for (const s of sentinelles) {
