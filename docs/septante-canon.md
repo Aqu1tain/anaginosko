@@ -78,9 +78,19 @@ Les recensions exclues sont documentées ici et pourront faire l'objet d'un modu
   dans la Vulgate.
 - **Additions grecques à Daniel** : Suzanne (`sus`) et Bel (`bel`) sont des livres
   deutérocanoniques distincts (= Daniel 13 et 14 dans la Vulgate) ; le Cantique des
-  trois jeunes gens est inclus en ligne dans Daniel-Théodotion (ch. 3).
-- **Esther** : `est` = l'Esther grec ; ses sections supplémentaires sont
-  deutérocanoniques, marquées comme telles dans la note du livre.
+  trois jeunes gens est inclus en ligne dans Daniel-Théodotion (ch. 3:24-90).
+- **Esther** : `est` = l'Esther grec. Ses six additions, que Rahlfs étiquette en
+  sous-versets (« 1:1a », « 4:17k »), sont sorties en chapitres-lettres A à F
+  (`lib/esther-additions.mjs`), deutérocanoniques, lus dans l'ordre du grec :
+  A, 1, 2, 3, B, 4, C, D, 5, 6, 7, 8, E, 9, 10, F.
+  - Les versets d'une addition sont numérotés dans l'ordre de Rahlfs (A:1 = 1:1a) ;
+    le lecteur affiche le numéro de Rahlfs (« 17k ») et c'est lui qu'on cite.
+  - D reprend 5:1 et 5:2, que le grec réécrit entièrement : le chapitre 5 commence
+    au verset 3. « 1:1s » est l'incipit hébreu, il reste Esther 1:1.
+  - B et E se lisent au milieu des chapitres 3 et 8 (après 3:13 et 8:12) : le
+    lecteur y pose un renvoi.
+- **Daniel 3:24-90** (Prière d'Azarias, cantique des trois jeunes gens) : plage
+  deutérocanonique signalée dans le chapitre (`src/data/canon.ts`).
 - **Règnes / Paralipomènes** : libellés catholiques familiers en tête (1–2 Samuel,
   1–2 Rois, 1–2 Chroniques), nom LXX (1–4 Règnes, Paralipomènes) en note.
 
