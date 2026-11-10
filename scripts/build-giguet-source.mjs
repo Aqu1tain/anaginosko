@@ -18,6 +18,13 @@ const INGEST = "e442251a"; // ingestion Giguet d'origine (numérotation Giguet)
 // ré-épinglée ici. Provenance + oldids Wikisource : data/lxx-giguet-fixes.json.
 const INGEST_LOCAL = new Set(["job", "psa", "isa", "pro", "sir"]);
 const MARK = "↑";
+// Coquilles de la transcription Wikisource au moment de l'ingestion, corrigées depuis
+// sur Wikisource : on rétablit sa leçon actuelle. Chaque coquille doit se trouver
+// exactement une fois, sinon le build s'arrête.
+const TYPOS = [
+  { book: "est", ref: "11:1", from: "Phruréés", to: "Phrurées" },
+  { book: "est", ref: "11:1", from: "Ptolémée .", to: "Ptolémée." },
+];
 
 const books = JSON.parse(fs.readFileSync(path.join(repo, "public/lxx/books.json"), "utf8"));
 const list = Array.isArray(books) ? books : books.books || Object.values(books);
@@ -26,6 +33,13 @@ const cleanFootnote = (t) => {
   if (!t.includes(MARK)) return t;
   return t.slice(0, t.indexOf(MARK)).trim();
 };
+
+function fixTypos(book, ref, text) {
+  return TYPOS.filter((t) => t.book === book && t.ref === ref).reduce((fixed, { from, to }) => {
+    if (fixed.split(from).length !== 2) throw new Error(`Coquille introuvable ou répétée : ${book} ${ref} « ${from} »`);
+    return fixed.replace(from, to);
+  }, text);
+}
 
 const fromGit = (ref, rel) => {
   try {
@@ -62,7 +76,7 @@ for (const b of list) {
         dropped++;
         continue;
       }
-      chapter[v] = cleaned;
+      chapter[v] = fixTypos(id, `${ch}:${v}`, cleaned);
       verses++;
     }
     if (Object.keys(chapter).length) book[ch] = chapter;
