@@ -7,6 +7,9 @@
   { "book": "job", "ref": "25:1", "expect": "Baldad le Sauchite", "lot": "Job restauré (overrides périmés retirés)" },
   { "book": "ezk", "ref": "7:3", "expect": "La fin est venue", "lot": "ezk 7 décalage" },
   { "book": "sir", "ref": "0:1", "expect": "nous ayant été données par la Loi", "lot": "prologue Siracide traduit maison par Biblion/admin (prime sur la campagne machine)" },
-  { "book": "jos", "ref": "12:24", "expect": "vingt-neuf rois", "lot": "jos 12 liste des rois" }
+  { "book": "jos", "ref": "12:24", "expect": "vingt-neuf rois", "lot": "jos 12 liste des rois" },
+  { "book": "est", "ref": "D:1", "expect": "Et le troisième jour", "lot": "Esther : additions en chapitres A-F" },
+  { "book": "est", "ref": "E:21", "expect": "Toute ville ou province", "lot": "Esther : additions en chapitres A-F" },
+  { "book": "est", "ref": "F:11", "expect": "La quatrième année du règne de Ptolémée", "lot": "Esther : additions en chapitres A-F" }
  ]
 }
