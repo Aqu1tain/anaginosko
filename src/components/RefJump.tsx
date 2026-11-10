@@ -2,7 +2,7 @@
 
 import { useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { chapterStep, type ChapterId } from "../data/corpus";
+import type { ChapterId } from "../data/corpus";
 import { estherPlace, parseEstherAddition, type Place } from "../data/refParse";
 
 // routePrefix optionnel : sur l'accueil, on melange NT et LXX, chaque livre pointe
@@ -23,7 +23,7 @@ const hasChapter = (b: Book, chapter: number) =>
   b.chapterList ? b.chapterList.includes(chapter) : chapter >= 1 && chapter <= b.chapters;
 
 const placeDetail = ({ chapter, verse }: Place) =>
-  `${chapterStep(chapter).toLowerCase()}${verse ? `, verset ${verse}` : ""}`;
+  `${typeof chapter === "string" ? "addition" : "chapitre"} ${chapter}${verse ? `, verset ${verse}` : ""}`;
 
 // Recherche de reference : on tape « Jean 3 », « Jean 3, 16 » (ou « gen 1 », « 1co 13 »)
 // et on saute au chapitre, voire au verset. Un livre n'a jamais d'id finissant par un
