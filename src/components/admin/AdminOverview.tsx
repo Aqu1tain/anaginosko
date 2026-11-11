@@ -7,7 +7,6 @@ import { useAuth } from "@/src/hooks/useAuth";
 import { can, fetchAdminReports, fetchAdminStats, fetchContributors, isLearner, type AdminStats } from "@/src/lib/api";
 import { fetchArticles } from "@/src/lib/articlesApi";
 import { fetchCourses } from "@/src/lib/coursesApi";
-import Avatar from "@/src/components/profile/Avatar";
 import Chevron from "@/src/components/Chevron";
 
 type Task = { href: string; count: number; label: (n: number) => string };
@@ -17,7 +16,7 @@ const plural = (n: number, one: string, many: string) => `${n} ${n > 1 ? many : 
 
 // Vue d'ensemble : ce qui attend une action de cette personne, puis quelques chiffres.
 export default function AdminOverview() {
-  const { user, ready, photo, logout } = useAuth();
+  const { user, ready } = useAuth();
   const router = useRouter();
   const [tasks, setTasks] = useState<Task[] | null>(null);
   const [figures, setFigures] = useState<Figures>({});
@@ -105,28 +104,10 @@ export default function AdminOverview() {
   return (
     <div className="space-y-8 pb-12 pt-6">
       <header className="flex flex-wrap items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <Avatar name={user.displayName} photo={photo} size={48} />
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight">Bonjour, {user.displayName}</h1>
-            {user.title && <p className="text-sm text-base-content/70">{user.title}</p>}
-          </div>
-        </div>
-        <div className="flex gap-2">
-          <Link href="/mon-profil" className="btn btn-outline btn-sm">
-            Mon profil
-          </Link>
-          <button
-            type="button"
-            className="btn btn-ghost btn-sm"
-            onClick={async () => {
-              await logout();
-              router.push("/");
-            }}
-          >
-            Se déconnecter
-          </button>
-        </div>
+        <h1 className="text-3xl font-bold tracking-tight">Aperçu</h1>
+        <Link href="/mon-profil" className="btn btn-outline btn-sm">
+          Mon profil
+        </Link>
       </header>
 
       <section>
