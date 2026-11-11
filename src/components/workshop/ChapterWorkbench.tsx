@@ -30,6 +30,29 @@ type PublishedMap = Record<string, Record<string, { maison: string }>>;
 type Side = "mot" | "verset" | "controles" | "assistant";
 const mod = (e: KeyboardEvent) => e.metaKey || e.ctrlKey;
 
+const quiet = "btn btn-sm border-base-300 bg-base-100 font-medium shadow-none hover:bg-base-200";
+
+function ChapterStep({ to, href, label }: { to: "left" | "right"; href: string | null; label: string }) {
+  if (!href) return <span className="w-11" aria-hidden="true" />;
+  return (
+    <Link href={href} aria-label={label} className="btn btn-ghost btn-square h-11 w-11">
+      <Chevron to={to} />
+    </Link>
+  );
+}
+
+function Keys({ k }: { k: string }) {
+  return (
+    <span className="flex gap-1">
+      {k.split(" ").map((key) => (
+        <kbd key={key} className="kbd kbd-xs">
+          {key}
+        </kbd>
+      ))}
+    </span>
+  );
+}
+
 export default function ChapterWorkbench({ corpus, book, chapter }: { corpus: WorkCorpus; book: string; chapter: ChapterId }) {
   const config = corpusById(corpus);
   const { user } = useAuth();
@@ -43,6 +66,14 @@ export default function ChapterWorkbench({ corpus, book, chapter }: { corpus: Wo
   const [active, setActive] = useState<string | null>(null);
   const [word, setWord] = useState<number | null>(null);
   const [side, setSide] = useState<Side>("verset");
+  const [drawer, setDrawer] = useState(false);
+
+  useEffect(() => {
+    if (!drawer) return;
+    const close = (e: globalThis.KeyboardEvent) => e.key === "Escape" && setDrawer(false);
+    document.addEventListener("keydown", close);
+    return () => document.removeEventListener("keydown", close);
+  }, [drawer]);
   const [noteFor, setNoteFor] = useState<string[] | null>(null);
   const [note, setNote] = useState("");
   const [error, setError] = useState("");
@@ -227,44 +258,147 @@ export default function ChapterWorkbench({ corpus, book, chapter }: { corpus: Wo
 
   if (error && !text) return <p className="py-12 text-center text-sm text-error">{error}</p>;
 
+  const panel = (
+    <>
+    <nav className="mb-4 flex gap-1 text-sm" aria-label="Panneau">
+      {(
+        [
+          ["mot", "Mot"],
+          ["verset", "Verset"],
+          ["controles", `Contrôles${issues.length ? ` (${issues.length})` : ""}`],
+          ...(assisted ? [["assistant", "Assistant"]] : []),
+        ] as [Side, string][]
+      ).map(([k, label]) => (
+        <button
+          key={k}
+          type="button"
+          onClick={() => setSide(k)}
+          className={`rounded-md px-2.5 py-1 ${side === k ? "bg-base-200 font-medium" : "text-base-content/80 hover:text-base-content"}`}
+        >
+          {label}
+        </button>
+      ))}
+    </nav>
+    {side === "mot" &&
+      (selected?.lemme ? (
+        <WordPanel
+          key={`${selected.lemme}:${JSON.stringify(terms.get(selected.lemme) ?? null)}`}
+          corpus={corpus}
+          mot={selected}
+          term={terms.get(selected.lemme)}
+          published={published}
+          onTermSaved={reloadTerms}
+        />
+      ) : (
+        <p className="text-sm text-base-content/70">Cliquez un mot grec.</p>
+      ))}
+    {side === "verset" &&
+      (activeRow && work ? (
+        <VerseSide
+          key={activeRow.ref}
+          corpus={corpus}
+          book={book}
+          verseRef={activeRow.ref}
+          comments={work.comments[activeRow.ref] ?? []}
+          onChanged={reloadWork}
+          current={activeRow.value}
+          onRestore={(t) => change(activeRow.ref, t)}
+        />
+      ) : (
+        <div className="space-y-3 text-sm text-base-content/70">
+          <p>Cliquez dans un verset.</p>
+          <dl className="grid grid-cols-[auto_1fr] items-center gap-x-3 gap-y-2 text-xs">
+            <dt><Keys k="⌘ Entrée" /></dt>
+            <dd>enregistrer, verset suivant</dd>
+            <dt><Keys k="⌘ ↑ ↓" /></dt>
+            <dd>changer de verset</dd>
+            <dt><Keys k="⌘ ⇧ Entrée" /></dt>
+            <dd>publier le verset</dd>
+            <dt><Keys k="⌘ B" /></dt>
+            <dd>partir de la traduction de base</dd>
+            <dt><Keys k="⌘ J" /></dt>
+            <dd>verset suivant à traduire</dd>
+            <dt><Keys k="⌘ K" /></dt>
+            <dd>aller à un passage</dd>
+            {assisted && (
+              <>
+                <dt><Keys k="⌘ I" /></dt>
+                <dd>premier jet de l’assistant</dd>
+              </>
+            )}
+          </dl>
+        </div>
+      ))}
+    {side === "assistant" &&
+      (activeRow ? (
+        <AssistantPanel
+          chat={chat}
+          target={{ corpus, book, chapter, verse: activeRow.verse }}
+          current={activeRow.value}
+          state={proposals[activeRow.ref]}
+          onRun={() => propose(activeRow.verse)}
+          onUse={(t) => change(activeRow.ref, t)}
+        />
+      ) : (
+        <p className="text-sm text-base-content/70">Cliquez dans un verset, puis ⌘ I.</p>
+      ))}
+    {side === "controles" &&
+      (issues.length ? (
+        <ul className="space-y-2 text-sm">
+          {issues.map((i) => (
+            <li key={`${i.ref}-${i.message}`}>
+              <button type="button" onClick={() => focusAt(rows.findIndex((r) => r.ref === i.ref))} className="text-left hover:text-primary">
+                <span className="font-semibold tabular-nums">{i.verse}</span> · {i.message}
+              </button>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className="text-sm text-base-content/70">Rien à signaler.</p>
+      ))}
+    </>
+  );
+
   return (
     <div className="pb-12 pt-4">
-      <header className="sticky top-14 z-10 -mx-4 mb-2 flex flex-wrap items-center gap-x-4 gap-y-2 border-b border-base-300 bg-base-100/95 px-4 py-3 backdrop-blur wide:mx-0 wide:px-0">
-        <Link href={`?corpus=${corpus}`} className="text-sm text-base-content/80 hover:text-base-content">
-          Atelier
-        </Link>
-        <h1 className="text-xl font-bold tracking-tight">
-          {config.bookNames[book] ?? book} {chapter}
-        </h1>
+      <header className="sticky top-14 z-10 -mx-4 mb-2 flex flex-wrap items-center gap-x-4 gap-y-2 border-b border-base-300 bg-base-100/95 px-4 py-2 backdrop-blur wide:mx-0 wide:px-0">
         <span className="flex items-center gap-1">
-          {pos > 0 && (
-            <Link href={href(chapters[pos - 1])} className="btn btn-ghost btn-xs" aria-label="Chapitre précédent">
-              <Chevron to="left" />
-            </Link>
-          )}
-          {pos >= 0 && pos < chapters.length - 1 && (
-            <Link href={href(chapters[pos + 1])} className="btn btn-ghost btn-xs" aria-label="Chapitre suivant">
-              <Chevron to="right" />
-            </Link>
-          )}
+          <Link href={`?corpus=${corpus}`} className="inline-flex min-h-11 items-center pr-1 text-sm text-base-content/80 transition-colors hover:text-base-content">
+            Atelier
+          </Link>
+          <span className="text-base-content/40" aria-hidden="true">
+            /
+          </span>
+          <ChapterStep to="left" href={pos > 0 ? href(chapters[pos - 1]) : null} label="Chapitre précédent" />
+          <h1 className="px-1 text-xl font-bold tracking-tight">
+            {config.bookNames[book] ?? book} {chapter}
+          </h1>
+          <ChapterStep to="right" href={pos >= 0 && pos < chapters.length - 1 ? href(chapters[pos + 1]) : null} label="Chapitre suivant" />
         </span>
-        <span className="text-sm tabular-nums text-base-content/70">
+        <span className="flex items-center gap-2 text-sm tabular-nums text-base-content/70">
+          <span className="h-1.5 w-20 overflow-hidden rounded-full bg-base-200" aria-hidden="true">
+            <span className="block h-full bg-success" style={{ width: `${rows.length ? (done / rows.length) * 100 : 0}%` }} />
+          </span>
           {done} / {rows.length} publiés
         </span>
-        <span className="ml-auto flex flex-wrap gap-2">
+        <span className="ml-auto flex flex-wrap items-center gap-2">
+          <button type="button" className={`${quiet} wide:hidden`} onClick={() => setDrawer(true)}>
+            Panneau
+          </button>
           <GotoPalette corpus={corpus} />
-          {done < rows.length && (
-            <button type="button" className="btn btn-ghost btn-sm" onClick={nextUntranslated} title="⌘ J">
-              Suivant à traduire
-            </button>
-          )}
           {corpus === "lxx" && (
-            <Link href={`?mode=alignement&corpus=lxx&book=${book}&ch=${chapter}`} className="btn btn-ghost btn-sm">
+            <Link href={`?mode=alignement&corpus=lxx&book=${book}&ch=${chapter}`} className="btn btn-ghost btn-sm hidden wide:inline-flex">
               Alignement Giguet
             </Link>
           )}
+          {done < rows.length && (
+            <button type="button" className={`${quiet} gap-2`} onClick={nextUntranslated}>
+              Suivant à traduire
+              <kbd className="kbd kbd-xs hidden wide:inline-flex">⌘J</kbd>
+            </button>
+          )}
           {publishable.length > 0 && (
-            <button type="button" className="btn btn-primary btn-sm" onClick={() => publish(publishable)} title="Publier les brouillons du chapitre">
+            <button type="button" className="btn btn-primary btn-sm" onClick={() => publish(publishable)}>
               Publier {publishable.length}
             </button>
           )}
@@ -293,6 +427,7 @@ export default function ChapterWorkbench({ corpus, book, chapter }: { corpus: Wo
                   setWord(index);
                   setActive(row.ref);
                   setSide("mot");
+                  setDrawer(true);
                 }}
                 onKey={onKey(i)}
                 onPublish={() => publish([row.ref])}
@@ -307,106 +442,30 @@ export default function ChapterWorkbench({ corpus, book, chapter }: { corpus: Wo
         </ol>
 
         <aside className="hidden wide:block">
-          <div className="sticky top-32 max-h-[calc(100dvh-9rem)] overflow-y-auto rounded-box border border-base-300 p-4">
-            <nav className="mb-4 flex gap-1 text-sm" aria-label="Panneau">
-              {(
-                [
-                  ["mot", "Mot"],
-                  ["verset", "Verset"],
-                  ["controles", `Contrôles${issues.length ? ` (${issues.length})` : ""}`],
-                  ...(assisted ? [["assistant", "Assistant"]] : []),
-                ] as [Side, string][]
-              ).map(([k, label]) => (
-                <button
-                  key={k}
-                  type="button"
-                  onClick={() => setSide(k)}
-                  className={`rounded-md px-2.5 py-1 ${side === k ? "bg-base-200 font-medium" : "text-base-content/80 hover:text-base-content"}`}
-                >
-                  {label}
-                </button>
-              ))}
-            </nav>
-            {side === "mot" &&
-              (selected?.lemme ? (
-                <WordPanel
-                  key={`${selected.lemme}:${JSON.stringify(terms.get(selected.lemme) ?? null)}`}
-                  corpus={corpus}
-                  mot={selected}
-                  term={terms.get(selected.lemme)}
-                  published={published}
-                  onTermSaved={reloadTerms}
-                />
-              ) : (
-                <p className="text-sm text-base-content/70">Cliquez un mot grec.</p>
-              ))}
-            {side === "verset" &&
-              (activeRow && work ? (
-                <VerseSide
-                  key={activeRow.ref}
-                  corpus={corpus}
-                  book={book}
-                  verseRef={activeRow.ref}
-                  comments={work.comments[activeRow.ref] ?? []}
-                  onChanged={reloadWork}
-                  current={activeRow.value}
-                  onRestore={(t) => change(activeRow.ref, t)}
-                />
-              ) : (
-                <div className="space-y-3 text-sm text-base-content/70">
-                  <p>Cliquez dans un verset.</p>
-                  <dl className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-xs">
-                    <dt className="font-mono">⌘ Entrée</dt>
-                    <dd>enregistrer, verset suivant</dd>
-                    <dt className="font-mono">⌘ ↑ ↓</dt>
-                    <dd>changer de verset</dd>
-                    <dt className="font-mono">⌘ ⇧ Entrée</dt>
-                    <dd>publier le verset</dd>
-                    <dt className="font-mono">⌘ B</dt>
-                    <dd>partir de la traduction de base</dd>
-                    <dt className="font-mono">⌘ J</dt>
-                    <dd>verset suivant à traduire</dd>
-                    <dt className="font-mono">⌘ K</dt>
-                    <dd>aller à un passage</dd>
-                    {assisted && (
-                      <>
-                        <dt className="font-mono">⌘ I</dt>
-                        <dd>premier jet de l’assistant</dd>
-                      </>
-                    )}
-                  </dl>
-                </div>
-              ))}
-            {side === "assistant" &&
-              (activeRow ? (
-                <AssistantPanel
-                  chat={chat}
-                  target={{ corpus, book, chapter, verse: activeRow.verse }}
-                  current={activeRow.value}
-                  state={proposals[activeRow.ref]}
-                  onRun={() => propose(activeRow.verse)}
-                  onUse={(t) => change(activeRow.ref, t)}
-                />
-              ) : (
-                <p className="text-sm text-base-content/70">Cliquez dans un verset, puis ⌘ I pour un premier jet.</p>
-              ))}
-            {side === "controles" &&
-              (issues.length ? (
-                <ul className="space-y-2 text-sm">
-                  {issues.map((i) => (
-                    <li key={`${i.ref}-${i.message}`}>
-                      <button type="button" onClick={() => focusAt(rows.findIndex((r) => r.ref === i.ref))} className="text-left hover:text-primary">
-                        <span className="font-semibold tabular-nums">{i.verse}</span> · {i.message}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="text-sm text-base-content/70">Rien à signaler.</p>
-              ))}
-          </div>
+          <div className="sticky top-32 max-h-[calc(100dvh-9rem)] overflow-y-auto rounded-box border border-base-300 p-4">{panel}</div>
         </aside>
       </div>
+
+      {drawer && (
+        <div className="fixed inset-0 z-50 wide:hidden" onClick={() => setDrawer(false)}>
+          <div className="absolute inset-0 bg-base-content/30" />
+          <div
+            role="dialog"
+            aria-label="Panneau"
+            className="absolute inset-x-0 bottom-0 max-h-[75dvh] overflow-y-auto rounded-t-box bg-base-100 p-4 pb-[calc(1rem+env(safe-area-inset-bottom))] shadow-xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="-mt-1 mb-1 flex justify-end">
+              <button type="button" aria-label="Fermer" className="btn btn-ghost btn-square" onClick={() => setDrawer(false)}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true">
+                  <path d="M18 6 6 18M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            {panel}
+          </div>
+        </div>
+      )}
 
       {noteFor && (
         <dialog open className="modal modal-open">
