@@ -67,7 +67,7 @@ export default function GotoPalette({ corpus }: { corpus: WorkCorpus }) {
 
   return (
     <>
-      <button type="button" onClick={() => setOpen(true)} className="btn btn-ghost btn-sm gap-2 text-base-content/80">
+      <button type="button" onClick={() => setOpen(true)} className="btn btn-sm gap-2 border-base-300 bg-base-100 font-medium shadow-none hover:bg-base-200">
         Aller à…
         <kbd className="kbd kbd-xs">⌘K</kbd>
       </button>
