@@ -110,48 +110,55 @@ export default function WorkshopHome({ corpus }: { corpus: WorkCorpus }) {
   const weeks: (WorkshopStats["weekly"][number] | null)[] = [...Array(Math.max(0, 12 - stats.weekly.length)).fill(null), ...stats.weekly.slice(-12)];
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {imported > 0 && <p className="rounded-box bg-success/10 px-4 py-2.5 text-sm">{imported} traductions de l’ancien atelier reprises.</p>}
 
-      <section className="grid gap-4 wide:grid-cols-[minmax(0,1fr)_20rem]">
+      {(stats.queue.drafts.length > 0 || stats.queue.changes.length > 0) && (
+        <section className="grid items-start gap-4 sm:grid-cols-2">
+          <Queue title="À corriger" items={stats.queue.changes} corpus={corpus} tone="bg-warning/20" />
+          <Queue title="Mes brouillons" items={stats.queue.drafts} corpus={corpus} tone="bg-base-200" />
+        </section>
+      )}
+
+      <section className={`grid items-start gap-4 ${stats.translators.length ? "wide:grid-cols-[minmax(0,1fr)_18rem]" : ""}`}>
         <div className="rounded-box border border-base-300 p-5">
           <p className="text-sm text-base-content/80">Traduction maison · {config.label}</p>
-          <p className="mt-1 flex items-baseline gap-3">
-            <span className="text-4xl font-bold tabular-nums">{verses ? `${pct(done, totalVerses).toLocaleString("fr-FR")} %` : "…"}</span>
+          <p className="mt-1 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+            <span className="text-3xl font-semibold tabular-nums">{verses ? `${pct(done, totalVerses).toLocaleString("fr-FR")} %` : "…"}</span>
             <span className="text-sm text-base-content/80">
               {done.toLocaleString("fr-FR")} verset{done > 1 ? "s" : ""} publié{done > 1 ? "s" : ""}
-              {verses ? ` sur ${totalVerses.toLocaleString("fr-FR")}` : ""} · {ongoing} en cours
+              {verses ? ` sur ${totalVerses.toLocaleString("fr-FR")}` : ""}
+              {ongoing ? ` · ${ongoing} en cours` : ""}
             </span>
           </p>
-          <div className="mt-4 flex h-2.5 overflow-hidden rounded-full bg-base-200">
+          <div className="mt-3 flex h-2 overflow-hidden rounded-full bg-base-200">
             <span className="bg-success" style={{ width: `${pct(done, totalVerses)}%` }} />
             <span className="bg-warning/70" style={{ width: `${pct(ongoing, totalVerses)}%` }} />
           </div>
-          <div className="mt-5">
-            <p className="mb-1 text-xs text-base-content/70">Versets publiés par semaine</p>
-            <div className="flex h-16 items-end gap-1.5">
-              {weeks.map((w, i) => (
-                <span key={i} title={w ? `${w.revisions} le ${w.week}` : undefined} className="flex-1 rounded-t bg-primary/60" style={{ height: w ? `${Math.max(6, (w.revisions / maxWeek) * 100)}%` : "2px", opacity: w ? 1 : 0.25 }} />
-              ))}
+          {stats.weekly.some((w) => w.revisions > 0) && (
+            <div className="mt-5">
+              <p className="mb-1 text-xs text-base-content/70">Versets publiés par semaine</p>
+              <div className="flex h-16 items-end gap-1.5">
+                {weeks.map((w, i) => (
+                  <span key={i} title={w ? `${w.revisions} le ${w.week}` : undefined} className="flex-1 rounded-t bg-primary/60" style={{ height: w ? `${Math.max(6, (w.revisions / maxWeek) * 100)}%` : "2px", opacity: w ? 1 : 0.25 }} />
+                ))}
+              </div>
             </div>
+          )}
+        </div>
+        {stats.translators.length > 0 && (
+          <div className="rounded-box border border-base-300 p-5">
+            <h3 className="text-sm font-semibold">Traducteurs</h3>
+            <ul className="mt-2 space-y-1 text-sm">
+              {stats.translators.map((t) => (
+                <li key={t.name} className="flex justify-between">
+                  <span>{t.name}</span>
+                  <span className="tabular-nums text-base-content/70">{t.published.toLocaleString("fr-FR")}</span>
+                </li>
+              ))}
+            </ul>
           </div>
-        </div>
-        <div className="rounded-box border border-base-300 p-5">
-          <h3 className="text-sm font-semibold">Traducteurs</h3>
-          <ul className="mt-2 space-y-1 text-sm">
-            {stats.translators.map((t) => (
-              <li key={t.name} className="flex justify-between">
-                <span>{t.name}</span>
-                <span className="tabular-nums text-base-content/70">{t.published.toLocaleString("fr-FR")}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      <section className="grid gap-4 sm:grid-cols-2">
-        <Queue title="Mes brouillons" items={stats.queue.drafts} corpus={corpus} tone="bg-base-200" />
-        {stats.queue.changes.length > 0 && <Queue title="À corriger" items={stats.queue.changes} corpus={corpus} tone="bg-warning/20" />}
+        )}
       </section>
 
       <section>
