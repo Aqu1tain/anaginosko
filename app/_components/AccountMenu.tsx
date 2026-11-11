@@ -5,7 +5,8 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "../../src/hooks/useAuth";
 import Avatar from "../../src/components/profile/Avatar";
-import { isLearner } from "../../src/lib/api";
+import { can, isLearner } from "../../src/lib/api";
+import { ICON } from "../../src/components/admin/icons";
 
 const base = "flex min-h-11 w-full items-center gap-3 rounded-lg px-3 text-left text-sm transition-colors";
 const item = `${base} hover:bg-base-200 focus-visible:bg-base-200`;
@@ -23,8 +24,8 @@ const SETTINGS = "M12 15a3 3 0 100-6 3 3 0 000 6zM19.4 15a1.7 1.7 0 00.3 1.8l.1.
 const DASHBOARD = "M4 13h6V4H4zM14 20h6V11h-6zM4 20h6v-3H4zM14 7h6V4h-6z";
 const LOGOUT = "M15 4h3a2 2 0 012 2v12a2 2 0 01-2 2h-3M10 17l5-5-5-5M15 12H4";
 
-// Avatar de la barre du haut : connexion, ou menu du compte (tableau de bord pour
-// l'équipe, paramètres, déconnexion).
+// Avatar de la barre du haut : connexion, ou menu du compte (tableau de bord et
+// atelier pour l'équipe, paramètres, déconnexion).
 export default function AccountMenu() {
   const { user, photo, logout } = useAuth();
   const router = useRouter();
@@ -76,6 +77,12 @@ export default function AccountMenu() {
             <Link role="menuitem" href="/admin" className={item}>
               <Icon d={DASHBOARD} />
               Tableau de bord
+            </Link>
+          )}
+          {can(user, "arbitrage") && (
+            <Link role="menuitem" href="/admin/arbitrage" className={item}>
+              <Icon d={ICON.workshop} />
+              Atelier de traduction
             </Link>
           )}
           <Link role="menuitem" href="/mon-compte" className={item}>
