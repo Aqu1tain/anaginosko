@@ -7,11 +7,13 @@ import { useAuth } from "../../src/hooks/useAuth";
 import Avatar from "../../src/components/profile/Avatar";
 import { isLearner } from "../../src/lib/api";
 
-const item = "flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm hover:bg-base-200";
+const base = "flex min-h-11 w-full items-center gap-3 rounded-lg px-3 text-left text-sm transition-colors";
+const item = `${base} hover:bg-base-200 focus-visible:bg-base-200`;
+const danger = `${base} text-accent hover:bg-accent/10 focus-visible:bg-accent/10`;
 
 function Icon({ d }: { d: string }) {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="text-base-content/70">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="shrink-0 opacity-70">
       <path d={d} />
     </svg>
   );
@@ -21,8 +23,8 @@ const SETTINGS = "M12 15a3 3 0 100-6 3 3 0 000 6zM19.4 15a1.7 1.7 0 00.3 1.8l.1.
 const DASHBOARD = "M4 13h6V4H4zM14 20h6V11h-6zM4 20h6v-3H4zM14 7h6V4h-6z";
 const LOGOUT = "M15 4h3a2 2 0 012 2v12a2 2 0 01-2 2h-3M10 17l5-5-5-5M15 12H4";
 
-// Avatar de la barre du haut : connexion, ou menu du compte (paramètres, tableau
-// de bord pour l'équipe, déconnexion).
+// Avatar de la barre du haut : connexion, ou menu du compte (tableau de bord pour
+// l'équipe, paramètres, déconnexion).
 export default function AccountMenu() {
   const { user, photo, logout } = useAuth();
   const router = useRouter();
@@ -61,30 +63,30 @@ export default function AccountMenu() {
         <Avatar name={user.displayName} photo={photo} size={26} />
       </button>
       {open && (
-        <div role="menu" className="absolute top-full right-0 z-40 mt-2 w-64 rounded-box border border-base-300 bg-base-100 p-1.5 shadow-lg">
-          <div className="flex items-center gap-3 px-3 py-2.5">
-            <Avatar name={user.displayName} photo={photo} size={34} />
+        <div role="menu" className="absolute top-full right-0 z-40 mt-2 w-72 rounded-box border border-base-300 bg-base-100 p-2 shadow-lg">
+          <div className="flex items-center gap-3 px-3 py-3">
+            <Avatar name={user.displayName} photo={photo} size={40} />
             <div className="min-w-0">
               <p className="truncate text-sm font-semibold">{user.displayName}</p>
               {user.email && <p className="truncate text-xs text-base-content/70">{user.email}</p>}
             </div>
           </div>
-          <div className="my-1 border-t border-base-300" />
-          <Link role="menuitem" href="/mon-compte" className={item}>
-            <Icon d={SETTINGS} />
-            Paramètres
-          </Link>
+          <div className="my-2 border-t border-base-300" />
           {!isLearner(user) && (
             <Link role="menuitem" href="/admin" className={item}>
               <Icon d={DASHBOARD} />
               Tableau de bord
             </Link>
           )}
-          <div className="my-1 border-t border-base-300" />
+          <Link role="menuitem" href="/mon-compte" className={item}>
+            <Icon d={SETTINGS} />
+            Paramètres
+          </Link>
+          <div className="my-2 border-t border-base-300" />
           <button
             role="menuitem"
             type="button"
-            className={item}
+            className={danger}
             onClick={async () => {
               setOpen(false);
               await logout();
