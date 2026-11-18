@@ -23,8 +23,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     title: a.title,
     description: a.excerpt || undefined,
     alternates: { canonical: `/articles/${a.slug}` },
-    // og:image vient du fichier-convention opengraph-image.tsx (carte de marque
-    // générée : titre + auteur), plus fiable qu'une cover WebP non rendue par satori.
+    // og:image vient du fichier-convention opengraph-image.tsx : la miniature de
+    // l'article en JPEG, ou à défaut la carte de marque générée.
     openGraph: {
       type: "article",
       title: a.title,
